@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
+/* @layer components {
   .ik-page {
     background-image: url("/bg.jpeg");
   }
-}
+} */
