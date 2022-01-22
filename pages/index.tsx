@@ -2,10 +2,9 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useUser } from "@auth0/nextjs-auth0";
-// @TODO: bring in d.ts for this since it does not have types published
 import RICIBs from "react-individual-character-input-boxes";
 
-/* Disable ESLint for this file because auth needs full page loading */
+// Disable ESLint for this file because auth needs full redirect, not SPA routing
 /*eslint-disable @next/next/no-html-link-for-pages*/
 
 const Home: NextPage = () => {
@@ -41,6 +40,7 @@ const Home: NextPage = () => {
             amount={5}
             handleOutputString={handleOutput}
             inputRegExp={/^[0-9]$/}
+            autoFocus={true}
           />
         </div>
 
