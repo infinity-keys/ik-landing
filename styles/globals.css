@@ -2,5 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @layer components {
-} */
+@layer components {
+  [name^="input"] {
+    @apply bg-white/[0.5];
+  }
+}
