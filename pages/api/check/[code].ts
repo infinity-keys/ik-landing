@@ -11,5 +11,14 @@ export default function handler(
 ) {
   console.log(req.body);
   console.log(req.query);
-  res.status(200).json({ name: "John Doe" });
+
+  console.log(process.env.INFINITY_KEYS_ACCESS_CODE);
+
+  const { code } = req.query;
+
+  if (code !== process.env.INFINITY_KEYS_ACCESS_CODE) {
+    res.status(403).end();
+  } else {
+    res.status(200).json({ name: "John Doe" });
+  }
 }

@@ -7,11 +7,22 @@ import RICIBs from "react-individual-character-input-boxes";
 // Disable ESLint for this file because auth needs full redirect, not SPA routing
 /*eslint-disable @next/next/no-html-link-for-pages*/
 
+const inputCount = 5;
+
 const Home: NextPage = () => {
   const { user, error, isLoading } = useUser();
 
-  const handleOutput = (output: string) => {
-    console.log(output);
+  const handleInput = async (input: string) => {
+    console.log(input);
+    if (input.length === inputCount) {
+      console.log("call backend");
+      const res = await fetch(`/api/check/${input}`);
+      if (!res.ok) {
+        return;
+      }
+      const results = await res.json();
+      console.log(results);
+    }
   };
 
   return (
@@ -37,8 +48,8 @@ const Home: NextPage = () => {
 
         <div className="magic-input pt-9">
           <RICIBs
-            amount={5}
-            handleOutputString={handleOutput}
+            amount={inputCount}
+            handleOutputString={handleInput}
             inputRegExp={/^[0-9]$/}
             autoFocus={true}
           />
