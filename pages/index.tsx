@@ -16,7 +16,16 @@ const Home: NextPage = () => {
     console.log(input);
     if (input.length === inputCount) {
       console.log("call backend");
-      const res = await fetch(`/api/check/${input}`);
+
+      // const res = await fetch(`/api/check/${input}`);
+      const res = await fetch(`/api/check/code`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code: input }),
+      });
+
       if (!res.ok) {
         return;
       }
