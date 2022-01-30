@@ -3,7 +3,12 @@ import type { NextApiRequest, NextApiResponse } from "next";
 // import jwt from "jsonwebtoken";
 import { SignJWT } from "jose";
 import { nanoid } from "nanoid";
-import { IK_ACCESS_COOKIE, JWT_SECRET_KEY, MAGIC_CODE } from "@lib/constants";
+import {
+  IK_ACCESS_COOKIE,
+  IK_CLAIMS_NAMESPACE,
+  JWT_SECRET_KEY,
+  MAGIC_CODE,
+} from "@lib/constants";
 
 export default async function handler(
   req: NextApiRequest,
@@ -23,7 +28,7 @@ export default async function handler(
   }
   // Correct code, generate token and send it back
   const token = await new SignJWT({
-    claims: { "https://infinitykeys.io": { access: true } },
+    claims: { [IK_CLAIMS_NAMESPACE]: { access: true } },
   })
     .setProtectedHeader({ alg: "HS256" })
     .setJti(nanoid())
