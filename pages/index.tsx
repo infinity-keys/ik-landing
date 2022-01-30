@@ -10,14 +10,11 @@ import RICIBs from "react-individual-character-input-boxes";
 const inputCount = 5;
 
 const Home: NextPage = () => {
-  const { user, error, isLoading } = useUser();
+  // const { user, error, isLoading } = useUser();
 
   const handleInput = async (input: string) => {
     console.log(input);
     if (input.length === inputCount) {
-      console.log("call backend");
-
-      // const res = await fetch(`/api/check/${input}`);
       const res = await fetch(`/api/check/code`, {
         method: "POST",
         headers: {
@@ -65,9 +62,11 @@ const Home: NextPage = () => {
           />
         </div>
 
-        <p className="pt-6">- or -</p>
+        {/* Example code for auth0 if/when users needed */}
 
-        <div className="auth pt-8">
+        {/* <p className="pt-6">- or -</p> */}
+
+        {/* <div className="auth pt-8">
           {isLoading && <p>Loading...</p>}
           {error && <p>Error: {error.message}</p>}
           {!user && !isLoading && (
@@ -83,7 +82,7 @@ const Home: NextPage = () => {
               </a>
             </p>
           )}
-        </div>
+        </div> */}
       </main>
 
       <footer className="flex items-center justify-center w-full h-24 border-t z-10">
