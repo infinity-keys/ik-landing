@@ -29,8 +29,9 @@ const Home: NextPage = () => {
       if (!res.ok) {
         return;
       }
+      // If we made it here, we have a valid code and can forward
       const results = await res.json();
-      console.log(results);
+      location.href = results.forwardTo;
     }
   };
 

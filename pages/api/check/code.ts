@@ -1,24 +1,38 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
+import { SignJWT } from "jose";
+import { nanoid } from "nanoid";
+import { IK_ACCESS_COOKIE, JWT_SECRET_KEY, MAGIC_CODE } from "@lib/constants";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log(req.body);
-  console.log(req.query);
-
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method !== "POST") return res.status(405).end();
 
   const { code } = req.body;
 
   // Nope
-  if (code !== process.env.INFINITY_KEYS_ACCESS_CODE) {
+  if (code !== MAGIC_CODE) {
     return res.status(403).end();
   }
 
-  if (!process.env.INFINITY_KEYS_SECRET) {
+  if (!JWT_SECRET_KEY) {
     throw new Error("Secret is not set, check env variables");
   }
   // Correct code, generate token and send it back
-  const token = jwt.sign({ sub: "anon" }, process.env.INFINITY_KEYS_SECRET);
-  return res.json({ token });
+  const token = await new SignJWT({
+    claims: { "https://infinitykeys.io": { access: true } },
+  })
+    .setProtectedHeader({ alg: "HS256" })
+    .setJti(nanoid())
+    .setIssuedAt()
+    .sign(new TextEncoder().encode(JWT_SECRET_KEY));
+
+  res.setHeader(
+    "Set-Cookie",
+    `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=/;`
+  );
+  return res.json({ access: true, forwardTo: "/gated" });
 }
