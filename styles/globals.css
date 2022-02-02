@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 @layer components {
-  [name^="input"] {
-    @apply bg-white/[0.5];
+  .ik-code-input {
+    @apply bg-gray-500 m-0 mr-8 border-gray-200 !important;
+    width: 160px !important;
+    height: 180px !important;
   }
 }
