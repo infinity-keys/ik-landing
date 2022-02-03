@@ -12,11 +12,11 @@ class GlobalDoc extends Document {
             crossOrigin="true"
           />
           <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,700;1,400&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
             rel="stylesheet"
           />
         </Head>
-        <body>
+        <body className="bg-blue text-gray-100">
           <Main />
           <NextScript />
         </body>

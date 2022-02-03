@@ -39,7 +39,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="ik-page flex flex-col items-center justify-center min-h-screen relative bg-blue">
+    <div className="ik-page flex flex-col items-center justify-center min-h-screen relative">
       <Head>
         <title>Infinity Keys</title>
         <meta name="description" content="Keys keys keys" />
@@ -52,12 +52,10 @@ const Home: NextPage = () => {
             <div className="w-6">
               <MaterialIcon />
             </div>
-            <h1 className="text-base font-bold text-gray-100 pt-2 pl-4">
-              Password
-            </h1>
+            <h1 className="text-base font-bold pt-2 pl-4">Password</h1>
           </div>
 
-          <div className="magic-input pt-7">
+          <div className="magic-input pt-7 text-turquoise font-bold text-5xl">
             <RICIBs
               amount={inputCount}
               handleOutputString={handleInput}
