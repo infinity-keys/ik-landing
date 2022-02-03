@@ -5,7 +5,7 @@ const Gated: NextPage = () => {
   return (
     <div className="ik-page flex flex-col items-center justify-center min-h-screen relative radial-bg">
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 z-10">
-        <div className="w-96 align">
+        <div className="w-96">
           <h1 className="text-3xl font-medium mb-6">Coming soon.</h1>
           <p className="text-sm font-normal mb-12">
             Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam

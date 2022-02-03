@@ -3,6 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useUser } from "@auth0/nextjs-auth0";
 import RICIBs from "react-individual-character-input-boxes";
+import loRange from "lodash/range";
 
 import MaterialIcon from "@components/svg/material-lock";
 
@@ -11,7 +12,7 @@ import MaterialIcon from "@components/svg/material-lock";
 
 // 5 inputs, and props per
 const inputCount = 5;
-const inputProps = Array.from(Array(inputCount).keys()).map(() => ({
+const inputProps = loRange(inputCount).map(() => ({
   className: "ik-code-input",
 }));
 
