@@ -11,4 +11,9 @@
   .ik-code-input:last-child {
     @apply mr-0 !important;
   }
+
+  .radial-bg {
+    background: radial-gradient(ellipse at top left, #3fccbb50, transparent 40%),
+      radial-gradient(ellipse at bottom right, #d2508e70, transparent 40%);
+  }
 }
