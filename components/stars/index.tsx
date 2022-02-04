@@ -1,14 +1,14 @@
 import loRange from "lodash/range";
 
-import styles from "./stars.module.scss";
+// import styles from "./stars.module.scss"; // try css modules later
 
 const starCount = loRange(50);
 
 const Stars = () => {
   return (
-    <div className={styles.stars}>
+    <div className="stars">
       {starCount.map((i) => (
-        <div className={styles.star} key={`star-${i}`}></div>
+        <div className="star" key={`star-${i}`}></div>
       ))}
     </div>
   );

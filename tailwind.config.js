@@ -1,7 +1,7 @@
 const tailwindforms = require("@tailwindcss/forms");
 
 module.exports = {
-  content: ["./*{pages,components}/**/*.{js,ts,jsx,tsx}"],
+  content: ["./*{pages,components}/**/*.{js,ts,jsx,tsx,scss}"],
   theme: {
     colors: {
       transparent: "transparent",
