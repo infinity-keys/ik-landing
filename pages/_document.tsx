@@ -1,7 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
-import loRange from "lodash/range";
 
-const starCount = loRange(50);
+import Stars from "@components/stars";
+
 class GlobalDoc extends Document {
   render() {
     return (
@@ -19,12 +19,7 @@ class GlobalDoc extends Document {
           />
         </Head>
         <body className="bg-blue text-gray-100 overflow-hidden">
-          <div className="stars">
-            {starCount.map((i) => (
-              <div className="star" key={`star-${i}`}></div>
-            ))}
-          </div>
-
+          <Stars />
           <Main />
           <NextScript />
         </body>
