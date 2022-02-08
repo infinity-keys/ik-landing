@@ -1,9 +1,13 @@
 import type { NextPage } from "next";
-import Head from "next/head";
+import Image from "next/image";
 
 const Gated: NextPage = () => {
   return (
     <div className="ik-page flex flex-col items-center justify-center min-h-screen relative radial-bg">
+      <header className="pt-14 block w-96">
+        <Image src="/logo.svg" width={100} height={63} alt="IK logo" />
+      </header>
+
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 z-10">
         <div className="w-96">
           <h1 className="text-3xl font-medium mb-6">Coming soon.</h1>

@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
 
@@ -19,10 +20,11 @@ const inputProps = loRange(inputCount).map(() => ({
 const Home: NextPage = () => {
   // const { user, error, isLoading } = useUser();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInput = async (input: string) => {
-    console.log(input);
     if (input.length === inputCount) {
+      setIsLoading(true);
       const res = await fetch(`/api/check/code`, {
         method: "POST",
         headers: {
@@ -32,11 +34,18 @@ const Home: NextPage = () => {
       });
 
       if (!res.ok) {
-        return;
+        setTimeout(() => {
+          setIsLoading(false);
+          return;
+        }, 2000);
       }
+
+      // Success, forward to next page
       // If we made it here, we have a valid code and can forward
       const results = await res.json();
-      router.push(results.forwardTo);
+      setTimeout(() => {
+        router.push(results.forwardTo);
+      }, 2000);
     }
   };
 
@@ -48,26 +57,37 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 z-10">
-        <div>
-          <div className="w-full flex items-center">
-            <div className="w-6">
-              <MaterialIcon />
-            </div>
-            <h1 className="text-base font-bold pt-2 pl-4">Password</h1>
-          </div>
-
-          <div className="magic-input pt-7 text-turquoise font-bold text-5xl">
-            <RICIBs
-              amount={inputCount}
-              handleOutputString={handleInput}
-              inputRegExp={/^[0-9]$/}
-              autoFocus={true}
-              inputProps={inputProps}
-            />
+      {isLoading && (
+        <div className="loader">
+          <div className="ball-clip-rotate-multiple">
+            <div></div>
+            <div></div>
           </div>
         </div>
-      </main>
+      )}
+
+      {!isLoading && (
+        <main className="flex flex-col items-center justify-center w-full flex-1 px-20 z-10">
+          <div>
+            <div className="w-full flex items-center">
+              <div className="w-6">
+                <MaterialIcon />
+              </div>
+              <h1 className="text-base font-bold pt-2 pl-4">Password</h1>
+            </div>
+
+            <div className="magic-input pt-7 text-turquoise font-bold text-5xl">
+              <RICIBs
+                amount={inputCount}
+                handleOutputString={handleInput}
+                inputRegExp={/^[0-9]$/}
+                autoFocus={true}
+                inputProps={inputProps}
+              />
+            </div>
+          </div>
+        </main>
+      )}
     </div>
   );
 };
