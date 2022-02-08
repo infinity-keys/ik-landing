@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useUser } from "@auth0/nextjs-auth0";
+import { useRouter } from "next/router";
 import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
 
@@ -18,6 +18,7 @@ const inputProps = loRange(inputCount).map(() => ({
 
 const Home: NextPage = () => {
   // const { user, error, isLoading } = useUser();
+  const router = useRouter();
 
   const handleInput = async (input: string) => {
     console.log(input);
@@ -35,7 +36,7 @@ const Home: NextPage = () => {
       }
       // If we made it here, we have a valid code and can forward
       const results = await res.json();
-      location.href = results.forwardTo;
+      router.push(results.forwardTo);
     }
   };
 
