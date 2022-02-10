@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useForm, ValidationError } from "@formspree/react";
+import ButtonSocialTwitter from "@components/button-social-twitter";
 
 const Gated: NextPage = () => {
   //  @TODO: move this to env var (blows up because of ssr)
@@ -63,6 +64,9 @@ const Gated: NextPage = () => {
                   Join the mailing list
                 </button>
               </form>
+              <div className="mt-6 flex">
+                <ButtonSocialTwitter />
+              </div>
             </div>
           )}
         </main>
