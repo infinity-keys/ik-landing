@@ -26,18 +26,18 @@
 // @keyframes tail-fade {
 //   0%,
 //   50% {
-//     width: var(--star-tail-length);
+//     height: 6em;
 //     opacity: 1;
 //   }
 
 //   70%,
 //   80% {
-//     width: 0;
+//     height: 0;
 //     opacity: 0.4;
 //   }
 
 //   100% {
-//     width: 0;
+//     height: 0;
 //     opacity: 0;
 //   }
 // }
@@ -58,7 +58,7 @@
 }
 
 .star {
-  $star-count: 20;
+  $star-count: 10;
   --star-color: var(--primary-color);
   --star-tail-length: 6em;
   --star-tail-height: 1px;
