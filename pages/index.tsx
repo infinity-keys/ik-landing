@@ -78,7 +78,7 @@ const Home: NextPage = () => {
                 <RICIBs
                   amount={inputCount}
                   handleOutputString={handleInput}
-                  inputRegExp={/^[0-9]$/}
+                  inputRegExp={/^[a-z0-9]$/}
                   autoFocus={true}
                   inputProps={inputProps}
                 />
