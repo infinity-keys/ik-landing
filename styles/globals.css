@@ -5,6 +5,9 @@
 @layer components {
   .ik-code-input {
     @apply bg-gray-500 border-gray-200 m-0 mr-8 text-4xl font-bold !important;
+    /* font-size: 4rem !important; */
+    /* height: auto !important; */
+    /* width: auto !important; */
     width: 160px !important;
     height: 180px !important;
   }

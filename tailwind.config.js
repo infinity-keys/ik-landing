@@ -18,6 +18,9 @@ module.exports = {
         500: "#303B5B",
       },
     },
+    container: {
+      center: true,
+    },
     extend: {
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
