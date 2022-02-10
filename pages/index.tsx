@@ -45,13 +45,13 @@ const Home: NextPage = () => {
       const results = await res.json();
       setTimeout(() => {
         router.push(results.forwardTo);
-      }, 2000);
+      }, 1500);
     }
   };
 
   return (
     <div className="ik-page scanlines">
-      <div className="container flex flex-col items-center justify-center min-h-screen relative">
+      <div className="container px-4 flex flex-col items-center justify-center min-h-screen">
         <Head>
           <title>Infinity Keys</title>
           <meta name="description" content="Keys keys keys" />
