@@ -22,17 +22,15 @@ const Gated: NextPage = () => {
               <h1 className="text-3xl font-medium mb-6">Coming soon.</h1>
 
               <p className="text-sm font-normal mb-4">
-                There’s treasure everywhere.
+                Discover clues, solve puzzles, and collect digital items to
+                discover real treasure — or create a quest of your own.
               </p>
               <p className="text-sm font-normal mb-4">
-                Discover clues, solve puzzles, and collect digital items to
-                discover real treasure…or maybe create a quest of your own with
-                Infinity Keys, a forthcoming massively multiplayer metaverse
+                Infinity Keys is a forthcoming massively multiplayer metaverse
                 treasure hunt platform.
               </p>
               <p className="text-sm font-normal mb-12">
-                Sign up below and follow on Twitter for future updates to learn
-                how to play, create, and get your brand or NFT into a quest.
+                There’s treasure everywhere.
               </p>
               <form onSubmit={handleSubmit}>
                 {/* <label htmlFor="name">Name</label> */}
