@@ -18,7 +18,7 @@ class GlobalDoc extends Document {
             rel="stylesheet"
           />
         </Head>
-        <body className="bg-blue text-gray-100 overflow-hidden">
+        <body className="bg-blue text-gray-100">
           <Stars />
           <Main />
           <NextScript />

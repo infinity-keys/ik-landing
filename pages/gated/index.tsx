@@ -9,8 +9,9 @@ const Gated: NextPage = () => {
 
   return (
     <div className="ik-page radial-bg scanlines">
-      <div className="container px-4 flex flex-col items-center justify-center min-h-screen max-w-sm">
-        <header className="pt-14 block w-full">
+      <div className="container px-4 flex flex-col items-center justify-center min-h-screen max-w-sm ">
+        {/* <div> */}
+        <header className="pt-4 md:pt-14 pb-4 block w-full">
           <Image src="/logo.svg" width={100} height={63} alt="IK logo" />
         </header>
 
@@ -70,6 +71,7 @@ const Gated: NextPage = () => {
             </div>
           )}
         </main>
+        {/* </div> */}
       </div>
     </div>
   );
