@@ -1,29 +1,29 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
+// import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
 
+import { MAGIC_CODE_CHAR_COUNT } from "@lib/constants";
 import MaterialIcon from "@components/svg/material-lock";
 
-// Disable ESLint for this file because auth needs full redirect, not SPA routing
-/*eslint-disable @next/next/no-html-link-for-pages*/
+interface PageProps {
+  count: number;
+}
 
-// 5 inputs, and props per
-const inputCount = 5;
-const inputProps = loRange(inputCount).map(() => ({
-  className: "ik-code-input",
-}));
+const Home: NextPage<PageProps> = ({ count }) => {
+  const inputProps = loRange(count).map(() => ({
+    className: "ik-code-input",
+  }));
 
-const Home: NextPage = () => {
   // const { user, error, isLoading } = useUser();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInput = async (input: string) => {
-    if (input.length === inputCount) {
+    if (input.length === count) {
       setIsLoading(true);
       const res = await fetch(`/api/check/code`, {
         method: "POST",
@@ -76,7 +76,7 @@ const Home: NextPage = () => {
               </div>
               <div className="magic-input pt-7 text-turquoise font-bold text-5xl">
                 <RICIBs
-                  amount={inputCount}
+                  amount={count}
                   handleOutputString={handleInput}
                   inputRegExp={/^[a-z0-9]$/}
                   autoFocus={true}
@@ -92,3 +92,11 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export async function getStaticProps(): Promise<{ props: PageProps }> {
+  return {
+    props: {
+      count: MAGIC_CODE_CHAR_COUNT,
+    },
+  };
+}
