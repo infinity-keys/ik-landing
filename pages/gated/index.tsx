@@ -3,14 +3,18 @@ import Image from "next/image";
 import { useForm, ValidationError } from "@formspree/react";
 import ButtonSocialTwitter from "@components/button-social-twitter";
 
-const Gated: NextPage = () => {
-  //  @TODO: move this to env var (blows up because of ssr)
-  const [state, handleSubmit] = useForm("xknyjenl");
+import { IK_FORMSPREE_CODE } from "@lib/constants";
+
+interface PageProps {
+  formSpreeCode: string;
+}
+
+const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
+  const [state, handleSubmit] = useForm(formSpreeCode);
 
   return (
     <div className="ik-page radial-bg scanlines">
       <div className="container px-4 flex flex-col items-center justify-center min-h-screen max-w-sm ">
-        {/* <div> */}
         <header className="pt-4 md:pt-14 pb-4 block w-full">
           <Image src="/logo.svg" width={100} height={63} alt="IK logo" />
         </header>
@@ -69,10 +73,17 @@ const Gated: NextPage = () => {
             </div>
           )}
         </main>
-        {/* </div> */}
       </div>
     </div>
   );
 };
 
 export default Gated;
+
+export async function getStaticProps(): Promise<{ props: PageProps }> {
+  return {
+    props: {
+      formSpreeCode: IK_FORMSPREE_CODE,
+    },
+  };
+}
