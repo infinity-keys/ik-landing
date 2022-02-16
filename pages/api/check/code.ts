@@ -18,8 +18,12 @@ export default async function handler(
 
   const { code } = req.body;
 
+  // Let's not care about case
+  const capsMagicCode = MAGIC_CODE?.toUpperCase();
+  const capsInputCode = code.toUpperCase();
+
   // Nope
-  if (code !== MAGIC_CODE) {
+  if (capsInputCode !== capsMagicCode) {
     return res.status(403).end();
   }
 
