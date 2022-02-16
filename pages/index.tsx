@@ -78,7 +78,7 @@ const Home: NextPage<PageProps> = ({ count }) => {
                 <RICIBs
                   amount={count}
                   handleOutputString={handleInput}
-                  inputRegExp={/^[a-z0-9]$/}
+                  inputRegExp={/^.*$/}
                   autoFocus={true}
                   inputProps={inputProps}
                 />
