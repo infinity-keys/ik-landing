@@ -33,19 +33,21 @@ const Home: NextPage<PageProps> = ({ count }) => {
         body: JSON.stringify({ code: input }),
       });
 
+      console.log(res);
+
       if (!res.ok) {
         setTimeout(() => {
           setIsLoading(false);
           return;
         }, 2000);
+      } else {
+        // Success, forward to next page
+        // If we made it here, we have a valid code and can forward
+        const results = await res.json();
+        setTimeout(() => {
+          router.push(results.forwardTo);
+        }, 1500);
       }
-
-      // Success, forward to next page
-      // If we made it here, we have a valid code and can forward
-      const results = await res.json();
-      setTimeout(() => {
-        router.push(results.forwardTo);
-      }, 1500);
     }
   };
 
@@ -78,7 +80,7 @@ const Home: NextPage<PageProps> = ({ count }) => {
                 <RICIBs
                   amount={count}
                   handleOutputString={handleInput}
-                  inputRegExp={/^[a-z0-9]$/}
+                  inputRegExp={/^.*$/}
                   autoFocus={true}
                   inputProps={inputProps}
                 />
