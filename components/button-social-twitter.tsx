@@ -2,6 +2,8 @@ const ButtonSocialTwitter = () => (
   <a
     className="bg-blue-300 px-3 py-1 font-semibold text-white inline-flex items-center space-x-2 rounded"
     href="https://twitter.com/InfinityKeys_io"
+    target="_blank"
+    rel="noopener noreferrer"
   >
     <svg
       className="w-5 h-5 fill-current"
