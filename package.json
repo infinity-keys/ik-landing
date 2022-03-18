@@ -10,6 +10,8 @@
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.7.0",
     "@formspree/react": "^2.2.4",
+    "@headlessui/react": "^1.5.0",
+    "@heroicons/react": "^1.0.6",
     "@tailwindcss/forms": "^0.4.0",
     "jose": "^4.4.0",
     "loaders.css": "^0.1.2",
