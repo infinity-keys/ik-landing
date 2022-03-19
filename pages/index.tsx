@@ -7,7 +7,9 @@ import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
 
 import { MAGIC_CODE_CHAR_COUNT } from "@lib/constants";
+import Wrapper from "@components/wrapper";
 import MaterialIcon from "@components/svg/material-lock";
+import NavFront from "@components/nav-front";
 
 interface PageProps {
   count: number;
@@ -52,44 +54,50 @@ const Home: NextPage<PageProps> = ({ count }) => {
   };
 
   return (
-    <div className="ik-page scanlines">
-      <div className="container px-4 flex flex-col items-center justify-center min-h-screen">
-        <Head>
-          <title>Infinity Keys</title>
-          <meta name="description" content="Keys keys keys" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        {isLoading && (
-          <div className="loader">
-            <div className="ball-clip-rotate-multiple">
-              <div></div>
-              <div></div>
+    <Wrapper>
+      <div className="ik-page scanlines">
+        <div className="container px-4 flex flex-col items-center justify-center min-h-screen">
+          <Head>
+            <title>Infinity Keys</title>
+            <meta name="description" content="Keys keys keys" />
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          {isLoading && (
+            <div className="loader">
+              <div className="ball-clip-rotate-multiple">
+                <div></div>
+                <div></div>
+              </div>
             </div>
-          </div>
-        )}
-        {!isLoading && (
-          <main className="flex flex-col items-center justify-center w-full flex-1 z-10">
-            <div>
-              <div className="w-full flex items-center">
-                <div className="w-6">
-                  <MaterialIcon />
+          )}
+          {!isLoading && (
+            <main className="flex flex-col items-center justify-center w-full flex-1 z-10">
+              <div>
+                <div className="w-full flex items-center">
+                  <div className="w-6">
+                    <MaterialIcon />
+                  </div>
+                  <h1 className="text-base font-bold pt-2 pl-4">Password</h1>
                 </div>
-                <h1 className="text-base font-bold pt-2 pl-4">Password</h1>
+                <div className="magic-input pt-7 text-turquoise font-bold text-5xl">
+                  <RICIBs
+                    amount={count}
+                    handleOutputString={handleInput}
+                    inputRegExp={/^.*$/}
+                    autoFocus={true}
+                    inputProps={inputProps}
+                  />
+                </div>
               </div>
-              <div className="magic-input pt-7 text-turquoise font-bold text-5xl">
-                <RICIBs
-                  amount={count}
-                  handleOutputString={handleInput}
-                  inputRegExp={/^.*$/}
-                  autoFocus={true}
-                  inputProps={inputProps}
-                />
-              </div>
-            </div>
-          </main>
-        )}
+            </main>
+          )}
+
+          <div className="ik-front-bottom">
+            <NavFront />
+          </div>
+        </div>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 

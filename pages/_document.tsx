@@ -1,6 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
-import Stars from "@components/stars";
+// import Stars from "@components/stars";
 
 class GlobalDoc extends Document {
   render() {
@@ -21,8 +21,8 @@ class GlobalDoc extends Document {
             rel="stylesheet"
           />
         </Head>
-        <body className="bg-blue text-gray-100">
-          <Stars />
+        <body>
+          {/* <Stars /> */}
           <Main />
           <NextScript />
         </body>
