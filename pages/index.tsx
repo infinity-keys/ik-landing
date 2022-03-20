@@ -71,9 +71,9 @@ const Home: NextPage<PageProps> = ({ count }) => {
             </div>
           )}
           {!isLoading && (
-            <main className="flex flex-col items-center justify-center w-full z-10">
+            <main className="flex justify-center w-full z-10">
               <div>
-                <div className="w-full flex items-center">
+                <div className="flex">
                   <div className="w-6">
                     <MaterialIcon />
                   </div>

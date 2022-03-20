@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 @layer components {
-  /* .magic-input > div > div {
-    @apply flex;
-  } */
+  .magic-input > div > div {
+    @apply flex flex-wrap justify-center;
+  }
   .ik-code-input {
-    @apply bg-gray-500 border-gray-200 m-0 mr-3 mb-5 font-bold shadow-md !important;
+    @apply bg-gray-500 border-gray-200 m-0 mx-1 mb-5 font-bold shadow-md !important;
     text-shadow: -2px 0px 7px #3fccbb;
     width: 54px !important;
     height: 63px !important;
 
     /* 640+ */
     @screen sm {
-      @apply mr-4;
+      @apply mx-2;
       width: 74px !important;
       height: 86px !important;
     }
@@ -23,9 +23,9 @@
     }
     /* 1024+ */
     @screen lg {
-      @apply mr-8 text-4xl !important;
-      width: 160px !important;
-      height: 180px !important;
+      @apply mx-4 text-4xl !important;
+      width: 182px !important;
+      height: 190px !important;
     }
     /* 1280+ */
     @screen xl {
@@ -34,9 +34,9 @@
     @screen 2xl {
     }
   }
-  .ik-code-input:last-child {
+  /* .ik-code-input:last-child {
     @apply mr-0 !important;
-  }
+  } */
 
   .radial-bg {
     background: radial-gradient(ellipse at left top, #3fccbb50, transparent 40%),
