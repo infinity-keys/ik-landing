@@ -8,8 +8,9 @@ import loRange from "lodash/range";
 
 import { MAGIC_CODE_CHAR_COUNT } from "@lib/constants";
 import Wrapper from "@components/wrapper";
-import MaterialIcon from "@components/svg/material-lock";
-import NavFront from "@components/nav-front";
+import MaterialIcon from "@components/svg/material-lock-svg";
+// import NavFront from "@components/nav-front";
+import NavAvalanche from "@components/nav-avalanche";
 
 interface PageProps {
   count: number;
@@ -35,7 +36,7 @@ const Home: NextPage<PageProps> = ({ count }) => {
         body: JSON.stringify({ code: input }),
       });
 
-      console.log(res);
+      // console.log(res);
 
       if (!res.ok) {
         setTimeout(() => {
@@ -71,13 +72,13 @@ const Home: NextPage<PageProps> = ({ count }) => {
             </div>
           )}
           {!isLoading && (
-            <main className="flex flex-col items-center justify-center w-full flex-1 z-10">
+            <main className="flex flex-col items-center justify-center w-full z-10">
               <div>
                 <div className="w-full flex items-center">
                   <div className="w-6">
                     <MaterialIcon />
                   </div>
-                  <h1 className="text-base font-bold pt-2 pl-4">Password</h1>
+                  <h1 className="text-base font-bold pt-2 pl-4">Passcode</h1>
                 </div>
                 <div className="magic-input pt-7 text-turquoise font-bold text-5xl">
                   <RICIBs
@@ -92,8 +93,8 @@ const Home: NextPage<PageProps> = ({ count }) => {
             </main>
           )}
 
-          <div className="ik-front-bottom">
-            <NavFront />
+          <div className="ik-front-bottom w-full">
+            <NavAvalanche />
           </div>
         </div>
       </div>
