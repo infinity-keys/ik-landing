@@ -3,8 +3,11 @@
 @tailwind utilities;
 
 @layer components {
+  /* .magic-input > div > div {
+    @apply flex;
+  } */
   .ik-code-input {
-    @apply bg-gray-500 border-gray-200 m-0 mr-3 font-bold shadow-md !important;
+    @apply bg-gray-500 border-gray-200 m-0 mr-3 mb-5 font-bold shadow-md !important;
     text-shadow: -2px 0px 7px #3fccbb;
     width: 54px !important;
     height: 63px !important;

@@ -8,6 +8,7 @@ import {
   IK_CLAIMS_NAMESPACE,
   JWT_SECRET_KEY,
   MAGIC_CODE,
+  MAGIC_CODE_AVALANCHE,
 } from "@lib/constants";
 
 export default async function handler(
@@ -16,10 +17,23 @@ export default async function handler(
 ) {
   if (req.method !== "POST") return res.status(405).end();
 
+  const { pid } = req.query;
+  if (!pid) return res.status(400).end();
+
   const { code } = req.body;
+  if (!code) return res.status(400).end();
 
   // Let's not care about case
-  const capsMagicCode = MAGIC_CODE?.toUpperCase();
+  let capsMagicCode;
+  switch (pid) {
+    case "landing":
+      capsMagicCode = MAGIC_CODE?.toUpperCase();
+      break;
+    case "avalanche":
+      capsMagicCode = MAGIC_CODE_AVALANCHE?.toUpperCase();
+      break;
+  }
+
   const capsInputCode = code.toUpperCase();
 
   // Nope

@@ -6,7 +6,7 @@ import { useState } from "react";
 import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
 
-import { MAGIC_CODE_CHAR_COUNT } from "@lib/constants";
+import { MAGIC_CODE_CHAR_COUNT_AVALANCHE } from "@lib/constants";
 import Wrapper from "@components/wrapper";
 import MaterialIcon from "@components/svg/material-lock-svg";
 import NavAvalanche from "@components/nav-avalanche";
@@ -27,7 +27,7 @@ const Home: NextPage<PageProps> = ({ count }) => {
   const handleInput = async (input: string) => {
     if (input.length === count) {
       setIsLoading(true);
-      const res = await fetch(`/api/check/code/landing`, {
+      const res = await fetch(`/api/check/code/avalanche`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +93,7 @@ const Home: NextPage<PageProps> = ({ count }) => {
           )}
 
           <div className="ik-front-bottom w-full">
-            <NavAvalanche />
+            <NavAvalanche showAvalanche={false} />
           </div>
         </div>
       </div>
@@ -106,7 +106,7 @@ export default Home;
 export async function getStaticProps(): Promise<{ props: PageProps }> {
   return {
     props: {
-      count: MAGIC_CODE_CHAR_COUNT,
+      count: MAGIC_CODE_CHAR_COUNT_AVALANCHE,
     },
   };
 }
