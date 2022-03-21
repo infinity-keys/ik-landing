@@ -13,7 +13,11 @@ const NavAvalanche = ({ showAvalanche = true }: Props) => (
       <div className="flex justify-center px-9 w-96">
         <div className="w-20">
           <Link href="https://twitter.com/InfinityKeys_io">
-            <a className="flex w-full">
+            <a
+              className="flex w-full"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               <TwitterSvg />
             </a>
           </Link>
