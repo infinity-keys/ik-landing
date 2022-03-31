@@ -10,10 +10,11 @@ import {
   MAGIC_CODE,
   MAGIC_CODE_AVALANCHE,
 } from "@lib/constants";
+import { PuzzleApiResponse } from "@lib/types";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<PuzzleApiResponse>
 ) {
   if (req.method !== "POST") return res.status(405).end();
 
@@ -57,5 +58,5 @@ export default async function handler(
     "Set-Cookie",
     `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=/;`
   );
-  return res.json({ access: true, forwardTo: "/gated" });
+  return res.status(200).json({ access: true, forwardTo: "/gated" });
 }
