@@ -19,8 +19,6 @@ const Home: NextPage<PageProps> = ({ count }) => {
         <div className="container px-4 flex flex-col items-center justify-center min-h-screen">
           <Head>
             <title>Infinity Keys</title>
-            <meta name="description" content="There's treasure everywhere." />
-            <link rel="icon" href="/favicon.ico" />
           </Head>
 
           <main>
