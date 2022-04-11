@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Image from "next/image";
+import Head from "next/head";
 import { useForm, ValidationError } from "@formspree/react";
 import ButtonSocialTwitter from "@components/button-social-twitter";
 
@@ -15,6 +16,10 @@ const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
 
   return (
     <Wrapper>
+      <Head>
+        <title>Congrats! Infinity Keys.</title>
+      </Head>
+
       <div className="ik-page radial-bg scanlines">
         <div className="container px-4 flex flex-col items-center justify-center min-h-screen max-w-sm ">
           <header className="pt-4 md:pt-14 pb-4 block w-full">
