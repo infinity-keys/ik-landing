@@ -5,13 +5,13 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 class GlobalDoc extends Document {
   render() {
     return (
-      <Html>
+      <Html lang="en">
         <Head>
           {/* <title>Infinity Keys</title> */}
           <meta name="title" content="Infinity Keys" />
           <meta
             name="description"
-            content="There\'s treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own.treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own."
+            content="There's treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own.treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own."
           />
 
           <meta property="og:type" content="website" />
@@ -19,7 +19,7 @@ class GlobalDoc extends Document {
           <meta property="og:title" content="Infinity Keys" />
           <meta
             property="og:description"
-            content="There\'s treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own."
+            content="There's treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own."
           />
           <meta
             property="og:image"
@@ -31,7 +31,7 @@ class GlobalDoc extends Document {
           <meta property="twitter:title" content="Infinity Keys" />
           <meta
             property="twitter:description"
-            content="There\'s treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own."
+            content="There's treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own."
           />
           <meta
             property="twitter:image"
