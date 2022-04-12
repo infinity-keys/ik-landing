@@ -41,7 +41,7 @@ const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
                   treasure hunt platform.
                 </p>
                 <p className="text-sm font-normal mb-12">
-                  There’s treasure everywhere.
+                  There&apos;s treasure everywhere.
                 </p>
                 <form onSubmit={handleSubmit}>
                   {/* <label htmlFor="name">Name</label> */}

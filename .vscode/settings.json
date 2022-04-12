@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["tailwindforms"]
+  "cSpell.words": ["tailwindforms"],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
