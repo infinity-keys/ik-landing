@@ -191,7 +191,7 @@ const Landing: NextPage<PageProps> = ({ count }) => {
                     </div>
 
                     <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-center text-white sm:mt-5 sm:text-6xl lg:mt-20 xl:text-6xl">
-                      <span className="block">There's treasure</span>
+                      <span className="block">There&apos;s treasure</span>
                       <span className="block text-turquoise">everywhere.</span>
                     </h1>
                     <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
