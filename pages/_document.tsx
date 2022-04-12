@@ -23,7 +23,7 @@ class GlobalDoc extends Document {
           />
           <meta
             property="og:image"
-            content="https://infinitykeys.io/meta.png"
+            content="https://infinitykeys.io/treasure.jpeg"
           />
 
           <meta property="twitter:card" content="summary_large_image" />
@@ -35,7 +35,7 @@ class GlobalDoc extends Document {
           />
           <meta
             property="twitter:image"
-            content="https://infinitykeys.io/meta.png"
+            content="https://infinitykeys.io/treasure.jpeg"
           />
           <meta name="description" content="There's treasure everywhere." />
 
