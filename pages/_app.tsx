@@ -9,11 +9,7 @@ import "../styles/scanlines.scss";
 // import "../styles/stars.scss";
 
 function InfinityKeysApp({ Component, pageProps }: AppProps) {
-  return (
-    // <UserProvider>
-    <Component {...pageProps} />
-    // </UserProvider>
-  );
+  return <Component {...pageProps} />;
 }
 
 export default InfinityKeysApp;
