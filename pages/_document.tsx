@@ -7,6 +7,19 @@ class GlobalDoc extends Document {
     return (
       <Html lang="en">
         <Head>
+          <script id="google-analytics">
+            {`
+          window.ga=window.ga||function(){(ga.q = ga.q || []).push(arguments)};
+          ga.l=+new Date;
+          ga('create', '${process.env.INFINITY_KEYS_ACCESS_CODE}', 'auto');
+          ga('send','pageview');
+        `}
+          </script>
+          <script
+            async
+            src="https://www.google-analytics.com/analytics.js"
+          ></script>
+
           {/* <title>Infinity Keys</title> */}
           <meta name="title" content="Infinity Keys" />
           <meta
