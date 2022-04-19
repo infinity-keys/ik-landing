@@ -7,18 +7,18 @@ class GlobalDoc extends Document {
     return (
       <Html lang="en">
         <Head>
-          <script id="google-analytics">
-            {`
-          window.ga=window.ga||function(){(ga.q = ga.q || []).push(arguments)};
-          ga.l=+new Date;
-          ga("create", "${process.env.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}", "auto");
-          ga("send","pageview");
-        `}
-          </script>
           <script
-            async
-            src="https://www.google-analytics.com/analytics.js"
-          ></script>
+            id="google-analytics"
+            dangerouslySetInnerHTML={{
+              __html: `
+            window.ga=window.ga||function(){(ga.q = ga.q || []).push(arguments)};
+            ga.l=+new Date;
+            ga("create", "${process.env.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}", "auto");
+            ga("send","pageview");
+          `,
+            }}
+          />
+          <script async src="https://www.google-analytics.com/analytics.js" />
 
           {/* <title>Infinity Keys</title> */}
           <meta name="title" content="Infinity Keys" />
