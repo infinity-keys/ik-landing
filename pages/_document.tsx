@@ -11,7 +11,7 @@ class GlobalDoc extends Document {
             {`
           window.ga=window.ga||function(){(ga.q = ga.q || []).push(arguments)};
           ga.l=+new Date;
-          ga("create", "${process.env.INFINITY_KEYS_ACCESS_CODE}", "auto");
+          ga("create", "${process.env.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}", "auto");
           ga("send","pageview");
         `}
           </script>
