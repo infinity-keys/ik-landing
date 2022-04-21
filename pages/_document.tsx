@@ -8,17 +8,19 @@ class GlobalDoc extends Document {
       <Html lang="en">
         <Head>
           <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}`}
+          />
+          <script
             id="google-analytics"
             dangerouslySetInnerHTML={{
               __html: `
-            window.ga=window.ga||function(){(ga.q = ga.q || []).push(arguments)};
-            ga.l=+new Date;
-            ga("create", "${process.env.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}", "auto");
-            ga("send","pageview");
-          `,
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}');`,
             }}
           />
-          <script async src="https://www.google-analytics.com/analytics.js" />
 
           {/* <title>Infinity Keys</title> */}
           <meta name="title" content="Infinity Keys" />
