@@ -40,7 +40,7 @@ const NavAvalanche = ({ showAvalanche = true }: Props) => (
     </div>
     <div className="flex justify-center mt-9">
       <div className="px-9 w-96 text-center">
-        Follow Inifinity Keys on Twitter.
+        Follow Infinity Keys on Twitter.
       </div>
 
       {showAvalanche && (
