@@ -6,6 +6,7 @@ import ButtonSocialTwitter from "@components/button-social-twitter";
 
 import { IK_FORMSPREE_CODE } from "@lib/constants";
 import Wrapper from "@components/wrapper";
+import Link from "next/link";
 
 interface PageProps {
   formSpreeCode: string;
@@ -17,7 +18,7 @@ const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
   return (
     <Wrapper>
       <Head>
-        <title>Congrats! Infinity Keys.</title>
+        <title>WAGMI</title>
       </Head>
 
       <div className="ik-page radial-bg scanlines">
@@ -75,7 +76,27 @@ const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
                   </button>
                 </form>
                 <div className="mt-6 flex">
-                  <ButtonSocialTwitter />
+                  <div className="w-2/4 flex items-center justify-center">
+                    <ButtonSocialTwitter />
+                  </div>
+                  <div className="w-2/4">
+                    <Link href="https://www.youtube.com">
+                      <a>
+                        <Image
+                          src="/rainbow.jpeg"
+                          alt="Avalanche Summit thumbnail."
+                          width={176}
+                          height={110}
+                          className="pb-4"
+                        />
+                      </a>
+                    </Link>
+                    <p className="text-center">
+                      <Link href="/avalanche">
+                        Watch the Avalanche Summit Workshop.
+                      </Link>
+                    </p>
+                  </div>
                 </div>
               </div>
             )}
