@@ -22,11 +22,16 @@ const Home: NextPage<PageProps> = ({ count }) => {
           </Head>
 
           <main>
+            <p className="max-w-xl mx-auto py-16 text-center text-lg text-gray-100">
+              Infinity Keys is a treasure hunt platform. Find the clues, submit
+              the passcode, unlock the treasure— Play the game and join our
+              early community.
+            </p>
             <Puzzle count={count} puzzleUri="landing" />
           </main>
 
           <footer className="ik-front-bottom w-full">
-            <NavAvalanche />
+            <NavAvalanche showAvalanche={false} />
           </footer>
         </div>
       </div>
