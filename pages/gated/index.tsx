@@ -80,7 +80,7 @@ const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
                     <ButtonSocialTwitter />
                   </div>
                   <div className="w-2/4">
-                    <Link href="https://www.youtube.com">
+                    <Link href="/avalanche">
                       <a>
                         <Image
                           src="/ik-logo-social.png"
@@ -92,7 +92,7 @@ const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
                       </a>
                     </Link>
                     <p className="text-center">
-                      <Link href="/avalanche">
+                      <Link href="https://www.youtube.com/c/Avalancheavax">
                         Watch the Avalanche Summit Workshop.
                       </Link>
                     </p>
