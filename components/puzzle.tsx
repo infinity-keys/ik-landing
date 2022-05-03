@@ -42,7 +42,7 @@ const Puzzle = ({ count, puzzleUri }: PuzzleProps) => {
   return (
     <>
       {isLoading && (
-        <div className="loader">
+        <div className="loader mx-auto w-8 h-8">
           <div className="ball-clip-rotate-multiple">
             <div></div>
             <div></div>

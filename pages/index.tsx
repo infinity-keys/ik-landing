@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-// import Image from "next/image";
+import Image from "next/image";
 
 import { MAGIC_CODE_CHAR_COUNT } from "@lib/constants";
 import Wrapper from "@components/wrapper";
@@ -21,12 +21,23 @@ const Home: NextPage<PageProps> = ({ count }) => {
             <title>Infinity Keys</title>
           </Head>
 
-          <main>
+          <main className="text-center pt-5">
+            <Image
+              src="/logo.svg"
+              alt="Infinity Keys logo"
+              width={100}
+              height={62.72}
+            />
+            <p className="py-16 text-center text-lg text-gray-100">
+              Infinity Keys is a treasure hunt platform. <br />
+              Find the clues, submit the passcode, unlock the treasure. <br />
+              Play the game and join our early community.
+            </p>
             <Puzzle count={count} puzzleUri="landing" />
           </main>
 
           <footer className="ik-front-bottom w-full">
-            <NavAvalanche />
+            <NavAvalanche showAvalanche={false} />
           </footer>
         </div>
       </div>
