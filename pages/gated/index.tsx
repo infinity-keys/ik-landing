@@ -83,10 +83,10 @@ const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
                     <Link href="https://www.youtube.com">
                       <a>
                         <Image
-                          src="/rainbow.jpeg"
-                          alt="Avalanche Summit thumbnail."
-                          width={176}
-                          height={110}
+                          src="/ik-logo-social.png"
+                          alt="Infinity Keys logo for Avalanche Summit"
+                          width={320}
+                          height={320}
                           className="pb-4"
                         />
                       </a>

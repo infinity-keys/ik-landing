@@ -42,7 +42,11 @@ const NavAvalanche = ({ showAvalanche = true }: Props) => (
       <div className="px-9 w-96 text-center">
         Start looking for keys{" "}
         <Link href="https://twitter.com/InfinityKeys_io">
-          <a rel="noopener noreferrer" target="_blank">
+          <a
+            rel="noopener noreferrer"
+            target="_blank"
+            className="text-turquoise"
+          >
             @InfinityKeys_io
           </a>
         </Link>
