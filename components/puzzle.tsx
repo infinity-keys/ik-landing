@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
@@ -21,6 +21,9 @@ const Puzzle = ({ count, puzzleUri }: PuzzleProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  // We can end up on this component with state set prior
+  // useEffect(() => setIsLoading(false), []);
+
   const handleInput = async (input: string) => {
     // Bail if guess is not the length of input
     if (input.length !== count) return;
@@ -30,13 +33,17 @@ const Puzzle = ({ count, puzzleUri }: PuzzleProps) => {
     // POST to puzzle backend
     const res = await puzzlePost({ uri: puzzleUri, code: input });
 
-    // Success, forward to next page.
-    if (res.ok) {
-      const results = await res.json();
-      return setTimeout(() => router.push(results.forwardTo), 1500);
-    }
-    // Fail
-    return setTimeout(() => setIsLoading(false), 2000);
+    if (!res.ok) throw new Error(res.statusText);
+
+    const { fail_route, success_route } = await res.json();
+    // Turn off loading if failed
+    !success_route && setIsLoading(false);
+    // debugger;
+    router.push(success_route || fail_route);
+
+    // Bad response
+    // return setIsLoading(false);
+    // return setTimeout(() => setIsLoading(false), 2000);
   };
 
   return (

@@ -33,7 +33,10 @@ const Home: NextPage<PageProps> = ({ count }) => {
               Find the clues, submit the passcode, unlock the treasure. <br />
               Play the game and join our early community.
             </p>
-            <Puzzle count={count} puzzleUri="landing" />
+            <Puzzle
+              count={count}
+              puzzleUri="396fc8dd-0ce1-4fcf-a6d0-e2071449e57a"
+            />
           </main>
 
           <footer className="ik-front-bottom w-full">

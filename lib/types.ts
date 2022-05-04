@@ -1,5 +1,6 @@
-export type PuzzleApis = "landing" | "avalanche";
+export type PuzzleApis = string;
 export type PuzzleApiResponse = {
-  access: boolean;
-  forwardTo: string;
+  access?: boolean;
+  fail_route: string | undefined;
+  success_route: string | undefined;
 };

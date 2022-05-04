@@ -1,4 +1,4 @@
-// Load the same env vars from next
+// Load the same env vars from nextjs
 const { loadEnvConfig } = require("@next/env");
 loadEnvConfig(process.cwd());
 
@@ -23,9 +23,9 @@ module.exports = {
       ],
       config: {
         skipTypename: false,
-        withHooks: true,
-        withHOC: false,
-        withComponent: false,
+        // withHooks: true,
+        // withHOC: false,
+        // withComponent: false,
       },
     },
     "./graphql.schema.json": {

@@ -1,6 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-// import jwt from "jsonwebtoken";
 import { SignJWT } from "jose";
 import { nanoid } from "nanoid";
 import {
@@ -10,7 +9,13 @@ import {
   MAGIC_CODE,
   MAGIC_CODE_AVALANCHE,
 } from "@lib/constants";
+import { gqlSdk } from "@lib/server";
 import { PuzzleApiResponse } from "@lib/types";
+
+// const vars = {
+//   puzzle_id: "396fc8dd-0ce1-4fcf-a6d0-e2071449e57a",
+//   solution: "wagmi",
+// };
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,29 +29,24 @@ export default async function handler(
   const { code } = req.body;
   if (!code) return res.status(400).end();
 
-  // Let's not care about case
-  let capsMagicCode;
-  switch (pid) {
-    case "landing":
-      capsMagicCode = MAGIC_CODE?.toUpperCase();
-      break;
-    case "avalanche":
-      capsMagicCode = MAGIC_CODE_AVALANCHE?.toUpperCase();
-      break;
-  }
-
-  const capsInputCode = code.toUpperCase();
-
-  // Nope
-  if (capsInputCode !== capsMagicCode) {
-    return res.status(403).end();
-  }
+  // Returns:
+  // 1. A route to redirect to if a guess is wrong. ALWAYS returned.
+  // 2. A route to redirect to if a guess is correct. ONLY returned if solved.
+  // Match is case insensitive
+  const { fail, success } = await gqlSdk.Guess({
+    puzzle_id: pid,
+    solution: code,
+  });
+  const fail_route = fail?.fail_route;
+  const success_route = success[0]?.success_route;
+  // console.log(fail, success);
 
   if (!JWT_SECRET_KEY) {
     throw new Error("Secret is not set, check env variables");
   }
   // Correct code, generate token and send it back
   const token = await new SignJWT({
+    // @todo: change this
     claims: { [IK_CLAIMS_NAMESPACE]: { access: true } },
   })
     .setProtectedHeader({ alg: "HS256" })
@@ -58,5 +58,5 @@ export default async function handler(
     "Set-Cookie",
     `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=/;`
   );
-  return res.status(200).json({ access: true, forwardTo: "/gated" });
+  return res.status(200).json({ access: true, fail_route, success_route });
 }
