@@ -1,3 +1,7 @@
+// Load the same env vars from next
+const { loadEnvConfig } = require("@next/env");
+loadEnvConfig(process.cwd());
+
 module.exports = {
   schema: [
     {
