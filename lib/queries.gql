@@ -1,0 +1,12 @@
+# An attempt at solving a puzzle
+query Guess($puzzle_id: uuid!, $solution: String!) {
+  fail: puzzles_by_pk(puzzle_id: $puzzle_id) {
+    fail_route
+  }
+  success: puzzles(
+    where: { puzzle_id: { _eq: $puzzle_id }, solution: { _eq: $solution } }
+  ) {
+    # success_puzzle
+    success_route
+  }
+}
