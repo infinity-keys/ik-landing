@@ -4,3 +4,8 @@ export type PuzzleApiResponse = {
   fail_route: string | undefined;
   success_route: string | undefined;
 };
+
+export interface PuzzlePageProps {
+  count: number;
+  puzzleId: string;
+}

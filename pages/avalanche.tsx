@@ -1,17 +1,14 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-// import Image from "next/image";
 
-import { MAGIC_CODE_CHAR_COUNT_AVALANCHE } from "@lib/constants";
+import { PuzzlePageProps } from "@lib/types";
+
 import Wrapper from "@components/wrapper";
 import NavAvalanche from "@components/nav-avalanche";
 import Puzzle from "@components/puzzle";
+import { puzzleCount } from "@lib/fetchers";
 
-interface PageProps {
-  count: number;
-}
-
-const Home: NextPage<PageProps> = ({ count }) => {
+const Home: NextPage<PuzzlePageProps> = ({ count, puzzleId }) => {
   return (
     <Wrapper>
       <div className="ik-page scanlines">
@@ -26,10 +23,7 @@ const Home: NextPage<PageProps> = ({ count }) => {
           </Head>
 
           <main>
-            <Puzzle
-              count={count}
-              puzzleUri="f890a455-6293-4a87-aff5-c5b5e5bc2617"
-            />
+            <Puzzle count={count} puzzleUri={puzzleId} />
           </main>
 
           <footer className="ik-front-bottom w-full">
@@ -43,10 +37,12 @@ const Home: NextPage<PageProps> = ({ count }) => {
 
 export default Home;
 
-export async function getStaticProps(): Promise<{ props: PageProps }> {
+export async function getStaticProps(): Promise<{ props: PuzzlePageProps }> {
+  const props = await puzzleCount({
+    puzzleId: "f890a455-6293-4a87-aff5-c5b5e5bc2617",
+  });
+
   return {
-    props: {
-      count: MAGIC_CODE_CHAR_COUNT_AVALANCHE,
-    },
+    props,
   };
 }
