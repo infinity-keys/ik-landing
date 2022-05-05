@@ -12,11 +12,6 @@ import {
 import { gqlSdk } from "@lib/server";
 import { PuzzleApiResponse } from "@lib/types";
 
-// const vars = {
-//   puzzle_id: "396fc8dd-0ce1-4fcf-a6d0-e2071449e57a",
-//   solution: "wagmi",
-// };
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<PuzzleApiResponse>
@@ -39,7 +34,10 @@ export default async function handler(
   });
   const fail_route = fail?.fail_route;
   const success_route = success[0]?.success_route;
-  // console.log(fail, success);
+
+  // Wrong guess
+  if (!success_route)
+    return res.status(200).json({ access: true, fail_route, success_route });
 
   if (!JWT_SECRET_KEY) {
     throw new Error("Secret is not set, check env variables");
@@ -56,7 +54,7 @@ export default async function handler(
 
   res.setHeader(
     "Set-Cookie",
-    `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=/;`
+    `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=${success_route};`
   );
   return res.status(200).json({ access: true, fail_route, success_route });
 }

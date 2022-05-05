@@ -21,9 +21,6 @@ const Puzzle = ({ count, puzzleUri }: PuzzleProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  // We can end up on this component with state set prior
-  // useEffect(() => setIsLoading(false), []);
-
   const handleInput = async (input: string) => {
     // Bail if guess is not the length of input
     if (input.length !== count) return;
@@ -40,10 +37,6 @@ const Puzzle = ({ count, puzzleUri }: PuzzleProps) => {
     !success_route && setIsLoading(false);
     // debugger;
     router.push(success_route || fail_route);
-
-    // Bad response
-    // return setIsLoading(false);
-    // return setTimeout(() => setIsLoading(false), 2000);
   };
 
   return (

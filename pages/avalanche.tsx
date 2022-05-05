@@ -26,7 +26,10 @@ const Home: NextPage<PageProps> = ({ count }) => {
           </Head>
 
           <main>
-            <Puzzle count={count} puzzleUri="avalanche" />
+            <Puzzle
+              count={count}
+              puzzleUri="f890a455-6293-4a87-aff5-c5b5e5bc2617"
+            />
           </main>
 
           <footer className="ik-front-bottom w-full">
