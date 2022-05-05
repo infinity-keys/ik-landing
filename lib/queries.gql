@@ -10,3 +10,10 @@ query Guess($puzzle_id: uuid!, $solution: String!) {
     success_route
   }
 }
+
+# We need char count for certain puzzles
+query SolutionCharCount($puzzle_id: uuid!) {
+  solution: puzzles_by_pk(puzzle_id: $puzzle_id) {
+    solution_char_count
+  }
+}
