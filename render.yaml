@@ -16,7 +16,7 @@ services:
       - key: HASURA_GRAPHQL_ADMIN_SECRET
         generateValue: true
       - key: HASURA_GRAPHQL_JWT_SECRET
-        type: HS256
-        key: 69a2cd79fcf74024aa1f9a9b3dacb404ff9888aec6bf44348378467311fbed74
+        - type: HS256
+        - key: 69a2cd79fcf74024aa1f9a9b3dacb404ff9888aec6bf44348378467311fbed74
 databases:
   - name: hasura
