@@ -6,9 +6,10 @@ module.exports = {
   schema: [
     {
       [process.env.GRAPHQL_ENDPOINT]: {
-        // headers: {
-        //   Authorization: "Bearer " + process.env.AUTH_TOKEN,
-        // },
+        headers: {
+          "x-hasura-admin-secret": process.env.HASURA_GRAPHQL_ADMIN_SECRET,
+          // Authorization: "Bearer " + process.env.AUTH_TOKEN,
+        },
       },
     },
   ],
