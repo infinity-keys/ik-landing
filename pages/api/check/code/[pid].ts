@@ -6,8 +6,6 @@ import {
   IK_ACCESS_COOKIE,
   IK_CLAIMS_NAMESPACE,
   JWT_SECRET_KEY,
-  MAGIC_CODE,
-  MAGIC_CODE_AVALANCHE,
 } from "@lib/constants";
 import { gqlSdk } from "@lib/server";
 import { PuzzleApiResponse } from "@lib/types";

@@ -8,6 +8,7 @@ import { GraphQLClient } from "graphql-request";
 import { getSdk } from "@lib/generated/graphql";
 
 const endpoint = process.env.GRAPHQL_ENDPOINT || "";
-const client = new GraphQLClient(endpoint, { headers: {} });
+
+export const client = new GraphQLClient(endpoint, { headers: {} });
 
 export const gqlSdk = getSdk(client);
