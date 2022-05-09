@@ -6,9 +6,14 @@
 import { GraphQLClient } from "graphql-request";
 
 import { getSdk } from "@lib/generated/graphql";
+import { apiToken } from "@lib/jwt";
 
-const endpoint = process.env.GRAPHQL_ENDPOINT || "";
+// Only use for API/backend NOT clientside
+const client = new GraphQLClient(process.env.GRAPHQL_ENDPOINT || "", {
+  headers: {
+    Authorization: `Bearer ${apiToken}`,
+  },
+});
 
-export const client = new GraphQLClient(endpoint, { headers: {} });
-
-export const gqlSdk = getSdk(client);
+// GQL sdk for nextjs serverless/"backend" use
+export const gqlApiSdk = getSdk(client);

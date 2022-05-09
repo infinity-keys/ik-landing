@@ -8,9 +8,6 @@ import Wrapper from "@components/wrapper";
 import NavAvalanche from "@components/nav-avalanche";
 import Puzzle from "@components/puzzle";
 import { puzzleCount } from "@lib/fetchers";
-import { client } from "@lib/server";
-import { anonymousToken } from "@lib/jwt";
-import { getSdk } from "@lib/generated/graphql";
 
 const Home: NextPage<PuzzlePageProps> = ({ count, puzzleId }) => {
   return (
@@ -48,29 +45,10 @@ const Home: NextPage<PuzzlePageProps> = ({ count, puzzleId }) => {
 export default Home;
 
 export async function getStaticProps(): Promise<{ props: PuzzlePageProps }> {
-  // 1. move all this to lib
-  // 2. use the `api` role for this
-
-  const token = await anonymousToken();
-  console.log(token);
-  client.setHeader("authorization", `Bearer ${token}`);
-  const gqlSdk = getSdk(client);
-
-  const { solution } = await gqlSdk.SolutionCharCount({
-    puzzle_id: "396fc8dd-0ce1-4fcf-a6d0-e2071449e57a",
+  const props = await puzzleCount({
+    puzzleId: "396fc8dd-0ce1-4fcf-a6d0-e2071449e57a",
   });
-  const count = solution?.solution_char_count || 0;
-
   return {
-    props: {
-      puzzleId: "396fc8dd-0ce1-4fcf-a6d0-e2071449e57a",
-      count,
-    },
+    props,
   };
-  // const props = await puzzleCount({
-  //   puzzleId: "396fc8dd-0ce1-4fcf-a6d0-e2071449e57a",
-  // });
-  // return {
-  //   props,
-  // };
 }

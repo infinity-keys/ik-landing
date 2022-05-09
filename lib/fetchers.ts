@@ -4,7 +4,7 @@ import type {
   PuzzleApis,
   PuzzlePageProps,
 } from "@lib/types";
-import { gqlSdk } from "./server";
+import { gqlApiSdk } from "./server";
 
 export const puzzlePost = async ({
   uri,
@@ -29,7 +29,9 @@ export const puzzleCount = async ({
 }: {
   puzzleId: string;
 }): Promise<PuzzlePageProps> => {
-  const { solution } = await gqlSdk.SolutionCharCount({ puzzle_id: puzzleId });
+  const { solution } = await gqlApiSdk.SolutionCharCount({
+    puzzle_id: puzzleId,
+  });
   const count = solution?.solution_char_count || 0;
   return {
     puzzleId,
