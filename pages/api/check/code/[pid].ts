@@ -7,7 +7,7 @@ import {
   IK_CLAIMS_NAMESPACE,
   JWT_SECRET_KEY,
 } from "@lib/constants";
-import { gqlSdk } from "@lib/server";
+import { gqlApiSdk } from "@lib/server";
 import { PuzzleApiResponse } from "@lib/types";
 
 export default async function handler(
@@ -26,7 +26,8 @@ export default async function handler(
   // 1. A route to redirect to if a guess is wrong. ALWAYS returned.
   // 2. A route to redirect to if a guess is correct. ONLY returned if solved.
   // Match is case insensitive
-  const { fail, success } = await gqlSdk.Guess({
+  const gql = await gqlApiSdk();
+  const { fail, success } = await gql.Guess({
     puzzle_id: pid,
     solution: code,
   });
@@ -35,7 +36,7 @@ export default async function handler(
 
   // Wrong guess
   if (!success_route)
-    return res.status(200).json({ access: true, fail_route, success_route });
+    return res.status(200).json({ access: false, fail_route, success_route });
 
   if (!JWT_SECRET_KEY) {
     throw new Error("Secret is not set, check env variables");

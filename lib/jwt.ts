@@ -25,14 +25,6 @@ const apiClaims: HasuraClaims = {
   },
 };
 
-// Add the shared parts of the JWT
-export const decorate = async (token: SignJWT) =>
-  token
-    .setProtectedHeader({ alg: "HS256" })
-    .setJti(nanoid())
-    .setIssuedAt()
-    .sign(new TextEncoder().encode(JWT_SECRET_KEY));
-
 // Anonymous
 // export const makeAnonToken = async () => {
 //   const token = await new SignJWT({
@@ -42,11 +34,12 @@ export const decorate = async (token: SignJWT) =>
 // };
 
 // API/backend tokens
-export const makeApiToken = async () => {
-  const token = await new SignJWT({
+export const makeApiToken = () =>
+  new SignJWT({
     ...apiClaims,
-  }).setExpirationTime("1H");
-  return decorate(token);
-};
-
-export const apiToken = makeApiToken();
+  })
+    .setExpirationTime("1H")
+    .setProtectedHeader({ alg: "HS256" })
+    .setJti(nanoid())
+    .setIssuedAt()
+    .sign(new TextEncoder().encode(JWT_SECRET_KEY));

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify, SignJWT } from "jose";
+import { jwtVerify } from "jose";
 import {
   JWT_SECRET_KEY,
   IK_ACCESS_COOKIE,

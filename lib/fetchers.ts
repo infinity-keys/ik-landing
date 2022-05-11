@@ -29,7 +29,8 @@ export const puzzleCount = async ({
 }: {
   puzzleId: string;
 }): Promise<PuzzlePageProps> => {
-  const { solution } = await gqlApiSdk.SolutionCharCount({
+  const gql = await gqlApiSdk();
+  const { solution } = await gql.SolutionCharCount({
     puzzle_id: puzzleId,
   });
   const count = solution?.solution_char_count || 0;
