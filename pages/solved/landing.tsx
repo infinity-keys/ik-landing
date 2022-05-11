@@ -80,7 +80,7 @@ const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
                     <ButtonSocialTwitter />
                   </div>
                   <div className="w-2/4">
-                    <Link href="/avalanche">
+                    <Link href="/puzzle/avalanche">
                       <a>
                         <Image
                           src="/ik-logo-social.png"

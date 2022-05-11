@@ -55,7 +55,7 @@ const NavAvalanche = ({ showAvalanche = true }: Props) => (
 
       {showAvalanche && (
         <div className="px-9 w-96">
-          <Link href="/avalanche">
+          <Link href="/puzzle/avalanche">
             <a className="text-turquoise">
               Watch the
               <br />
