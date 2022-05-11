@@ -4,6 +4,10 @@ const nextConfig = {
   images: {
     domains: ["images.unsplash.com", "tailwindui.com"],
   },
+  exportPathMap: () => ({
+    // The root page is just a puzzle
+    "/": { page: "/puzzle/landing" },
+  }),
 };
 
 module.exports = nextConfig;
