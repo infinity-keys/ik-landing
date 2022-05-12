@@ -28,7 +28,7 @@ const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
           </header>
 
           <main className="flex flex-col items-center justify-center w-full flex-1 z-10 ">
-            {state.succeeded && <p>Thanks for joining, we will be in touch!</p>}
+            {state.succeeded && <p>Thank you for testing with us.</p>}
             {!state.succeeded && (
               <div className="">
                 <h1 className="text-3xl font-medium mb-6">Coming soon.</h1>
