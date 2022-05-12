@@ -4,9 +4,9 @@ import Head from "next/head";
 import { useForm, ValidationError } from "@formspree/react";
 import ButtonSocialTwitter from "@components/button-social-twitter";
 
-import { IK_FORMSPREE_CODE } from "@lib/constants";
 import Wrapper from "@components/wrapper";
 import Link from "next/link";
+import { ETH_ADDRESS_REGEX } from "@lib/constants";
 
 interface PageProps {
   formSpreeCode: string;
@@ -28,14 +28,49 @@ const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
           </header>
 
           <main className="flex flex-col items-center justify-center w-full flex-1 z-10 ">
-            {state.succeeded && <p>Thanks for joining, we will be in touch!</p>}
+            {state.succeeded && <p>Thank you for testing with us.</p>}
             {!state.succeeded && (
               <div className="">
                 <h1 className="text-3xl font-medium mb-6">Coming soon.</h1>
 
                 <p className="text-sm font-normal mb-4">
-                  Eth address or connect wallet here.
+                  Discover clues, solve puzzles, and collect digital items to
+                  discover real treasure — or create a quest of your own.
                 </p>
+                <p className="text-sm font-normal mb-4">
+                  Infinity Keys is a forthcoming massively multiplayer metaverse
+                  treasure hunt platform.
+                </p>
+                <p className="text-sm font-normal mb-12">
+                  There&apos;s treasure everywhere.
+                </p>
+
+                <form onSubmit={handleSubmit}>
+                  <label htmlFor="wallet" className="block pb-2">
+                    Wallet address
+                  </label>
+                  <input
+                    className="mb-6 block w-full lowercase rounded-md text-gray-150 placeholder:text-gray-150 text-sm py-2 px-4 bg-gray-500"
+                    type="text"
+                    placeholder="&rsaquo; starts with 0x, 40 characters long"
+                    name="wallet"
+                    id="wallet"
+                    pattern={ETH_ADDRESS_REGEX.source}
+                  />
+                  <ValidationError
+                    prefix="Wallet"
+                    field="wallet"
+                    errors={state.errors}
+                  />
+                  <button
+                    className="block w-full text-xs text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4"
+                    type="submit"
+                    value="submit"
+                    disabled={state.submitting}
+                  >
+                    Submit
+                  </button>
+                </form>
 
                 <div className="mt-6 flex">
                   <div className="w-2/4 flex items-center justify-center">
@@ -56,7 +91,7 @@ export default Gated;
 export async function getStaticProps(): Promise<{ props: PageProps }> {
   return {
     props: {
-      formSpreeCode: IK_FORMSPREE_CODE,
+      formSpreeCode: "mayvabyg",
     },
   };
 }

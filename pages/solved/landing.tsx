@@ -4,7 +4,6 @@ import Head from "next/head";
 import { useForm, ValidationError } from "@formspree/react";
 import ButtonSocialTwitter from "@components/button-social-twitter";
 
-import { IK_FORMSPREE_CODE } from "@lib/constants";
 import Wrapper from "@components/wrapper";
 import Link from "next/link";
 
@@ -112,7 +111,7 @@ export default Gated;
 export async function getStaticProps(): Promise<{ props: PageProps }> {
   return {
     props: {
-      formSpreeCode: IK_FORMSPREE_CODE,
+      formSpreeCode: "xknyjenl",
     },
   };
 }
