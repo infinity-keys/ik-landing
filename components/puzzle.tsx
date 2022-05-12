@@ -73,6 +73,7 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
                 <input
                   onChange={(e) => handleInput(e.target.value)}
                   type="text"
+                  size={count}
                   className="text-blue-800"
                 />
               )}
