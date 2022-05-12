@@ -29,6 +29,7 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
     if (input.length !== count) return;
 
     setIsLoading(true);
+    setCharsLeft(count);
 
     // POST to puzzle backend
     const res = await puzzlePost({ uri: puzzleUri, code: input });
