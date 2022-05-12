@@ -14,15 +14,17 @@ interface PuzzleProps {
   boxes?: boolean;
 }
 
-const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
+const Puzzle = ({ count = 0, puzzleUri, boxes = true }: PuzzleProps) => {
   const inputProps = loRange(count).map(() => ({
     className: "ik-code-input",
   }));
 
   const [isLoading, setIsLoading] = useState(false);
+  const [charsLeft, setCharsLeft] = useState(count);
   const router = useRouter();
 
   const handleInput = async (input: string) => {
+    setCharsLeft(count - input.length);
     // Bail if guess is not the length of input
     if (input.length !== count) return;
 
@@ -70,12 +72,17 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
                 />
               )}
               {!boxes && (
-                <input
-                  onChange={(e) => handleInput(e.target.value)}
-                  type="text"
-                  size={count}
-                  className="text-blue-800"
-                />
+                <div className="flex items-center">
+                  <input
+                    onChange={(e) => handleInput(e.target.value)}
+                    type="text"
+                    size={count}
+                    className="text-blue-800 w-full"
+                  />
+                  <div className="counter text-lg p-4 text-white">
+                    {charsLeft}
+                  </div>
+                </div>
               )}
             </div>
           </div>
