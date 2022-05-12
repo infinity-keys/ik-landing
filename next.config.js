@@ -7,6 +7,8 @@ const nextConfig = {
   exportPathMap: () => ({
     // The root page is just a puzzle
     "/": { page: "/puzzle/landing" },
+    // Forward old avalanche page to new
+    "/avalanche": { page: "/puzzle/avalanche" },
   }),
 };
 
