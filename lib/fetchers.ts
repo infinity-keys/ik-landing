@@ -1,5 +1,10 @@
 import { NextApiResponse } from "next";
-import type { PuzzleApiResponse, PuzzleApis } from "@lib/types";
+import type {
+  PuzzleApiResponse,
+  PuzzleApis,
+  PuzzlePageProps,
+} from "@lib/types";
+import { gqlApiSdk } from "./server";
 
 export const puzzlePost = async ({
   uri,
@@ -17,4 +22,20 @@ export const puzzlePost = async ({
   });
 
   return res;
+};
+
+export const puzzleCount = async ({
+  puzzleId,
+}: {
+  puzzleId: string;
+}): Promise<PuzzlePageProps> => {
+  const gql = await gqlApiSdk();
+  const { solution } = await gql.SolutionCharCount({
+    puzzle_id: puzzleId,
+  });
+  const count = solution?.solution_char_count || 0;
+  return {
+    puzzleId,
+    count,
+  };
 };

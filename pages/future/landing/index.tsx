@@ -7,7 +7,6 @@ import {
   CurrencyDollarIcon,
 } from "@heroicons/react/outline";
 
-import { MAGIC_CODE_CHAR_COUNT } from "@lib/constants";
 import Wrapper from "@components/wrapper";
 import Puzzle from "@components/puzzle";
 
@@ -516,7 +515,7 @@ export default Landing;
 export async function getStaticProps(): Promise<{ props: PageProps }> {
   return {
     props: {
-      count: MAGIC_CODE_CHAR_COUNT,
+      count: 5, // @TODO: change this when ready
     },
   };
 }

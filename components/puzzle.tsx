@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
@@ -11,9 +11,10 @@ import { puzzlePost } from "@lib/fetchers";
 interface PuzzleProps {
   count: number;
   puzzleUri: PuzzleApis;
+  boxes?: boolean;
 }
 
-const Puzzle = ({ count, puzzleUri }: PuzzleProps) => {
+const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
   const inputProps = loRange(count).map(() => ({
     className: "ik-code-input",
   }));
@@ -30,13 +31,13 @@ const Puzzle = ({ count, puzzleUri }: PuzzleProps) => {
     // POST to puzzle backend
     const res = await puzzlePost({ uri: puzzleUri, code: input });
 
-    // Success, forward to next page.
-    if (res.ok) {
-      const results = await res.json();
-      return setTimeout(() => router.push(results.forwardTo), 1500);
-    }
-    // Fail
-    return setTimeout(() => setIsLoading(false), 2000);
+    if (!res.ok) throw new Error(res.statusText);
+
+    const { fail_route, success_route } = await res.json();
+    // Turn off loading if failed
+    !success_route && setIsLoading(false);
+    // debugger;
+    router.push(success_route || fail_route);
   };
 
   return (
@@ -59,13 +60,23 @@ const Puzzle = ({ count, puzzleUri }: PuzzleProps) => {
               <h1 className="text-base font-bold pt-2 pl-4">Passcode</h1>
             </div>
             <div className="magic-input pt-7 text-turquoise font-bold text-5xl">
-              <RICIBs
-                amount={count}
-                handleOutputString={handleInput}
-                inputRegExp={/^.*$/}
-                autoFocus={true}
-                inputProps={inputProps}
-              />
+              {boxes && (
+                <RICIBs
+                  amount={count}
+                  handleOutputString={handleInput}
+                  inputRegExp={/^.*$/}
+                  autoFocus={true}
+                  inputProps={inputProps}
+                />
+              )}
+              {!boxes && (
+                <input
+                  onChange={(e) => handleInput(e.target.value)}
+                  type="text"
+                  size={count}
+                  className="text-blue-800"
+                />
+              )}
             </div>
           </div>
         </div>

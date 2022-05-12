@@ -1,15 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-// import jwt from "jsonwebtoken";
 import { SignJWT } from "jose";
 import { nanoid } from "nanoid";
 import {
   IK_ACCESS_COOKIE,
   IK_CLAIMS_NAMESPACE,
   JWT_SECRET_KEY,
-  MAGIC_CODE,
-  MAGIC_CODE_AVALANCHE,
 } from "@lib/constants";
+import { gqlApiSdk } from "@lib/server";
 import { PuzzleApiResponse } from "@lib/types";
 
 export default async function handler(
@@ -24,29 +22,28 @@ export default async function handler(
   const { code } = req.body;
   if (!code) return res.status(400).end();
 
-  // Let's not care about case
-  let capsMagicCode;
-  switch (pid) {
-    case "landing":
-      capsMagicCode = MAGIC_CODE?.toUpperCase();
-      break;
-    case "avalanche":
-      capsMagicCode = MAGIC_CODE_AVALANCHE?.toUpperCase();
-      break;
-  }
+  // Returns:
+  // 1. A route to redirect to if a guess is wrong. ALWAYS returned.
+  // 2. A route to redirect to if a guess is correct. ONLY returned if solved.
+  // Match is case insensitive
+  const gql = await gqlApiSdk();
+  const { fail, success } = await gql.Guess({
+    puzzle_id: pid,
+    solution: code,
+  });
+  const fail_route = fail?.fail_route;
+  const success_route = success[0]?.success_route;
 
-  const capsInputCode = code.toUpperCase();
-
-  // Nope
-  if (capsInputCode !== capsMagicCode) {
-    return res.status(403).end();
-  }
+  // Wrong guess
+  if (!success_route)
+    return res.status(200).json({ access: false, fail_route, success_route });
 
   if (!JWT_SECRET_KEY) {
     throw new Error("Secret is not set, check env variables");
   }
   // Correct code, generate token and send it back
   const token = await new SignJWT({
+    // @todo: change this
     claims: { [IK_CLAIMS_NAMESPACE]: { access: true } },
   })
     .setProtectedHeader({ alg: "HS256" })
@@ -56,7 +53,7 @@ export default async function handler(
 
   res.setHeader(
     "Set-Cookie",
-    `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=/;`
+    `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=${success_route};`
   );
-  return res.status(200).json({ access: true, forwardTo: "/gated" });
+  return res.status(200).json({ access: true, fail_route, success_route });
 }
