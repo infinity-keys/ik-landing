@@ -4,12 +4,14 @@ const nextConfig = {
   images: {
     domains: ["images.unsplash.com", "tailwindui.com"],
   },
-  exportPathMap: () => ({
-    // The root page is just a puzzle
-    "/": { page: "/puzzle/landing" },
-    // Forward old avalanche page to new
-    "/avalanche": { page: "/puzzle/avalanche" },
-  }),
+  async rewrites() {
+    return [
+      // The root page is just a puzzle
+      { source: "/", destination: "/puzzle/landing" },
+      // Forward old avalanche page to new
+      { source: "/avalanche", destination: "/puzzle/avalanche" },
+    ];
+  },
 };
 
 module.exports = nextConfig;
