@@ -14,7 +14,7 @@ interface PuzzleProps {
   boxes?: boolean;
 }
 
-const Puzzle = ({ count = 0, puzzleUri, boxes = true }: PuzzleProps) => {
+const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
   const inputProps = loRange(count).map(() => ({
     className: "ik-code-input",
   }));
