@@ -4,7 +4,7 @@ import Head from "next/head";
 import { useForm, ValidationError } from "@formspree/react";
 import ButtonSocialTwitter from "@components/button-social-twitter";
 
-import { IK_FORMSPREE_CODE } from "@lib/constants";
+import { ETH_ADDRESS_REGEX } from "@lib/constants";
 import Wrapper from "@components/wrapper";
 import Link from "next/link";
 
@@ -54,7 +54,7 @@ const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
                     placeholder="&rsaquo; starts with 0x, 40 characters long"
                     name="wallet"
                     id="wallet"
-                    pattern="/^0x[a-fA-F0-9]{40}$/"
+                    pattern={ETH_ADDRESS_REGEX.source}
                   />
                   <ValidationError
                     prefix="Wallet"
