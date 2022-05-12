@@ -45,34 +45,29 @@ const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
                   There&apos;s treasure everywhere.
                 </p>
                 <form onSubmit={handleSubmit}>
-                  {/* <label htmlFor="name">Name</label> */}
+                  <label htmlFor="wallet" className="block pb-2">
+                    Wallet address
+                  </label>
                   <input
                     className="mb-6 block w-full lowercase rounded-md text-gray-150 placeholder:text-gray-150 text-sm py-2 px-4 bg-gray-500"
                     type="text"
-                    placeholder="&rsaquo; Enter your name"
-                    name="name"
-                    id="name"
-                  />
-                  {/* <label htmlFor="email">Email address</label> */}
-                  <input
-                    className="mb-6 block w-full lowercase rounded-md text-gray-150 placeholder:text-gray-150 text-sm py-2 px-4 bg-gray-500"
-                    type="email"
-                    placeholder="&rsaquo; Enter your email address"
-                    name="email"
-                    id="email"
+                    placeholder="&rsaquo; starts with 0x, 40 characters long"
+                    name="wallet"
+                    id="wallet"
+                    pattern="/^0x[a-fA-F0-9]{40}$/"
                   />
                   <ValidationError
-                    prefix="Email"
-                    field="email"
+                    prefix="Wallet"
+                    field="wallet"
                     errors={state.errors}
                   />
                   <button
                     className="block w-full text-xs text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4"
                     type="submit"
-                    value="Join the mailing list"
+                    value="submit"
                     disabled={state.submitting}
                   >
-                    Join the mailing list
+                    Submit
                   </button>
                 </form>
                 <div className="mt-6 flex">
@@ -112,7 +107,7 @@ export default Gated;
 export async function getStaticProps(): Promise<{ props: PageProps }> {
   return {
     props: {
-      formSpreeCode: IK_FORMSPREE_CODE,
+      formSpreeCode: "mwkyaqkr",
     },
   };
 }

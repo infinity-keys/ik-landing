@@ -17,7 +17,7 @@ interface PuzzleProps {
 
 const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
   const inputProps = loRange(count).map(() => ({
-    className: "ik-code-input",
+    className: "ik-code-input text-5xl",
   }));
 
   const [isLoading, setIsLoading] = useState(false);
@@ -69,7 +69,7 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
             <div className={clsx({ invisible: !isWrongGuess })}>
               <span className="opacity-50">Incorrect passcode. Try again.</span>
             </div>
-            <div className="magic-input pt-2 text-turquoise font-bold text-5xl">
+            <div className="magic-input pt-2 text-turquoise font-bold">
               {boxes && (
                 <RICIBs
                   amount={count}
@@ -80,14 +80,17 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
                 />
               )}
               {!boxes && (
-                <div className="flex items-center">
+                <div className="flex items-center sm:w-full">
                   <input
                     onChange={(e) => handleInput(e.target.value)}
                     type="text"
-                    size={count}
                     className="text-blue-800 w-full"
+                    size={count}
+                    autoFocus={true}
+                    tabIndex={0}
+                    onPaste={(e) => e.preventDefault()}
                   />
-                  <div className="counter text-lg p-4 text-white">
+                  <div className="counter text-lg p-4 text-white w-11">
                     {charsLeft}
                   </div>
                 </div>

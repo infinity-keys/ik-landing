@@ -112,7 +112,7 @@ export default Gated;
 export async function getStaticProps(): Promise<{ props: PageProps }> {
   return {
     props: {
-      formSpreeCode: IK_FORMSPREE_CODE,
+      formSpreeCode: "xknyjenl",
     },
   };
 }
