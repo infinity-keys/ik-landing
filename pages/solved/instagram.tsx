@@ -18,7 +18,7 @@ const Gated: NextPage<PageProps> = ({ formSpreeCode }) => {
   return (
     <Wrapper>
       <Head>
-        <title>Avalanche</title>
+        <title>Instagram</title>
       </Head>
 
       <div className="ik-page radial-bg scanlines">
