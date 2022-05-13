@@ -57,6 +57,11 @@ const Home: NextPage<PuzzlePageProps> = ({ count, puzzleId }) => {
   const [chainId, setChainId] = useState<number>();
   const [connected, setConnected] = useState<boolean>(false);
 
+  //FOR SIGNING- NOT NEEDED FOR WALLET CONNECT
+  const [message, setMessage] = useState<string>("This is a test message.");
+  const [signature, setSignature] = useState<string>('');
+  //
+
   useEffect(() => {
     setWeb3Modal(new Web3Modal({
       //network: "rinkeby", // optional- we dont care for now I think, but will be important once we add NFT claiming/anything on chain
@@ -86,6 +91,8 @@ const Home: NextPage<PuzzlePageProps> = ({ count, puzzleId }) => {
   const refreshState = () => {
     setAccount("");
     setChainId(-1);
+    // FOR SIGNING ONLY
+    setSignature("");
   };
 
   const disconnect = async () => {
@@ -94,6 +101,21 @@ const Home: NextPage<PuzzlePageProps> = ({ count, puzzleId }) => {
       refreshState();
       setConnected(false);
     }
+  };
+
+  //FOR SIGNING ONLY- NOT NEEDED FOR WALLET CONNECTION
+  const signMessage = async () => {
+    if (library?.provider.request) {
+      try {
+        const signature = await library.provider.request({
+          method: "personal_sign",
+          params: [message, account]
+        });
+        setSignature(signature);
+      } catch (error) {
+        console.log(error)
+      }
+    } 
   };
   
   return (
@@ -116,6 +138,15 @@ const Home: NextPage<PuzzlePageProps> = ({ count, puzzleId }) => {
             {connected ? <div>
               <p>Wallet Address: {account}</p>
               <p>Chain Id: {chainId}</p>
+              <br/>
+              {/*ONLY NEEDED FOR SIGNING MESSAGES, NOT WALLET CONNECTION*/}
+              <button onClick={signMessage}>Sign Message</button>
+              {signature === '' ? <></> : 
+              <div>
+                <p>Signed Message: {message}</p>
+                <p>Signature: {signature}</p>
+              </div>}
+              {/*END*/}
             </div> : <></>}
             
             {/*<Puzzle count={count} puzzleUri={puzzleId} />*/}
