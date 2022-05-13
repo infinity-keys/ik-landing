@@ -43,22 +43,26 @@ export default async function handler(
   }
   // Correct code, generate token and send it back
   const token = await new SignJWT({
-    // @todo: change this
     claims: {
       [IK_CLAIMS_NAMESPACE]: {
-        access: true,
-        sessionId: nanoid(), // use when submitting solutions to limit the number of guesses
+        access: true, // @todo: change this
       },
     },
   })
     .setProtectedHeader({ alg: "HS256" })
-    .setJti(nanoid())
+    .setJti(nanoid()) // Use this for unique "session id" when submitting values
     .setIssuedAt()
     .sign(new TextEncoder().encode(JWT_SECRET_KEY));
 
+  // Cookie for route access
   res.setHeader(
     "Set-Cookie",
     `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=${success_route};`
+  );
+  // TEMP: Cookie for API access later
+  res.setHeader(
+    "Set-Cookie",
+    `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=/api/submission;`
   );
   return res.status(200).json({ access: true, fail_route, success_route });
 }

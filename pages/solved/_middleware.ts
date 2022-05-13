@@ -6,11 +6,7 @@ import {
   IK_CLAIMS_NAMESPACE,
 } from "@lib/constants";
 
-interface IkJwt {
-  claims: {
-    [IK_CLAIMS_NAMESPACE]: { access: boolean };
-  };
-}
+import { IkJwt } from "@lib/types";
 
 export async function middleware(req: NextRequest, res: NextResponse) {
   const token = req.cookies[IK_ACCESS_COOKIE];
