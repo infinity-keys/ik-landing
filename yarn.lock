@@ -4793,6 +4793,11 @@ react-dom@^18:
     loose-envify "^1.1.0"
     scheduler "^0.22.0"
 
+react-hook-form@^7.31.1:
+  version "7.31.1"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.31.1.tgz#16c357dd366bc226172e6acbb5a1672873bbfb28"
+  integrity sha512-QjtjZ8r8KtEBWWpcXLyQordCraTFxILtyQpaz5KLLxN2YzcC+FZ9LLtOnNGuOnzZo9gCoB+viK3ZHV9Mb2htmQ==
+
 react-individual-character-input-boxes@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-individual-character-input-boxes/-/react-individual-character-input-boxes-1.1.0.tgz#2d200109e95b48964ef072a6829a39442ec89c20"
