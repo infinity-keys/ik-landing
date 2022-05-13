@@ -44,7 +44,12 @@ export default async function handler(
   // Correct code, generate token and send it back
   const token = await new SignJWT({
     // @todo: change this
-    claims: { [IK_CLAIMS_NAMESPACE]: { access: true } },
+    claims: {
+      [IK_CLAIMS_NAMESPACE]: {
+        access: true,
+        sessionId: nanoid(), // use when submitting solutions to limit the number of guesses
+      },
+    },
   })
     .setProtectedHeader({ alg: "HS256" })
     .setJti(nanoid())
