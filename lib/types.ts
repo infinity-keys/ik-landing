@@ -1,3 +1,5 @@
+import { IK_CLAIMS_NAMESPACE } from "./constants";
+
 export type PuzzleApis = string;
 export type PuzzleApiResponse = {
   access?: boolean;
@@ -8,4 +10,12 @@ export type PuzzleApiResponse = {
 export interface PuzzlePageProps {
   count: number;
   puzzleId: string;
+}
+
+export interface IkJwt {
+  claims: {
+    [IK_CLAIMS_NAMESPACE]: {
+      access: boolean;
+    };
+  };
 }
