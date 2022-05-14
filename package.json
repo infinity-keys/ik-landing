@@ -20,7 +20,6 @@
     "@graphql-codegen/typescript-operations": "^2.3.5",
     "@headlessui/react": "^1.5.0",
     "@heroicons/react": "^1.0.6",
-    "@stablelib/random": "^1.0.1",
     "@tailwindcss/forms": "^0.5",
     "clsx": "^1.1.1",
     "graphql": "^16.4.0",
