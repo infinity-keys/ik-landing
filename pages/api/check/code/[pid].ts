@@ -7,6 +7,7 @@ import {
   IK_CLAIMS_NAMESPACE,
   JWT_SECRET_KEY,
 } from "@lib/constants";
+import { epochMinus30s } from "@lib/utils";
 import { gqlApiSdk } from "@lib/server";
 import { PuzzleApiResponse } from "@lib/types";
 
@@ -54,10 +55,8 @@ export default async function handler(
   })
     .setProtectedHeader({ alg: "HS256" })
     .setJti(nanoid()) // Use this for unique "session id" when submitting values
-    .setIssuedAt(new Date().getTime() - 60000) // Offset a minute because stupid clocks
+    .setIssuedAt(epochMinus30s()) // Offset 30s because stupid clocks
     .sign(new TextEncoder().encode(JWT_SECRET_KEY));
-
-console.log(token)
 
   // Cookie for route access
   res.setHeader(

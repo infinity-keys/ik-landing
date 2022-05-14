@@ -2,6 +2,7 @@ import { SignJWT } from "jose";
 import { nanoid } from "nanoid";
 
 import { JWT_SECRET_KEY } from "@lib/constants";
+import { epochMinus30s } from "./utils";
 
 export type HasuraRoles = "anonymous" | "user" | "manager" | "api" | "admin";
 
@@ -41,5 +42,5 @@ export const makeApiToken = () =>
     .setExpirationTime("1H")
     .setProtectedHeader({ alg: "HS256" })
     .setJti(nanoid())
-    .setIssuedAt()
+    .setIssuedAt(epochMinus30s()) // Offset 30s because stuipd clocks
     .sign(new TextEncoder().encode(JWT_SECRET_KEY));
