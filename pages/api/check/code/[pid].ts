@@ -43,8 +43,6 @@ export default async function handler(
     throw new Error("Secret is not set, check env variables");
   }
 
-
-
   // Correct code, generate token and send it back
   const token = await new SignJWT({
     claims: {
@@ -63,10 +61,6 @@ export default async function handler(
     "Set-Cookie",
     `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=${success_route};`
   );
-  // TEMP: Cookie for API access later
-  // res.setHeader(
-  //   "Set-Cookie",
-  //   `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=/api/submission;`
-  // );
+
   return res.status(200).json({ access: true, fail_route, success_route });
 }
