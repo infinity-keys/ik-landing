@@ -41,18 +41,23 @@ export default async function handler(
   if (!JWT_SECRET_KEY) {
     throw new Error("Secret is not set, check env variables");
   }
+
+
+
   // Correct code, generate token and send it back
   const token = await new SignJWT({
     claims: {
       [IK_CLAIMS_NAMESPACE]: {
-        access: true, // @todo: change this
+        access: true,
       },
     },
   })
     .setProtectedHeader({ alg: "HS256" })
     .setJti(nanoid()) // Use this for unique "session id" when submitting values
-    .setIssuedAt()
+    .setIssuedAt(new Date().getTime() - 60000) // Offset a minute because stupid clocks
     .sign(new TextEncoder().encode(JWT_SECRET_KEY));
+
+console.log(token)
 
   // Cookie for route access
   res.setHeader(
@@ -60,9 +65,9 @@ export default async function handler(
     `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=${success_route};`
   );
   // TEMP: Cookie for API access later
-  res.setHeader(
-    "Set-Cookie",
-    `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=/api/submission;`
-  );
+  // res.setHeader(
+  //   "Set-Cookie",
+  //   `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=/api/submission;`
+  // );
   return res.status(200).json({ access: true, fail_route, success_route });
 }
