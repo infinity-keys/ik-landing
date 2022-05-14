@@ -12,8 +12,6 @@
   "dependencies": {
     "@apollo/client": "^3.6.2",
     "@auth0/nextjs-auth0": "^1.7.0",
-    "@ceramicnetwork/3id-did-resolver": "^2.0.0",
-    "@ceramicnetwork/http-client": "^2.0.0",
     "@formspree/react": "^2.2.4",
     "@graphql-codegen/cli": "^2.6.2",
     "@graphql-codegen/introspection": "^2.1.1",
@@ -25,12 +23,9 @@
     "@stablelib/random": "^1.0.1",
     "@tailwindcss/forms": "^0.5",
     "clsx": "^1.1.1",
-    "ethers": "^5.6.5",
     "graphql": "^16.4.0",
     "graphql-request": "^4.2.0",
     "jose": "^4",
-    "key-did-provider-ed25519": "^2.0.0",
-    "key-did-resolver": "^2.0.0",
     "loaders.css": "^0.1.2",
     "lodash": "^4.17.21",
     "nanoid": "^3.2.0",
@@ -38,8 +33,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.31.1",
-    "react-individual-character-input-boxes": "^1.1.0",
-    "web3modal": "^1.9.7"
+    "react-individual-character-input-boxes": "^1.1.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.178",
