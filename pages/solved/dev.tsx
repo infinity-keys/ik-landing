@@ -4,14 +4,15 @@ import Head from "next/head";
 import { useForm, SubmitHandler, useFormState } from "react-hook-form";
 
 import Wrapper from "@components/wrapper";
-import Link from "next/link";
 import { ETH_ADDRESS_REGEX } from "@lib/constants";
+import { PuzzleInput } from "@lib/types";
 
-interface FormInput {
+
+interface FormInput extends PuzzleInput {
   address: string;
 }
 
-const Dev: NextPage = () => {
+const Dev: NextPage<PuzzleInput> = ({ puzzleId }) => {
   const {
     register,
     handleSubmit,
@@ -19,16 +20,17 @@ const Dev: NextPage = () => {
   } = useForm<FormInput>({ mode: "onChange" });
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
+    console.log(data);
     const res = await fetch("/api/submission", {
       method: "POST",
-      // credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Cookie: "name=ik-jwt",
       },
       body: JSON.stringify(data),
     });
-    console.log(res);
+
+    if (!res.ok) throw new Error(res.statusText);
+    // console.log(res);
     return true;
   };
 
@@ -70,6 +72,7 @@ const Dev: NextPage = () => {
                       characters long
                     </p>
                   )}
+                  <input type="hidden" {...register("puzzleId")} value={puzzleId} />
                   <button
                     className="block w-full text-xs text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4"
                     type="submit"
@@ -89,3 +92,12 @@ const Dev: NextPage = () => {
 };
 
 export default Dev;
+
+export function getStaticProps(): { props: PuzzleInput } {
+  const props = {
+    puzzleId: "a89b6cf8-81b1-45a5-9f69-18af130178e6",
+  }
+  return {
+    props,
+  }
+}

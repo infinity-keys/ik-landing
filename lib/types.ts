@@ -19,3 +19,8 @@ export interface IkJwt {
     };
   };
 }
+
+// All submission pages need a puzzle id
+export interface PuzzleInput {
+  puzzleId: string;
+}

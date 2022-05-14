@@ -15,28 +15,30 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method !== "POST") return res.status(405).end();
+  // console.log(req);
+  console.log(req.body);
   console.log(req.cookies);
 
-  const token = req.cookies[IK_ACCESS_COOKIE];
-  console.log(token);
+  // const token = req.cookies[IK_ACCESS_COOKIE];
+  // console.log(token);
 
-  try {
-    const verified = await jwtVerify(
-      token,
-      new TextEncoder().encode(JWT_SECRET_KEY)
-    );
+  // try {
+  //   const verified = await jwtVerify(
+  //     token,
+  //     new TextEncoder().encode(JWT_SECRET_KEY)
+  //   );
 
-    console.log(verified);
-    const payload = verified.payload as unknown as IkJwt;
-    console.log(payload);
-    // if (payload?.claims?.[IK_CLAIMS_NAMESPACE].access) {
+  //   console.log(verified);
+  //   const payload = verified.payload as unknown as IkJwt;
+  //   console.log(payload);
+  //   // if (payload?.claims?.[IK_CLAIMS_NAMESPACE].access) {
 
-    // }
-  } catch (e) {
-    console.log(e);
-    // return new Response("Invalid token", {
-    //   status: 401,
-    // });
-  }
+  //   // }
+  // } catch (e) {
+  //   console.log(e);
+  //   // return new Response("Invalid token", {
+  //   //   status: 401,
+  //   // });
+  // }
   return res.status(200).end();
 }
