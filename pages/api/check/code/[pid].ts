@@ -1,16 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { jwtVerify, SignJWT } from "jose";
-import { nanoid } from "nanoid";
 import { uniq } from "lodash";
-import {
-  IK_CLAIMS_NAMESPACE,
-  IK_ID_COOKIE,
-  JWT_SECRET_KEY,
-} from "@lib/constants";
-import { epochMinus30s } from "@lib/utils";
+import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 import { gqlApiSdk } from "@lib/server";
 import { IkJwt, PuzzleApiResponse } from "@lib/types";
+import { makeAnonToken, verifyToken } from "@lib/jwt";
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,7 +18,7 @@ export default async function handler(
   // Validate token first
   let verified = undefined;
   try {
-    verified = await jwtVerify(token, new TextEncoder().encode(JWT_SECRET_KEY));
+    verified = await verifyToken(token);
   } catch (e) {
     // Bad token
     return res.status(401).end();
@@ -71,14 +65,7 @@ export default async function handler(
     guessResults.access = true;
   }
 
-  const newToken = await new SignJWT(payload)
-    .setProtectedHeader({
-      alg: "HS256",
-    })
-    .setProtectedHeader({ alg: "HS256" })
-    .setJti(nanoid()) // New id for the JWT
-    .setIssuedAt(epochMinus30s()) // Effectively "refresh" JWT
-    .sign(new TextEncoder().encode(JWT_SECRET_KEY));
+  const newToken = await makeAnonToken(payload);
 
   // Cookie for route access
   res.setHeader("Set-Cookie", `${IK_ID_COOKIE}=${newToken}; HttpOnly; Path=/;`);

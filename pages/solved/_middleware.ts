@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify } from "jose";
-import {
-  JWT_SECRET_KEY,
-  IK_CLAIMS_NAMESPACE,
-  IK_ID_COOKIE,
-} from "@lib/constants";
+import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 
 import { IkJwt } from "@lib/types";
+import { verifyToken } from "@lib/jwt";
 
 export async function middleware(req: NextRequest, res: NextResponse) {
   const token = req.cookies[IK_ID_COOKIE];
@@ -25,10 +21,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   }
 
   try {
-    const verified = await jwtVerify(
-      token,
-      new TextEncoder().encode(JWT_SECRET_KEY)
-    );
+    const verified = await verifyToken(token);
 
     const payload = verified.payload as unknown as IkJwt;
 

@@ -28,3 +28,16 @@ mutation UserSubmission($puzzle_id: uuid, $user_id: String, $form_data: jsonb) {
     # form_data
   }
 }
+
+# A user submits against a puzzle id, but we need to check that the user's jwt
+# claims include the success route for the puzzle id
+query UserPuzzlesInSubmitted($puzzleId: uuid, $puzzleRoutes: [String!]) {
+  puzzles(
+    where: {
+      puzzle_id: { _eq: $puzzleId }
+      _and: { success_route: { _in: $puzzleRoutes } }
+    }
+  ) {
+    success_route
+  }
+}

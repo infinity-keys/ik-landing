@@ -30,7 +30,6 @@ const Dev: NextPage<PuzzleInput> = ({ puzzleId }) => {
     });
 
     if (!res.ok) throw new Error(res.statusText);
-    // console.log(res);
     return true;
   };
 
