@@ -3,12 +3,16 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { jwtVerify, SignJWT } from "jose";
 import { nanoid } from "nanoid";
 import {
-  IK_ACCESS_COOKIE,
   IK_CLAIMS_NAMESPACE,
+  IK_ID_COOKIE,
   JWT_SECRET_KEY,
 } from "@lib/constants";
 import { gqlApiSdk } from "@lib/server";
-import { IkJwt, PuzzleApiResponse } from "@lib/types";
+import { IkJwt, PuzzleApiResponse, PuzzleInput } from "@lib/types";
+
+interface UserSubmission extends PuzzleInput {
+  [key: string]: string;
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,6 +22,22 @@ export default async function handler(
   // console.log(req);
   console.log(req.body);
   console.log(req.cookies);
+
+  const userId = req.cookies[IK_ID_COOKIE];
+  // Entire form submission
+  const submission = req.body as UserSubmission;
+  // Pull out the hidden puzzleId field
+  const { puzzleId, ...formData } = submission;
+
+  const gql = await gqlApiSdk();
+
+  const response = await gql.UserSubmission({
+    puzzle_id: puzzleId,
+    user_id: userId,
+    form_data: formData,
+  });
+
+  console.log(response);
 
   // const token = req.cookies[IK_ACCESS_COOKIE];
   // console.log(token);

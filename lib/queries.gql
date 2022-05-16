@@ -17,3 +17,14 @@ query SolutionCharCount($puzzle_id: uuid!) {
     solution_char_count
   }
 }
+
+# A user submits a form after completing a puzzle
+mutation UserSubmission($puzzle_id: uuid, $user_id: String, $form_data: jsonb) {
+  insert_submissions_one(
+    object: { user_id: $user_id, puzzle_id: $puzzle_id, form_data: $form_data }
+  ) {
+    user_id
+    puzzle_id
+    # form_data
+  }
+}
