@@ -6,6 +6,7 @@ import { useForm, SubmitHandler, useFormState } from "react-hook-form";
 import Wrapper from "@components/wrapper";
 import { ETH_ADDRESS_REGEX } from "@lib/constants";
 import { PuzzleInput } from "@lib/types";
+import { formSubmit } from "@lib/fetchers";
 
 
 interface FormInput extends PuzzleInput {
@@ -20,14 +21,7 @@ const Dev: NextPage<PuzzleInput> = ({ puzzleId }) => {
   } = useForm<FormInput>({ mode: "onChange" });
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
-    console.log(data);
-    const res = await fetch("/api/submission", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    const res = await formSubmit({ data })
 
     if (!res.ok) throw new Error(res.statusText);
     return true;

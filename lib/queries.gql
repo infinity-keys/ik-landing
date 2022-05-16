@@ -10,6 +10,17 @@ query Guess($puzzle_id: uuid!, $solution: String!) {
     success_route
   }
 }
+# Create/update user
+mutation UpsertUser($userId: uuid) {
+  insert_users(
+    objects: { user_id: $userId }
+    on_conflict: { constraint: users_pkey, update_columns: [] }
+  ) {
+    returning {
+      user_id
+    }
+  }
+}
 
 # We need char count for certain puzzles
 query SolutionCharCount($puzzle_id: uuid!) {
@@ -19,7 +30,7 @@ query SolutionCharCount($puzzle_id: uuid!) {
 }
 
 # A user submits a form after completing a puzzle
-mutation UserSubmission($puzzle_id: uuid, $user_id: String, $form_data: jsonb) {
+mutation UserSubmission($puzzle_id: uuid, $user_id: uuid, $form_data: jsonb) {
   insert_submissions_one(
     object: { user_id: $user_id, puzzle_id: $puzzle_id, form_data: $form_data }
   ) {

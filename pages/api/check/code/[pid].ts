@@ -52,6 +52,11 @@ export default async function handler(
   // Pull payload off the token
   const payload = verified.payload as unknown as IkJwt;
 
+  // Throw a user update/create query out
+  await gql.UpsertUser({
+    userId: payload.sub,
+  });
+
   // Guessed correctly
   if (success_route) {
     // Add solved puzzle route to user's puzzles claims

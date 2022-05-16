@@ -15,8 +15,8 @@ export default async function handler(
 ) {
   if (req.method !== "POST") return res.status(405).end();
   // console.log(req);
-  console.log(req.body);
-  console.log(req.cookies);
+  // console.log(req.body);
+  // console.log(req.cookies);
 
   const token = req.cookies[IK_ID_COOKIE];
 

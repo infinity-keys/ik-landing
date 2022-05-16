@@ -6,6 +6,7 @@ import type {
 } from "@lib/types";
 import { gqlApiSdk } from "./server";
 
+// Client
 export const puzzlePost = async ({
   uri,
   code,
@@ -24,6 +25,19 @@ export const puzzlePost = async ({
   return res;
 };
 
+export const formSubmit = async ({ data }: { data: unknown }) => {
+  const res = await fetch("/api/submission", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  return res;
+};
+
+// Server only
 export const puzzleCount = async ({
   puzzleId,
 }: {
