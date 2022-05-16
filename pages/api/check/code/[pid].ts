@@ -1,15 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { SignJWT } from "jose";
+import { jwtVerify, SignJWT } from "jose";
 import { nanoid } from "nanoid";
+import { uniq } from "lodash";
 import {
-  IK_ACCESS_COOKIE,
   IK_CLAIMS_NAMESPACE,
+  IK_ID_COOKIE,
   JWT_SECRET_KEY,
 } from "@lib/constants";
 import { epochMinus30s } from "@lib/utils";
 import { gqlApiSdk } from "@lib/server";
-import { PuzzleApiResponse } from "@lib/types";
+import { IkJwt, PuzzleApiResponse } from "@lib/types";
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,8 +18,20 @@ export default async function handler(
 ) {
   if (req.method !== "POST") return res.status(405).end();
 
+  const token = req.cookies[IK_ID_COOKIE];
+  if (!token) return res.status(401).end();
+
+  // Validate token first
+  let verified = undefined;
+  try {
+    verified = await jwtVerify(token, new TextEncoder().encode(JWT_SECRET_KEY));
+  } catch (e) {
+    // Bad token
+    return res.status(401).end();
+  }
+
   const { pid } = req.query;
-  if (!pid) return res.status(400).end();
+  if (!pid || typeof pid === "object") return res.status(400).end();
 
   const { code } = req.body;
   if (!code) return res.status(400).end();
@@ -35,32 +48,40 @@ export default async function handler(
   const fail_route = fail?.fail_route;
   const success_route = success[0]?.success_route;
 
-  // Wrong guess
-  if (!success_route)
-    return res.status(200).json({ access: false, fail_route, success_route });
+  // Default returned results, defaults to access: false
+  const guessResults = {
+    access: false,
+    fail_route,
+    success_route,
+  };
 
-  if (!JWT_SECRET_KEY) {
-    throw new Error("Secret is not set, check env variables");
+  // Pull payload off the token
+  const payload = verified.payload as unknown as IkJwt;
+
+  // Guessed correctly
+  if (success_route) {
+    // Add solved puzzle route to user's puzzles claims
+    const { puzzles } = payload.claims[IK_CLAIMS_NAMESPACE];
+    payload.claims[IK_CLAIMS_NAMESPACE].puzzles = uniq([
+      ...puzzles,
+      success_route,
+    ]);
+
+    // Give access in response json
+    guessResults.access = true;
   }
 
-  // Correct code, generate token and send it back
-  const token = await new SignJWT({
-    claims: {
-      [IK_CLAIMS_NAMESPACE]: {
-        access: true,
-      },
-    },
-  })
+  const newToken = await new SignJWT(payload)
+    .setProtectedHeader({
+      alg: "HS256",
+    })
     .setProtectedHeader({ alg: "HS256" })
-    .setJti(nanoid()) // Use this for unique "session id" when submitting values
-    .setIssuedAt(epochMinus30s()) // Offset 30s because stupid clocks
+    .setJti(nanoid()) // New id for the JWT
+    .setIssuedAt(epochMinus30s()) // Effectively "refresh" JWT
     .sign(new TextEncoder().encode(JWT_SECRET_KEY));
 
   // Cookie for route access
-  res.setHeader(
-    "Set-Cookie",
-    `${IK_ACCESS_COOKIE}=${token}; HttpOnly; Path=${success_route};`
-  );
+  res.setHeader("Set-Cookie", `${IK_ID_COOKIE}=${newToken}; HttpOnly; Path=/;`);
 
-  return res.status(200).json({ access: true, fail_route, success_route });
+  return res.status(200).json(guessResults);
 }
