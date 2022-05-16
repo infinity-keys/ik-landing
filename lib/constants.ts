@@ -1,6 +1,5 @@
 // JWT stuff
 export const JWT_SECRET_KEY = process.env.INFINITY_KEYS_SECRET;
-export const IK_ACCESS_COOKIE = "ik-jwt";
 export const IK_ID_COOKIE = "ik-id";
 export const IK_CLAIMS_NAMESPACE = "https://infinitykeys.io";
 

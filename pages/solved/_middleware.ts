@@ -1,15 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify } from "jose";
-import {
-  JWT_SECRET_KEY,
-  IK_ACCESS_COOKIE,
-  IK_CLAIMS_NAMESPACE,
-} from "@lib/constants";
+import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 
 import { IkJwt } from "@lib/types";
+import { verifyToken } from "@lib/jwt";
 
 export async function middleware(req: NextRequest, res: NextResponse) {
-  const token = req.cookies[IK_ACCESS_COOKIE];
+  const token = req.cookies[IK_ID_COOKIE];
+  const path = req.page.name;
 
   if (!token) {
     return new Response("Code access required", {
@@ -17,15 +14,18 @@ export async function middleware(req: NextRequest, res: NextResponse) {
     });
   }
 
+  if (!(typeof path === "string")) {
+    return new Response("Path invalid", {
+      status: 404,
+    });
+  }
+
   try {
-    const verified = await jwtVerify(
-      token,
-      new TextEncoder().encode(JWT_SECRET_KEY)
-    );
+    const verified = await verifyToken(token);
 
     const payload = verified.payload as unknown as IkJwt;
 
-    if (payload?.claims?.[IK_CLAIMS_NAMESPACE].access) {
+    if (payload?.claims?.[IK_CLAIMS_NAMESPACE].puzzles.includes(path)) {
       return NextResponse.next();
     }
   } catch (e) {
@@ -33,4 +33,8 @@ export async function middleware(req: NextRequest, res: NextResponse) {
       status: 401,
     });
   }
+
+  return new Response("Code access required", {
+    status: 401,
+  });
 }
