@@ -29,11 +29,12 @@ const apiClaims: HasuraClaims = {
 };
 
 // API/backend tokens
-let apiToken: SignJWT | undefined = undefined;
+let apiToken: Promise<string> | undefined = undefined;
 // Use this same token for all API requests during this session
-export const makeApiToken = () =>
-  apiToken ??
-  new SignJWT({
+export const makeApiToken = () => {
+  if (apiToken) return apiToken;
+
+  apiToken = new SignJWT({
     ...apiClaims,
   })
     .setExpirationTime("1H")
@@ -41,6 +42,9 @@ export const makeApiToken = () =>
     .setJti(nanoid())
     .setIssuedAt(epochMinus30s()) // Offset 30s because stuipd clocks
     .sign(new TextEncoder().encode(JWT_SECRET_KEY));
+
+  return apiToken;
+};
 
 /**
  * Create a token for a user
