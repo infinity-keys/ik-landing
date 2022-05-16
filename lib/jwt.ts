@@ -1,7 +1,6 @@
 import { jwtVerify, SignJWT } from "jose";
 import { nanoid } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
-import { memoize } from "lodash";
 
 import { JWT_SECRET_KEY } from "@lib/constants";
 import { epochMinus30s } from "./utils";
@@ -30,7 +29,10 @@ const apiClaims: HasuraClaims = {
 };
 
 // API/backend tokens
-export const makeApiToken = memoize(() =>
+let apiToken: SignJWT | undefined = undefined;
+// Use this same token for all API requests during this session
+export const makeApiToken = () =>
+  apiToken ??
   new SignJWT({
     ...apiClaims,
   })
@@ -38,8 +40,8 @@ export const makeApiToken = memoize(() =>
     .setProtectedHeader({ alg: "HS256" })
     .setJti(nanoid())
     .setIssuedAt(epochMinus30s()) // Offset 30s because stuipd clocks
-    .sign(new TextEncoder().encode(JWT_SECRET_KEY))
-);
+    .sign(new TextEncoder().encode(JWT_SECRET_KEY));
+
 /**
  * Create a token for a user
  */
