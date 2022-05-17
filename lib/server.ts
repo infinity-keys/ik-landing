@@ -11,7 +11,10 @@ import { makeApiToken } from "@lib/jwt";
 // Only use for API/backend NOT clientside
 
 // GQL sdk for nextjs serverless/"backend" use
+let sdk: ReturnType<typeof getSdk> | undefined = undefined;
 export const gqlApiSdk = async () => {
+  if (sdk) return sdk;
+
   const token = await makeApiToken();
 
   const client = new GraphQLClient(process.env.GRAPHQL_ENDPOINT || "", {
@@ -19,5 +22,7 @@ export const gqlApiSdk = async () => {
       Authorization: `Bearer ${token}`,
     },
   });
-  return getSdk(client);
+  sdk = getSdk(client);
+
+  return sdk;
 };

@@ -28,6 +28,12 @@ query SolutionCharCount($puzzle_id: uuid!) {
     solution_char_count
   }
 }
+query SolutionCharCountByPath($path: String!) {
+  solution: puzzles(where: { landing_route: { _eq: $path } }) {
+    solution_char_count
+    puzzle_id
+  }
+}
 
 # A user submits a form after completing a puzzle
 mutation UserSubmission($puzzle_id: uuid, $user_id: uuid, $form_data: jsonb) {
@@ -50,5 +56,11 @@ query UserPuzzlesInSubmitted($puzzleId: uuid, $puzzleRoutes: [String!]) {
     }
   ) {
     success_route
+  }
+}
+
+query AllLandingRoutes {
+  puzzles {
+    landing_route
   }
 }

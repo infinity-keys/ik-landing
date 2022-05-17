@@ -53,3 +53,31 @@ export const puzzleCount = async ({
     count,
   };
 };
+
+export const puzzleCountByRoute = async (
+  path: string
+): Promise<PuzzlePageProps> => {
+  const gql = await gqlApiSdk();
+  const { solution } = await gql.SolutionCharCountByPath({ path });
+  if (!solution) throw new Error("No solution for that path");
+
+  const [{ solution_char_count, puzzle_id: puzzleId }] = solution;
+  const count = solution_char_count || 0;
+  return {
+    count,
+    puzzleId,
+  };
+};
+
+export const allLandingRoutes = async (): Promise<string[]> => {
+  const gql = await gqlApiSdk();
+  const { puzzles } = await gql.AllLandingRoutes();
+
+  if (!puzzles) throw new Error("No puzzles");
+
+  function isLanding(p: typeof puzzles[0]): p is { landing_route: string } {
+    return !!p.landing_route;
+  }
+
+  return puzzles.filter(isLanding).map((p) => p.landing_route);
+};
