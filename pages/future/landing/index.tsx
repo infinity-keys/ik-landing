@@ -160,6 +160,14 @@ const Landing: NextPage<PageProps> = ({ count }) => {
         {/* Top puzzle */}
         <div className="slice--top w-full h-screen min-h-[54rem] flex items-center radial-bg relative z-0">
           <div className="container px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <Image src="/logo.svg" width={150} height={94} alt="IK logo" />
+            </div>
+            <p className="mt-6 text-base text-center text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+              This is an Infinity Keys hunt. You find the clues you and enter
+              the key. Hunt for clues anywhere, like embedded in this page (find
+              the underlined letters!)
+            </p>
             <Puzzle count={count} puzzleUri="landing" />
           </div>
           <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40"></div>
@@ -174,23 +182,18 @@ const Landing: NextPage<PageProps> = ({ count }) => {
               <div className="">
                 <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
                   <div className="lg:py-24">
-                    <div className="text-center">
-                      <Image
-                        src="/logo.svg"
-                        width={150}
-                        height={94}
-                        alt="IK logo"
-                      />
-                    </div>
-
                     <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-center text-white sm:mt-5 sm:text-6xl lg:mt-20 xl:text-6xl">
-                      <span className="block">There&apos;s treasure</span>
-                      <span className="block text-turquoise">everywhere.</span>
+                      <span className="block">What is</span>
+                      <span className="block text-turquoise">
+                        Infinity Keys?
+                      </span>
                     </h1>
                     <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                      Anim aute id magna aliqua ad ad non deserunt sunt. Qui
-                      irure qui Lorem cupidatat commodo. Elit sunt amet fugiat
-                      veniam occaecat.
+                      Infinity Keys is a puzzle game that takes players on hunts
+                      through our digital world. Players find clues, decipher
+                      keys, and claim treasure. It’s also a platform where
+                      anyone can build their own hunts, keys, and treasure to
+                      create engaging experiences for others.
                     </p>
                     <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Find out how it works below.
