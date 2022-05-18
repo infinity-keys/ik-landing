@@ -2,13 +2,14 @@ import { useState, ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
+import clsx from "clsx";
 
 import MaterialIcon from "@components/svg/material-lock-svg";
 
-import { PuzzleApis } from "@lib/types";
 import { puzzlePost } from "@lib/fetchers";
-import clsx from "clsx";
+import { routeFailUrl, routeSuccessUrl } from "@lib/utils";
 
+import { PuzzleApis } from "@lib/types";
 interface PuzzleProps {
   count: number;
   puzzleUri: PuzzleApis;
@@ -44,7 +45,8 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
     !success_route && setIsLoading(false);
     !success_route && setIsWrongGuess(true);
     // debugger;
-    router.push(success_route || fail_route);
+    // If either success or fail exist, turn them into proper paths
+    router.push((success_route && routeSuccessUrl(success_route)) || (fail_route && routeFailUrl(fail_route)));
   };
 
   return (

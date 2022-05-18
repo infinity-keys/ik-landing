@@ -3,6 +3,7 @@ import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 
 import { IkJwt } from "@lib/types";
 import { verifyToken } from "@lib/jwt";
+import { routeSuccessUrl } from "@lib/utils";
 
 export async function middleware(req: NextRequest, res: NextResponse) {
   const token = req.cookies[IK_ID_COOKIE];
@@ -25,7 +26,13 @@ export async function middleware(req: NextRequest, res: NextResponse) {
 
     const payload = verified.payload as unknown as IkJwt;
 
-    if (payload?.claims?.[IK_CLAIMS_NAMESPACE].puzzles.includes(path)) {
+    // Claims puzzles are just slugs like "dev", need to make them solved paths
+    //  like: /solved/dev before comparing to path
+    if (
+      payload?.claims?.[IK_CLAIMS_NAMESPACE].puzzles
+        .map((p) => routeSuccessUrl(p))
+        .includes(path)
+    ) {
       return NextResponse.next();
     }
   } catch (e) {

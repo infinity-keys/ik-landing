@@ -6,13 +6,10 @@ import Image from "next/image";
 import Wrapper from "@components/wrapper";
 import NavAvalanche from "@components/nav-avalanche";
 import Puzzle from "@components/puzzle";
-import { allLandingRoutes, puzzleInfoByRoute } from "@lib/fetchers";
 
 const DevPuzzle = dynamic(() => import('@components/puzzles/dev'));
 
 import { PuzzlePageProps } from "@lib/types";
-import { PUZZLE_LANDING_BASE } from "@lib/constants";
-import { routeLandingUrl } from "@lib/utils";
 import { gqlApiSdk } from "@lib/server";
 
 interface PuzzleParams {
