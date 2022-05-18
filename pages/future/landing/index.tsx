@@ -106,7 +106,7 @@ const Landing: NextPage<PageProps> = ({ count }) => {
 
       <div className="scanlines">
         {/* Nav */}
-        <header className="w-full fixed z-50">
+        <header className="w-full fixed z-50 bg-blue">
           <nav className="container px-4 sm:px-6 lg:px-8" aria-label="Top">
             <div className="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
               {/* left */}
