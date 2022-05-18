@@ -137,9 +137,9 @@ const Landing: NextPage<PageProps> = ({ count }) => {
               <div className="ml-10 space-x-4">
                 <a
                   href="#"
-                  className="inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-turquoise hover:bg-indigo-50"
+                  className="inline-block bg-blue py-2 px-4 border border-transparent rounded-md text-base font-medium text-white hover:bg-indigo-50"
                 >
-                  Sign up
+                  Play
                 </a>
               </div>
             </div>
