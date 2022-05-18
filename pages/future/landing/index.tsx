@@ -13,10 +13,10 @@ import Puzzle from "@components/puzzle";
 import type { NextPage } from "next";
 
 const navigation = [
-  { name: "Puzzle", href: "#" },
-  { name: "About", href: "#" },
-  { name: "Quests", href: "#" },
+  { name: "Home", href: "#" },
+  { name: "Hunts", href: "#" },
   { name: "Contact", href: "#" },
+  { name: "Docs", href: "#" },
 ];
 
 const navigationFooter = {
