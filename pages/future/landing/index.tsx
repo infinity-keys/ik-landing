@@ -291,33 +291,18 @@ const Landing: NextPage<PageProps> = ({ count }) => {
           <div className="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24 relative">
             <div className="px-4 max-w-xl mx-auto sm:px-6 lg:py-32 lg:max-w-none lg:mx-0 lg:px-0 lg:col-start-2">
               <div>
-                <div>
-                  <span className="h-12 w-12 rounded-md flex items-center justify-center bg-blue">
-                    <SparklesIcon
-                      className="h-6 w-6 text-white"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </div>
                 <div className="mt-6">
                   <h2 className="text-3xl font-extrabold tracking-tight">
-                    Second, do the stuff that is the stuff
+                    Build an Infinity Keys Hunt for your Project
                   </h2>
                   <p className="mt-4 text-lg text-gray-100">
-                    Semper curabitur ullamcorper posuere nunc sed. Ornare
-                    iaculis bibendum malesuada faucibus lacinia porttitor.
-                    Pulvinar laoreet sagittis viverra duis. In venenatis sem
-                    arcu pretium pharetra at. Lectus viverra dui tellus ornare
-                    pharetra.
+                    Infinity Keys is a platform to build puzzles, hunts, and
+                    treasure. If you’d like to use these tools to increase
+                    engagement with your community, users, players, or fans,
+                    please reach out. We are currently selecting projects to
+                    work with on initial partner hunts, so please reach out for
+                    business inquiries.
                   </p>
-                  <div className="mt-6">
-                    <a
-                      href="#"
-                      className="inline-flex px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
-                    >
-                      Get started
-                    </a>
-                  </div>
                 </div>
               </div>
             </div>
@@ -341,13 +326,11 @@ const Landing: NextPage<PageProps> = ({ count }) => {
                     </div> */}
 
                     <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-center text-white sm:mt-5 sm:text-6xl lg:mt-20 xl:text-6xl">
-                      <span className="block"> CONTACT GOES HERE TBD</span>
+                      <span className="block"> Contact</span>
                       {/* <span className="block text-turquoise">everywhere.</span> */}
                     </h1>
                     <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                      Anim aute id magna aliqua ad ad non deserunt sunt. Qui
-                      irure qui Lorem cupidatat commodo. Elit sunt amet fugiat
-                      veniam occaecat.
+                      Sign up for email notifications here
                     </p>
 
                     <div className="mt-10 sm:mt-12 flex justify-center">
@@ -372,18 +355,10 @@ const Landing: NextPage<PageProps> = ({ count }) => {
                               type="submit"
                               className="block w-full py-3 px-4 rounded-md shadow bg-indigo-500 text-white font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
                             >
-                              Start free trial
+                              Submit
                             </button>
                           </div>
                         </div>
-                        <p className="mt-3 text-sm text-gray-300 sm:mt-4">
-                          Start your free 14-day trial, no credit card
-                          necessary. By providing your email, you agree to our{" "}
-                          <a href="#" className="font-medium text-white">
-                            terms of service
-                          </a>
-                          .
-                        </p>
                       </form>
                     </div>
                   </div>
