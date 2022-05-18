@@ -266,33 +266,15 @@ const Landing: NextPage<PageProps> = ({ count }) => {
           <div className="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24 relative">
             <div className="px-4 max-w-xl mx-auto sm:px-6 lg:py-16 lg:max-w-none lg:mx-0 lg:px-0">
               <div>
-                <div>
-                  <span className="h-12 w-12 rounded-md flex items-center justify-center bg-blue">
-                    <InboxIcon
-                      className="h-6 w-6 text-white"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </div>
                 <div className="mt-6">
                   <h2 className="text-3xl font-extrabold tracking-tight">
-                    First, sign up to do the thing
+                    IK Treasure Hunts
                   </h2>
                   <p className="mt-4 text-lg text-gray-100">
-                    Semper curabitur ullamcorper posuere nunc sed. Ornare
-                    iaculis bibendum malesuada faucibus lacinia porttitor.
-                    Pulvinar laoreet sagittis viverra duis. In venenatis sem
-                    arcu pretium pharetra at. Lectus viverra dui tellus ornare
-                    pharetra.
+                    1. Find clues across the web. 2. Decipher clues. 3. Enter
+                    keys on the Infinity Keys App. 4. Claim digital treasure. 5.
+                    Build your own.
                   </p>
-                  <div className="mt-6">
-                    <a
-                      href="#"
-                      className="inline-flex px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
-                    >
-                      Get started
-                    </a>
-                  </div>
                 </div>
               </div>
             </div>
