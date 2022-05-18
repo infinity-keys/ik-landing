@@ -10,28 +10,14 @@ query Guess($puzzle_id: uuid!, $solution: String!) {
     success_route
   }
 }
-# Create/update user
-mutation UpsertUser($userId: uuid) {
-  insert_users(
-    objects: { user_id: $userId }
-    on_conflict: { constraint: users_pkey, update_columns: [] }
-  ) {
-    returning {
-      user_id
-    }
-  }
-}
 
-# We need char count for certain puzzles
-query SolutionCharCount($puzzle_id: uuid!) {
-  solution: puzzles_by_pk(puzzle_id: $puzzle_id) {
-    solution_char_count
-  }
-}
-query SolutionCharCountByPath($path: String!) {
-  solution: puzzles(where: { landing_route: { _eq: $path } }) {
+# Information needed for a puzzle to render
+query PuzzleInfo($landing: String!) {
+  puzzles(where: { landing_route: { _eq: $landing } }) {
+    simple_name
     solution_char_count
     puzzle_id
+    input_type
   }
 }
 
@@ -59,8 +45,21 @@ query UserPuzzlesInSubmitted($puzzleId: uuid, $puzzleRoutes: [String!]) {
   }
 }
 
+# Used to prebuild all puzzle routes
 query AllLandingRoutes {
   puzzles {
     landing_route
+  }
+}
+
+# Create/update user
+mutation UpsertUser($userId: uuid) {
+  insert_users(
+    objects: { user_id: $userId }
+    on_conflict: { constraint: users_pkey, update_columns: [] }
+  ) {
+    returning {
+      user_id
+    }
   }
 }

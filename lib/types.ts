@@ -9,8 +9,10 @@ export type PuzzleApiResponse = {
 };
 
 export interface PuzzlePageProps {
+  name: string;
   count: number;
   puzzleId: string;
+  input_type: string;
 }
 
 export interface IkJwt extends JWTPayload {

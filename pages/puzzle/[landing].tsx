@@ -6,11 +6,14 @@ import Image from "next/image";
 import Wrapper from "@components/wrapper";
 import NavAvalanche from "@components/nav-avalanche";
 import Puzzle from "@components/puzzle";
-import { allLandingRoutes, puzzleCount, puzzleCountByRoute } from "@lib/fetchers";
+import { allLandingRoutes, puzzleInfoByRoute } from "@lib/fetchers";
 
 const DevPuzzle = dynamic(() => import('@components/puzzles/dev'));
 
 import { PuzzlePageProps } from "@lib/types";
+import { PUZZLE_LANDING_BASE } from "@lib/constants";
+import { routeLandingUrl } from "@lib/utils";
+import { gqlApiSdk } from "@lib/server";
 
 interface PuzzleParams {
   params: {
@@ -18,7 +21,7 @@ interface PuzzleParams {
   }
 }
 
-const Dev: NextPage<PuzzlePageProps> = ({ count, puzzleId }) => {
+const Dev: NextPage<PuzzlePageProps> = ({ name, count, puzzleId, input_type }) => {
   return (
     <Wrapper>
       <div className="ik-page scanlines">
@@ -36,7 +39,14 @@ const Dev: NextPage<PuzzlePageProps> = ({ count, puzzleId }) => {
             />
             <DevPuzzle val={puzzleId} />
             <p className="py-16 text-center text-lg text-gray-100">Dev only</p>
-            <Puzzle count={count} puzzleUri={puzzleId} />
+
+            {name === 'landing' && <p className="py-16 text-center text-lg text-gray-100">
+              Infinity Keys is a treasure hunt platform. <br />
+              Find the clues, submit the passcode, unlock the treasure. <br />
+              Play the game and join our early community.
+            </p>}
+
+            <Puzzle count={count} puzzleUri={puzzleId} boxes={input_type === 'boxes'} />
           </main>
 
           <footer className="ik-front-bottom w-full">
@@ -51,18 +61,34 @@ const Dev: NextPage<PuzzlePageProps> = ({ count, puzzleId }) => {
 export default Dev;
 
 export async function getStaticProps({ params: { landing } }: PuzzleParams): Promise<{ props: PuzzlePageProps }> {
-  const route = `/puzzle/${landing}`;
-  const props = await puzzleCountByRoute(route);
+  const gql = await gqlApiSdk();
+
+  const { puzzles } = await gql.PuzzleInfo({ landing });
+  const [{ simple_name, solution_char_count, puzzle_id, input_type }] = puzzles;
 
   return {
-    props,
+    props: {
+      name: simple_name,
+      count: solution_char_count || 0,
+      puzzleId: puzzle_id,
+      input_type: input_type || "boxes",
+    },
   };
 }
 
 export async function getStaticPaths() {
-  const routes = await allLandingRoutes()
+  const gql = await gqlApiSdk();
+  const { puzzles } = await gql.AllLandingRoutes();
+
+  // https://nextjs.org/docs/api-reference/data-fetching/get-static-paths
+  const paths = puzzles.map(p => ({
+    params: {
+      landing: p.landing_route
+    }
+  }))
+
   return {
-    paths: routes,
+    paths,
     fallback: false,
   }
 }
