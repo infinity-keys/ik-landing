@@ -1,17 +1,14 @@
 import { NextApiResponse } from "next";
-import type {
-  PuzzleApiResponse,
-  PuzzleApis,
-  PuzzlePageProps,
-} from "@lib/types";
+import type { PuzzleApiResponse } from "@lib/types";
 import { gqlApiSdk } from "./server";
+import { routeLandingUrl } from "./utils";
 
 // Client
 export const puzzlePost = async ({
   uri,
   code,
 }: {
-  uri: PuzzleApis;
+  uri: string;
   code: string;
 }) => {
   const res = await fetch(`/api/check/code/${uri}`, {
@@ -35,21 +32,4 @@ export const formSubmit = async ({ data }: { data: unknown }) => {
   });
 
   return res;
-};
-
-// Server only
-export const puzzleCount = async ({
-  puzzleId,
-}: {
-  puzzleId: string;
-}): Promise<PuzzlePageProps> => {
-  const gql = await gqlApiSdk();
-  const { solution } = await gql.SolutionCharCount({
-    puzzle_id: puzzleId,
-  });
-  const count = solution?.solution_char_count || 0;
-  return {
-    puzzleId,
-    count,
-  };
 };
