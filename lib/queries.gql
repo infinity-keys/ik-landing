@@ -6,13 +6,12 @@ query Guess($puzzle_id: uuid!, $solution: String!) {
   success: puzzles(
     where: { puzzle_id: { _eq: $puzzle_id }, solution: { _ilike: $solution } }
   ) {
-    # success_puzzle
     success_route
   }
 }
 
 # Information needed for a puzzle to render
-query PuzzleInfo($landing: String!) {
+query PuzzleInfoByLanding($landing: String!) {
   puzzles(where: { landing_route: { _eq: $landing } }) {
     simple_name
     solution_char_count
@@ -20,15 +19,22 @@ query PuzzleInfo($landing: String!) {
     input_type
   }
 }
-
-# A user submits a form after completing a puzzle
-mutation UserSubmission($puzzle_id: uuid, $user_id: uuid, $form_data: jsonb) {
-  insert_submissions_one(
-    object: { user_id: $user_id, puzzle_id: $puzzle_id, form_data: $form_data }
-  ) {
-    user_id
+query PuzzleInfoBySuccess($success: String!) {
+  puzzles(where: { success_route: { _eq: $success } }) {
+    simple_name
     puzzle_id
-    # form_data
+  }
+}
+
+# Used to prebuild all puzzle routes
+query AllLandingRoutes {
+  puzzles {
+    landing_route
+  }
+}
+query AllSuccessRoutes {
+  puzzles {
+    success_route
   }
 }
 
@@ -44,11 +50,14 @@ query UserPuzzlesInSubmitted($puzzleId: uuid, $puzzleRoutes: [String!]) {
     success_route
   }
 }
-
-# Used to prebuild all puzzle routes
-query AllLandingRoutes {
-  puzzles {
-    landing_route
+# A user submits a form after completing a puzzle
+mutation UserSubmission($puzzle_id: uuid, $user_id: uuid, $form_data: jsonb) {
+  insert_submissions_one(
+    object: { user_id: $user_id, puzzle_id: $puzzle_id, form_data: $form_data }
+  ) {
+    user_id
+    puzzle_id
+    form_data
   }
 }
 

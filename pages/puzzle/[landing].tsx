@@ -60,7 +60,7 @@ export default Dev;
 export async function getStaticProps({ params: { landing } }: PuzzleParams): Promise<{ props: PuzzlePageProps }> {
   const gql = await gqlApiSdk();
 
-  const { puzzles } = await gql.PuzzleInfo({ landing });
+  const { puzzles } = await gql.PuzzleInfoByLanding({ landing });
   const [{ simple_name, solution_char_count, puzzle_id, input_type }] = puzzles;
 
   return {
