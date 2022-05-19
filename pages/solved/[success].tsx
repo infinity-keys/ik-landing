@@ -7,6 +7,7 @@ import Head from "next/head";
 import { gqlApiSdk } from "@lib/server";
 import Wrapper from "@components/wrapper";
 
+const LandingForm = dynamic(() => import('@components/forms/landing'));
 const DevForm = dynamic(() => import('@components/forms/dev'));
 const AvalancheForm = dynamic(() => import('@components/forms/avalanche'));
 
@@ -19,7 +20,7 @@ const Dev: NextPage<SuccessForms> = ({ puzzleId, name }) => {
   return (
     <Wrapper>
       <Head>
-        <title>Dev</title>
+        <title>Congrats</title>
       </Head>
 
       <div className="ik-page radial-bg scanlines">
@@ -29,6 +30,7 @@ const Dev: NextPage<SuccessForms> = ({ puzzleId, name }) => {
           </header>
 
           <main className="flex flex-col items-center justify-center w-full flex-1 z-10 ">
+            {name === 'landing' && <LandingForm puzzleId={puzzleId} />}
             {name === 'dev' && <DevForm puzzleId={puzzleId} />}
             {name === 'avalanche' && <AvalancheForm puzzleId={puzzleId} />}
           </main>
