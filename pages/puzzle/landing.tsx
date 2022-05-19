@@ -30,6 +30,7 @@ const Home: NextPage<PuzzlePageProps> = ({ count, puzzleId }) => {
               Find the clues, submit the passcode, unlock the treasure. <br />
               Play the game and join our early community.
             </p>
+
             <Puzzle count={count} puzzleUri={puzzleId} />
           </main>
 
