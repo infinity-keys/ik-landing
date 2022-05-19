@@ -9,8 +9,11 @@ import {
 
 import Wrapper from "@components/wrapper";
 import Puzzle from "@components/puzzle";
+import Discord from "@components/svg/discord-svg";
 
 import type { NextPage } from "next";
+import Twitter from "@components/svg/twitter-svg";
+import TwitterIcon from "@components/svg/twitter-icon-svg";
 
 const navigation = [
   { name: "Home", href: "#" },
@@ -133,6 +136,8 @@ const Landing: NextPage<PageProps> = ({ count }) => {
                   </a>
                 ))}
               </div>
+              <TwitterIcon />
+              <Discord />
               {/* right */}
               <div className="ml-10 space-x-4">
                 <a
