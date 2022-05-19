@@ -63,7 +63,7 @@ export default async function handler(
     const { puzzles } = payload.claims[IK_CLAIMS_NAMESPACE];
     payload.claims[IK_CLAIMS_NAMESPACE].puzzles = uniq([
       ...puzzles,
-      success_route,
+      `/solved/${success_route}`,
     ]);
 
     // Give access in response json

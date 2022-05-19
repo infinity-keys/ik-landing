@@ -44,7 +44,7 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
     !success_route && setIsLoading(false);
     !success_route && setIsWrongGuess(true);
     // debugger;
-    router.push(success_route || fail_route);
+    router.push((success_route && `/solved/${success_route}`) || (fail_route && `/solved/${fail_route}`));
   };
 
   return (
