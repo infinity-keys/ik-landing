@@ -9,10 +9,9 @@ import MaterialIcon from "@components/svg/material-lock-svg";
 import { puzzlePost } from "@lib/fetchers";
 import { routeFailUrl, routeSuccessUrl } from "@lib/utils";
 
-import { PuzzleApis } from "@lib/types";
 interface PuzzleProps {
   count: number;
-  puzzleUri: PuzzleApis;
+  puzzleUri: string;
   boxes?: boolean;
 }
 
@@ -52,7 +51,7 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
   return (
     <>
       {isLoading && (
-        <div className="loader mx-auto w-8 h-8">
+        <div className="loader mx-auto w-8 h-8 mt-10">
           <div className="ball-clip-rotate-multiple">
             <div></div>
             <div></div>

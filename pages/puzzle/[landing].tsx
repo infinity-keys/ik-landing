@@ -7,12 +7,15 @@ import Wrapper from "@components/wrapper";
 import NavAvalanche from "@components/nav-avalanche";
 import Puzzle from "@components/puzzle";
 
-const DevPuzzle = dynamic(() => import('@components/puzzles/dev'));
-
-import { PuzzlePageProps } from "@lib/types";
 import { gqlApiSdk } from "@lib/server";
 
-interface PuzzleParams {
+export interface PuzzlePageProps {
+  name: string;
+  count: number;
+  puzzleId: string;
+  input_type: string;
+}
+interface PuzzlePageParams {
   params: {
     landing: string;
   }
@@ -28,14 +31,15 @@ const Dev: NextPage<PuzzlePageProps> = ({ name, count, puzzleId, input_type }) =
           </Head>
 
           <main className="text-center pt-5">
-            <Image
-              src="/logo.svg"
-              alt="Infinity Keys logo"
-              width={100}
-              height={62.72}
-            />
-            <DevPuzzle val={puzzleId} />
-            <p className="py-16 text-center text-lg text-gray-100">Dev only</p>
+            {name !== 'instagram' &&
+              <Image
+                src="/logo.svg"
+                alt="Infinity Keys logo"
+                width={100}
+                height={62.72}
+              />
+
+            }
 
             {name === 'landing' && <p className="py-16 text-center text-lg text-gray-100">
               Infinity Keys is a treasure hunt platform. <br />
@@ -57,7 +61,7 @@ const Dev: NextPage<PuzzlePageProps> = ({ name, count, puzzleId, input_type }) =
 
 export default Dev;
 
-export async function getStaticProps({ params: { landing } }: PuzzleParams): Promise<{ props: PuzzlePageProps }> {
+export async function getStaticProps({ params: { landing } }: PuzzlePageParams): Promise<{ props: PuzzlePageProps }> {
   const gql = await gqlApiSdk();
 
   const { puzzles } = await gql.PuzzleInfoByLanding({ landing });

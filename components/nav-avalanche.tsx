@@ -8,7 +8,7 @@ type Props = {
 };
 
 const NavAvalanche = ({ showAvalanche = true }: Props) => (
-  <div className="nav-avalanche py-28">
+  <div className="nav-avalanche pt-28">
     <div className="flex justify-center">
       <div className="flex justify-center px-9 w-96">
         <div className="w-20">
