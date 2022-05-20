@@ -391,15 +391,10 @@ const Landing: NextPage<PageProps> = ({ count }) => {
             </div>
           </div>
         </div>
-        <div className="flex items-center">
-          <TwitterIcon />
-          <Discord />
-        </div>
-
         {/* Footer */}
         <footer className="">
           <div className="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8 bg-blue">
-            <nav
+            {/* <nav
               className="-mx-5 -my-2 flex flex-wrap justify-center"
               aria-label="Footer"
             >
@@ -425,7 +420,64 @@ const Landing: NextPage<PageProps> = ({ count }) => {
                   <item.icon className="h-6 w-6" aria-hidden="true" />
                 </a>
               ))}
-            </div>
+            </div> */}
+            <nav className="container px-4 sm:px-6 lg:px-8" aria-label="Top">
+              <div className="w-full py-6 flex items-center justify-evenly border-b border-indigo-500 lg:border-none">
+                {/* left */}
+                <div className="flex items-center">
+                  <a href="#">
+                    <span className="sr-only">Infinity Keys</span>
+                    <Image
+                      src="/logo.svg"
+                      width={80}
+                      height={50}
+                      alt="IK logo"
+                    />
+                    {/* <img
+                  className="h-10 w-auto"
+                  src="https://tailwindui.com/img/logos/workflow-mark.svg?color=white"
+                  alt=""
+                /> */}
+                  </a>
+                </div>
+                {/* center */}
+                <div className="hidden space-x-8 lg:block">
+                  {navigation.map((link) => (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      className="text-base font-medium hover:text-indigo-50"
+                    >
+                      {link.name}
+                    </a>
+                  ))}
+                </div>
+                <div className="flex items-center space-x-6">
+                  <TwitterIcon />
+                  <Discord />
+                </div>
+                {/* right */}
+                <div className="ml-10 space-x-4">
+                  <a
+                    href="#"
+                    className="inline-block bg-blue py-2 px-4 border border-transparent rounded-md text-base font-medium text-white hover:bg-indigo-50"
+                  >
+                    Play
+                  </a>
+                </div>
+              </div>
+              <div className="py-4 flex flex-wrap justify-center space-x-6 lg:hidden">
+                {navigation.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className="text-base font-medium text-white hover:text-indigo-50"
+                  >
+                    {link.name}
+                  </a>
+                ))}
+              </div>
+            </nav>
             <p className="mt-8 text-center text-base text-gray-500">
               &copy; 2022 Infinity Keys. All rights reserved.
             </p>
