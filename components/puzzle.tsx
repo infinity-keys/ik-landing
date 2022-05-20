@@ -2,16 +2,16 @@ import { useState, ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
+import clsx from "clsx";
 
 import MaterialIcon from "@components/svg/material-lock-svg";
 
-import { PuzzleApis } from "@lib/types";
 import { puzzlePost } from "@lib/fetchers";
-import clsx from "clsx";
+import { routeFailUrl, routeSuccessUrl } from "@lib/utils";
 
 interface PuzzleProps {
   count: number;
-  puzzleUri: PuzzleApis;
+  puzzleUri: string;
   boxes?: boolean;
 }
 
@@ -44,13 +44,14 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
     !success_route && setIsLoading(false);
     !success_route && setIsWrongGuess(true);
     // debugger;
-    router.push(success_route || fail_route);
+    // If either success or fail exist, turn them into proper paths
+    router.push((success_route && routeSuccessUrl(success_route)) || (fail_route && routeFailUrl(fail_route)));
   };
 
   return (
     <>
       {isLoading && (
-        <div className="loader mx-auto w-8 h-8">
+        <div className="loader mx-auto w-8 h-8 mt-10">
           <div className="ball-clip-rotate-multiple">
             <div></div>
             <div></div>
