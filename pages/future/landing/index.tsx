@@ -14,6 +14,7 @@ import Discord from "@components/svg/discord-svg";
 import type { NextPage } from "next";
 import Twitter from "@components/svg/twitter-svg";
 import TwitterIcon from "@components/svg/twitter-icon-svg";
+import MaterialLock from "@components/svg/material-lock-svg";
 
 const navigation = [
   { name: "Home", href: "#" },
@@ -291,12 +292,15 @@ const Landing: NextPage<PageProps> = ({ count }) => {
         </div>
 
         <div className="relative pt-32 pb-32">
-          <Image
+          {/* <Image
             src="/rainbow.jpeg"
             layout="fill"
             objectFit="cover"
             alt="Blue geoddesic background"
-          />
+          /> */}
+          <div className="flex self-start space-x-6">
+            <MaterialLock />
+          </div>
           <div className="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24 relative">
             <div className="px-4 max-w-xl mx-auto sm:px-6 lg:py-32 lg:max-w-none lg:mx-0 lg:px-0 lg:col-start-2">
               <div>
@@ -339,7 +343,8 @@ const Landing: NextPage<PageProps> = ({ count }) => {
                       {/* <span className="block text-turquoise">everywhere.</span> */}
                     </h1>
                     <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                      Sign up for email notifications here
+                      If you are a brand interested in integrating an Infinity
+                      Keys puzzle please contact us here
                     </p>
 
                     <div className="mt-10 sm:mt-12 flex justify-center">
