@@ -111,7 +111,7 @@ const Landing: NextPage<PageProps> = ({ count }) => {
         {/* Nav */}
         <header className="w-full fixed z-50 bg-blue">
           <nav className="container px-4 sm:px-6 lg:px-8" aria-label="Top">
-            <div className="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
+            <div className="w-full py-6 flex items-center justify-evenly border-b border-indigo-500 lg:border-none">
               {/* left */}
               <div className="flex items-center">
                 <a href="#">
@@ -136,8 +136,11 @@ const Landing: NextPage<PageProps> = ({ count }) => {
                   </a>
                 ))}
               </div>
-              <TwitterIcon />
-              <Discord />
+              <div className="flex items-center space-x-6">
+                <TwitterIcon />
+                <Discord />
+              </div>
+
               {/* right */}
               <div className="ml-10 space-x-4">
                 <a
@@ -381,6 +384,10 @@ const Landing: NextPage<PageProps> = ({ count }) => {
               </div>
             </div>
           </div>
+        </div>
+        <div className="flex items-center">
+          <TwitterIcon />
+          <Discord />
         </div>
 
         {/* Footer */}
