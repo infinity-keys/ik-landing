@@ -15,6 +15,7 @@ import type { NextPage } from "next";
 import Twitter from "@components/svg/twitter-svg";
 import TwitterIcon from "@components/svg/twitter-icon-svg";
 import MaterialLock from "@components/svg/material-lock-svg";
+import { gqlApiSdk } from "@lib/server";
 
 const navigation = [
   { name: "Home", href: "#" },
@@ -99,9 +100,10 @@ const navigationFooter = {
 
 interface PageProps {
   count: number;
+  name: string;
 }
 
-const Landing: NextPage<PageProps> = ({ count }) => {
+const Landing: NextPage<PageProps> = ({ count, name }) => {
   return (
     <Wrapper>
       <Head>
@@ -183,7 +185,7 @@ const Landing: NextPage<PageProps> = ({ count }) => {
               <p>Hunt for clues anywhere, like embedded in this page</p>
               <p>(find the underlined letters!)</p>
             </div>
-            <Puzzle count={count} puzzleUri="landing" />
+            <Puzzle count={count} puzzleUri={name} />
           </div>
           <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40"></div>
           {/* <div className="absolute bottom-0 inset-x-0 h-28 pointer-events-none bg-gradient-to-t from-blue-800"></div> */}
@@ -498,9 +500,15 @@ const Landing: NextPage<PageProps> = ({ count }) => {
 export default Landing;
 
 export async function getStaticProps(): Promise<{ props: PageProps }> {
+  const gql = await gqlApiSdk();
+
+  const { puzzles } = await gql.PuzzleInfoByLanding({ landing: "landing" });
+  const [{ simple_name, solution_char_count }] = puzzles;
+
   return {
     props: {
-      count: 5, // @TODO: change this when ready
+      name: simple_name,
+      count: solution_char_count || 0,
     },
   };
 }
