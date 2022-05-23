@@ -172,12 +172,12 @@ const Landing: NextPage<PageProps> = ({ count }) => {
             <div className="text-center">
               <Image src="/logo.svg" width={150} height={94} alt="IK logo" />
             </div>
-            <p className="mt-6 text-base text-center text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+            <div className="mt-6 text-base text-center text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
               <p>This is an Infinity Keys hunt.</p>
               <p>You find the clues you and enter the key.</p>
               <p>Hunt for clues anywhere, like embedded in this page</p>
               <p>(find the underlined letters!)</p>
-            </p>
+            </div>
             <Puzzle count={count} puzzleUri="landing" />
           </div>
           <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40"></div>
