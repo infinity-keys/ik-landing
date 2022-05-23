@@ -117,7 +117,12 @@ const Landing: NextPage<PageProps> = ({ count }) => {
               <div className="flex items-center">
                 <a href="#">
                   <span className="sr-only">Infinity Keys</span>
-                  <Image src="/logo.svg" width={80} height={50} alt="IK logo" />
+                  <Image
+                    src="/logo.svg"
+                    width={100}
+                    height={70}
+                    alt="IK logo"
+                  />
                   {/* <img
                   className="h-10 w-auto"
                   src="https://tailwindui.com/img/logos/workflow-mark.svg?color=white"
@@ -131,7 +136,7 @@ const Landing: NextPage<PageProps> = ({ count }) => {
                   <a
                     key={link.name}
                     href={link.href}
-                    className="text-base font-medium hover:text-indigo-50"
+                    className="text-2xl font-medium hover:text-indigo-50"
                   >
                     {link.name}
                   </a>
@@ -146,13 +151,13 @@ const Landing: NextPage<PageProps> = ({ count }) => {
               <div className="ml-10 space-x-4">
                 <a
                   href="#"
-                  className="inline-block bg-blue py-2 px-4 border border-turquoise rounded-md file:text-base font-medium text-white"
+                  className="inline-block bg-blue py-2 px-4 border border-turquoise rounded-md text-2xl font-medium text-white"
                 >
                   Play
                 </a>
               </div>
             </div>
-            <div className="py-4 flex flex-wrap justify-center space-x-6 lg:hidden">
+            {/* <div className="py-4 flex flex-wrap justify-center space-x-6 lg:hidden">
               {navigation.map((link) => (
                 <a
                   key={link.name}
@@ -162,7 +167,7 @@ const Landing: NextPage<PageProps> = ({ count }) => {
                   {link.name}
                 </a>
               ))}
-            </div>
+            </div> */}
           </nav>
         </header>
 
@@ -429,8 +434,8 @@ const Landing: NextPage<PageProps> = ({ count }) => {
                     <span className="sr-only">Infinity Keys</span>
                     <Image
                       src="/logo.svg"
-                      width={80}
-                      height={50}
+                      width={100}
+                      height={70}
                       alt="IK logo"
                     />
                     {/* <img
@@ -446,7 +451,7 @@ const Landing: NextPage<PageProps> = ({ count }) => {
                     <a
                       key={link.name}
                       href={link.href}
-                      className="text-base font-medium hover:text-indigo-50"
+                      className="text-2xl font-medium hover:text-indigo-50"
                     >
                       {link.name}
                     </a>
@@ -460,13 +465,13 @@ const Landing: NextPage<PageProps> = ({ count }) => {
                 <div className="ml-10 space-x-4">
                   <a
                     href="#"
-                    className="inline-block bg-blue py-2 px-4 border border-turquoise rounded-md text-base font-medium text-white"
+                    className="inline-block bg-blue py-2 px-4 border border-turquoise rounded-md text-2xl font-medium text-white"
                   >
                     Play
                   </a>
                 </div>
               </div>
-              <div className="py-4 flex flex-wrap justify-center space-x-6 lg:hidden">
+              {/* <div className="py-4 flex flex-wrap justify-center space-x-6 lg:hidden">
                 {navigation.map((link) => (
                   <a
                     key={link.name}
@@ -476,7 +481,7 @@ const Landing: NextPage<PageProps> = ({ count }) => {
                     {link.name}
                   </a>
                 ))}
-              </div>
+              </div> */}
             </nav>
             <p className="mt-8 text-center text-base text-gray-500">
               &copy; 2022 Infinity Keys. All rights reserved.
