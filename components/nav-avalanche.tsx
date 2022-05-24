@@ -12,7 +12,7 @@ const NavAvalanche = ({ showAvalanche = true }: Props) => (
     <div className="flex justify-center">
       <div className="flex justify-center px-9 w-96">
         <div className="w-20">
-          <Link href="https://twitter.com/InfinityKeys_io">
+          <Link href="https://twitter.com/InfinityKeys">
             <a
               className="flex w-full"
               rel="noopener noreferrer"
@@ -41,13 +41,13 @@ const NavAvalanche = ({ showAvalanche = true }: Props) => (
     <div className="flex justify-center mt-9">
       <div className="px-9 w-96 text-center">
         Start looking for keys{" "}
-        <Link href="https://twitter.com/InfinityKeys_io">
+        <Link href="https://twitter.com/InfinityKeys">
           <a
             rel="noopener noreferrer"
             target="_blank"
             className="text-turquoise"
           >
-            @InfinityKeys_io
+            @InfinityKeys
           </a>
         </Link>
         .
