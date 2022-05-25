@@ -1,7 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
-// import Stars from "@components/stars";
-
 class GlobalDoc extends Document {
   render() {
     return (
@@ -86,7 +84,6 @@ class GlobalDoc extends Document {
           />
         </Head>
         <body>
-          {/* <Stars /> */}
           <Main />
           <NextScript />
         </body>

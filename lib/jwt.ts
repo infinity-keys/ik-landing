@@ -1,7 +1,10 @@
-import { SignJWT } from "jose";
+import { jwtVerify, SignJWT } from "jose";
 import { nanoid } from "nanoid";
+import { v4 as uuidv4 } from "uuid";
 
 import { JWT_SECRET_KEY } from "@lib/constants";
+import { epochMinus30s } from "./utils";
+import { IkJwt } from "./types";
 
 export type HasuraRoles = "anonymous" | "user" | "manager" | "api" | "admin";
 
@@ -25,21 +28,42 @@ const apiClaims: HasuraClaims = {
   },
 };
 
-// Anonymous
-// export const makeAnonToken = async () => {
-//   const token = await new SignJWT({
-//     ...anonymousClaims,
-//   }).setExpirationTime("24H");
-//   return decorate(token);
-// };
-
 // API/backend tokens
-export const makeApiToken = () =>
-  new SignJWT({
+let apiToken: Promise<string> | undefined = undefined;
+// Use this same token for all API requests during this session
+export const makeApiToken = () => {
+  if (apiToken) return apiToken;
+
+  apiToken = new SignJWT({
     ...apiClaims,
   })
     .setExpirationTime("1H")
     .setProtectedHeader({ alg: "HS256" })
     .setJti(nanoid())
-    .setIssuedAt()
+    .setIssuedAt(epochMinus30s()) // Offset 30s because stuipd clocks
     .sign(new TextEncoder().encode(JWT_SECRET_KEY));
+
+  return apiToken;
+};
+
+/**
+ * Create a token for a user
+ */
+export const makeAnonToken = (payload: IkJwt, newUser: boolean = false) => {
+  const token = new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt(epochMinus30s())
+    .setJti(nanoid());
+
+  if (newUser) {
+    token.setSubject(uuidv4());
+  }
+
+  return token.sign(new TextEncoder().encode(JWT_SECRET_KEY));
+};
+
+/**
+ * Verify all tokens from the same shared secret
+ */
+export const verifyToken = (token: string) =>
+  jwtVerify(token, new TextEncoder().encode(JWT_SECRET_KEY));

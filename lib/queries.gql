@@ -6,14 +6,69 @@ query Guess($puzzle_id: uuid!, $solution: String!) {
   success: puzzles(
     where: { puzzle_id: { _eq: $puzzle_id }, solution: { _ilike: $solution } }
   ) {
-    # success_puzzle
     success_route
   }
 }
 
-# We need char count for certain puzzles
-query SolutionCharCount($puzzle_id: uuid!) {
-  solution: puzzles_by_pk(puzzle_id: $puzzle_id) {
+# Information needed for a puzzle to render
+query PuzzleInfoByLanding($landing: String!) {
+  puzzles(where: { landing_route: { _eq: $landing } }) {
+    simple_name
     solution_char_count
+    puzzle_id
+    input_type
+  }
+}
+query PuzzleInfoBySuccess($success: String!) {
+  puzzles(where: { success_route: { _eq: $success } }) {
+    simple_name
+    puzzle_id
+  }
+}
+
+# Used to prebuild all puzzle routes
+query AllLandingRoutes {
+  puzzles {
+    landing_route
+  }
+}
+query AllSuccessRoutes {
+  puzzles {
+    success_route
+  }
+}
+
+# A user submits against a puzzle id, but we need to check that the user's jwt
+# claims include the success route for the puzzle id
+query UserPuzzlesInSubmitted($puzzleId: uuid, $puzzleRoutes: [String!]) {
+  puzzles(
+    where: {
+      puzzle_id: { _eq: $puzzleId }
+      _and: { success_route: { _in: $puzzleRoutes } }
+    }
+  ) {
+    success_route
+  }
+}
+# A user submits a form after completing a puzzle
+mutation UserSubmission($puzzle_id: uuid, $user_id: uuid, $form_data: jsonb) {
+  insert_submissions_one(
+    object: { user_id: $user_id, puzzle_id: $puzzle_id, form_data: $form_data }
+  ) {
+    user_id
+    puzzle_id
+    form_data
+  }
+}
+
+# Create/update user
+mutation UpsertUser($userId: uuid) {
+  insert_users(
+    objects: { user_id: $userId }
+    on_conflict: { constraint: users_pkey, update_columns: [] }
+  ) {
+    returning {
+      user_id
+    }
   }
 }
