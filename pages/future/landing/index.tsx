@@ -325,6 +325,37 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                   </p>
                 </div>
               </div>
+
+              <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                If you are a brand interested in integrating an Infinity Keys
+                puzzle please contact us here
+              </p>
+
+              <div className="mt-10 sm:mt-12 flex justify-center">
+                <form action="#" className="sm:max-w-xl sm:mx-auto lg:mx-0">
+                  <div className="sm:flex">
+                    <div className="min-w-0 flex-1">
+                      <label htmlFor="email" className="sr-only">
+                        Email address
+                      </label>
+                      <input
+                        id="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        className="block w-full px-4 py-3 rounded-md border-0 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
+                      />
+                    </div>
+                    <div className="mt-3 sm:mt-0 sm:ml-3">
+                      <button
+                        type="submit"
+                        className="block w-full py-3 px-4 rounded-md shadow bg-indigo-500 text-white font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -333,10 +364,10 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
         <div>
           <div className="pt-10 bg-blue-800 sm:pt-16 lg:pt-12 lg:pb-20 lg:overflow-hidden">
             <div className="mx-auto max-w-7xl lg:px-8">
-              <div className="">
-                <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
-                  <div className="lg:py-24">
-                    {/* <div className="text-center">
+              {/* <div className=""> */}
+              <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
+                <div className="lg:py-24">
+                  {/* <div className="text-center">
                       <Image
                         src="/logo.svg"
                         width={150}
@@ -345,46 +376,42 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                       />
                     </div> */}
 
-                    <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-center text-white sm:mt-5 sm:text-6xl lg:mt-20 xl:text-6xl">
-                      <span className="block"> Contact</span>
-                      {/* <span className="block text-turquoise">everywhere.</span> */}
-                    </h1>
-                    <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                      If you are a brand interested in integrating an Infinity
-                      Keys puzzle please contact us here
-                    </p>
+                  <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-center text-white sm:mt-5 sm:text-6xl lg:mt-20 xl:text-6xl">
+                    <span className="block"> Contact</span>
+                    {/* <span className="block text-turquoise">everywhere.</span> */}
+                  </h1>
+                  <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                    Sign Up for Our Newsletter!
+                  </p>
 
-                    <div className="mt-10 sm:mt-12 flex justify-center">
-                      <form
-                        action="#"
-                        className="sm:max-w-xl sm:mx-auto lg:mx-0"
-                      >
-                        <div className="sm:flex">
-                          <div className="min-w-0 flex-1">
-                            <label htmlFor="email" className="sr-only">
-                              Email address
-                            </label>
-                            <input
-                              id="email"
-                              type="email"
-                              placeholder="Enter your email"
-                              className="block w-full px-4 py-3 rounded-md border-0 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
-                            />
-                          </div>
-                          <div className="mt-3 sm:mt-0 sm:ml-3">
-                            <button
-                              type="submit"
-                              className="block w-full py-3 px-4 rounded-md shadow bg-indigo-500 text-white font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
-                            >
-                              Submit
-                            </button>
-                          </div>
+                  <div className="mt-10 sm:mt-12 flex justify-center">
+                    <form action="#" className="sm:max-w-xl sm:mx-auto lg:mx-0">
+                      <div className="sm:flex">
+                        <div className="min-w-0 flex-1">
+                          <label htmlFor="email" className="sr-only">
+                            Email address
+                          </label>
+                          <input
+                            id="email"
+                            type="email"
+                            placeholder="Enter your email"
+                            className="block w-full px-4 py-3 rounded-md border-0 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
+                          />
                         </div>
-                      </form>
-                    </div>
+                        <div className="mt-3 sm:mt-0 sm:ml-3">
+                          <button
+                            type="submit"
+                            className="block w-full py-3 px-4 rounded-md shadow bg-indigo-500 text-white font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
-                {/* <div className="mt-12 -mb-16 sm:-mb-48 lg:m-0 lg:relative">
+              </div>
+              {/* <div className="mt-12 -mb-16 sm:-mb-48 lg:m-0 lg:relative">
                   <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 lg:max-w-none lg:px-0">
 
                     <img
@@ -394,7 +421,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                     />
                   </div>
                 </div> */}
-              </div>
+              {/* </div> */}
             </div>
           </div>
         </div>
