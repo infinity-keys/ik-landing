@@ -180,9 +180,18 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
               <Image src="/logo.svg" width={150} height={94} alt="IK logo" />
             </div>
             <div className="mt-6 text-base text-center text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-              <p>This is an Infinity Keys hunt.</p>
-              <p>You find the clues you and enter the key.</p>
-              <p>Hunt for clues anywhere, like embedded in this page</p>
+              <p>
+                This is an Infinity Keys h<span className="underline">un</span>
+                t.
+              </p>
+              <p>
+                You find the c<span className="underline">l</span>ues y
+                <span className="underline">o</span>u and enter the key.
+              </p>
+              <p>
+                Hunt for <span className="underline">c</span>lues anywhere, li
+                <span className="underline">k</span>e embedded in this page
+              </p>
               <p>(find the underlined letters!)</p>
             </div>
             <Puzzle count={count} puzzleUri={name} />
