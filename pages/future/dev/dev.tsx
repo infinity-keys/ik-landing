@@ -14,6 +14,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 import Fortmatic from "fortmatic";
 import { Web3Provider } from "@ethersproject/providers";
+import { verify } from "crypto";
 
 const customNetworkOptions = {
   rpcUrl: 'https://rinkeby.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d',
@@ -57,6 +58,8 @@ const Dev: NextPage = () => {
   //FOR SIGNING- NOT NEEDED FOR WALLET CONNECT
   const [message, setMessage] = useState<string>("This is a test message.");
   const [signature, setSignature] = useState<string>('');
+  const [signed, setSigned] = useState<boolean>(false);
+  const [verifiedAddress, setVerifiedAddress] = useState<string>('');
   //
 
   useEffect(() => {
@@ -90,6 +93,8 @@ const Dev: NextPage = () => {
     setChainId(-1);
     // FOR SIGNING ONLY
     setSignature("");
+    setVerifiedAddress("");
+    setSigned(false);
   };
 
   const disconnect = async () => {
@@ -109,11 +114,16 @@ const Dev: NextPage = () => {
           params: [message, account]
         });
         setSignature(signature);
+        setSigned(true);
       } catch (error) {
         console.log(error)
       }
     } 
   };
+
+  const verifySignature = async () => {
+    setVerifiedAddress(ethers.utils.verifyMessage(message, signature));
+  }
 
   return (
     <Wrapper>
@@ -136,9 +146,19 @@ const Dev: NextPage = () => {
               {/*ONLY NEEDED FOR SIGNING MESSAGES, NOT WALLET CONNECTION*/}
               {signature === '' ? <button onClick={signMessage}>Sign Message</button> : 
               <div>
-                <p>Signed Message: {message}</p>
-                <p>Signature: {signature}</p>
+                <p>Signed Message: <br/>{message}</p>
+                <p>Signature: <br/>{signature}</p>
               </div>}
+              {signed ? 
+                <div>
+                  <br/>
+                  <button onClick={verifySignature}>Verify Signature</button>
+                  {verifiedAddress !== '' ? <div>
+                    <p>Address of Signature: <br/>{verifiedAddress}</p>
+                    <p>Address Match?<br />{verifiedAddress === account ? <p>True</p> : <p>False</p>}</p>
+                  </div> : <></>}
+                </div> 
+              : <></>}
               {/*END*/}
             </div> : <></>}
           </main>
