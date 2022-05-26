@@ -374,7 +374,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
             <div className="mx-auto max-w-7xl lg:px-8">
               {/* <div className=""> */}
               <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
-                <div className="lg:py-24">
+                <div className="lg:py-12">
                   {/* <div className="text-center">
                       <Image
                         src="/logo.svg"
