@@ -24,8 +24,8 @@
     /* 1024+ */
     @screen lg {
       @apply mx-4 text-4xl !important;
-      width: 182px !important;
-      height: 190px !important;
+      width: 170px !important;
+      height: 170px !important;
     }
     /* 1280+ */
     @screen xl {

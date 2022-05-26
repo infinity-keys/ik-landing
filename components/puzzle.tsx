@@ -17,7 +17,7 @@ interface PuzzleProps {
 
 const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
   const inputProps = loRange(count).map(() => ({
-    className: "ik-code-input text-5xl",
+    className: "ik-code-input",
   }));
 
   const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +47,7 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
     // If either success or fail exist, turn them into proper paths
     router.push(
       (success_route && routeSuccessUrl(success_route)) ||
-        (fail_route && routeFailUrl(fail_route))
+      (fail_route && routeFailUrl(fail_route))
     );
   };
 
