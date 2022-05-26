@@ -313,10 +313,11 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
             objectFit="cover"
             alt="Blue geoddesic background"
           /> */}
-          <div className="">
-            <MaterialLock />
-          </div>
-          <div className="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24 relative">
+
+          <div className="justify-items-center items-center lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24 relative">
+            <div className="lg:w-80 lg:h-80 lg:col-start">
+              <MaterialLock />
+            </div>
             <div className="px-4 max-w-xl mx-auto sm:px-6 lg:py-32 lg:max-w-none lg:mx-0 lg:px-0 lg:col-start-2">
               <div>
                 <div className="mt-6">
@@ -365,6 +366,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                 </form>
               </div>
             </div>
+
           </div>
         </div>
 
