@@ -280,7 +280,6 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
         </main>
 
         {/* How it works */}
-
         <div className="relative pt-32 pb-32">
           <Image
             src="/blue-angles.jpeg"
@@ -288,7 +287,6 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
             objectFit="cover"
             alt="Blue geoddesic background"
           />
-
           <div className="lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24 relative">
             <div className="px-4 max-w-xl mx-auto sm:px-6 lg:py-16 lg:max-w-none lg:mx-0 lg:px-0">
               <div>
@@ -307,6 +305,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
           </div>
         </div>
 
+        {/* Business Partners */}
         <div className="flex items-center relative">
           {/* <Image
             src="/rainbow.jpeg"
@@ -369,7 +368,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
           </div>
         </div>
 
-        {/* Contactx*/}
+        {/* Newsletter*/}
         <div>
           <div className="pt-10 bg-blue-800 sm:pt-16 lg:pt-12 lg:pb-20 lg:overflow-hidden">
             <div className="mx-auto max-w-7xl lg:px-8">
@@ -434,6 +433,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
             </div>
           </div>
         </div>
+
         {/* Footer */}
         <footer className="">
           <div className="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8 bg-blue">
