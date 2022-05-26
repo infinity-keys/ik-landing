@@ -122,7 +122,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                   <Image
                     src="/logo.svg"
                     width={100}
-                    height={70}
+                    height={100}
                     alt="IK logo"
                   />
                   {/* <img
@@ -138,7 +138,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                   <a
                     key={link.name}
                     href={link.href}
-                    className="text-2xl font-medium hover:text-indigo-50"
+                    className="text-2xl font-medium hover:text-turquoise"
                   >
                     {link.name}
                   </a>
@@ -153,7 +153,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
               <div className="ml-10 space-x-4">
                 <a
                   href="#"
-                  className="inline-block bg-blue py-2 px-4 border border-turquoise rounded-md text-2xl font-medium text-white"
+                  className="inline-block bg-blue hover:bg-turquoise py-2 px-4 border border-turquoise rounded-md text-2xl font-medium text-white hover:text-blue"
                 >
                   Play
                 </a>
