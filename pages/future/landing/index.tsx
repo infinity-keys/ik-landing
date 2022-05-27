@@ -114,7 +114,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
         {/* Nav */}
         <header className="w-full static z-50 bg-blue">
           <nav className="container px-4 sm:px-6 lg:px-8" aria-label="Top">
-            <div className="w-full py-6 flex items-center justify-evenly border-b border-indigo-500 lg:border-none">
+            <div className="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
               {/* left */}
               <div className="flex items-center">
                 <a href="#">
@@ -466,7 +466,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
               ))}
             </div> */}
             <nav className="container px-4 sm:px-6 lg:px-8" aria-label="Top">
-              <div className="w-full py-6 flex items-center justify-evenly border-b border-indigo-500 lg:border-none">
+              <div className="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
                 {/* left */}
                 <div className="flex items-center">
                   <a href="#">
