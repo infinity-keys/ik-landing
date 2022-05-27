@@ -153,7 +153,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
               <div className="ml-10 space-x-4">
                 <a
                   href="#"
-                  className="inline-block bg-blue hover:bg-turquoise py-2 px-4 border border-turquoise rounded-md text-2xl font-medium text-white hover:text-blue"
+                  className="inline-block bg-blue hover:bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-2xl font-medium text-white hover:text-blue"
                 >
                   Play
                 </a>
@@ -208,20 +208,20 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
               <div className="">
                 <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
                   <div className="lg:py-24">
-                    <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-center text-white sm:mt-5 sm:text-6xl lg:mt-20 xl:text-6xl">
+                    <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-left text-white sm:mt-5 sm:text-6xl lg:mt-20 xl:text-6xl">
                       <span className="block">What is</span>
                       <span className="block text-turquoise">
                         Infinity Keys?
                       </span>
                     </h1>
-                    <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                    <p className="mt-6 text-base text-left text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Infinity Keys is a puzzle game that takes players on hunts
                       through our digital world. Players find clues, decipher
                       keys, and claim treasure. It’s also a platform where
                       anyone can build their own hunts, keys, and treasure to
                       create engaging experiences for others.
                     </p>
-                    <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                    <p className="mt-6 text-base text-left text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Find out how it works below.
                     </p>
                     {/* <div className="mt-10 sm:mt-12">
