@@ -20,7 +20,7 @@ import { gqlApiSdk } from "@lib/server";
 const navigation = [
   { name: "Home", href: "https://www.infinitykeys.io/future/landing" },
   { name: "Hunts", href: "#" },
-  { name: "Contact", href: "#" },
+  { name: "Partner", href: "#partner" },
   { name: "Docs", href: "#" },
 ];
 
@@ -305,8 +305,8 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
           </div>
         </div>
 
-        {/* Business Partners */}
-        <div className="flex items-center relative">
+        {/* Partner */}
+        <div id="partner" className="flex items-center relative">
           {/* <Image
             src="/rainbow.jpeg"
             layout="fill"
