@@ -18,7 +18,7 @@ import MaterialLock from "@components/svg/material-lock-svg";
 import { gqlApiSdk } from "@lib/server";
 
 const navigation = [
-  { name: "Home", href: "#" },
+  { name: "Home", href: "https://www.infinitykeys.io/future/landing" },
   { name: "Hunts", href: "#" },
   { name: "Contact", href: "#" },
   { name: "Docs", href: "#" },
@@ -117,7 +117,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
             <div className="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
               {/* left */}
               <div className="flex items-center">
-                <a href="#">
+                <a href="https://www.infinitykeys.io/future/landing">
                   <span className="sr-only">Infinity Keys</span>
                   <Image
                     src="/logo.svg"
