@@ -73,7 +73,7 @@ const Dev: NextPage = () => {
 
       if (!library?.provider?.request)
         throw new Error("Library is undefined");
-      const signature = await library?.provider?.request({
+      const signature = await library.provider.request({
         method: "personal_sign",
         params: [message, account]
       });
