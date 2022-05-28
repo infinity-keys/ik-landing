@@ -1,13 +1,10 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import Head from "next/head";
-import { useForm, SubmitHandler, useFormState } from "react-hook-form";
+import { useState, useEffect } from "react";
 
 import Wrapper from "@components/wrapper";
-import Link from "next/link";
-import { ETH_ADDRESS_REGEX } from "@lib/constants";
 
-import { useState, useEffect } from "react";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -47,78 +44,71 @@ const providerOptions = {
   }
 };
 
+const message = "This is a test message."
+
+// In NextJS, during prerender in Node there is no "window" the library needs
+const web3Modal: Web3Modal | undefined =
+  typeof window !== 'undefined' ? new Web3Modal({
+    //network: "rinkeby", // optional- we dont care for now I think, but will be important once we add NFT claiming/anything on chain
+    cacheProvider: false, // optional- can set to false if we want them to connect every time
+    providerOptions
+  }) : undefined
+
+// Scoped up here since multiple callbacks need it
+let library: ethers.providers.Web3Provider | undefined;
+
+
 const Dev: NextPage = () => {
-  const [web3Modal, setWeb3Modal] = useState<Web3Modal>();
-  const [provider, setProvider] = useState();
-  const [library, setLibrary] = useState<Web3Provider>();
+
   const [account, setAccount] = useState<string>();
   const [chainId, setChainId] = useState<number>();
-  const [connected, setConnected] = useState<boolean>(false);
 
   //FOR SIGNING- NOT NEEDED FOR WALLET CONNECT
-  const [message, setMessage] = useState<string>("This is a test message.");
   const [signature, setSignature] = useState<string>('');
-  const [signed, setSigned] = useState<boolean>(false);
   const [verifiedAddress, setVerifiedAddress] = useState<string>('');
-  //
 
-  useEffect(() => {
-    setWeb3Modal(new Web3Modal({
-      //network: "rinkeby", // optional- we dont care for now I think, but will be important once we add NFT claiming/anything on chain
-      cacheProvider: false, // optional- can set to false if we want them to connect every time
-      providerOptions
-    }));
-  }, []);
-  
-  const connect = async () => {
-    if (web3Modal != undefined) {
-      try {
-        const provider = await web3Modal.connect();
-        const library = new ethers.providers.Web3Provider(provider);
-        const accounts = await library.listAccounts();
-        const network = await library.getNetwork();
-        setProvider(provider);
-        setLibrary(library);
-        if (accounts) setAccount(accounts[0]);
-        setChainId(network.chainId);
-        setConnected(true);
-      } catch (error) {
-        console.log(error);
-      }
+  const connect = async (): Promise<Web3Provider | undefined> => {
+    if (!web3Modal) return;
+
+    try {
+      const provider: ethers.providers.ExternalProvider = await web3Modal.connect();
+      library = new ethers.providers.Web3Provider(provider);
+
+      const accounts = await library.listAccounts();
+      const network = await library.getNetwork();
+      accounts && setAccount(accounts[0]);
+
+      setChainId(network.chainId);
+    } catch (error) {
+      console.log(error);
     }
+
   }
 
-  const refreshState = () => {
+  const disconnect = () => {
+    if (web3Modal)
+      web3Modal.clearCachedProvider();
     setAccount("");
     setChainId(-1);
     // FOR SIGNING ONLY
     setSignature("");
     setVerifiedAddress("");
-    setSigned(false);
-  };
-
-  const disconnect = async () => {
-    if (web3Modal != undefined) {
-      await web3Modal.clearCachedProvider();
-      refreshState();
-      setConnected(false);
-    }
   };
 
   //FOR SIGNING ONLY- NOT NEEDED FOR WALLET CONNECTION
   const signMessage = async () => {
-    if (library?.provider.request) {
-      try {
-        const signature = await library.provider.request({
-          method: "personal_sign",
-          params: [message, account]
-        });
-        setSignature(signature);
-        setSigned(true);
-      } catch (error) {
-        console.log(error)
-      }
-    } 
+    if (!library?.provider?.request) return;
+
+    try {
+      const signature = await library.provider.request({
+        method: "personal_sign",
+        params: [message, account]
+      });
+      setSignature(signature);
+    } catch (error) {
+      console.log(error)
+    }
+
   };
 
   const verifySignature = async () => {
@@ -138,29 +128,32 @@ const Dev: NextPage = () => {
           </header>
 
           <main className="flex flex-col items-center justify-center text-center w-full flex-1 z-10 ">
-            {connected ? <button onClick={disconnect}>Disconnect Wallet</button> : <button onClick={connect}>Connect Wallet</button>}
-            {connected ? <div>
+            {account
+              ? <button onClick={disconnect}>Disconnect Wallet</button>
+              : <button onClick={connect}>Connect Wallet</button>}
+
+            {account && <div>
               <p>Wallet Address: {account}</p>
               <p>Chain Id: {chainId}</p>
-              <br/>
+              <br />
               {/*ONLY NEEDED FOR SIGNING MESSAGES, NOT WALLET CONNECTION*/}
-              {signature === '' ? <button onClick={signMessage}>Sign Message</button> : 
-              <div>
-                <p>Signed Message: <br/>{message}</p>
-                <p>Signature: <br/>{signature}</p>
-              </div>}
-              {signed ? 
+              {!signature
+                ? <button onClick={signMessage}>Sign Message</button>
+                : <div>
+                  <p>Signed Message: <br />{message}</p>
+                  <p>Signature: <br />{signature}</p>
+                </div>}
+              {signature &&
                 <div>
-                  <br/>
+                  <br />
                   <button onClick={verifySignature}>Verify Signature</button>
-                  {verifiedAddress !== '' ? <div>
-                    <p>Address of Signature: <br/>{verifiedAddress}</p>
-                    <p>Address Match?<br />{verifiedAddress === account ? <p>True</p> : <p>False</p>}</p>
-                  </div> : <></>}
-                </div> 
-              : <></>}
+                  {verifiedAddress && <div>
+                    <p>Address of Signature: <br />{verifiedAddress}</p>
+                    <p>Address Match?<br />{verifiedAddress === account ? <span>True</span> : <span>False</span>}</p>
+                  </div>}
+                </div>}
               {/*END*/}
-            </div> : <></>}
+            </div>}
           </main>
         </div>
       </div>
