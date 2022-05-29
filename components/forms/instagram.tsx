@@ -73,7 +73,7 @@ const InstagramForm = ({ puzzleId }: PuzzleInput) => {
             Submit
           </button>
         </form>
-        <div className="mt-6 flex">
+        <div className="mt-6 flex justify-center">
           <div className="w-2/4 flex items-center justify-center">
             <ButtonSocialTwitter />
           </div>
