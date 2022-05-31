@@ -16,8 +16,6 @@ module.exports = {
         "blue-800": "#070e1f",
         turquoise: "#3FCCBB",
         turquoiseDark: "#5ffae7",
-        discordPurple: "#5865F2",
-        twitterBlue: "#1DA1F2",
         gray: {
           100: "#EEEFFC",
           150: "#A6ADB4",

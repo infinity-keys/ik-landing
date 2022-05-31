@@ -145,9 +145,13 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                   </a>
                 ))}
               </div>
-              <div className="flex items-center space-x-6">
-                <TwitterIcon />
-                <Discord />
+              <div className="flex items-center space-x-6 icons">
+                <div className="twitterIcon">
+                  <TwitterIcon />
+                </div>
+                <div className="discordIcon">
+                  <Discord />
+                </div>
               </div>
 
               {/* right */}
@@ -498,8 +502,12 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                   ))}
                 </div>
                 <div className="flex items-center space-x-6">
-                  <TwitterIcon />
-                  <Discord />
+                  <div className="twitterIcon">
+                    <TwitterIcon />
+                  </div>
+                  <div className="discordIcon">
+                    <Discord />
+                  </div>
                 </div>
                 {/* right */}
                 <div className="ml-10 space-x-4">

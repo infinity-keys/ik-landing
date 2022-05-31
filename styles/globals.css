@@ -43,3 +43,11 @@
       radial-gradient(ellipse at right bottom, #d2508e70, transparent 40%);
   }
 }
+
+.discordIcon:hover {
+  color: #5865f2;
+}
+
+.twitterIcon:hover {
+  color: #1da1f2;
+}
