@@ -9,14 +9,14 @@
   .ik-code-input {
     @apply bg-gray-500 border-gray-200 m-0 mx-1 mb-5 font-bold shadow-md !important;
     text-shadow: -2px 0px 7px #3fccbb;
-    width: 54px !important;
-    height: 63px !important;
+    width: 45px !important;
+    height: 45px !important;
 
     /* 640+ */
     @screen sm {
       @apply mx-2;
-      width: 74px !important;
-      height: 86px !important;
+      width: 90px !important;
+      height: 90px !important;
     }
     /* 768+ */
     @screen md {
@@ -24,8 +24,8 @@
     /* 1024+ */
     @screen lg {
       @apply mx-4 text-4xl !important;
-      width: 170px !important;
-      height: 170px !important;
+      width: 125px !important;
+      height: 125px !important;
     }
     /* 1280+ */
     @screen xl {
