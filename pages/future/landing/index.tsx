@@ -15,6 +15,7 @@ import type { NextPage } from "next";
 import Twitter from "@components/svg/twitter-svg";
 import TwitterIcon from "@components/svg/twitter-icon-svg";
 import MaterialLock from "@components/svg/material-lock-svg";
+import Map from "@components/svg/map-svg";
 import { gqlApiSdk } from "@lib/server";
 
 const navigation = [
@@ -316,7 +317,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
 
           <div className="justify-items-center items-center lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24 relative">
             <div className="lg:w-90 lg:h-90 lg:col-start">
-              <MaterialLock />
+              <Map />
             </div>
             <div className="px-4 max-w-xl mx-auto sm:px-6 lg:py-32 lg:max-w-none lg:mx-0 lg:px-0 lg:col-start-2">
               <div>
