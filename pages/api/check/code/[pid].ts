@@ -1,6 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { uniq } from "lodash";
+import { nanoid } from "nanoid";
+
 import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 import { gqlApiSdk } from "@lib/server";
 import { IkJwt, PuzzleApiResponse } from "@lib/types";
