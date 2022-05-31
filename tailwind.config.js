@@ -7,6 +7,9 @@ module.exports = {
       center: true,
     },
     extend: {
+      screen: {
+        xsm: "300px",
+      },
       colors: {
         transparent: "transparent",
         current: "currentColor",

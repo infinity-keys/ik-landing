@@ -226,7 +226,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                       anyone can build their own hunts, keys, and treasure to
                       create engaging experiences for others.
                     </p>
-                    <p className="mt-6 text-base text-left text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                    <p className="mt-5 text-base text-left xsm: pb-6 text-gray-300 sm:pb-6 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Find out how it works below.
                     </p>
                     {/* <div className="mt-10 sm:mt-12">
