@@ -226,7 +226,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                       anyone can build their own hunts, keys, and treasure to
                       create engaging experiences for others.
                     </p>
-                    <p className="mt-5 text-base text-left xsm: pb-6 text-gray-300 sm:pb-6 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                    <p className="mt-5 text-base text-left xsm:pb-6 text-gray-300 sm:pb-6 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Find out how it works below.
                     </p>
                     {/* <div className="mt-10 sm:mt-12">
@@ -348,7 +348,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
               <div className="mt-10 sm:mt-12 flex justify-center">
                 <form action="#" className="sm:max-w-xl sm:mx-auto lg:mx-0">
                   <div className="sm:flex">
-                    <div className="min-w-0 flex-1">
+                    <div className="min-w-0 flex-1 mb-4">
                       <label htmlFor="email" className="sr-only">
                         Email address
                       </label>
@@ -359,7 +359,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                         className="block w-full px-4 py-3 rounded-md border-0 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
                       />
                     </div>
-                    <div className="mt-3 sm:mt-0 sm:ml-3">
+                    <div className="sm: mb-4 sm:ml-3">
                       <button
                         type="submit"
                         className="block w-full py-3 px-4 rounded-md shadow bg-indigo-500 text-white font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
@@ -412,7 +412,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                             className="block w-full px-4 py-3 rounded-md border-0 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
                           />
                         </div>
-                        <div className="mt-3 sm:mt-0 sm:ml-3">
+                        <div className="m-4 sm:mt-0 sm:ml-3">
                           <button
                             type="submit"
                             className="block w-full py-3 px-4 rounded-md shadow bg-indigo-500 text-white font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
