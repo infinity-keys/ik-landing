@@ -14,9 +14,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method !== "POST") return res.status(405).end();
-  // console.log(req);
-  // console.log(req.body);
-  // console.log(req.cookies);
 
   const token = req.cookies[IK_ID_COOKIE];
 
@@ -51,7 +48,7 @@ export default async function handler(
 
   const response = await gql.UserSubmission({
     puzzle_id: puzzleId, // comes from hidden field in form
-    user_id: verified.payload.sub, // user id from jwt
+    user_id: payload.sub, // user id from jwt
     form_data: formData,
   });
 

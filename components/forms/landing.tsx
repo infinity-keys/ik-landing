@@ -6,6 +6,7 @@ import ButtonSocialTwitter from "@components/button-social-twitter";
 import { ETH_ADDRESS_REGEX } from "@lib/constants";
 import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
+import Wallet from "@components/wallet";
 
 interface FormInput extends PuzzleInput {
   name: string;
@@ -25,23 +26,37 @@ const LandingForm = ({ puzzleId }: PuzzleInput) => {
     if (!res.ok) throw new Error(res.statusText);
     return true;
   };
+
+  const onWalletSignature = async (address: string) => {
+    // @TODO: try/catch here
+    await formSubmit({
+      data: {
+        puzzleId,
+        address,
+      }
+    })
+  }
+
   return (<>
 
     {isSubmitSuccessful && <p>Thanks for joining, we will be in touch!</p>}
     {!isSubmitSuccessful && (
       <div className="">
-        <h1 className="text-3xl font-medium mb-6">Coming soon.</h1>
+
 
         <p className="text-sm font-normal mb-4">
-          Discover clues, solve puzzles, and collect digital items to
-          discover real treasure — or create a quest of your own.
+          You did it!
         </p>
+        <p className="text-sm font-normal mb-8">
+          Connect your web3 wallet to be part of an early player leaderboard.
+        </p>
+
+        <div className="flex justify-center mb-10">
+          <Wallet onWalletSignature={onWalletSignature} />
+        </div>
+
         <p className="text-sm font-normal mb-4">
-          Infinity Keys is a forthcoming massively multiplayer metaverse
-          treasure hunt platform.
-        </p>
-        <p className="text-sm font-normal mb-12">
-          There&apos;s treasure everywhere.
+          Drop us an email if web3 is not your thing.
         </p>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
@@ -99,7 +114,8 @@ const LandingForm = ({ puzzleId }: PuzzleInput) => {
           </div>
         </div>
       </div>
-    )}
+    )
+    }
   </>)
 };
 

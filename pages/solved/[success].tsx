@@ -32,7 +32,7 @@ const Dev: NextPage<SuccessPageProps> = ({ puzzleId, name }) => {
             <Image src="/logo.svg" width={100} height={63} alt="IK logo" />
           </header>
 
-          <main className="flex flex-col items-center justify-center w-full flex-1 z-10 ">
+          <main className="flex flex-col items-center justify-center w-full flex-1">
             {name === 'dev' && <DevForm puzzleId={puzzleId} />}
             {name === 'landing' && <LandingForm puzzleId={puzzleId} />}
             {name === 'avalanche' && <AvalancheForm puzzleId={puzzleId} />}

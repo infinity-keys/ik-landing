@@ -1,5 +1,4 @@
-import type { NextPage } from "next";
-import Head from "next/head";
+
 import { useState, useEffect } from "react";
 
 import Web3Modal from "web3modal";
@@ -50,7 +49,10 @@ const web3Modal: Web3Modal | undefined =
     providerOptions
   }) : undefined
 
-const Dev: NextPage = () => {
+interface WalletProps {
+  onWalletSignature?: (address: string) => Promise<void>;
+}
+const Wallet = ({ onWalletSignature }: WalletProps) => {
   const [account, setAccount] = useState<string>();
   const [chainId, setChainId] = useState<number>();
 
@@ -92,13 +94,13 @@ const Dev: NextPage = () => {
         },
         method: 'POST'
       })
-      console.log(authReq)
-      // Now do something with this validated person
 
-      const network = await library.getNetwork();
-      setChainId(network.chainId);
+      // Call the callback with our wallet address
+      onWalletSignature && await onWalletSignature(account);
+
+      // const network = await library.getNetwork();
+      // setChainId(network.chainId);
     } catch (error) {
-      console.log(error);
       disconnect();
     }
 
@@ -114,47 +116,17 @@ const Dev: NextPage = () => {
     setVerifiedAddress("");
   };
 
-  const verifySignature = async () => {
-    // setVerifiedAddress(ethers.utils.verifyMessage(message, signature));
-  }
+  // const verifySignature = async () => {
+  //   // setVerifiedAddress(ethers.utils.verifyMessage(message, signature));
+  // }
 
   return (
-    <Wrapper>
-      <Head>
-        <title>Dev</title>
-      </Head>
-
-      <div className="ik-page radial-bg ">
-        <div className="container px-4 flex flex-col items-center justify-center min-h-screen max-w-sm ">
-
-          <main className="flex flex-col items-center justify-center text-center w-full flex-1">
-            <button onClick={account ? disconnect : connect} className="text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4" >
-              {account ? 'Disconnect wallet' : 'Connect wallet'}
-            </button>
-
-            {account && <div>
-              <p>Wallet Address: {account}</p>
-              <p>Chain Id: {chainId}</p>
-
-              {signature &&
-                <div>
-                  {/* <p>Signed Message: {message}</p> */}
-                  <p>Signature: {signature}</p>
-
-                  <button onClick={verifySignature} className="text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4">
-                    Verify Signature
-                  </button>
-                  {verifiedAddress && <div>
-                    <p>Address of Signature: {verifiedAddress}</p>
-                    <p>Address Match? <span>{verifiedAddress === account ? 'True' : 'False'}</span></p>
-                  </div>}
-                </div>}
-            </div>}
-          </main>
-        </div>
-      </div>
-    </Wrapper>
+    <button onClick={account ? disconnect : connect} className="text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4" >
+      {!account && !signature && 'Connect wallet'}
+      {account && !signature && 'Waiting on signature'}
+      {account && signature && 'Disconnect'}
+    </button>
   );
 };
 
-export default Dev;
+export default Wallet;

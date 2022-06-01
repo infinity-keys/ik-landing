@@ -49,7 +49,6 @@ export default async function handler(
   }
 
   const [user] = users;
-  console.log(user);
   // User with wallet exists
   if (!user?.nonce) throw new Error("No user nonce");
 
