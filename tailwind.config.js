@@ -7,8 +7,8 @@ module.exports = {
       center: true,
     },
     extend: {
-      screen: {
-        xsm: "300px",
+      screens: {
+        xsm: "250px",
       },
       colors: {
         transparent: "transparent",

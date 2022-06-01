@@ -212,7 +212,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
             <div className="mx-auto max-w-7xl lg:px-8">
               <div className="">
                 <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
-                  <div className="lg:py-24">
+                  <div className="xsm:pb-6 lg:py-24">
                     <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-left text-white sm:mt-5 sm:text-6xl lg:mt-20 xl:text-6xl">
                       <span className="block">What is</span>
                       <span className="block text-turquoise">
@@ -226,7 +226,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                       anyone can build their own hunts, keys, and treasure to
                       create engaging experiences for others.
                     </p>
-                    <p className="mt-5 text-base text-left xsm:pb-6 text-gray-300 sm:pb-6 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                    <p className="mt-5 text-base text-left  text-gray-300 sm:pb-6 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Find out how it works below.
                     </p>
                     {/* <div className="mt-10 sm:mt-12">

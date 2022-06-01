@@ -47,7 +47,7 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
     // If either success or fail exist, turn them into proper paths
     router.push(
       (success_route && routeSuccessUrl(success_route)) ||
-      (fail_route && routeFailUrl(fail_route))
+        (fail_route && routeFailUrl(fail_route))
     );
   };
 
@@ -64,11 +64,11 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
       {!isLoading && (
         <div className="flex justify-center z-10">
           <div>
-            <div className="flex pb-5">
+            <div className="flex pt-5 pb-5">
               <div className="w-6">
                 <MaterialIcon />
               </div>
-              <h1 className="text-base font-bold pt-2 pl-4">Enter Key</h1>
+              <h1 className="text-base font-bold pt-3 pl-4">Enter Key</h1>
             </div>
             <div className={clsx({ invisible: !isWrongGuess })}>
               <span className="opacity-50">Incorrect passcode. Try again.</span>
