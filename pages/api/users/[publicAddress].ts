@@ -35,7 +35,7 @@ export default async function handler(
   if (!users.length) {
     // Add wallet + nonce to user
     const { user } = await gql.AddWalletToUser({
-      userId: payload.sub,
+      userId: payload.sub, // Current anon user
       publicAddress,
       nonce: nanoid(),
     });
@@ -44,15 +44,15 @@ export default async function handler(
     return res.json({ nonce: user.nonce });
   }
 
+  // Do something about consolidating mulitple users or something
   if (users.length > 1) {
-    // Do something about consolidating mulitple users or something
   }
 
   const [user] = users;
   console.log(user);
   // User with wallet exists
-  if (user?.nonce) {
-    // should have nonce, but def check
-    return res.json({ nonce: user.nonce });
-  }
+  if (!user?.nonce) throw new Error("No user nonce");
+
+  // should have nonce, but def check
+  return res.json({ nonce: user.nonce });
 }

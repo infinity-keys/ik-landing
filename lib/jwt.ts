@@ -49,15 +49,13 @@ export const makeApiToken = () => {
 /**
  * Create a token for a user
  */
-export const makeAnonToken = (payload: IkJwt, newUser: boolean = false) => {
+export const makeUserToken = (payload: IkJwt, userId?: string) => {
   const token = new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt(epochMinus30s())
     .setJti(nanoid());
 
-  if (newUser) {
-    token.setSubject(uuidv4());
-  }
+  token.setSubject(userId ?? uuidv4());
 
   return token.sign(new TextEncoder().encode(JWT_SECRET_KEY));
 };

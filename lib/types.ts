@@ -9,6 +9,7 @@ export type PuzzleApiResponse = {
 export interface IkJwt extends JWTPayload {
   claims: {
     [IK_CLAIMS_NAMESPACE]: {
+      walletConnected?: boolean;
       puzzles: string[];
     };
   };

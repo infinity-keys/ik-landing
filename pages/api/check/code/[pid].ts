@@ -1,12 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { uniq } from "lodash";
-import { nanoid } from "nanoid";
 
 import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 import { gqlApiSdk } from "@lib/server";
 import { IkJwt, PuzzleApiResponse } from "@lib/types";
-import { makeAnonToken, verifyToken } from "@lib/jwt";
+import { makeUserToken, verifyToken } from "@lib/jwt";
 
 export default async function handler(
   req: NextApiRequest,
@@ -72,7 +71,7 @@ export default async function handler(
     guessResults.access = true;
   }
 
-  const newToken = await makeAnonToken(payload);
+  const newToken = await makeUserToken(payload);
 
   // Cookie for route access
   res.setHeader("Set-Cookie", `${IK_ID_COOKIE}=${newToken}; HttpOnly; Path=/;`);

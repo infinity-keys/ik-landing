@@ -88,7 +88,25 @@ mutation AddWalletToUser(
 }
 
 query UserByPublicAddress($publicAddress: String!) {
+  submissions(where: { user: { public_address: { _eq: $publicAddress } } }) {
+    puzzle {
+      success_route
+    }
+  }
   users(where: { public_address: { _eq: $publicAddress } }) {
+    user_id
     nonce
+  }
+}
+
+# When an anon user signs in with wallet, we want to migrate anon submissions to them
+query MigrateUserSubmissions($fromUser: uuid, $toUser: uuid) {
+  fromUser: submissions(where: { user_id: { _eq: $fromUser } }) {
+    form_data
+    puzzle_id
+  }
+  toUser: submissions(where: { user_id: { _eq: $toUser } }) {
+    form_data
+    puzzle_id
   }
 }
