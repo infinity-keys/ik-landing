@@ -12,6 +12,7 @@
   "dependencies": {
     "@apollo/client": "^3.6.2",
     "@auth0/nextjs-auth0": "^1.7.0",
+    "@coinbase/wallet-sdk": "^3.1.0",
     "@formspree/react": "^2.2.4",
     "@graphql-codegen/cli": "^2.6.2",
     "@graphql-codegen/introspection": "^2.1.1",
@@ -21,7 +22,10 @@
     "@headlessui/react": "^1.5.0",
     "@heroicons/react": "^1.0.6",
     "@tailwindcss/forms": "^0.5",
+    "@walletconnect/web3-provider": "^1.7.8",
     "clsx": "^1.1.1",
+    "ethers": "^5.6.5",
+    "fortmatic": "^2.3.0",
     "graphql": "^16.4.0",
     "graphql-request": "^4.2.0",
     "jose": "^4",
@@ -33,7 +37,8 @@
     "react-dom": "^18",
     "react-hook-form": "^7.31.1",
     "react-individual-character-input-boxes": "^1.1.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "web3modal": "^1.9.7"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.178",
@@ -48,6 +53,7 @@
     "prettier": "^2.5.1",
     "sass": "^1.49.7",
     "tailwindcss": "^3.0.15",
-    "typescript": "^4"
+    "typescript": "^4",
+    "yarn-audit-fix": "^9.3.1"
   }
 }

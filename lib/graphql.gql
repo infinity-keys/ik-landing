@@ -61,7 +61,7 @@ mutation UserSubmission($puzzle_id: uuid, $user_id: uuid, $form_data: jsonb) {
   }
 }
 
-# Create/update user
+# Create/update ANONYMOUS users, do not touch nonce nor wallet here
 mutation UpsertUser($userId: uuid) {
   insert_users(
     objects: { user_id: $userId }
@@ -70,5 +70,43 @@ mutation UpsertUser($userId: uuid) {
     returning {
       user_id
     }
+  }
+}
+
+# nonce is any random string
+mutation AddWalletToUser(
+  $userId: uuid!
+  $publicAddress: String!
+  $nonce: String!
+) {
+  user: update_users_by_pk(
+    pk_columns: { user_id: $userId }
+    _set: { public_address: $publicAddress, nonce: $nonce }
+  ) {
+    nonce
+  }
+}
+
+query UserByPublicAddress($publicAddress: String!) {
+  submissions(where: { user: { public_address: { _eq: $publicAddress } } }) {
+    puzzle {
+      success_route
+    }
+  }
+  users(where: { public_address: { _eq: $publicAddress } }) {
+    user_id
+    nonce
+  }
+}
+
+# When an anon user signs in with wallet, we want to migrate anon submissions to them
+query MigrateUserSubmissions($fromUser: uuid, $toUser: uuid) {
+  fromUser: submissions(where: { user_id: { _eq: $fromUser } }) {
+    form_data
+    puzzle_id
+  }
+  toUser: submissions(where: { user_id: { _eq: $toUser } }) {
+    form_data
+    puzzle_id
   }
 }
