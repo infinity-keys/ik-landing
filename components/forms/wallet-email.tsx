@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { InformationCircleIcon } from "@heroicons/react/solid";
 
 import ButtonSocialTwitter from "@components/button-social-twitter";
 import { ETH_ADDRESS_REGEX } from "@lib/constants";
@@ -11,19 +12,57 @@ import Wallet from "@components/wallet";
 interface FormInput extends PuzzleInput {
   name: string;
   email: string;
+  address?: string;
 }
 
-const LandingForm = ({ puzzleId }: PuzzleInput) => {
+function Alert() {
+  return (
+    <div className="rounded-md bg-blue-50 p-4">
+      <div className="flex">
+        <div className="flex-shrink-0">
+          <InformationCircleIcon
+            className="h-5 w-5 text-blue-400"
+            aria-hidden="true"
+          />
+        </div>
+        <div className="ml-3 flex-1 md:flex md:justify-between">
+          <p className="text-sm text-blue-700">
+            A new software update is available. See what’s new in version 2.0.4.
+          </p>
+          <p className="mt-3 text-sm md:mt-0 md:ml-6">
+            <a
+              href="#"
+              className="whitespace-nowrap font-medium text-blue-700 hover:text-blue-600"
+            >
+              Details <span aria-hidden="true">&rarr;</span>
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const WalletEmail = ({ puzzleId }: PuzzleInput) => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isValid, isSubmitSuccessful },
   } = useForm<FormInput>({ mode: "onChange" });
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
     const res = await formSubmit({ data });
-
-    if (!res.ok) throw new Error(res.statusText);
+    // 409 === conflict === already submitted
+    if (res.status === 409) {
+      // Set error message
+      console.log("Already submitted");
+      setError("puzzleId", {
+        type: "custom",
+        message: "Already submiitted",
+      });
+      return false;
+    }
     return true;
   };
 
@@ -54,6 +93,7 @@ const LandingForm = ({ puzzleId }: PuzzleInput) => {
           <p className="text-sm font-normal mb-4">
             Drop us an email if web3 is not your thing.
           </p>
+          {errors?.puzzleId && <Alert />}
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
               className="mb-6 block w-full lowercase rounded-md text-gray-150 placeholder:text-gray-150 text-sm py-2 px-4 bg-gray-500"
@@ -111,4 +151,4 @@ const LandingForm = ({ puzzleId }: PuzzleInput) => {
   );
 };
 
-export default LandingForm;
+export default WalletEmail;

@@ -5,18 +5,19 @@ import Head from "next/head";
 
 import { gqlApiSdk } from "@lib/server";
 import Wrapper from "@components/wrapper";
+import WalletEmail from "@components/forms/wallet-email";
 
-const LandingForm = dynamic(() => import('@components/forms/landing'));
-const DevForm = dynamic(() => import('@components/forms/dev'));
-const AvalancheForm = dynamic(() => import('@components/forms/avalanche'));
-const InstagramForm = dynamic(() => import('@components/forms/instagram'));
+const LandingForm = dynamic(() => import("@components/forms/landing"));
+const DevForm = dynamic(() => import("@components/forms/dev"));
+const AvalancheForm = dynamic(() => import("@components/forms/avalanche"));
+const InstagramForm = dynamic(() => import("@components/forms/instagram"));
 
 interface SuccessPageProps {
   name: string;
   puzzleId: string;
 }
 interface SuccessPageParams {
-  params: { success: string }
+  params: { success: string };
 }
 
 const Dev: NextPage<SuccessPageProps> = ({ puzzleId, name }) => {
@@ -33,10 +34,10 @@ const Dev: NextPage<SuccessPageProps> = ({ puzzleId, name }) => {
           </header>
 
           <main className="flex flex-col items-center justify-center w-full flex-1">
-            {name === 'dev' && <DevForm puzzleId={puzzleId} />}
-            {name === 'landing' && <LandingForm puzzleId={puzzleId} />}
-            {name === 'avalanche' && <AvalancheForm puzzleId={puzzleId} />}
-            {name === 'instagram' && <InstagramForm puzzleId={puzzleId} />}
+            {name === "dev" && <DevForm puzzleId={puzzleId} />}
+            {name === "landing" && <WalletEmail puzzleId={puzzleId} />}
+            {name === "avalanche" && <AvalancheForm puzzleId={puzzleId} />}
+            {name === "instagram" && <InstagramForm puzzleId={puzzleId} />}
           </main>
         </div>
       </div>
@@ -46,7 +47,9 @@ const Dev: NextPage<SuccessPageProps> = ({ puzzleId, name }) => {
 
 export default Dev;
 
-export async function getStaticProps({ params: { success } }: SuccessPageParams): Promise<{ props: SuccessPageProps }> {
+export async function getStaticProps({
+  params: { success },
+}: SuccessPageParams): Promise<{ props: SuccessPageProps }> {
   const gql = await gqlApiSdk();
   const { puzzles } = await gql.PuzzleInfoBySuccess({ success });
   const [{ puzzle_id, simple_name }] = puzzles;
@@ -56,7 +59,7 @@ export async function getStaticProps({ params: { success } }: SuccessPageParams)
       name: simple_name,
       puzzleId: puzzle_id,
     },
-  }
+  };
 }
 
 export async function getStaticPaths() {
@@ -64,14 +67,14 @@ export async function getStaticPaths() {
   const { puzzles } = await gql.AllSuccessRoutes();
 
   // https://nextjs.org/docs/api-reference/data-fetching/get-static-paths
-  const paths = puzzles.map(p => ({
+  const paths = puzzles.map((p) => ({
     params: {
-      success: p.success_route
-    }
-  }))
+      success: p.success_route,
+    },
+  }));
 
   return {
     paths,
     fallback: false,
-  }
+  };
 }

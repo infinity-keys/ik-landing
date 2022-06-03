@@ -1,5 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
+import has from "lodash/has";
+
 import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 import { gqlApiSdk } from "@lib/server";
 import { IkJwt, PuzzleInput } from "@lib/types";
@@ -8,6 +10,23 @@ import { verifyToken } from "@lib/jwt";
 interface UserSubmission extends PuzzleInput {
   [key: string]: string;
 }
+
+interface BaseGqlResponseError {
+  extensions: {
+    path: string;
+    code: string;
+  };
+  message: string;
+}
+
+interface BaseGqlResponseErrors {
+  response: {
+    errors?: BaseGqlResponseError[];
+  };
+}
+
+const isGqlError = (e: unknown): e is BaseGqlResponseErrors =>
+  has(e, "response.errors");
 
 export default async function handler(
   req: NextApiRequest,
@@ -43,16 +62,30 @@ export default async function handler(
 
   // User's puzzles claims does not include the success route for this puzzle id
   if (!puzzles.length) {
-    return res.status(403).end();
+    return res.status(403).send({
+      error: "User has not solved the puzzle they are submitting for",
+    });
   }
 
-  const response = await gql.UserSubmission({
-    puzzle_id: puzzleId, // comes from hidden field in form
-    user_id: payload.sub, // user id from jwt
-    form_data: formData,
-  });
+  try {
+    await gql.UserSubmission({
+      puzzle_id: puzzleId, // comes from hidden field in form
+      user_id: payload.sub, // user id from jwt
+      form_data: formData,
+    });
+    return res.status(200).end();
+  } catch (e) {
+    if (isGqlError(e) && e.response?.errors?.length) {
+      const [error] = e.response.errors;
+      if (error.extensions.code === "constraint-violation") {
+        return res.status(409).send({
+          error: "constraint-violation",
+        });
+      }
+    }
+    // Generic explode
+    return res.status(500).end();
+  }
 
   // Error will throw if submitting duplicate solution, @TODO: handle
-
-  return res.status(200).end();
 }
