@@ -21,23 +21,23 @@ const providerOptions = {
       infuraId: "c10d222a5bae4a8e97fad0915b06ff5d"
     }
   },
-  coinbasewallet: {
-    package: CoinbaseWalletSDK, // Required
-    options: {
-      appName: "My Awesome App", // Required
-      infuraId: "INFURA_ID", // Required
-      rpc: "", // Optional if `infuraId` is provided; otherwise it's required
-      chainId: 1, // Optional. It defaults to 1 if not provided
-      darkMode: false // Optional. Use dark theme, defaults to false
-    }
-  },
-  fortmatic: {
-    package: Fortmatic, // required
-    options: {
-      key: "FORTMATIC_KEY", // required
-      network: customNetworkOptions // if we don't pass it, it will default to localhost:8454
-    }
-  }
+  // coinbasewallet: {
+  //   package: CoinbaseWalletSDK, // Required
+  //   options: {
+  //     appName: "My Awesome App", // Required
+  //     infuraId: "INFURA_ID", // Required
+  //     rpc: "", // Optional if `infuraId` is provided; otherwise it's required
+  //     chainId: 1, // Optional. It defaults to 1 if not provided
+  //     darkMode: false // Optional. Use dark theme, defaults to false
+  //   }
+  // },
+  // fortmatic: {
+  //   package: Fortmatic, // required
+  //   options: {
+  //     key: "FORTMATIC_KEY", // required
+  //     network: customNetworkOptions // if we don't pass it, it will default to localhost:8454
+  //   }
+  // }
 };
 
 // In NextJS, during prerender in Node there is no "window" the library needs
