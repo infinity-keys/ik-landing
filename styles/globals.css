@@ -13,10 +13,10 @@
     height: 45px !important;
 
     /* 250+ */
-    @screen xsm {
+    /* @screen xsm {
       width: 28px !important;
       height: 28px !important;
-    }
+    } */
     /* 640+ */
     @screen sm {
       @apply mx-2;
@@ -25,6 +25,8 @@
     }
     /* 768+ */
     @screen md {
+      width: 90px !important;
+      height: 90px !important;
     }
     /* 1024+ */
     @screen lg {

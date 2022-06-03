@@ -15,8 +15,10 @@ import type { NextPage } from "next";
 import Twitter from "@components/svg/twitter-svg";
 import TwitterIcon from "@components/svg/twitter-icon-svg";
 import MaterialLock from "@components/svg/material-lock-svg";
+import MarketingNav from "@components/marketing-nav";
 import Map from "@components/svg/map-svg";
 import { gqlApiSdk } from "@lib/server";
+import { Disclosure } from "@headlessui/react";
 
 const navigation = [
   { name: "Home", href: "https://www.infinitykeys.io/future/landing" },
@@ -113,71 +115,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
 
       <div className="scanlines">
         {/* Nav */}
-        <header className="w-full static z-50 bg-blue">
-          <nav className="container px-4 sm:px-6 lg:px-8" aria-label="Top">
-            <div className="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
-              {/* left */}
-              <div className="flex items-center">
-                <a href="https://www.infinitykeys.io/future/landing">
-                  <span className="sr-only">Infinity Keys</span>
-                  <Image
-                    src="/logo.svg"
-                    width={100}
-                    height={100}
-                    alt="IK logo"
-                  />
-                  {/* <img
-                  className="h-10 w-auto"
-                  src="https://tailwindui.com/img/logos/workflow-mark.svg?color=white"
-                  alt=""
-                /> */}
-                </a>
-              </div>
-              {/* center */}
-              <div className="hidden space-x-8 lg:block">
-                {navigation.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    className="text-2xl font-medium hover:text-turquoise"
-                  >
-                    {link.name}
-                  </a>
-                ))}
-              </div>
-              <div className="flex items-center space-x-6 icons">
-                <div className="twitterIcon">
-                  <TwitterIcon />
-                </div>
-                <div className="discordIcon">
-                  <Discord />
-                </div>
-              </div>
-
-              {/* right */}
-              <div className="ml-10 space-x-4">
-                <a
-                  href="#"
-                  className="inline-block bg-blue hover:bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-2xl font-medium text-white hover:text-blue"
-                >
-                  Play
-                </a>
-              </div>
-            </div>
-            {/* <div className="py-4 flex flex-wrap justify-center space-x-6 lg:hidden">
-              {navigation.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-base font-medium text-white hover:text-indigo-50"
-                >
-                  {link.name}
-                </a>
-              ))}
-            </div> */}
-          </nav>
-        </header>
-
+        <MarketingNav />
         {/* Top puzzle */}
         <div className="slice--top w-full h-screen min-h-[54rem] flex items-center radial-bg relative z-0">
           <div className="container px-4 sm:px-6 lg:px-8">
