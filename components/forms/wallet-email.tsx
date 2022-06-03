@@ -15,9 +15,9 @@ interface FormInput extends PuzzleInput {
   address?: string;
 }
 
-function Alert() {
+function Alert({ text }: { text: string }) {
   return (
-    <div className="rounded-md bg-blue-50 p-4">
+    <div className="rounded-md bg-blue p-4">
       <div className="flex">
         <div className="flex-shrink-0">
           <InformationCircleIcon
@@ -27,16 +27,9 @@ function Alert() {
         </div>
         <div className="ml-3 flex-1 md:flex md:justify-between">
           <p className="text-sm text-blue-700">
-            A new software update is available. See what’s new in version 2.0.4.
+            {text}
           </p>
-          <p className="mt-3 text-sm md:mt-0 md:ml-6">
-            <a
-              href="#"
-              className="whitespace-nowrap font-medium text-blue-700 hover:text-blue-600"
-            >
-              Details <span aria-hidden="true">&rarr;</span>
-            </a>
-          </p>
+
         </div>
       </div>
     </div>
@@ -56,7 +49,6 @@ const WalletEmail = ({ puzzleId }: PuzzleInput) => {
     // 409 === conflict === already submitted
     if (res.status === 409) {
       // Set error message
-      console.log("Already submitted");
       setError("puzzleId", {
         type: "custom",
         message: "Already submiitted",
@@ -66,21 +58,32 @@ const WalletEmail = ({ puzzleId }: PuzzleInput) => {
     return true;
   };
 
+  // @TODO: get this to just call onSubmit() above
   const onWalletSignature = async (address: string) => {
     // @TODO: try/catch here
-    await formSubmit({
+    const res = await formSubmit({
       data: {
         puzzleId,
         address,
       },
     });
+    if (res.status === 409) {
+      setError("puzzleId", {
+        type: "custom",
+        message: "Already submiitted",
+      });
+    }
   };
 
   return (
     <>
-      {isSubmitSuccessful && <p>Thanks for joining, we will be in touch!</p>}
-      {!isSubmitSuccessful && (
+      {isSubmitSuccessful && <Alert text="Thanks for joining, we will be in touch!" />}
+      {!isSubmitSuccessful && errors?.puzzleId &&
+        <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
+      }
+      {!isSubmitSuccessful && !errors?.puzzleId && (
         <div className="">
+
           <p className="text-sm font-normal mb-4">You did it!</p>
           <p className="text-sm font-normal mb-8">
             Connect your web3 wallet to be part of an early player leaderboard.
@@ -89,11 +92,10 @@ const WalletEmail = ({ puzzleId }: PuzzleInput) => {
           <div className="flex justify-center mb-10">
             <Wallet onWalletSignature={onWalletSignature} />
           </div>
-
+          <p className="text-center mb-8">- or -</p>
           <p className="text-sm font-normal mb-4">
             Drop us an email if web3 is not your thing.
           </p>
-          {errors?.puzzleId && <Alert />}
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
               className="mb-6 block w-full lowercase rounded-md text-gray-150 placeholder:text-gray-150 text-sm py-2 px-4 bg-gray-500"

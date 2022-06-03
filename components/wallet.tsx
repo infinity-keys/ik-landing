@@ -7,8 +7,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 import Fortmatic from "fortmatic";
 
-import Wrapper from "@components/wrapper";
-import { welcome } from "@lib/constants";
+import { message } from "@lib/utils";
 
 const customNetworkOptions = {
   rpcUrl: 'https://rinkeby.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d',
@@ -75,14 +74,12 @@ const Wallet = ({ onWalletSignature }: WalletProps) => {
       // Fetch our nonce used to sign our message
       const nonceReq = await fetch(`/api/users/${account}`);
       const { nonce } = await nonceReq.json();
-      const message = `${welcome}\n\n${nonce}`;
-
 
       if (!library?.provider?.request)
         throw new Error("Library is undefined");
       const signature = await library.provider.request({
         method: "personal_sign",
-        params: [message, account]
+        params: [message(nonce), account]
       });
       setSignature(signature);
 

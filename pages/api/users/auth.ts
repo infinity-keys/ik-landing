@@ -5,10 +5,10 @@ import uniq from "lodash/uniq";
 import differenceBy from "lodash/differenceBy";
 
 import { gqlApiSdk } from "@lib/server";
-import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE, welcome } from "@lib/constants";
+import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 import { makeUserToken, verifyToken } from "@lib/jwt";
 import { IkJwt } from "@lib/types";
-import { MigrateUserSubmissionsDocument } from "@lib/generated/graphql";
+import { message } from "@lib/utils";
 
 export default async function handler(
   req: NextApiRequest,
@@ -36,8 +36,12 @@ export default async function handler(
   const { users } = userInfo;
   if (!users.length) throw new Error("Cannot find user.");
   const [user] = users;
-  const message = `${welcome}\n\n${user.nonce}`;
-  const verifiedAddess = ethers.utils.verifyMessage(message, signature);
+
+  if (typeof user.nonce !== "string") throw new Error("Nonce is not a string.");
+  const verifiedAddess = ethers.utils.verifyMessage(
+    message(user.nonce),
+    signature
+  );
 
   // Bail if addresses don't match
   if (verifiedAddess !== publicAddress) return res.status(403).end();

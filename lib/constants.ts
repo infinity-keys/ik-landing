@@ -5,8 +5,7 @@ export const IK_CLAIMS_NAMESPACE = "https://infinitykeys.io";
 
 // Crypto stuff
 export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/;
-export const welcome =
-  "Welcome to Infinity Keys. Please sign this message that includes your unique, one-time code.";
+export const welcome = "Thanks for playing :)";
 
 // Route stuff, see utils.ts:Routes
 export const PUZZLE_LANDING_BASE = "puzzle";
