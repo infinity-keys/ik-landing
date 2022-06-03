@@ -1,10 +1,10 @@
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InformationCircleIcon } from "@heroicons/react/solid";
 
 import ButtonSocialTwitter from "@components/button-social-twitter";
-import { ETH_ADDRESS_REGEX } from "@lib/constants";
 import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
 import Wallet from "@components/wallet";
@@ -42,10 +42,13 @@ const WalletEmail = ({ puzzleId }: PuzzleInput) => {
     handleSubmit,
     setError,
     formState: { errors, isValid, isSubmitSuccessful },
-  } = useForm<FormInput>({ mode: "onChange" });
+  } = useForm<FormInput>();
+
+  const [walletSigned, setWalletSigned] = useState(false)
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
     const res = await formSubmit({ data });
+    console.log(res);
     // 409 === conflict === already submitted
     if (res.status === 409) {
       // Set error message
@@ -58,9 +61,9 @@ const WalletEmail = ({ puzzleId }: PuzzleInput) => {
     return true;
   };
 
-  // @TODO: get this to just call onSubmit() above
+  // @TODO: get this to just call onSubmit() above OR on wallet sign, pass address
+  // to a hidden field and submit form
   const onWalletSignature = async (address: string) => {
-    // @TODO: try/catch here
     const res = await formSubmit({
       data: {
         puzzleId,
@@ -72,16 +75,18 @@ const WalletEmail = ({ puzzleId }: PuzzleInput) => {
         type: "custom",
         message: "Already submiitted",
       });
+      return;
     }
+    setWalletSigned(true);
   };
 
   return (
     <>
-      {isSubmitSuccessful && <Alert text="Thanks for joining, we will be in touch!" />}
+      {(isSubmitSuccessful || walletSigned) && <Alert text="Thanks for joining, we will be in touch!" />}
       {!isSubmitSuccessful && errors?.puzzleId &&
         <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
       }
-      {!isSubmitSuccessful && !errors?.puzzleId && (
+      {!isSubmitSuccessful && !errors?.puzzleId && !walletSigned && (
         <div className="">
 
           <p className="text-sm font-normal mb-4">You did it!</p>
@@ -104,14 +109,14 @@ const WalletEmail = ({ puzzleId }: PuzzleInput) => {
               id="name"
               {...register("name")}
             />
-            {errors?.email && <p>Email required.</p>}
+
 
             <input
               className="mb-6 block w-full lowercase rounded-md text-gray-150 placeholder:text-gray-150 text-sm py-2 px-4 bg-gray-500"
               type="email"
               placeholder="&rsaquo; Enter your email address"
               id="email"
-              {...register("email", { required: true })}
+              {...register("email")}
             />
 
             <input type="hidden" {...register("puzzleId")} value={puzzleId} />
