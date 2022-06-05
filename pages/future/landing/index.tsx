@@ -257,7 +257,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
             alt="Blue geoddesic background"
           /> */}
 
-          <div className="justify-items-center items-center lg:mx-auto lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:grid-flow-col-dense lg:gap-24 relative">
+          <div className="justify-items-center items-center md:mx-auto md:max-w-7xl md:px-8 md:grid md:grid-cols-2 md:grid-flow-col-dense md:gap-24 relative">
             <div className="lg:w-90 lg:h-90 lg:col-start p-10">
               <Map />
             </div>
@@ -267,7 +267,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                   <h2 className="text-3xl font-extrabold tracking-tight">
                     Build an Infinity Keys Hunt for your Project
                   </h2>
-                  <p className="mt-4 text-lg text-gray-100">
+                  <p className="mt-6 text-lg text-gray-100">
                     Infinity Keys is a platform to build puzzles, hunts, and
                     treasure. If you would like to use these tools to increase
                     engagement with your community, users, players, or fans,
