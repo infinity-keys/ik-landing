@@ -411,7 +411,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
             <nav className="container px-4 sm:px-6 lg:px-8" aria-label="Top">
               <div className="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
                 {/* left */}
-                <div className="flex items-center">
+                <div className="hidden sm:block items-center">
                   <a href="#">
                     <span className="sr-only">Infinity Keys</span>
                     <Image
@@ -428,18 +428,23 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
                   </a>
                 </div>
                 {/* center */}
-                <div className="hidden space-x-8 lg:block">
-                  {navigation.map((link) => (
-                    <a
-                      key={link.name}
-                      href={link.href}
-                      className="text-2xl font-medium hover:text-turquoise"
-                    >
-                      {link.name}
-                    </a>
-                  ))}
+
+                <div className="menu-items flex items-center justify-center sm:items-stretch sm:justify-start">
+                  <div className="hidden sm:block sm:ml-6">
+                    <div className="flex space-x-4">
+                      {navigation.map((link) => (
+                        <a
+                          key={link.name}
+                          href={link.href}
+                          className="text-2xl font-medium hover:text-turquoise"
+                        >
+                          {link.name}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-6">
+                <div className="flex items-center space-x-6 icons">
                   <div className="twitterIcon">
                     <TwitterIcon />
                   </div>

@@ -23,7 +23,7 @@ export default function Example() {
       {({ open }) => (
         <>
           <div
-            className="container px-4 sm:px-6 lg:px-8 border-b border-indigo-500 lg:border-none"
+            className="sm:px-6 lg:px-8 border-b border-indigo-500 lg:border-none"
             aria-label="Top"
           >
             <div className="relative flex items-center justify-between h-16">
