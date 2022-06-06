@@ -12,7 +12,7 @@ import { gqlApiSdk } from "@lib/server";
 import Header from "@components/header-nav";
 
 const navigation = [
-  { name: "Home", href: "https://www.infinitykeys.io/future/landing" },
+  { name: "Home", href: "/" },
   { name: "Hunts", href: "#" },
   { name: "Partner", href: "#partner" },
   { name: "Docs", href: "#" },
