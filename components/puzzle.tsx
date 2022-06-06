@@ -73,7 +73,7 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
             <div className={clsx({ invisible: !isWrongGuess })}>
               <span className="opacity-50">Incorrect passcode. Try again.</span>
             </div>
-            <div className="magic-input pt-2 text-turquoise font-bold">
+            <div className="magic-input  text-turquoise font-bold">
               {boxes && (
                 <RICIBs
                   amount={count}

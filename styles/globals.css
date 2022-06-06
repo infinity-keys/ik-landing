@@ -14,8 +14,8 @@
 
     /* 250+ */
     @screen xsm {
-      width: 28px !important;
-      height: 28px !important;
+      width: 45px !important;
+      height: 45px !important;
     }
     /* 640+ */
     @screen sm {

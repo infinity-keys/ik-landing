@@ -36,7 +36,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
 
         {/* Top puzzle */}
         <div className="slice--top w-full h-screen min-h-[54rem] flex items-center radial-bg relative z-0">
-          <div className="container px-4 sm:px-6 lg:px-8">
+          <div className="w-full mr-auto ml-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <Image src="/logo.svg" width={150} height={94} alt="IK logo" />
             </div>
