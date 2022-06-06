@@ -25,18 +25,6 @@ export default function Header() {
             aria-label="Top"
           >
             <div className="relative flex items-center justify-between h-16">
-              {/* hamburger icon, visible mobile only */}
-              <div className="hamburger flex items-center sm:hidden">
-                {/* Mobile menu button*/}
-                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <XIcon className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <MenuIcon className="block h-6 w-6" aria-hidden="true" />
-                  )}
-                </Disclosure.Button>
-              </div>
               <div className="logo flex-shrink-0 flex items-center">
                 <div className="block lg:hidden h-12 w-auto">
                   <Image
@@ -88,6 +76,19 @@ export default function Header() {
                   Play
                 </a>
               </div>
+
+              {/* hamburger icon, visible mobile only */}
+              <div className="hamburger flex items-center sm:hidden">
+                {/* Mobile menu button*/}
+                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                  <span className="sr-only">Open main menu</span>
+                  {open ? (
+                    <XIcon className="block h-6 w-6" aria-hidden="true" />
+                  ) : (
+                    <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                  )}
+                </Disclosure.Button>
+              </div>
             </div>
           </div>
 
@@ -98,10 +99,7 @@ export default function Header() {
                   key={item.name}
                   as="a"
                   href={item.href}
-                  className={classNames(
-                    item.name ? " text-white" : " hover:text-turquoise",
-                    "block px-3 py-2 rounded-md text-2xl font-medium"
-                  )}
+                  className="text-white hover:text-turquoise block px-3 py-2 rounded-md text-2xl font-medium"
                   aria-current={item.name ? "page" : undefined}
                 >
                   {item.name}
