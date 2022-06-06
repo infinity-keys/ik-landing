@@ -33,6 +33,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
       <div className="scanlines">
         {/* Nav */}
         <Header />
+
         {/* Top puzzle */}
         <div className="slice--top w-full h-screen min-h-[54rem] flex items-center radial-bg relative z-0">
           <div className="container px-4 sm:px-6 lg:px-8">
@@ -91,7 +92,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
         </main>
 
         {/* Game Flow */}
-        <div className="relative pt-32 pb-32">
+        {/* <div className="relative pt-32 pb-32">
           <Image
             src="/blue-angles.jpeg"
             layout="fill"
@@ -114,7 +115,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Partner */}
         <div id="partner" className="flex items-center relative">
