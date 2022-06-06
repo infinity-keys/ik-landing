@@ -7,9 +7,9 @@ import Discord from "@components/svg/discord-svg";
 
 import type { NextPage } from "next";
 import TwitterIcon from "@components/svg/twitter-icon-svg";
-import MarketingNav from "@components/marketing-nav";
 import Map from "@components/svg/map-svg";
 import { gqlApiSdk } from "@lib/server";
+import Header from "@components/header-nav";
 
 const navigation = [
   { name: "Home", href: "https://www.infinitykeys.io/future/landing" },
@@ -32,7 +32,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
 
       <div className="scanlines">
         {/* Nav */}
-        <MarketingNav />
+        <Header />
         {/* Top puzzle */}
         <div className="slice--top w-full h-screen min-h-[54rem] flex items-center radial-bg relative z-0">
           <div className="container px-4 sm:px-6 lg:px-8">
