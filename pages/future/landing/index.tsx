@@ -20,10 +20,10 @@ const navigation = [
 
 interface PageProps {
   count: number;
-  name: string;
+  puzzleId: string;
 }
 
-const Landing: NextPage<PageProps> = ({ count, name }) => {
+const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
   return (
     <Wrapper>
       <Head>
@@ -55,7 +55,7 @@ const Landing: NextPage<PageProps> = ({ count, name }) => {
               </p>
               <p>(find the underlined letters!)</p>
             </div>
-            <Puzzle count={count} puzzleUri={name} />
+            <Puzzle count={count} puzzleUri={puzzleId} />
           </div>
           <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40"></div>
         </div>
@@ -284,11 +284,11 @@ export async function getStaticProps(): Promise<{ props: PageProps }> {
   const gql = await gqlApiSdk();
 
   const { puzzles } = await gql.PuzzleInfoByLanding({ landing: "landing" });
-  const [{ simple_name, solution_char_count }] = puzzles;
+  const [{ puzzle_id, solution_char_count }] = puzzles;
 
   return {
     props: {
-      name: simple_name,
+      puzzleId: puzzle_id,
       count: solution_char_count || 0,
     },
   };
