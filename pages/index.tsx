@@ -32,7 +32,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
 
       <div className="scanlines">
         {/* Nav */}
-        <Header />
+        <Header navigation={navigation} />
 
         {/* Top puzzle */}
         <div className="slice--top w-full h-screen min-h-[54rem] flex items-center radial-bg relative z-0">

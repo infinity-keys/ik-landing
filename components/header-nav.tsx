@@ -1,21 +1,20 @@
+import Image from "next/image";
+import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
+
 import Discord from "@components/svg/discord-svg";
 import TwitterIcon from "@components/svg/twitter-icon-svg";
-import Image from "next/image";
 
-const navigation = [
-  { name: "Home", href: "https://www.infinitykeys.io/future/landing" },
-  { name: "Hunts", href: "#" },
-  { name: "Partner", href: "#partner" },
-  { name: "Docs", href: "#" },
-];
+interface Props {
+  navigation: { name: string; href: string }[];
+}
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Header() {
+export default function Header({ navigation }: Props) {
   return (
     <Disclosure as="nav" className="w-full static z-50 bg-blue">
       {({ open }) => (
@@ -47,13 +46,11 @@ export default function Header() {
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="text-2xl font-medium hover:text-turquoise"
-                      >
-                        {item.name}
-                      </a>
+                      <Link href={item.href} key={item.name}>
+                        <a className="text-2xl font-medium hover:text-turquoise">
+                          {item.name}
+                        </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
