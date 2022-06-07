@@ -10,6 +10,8 @@ import TwitterIcon from "@components/svg/twitter-icon-svg";
 import Map from "@components/svg/map-svg";
 import { gqlApiSdk } from "@lib/server";
 import Header from "@components/header-nav";
+import PartnerForm from "@components/email-partner";
+import NewsLetterForm from "@components/email-newsletter";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -144,29 +146,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                 puzzle please contact us here
               </p>
               <div className="mt-10 sm:mt-12 flex justify-center">
-                <form action="#" className="sm:max-w-xl sm:mx-auto lg:mx-0">
-                  <div className="sm:flex">
-                    <div className="min-w-0 flex-1 mb-4">
-                      <label htmlFor="email" className="sr-only">
-                        Email address
-                      </label>
-                      <input
-                        id="email"
-                        type="email"
-                        placeholder="Enter your email"
-                        className="block w-full px-4 py-3 rounded-md border-0 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
-                      />
-                    </div>
-                    <div className="sm: mb-4 sm:ml-3">
-                      <button
-                        type="submit"
-                        className="block w-full py-3 px-4 rounded-md shadow bg-indigo-500 text-white font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </div>
-                </form>
+                <PartnerForm />
               </div>
             </div>
           </div>
@@ -184,29 +164,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                     </span>
                   </h1>
                   <div className="mt-10 sm:mt-12 flex justify-center">
-                    <form action="#" className="sm:max-w-xl sm:mx-auto lg:mx-0">
-                      <div className="sm:flex">
-                        <div className="min-w-0 flex-1">
-                          <label htmlFor="email" className="sr-only">
-                            Email address
-                          </label>
-                          <input
-                            id="email"
-                            type="email"
-                            placeholder="Enter your email"
-                            className="block w-full px-4 py-3 rounded-md border-0 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
-                          />
-                        </div>
-                        <div className="m-4 sm:mt-0 sm:ml-3">
-                          <button
-                            type="submit"
-                            className="block w-full py-3 px-4 rounded-md shadow bg-indigo-500 text-white font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
-                          >
-                            Submit
-                          </button>
-                        </div>
-                      </div>
-                    </form>
+                    <NewsLetterForm />
                   </div>
                 </div>
               </div>
