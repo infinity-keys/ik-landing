@@ -25,7 +25,7 @@
     "@walletconnect/web3-provider": "^1.7.8",
     "clsx": "^1.1.1",
     "ethers": "^5.6.5",
-    "fortmatic": "^2.3.0",
+    "fortmatic": "^2.4.0",
     "graphql": "^16.4.0",
     "graphql-request": "^4.2.0",
     "jose": "^4",
