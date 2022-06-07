@@ -10,10 +10,6 @@ interface Props {
   navigation: { name: string; href: string }[];
 }
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function Header({ navigation }: Props) {
   return (
     <Disclosure as="nav" className="w-full static z-50 bg-blue">
