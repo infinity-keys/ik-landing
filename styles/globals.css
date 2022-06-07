@@ -12,11 +12,6 @@
     width: 45px !important;
     height: 45px !important;
 
-    /* 250+ */
-    @screen xsm {
-      width: 45px !important;
-      height: 45px !important;
-    }
     /* 640+ */
     @screen sm {
       @apply mx-2;

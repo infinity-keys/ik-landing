@@ -64,7 +64,7 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
       {!isLoading && (
         <div className="flex justify-center z-10">
           <div>
-            <div className="flex pt-5 pb-5">
+            <div className="flex py-5">
               <div className="w-6">
                 <MaterialIcon />
               </div>

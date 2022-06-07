@@ -67,7 +67,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
             <div className="mx-auto max-w-7xl lg:px-8">
               <div className="">
                 <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
-                  <div className="xsm:pb-6 lg:py-24">
+                  <div className="lg:py-24">
                     <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-left text-white sm:mt-5 sm:text-6xl lg:mt-20 xl:text-6xl">
                       <span className="block">What is</span>
                       <span className="block text-turquoise">
@@ -248,10 +248,10 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                   </div>
                 </div>
                 <div className="flex items-center space-x-6 icons">
-                  <div className="twitterIcon">
+                  <div className="twitterIcon hover: fill-twitterBlue">
                     <TwitterIcon />
                   </div>
-                  <div className="discordIcon">
+                  <div className="discordIcon hover: fill-discordPurple">
                     <Discord />
                   </div>
                 </div>
