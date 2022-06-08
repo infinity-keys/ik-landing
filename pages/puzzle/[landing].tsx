@@ -8,12 +8,14 @@ import NavAvalanche from "@components/nav-avalanche";
 import Puzzle from "@components/puzzle";
 
 import { gqlApiSdk } from "@lib/server";
+import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
 
 export interface PuzzlePageProps {
   name: string;
   count: number;
   puzzleId: string;
-  input_type: string;
+  inputType?: Puzzle_Input_Type_Enum;
+  failMessage?: string;
 }
 interface PuzzlePageParams {
   params: {
@@ -21,7 +23,7 @@ interface PuzzlePageParams {
   }
 }
 
-const Dev: NextPage<PuzzlePageProps> = ({ name, count, puzzleId, input_type }) => {
+const Dev: NextPage<PuzzlePageProps> = ({ name, count, puzzleId, inputType, failMessage }) => {
   return (
     <Wrapper>
       <div className="ik-page scanlines">
@@ -31,23 +33,22 @@ const Dev: NextPage<PuzzlePageProps> = ({ name, count, puzzleId, input_type }) =
           </Head>
 
           <main className="text-center pt-5">
-            {name !== 'instagram' &&
+            <div className="pb-16">
               <Image
                 src="/logo.svg"
                 alt="Infinity Keys logo"
                 width={100}
                 height={62.72}
               />
+            </div>
 
-            }
-
-            {name === 'landing' && <p className="py-16 text-center text-lg text-gray-100">
+            {name === 'landing' && <p className="pb-16 text-center text-lg text-gray-100">
               Infinity Keys is a treasure hunt platform. <br />
               Find the clues, submit the passcode, unlock the treasure. <br />
               Play the game and join our early community.
             </p>}
 
-            <Puzzle count={count} puzzleUri={puzzleId} boxes={input_type === 'boxes'} />
+            <Puzzle count={count} puzzleUri={puzzleId} boxes={inputType === 'boxes'} failMessage={failMessage} />
           </main>
 
           <footer className="ik-front-bottom w-full">
@@ -65,14 +66,15 @@ export async function getStaticProps({ params: { landing } }: PuzzlePageParams):
   const gql = await gqlApiSdk();
 
   const { puzzles } = await gql.PuzzleInfoByLanding({ landing });
-  const [{ simple_name, solution_char_count, puzzle_id, input_type }] = puzzles;
+  const [{ simple_name, solution_char_count, puzzle_id, input_type, fail_message }] = puzzles;
 
   return {
     props: {
       name: simple_name,
       count: solution_char_count || 0,
       puzzleId: puzzle_id,
-      input_type: input_type || "boxes",
+      inputType: input_type || Puzzle_Input_Type_Enum.Boxes,
+      failMessage: fail_message || '',
     },
   };
 }

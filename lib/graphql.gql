@@ -17,8 +17,10 @@ query PuzzleInfoByLanding($landing: String!) {
     solution_char_count
     puzzle_id
     input_type
+    fail_message
   }
 }
+
 query PuzzleInfoBySuccess($success: String!) {
   puzzles(where: { success_route: { _eq: $success } }) {
     simple_name
