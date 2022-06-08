@@ -26,6 +26,7 @@ query PuzzleInfoBySuccess($success: String!) {
   puzzles(where: { success_route: { _eq: $success } }) {
     simple_name
     puzzle_id
+    success_message
   }
 }
 
