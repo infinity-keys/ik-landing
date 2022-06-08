@@ -8,6 +8,7 @@ import MaterialIcon from "@components/svg/material-lock-svg";
 
 import { puzzlePost } from "@lib/fetchers";
 import { routeFailUrl, routeSuccessUrl } from "@lib/utils";
+import Markdown from "./markdown";
 
 interface PuzzleProps {
   count: number;
@@ -69,7 +70,9 @@ const Puzzle = ({ count, puzzleUri, boxes = true, failMessage }: PuzzleProps) =>
               <h1 className="text-base font-bold pt-2 pl-4">Passcode</h1>
             </div>
             <div className={clsx({ invisible: !isWrongGuess })}>
-              <span className="opacity-50">{failMessage || "Incorrect passcode. Try again."}</span>
+              <div className="opacity-50">
+                <Markdown>{failMessage || "Incorrect passcode. Try again."}</Markdown>
+              </div>
             </div>
             <div className="magic-input pt-2 text-turquoise font-bold">
               {boxes && (

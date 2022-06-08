@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
-import dynamic from 'next/dynamic'
 import Head from "next/head";
 import Image from "next/image";
 
 import Wrapper from "@components/wrapper";
 import NavAvalanche from "@components/nav-avalanche";
 import Puzzle from "@components/puzzle";
+import Markdown from '@components/markdown';
 
 import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
@@ -15,6 +15,7 @@ export interface PuzzlePageProps {
   count: number;
   puzzleId: string;
   inputType?: Puzzle_Input_Type_Enum;
+  landingMessage?: string;
   failMessage?: string;
 }
 interface PuzzlePageParams {
@@ -23,7 +24,7 @@ interface PuzzlePageParams {
   }
 }
 
-const Dev: NextPage<PuzzlePageProps> = ({ name, count, puzzleId, inputType, failMessage }) => {
+const Dev: NextPage<PuzzlePageProps> = ({ name, count, puzzleId, inputType, landingMessage, failMessage }) => {
   return (
     <Wrapper>
       <div className="ik-page scanlines">
@@ -42,11 +43,11 @@ const Dev: NextPage<PuzzlePageProps> = ({ name, count, puzzleId, inputType, fail
               />
             </div>
 
-            {name === 'landing' && <p className="pb-16 text-center text-lg text-gray-100">
-              Infinity Keys is a treasure hunt platform. <br />
-              Find the clues, submit the passcode, unlock the treasure. <br />
-              Play the game and join our early community.
-            </p>}
+            {landingMessage &&
+              <div className="pb-16 text-center text-lg text-gray-100">
+                <Markdown>{landingMessage}</Markdown>
+              </div>
+            }
 
             <Puzzle count={count} puzzleUri={puzzleId} boxes={inputType === 'boxes'} failMessage={failMessage} />
           </main>
@@ -66,7 +67,7 @@ export async function getStaticProps({ params: { landing } }: PuzzlePageParams):
   const gql = await gqlApiSdk();
 
   const { puzzles } = await gql.PuzzleInfoByLanding({ landing });
-  const [{ simple_name, solution_char_count, puzzle_id, input_type, fail_message }] = puzzles;
+  const [{ simple_name, solution_char_count, puzzle_id, input_type, landing_message, fail_message }] = puzzles;
 
   return {
     props: {
@@ -74,6 +75,7 @@ export async function getStaticProps({ params: { landing } }: PuzzlePageParams):
       count: solution_char_count || 0,
       puzzleId: puzzle_id,
       inputType: input_type || Puzzle_Input_Type_Enum.Boxes,
+      landingMessage: landing_message || '',
       failMessage: fail_message || '',
     },
   };
