@@ -13,7 +13,7 @@ module.exports = {
       },
     },
   ],
-  documents: ["./lib/**/*.gql"],
+  documents: ["./lib/graphql.gql"],
   overwrite: true,
   generates: {
     "./lib/generated/graphql.ts": {

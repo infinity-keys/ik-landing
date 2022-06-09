@@ -2,6 +2,7 @@ import {
   PUZZLE_FAILED_BASE,
   PUZZLE_LANDING_BASE,
   PUZZLE_SUCCESS_BASE,
+  welcome,
 } from "./constants";
 
 export const epochMinus30s = () => Math.round(new Date().getTime() / 1000) - 30;
@@ -12,3 +13,6 @@ export const routeLandingUrl = (slug: string) =>
 export const routeSuccessUrl = (slug: string) =>
   `/${PUZZLE_SUCCESS_BASE}/${slug}`;
 export const routeFailUrl = (slug: string) => `/${PUZZLE_FAILED_BASE}/${slug}`;
+
+// Wallet stuff
+export const message = (nonce: string) => `${welcome}\n\n${nonce}`;

@@ -8,14 +8,16 @@ import MaterialIcon from "@components/svg/material-lock-svg";
 
 import { puzzlePost } from "@lib/fetchers";
 import { routeFailUrl, routeSuccessUrl } from "@lib/utils";
+import Markdown from "./markdown";
 
 interface PuzzleProps {
   count: number;
   puzzleUri: string;
   boxes?: boolean;
+  failMessage?: string;
 }
 
-const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
+const Puzzle = ({ count, puzzleUri, boxes = true, failMessage }: PuzzleProps) => {
   const inputProps = loRange(count).map(() => ({
     className: "ik-code-input text-5xl",
   }));
@@ -68,7 +70,9 @@ const Puzzle = ({ count, puzzleUri, boxes = true }: PuzzleProps) => {
               <h1 className="text-base font-bold pt-2 pl-4">Passcode</h1>
             </div>
             <div className={clsx({ invisible: !isWrongGuess })}>
-              <span className="opacity-50">Incorrect passcode. Try again.</span>
+              <div className="opacity-50">
+                <Markdown>{failMessage || "Incorrect passcode. Try again."}</Markdown>
+              </div>
             </div>
             <div className="magic-input pt-2 text-turquoise font-bold">
               {boxes && (
