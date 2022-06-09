@@ -2,51 +2,35 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { InformationCircleIcon } from "@heroicons/react/solid";
+
 
 import ButtonSocialTwitter from "@components/button-social-twitter";
 import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
 import Wallet from "@components/wallet";
+import Alert from '@components/alert';
 
-interface FormInput extends PuzzleInput {
+interface FormProps extends PuzzleInput {
   name: string;
   email: string;
   address?: string;
 }
 
-function Alert({ text }: { text: string }) {
-  return (
-    <div className="rounded-md bg-blue p-4">
-      <div className="flex">
-        <div className="flex-shrink-0">
-          <InformationCircleIcon
-            className="h-5 w-5 text-blue-400"
-            aria-hidden="true"
-          />
-        </div>
-        <div className="ml-3 flex-1 md:flex md:justify-between">
-          <p className="text-sm text-blue-700">
-            {text}
-          </p>
-
-        </div>
-      </div>
-    </div>
-  );
+interface ComponentProps extends PuzzleInput {
+  successMessage?: string;
 }
 
-const WalletEmail = ({ puzzleId }: PuzzleInput) => {
+const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isValid, isSubmitSuccessful },
-  } = useForm<FormInput>();
+  } = useForm<FormProps>();
 
   const [walletSigned, setWalletSigned] = useState(false)
 
-  const onSubmit: SubmitHandler<FormInput> = async (data) => {
+  const onSubmit: SubmitHandler<FormProps> = async (data) => {
     const res = await formSubmit({ data });
     console.log(res);
     // 409 === conflict === already submitted
@@ -88,8 +72,10 @@ const WalletEmail = ({ puzzleId }: PuzzleInput) => {
       }
       {!isSubmitSuccessful && !errors?.puzzleId && !walletSigned && (
         <div className="">
+          <div className="mb-8">
+            <Alert text={successMessage || 'You did it!'} />
+          </div>
 
-          <p className="text-sm font-normal mb-4">You did it!</p>
           <p className="text-sm font-normal mb-8">
             Connect your web3 wallet to be part of an early player leaderboard.
           </p>
