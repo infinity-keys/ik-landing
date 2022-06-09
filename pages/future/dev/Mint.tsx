@@ -1,42 +1,54 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import type { NextPage } from "next";
+import { walletUtil } from "@lib/wallet";
 
 import ContractABI from "./ContractABI.json";
 
-const ContractAddress = "0xB9f6ec920279B9d19058bbdc4C1674F18Df59a83";
+const wallet = walletUtil();
+
+const ContractAddress = "0x2df860eEe7c02F1f7DF8adE65e8c2Cb372432A2B";
 const blockTracker = "testnet.snowtrace";
 
 interface PageProps {
-  account: string;
-  library: ethers.providers.Web3Provider;
   puzzleId: number;
 }
 
-const Mint: NextPage<PageProps> = ({ account, library, puzzleId }) => {
+const Mint: NextPage<PageProps> = ({ puzzleId }) => {
+  puzzleId = 0;
   const [registry, setRegistry] = useState<ethers.Contract>();
-  const [txMessage, setTxMessage] = useState();
-  const [txProgress, setTxProgress] = useState(false);
-  const [mintedBool, setMintedBool] = useState(false);
+  const [account, setAccount] = useState<string>();
+  const [txMessage, setTxMessage] = useState<string>();
+  const [txProgress, setTxProgress] = useState<boolean>(false);
+  const [claimedBool, setClaimedBool] = useState<boolean>(false);
 
   useEffect(() => {
     if (registry && account) {
-      checkIfMinted();
+      checkIfClaimed();
     }
   }, [registry, account, txProgress]);
 
   const mintNFT = async () => {
-    const signature = await verify();
+    if (registry) {
+      const signature = await verify();
 
-    const data = registry.interface.encodeFunctionData("claim", [
-      puzzleId,
-      signature,
-    ]);
+      const data = registry.interface.encodeFunctionData("claim", [
+        puzzleId,
+        signature,
+      ]);
 
-    createTx(data);
+      createTx(data);
+    }
   };
 
-  async function verify() {
+  const connectWallet = async () => {
+    await wallet.trigger();
+    const { library, account } = wallet.retrieve();
+    setAccount(account);
+    setRegistry(new ethers.Contract(ContractAddress, ContractABI, library));
+  };
+
+  const verify = async () => {
     const url = `http://localhost:3001/signature?account=${account}&id=${String(
       puzzleId
     )}`;
@@ -58,13 +70,21 @@ const Mint: NextPage<PageProps> = ({ account, library, puzzleId }) => {
       console.log(err);
       return;
     }
-  }
+  };
 
-  const checkIfMinted = async () => {
-    setMintedBool(await registry.checkIfMinted(puzzleId, account));
+  const checkIfClaimed = async () => {
+    if (registry) {
+      try {
+        setClaimedBool(await registry.checkIfClaimed(puzzleId, account));
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   const createTx = async (data: string) => {
+    const { library } = wallet.retrieve();
+
     try {
       if (registry) {
         const transaction = {
@@ -97,24 +117,24 @@ const Mint: NextPage<PageProps> = ({ account, library, puzzleId }) => {
     }
   };
 
-  const setTransactionError = (error) => {
-    setTxMessage(error);
+  const setTransactionError = (error: unknown) => {
+    console.log(error);
     setTxProgress(false);
   };
 
-  const setTransactionStart = (txHash) => {
+  const setTransactionStart = (txHash: string) => {
     const val = "https://" + blockTracker + ".io/tx/" + txHash;
     setTxMessage(val);
     setTxProgress(true);
   };
 
-  const setTransactionSuccess = (txHash) => {
+  const setTransactionSuccess = (txHash: string) => {
     const val = "https://" + blockTracker + ".io/tx/" + txHash;
     setTxMessage(val);
     setTxProgress(false);
   };
 
-  const setTransactionFailed = (txHash) => {
+  const setTransactionFailed = (txHash: string) => {
     const val = "https://" + blockTracker + ".io/tx/" + txHash;
     setTxMessage(val);
     setTxProgress(false);
@@ -122,25 +142,32 @@ const Mint: NextPage<PageProps> = ({ account, library, puzzleId }) => {
 
   return (
     <div>
-      <h3>Wallet Address: {account}</h3>
-      {txProgress ? (
-        <p>
-          Transaction Pending!{" "}
-          <a href={txMessage} target="_blank" rel="noopener noreferrer">
-            Click here to view!
-          </a>
-        </p>
-      ) : (
+      <button onClick={connectWallet}>Connect Wallet</button>
+      {account ? (
         <div>
-          {mintedBool ? (
+          <h3>Wallet Address: {account}</h3>
+          {txProgress ? (
             <p>
-              Infinity Keys TokenID {puzzleId} has been claimed by current
-              address.
+              Transaction Pending!{" "}
+              <a href={txMessage} target="_blank" rel="noopener noreferrer">
+                Click here to view!
+              </a>
             </p>
           ) : (
-            <button onClick={mintNFT}>Claim NFT</button>
+            <div>
+              {claimedBool ? (
+                <p>
+                  Infinity Keys TokenID {puzzleId} has been claimed by current
+                  address.
+                </p>
+              ) : (
+                <button onClick={mintNFT}>Claim NFT</button>
+              )}
+            </div>
           )}
         </div>
+      ) : (
+        <></>
       )}
     </div>
   );
