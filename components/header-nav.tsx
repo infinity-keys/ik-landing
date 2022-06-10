@@ -66,7 +66,7 @@ export default function Header({ navigation }: Props) {
                   href="#"
                   className="inline-block bg-blue hover:bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-xl font-medium text-white hover:text-blue"
                 >
-                  Play
+                  Puzzles
                 </a>
               </div>
 

@@ -16,8 +16,8 @@ import NewsLetterForm from "@components/email-newsletter";
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Hunts", href: "#" },
-  { name: "Partner", href: "#partner" },
-  { name: "Docs", href: "#" },
+  { name: "Collab", href: "#collab" },
+  { name: "Thesis", href: "#" },
 ];
 
 interface PageProps {
@@ -44,16 +44,18 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
             </div>
             <div className="mt-6 text-base text-center text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
               <p>
-                This is an Infinity Keys h<span className="underline">un</span>
+                This is an Infinity Keys h
+                <span className="underline font-semibold">un</span>
                 t.
               </p>
               <p>
-                You find the c<span className="underline">l</span>ues y
-                <span className="underline">o</span>u and enter the key.
+                Find the c<span className="underline font-semibold">l</span>
+                ues and enter the key.
               </p>
               <p>
-                Hunt for <span className="underline">c</span>lues anywhere, li
-                <span className="underline">k</span>e embedded in this page
+                Hunt f<span className="underline font-semibold">o</span>r{" "}
+                <span className="underline font-semibold">c</span>lues and{" "}
+                <span className="underline font-semibold">k</span>eys anywhere.
               </p>
               <p>(find the underlined letters!)</p>
             </div>
@@ -83,9 +85,9 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                       anyone can build their own hunts, keys, and treasure to
                       create engaging experiences for others.
                     </p>
-                    <p className="mt-5 text-base text-left  text-gray-300 sm:pb-6 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                    {/* <p className="mt-5 text-base text-left  text-gray-300 sm:pb-6 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Find out how it works below.
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               </div>
@@ -119,8 +121,8 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
           </div>
         </div> */}
 
-        {/* Partner */}
-        <div id="partner" className="flex items-center relative">
+        {/* Collab */}
+        <div id="collab" className="flex items-center relative">
           <div className="justify-items-center items-center md:mx-auto md:max-w-7xl md:px-8 md:grid md:grid-cols-2 md:grid-flow-col-dense md:gap-24 relative">
             <div className="lg:w-90 lg:h-90 lg:col-start p-10">
               <Map />
@@ -132,19 +134,18 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                     Build an Infinity Keys Hunt for your Project
                   </h2>
                   <p className="mt-6 text-lg text-gray-100">
-                    Infinity Keys is a platform to build puzzles, hunts, and
-                    treasure. If you would like to use these tools to increase
-                    engagement with your community, users, players, or fans,
-                    please reach out. We are currently selecting projects to
-                    work with on initial partner hunts, so please reach out for
-                    business inquiries.
+                    If you would like to use these tools to increase engagement
+                    with your community, users, players, or fans, please reach
+                    out. We are currently selecting projects to work with on
+                    initial partner hunts, so please reach out for business
+                    inquiries.
                   </p>
                 </div>
               </div>
-              <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+              {/* <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                 If you are a brand interested in integrating an Infinity Keys
                 puzzle please contact us here
-              </p>
+              </p> */}
               <div className="mt-10 sm:mt-12 flex justify-center">
                 <PartnerForm />
               </div>
@@ -160,7 +161,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                 <div className="lg:py-24">
                   <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-center text-white sm:mt-5 sm:text-6xl lg:mt-20 xl:text-6xl">
                     <span className="block text-gray-300 ">
-                      Sign Up for Our Newsletter!
+                      Sign Up for Email Updates!
                     </span>
                   </h1>
                   <div className="mt-10 sm:mt-12 flex justify-center">
@@ -176,9 +177,9 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
         <footer className="">
           <div className="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8 bg-blue">
             <nav className="container px-4 sm:px-6 lg:px-8" aria-label="Top">
-              <div className="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
+              <div className="w-full py-6 flex items-center justify-evenly border-b border-indigo-500 lg:border-none">
                 {/* left */}
-                <div className="hidden sm:block items-center">
+                {/* <div className="hidden sm:block items-center">
                   <a href="#">
                     <span className="sr-only">Infinity Keys</span>
                     <Image
@@ -188,7 +189,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                       alt="IK logo"
                     />
                   </a>
-                </div>
+                </div> */}
                 {/* center */}
                 <div className="menu-items flex items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="hidden sm:block sm:ml-6">
@@ -219,7 +220,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                     href="#"
                     className="inline-block bg-blue hover:bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-2xl font-medium text-white hover:text-blue"
                   >
-                    Play
+                    Puzzles
                   </a>
                 </div>
               </div>
