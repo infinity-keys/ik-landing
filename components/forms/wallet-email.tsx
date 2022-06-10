@@ -3,11 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 
+
 import ButtonSocialTwitter from "@components/button-social-twitter";
 import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
 import Wallet from "@components/wallet";
-import Alert from "@components/alert";
+import Alert from '@components/alert';
 
 interface FormProps extends PuzzleInput {
   name: string;
@@ -27,7 +28,7 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
     formState: { errors, isValid, isSubmitSuccessful },
   } = useForm<FormProps>();
 
-  const [walletSigned, setWalletSigned] = useState(false);
+  const [walletSigned, setWalletSigned] = useState(false)
 
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
     const res = await formSubmit({ data });
@@ -65,16 +66,14 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
 
   return (
     <>
-      {(isSubmitSuccessful || walletSigned) && (
-        <Alert text="Thanks for joining, we will be in touch!" />
-      )}
-      {!isSubmitSuccessful && errors?.puzzleId && (
+      {(isSubmitSuccessful || walletSigned) && <Alert text="Thanks for joining, we will be in touch!" />}
+      {!isSubmitSuccessful && errors?.puzzleId &&
         <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
-      )}
+      }
       {!isSubmitSuccessful && !errors?.puzzleId && !walletSigned && (
         <div className="">
           <div className="mb-8">
-            <Alert text={successMessage || "You did it!"} />
+            <Alert text={successMessage || 'You did it!'} />
           </div>
 
           <p className="text-sm font-normal mb-8">
@@ -97,6 +96,7 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
               {...register("name")}
             />
 
+
             <input
               className="mb-6 block w-full lowercase rounded-md text-gray-150 placeholder:text-gray-150 text-sm py-2 px-4 bg-gray-500"
               type="email"
@@ -116,8 +116,26 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
             </button>
           </form>
           <div className="mt-6 flex">
-            <div className="w-full flex items-center justify-center">
+            <div className="w-2/4 flex items-center justify-center">
               <ButtonSocialTwitter />
+            </div>
+            <div className="w-2/4">
+              <Link href="/puzzle/avalanche">
+                <a>
+                  <Image
+                    src="/ik-logo-social.png"
+                    alt="Infinity Keys logo for Avalanche Summit"
+                    width={320}
+                    height={320}
+                    className="pb-4"
+                  />
+                </a>
+              </Link>
+              <p className="text-center">
+                <Link href="https://www.youtube.com/c/Avalancheavax">
+                  Watch the Avalanche Summit Workshop.
+                </Link>
+              </p>
             </div>
           </div>
         </div>
