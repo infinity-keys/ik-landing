@@ -6,11 +6,14 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import Discord from "@components/svg/discord-svg";
 import TwitterIcon from "@components/svg/twitter-icon-svg";
 
-interface Props {
-  navigation: { name: string; href: string }[];
-}
+const navigation = [
+  { name: "Home", href: "/" },
+  { name: "Hunts", href: "#" },
+  { name: "Collab", sub: "coming soon", href: "#collab" },
+  { name: "Thesis", href: "#" },
+];
 
-export default function Header({ navigation }: Props) {
+export default function Header() {
   return (
     <Disclosure as="nav" className="w-full sticky top-0 z-50 bg-blue">
       {({ open }) => (
@@ -45,6 +48,12 @@ export default function Header({ navigation }: Props) {
                       <Link href={item.href} key={item.name}>
                         <a className="text-2xl font-medium hover:text-turquoise">
                           {item.name}
+                          {item.sub && (
+                            <span className="text-xs">
+                              <br />
+                              {item.sub}
+                            </span>
+                          )}
                         </a>
                       </Link>
                     ))}
