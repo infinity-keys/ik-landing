@@ -17,7 +17,12 @@ interface PuzzleProps {
   failMessage?: string;
 }
 
-const Puzzle = ({ count, puzzleUri, boxes = true, failMessage }: PuzzleProps) => {
+const Puzzle = ({
+  count,
+  puzzleUri,
+  boxes = true,
+  failMessage,
+}: PuzzleProps) => {
   const inputProps = loRange(count).map(() => ({
     className: "ik-code-input",
   }));
@@ -70,11 +75,13 @@ const Puzzle = ({ count, puzzleUri, boxes = true, failMessage }: PuzzleProps) =>
               <div className="w-6">
                 <MaterialIcon />
               </div>
-              <h1 className="text-base font-bold pt-3 pl-4">Enter Key</h1>
+              <h1 className="text-base font-bold pt-3 pl-4">Solve Puzzle</h1>
             </div>
             <div className={clsx({ invisible: !isWrongGuess })}>
               <div className="opacity-50">
-                <Markdown>{failMessage || "Incorrect passcode. Try again."}</Markdown>
+                <Markdown>
+                  {failMessage || "Incorrect passcode. Try again."}
+                </Markdown>
               </div>
             </div>
             <div className="magic-input  text-turquoise font-bold">
