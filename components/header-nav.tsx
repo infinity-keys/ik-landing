@@ -19,8 +19,8 @@ export default function Header({ navigation }: Props) {
             className="sm:px-6 lg:px-8 border-b border-indigo-500 lg:border-none"
             aria-label="Top"
           >
-            <div className="relative flex items-center justify-between h-16">
-              <div className="logo flex-shrink-0 flex items-center">
+            <div className="relative flex items-center justify-evenly h-20">
+              {/* <div className="logo flex-shrink-0 flex items-center">
                 <div className="block lg:hidden h-12 w-auto">
                   <Image
                     src="/logo.svg"
@@ -37,7 +37,7 @@ export default function Header({ navigation }: Props) {
                     alt="IK logo"
                   />
                 </div>
-              </div>
+              </div> */}
               <div className="menu-items flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
@@ -64,7 +64,7 @@ export default function Header({ navigation }: Props) {
               <div className="play inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <a
                   href="#"
-                  className="inline-block bg-blue hover:bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-2xl font-medium text-white hover:text-blue"
+                  className="inline-block bg-blue hover:bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-xl font-medium text-white hover:text-blue"
                 >
                   Play
                 </a>
