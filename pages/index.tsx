@@ -78,7 +78,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                         Infinity Keys?
                       </span>
                     </h1>
-                    <p className="mt-6 text-base text-left text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                    <p className="mt-6 text-base text-left text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Infinity Keys is a puzzle game that takes players on hunts
                       through our digital world. Players find clues, decipher
                       keys, and claim treasure. It’s also a platform where
@@ -160,7 +160,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
               <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
                 <div className="lg:py-24">
                   <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-center text-white sm:mt-5 sm:text-6xl lg:mt-20 xl:text-6xl">
-                    <span className="block text-gray-300 ">
+                    <span className="block text-turquoise ">
                       Sign Up for Email Updates!
                     </span>
                   </h1>

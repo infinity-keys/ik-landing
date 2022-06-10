@@ -12,7 +12,7 @@ interface Props {
 
 export default function Header({ navigation }: Props) {
   return (
-    <Disclosure as="nav" className="w-full static z-50 bg-blue">
+    <Disclosure as="nav" className="w-full sticky top-0 z-50 bg-blue">
       {({ open }) => (
         <>
           <div
