@@ -28,6 +28,29 @@
     tslib "^2.3.0"
     zen-observable-ts "^1.2.5"
 
+"@ardatan/relay-compiler@12.0.0":
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/@ardatan/relay-compiler/-/relay-compiler-12.0.0.tgz#2e4cca43088e807adc63450e8cab037020e91106"
+  integrity sha512-9anThAaj1dQr6IGmzBMcfzOQKTa5artjuPmw8NYK/fiGEMjADbSguBY2FMDykt+QhilR3wc9VA/3yVju7JHg7Q==
+  dependencies:
+    "@babel/core" "^7.14.0"
+    "@babel/generator" "^7.14.0"
+    "@babel/parser" "^7.14.0"
+    "@babel/runtime" "^7.0.0"
+    "@babel/traverse" "^7.14.0"
+    "@babel/types" "^7.0.0"
+    babel-preset-fbjs "^3.4.0"
+    chalk "^4.0.0"
+    fb-watchman "^2.0.0"
+    fbjs "^3.0.0"
+    glob "^7.1.1"
+    immutable "~3.7.6"
+    invariant "^2.2.4"
+    nullthrows "^1.1.1"
+    relay-runtime "12.0.0"
+    signedsource "^1.0.0"
+    yargs "^15.3.1"
+
 "@auth0/nextjs-auth0@^1.7.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@auth0/nextjs-auth0/-/nextjs-auth0-1.9.0.tgz#05a23df9092f9217122ebdb031d5a0dbfbb5d632"
@@ -1135,13 +1158,13 @@
     "@graphql-tools/utils" "^8.1.1"
     tslib "~2.3.0"
 
-"@graphql-codegen/typescript-graphql-request@^4.4.5":
-  version "4.4.9"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-graphql-request/-/typescript-graphql-request-4.4.9.tgz#f2d6a93a5822195ebc319975ad8a5a05db64f1bf"
-  integrity sha512-+iZq94BkIxnnr7vMvLgLPn/O5AuEqx1pY56FQEVwQZt8NCvV0e6X2g8yUraqu+v8kv14kPJpc2uzQIxdF/o4aQ==
+"@graphql-codegen/typescript-graphql-request@^4.4.10":
+  version "4.4.10"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-graphql-request/-/typescript-graphql-request-4.4.10.tgz#8ffab15dfdf1143eae01759e4fb99430051821b0"
+  integrity sha512-kKbVKAANDZjCQdFWQRDV49ItIKBWUQgiBbbgwE3DDwVwacQS40ggTtvh24J2sO/vjJBU+JqzD8IJS67+Euzrmg==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^2.4.0"
-    "@graphql-codegen/visitor-plugin-common" "2.9.0"
+    "@graphql-codegen/visitor-plugin-common" "2.9.1"
     auto-bind "~4.0.0"
     tslib "~2.4.0"
 
@@ -1175,6 +1198,22 @@
     "@graphql-codegen/plugin-helpers" "^2.4.0"
     "@graphql-tools/optimize" "^1.0.1"
     "@graphql-tools/relay-operation-optimizer" "^6.3.7"
+    "@graphql-tools/utils" "^8.3.0"
+    auto-bind "~4.0.0"
+    change-case-all "1.0.14"
+    dependency-graph "^0.11.0"
+    graphql-tag "^2.11.0"
+    parse-filepath "^1.0.2"
+    tslib "~2.4.0"
+
+"@graphql-codegen/visitor-plugin-common@2.9.1":
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-2.9.1.tgz#17dfe33e19e846e7475ab9d4ff43de5130e18397"
+  integrity sha512-j9eGOSGt+sJcwv0ijhZiQ2cF/0ponscekNVoF+vHdOT4RB0qgOQxykPBk6EbKxIHECnkdV8ARdPVTA21A93/QQ==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^2.4.0"
+    "@graphql-tools/optimize" "^1.0.1"
+    "@graphql-tools/relay-operation-optimizer" "^6.4.14"
     "@graphql-tools/utils" "^8.3.0"
     auto-bind "~4.0.0"
     change-case-all "1.0.14"
@@ -1349,6 +1388,15 @@
   dependencies:
     "@graphql-tools/utils" "8.6.13"
     relay-compiler "12.0.0"
+    tslib "^2.4.0"
+
+"@graphql-tools/relay-operation-optimizer@^6.4.14":
+  version "6.4.14"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/relay-operation-optimizer/-/relay-operation-optimizer-6.4.14.tgz#812f32123a1351615a72b4e832852daac7bd64b3"
+  integrity sha512-vqch2M/sIUfMmlRJ4eCupiHlVPXWOPVpHX9yCZwRrpNg0Eaokyc57NSjJuKVV3KcvcJKf03qfMK2PxFbfDvN9A==
+  dependencies:
+    "@ardatan/relay-compiler" "12.0.0"
+    "@graphql-tools/utils" "8.6.13"
     tslib "^2.4.0"
 
 "@graphql-tools/schema@8.3.14", "@graphql-tools/schema@^8.1.2":
