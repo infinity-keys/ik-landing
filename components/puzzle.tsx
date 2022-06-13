@@ -75,7 +75,11 @@ const Puzzle = ({
               <div className="w-6">
                 <MaterialIcon />
               </div>
+<<<<<<< HEAD
               <h1 className="text-base font-bold pt-3 pl-4">Solve Puzzle</h1>
+=======
+              <h1 className="text-base font-bold pt-2 pl-4">Solve Puzzle</h1>
+>>>>>>> main
             </div>
             <div className={clsx({ invisible: !isWrongGuess })}>
               <div className="opacity-50">
