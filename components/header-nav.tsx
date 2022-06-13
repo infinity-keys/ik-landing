@@ -9,7 +9,7 @@ import TwitterIcon from "@components/svg/twitter-icon-svg";
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Hunts", href: "#" },
-  { name: "Collab", sub: "coming soon", href: "#collab" },
+  { name: "Collab", href: "#collab" },
   { name: "Thesis", href: "#" },
 ];
 
@@ -22,8 +22,8 @@ export default function Header() {
             className="sm:px-6 lg:px-8 border-b border-indigo-500 lg:border-none"
             aria-label="Top"
           >
-            <div className="relative flex items-center justify-evenly h-20">
-              {/* <div className="logo flex-shrink-0 flex items-center">
+            <div className="relative flex items-center justify-between h-20">
+              <div className="logo flex-shrink-0 flex items-center">
                 <div className="block lg:hidden h-12 w-auto">
                   <Image
                     src="/logo.svg"
@@ -40,7 +40,7 @@ export default function Header() {
                     alt="IK logo"
                   />
                 </div>
-              </div> */}
+              </div>
               <div className="menu-items flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
@@ -55,14 +55,14 @@ export default function Header() {
                 </div>
               </div>
 
-              <div className="social flex items-center space-x-6 icons">
+              {/* <div className="social flex items-center space-x-4">
                 <div className="twitterIcon">
                   <TwitterIcon />
                 </div>
                 <div className="discordIcon">
                   <Discord />
                 </div>
-              </div>
+              </div> */}
 
               <div className="play inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <a
