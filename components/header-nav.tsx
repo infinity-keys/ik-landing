@@ -48,12 +48,6 @@ export default function Header() {
                       <Link href={item.href} key={item.name}>
                         <a className="text-2xl font-medium hover:text-turquoise">
                           {item.name}
-                          {item.sub && (
-                            <span className="text-xs">
-                              <br />
-                              {item.sub}
-                            </span>
-                          )}
                         </a>
                       </Link>
                     ))}
