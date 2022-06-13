@@ -52,8 +52,8 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
               <p>(find the underlined letters!)</p>
             </div> */}
             <Puzzle count={count} puzzleUri={puzzleId} />
-            <div className="text-white text-left pl-96 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-              <p className="text-[2.5rem] leading-normal">
+            <div className="text-white sm:pl-16 md:pl-24 lg:pl-48 xl:pl-96 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+              <p className="text-[2.5rem] sm:text[1rem] leading-normal">
                 This is an Infinity Keys h
                 <span className="font-semibold text-turquoise">un</span>
                 t.
