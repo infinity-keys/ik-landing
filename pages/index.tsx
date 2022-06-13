@@ -52,22 +52,26 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
               <p>(find the underlined letters!)</p>
             </div> */}
             <Puzzle count={count} puzzleUri={puzzleId} />
-            <div className="text-base text-center text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-              <p>
+            <div className="text-white text-left pl-96 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+              <p className="text-[2.5rem] leading-normal">
                 This is an Infinity Keys h
-                <span className="underline font-semibold">un</span>
+                <span className="font-semibold text-turquoise">un</span>
                 t.
               </p>
-              <p>
-                Find the c<span className="underline font-semibold">l</span>
+              <p className="text-[1.50rem] leading-normal">
+                Find the c
+                <span className="font-semibold text-turquoise">l</span>
                 ues and enter the key.
               </p>
-              <p>
-                Hunt f<span className="underline font-semibold">o</span>r{" "}
-                <span className="underline font-semibold">c</span>lues and{" "}
-                <span className="underline font-semibold">k</span>eys anywhere.
+              <p className="text-[1.50rem] leading-normal">
+                Hunt f<span className="font-semibold text-turquoise">o</span>r{" "}
+                <span className="font-semibold text-turquoise">c</span>
+                lues and <span className="font-semibold text-turquoise">k</span>
+                eys anywhere.
               </p>
-              <p>(find the underlined letters!)</p>
+              <p className="text-[1.50rem] leading-normal">
+                (Try the colored letters!)
+              </p>
             </div>
           </div>
           <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40"></div>
