@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, React } from "react";
 import { useRouter } from "next/router";
 import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
@@ -9,13 +9,24 @@ import MaterialIcon from "@components/svg/material-lock-svg";
 import { puzzlePost } from "@lib/fetchers";
 import { routeFailUrl, routeSuccessUrl } from "@lib/utils";
 import Markdown from "./markdown";
+import { stubFalse } from "lodash";
 
 interface PuzzleProps {
   count: number;
   puzzleUri: string;
   boxes?: boolean;
   failMessage?: string;
+  successComponent?: ReactComponentElement;
+  failComponent?: ReactComponentElement;
 }
+
+const successComponent = () => {
+  return <h1>it works!</h1>;
+};
+
+const failComponent = () => {
+  return <h1>it failed!</h1>;
+};
 
 const Puzzle = ({
   count,
@@ -30,6 +41,8 @@ const Puzzle = ({
   const [isLoading, setIsLoading] = useState(false);
   const [charsLeft, setCharsLeft] = useState(count);
   const [isWrongGuess, setIsWrongGuess] = useState(false);
+  const [isSuccess, setSuccess] = useState(false);
+  const [isFail, setFail] = useState(false);
   const router = useRouter();
 
   const handleInput = async (input: string) => {
@@ -68,6 +81,11 @@ const Puzzle = ({
           </div>
         </div>
       )}
+      {/* logic to check if components exist */}
+      if(successComponent && failComponent)
+      {
+        // execute these components and hide "isloading" below
+      }
       {!isLoading && (
         <div className="flex justify-center z-10">
           <div>
