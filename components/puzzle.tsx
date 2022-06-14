@@ -24,7 +24,7 @@ const Puzzle = ({
   failMessage,
 }: PuzzleProps) => {
   const inputProps = loRange(count).map(() => ({
-    className: "ik-code-input text-5xl",
+    className: "ik-code-input",
   }));
 
   const [isLoading, setIsLoading] = useState(false);
@@ -71,7 +71,7 @@ const Puzzle = ({
       {!isLoading && (
         <div className="flex justify-center z-10">
           <div>
-            <div className="flex pb-5">
+            <div className="flex py-5">
               <div className="w-6">
                 <MaterialIcon />
               </div>
@@ -84,7 +84,7 @@ const Puzzle = ({
                 </Markdown>
               </div>
             </div>
-            <div className="magic-input pt-2 text-turquoise font-bold">
+            <div className="magic-input  text-turquoise font-bold">
               {boxes && (
                 <RICIBs
                   amount={count}
