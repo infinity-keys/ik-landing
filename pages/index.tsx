@@ -52,24 +52,24 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
               <p>(find the underlined letters!)</p>
             </div> */}
             <Puzzle count={count} puzzleUri={puzzleId} />
-            <div className="text-white sm:pl-16 md:pl-24 lg:pl-48 xl:pl-96 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-              <p className="text-[2.5rem] sm:text[1rem] leading-normal">
+            <div className="text-white text-left pl-6 sm:pl-16 md:pl-28 lg:pl-48 xl:pl-96 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+              <p className="text-[1.35rem] md:text-[2.5rem] leading-normal">
                 This is an Infinity Keys h
                 <span className="font-semibold text-turquoise">un</span>
                 t.
               </p>
-              <p className="text-[1.50rem] leading-normal">
+              <p className="md:text-[1.50rem] leading-normal">
                 Find the c
                 <span className="font-semibold text-turquoise">l</span>
                 ues and enter the key.
               </p>
-              <p className="text-[1.50rem] leading-normal">
+              <p className="md:text-[1.50rem] leading-normal">
                 Hunt f<span className="font-semibold text-turquoise">o</span>r{" "}
                 <span className="font-semibold text-turquoise">c</span>
                 lues and <span className="font-semibold text-turquoise">k</span>
                 eys anywhere.
               </p>
-              <p className="text-[1.50rem] leading-normal">
+              <p className="md:text-[1.50rem] leading-normal">
                 (Try the colored letters!)
               </p>
             </div>
