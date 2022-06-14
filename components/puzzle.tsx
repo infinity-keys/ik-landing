@@ -17,7 +17,12 @@ interface PuzzleProps {
   failMessage?: string;
 }
 
-const Puzzle = ({ count, puzzleUri, boxes = true, failMessage }: PuzzleProps) => {
+const Puzzle = ({
+  count,
+  puzzleUri,
+  boxes = true,
+  failMessage,
+}: PuzzleProps) => {
   const inputProps = loRange(count).map(() => ({
     className: "ik-code-input text-5xl",
   }));
@@ -47,7 +52,10 @@ const Puzzle = ({ count, puzzleUri, boxes = true, failMessage }: PuzzleProps) =>
     !success_route && setIsWrongGuess(true);
     // debugger;
     // If either success or fail exist, turn them into proper paths
-    router.push((success_route && routeSuccessUrl(success_route)) || (fail_route && routeFailUrl(fail_route)));
+    router.push(
+      (success_route && routeSuccessUrl(success_route)) ||
+        (fail_route && routeFailUrl(fail_route))
+    );
   };
 
   return (
@@ -67,11 +75,13 @@ const Puzzle = ({ count, puzzleUri, boxes = true, failMessage }: PuzzleProps) =>
               <div className="w-6">
                 <MaterialIcon />
               </div>
-              <h1 className="text-base font-bold pt-2 pl-4">Passcode</h1>
+              <h1 className="text-base font-bold pt-2 pl-4">Solve Puzzle</h1>
             </div>
             <div className={clsx({ invisible: !isWrongGuess })}>
               <div className="opacity-50">
-                <Markdown>{failMessage || "Incorrect passcode. Try again."}</Markdown>
+                <Markdown>
+                  {failMessage || "Incorrect passcode. Try again."}
+                </Markdown>
               </div>
             </div>
             <div className="magic-input pt-2 text-turquoise font-bold">
