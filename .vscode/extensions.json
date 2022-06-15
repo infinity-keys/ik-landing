@@ -1,7 +1,9 @@
 {
   "recommendations": [
     "editorconfig.editorconfig",
-    "esbenp.prettier-vscode",
-    "bradlc.vscode-tailwindcss"
+    "bradlc.vscode-tailwindcss",
+    "apollographql.vscode-apollo",
+    "irongeek.vscode-env",
+    "dbaeumer.vscode-eslint"
   ]
 }
