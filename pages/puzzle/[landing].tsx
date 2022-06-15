@@ -5,10 +5,11 @@ import Image from "next/image";
 import Wrapper from "@components/wrapper";
 import NavAvalanche from "@components/nav-avalanche";
 import Puzzle from "@components/puzzle";
-import Markdown from '@components/markdown';
+import Markdown from "@components/markdown";
 
 import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
+import Link from "next/link";
 
 export interface PuzzlePageProps {
   name: string;
@@ -21,10 +22,17 @@ export interface PuzzlePageProps {
 interface PuzzlePageParams {
   params: {
     landing: string;
-  }
+  };
 }
 
-const Dev: NextPage<PuzzlePageProps> = ({ name, count, puzzleId, inputType, landingMessage, failMessage }) => {
+const Dev: NextPage<PuzzlePageProps> = ({
+  name,
+  count,
+  puzzleId,
+  inputType,
+  landingMessage,
+  failMessage,
+}) => {
   return (
     <Wrapper>
       <div className="ik-page scanlines">
@@ -35,21 +43,30 @@ const Dev: NextPage<PuzzlePageProps> = ({ name, count, puzzleId, inputType, land
 
           <main className="text-center pt-5">
             <div className="pb-16">
-              <Image
-                src="/logo.svg"
-                alt="Infinity Keys logo"
-                width={100}
-                height={62.72}
-              />
+              <Link href={"/"}>
+                <a>
+                  <Image
+                    src="/logo.svg"
+                    alt="Infinity Keys logo"
+                    width={100}
+                    height={62.72}
+                  />
+                </a>
+              </Link>
             </div>
 
-            {landingMessage &&
+            {landingMessage && (
               <div className="pb-16 text-center text-lg text-gray-100">
                 <Markdown>{landingMessage}</Markdown>
               </div>
-            }
+            )}
 
-            <Puzzle count={count} puzzleUri={puzzleId} boxes={inputType === 'boxes'} failMessage={failMessage} />
+            <Puzzle
+              count={count}
+              puzzleUri={puzzleId}
+              boxes={inputType === "boxes"}
+              failMessage={failMessage}
+            />
           </main>
 
           <footer className="ik-front-bottom w-full">
@@ -63,11 +80,22 @@ const Dev: NextPage<PuzzlePageProps> = ({ name, count, puzzleId, inputType, land
 
 export default Dev;
 
-export async function getStaticProps({ params: { landing } }: PuzzlePageParams): Promise<{ props: PuzzlePageProps }> {
+export async function getStaticProps({
+  params: { landing },
+}: PuzzlePageParams): Promise<{ props: PuzzlePageProps }> {
   const gql = await gqlApiSdk();
 
   const { puzzles } = await gql.PuzzleInfoByLanding({ landing });
-  const [{ simple_name, solution_char_count, puzzle_id, input_type, landing_message, fail_message }] = puzzles;
+  const [
+    {
+      simple_name,
+      solution_char_count,
+      puzzle_id,
+      input_type,
+      landing_message,
+      fail_message,
+    },
+  ] = puzzles;
 
   return {
     props: {
@@ -75,8 +103,8 @@ export async function getStaticProps({ params: { landing } }: PuzzlePageParams):
       count: solution_char_count || 0,
       puzzleId: puzzle_id,
       inputType: input_type || Puzzle_Input_Type_Enum.Boxes,
-      landingMessage: landing_message || '',
-      failMessage: fail_message || '',
+      landingMessage: landing_message || "",
+      failMessage: fail_message || "",
     },
   };
 }
@@ -86,14 +114,14 @@ export async function getStaticPaths() {
   const { puzzles } = await gql.AllLandingRoutes();
 
   // https://nextjs.org/docs/api-reference/data-fetching/get-static-paths
-  const paths = puzzles.map(p => ({
+  const paths = puzzles.map((p) => ({
     params: {
-      landing: p.landing_route
-    }
-  }))
+      landing: p.landing_route,
+    },
+  }));
 
   return {
     paths,
     fallback: false,
-  }
+  };
 }
