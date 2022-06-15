@@ -1,19 +1,20 @@
-import Wrapper from "@components/wrapper";
 import { NextPage } from "next";
 import Head from "next/head";
-import Avatar from 'boring-avatars';
+import Link from "next/link";
+import Image from "next/image";
+import Avatar from "boring-avatars";
 
 // import { MailIcon, PhoneIcon } from '@heroicons/react/solid'
 
 import { gqlApiSdk } from "@lib/server";
 import { PublicPuzzlesQuery } from "@lib/generated/graphql";
-import Link from "next/link";
 import { routeLandingUrl } from "@lib/utils";
+import Wrapper from "@components/wrapper";
 import Header from "@components/header-nav";
-// import Footer from "@components/footer";
+import Footer from "@components/footer";
 
 interface PageProps {
-  puzzles: PublicPuzzlesQuery['puzzles']
+  puzzles: PublicPuzzlesQuery["puzzles"];
 }
 
 const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
@@ -22,12 +23,14 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
       <Head>
         <title>Infinity Keys Puzzles</title>
       </Head>
-      <div className="radial-bg scanlines min-h-screen">
+      <div className="radial-bg scanlines min-h-screen flex flex-col">
         <Header />
 
-        <div className="container px-4">
-
-          <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-8">
+        <div className="container px-4 flex-1">
+          <ul
+            role="list"
+            className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-8"
+          >
             {puzzles.map((puzzle) => (
               <li
                 key={puzzle.puzzle_id}
@@ -37,19 +40,37 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
                   <div className="flex-1 flex flex-col p-8">
                     {/* <img className="w-32 h-32 flex-shrink-0 mx-auto rounded-full" src={person.imageUrl} alt="" /> */}
                     <div className="w-32 h-32 flex-shrink-0 mx-auto">
-                      <Avatar size={128}
+                      <Avatar
+                        size={128}
                         name={puzzle.puzzle_id}
                         variant="marble"
-                        colors={["#101D42", "#E400FF", "#3FCCBB", "#8500AC", "#303B5B"]} />
+                        colors={[
+                          "#101D42",
+                          "#E400FF",
+                          "#3FCCBB",
+                          "#8500AC",
+                          "#303B5B",
+                        ]}
+                      />
                     </div>
-                    <h3 className="mt-6 text-gray-200 text-sm font-medium">{puzzle.simple_name}</h3>
+                    <h3 className="mt-6 text-gray-200 text-sm font-medium">
+                      {puzzle.simple_name}
+                    </h3>
                     <dl className="mt-1 flex-grow flex flex-col justify-between">
                       <dt className="sr-only">Title</dt>
-                      <dd className="text-gray-500 text-sm">{puzzle.puzzle_id}</dd>
+                      {/* @TOOD: put slugs here when the time comes */}
+                      {/* <dd className="text-gray-500 text-sm">
+                        {puzzle.puzzle_id}
+                      </dd> */}
                       <dt className="sr-only">Character count</dt>
                       <dd className="mt-3">
-                        <span className="px-2 py-1 text-green-800 text-xs font-medium bg-turquoise rounded-full">
-                          {puzzle.solution_char_count}
+                        <span className="px-2 py-1 text-green-800 text-xs font-medium">
+                          <Image
+                            src="/favicon-32x32.png"
+                            alt="Infinity Keys logo"
+                            width={32}
+                            height={32}
+                          />
                         </span>
                       </dd>
                     </dl>
@@ -80,14 +101,13 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
               </li>
             ))}
           </ul>
-
-
         </div>
 
+        <Footer />
       </div>
     </Wrapper>
-  )
-}
+  );
+};
 export default Puzzles;
 
 export async function getStaticProps(): Promise<{ props: PageProps }> {
@@ -97,6 +117,6 @@ export async function getStaticProps(): Promise<{ props: PageProps }> {
   return {
     props: {
       puzzles,
-    }
-  }
+    },
+  };
 }

@@ -13,7 +13,7 @@ const navigation = [
 export default function Footer() {
   return (
     <footer className="">
-      <div className="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8 bg-blue">
+      <div className="py-12 px-4 overflow-hidden sm:px-6 lg:px-8 bg-blue">
         <nav className="px-4 sm:px-6 lg:px-8" aria-label="Top">
           <div className="w-full py-6 flex items-center justify-center border-b border-indigo-500 lg:border-none">
             {/* <div className="logo flex-shrink-0 flex items-center">
