@@ -1,7 +1,6 @@
-import Image from "next/image";
-
 import TwitterIcon from "./svg/twitter-icon-svg";
 import Discord from "./svg/discord-svg";
+import PuzzleButton from "./puzzle-button";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -49,14 +48,15 @@ export default function Footer() {
               </div>
             </div>
             {/* right */}
-            <div className="ml-10 space-x-4">
+            <PuzzleButton />
+            {/* <div className="ml-10 space-x-4">
               <a
                 href="#"
                 className="inline-block bg-turquoise hover:bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-2xl font-medium text-white hover:text-blue"
               >
                 Puzzles
               </a>
-            </div>
+            </div> */}
           </div>
         </nav>
         <p className="mt-8 text-center text-base text-gray-500">
