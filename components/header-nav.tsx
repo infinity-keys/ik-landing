@@ -8,7 +8,10 @@ import TwitterIcon from "@components/svg/twitter-icon-svg";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Hunts", href: "#" },
+  {
+    name: "Hunts",
+    href: "https://ik-landing-4tsbp2108-infinity-keys.vercel.app/puzzles",
+  },
   { name: "Collab", href: "#collab" },
   { name: "Thesis", href: "#" },
 ];
@@ -25,20 +28,28 @@ export default function Header() {
             <div className="relative flex items-center justify-between h-20">
               <div className="logo flex-shrink-0 flex items-center">
                 <div className="block lg:hidden h-12 w-auto">
-                  <Image
-                    src="/logo.svg"
-                    width={100}
-                    height={55}
-                    alt="IK logo"
-                  />
+                  <Link href={"/"}>
+                    <a>
+                      <Image
+                        src="/logo.svg"
+                        width={100}
+                        height={55}
+                        alt="IK logo"
+                      />
+                    </a>
+                  </Link>
                 </div>
                 <div className="hidden lg:block h-12 w-auto">
-                  <Image
-                    src="/logo.svg"
-                    width={100}
-                    height={55}
-                    alt="IK logo"
-                  />
+                  <Link href={"/"}>
+                    <a>
+                      <Image
+                        src="/logo.svg"
+                        width={100}
+                        height={55}
+                        alt="IK logo"
+                      />
+                    </a>
+                  </Link>
                 </div>
               </div>
               <div className="menu-items flex items-center justify-center sm:items-stretch sm:justify-start">
@@ -66,9 +77,7 @@ export default function Header() {
 
               <div className="play inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <Link href="/puzzles">
-                  <a
-                    className="inline-block bg-turquoise hover:bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-xl font-medium text-white hover:text-blue"
-                  >
+                  <a className="inline-block bg-turquoise hover:bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-xl font-medium text-white hover:text-blue">
                     Puzzles
                   </a>
                 </Link>
