@@ -29,7 +29,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
         <Header />
 
         {/* Top puzzle */}
-        <div className="slice--top w-full h-screen min-h-0 flex items-center radial-bg relative z-0">
+        <div className="slice--top w-full pt-4 pb-4 lg:h-screen min-h-0 flex items-center radial-bg relative z-0">
           <div className="w-full mr-auto ml-auto px-4 sm:px-6 lg:px-8">
             {/* <div className="text-center">
               <Image src="/logo.svg" width={150} height={94} alt="IK logo" />
@@ -91,7 +91,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                         Infinity Keys?
                       </span>
                     </h1>
-                    <p className="mt-6 text-base text-left text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                    <p className="mt-6 pb-6 text-base text-left text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Infinity Keys is a puzzle game that takes players on hunts
                       through our digital world. Players find clues, decipher
                       keys, and claim treasure. It’s also a platform where
