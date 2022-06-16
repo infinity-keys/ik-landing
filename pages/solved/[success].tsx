@@ -37,7 +37,7 @@ const Dev: NextPage<SuccessPageProps> = ({
             </Link>
           </header>
 
-          <main className="flex flex-col items-center justify-center w-full flex-1">
+          <main className="flex flex-col grow-0 items-center justify-center w-full flex-1">
             <WalletEmail puzzleId={puzzleId} successMessage={successMessage} />
           </main>
         </div>
