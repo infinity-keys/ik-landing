@@ -38,7 +38,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
         <Header />
 
         {/* Top puzzle */}
-        <div className="slice--top w-full pt-4 pb-4 lg:h-screen min-h-0 flex items-center radial-bg relative z-0">
+        <div className="slice--top w-full pt-4 pb-4 min-h-0 flex items-center radial-bg relative z-0">
           <div className="w-full mr-auto ml-auto px-4 sm:px-6 lg:px-8">
             <Puzzle
               puzzleUri={puzzleId}
