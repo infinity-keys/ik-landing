@@ -11,6 +11,7 @@ import Header from "@components/header-nav";
 import Footer from "@components/footer";
 import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
+import WalletEmail from "@components/forms/wallet-email";
 
 interface PageProps {
   count: number;
@@ -18,6 +19,15 @@ interface PageProps {
 }
 
 const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
+  const SuccessComponent = () => (
+    <div className="container px-4 flex flex-col items-center justify-center max-w-sm">
+      <WalletEmail
+        puzzleId={puzzleId}
+        successMessage="Now you're playing Infinity Keys! Sign up for future updates and rewards. Solve more puzzles. Find more clues on IK social channels."
+      />
+    </div>
+  );
+
   return (
     <Wrapper>
       <Head>
@@ -31,27 +41,11 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
         {/* Top puzzle */}
         <div className="slice--top w-full pt-4 pb-4 lg:h-screen min-h-0 flex items-center radial-bg relative z-0">
           <div className="w-full mr-auto ml-auto px-4 sm:px-6 lg:px-8">
-            {/* <div className="text-center">
-              <Image src="/logo.svg" width={150} height={94} alt="IK logo" />
-            </div> */}
-            {/* <div className="text-base text-center text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-              <p>
-                This is an Infinity Keys h
-                <span className="underline font-semibold">un</span>
-                t.
-              </p>
-              <p>
-                Find the c<span className="underline font-semibold">l</span>
-                ues and enter the key.
-              </p>
-              <p>
-                Hunt f<span className="underline font-semibold">o</span>r{" "}
-                <span className="underline font-semibold">c</span>lues and{" "}
-                <span className="underline font-semibold">k</span>eys anywhere.
-              </p>
-              <p>(find the underlined letters!)</p>
-            </div> */}
-            <Puzzle count={count} puzzleUri={puzzleId} />
+            <Puzzle
+              puzzleUri={puzzleId}
+              count={count}
+              SuccessComponent={SuccessComponent}
+            />
             <div className="text-white text-left pl-6 sm:pl-16 md:pl-28 lg:pl-48 xl:pl-96 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
               <p className="text-[1.35rem] md:text-[2.5rem] leading-normal">
                 This is an Infinity Keys h
@@ -94,7 +88,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                     <p className="mt-6 pb-6 text-base text-left text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Infinity Keys is a puzzle game that takes players on hunts
                       through our digital world. Players find clues, decipher
-                      keys, and claim treasure. It’s also a platform where
+                      keys, and claim treasure. It's also a platform where
                       anyone can build their own hunts, keys, and treasure to
                       create engaging experiences for others.
                     </p>
@@ -149,9 +143,8 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                   <p className="mt-6 text-lg text-gray-100">
                     If you would like to use these tools to increase engagement
                     with your community, users, players, or fans, please reach
-                    out. We are currently selecting projects to work with on alpha
-                    hunts, so please reach out for business
-                    inquiries.
+                    out. We are currently selecting projects to work with on
+                    alpha hunts, so please reach out for business inquiries.
                   </p>
                 </div>
               </div>
