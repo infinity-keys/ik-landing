@@ -11,17 +11,18 @@ import Header from "@components/header-nav";
 import Footer from "@components/footer";
 import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
+import WalletEmail from "@components/forms/wallet-email";
 
 interface PageProps {
   count: number;
   puzzleId: string;
 }
 
-const SuccessComponent = () => {
-  return <h1>it works!</h1>;
-};
-
 const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
+  const SuccessComponent = () => (
+    <WalletEmail puzzleId={puzzleId} successMessage="You did it!" />
+  );
+
   return (
     <Wrapper>
       <Head>

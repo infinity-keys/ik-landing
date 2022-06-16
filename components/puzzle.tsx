@@ -33,7 +33,7 @@ PuzzleProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [charsLeft, setCharsLeft] = useState(count);
   const [isWrongGuess, setIsWrongGuess] = useState(false);
-  // Only used for local reward
+  // Only used for local success state
   const [isSuccess, setIsSuccess] = useState(false);
 
   const router = useRouter();
