@@ -8,6 +8,7 @@ import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
 import Wallet from "@components/wallet";
 import Alert from "@components/alert";
+import PuzzleButton from "@components/puzzle-button";
 
 interface FormProps extends PuzzleInput {
   name: string;
@@ -66,10 +67,16 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
   return (
     <>
       {(isSubmitSuccessful || walletSigned) && (
-        <Alert text="Thanks for joining, we will be in touch!" />
+        <>
+          <PuzzleButton />
+          <Alert text="Thanks for joining, we will be in touch!" />
+        </>
       )}
       {!isSubmitSuccessful && errors?.puzzleId && (
-        <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
+        <>
+          <PuzzleButton />
+          <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
+        </>
       )}
       {!isSubmitSuccessful && !errors?.puzzleId && !walletSigned && (
         <div className="">
