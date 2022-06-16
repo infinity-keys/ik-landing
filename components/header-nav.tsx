@@ -9,10 +9,11 @@ const navigation = [
   { name: "Home", href: "/" },
   {
     name: "Hunts",
-    href: "https://ik-landing-4tsbp2108-infinity-keys.vercel.app/puzzles",
+    href: "/puzzles",
   },
   { name: "Collab", href: "#collab" },
   { name: "Thesis", href: "#" },
+  { name: "Blog", href: "https://blog.infinitykeys.io" },
 ];
 
 export default function Header() {

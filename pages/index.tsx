@@ -1,6 +1,5 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 
 import { gqlApiSdk } from "@lib/server";
 
@@ -70,6 +69,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
           </div>
           <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40"></div>
         </div>
+
         {/* Bottom of puzzle */}
 
         {/* About */}
