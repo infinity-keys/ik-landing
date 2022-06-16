@@ -17,6 +17,10 @@ interface PageProps {
   puzzleId: string;
 }
 
+const SuccessComponent = () => {
+  return <h1>it works!</h1>;
+};
+
 const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
   return (
     <Wrapper>
@@ -31,27 +35,11 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
         {/* Top puzzle */}
         <div className="slice--top w-full h-screen min-h-0 flex items-center radial-bg relative z-0">
           <div className="w-full mr-auto ml-auto px-4 sm:px-6 lg:px-8">
-            {/* <div className="text-center">
-              <Image src="/logo.svg" width={150} height={94} alt="IK logo" />
-            </div> */}
-            {/* <div className="text-base text-center text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-              <p>
-                This is an Infinity Keys h
-                <span className="underline font-semibold">un</span>
-                t.
-              </p>
-              <p>
-                Find the c<span className="underline font-semibold">l</span>
-                ues and enter the key.
-              </p>
-              <p>
-                Hunt f<span className="underline font-semibold">o</span>r{" "}
-                <span className="underline font-semibold">c</span>lues and{" "}
-                <span className="underline font-semibold">k</span>eys anywhere.
-              </p>
-              <p>(find the underlined letters!)</p>
-            </div> */}
-            <Puzzle count={count} puzzleUri={puzzleId} />
+            <Puzzle
+              puzzleUri={puzzleId}
+              count={count}
+              SuccessComponent={SuccessComponent}
+            />
             <div className="text-white text-left pl-6 sm:pl-16 md:pl-28 lg:pl-48 xl:pl-96 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
               <p className="text-[1.35rem] md:text-[2.5rem] leading-normal">
                 This is an Infinity Keys h
