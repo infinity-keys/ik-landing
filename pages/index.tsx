@@ -20,7 +20,12 @@ interface PageProps {
 
 const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
   const SuccessComponent = () => (
-    <WalletEmail puzzleId={puzzleId} successMessage="You did it!" />
+    <div className="container px-4 flex flex-col items-center justify-center max-w-sm">
+      <WalletEmail
+        puzzleId={puzzleId}
+        successMessage="Now you're playing Infinity Keys! Sign up for future updates and rewards. Solve more puzzles. Find more clues on IK social channels."
+      />
+    </div>
   );
 
   return (
@@ -83,7 +88,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                     <p className="mt-6 pb-6 text-base text-left text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Infinity Keys is a puzzle game that takes players on hunts
                       through our digital world. Players find clues, decipher
-                      keys, and claim treasure. It’s also a platform where
+                      keys, and claim treasure. It's also a platform where
                       anyone can build their own hunts, keys, and treasure to
                       create engaging experiences for others.
                     </p>
@@ -138,9 +143,8 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                   <p className="mt-6 text-lg text-gray-100">
                     If you would like to use these tools to increase engagement
                     with your community, users, players, or fans, please reach
-                    out. We are currently selecting projects to work with on alpha
-                    hunts, so please reach out for business
-                    inquiries.
+                    out. We are currently selecting projects to work with on
+                    alpha hunts, so please reach out for business inquiries.
                   </p>
                 </div>
               </div>
