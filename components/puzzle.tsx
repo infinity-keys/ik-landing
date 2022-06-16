@@ -68,6 +68,9 @@ PuzzleProps) => {
       setIsWrongGuess(false);
       return;
     }
+    if (!success_route && SuccessComponent) {
+      return;
+    }
 
     // If either success or fail exist, turn them into proper paths and route
     router.push(
