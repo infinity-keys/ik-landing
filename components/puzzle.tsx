@@ -24,8 +24,7 @@ const Puzzle = ({
   boxes = true,
   failMessage,
   SuccessComponent,
-}: // FailComponent,
-PuzzleProps) => {
+}: PuzzleProps) => {
   const inputProps = loRange(count).map(() => ({
     className: "ik-code-input",
   }));
@@ -59,16 +58,14 @@ PuzzleProps) => {
       setIsLoading(false);
       setIsWrongGuess(true);
     }
-    // debugger;
 
     // Do not route if custom success components exist. Show in place.
-    if (success_route && SuccessComponent) {
-      setIsLoading(false);
-      setIsSuccess(true);
-      setIsWrongGuess(false);
-      return;
-    }
-    if (!success_route && SuccessComponent) {
+    if (SuccessComponent) {
+      if (success_route) {
+        setIsLoading(false);
+        setIsSuccess(true);
+        setIsWrongGuess(false);
+      }
       return;
     }
 
