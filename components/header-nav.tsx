@@ -98,7 +98,7 @@ export default function Header() {
                   key={item.name}
                   as="a"
                   href={item.href}
-                  className="text-white hover:text-turquoise block px-3 py-2 rounded-md text-2xl font-medium"
+                  className="text-white block px-3 py-2 rounded-md text-2xl font-medium"
                   aria-current={item.name ? "page" : undefined}
                 >
                   {item.name}
