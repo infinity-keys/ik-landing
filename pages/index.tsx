@@ -149,8 +149,8 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                   <p className="mt-6 text-lg text-gray-100">
                     If you would like to use these tools to increase engagement
                     with your community, users, players, or fans, please reach
-                    out. We are currently selecting projects to work with on
-                    initial partner hunts, so please reach out for business
+                    out. We are currently selecting projects to work with on alpha
+                    hunts, so please reach out for business
                     inquiries.
                   </p>
                 </div>

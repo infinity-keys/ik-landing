@@ -93,7 +93,7 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
           </div>
           <p className="text-center mb-8">- or -</p>
           <p className="text-sm font-normal mb-4">
-            Drop us an email if web3 is not your thing.
+            Drop your email if web3 is not your thing.
           </p>
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
