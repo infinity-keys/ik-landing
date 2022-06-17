@@ -78,7 +78,7 @@ export default function Header() {
               <PuzzleButton />
 
               {/* hamburger icon, visible mobile only */}
-              <div className="hamburger flex items-center sm:hidden">
+              <div className="hamburger flex items-center pr-4 sm:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
