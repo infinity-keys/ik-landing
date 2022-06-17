@@ -76,46 +76,45 @@ $scan-opacity: 0.75;
 
 /* CSS .scanlines CLASS */
 
-.scanlines {
-  position: relative;
-  overflow: hidden; // only to animate the unique scanline
-
-  &:before,
-  &:after {
-    display: block;
-    pointer-events: none;
-    content: "";
-    position: absolute;
-  }
-
-  // unique scanline travelling on the screen
-  &:before {
-    // position: absolute;
-    // bottom: 100%;
-    width: 100%;
-    height: $scan-width * 1;
-    z-index: $scan-z-index + 1;
-    background: $scan-color;
-    opacity: $scan-opacity;
-    // animation: scanline 6s linear infinite;
-    @include scan-moving($scan-moving-line);
-  }
-
-  // the scanlines, so!
-  &:after {
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: $scan-z-index;
-    background: linear-gradient(to bottom, transparent 50%, $scan-color 51%);
-    background-size: 100% $scan-width * 2;
-    @include scan-crt($scan-crt);
-  }
-}
-
 /* ANIMATE UNIQUE SCANLINE */
 @media (min-width: 640px) {
+  .scanlines {
+    position: relative;
+    overflow: hidden; // only to animate the unique scanline
+
+    &:before,
+    &:after {
+      display: block;
+      pointer-events: none;
+      content: "";
+      position: absolute;
+    }
+
+    // unique scanline travelling on the screen
+    &:before {
+      // position: absolute;
+      // bottom: 100%;
+      width: 100%;
+      height: $scan-width * 1;
+      z-index: $scan-z-index + 1;
+      background: $scan-color;
+      opacity: $scan-opacity;
+      // animation: scanline 6s linear infinite;
+      @include scan-moving($scan-moving-line);
+    }
+
+    // the scanlines, so!
+    &:after {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: $scan-z-index;
+      background: linear-gradient(to bottom, transparent 50%, $scan-color 51%);
+      background-size: 100% $scan-width * 2;
+      @include scan-crt($scan-crt);
+    }
+  }
   @keyframes scanline {
     0% {
       transform: translate3d(0, 200000%, 0);
