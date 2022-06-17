@@ -16,3 +16,11 @@ export const routeFailUrl = (slug: string) => `/${PUZZLE_FAILED_BASE}/${slug}`;
 
 // Wallet stuff
 export const message = (nonce: string) => `${welcome}\n\n${nonce}`;
+
+// Hasura/GraphQL stuff
+
+/**
+ * Linebreaks in Hasura text fields get escaped like \\n but we need \n.
+ */
+export const cleanGqlMarkdown = (markdown: string) =>
+  markdown.split(/\\n/).join("\n");

@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ComponentType } from "react";
 import { useRouter } from "next/router";
 import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
@@ -15,6 +15,7 @@ interface PuzzleProps {
   puzzleUri: string;
   boxes?: boolean;
   failMessage?: string;
+  SuccessComponent?: ComponentType<{}>;
 }
 
 const Puzzle = ({
@@ -22,14 +23,18 @@ const Puzzle = ({
   puzzleUri,
   boxes = true,
   failMessage,
+  SuccessComponent,
 }: PuzzleProps) => {
   const inputProps = loRange(count).map(() => ({
-    className: "ik-code-input text-5xl",
+    className: "ik-code-input",
   }));
 
   const [isLoading, setIsLoading] = useState(false);
   const [charsLeft, setCharsLeft] = useState(count);
   const [isWrongGuess, setIsWrongGuess] = useState(false);
+  // Only used for local success state
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const router = useRouter();
 
   const handleInput = async (input: string) => {
@@ -47,11 +52,24 @@ const Puzzle = ({
     if (!res.ok) throw new Error(res.statusText);
 
     const { fail_route, success_route } = await res.json();
+
     // Turn off loading if failed
-    !success_route && setIsLoading(false);
-    !success_route && setIsWrongGuess(true);
-    // debugger;
-    // If either success or fail exist, turn them into proper paths
+    if (!success_route) {
+      setIsLoading(false);
+      setIsWrongGuess(true);
+    }
+
+    // Do not route if custom success components exist. Show in place.
+    if (SuccessComponent) {
+      if (success_route) {
+        setIsLoading(false);
+        setIsSuccess(true);
+        setIsWrongGuess(false);
+      }
+      return;
+    }
+
+    // If either success or fail exist, turn them into proper paths and route
     router.push(
       (success_route && routeSuccessUrl(success_route)) ||
         (fail_route && routeFailUrl(fail_route))
@@ -68,10 +86,11 @@ const Puzzle = ({
           </div>
         </div>
       )}
-      {!isLoading && (
+
+      {!isLoading && !isSuccess && (
         <div className="flex justify-center z-10">
           <div>
-            <div className="flex pb-5">
+            <div className="flex py-5">
               <div className="w-6">
                 <MaterialIcon />
               </div>
@@ -84,7 +103,7 @@ const Puzzle = ({
                 </Markdown>
               </div>
             </div>
-            <div className="magic-input pt-2 text-turquoise font-bold">
+            <div className="magic-input  text-turquoise font-bold">
               {boxes && (
                 <RICIBs
                   amount={count}
@@ -114,6 +133,8 @@ const Puzzle = ({
           </div>
         </div>
       )}
+
+      {!isLoading && isSuccess && SuccessComponent && <SuccessComponent />}
     </>
   );
 };
