@@ -12,7 +12,7 @@ const navigation = [
     href: "/puzzles",
   },
   { name: "Collab", href: "#collab" },
-  { name: "Thesis", href: "#" },
+  { name: "Thesis", href: "https://blog.infinitykeys.io/infinity-keys-thesis" },
   { name: "Blog", href: "https://blog.infinitykeys.io" },
 ];
 
