@@ -88,7 +88,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                     <p className="mt-6 pb-6 text-base text-left text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Infinity Keys is a puzzle game that takes players on hunts
                       through our digital world. Players find clues, decipher
-                      keys, and claim treasure. It&aposs also a platform where
+                      keys, and claim treasure. It&apos;s also a platform where
                       anyone can build their own hunts, keys, and treasure to
                       create engaging experiences for others.
                     </p>
