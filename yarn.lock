@@ -33,10 +33,10 @@
     signedsource "^1.0.0"
     yargs "^15.3.1"
 
-"@auth0/nextjs-auth0@^1.7.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@auth0/nextjs-auth0/-/nextjs-auth0-1.9.0.tgz#05a23df9092f9217122ebdb031d5a0dbfbb5d632"
-  integrity sha512-NYM545sXeF7GNrUIr7eZ5oZo0EVhKRCnDL27v6tw4Og/OfRt/QbzX7D//jjN/pjqg8KWZvmwit+zDa2X7dp+tQ==
+"@auth0/nextjs-auth0@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@auth0/nextjs-auth0/-/nextjs-auth0-1.9.1.tgz#e7a0e8688b26cee490ed7599fba3b2550b7b698b"
+  integrity sha512-GvX1Ke9YzZRogIvSZhRRuZFwvw5DNuQv233VBUHrUwNi+z/XFE6ZRC0y22NgLsz4xsVdG9WicEwqoFT4rNL/Bw==
   dependencies:
     base64url "^3.0.1"
     cookie "^0.5.0"
