@@ -6,7 +6,7 @@ import { gqlApiSdk } from "@lib/server";
 import Wrapper from "@components/wrapper";
 import Puzzle from "@components/puzzle";
 import Map from "@components/svg/map-svg";
-import Header from "@components/header-nav";
+import Header from "@components/header";
 import Footer from "@components/footer";
 import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
