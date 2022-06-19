@@ -1,8 +1,3 @@
-import { NextApiResponse } from "next";
-import type { PuzzleApiResponse } from "@lib/types";
-import { gqlApiSdk } from "./server";
-import { routeLandingUrl } from "./utils";
-
 // Client
 export const puzzlePost = async ({
   puzzleId,
