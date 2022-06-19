@@ -8,7 +8,9 @@
     "lint": "next lint",
     "generate:once": "graphql-codegen",
     "generate:watch": "graphql-codegen --watch",
-    "fmt": "eslint . --fix"
+    "fmt": "eslint . --fix",
+    "cypress:open": "cypress open",
+    "cypress:ci": ""
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.1",
