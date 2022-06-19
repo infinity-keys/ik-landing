@@ -10,12 +10,12 @@ jobs:
         run: env
       - name: Echo just our env
         run: echo "GRAPHQL_ENDPOINT $GRAPHQL_ENDPOINT"
-      # - name: Checkout
-      #   uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests. bump
-      # - name: Cypress run
-      #   uses: cypress-io/github-action@v4
-      #   with:
-      #     build: yarn build
-      #     start: yarn start
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          build: yarn build
+          start: yarn start
