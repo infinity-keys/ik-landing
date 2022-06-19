@@ -4,7 +4,7 @@ import Head from "next/head";
 
 import { gqlApiSdk } from "@lib/server";
 import Wrapper from "@components/wrapper";
-import WalletEmail from "@components/forms/wallet-email";
+import WalletEmail from "@components/wallet-email";
 import Link from "next/link";
 
 interface SuccessPageProps {

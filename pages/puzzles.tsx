@@ -6,7 +6,7 @@ import Head from "next/head";
 import { gqlApiSdk } from "@lib/server";
 import { PublicPuzzlesQuery } from "@lib/generated/graphql";
 import Wrapper from "@components/wrapper";
-import Header from "@components/header-nav";
+import Header from "@components/header";
 import Footer from "@components/footer";
 import PuzzleThumbnail from "@components/puzzle-thumbnail";
 
