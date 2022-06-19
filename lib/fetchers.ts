@@ -5,13 +5,13 @@ import { routeLandingUrl } from "./utils";
 
 // Client
 export const puzzlePost = async ({
-  uri,
+  puzzleId,
   code,
 }: {
-  uri: string;
+  puzzleId: string;
   code: string;
 }) => {
-  const res = await fetch(`/api/check/code/${uri}`, {
+  const res = await fetch(`/api/check/code/${puzzleId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

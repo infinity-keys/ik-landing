@@ -63,7 +63,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
 
             <Puzzle
               count={count}
-              puzzleUri={puzzleId}
+              puzzleId={puzzleId}
               boxes={inputType === "boxes"}
               failMessage={failMessage}
             />
