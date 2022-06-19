@@ -6,6 +6,8 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     steps:
+      - name: Echo env
+        run: echo "GRAPHQL_ENDPOINT $GRAPHQL_ENDPOINT\n HASURA_GRAPHQL_ADMIN_SECRET $HASURA_GRAPHQL_ADMIN_SECRET\n"
       - name: Checkout
         uses: actions/checkout@v2
       # Install NPM dependencies, cache them correctly
