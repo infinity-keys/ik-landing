@@ -10,7 +10,7 @@ import Header from "@components/header";
 import Footer from "@components/footer";
 import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
-import WalletEmail from "@components/forms/wallet-email";
+import WalletEmail from "@components/wallet-email";
 
 interface PageProps {
   count: number;
