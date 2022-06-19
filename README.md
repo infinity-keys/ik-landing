@@ -55,6 +55,8 @@ sequenceDiagram
 5. Create pull requests. Consider using the [GitHub CLI](https://cli.github.com/) to greatly streamline this.
 6. Ensure the title of your pull request follows this pattern: `ENG-{linear ticket number}: simple description of your work that could be read by a customer`
    1. For instance, if you have Linear ticket `ENG-123` and the ticket description is something like "integrate auth0", you'd make a PR title that looks like "ENG-123: users can now sign in with user name and password through auth0" (or something like that)
+7. If there are no conflicts in your pull request, your code will start to build at Vercel. Click the "Show environments" dropdown then the "View deployment" link to see the frontend of the site as it exists entirely at the state of your branch.
+8. Merge `main` into your work often.
 
 # NextJs
 
