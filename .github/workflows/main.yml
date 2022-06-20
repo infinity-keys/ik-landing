@@ -4,10 +4,10 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo all env
-        run: env
-      - name: Echo just our env
-        run: echo "FLERP $FLERP" && echo "GITHUB_RUN_NUMBER $GITHUB_RUN_NUMBER"
+      # - name: Echo all env
+      #   run: env
+      # - name: Echo just our env
+      #   run: echo "FLERP $FLERP" && echo "GITHUB_RUN_NUMBER $GITHUB_RUN_NUMBER"
       - name: Checkout
         uses: actions/checkout@v2
       # Install NPM dependencies, cache them correctly
@@ -17,3 +17,8 @@ jobs:
         with:
           build: yarn build
           start: yarn start
+        # Our required env vars
+        env:
+          GRAPHQL_ENDPOINT: ${{secrets.GRAPHQL_ENDPOINT}}
+          HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
+          INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS: ${{secrets.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}}
