@@ -3,6 +3,7 @@ import Image from "next/image";
 import Avatar from "boring-avatars";
 
 import { routeLandingUrl } from "@lib/utils";
+import MinimalKeyLogo from '@components/svg/minimal-key-logo-svg'
 
 interface PuzzleThumbProps {
   landing_route: string;
@@ -27,21 +28,11 @@ const PuzzleThumbnail = (puzzle: PuzzleThumbProps) => {
             {puzzle.simple_name}
           </h3>
           <dl className="mt-1 flex-grow flex flex-col justify-between">
-            <dt className="sr-only">Title</dt>
-            {/* @TOOD: put slugs here when the time comes */}
-            {/* <dd className="text-gray-500 text-sm">
-                        {puzzle.puzzle_id}
-                      </dd> */}
             <dt className="sr-only">Logo</dt>
-            <dd className="mt-3">
-              <span className="px-2 py-1 text-green-800 text-xs font-medium">
-                <Image
-                  src="/favicon-32x32.png"
-                  alt="Infinity Keys logo"
-                  width={32}
-                  height={32}
-                />
-              </span>
+            <dd className="mt-4 flex justify-center">
+              <div className="w-8 h-8 text-turquoise">
+                <MinimalKeyLogo />
+              </div>
             </dd>
           </dl>
         </div>
