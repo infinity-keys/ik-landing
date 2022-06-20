@@ -10,7 +10,7 @@
     "generate:watch": "graphql-codegen --watch",
     "fmt": "eslint . --fix",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run --browser chrome",
+    "cypress:run": "cypress run --headless --browser chrome",
     "cypress:ci": "yarn build && start-server-and-test start http://localhost:3000 cypress:run"
   },
   "dependencies": {

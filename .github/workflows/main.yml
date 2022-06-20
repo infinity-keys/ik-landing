@@ -20,6 +20,8 @@ jobs:
         with:
           build: yarn build
           start: yarn start
+          browser: chrome
+          headed: false
         # Our required env vars
         env:
           GRAPHQL_ENDPOINT: ${{secrets.GRAPHQL_ENDPOINT}}
