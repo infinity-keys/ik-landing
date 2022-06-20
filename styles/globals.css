@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  svg {
+    @apply fill-current;
+  }
+}
+
 @layer components {
   .magic-input > div > div {
     @apply flex flex-wrap justify-center;
@@ -47,9 +53,5 @@
 
   .twitterIcon:hover {
     color: #1da1f2;
-  }
-
-  svg {
-    @apply fill-current;
   }
 }
