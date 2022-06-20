@@ -7,7 +7,7 @@ jobs:
       - name: Echo all env
         run: env
       - name: Echo just our env
-        run: echo "GRAPHQL_ENDPOINT $GRAPHQL_ENDPOINT"
+        run: echo "FLERP $FLERP" && echo "GITHUB_RUN_NUMBER $GITHUB_RUN_NUMBER"
       - name: Checkout
         uses: actions/checkout@v2
       # Install NPM dependencies, cache them correctly
