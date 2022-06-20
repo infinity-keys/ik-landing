@@ -1,11 +1,18 @@
 name: Cypress Tests
 on: [push]
 jobs:
-  cypress-run:
+  testing:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: actions/setup-node@v3
+        with:
+          cache: yarn
+      - name: Install deps
+        run: yarn install --frozen-lockfile
+      - name: eslint
+        run: yarn lint
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests. bump
       - name: Cypress run
