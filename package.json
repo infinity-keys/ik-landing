@@ -55,7 +55,7 @@
     "eslint-config-next": "^12",
     "eslint-config-prettier": "^8.3.0",
     "postcss": "^8.4.5",
-    "postcss-preset-env": "^7.2.3",
+    "postcss-preset-env": "^7.7.2",
     "prettier": "^2.7.1",
     "sass": "^1.52.3",
     "start-server-and-test": "^1.14.0",
