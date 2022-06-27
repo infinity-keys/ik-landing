@@ -8,6 +8,7 @@ import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
 import Wallet from "@components/wallet";
 import Alert from "@components/alert";
+import PuzzleButton from "@components/puzzle-button";
 
 interface FormProps extends PuzzleInput {
   name: string;
@@ -66,10 +67,14 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
   return (
     <>
       {(isSubmitSuccessful || walletSigned) && (
-        <Alert text="Thanks for joining, we will be in touch!" />
+        <>
+          <Alert text="Thanks for joining, we will be in touch!" />
+        </>
       )}
       {!isSubmitSuccessful && errors?.puzzleId && (
-        <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
+        <>
+          <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
+        </>
       )}
       {!isSubmitSuccessful && !errors?.puzzleId && !walletSigned && (
         <div className="">
@@ -86,7 +91,7 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
           </div>
           <p className="text-center mb-8">- or -</p>
           <p className="text-sm font-normal mb-4">
-            Drop us an email if web3 is not your thing.
+            Drop your email if web3 is not your thing.
           </p>
           <form onSubmit={handleSubmit(onSubmit)}>
             <input

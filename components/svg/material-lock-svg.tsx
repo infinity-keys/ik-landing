@@ -1,8 +1,8 @@
 const MaterialLock = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="31.5"
+    width="100%"
+    height="100%"
     viewBox="0 0 24 31.5"
   >
     <path
