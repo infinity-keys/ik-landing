@@ -13,7 +13,7 @@ interface PuzzleThumbProps {
 
 const PuzzleThumbnail = (puzzle: PuzzleThumbProps) => {
   return (
-    <div className="flex flex-col text-center bg-blue-800 rounded-lg shadow cursor-pointer">
+    <div className="puzzle-thumb flex flex-col text-center bg-blue-800 rounded-lg shadow cursor-pointer">
       <Link href={routeLandingUrl(puzzle.landing_route)}>
         <div className="flex-1 flex flex-col p-8">
           <div className="w-32 h-32 flex-shrink-0 mx-auto">
