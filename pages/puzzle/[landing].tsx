@@ -57,7 +57,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
             </div>
 
             {puzzleId === "f890a455-6293-4a87-aff5-c5b5e5bc2617" && (
-              <div className="">
+              <div className="flex pl-60">
                 <Video></Video>
               </div>
             )}
