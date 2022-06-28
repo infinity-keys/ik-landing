@@ -1,17 +1,19 @@
-import React from "react";
+import { FC } from "react";
 
-const Video = () => {
-  return (
-    <iframe
-      width="727"
-      height="409"
-      src="https://www.youtube.com/embed/yx-KVU79Y2o"
-      title="Putting the Games Back Into Games ft. Infinity Keys | Avalanche Summit 2022"
-      frameBorder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowFullScreen
-    ></iframe>
-  );
-};
+interface VideoProps {
+  src: string;
+  title?: string;
+}
+
+const Video: FC<VideoProps> = ({ src, title }) => (
+  <iframe
+    className="w-full aspect-video"
+    src={src}
+    title={title}
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  />
+);
 
 export default Video;
