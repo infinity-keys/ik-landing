@@ -87,7 +87,7 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
             player leaderboard.
           </p>
 
-          <div className="flex justify-center mb-10">
+          <div className="mb-10">
             <Wallet onWalletSignature={onWalletSignature} />
           </div>
           <p className="text-center mb-8">- or -</p>
