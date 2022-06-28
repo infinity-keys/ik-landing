@@ -83,7 +83,8 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
           </div>
 
           <p className="text-sm font-normal mb-8">
-            Connect your web3 wallet to be part of an early player leaderboard.
+            Connect your web3 wallet and sign the message to be part of an early
+            player leaderboard.
           </p>
 
           <div className="flex justify-center mb-10">

@@ -54,7 +54,7 @@ const Wallet = ({ onWalletSignature }: WalletProps) => {
       className="text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4"
     >
       {!userAccount && !userSignature && "Connect wallet"}
-      {userAccount && !userSignature && "Sign"}
+      {userAccount && !userSignature && "Sign Message"}
       {userAccount && userSignature && "Disconnect"}
     </button>
   );
