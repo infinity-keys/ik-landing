@@ -28,7 +28,14 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
     formState: { errors, isValid, isSubmitSuccessful },
   } = useForm<FormProps>();
 
+  const defaultClasses = "font-normal text-neutral-500";
+  const activeClasses = "font-bold text-neutral-50";
+  const completedClasses = defaultClasses + " line-through";
+
   const [walletSigned, setWalletSigned] = useState(false);
+  const [status, setStatus] = useState<"connect" | "sign" | "disconnect">(
+    "connect"
+  );
 
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
     const res = await formSubmit({ data });
@@ -88,7 +95,28 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
           </p>
 
           <div className="mb-10">
-            <Wallet onWalletSignature={onWalletSignature} />
+            <p
+              className={`text-md mb-3 ${
+                status === "connect" ? activeClasses : completedClasses
+              }`}
+            >
+              1. Connect your wallet
+            </p>
+            <p
+              className={`text-md mb-8 ${
+                status === "sign"
+                  ? activeClasses
+                  : status === "disconnect"
+                  ? completedClasses
+                  : defaultClasses
+              }`}
+            >
+              2. Sign message
+            </p>
+            <Wallet
+              onWalletSignature={onWalletSignature}
+              setStatus={setStatus}
+            />
           </div>
           <p className="text-center mb-8">- or -</p>
           <p className="text-sm font-normal mb-4">
