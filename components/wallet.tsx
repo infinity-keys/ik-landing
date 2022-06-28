@@ -84,11 +84,11 @@ interface WalletProps {
 const Wallet = ({ onWalletSignature }: WalletProps) => {
   const [signature, setSignature] = useState<string>("");
   // console.log("signature: ", signature);
-  const [userNonce, setUserNonce] = useState();
+  const [userNonce, setUserNonce] = useState<any>();
   // console.log("userNonce: ", userNonce);
-  const [userLibrary, setUserLibrary] = useState();
+  const [userLibrary, setUserLibrary] = useState<any>();
   // console.log("userLibrary: ", userLibrary);
-  const [userAccount, setUserAccount] = useState();
+  const [userAccount, setUserAccount] = useState<any>();
   // console.log("userAccount: ", userAccount);
 
   const connect = async (): Promise<void> => {
@@ -106,7 +106,7 @@ const Wallet = ({ onWalletSignature }: WalletProps) => {
 
       if (!library?.provider?.request) throw new Error("Library is undefined");
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       disconnect();
     }
   };
@@ -139,7 +139,7 @@ const Wallet = ({ onWalletSignature }: WalletProps) => {
       // const network = await library.getNetwork();
       // setChainId(network.chainId);
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       disconnect();
     }
   };
