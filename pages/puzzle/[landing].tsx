@@ -6,6 +6,7 @@ import Wrapper from "@components/wrapper";
 import NavAvalanche from "@components/nav-avalanche";
 import Puzzle from "@components/puzzle";
 import Markdown from "@components/markdown";
+import Video from "public/puzzles/avalanche/video";
 
 import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
@@ -54,6 +55,12 @@ const Dev: NextPage<PuzzlePageProps> = ({
                 </a>
               </Link>
             </div>
+
+            {puzzleId === "f890a455-6293-4a87-aff5-c5b5e5bc2617" && (
+              <div className="">
+                <Video></Video>
+              </div>
+            )}
 
             {landingMessage && (
               <div className="pb-16 text-center text-lg text-gray-100">
