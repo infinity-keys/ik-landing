@@ -9,6 +9,7 @@ import { PuzzleInput } from "@lib/types";
 import Wallet from "@components/wallet";
 import Alert from "@components/alert";
 import PuzzleButton from "@components/puzzle-button";
+import clsx from "clsx";
 
 interface FormProps extends PuzzleInput {
   name: string;
@@ -27,10 +28,6 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
     setError,
     formState: { errors, isValid, isSubmitSuccessful },
   } = useForm<FormProps>();
-
-  const defaultClasses = "font-normal text-neutral-500";
-  const activeClasses = "font-bold text-neutral-50";
-  const completedClasses = defaultClasses + " line-through";
 
   const [walletSigned, setWalletSigned] = useState(false);
   const [status, setStatus] = useState<"connect" | "sign" | "disconnect">(
@@ -96,20 +93,23 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
 
           <div className="mb-10">
             <p
-              className={`text-md mb-3 ${
-                status === "connect" ? activeClasses : completedClasses
-              }`}
+              className={clsx(
+                "text-md mb-3",
+                status === "connect"
+                  ? "font-bold text-neutral-50"
+                  : "line-through font-normal text-neutral-500"
+              )}
             >
               1. Connect your wallet
             </p>
             <p
-              className={`text-md mb-8 ${
-                status === "sign"
-                  ? activeClasses
-                  : status === "disconnect"
-                  ? completedClasses
-                  : defaultClasses
-              }`}
+              className={clsx(
+                "text-md mb-8",
+                status === "connect" && "font-normal text-neutral-500",
+                status === "sign" && "font-bold text-neutral-50",
+                status === "disconnect" &&
+                  "font-normal text-neutral-500 line-through"
+              )}
             >
               2. Sign message
             </p>
