@@ -34,6 +34,8 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
     "connect"
   );
 
+  console.log("status: ", status);
+
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
     const res = await formSubmit({ data });
     console.log(res);
