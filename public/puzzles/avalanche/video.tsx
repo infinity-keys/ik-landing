@@ -6,11 +6,14 @@ interface VideoProps {
 }
 
 const Video: FC<VideoProps> = ({ src, title }) => (
-  <span className="flex w-full justify-center">
-    <span className="block">
+  <span className="container flex justify-center">
+    <span className="">
       <iframe
-        className="w-full aspect-video"
-        height={409}
+        className="aspect-video"
+        // height={409}
+        // width={727}
+        height="100%"
+        width="100%"
         src={src}
         title={title}
         frameBorder="0"
