@@ -89,7 +89,6 @@ export const transactionUtil = (props: {
   const setTransactionSuccess = (txHash: string) => {
     const val = "https://" + blockTracker + ".io/tx/" + txHash;
     console.log(val);
-    console.log("here");
     props.changeLoading(false);
   };
 

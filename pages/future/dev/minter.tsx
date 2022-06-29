@@ -24,7 +24,7 @@ export const minterUtil = (props: {
   const [transaction, setTransaction] = useState<any>();
 
   //TEMPORARY
-  const puzzleId = 0;
+  const puzzleId = 1;
 
   const wallet = walletUtil();
 
@@ -117,9 +117,9 @@ export const minterUtil = (props: {
     }
   };
 
-  const mint = () => {
+  const mint = async () => {
     if (library && transaction) {
-      transaction.createTx();
+      await transaction.createTx();
     }
   };
 
@@ -141,7 +141,7 @@ export const minterUtil = (props: {
       ContractABI,
       providerAVAX
     );
-    let resultAVAX = await contractETH.checkIfClaimed(puzzleId, account);
+    let resultAVAX = await contractAVAX.checkIfClaimed(puzzleId, account);
     if (resultAVAX === true) return true;
 
     return false;
