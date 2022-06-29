@@ -1,7 +1,7 @@
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-// import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
+import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
 // import Fortmatic from "fortmatic";
 
 const providerOptions = {
@@ -11,16 +11,15 @@ const providerOptions = {
       infuraId: "c10d222a5bae4a8e97fad0915b06ff5d",
     },
   },
-  // coinbasewallet: {
-  //   package: CoinbaseWalletSDK, // Required
-  //   options: {
-  //     appName: "My Awesome App", // Required
-  //     infuraId: "INFURA_ID", // Required
-  //     rpc: "", // Optional if `infuraId` is provided; otherwise it's required
-  //     chainId: 1, // Optional. It defaults to 1 if not provided
-  //     darkMode: false // Optional. Use dark theme, defaults to false
-  //   }
-  // },
+  coinbasewallet: {
+    package: CoinbaseWalletSDK, // Required
+    options: {
+      appName: "InfinityKeys", // Required
+      infuraId: "c10d222a5bae4a8e97fad0915b06ff5d", // Required
+      chainId: 1, // Optional. It defaults to 1 if not provided
+      darkMode: false, // Optional. Use dark theme, defaults to false
+    },
+  },
   // fortmatic: {
   //   package: Fortmatic, // required
   //   options: {
@@ -48,6 +47,7 @@ export const walletUtil = () => {
   let provider: ethers.providers.ExternalProvider;
   let library: ethers.providers.Web3Provider;
   let account: string;
+  let chain: number;
 
   /**
    * Pop the modal and set vars we may need later
@@ -56,11 +56,13 @@ export const walletUtil = () => {
     if (!web3Modal) throw new Error("No web3Modal");
 
     provider = await web3Modal.connect();
-    library = new ethers.providers.Web3Provider(provider);
+    library = new ethers.providers.Web3Provider(provider, "any");
 
     const accounts = await library.listAccounts();
     if (!accounts.length) throw new Error("No accounts found");
     account = accounts[0];
+
+    chain = (await library.getNetwork()).chainId;
 
     return retrieve();
   };
@@ -72,6 +74,7 @@ export const walletUtil = () => {
     provider,
     library,
     account,
+    chain,
   });
 
   /**

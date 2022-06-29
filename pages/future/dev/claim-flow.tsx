@@ -4,21 +4,39 @@ import Avatar from "boring-avatars";
 import Wrapper from "@components/wrapper";
 import Header from "@components/header";
 import Footer from "@components/footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { minterUtil } from "./minter";
+import { AVAX_CHAIN_ID, ETH_CHAIN_ID } from "@lib/constants";
 
 const ClaimFlow: NextPage = () => {
-  const [provider, setProvider] = useState<String | null>(null);
+  const [chain, setChain] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [minted, setMinted] = useState(false);
 
-  const mint = (network: String) => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      console.log("minting on " + network);
-      setMinted(true);
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+  const updateLoading = async (isItLoading: boolean) => {
+    if (await isItLoading) setIsLoading(isItLoading);
+  };
+
+  const updateMinted = async (isItMinted: boolean) => {
+    if (await isItMinted) setMinted(isItMinted);
+  };
+
+  const minter = minterUtil({ updateLoading, updateMinted });
+
+  const connectWallet = async () => {
+    setChain(await minter.connectWallet());
+  };
+
+  const mint = (network: number) => {
+    minter.mint();
+
+    // const timer = setTimeout(() => {
+    //   console.log("minting on " + network);
+    //   setMinted(true);
+    //   setIsLoading(false);
+    // }, 1000);
+    // return () => clearTimeout(timer);
   };
 
   const buttonClasses =
@@ -52,56 +70,58 @@ const ClaimFlow: NextPage = () => {
                   : "Mint Your Trophy"}
               </h2>
 
-              {!provider && (
+              {!chain && (
                 <button
                   className={buttonPrimaryClasses}
                   type="submit"
                   value="Join the mailing list"
-                  onClick={() => setProvider("ethereum")}
+                  onClick={() => connectWallet()}
                 >
                   Connect Wallet
                 </button>
               )}
 
-              {!isLoading && provider && !minted && (
+              {!isLoading && chain && !minted && (
                 <>
                   <button
                     className={
-                      provider === "ethereum"
+                      chain === ETH_CHAIN_ID
                         ? buttonPrimaryClasses
                         : buttonClasses
                     }
                     type="submit"
                     value="Join the mailing list"
                     onClick={() => {
-                      if (provider === "ethereum") {
-                        mint("ethereum");
+                      if (chain === ETH_CHAIN_ID) {
+                        mint(ETH_CHAIN_ID);
                       } else {
-                        setProvider("ethereum");
+                        minter.switchToEth();
+                        setChain(ETH_CHAIN_ID);
                       }
                     }}
                   >
-                    {provider === "ethereum"
+                    {chain === ETH_CHAIN_ID
                       ? "Mint on Ethereum"
                       : "Switch to Ethereum"}
                   </button>
                   <button
                     className={
-                      provider === "avalanche"
+                      chain === AVAX_CHAIN_ID
                         ? buttonPrimaryClasses
                         : buttonClasses
                     }
                     type="submit"
                     value="Join the mailing list"
-                    onClick={() => {
-                      if (provider === "avalanche") {
-                        mint("avalanche");
+                    onClick={async () => {
+                      if (chain === AVAX_CHAIN_ID) {
+                        mint(AVAX_CHAIN_ID);
                       } else {
-                        setProvider("avalanche");
+                        minter.switchToAvax();
+                        setChain(AVAX_CHAIN_ID);
                       }
                     }}
                   >
-                    {provider === "avalanche"
+                    {chain === AVAX_CHAIN_ID
                       ? "Mint on Avalanche"
                       : "Switch to Avalanche"}
                   </button>
@@ -119,7 +139,7 @@ const ClaimFlow: NextPage = () => {
 
               {minted && (
                 <a href="#" className={buttonPrimaryClasses}>
-                  View On {provider === "ethereum" ? "OpenSea" : "JoePegs"}
+                  View On {chain === ETH_CHAIN_ID ? "OpenSea" : "JoePegs"}
                 </a>
               )}
             </div>
