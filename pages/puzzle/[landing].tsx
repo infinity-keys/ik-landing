@@ -56,17 +56,6 @@ const Dev: NextPage<PuzzlePageProps> = ({
               </Link>
             </div>
 
-            {puzzleId === "f890a455-6293-4a87-aff5-c5b5e5bc2617" && (
-              <div className="flex w-full justify-center">
-                <div className="">
-                  <Video
-                    src="https://www.youtube.com/embed/yx-KVU79Y2o"
-                    title="Putting the Games Back Into Games ft. Infinity Keys | Avalanche Summit 2022"
-                  />
-                </div>
-              </div>
-            )}
-
             {landingMessage && (
               <div className="pb-16 text-center text-lg text-gray-100">
                 <Markdown>{landingMessage}</Markdown>
