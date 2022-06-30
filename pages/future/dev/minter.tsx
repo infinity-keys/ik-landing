@@ -17,12 +17,13 @@ export const minterUtil = (props: {
   updateLoading: Function;
   updateMinted: Function;
   updateTxMessage: Function;
+  updateChain: Function;
   puzzleId: number;
 }) => {
-  const [account, setAccount] = useState<string>();
-  const [library, setLibrary] = useState<ethers.providers.Web3Provider>();
-  const [chain, setChain] = useState<number>();
-  const [transaction, setTransaction] = useState<any>();
+  let account: string;
+  let library: ethers.providers.Web3Provider;
+  let chain: number;
+  let transaction: any;
 
   const puzzleId = props.puzzleId;
   const wallet = walletUtil();
@@ -39,37 +40,27 @@ export const minterUtil = (props: {
     props.updateTxMessage(txMessage);
   };
 
-  useEffect(() => {
-    if (account) {
-      checkIfClaimed();
-    }
-  }, [account, chain]);
-
-  useEffect(() => {
-    if (account && library && chain) {
-      setTransaction(
-        transactionUtil({
-          chain,
-          puzzleId,
-          library,
-          account,
-          changeLoading,
-          changeMinted,
-          changeTxMessage,
-        })
-      );
-    }
-  }, [account, library, chain]);
-
   const connectWallet = async () => {
     try {
-      const { library, account, chain } = await wallet.trigger();
-      setAccount(account);
-      setLibrary(library);
-      setChain(chain);
+      { library, account, chain } = await wallet.trigger();
 
-      //issues on other end getting undefined while waiting for chain state to change
-      return chain;
+      if (account) {
+        checkIfClaimed();
+
+        if (library && chain) {
+          transaction = transactionUtil({
+            chain,
+            puzzleId,
+            library,
+            account,
+            changeLoading,
+            changeMinted,
+            changeTxMessage,
+          });
+        }
+      }
+
+      props.updateChain(chain);
     } catch (error) {
       console.log(error);
       disconnectWallet();
@@ -81,10 +72,10 @@ export const minterUtil = (props: {
     wallet.clear();
   };
 
-  const getChainID = () => {
-    //feel like this could be better..
-    //issues where chain isn't set yet by setState but this is being called
+  const updateChainID = async () => {
     if (chain) {
+      chain = (await library.getNetwork()).chainId;
+      props.updateChain(chain);
       return chain;
     }
     return 0;
@@ -102,7 +93,7 @@ export const minterUtil = (props: {
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(ETH_CHAIN_ID) }],
         });
-        setChain((await library.getNetwork()).chainId);
+        updateChainID();
       } catch (switchError: any) {
         console.log(switchError);
       }
@@ -116,7 +107,7 @@ export const minterUtil = (props: {
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(AVAX_CHAIN_ID) }],
         });
-        setChain((await library.getNetwork()).chainId);
+        updateChainID();
       } catch (switchError: any) {
         //I think this should add AVAX to MetaMask if you dont have it yet
         //have not tested
@@ -126,7 +117,7 @@ export const minterUtil = (props: {
               method: "wallet_addEthereumChain",
               params: [FUJI_PARAMS],
             });
-            setChain((await library.getNetwork()).chainId);
+            updateChainID();
           } catch (error) {
             console.log(error);
           }
@@ -178,7 +169,7 @@ export const minterUtil = (props: {
     disconnectWallet,
     switchToEth,
     switchToAvax,
-    getChainID,
+    updateChainID,
     mint,
     checkIfClaimed,
   };

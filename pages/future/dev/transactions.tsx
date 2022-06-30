@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ethers } from "ethers";
 import {
   CONTRACT_ADDRESS_AVAX,

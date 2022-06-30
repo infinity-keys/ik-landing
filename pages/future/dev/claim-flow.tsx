@@ -15,15 +15,14 @@ import {
   CONTRACT_ADDRESS_ETH,
   CONTRACT_ADDRESS_AVAX,
 } from "@lib/constants";
+import { getChainId } from "web3modal";
 
 const ClaimFlow: NextPage = () => {
   //MOVE TO A PROP
   const puzzleId = 5;
 
-  const openseaLink =
-    ETH_MARKETPLACE_LINK + CONTRACT_ADDRESS_ETH + "/" + puzzleId;
-  const joePegsLink =
-    AVAX_MARKETPLACE_LINK + CONTRACT_ADDRESS_AVAX + "/" + puzzleId;
+  const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/${puzzleId}`;
+  const joePegsLink = `${AVAX_MARKETPLACE_LINK}${CONTRACT_ADDRESS_AVAX}/${puzzleId}`;
 
   const [chain, setChain] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,15 +41,20 @@ const ClaimFlow: NextPage = () => {
     setTxMessage(newTxMessage);
   };
 
+  const updateChain = async (newChain: number) => {
+    setChain(newChain);
+  };
+
   const minter = minterUtil({
     updateLoading,
     updateMinted,
     updateTxMessage,
+    updateChain,
     puzzleId,
   });
 
   const connectWallet = async () => {
-    setChain(await minter.connectWallet());
+    await minter.connectWallet();
   };
 
   const mint = async (network: number) => {
@@ -116,7 +120,7 @@ const ClaimFlow: NextPage = () => {
                         mint(ETH_CHAIN_ID);
                       } else {
                         await minter.switchToEth();
-                        setChain(ETH_CHAIN_ID);
+                        await minter.updateChainID();
                       }
                     }}
                   >
@@ -137,7 +141,7 @@ const ClaimFlow: NextPage = () => {
                         mint(AVAX_CHAIN_ID);
                       } else {
                         await minter.switchToAvax();
-                        setChain(AVAX_CHAIN_ID);
+                        await minter.updateChainID();
                       }
                     }}
                   >
