@@ -1,6 +1,6 @@
 import { createMachine } from "xstate";
 
-type WalletConnectEvents = { type: "NEXT" };
+export type WalletConnectEvents = { type: "NEXT" };
 
 export type WalletConnectStates =
   | { value: "connect"; context: undefined }
