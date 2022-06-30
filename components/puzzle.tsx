@@ -84,7 +84,7 @@ const Puzzle = ({
     // If either success or fail exist, turn them into proper paths and route
     router.push(
       (success_route && routeSuccessUrl(success_route)) ||
-        (fail_route && routeFailUrl(fail_route))
+      (fail_route && routeFailUrl(fail_route))
     );
   };
 
