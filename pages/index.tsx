@@ -11,6 +11,7 @@ import Footer from "@components/footer";
 import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
 import WalletEmail from "@components/wallet-email";
+import Alert from "@components/alert";
 
 interface PageProps {
   count: number;
@@ -19,11 +20,8 @@ interface PageProps {
 
 const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
   const SuccessComponent = () => (
-    <div className="container px-4 flex flex-col items-center justify-center max-w-sm">
-      <WalletEmail
-        puzzleId={puzzleId}
-        successMessage="Now you're playing Infinity Keys! Sign up for future updates and rewards. Solve more puzzles. Find more clues on IK social channels."
-      />
+    <div className="container my-9 flex justify-center max-w-sm">
+      <Alert text="Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels." />
     </div>
   );
 
