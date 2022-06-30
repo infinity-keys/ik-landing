@@ -32,7 +32,6 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
 
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
     const res = await formSubmit({ data });
-    console.log(res);
     // 409 === conflict === already submitted
     if (res.status === 409) {
       // Set error message
