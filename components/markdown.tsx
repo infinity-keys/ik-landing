@@ -23,7 +23,11 @@ const Markdown = ({ children }: Props) => (
             />
           );
         }
-        return <a href={props.href}>{props.children}</a>;
+        return (
+          <a className="underline" href={props.href}>
+            {props.children}
+          </a>
+        );
       },
     }}
   >
