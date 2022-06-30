@@ -17,6 +17,7 @@ export const transactionUtil = (props: {
   account: string;
   changeLoading: Function;
   changeMinted: Function;
+  changeTxMessage: Function;
 }) => {
   let contractAddress: string;
   let blockTracker: string;
@@ -72,7 +73,7 @@ export const transactionUtil = (props: {
         setTransactionStart(txHash);
       }
     } catch (error) {
-      console.log(error);
+      setTransactionError(error);
     }
   };
 
@@ -84,20 +85,20 @@ export const transactionUtil = (props: {
 
   const setTransactionStart = (txHash: string) => {
     const val = "https://" + blockTracker + ".io/tx/" + txHash;
-    console.log(val);
+    props.changeTxMessage(val);
     props.changeLoading(true);
   };
 
   const setTransactionSuccess = (txHash: string) => {
     const val = "https://" + blockTracker + ".io/tx/" + txHash;
-    console.log(val);
+    props.changeTxMessage(val);
     props.changeMinted(true);
     props.changeLoading(false);
   };
 
   const setTransactionFailed = (txHash: string) => {
     const val = "https://" + blockTracker + ".io/tx/" + txHash;
-    console.log(val);
+    props.changeTxMessage(val);
     props.changeMinted(false);
     props.changeLoading(false);
   };

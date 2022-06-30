@@ -4,7 +4,7 @@ import Avatar from "boring-avatars";
 import Wrapper from "@components/wrapper";
 import Header from "@components/header";
 import Footer from "@components/footer";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { minterUtil } from "./minter";
 import {
@@ -18,7 +18,7 @@ import {
 
 const ClaimFlow: NextPage = () => {
   //MOVE TO A PROP
-  const puzzleId = 4;
+  const puzzleId = 5;
 
   const openseaLink =
     ETH_MARKETPLACE_LINK + CONTRACT_ADDRESS_ETH + "/" + puzzleId;
@@ -28,6 +28,7 @@ const ClaimFlow: NextPage = () => {
   const [chain, setChain] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [minted, setMinted] = useState(false);
+  const [txMessage, setTxMessage] = useState<string>();
 
   const updateLoading = async (isItLoading: boolean) => {
     setIsLoading(isItLoading);
@@ -37,7 +38,16 @@ const ClaimFlow: NextPage = () => {
     if (await isItMinted) setMinted(isItMinted);
   };
 
-  const minter = minterUtil({ updateLoading, updateMinted, puzzleId });
+  const updateTxMessage = async (newTxMessage: string) => {
+    setTxMessage(newTxMessage);
+  };
+
+  const minter = minterUtil({
+    updateLoading,
+    updateMinted,
+    updateTxMessage,
+    puzzleId,
+  });
 
   const connectWallet = async () => {
     setChain(await minter.connectWallet());
@@ -72,7 +82,9 @@ const ClaimFlow: NextPage = () => {
               />
               <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl">
                 {isLoading
-                  ? "Claiming Trophy"
+                  ? txMessage
+                    ? "Claiming Trophy"
+                    : "Connecting Wallet"
                   : minted
                   ? "Your Trophy Has Been Claimed"
                   : "Claim Your Trophy"}
@@ -136,6 +148,20 @@ const ClaimFlow: NextPage = () => {
                 </>
               )}
 
+              {txMessage && (
+                <div>
+                  View Transaction&nbsp;
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={txMessage} //this should know what chain its on. set in transactions util.
+                    className="underline"
+                  >
+                    Here
+                  </a>
+                </div>
+              )}
+
               {isLoading && (
                 <div className="loader mx-auto mt-10">
                   <div className="ball-clip-rotate-multiple">
@@ -152,7 +178,7 @@ const ClaimFlow: NextPage = () => {
                   href={chain === ETH_CHAIN_ID ? openseaLink : joePegsLink}
                   className={buttonPrimaryClasses}
                 >
-                  View On {chain === ETH_CHAIN_ID ? "OpenSea" : "JoePegs"}
+                  View NFT On {chain === ETH_CHAIN_ID ? "OpenSea" : "JoePegs"}
                 </a>
               )}
             </div>

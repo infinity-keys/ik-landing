@@ -16,6 +16,7 @@ import ContractABI from "./ContractABI.json";
 export const minterUtil = (props: {
   updateLoading: Function;
   updateMinted: Function;
+  updateTxMessage: Function;
   puzzleId: number;
 }) => {
   const [account, setAccount] = useState<string>();
@@ -34,11 +35,13 @@ export const minterUtil = (props: {
     props.updateMinted(minted);
   };
 
+  const changeTxMessage = (txMessage: string) => {
+    props.updateTxMessage(txMessage);
+  };
+
   useEffect(() => {
-    console.log("test");
     if (account) {
-      const claimed = checkIfClaimed();
-      props.updateMinted(claimed);
+      checkIfClaimed();
     }
   }, [account, chain]);
 
@@ -52,6 +55,7 @@ export const minterUtil = (props: {
           account,
           changeLoading,
           changeMinted,
+          changeTxMessage,
         })
       );
     }
@@ -78,6 +82,8 @@ export const minterUtil = (props: {
   };
 
   const getChainID = () => {
+    //feel like this could be better..
+    //issues where chain isn't set yet by setState but this is being called
     if (chain) {
       return chain;
     }
@@ -90,7 +96,7 @@ export const minterUtil = (props: {
   };
 
   const switchToEth = async () => {
-    if (chain && library?.provider) {
+    if (chain && library?.provider?.request) {
       try {
         await library.provider.request({
           method: "wallet_switchEthereumChain",
@@ -104,7 +110,7 @@ export const minterUtil = (props: {
   };
 
   const switchToAvax = async () => {
-    if (chain && library?.provider) {
+    if (chain && library?.provider?.request) {
       try {
         await library.provider.request({
           method: "wallet_switchEthereumChain",
@@ -112,6 +118,8 @@ export const minterUtil = (props: {
         });
         setChain((await library.getNetwork()).chainId);
       } catch (switchError: any) {
+        //I think this should add AVAX to MetaMask if you dont have it yet
+        //have not tested
         if (switchError.code === 4902) {
           try {
             await library.provider.request({
@@ -136,6 +144,7 @@ export const minterUtil = (props: {
   const verify = () => {};
 
   const checkIfClaimed = async () => {
+    changeLoading(true);
     const providerETH = new ethers.providers.JsonRpcProvider(ETH_RPC);
     const contractETH = new ethers.Contract(
       CONTRACT_ADDRESS_ETH,
@@ -143,7 +152,10 @@ export const minterUtil = (props: {
       providerETH
     );
     let resultETH = await contractETH.checkIfClaimed(puzzleId, account);
-    if (resultETH === true) return true;
+    if (resultETH === true) {
+      changeMinted(true);
+      changeLoading(false);
+    }
 
     const providerAVAX = new ethers.providers.JsonRpcProvider(AVAX_RPC);
     const contractAVAX = new ethers.Contract(
@@ -152,9 +164,13 @@ export const minterUtil = (props: {
       providerAVAX
     );
     let resultAVAX = await contractAVAX.checkIfClaimed(puzzleId, account);
-    if (resultAVAX === true) return true;
+    if (resultAVAX === true) {
+      changeMinted(true);
+      changeLoading(false);
+    }
 
-    return false;
+    changeMinted(false);
+    changeLoading(false);
   };
 
   return {
