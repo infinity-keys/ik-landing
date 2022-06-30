@@ -7,36 +7,44 @@ import Footer from "@components/footer";
 import { useEffect, useState } from "react";
 
 import { minterUtil } from "./minter";
-import { AVAX_CHAIN_ID, ETH_CHAIN_ID } from "@lib/constants";
+import {
+  AVAX_CHAIN_ID,
+  ETH_CHAIN_ID,
+  AVAX_MARKETPLACE_LINK,
+  ETH_MARKETPLACE_LINK,
+  CONTRACT_ADDRESS_ETH,
+  CONTRACT_ADDRESS_AVAX,
+} from "@lib/constants";
 
 const ClaimFlow: NextPage = () => {
+  //MOVE TO A PROP
+  const puzzleId = 4;
+
+  const openseaLink =
+    ETH_MARKETPLACE_LINK + CONTRACT_ADDRESS_ETH + "/" + puzzleId;
+  const joePegsLink =
+    AVAX_MARKETPLACE_LINK + CONTRACT_ADDRESS_AVAX + "/" + puzzleId;
+
   const [chain, setChain] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [minted, setMinted] = useState(false);
 
   const updateLoading = async (isItLoading: boolean) => {
-    if (await isItLoading) setIsLoading(isItLoading);
+    setIsLoading(isItLoading);
   };
 
   const updateMinted = async (isItMinted: boolean) => {
     if (await isItMinted) setMinted(isItMinted);
   };
 
-  const minter = minterUtil({ updateLoading, updateMinted });
+  const minter = minterUtil({ updateLoading, updateMinted, puzzleId });
 
   const connectWallet = async () => {
     setChain(await minter.connectWallet());
   };
 
-  const mint = (network: number) => {
-    minter.mint();
-
-    // const timer = setTimeout(() => {
-    //   console.log("minting on " + network);
-    //   setMinted(true);
-    //   setIsLoading(false);
-    // }, 1000);
-    // return () => clearTimeout(timer);
+  const mint = async (network: number) => {
+    await minter.mint();
   };
 
   const buttonClasses =
@@ -64,10 +72,10 @@ const ClaimFlow: NextPage = () => {
               />
               <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl">
                 {isLoading
-                  ? "Minting Trophy"
+                  ? "Claiming Trophy"
                   : minted
-                  ? "Your Trophy Is Minted"
-                  : "Mint Your Trophy"}
+                  ? "Your Trophy Has Been Claimed"
+                  : "Claim Your Trophy"}
               </h2>
 
               {!chain && (
@@ -91,17 +99,17 @@ const ClaimFlow: NextPage = () => {
                     }
                     type="submit"
                     value="Join the mailing list"
-                    onClick={() => {
+                    onClick={async () => {
                       if (chain === ETH_CHAIN_ID) {
                         mint(ETH_CHAIN_ID);
                       } else {
-                        minter.switchToEth();
+                        await minter.switchToEth();
                         setChain(ETH_CHAIN_ID);
                       }
                     }}
                   >
                     {chain === ETH_CHAIN_ID
-                      ? "Mint on Ethereum"
+                      ? "Claim on Ethereum"
                       : "Switch to Ethereum"}
                   </button>
                   <button
@@ -116,13 +124,13 @@ const ClaimFlow: NextPage = () => {
                       if (chain === AVAX_CHAIN_ID) {
                         mint(AVAX_CHAIN_ID);
                       } else {
-                        minter.switchToAvax();
+                        await minter.switchToAvax();
                         setChain(AVAX_CHAIN_ID);
                       }
                     }}
                   >
                     {chain === AVAX_CHAIN_ID
-                      ? "Mint on Avalanche"
+                      ? "Claim on Avalanche"
                       : "Switch to Avalanche"}
                   </button>
                 </>
@@ -138,7 +146,12 @@ const ClaimFlow: NextPage = () => {
               )}
 
               {minted && (
-                <a href="#" className={buttonPrimaryClasses}>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={chain === ETH_CHAIN_ID ? openseaLink : joePegsLink}
+                  className={buttonPrimaryClasses}
+                >
                   View On {chain === ETH_CHAIN_ID ? "OpenSea" : "JoePegs"}
                 </a>
               )}

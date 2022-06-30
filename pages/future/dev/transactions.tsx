@@ -16,6 +16,7 @@ export const transactionUtil = (props: {
   library: ethers.providers.Web3Provider;
   account: string;
   changeLoading: Function;
+  changeMinted: Function;
 }) => {
   let contractAddress: string;
   let blockTracker: string;
@@ -77,6 +78,7 @@ export const transactionUtil = (props: {
 
   const setTransactionError = (error: any) => {
     console.log(error);
+    props.changeMinted(false);
     props.changeLoading(false);
   };
 
@@ -89,12 +91,14 @@ export const transactionUtil = (props: {
   const setTransactionSuccess = (txHash: string) => {
     const val = "https://" + blockTracker + ".io/tx/" + txHash;
     console.log(val);
+    props.changeMinted(true);
     props.changeLoading(false);
   };
 
   const setTransactionFailed = (txHash: string) => {
     const val = "https://" + blockTracker + ".io/tx/" + txHash;
     console.log(val);
+    props.changeMinted(false);
     props.changeLoading(false);
   };
 

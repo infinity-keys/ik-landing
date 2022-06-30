@@ -19,6 +19,7 @@ export const CONTRACT_ADDRESS_AVAX =
   "0x40e5cEDa87c54b1E1C22dF6684c60E414fBc399a";
 export const SNOWTRACE_TRACKER = "testnet.snowtrace";
 export const AVAX_RPC = "https://api.avax-test.network/ext/bc/C/rpc";
+export const AVAX_MARKETPLACE_LINK = "https://joepegs.com/item/";
 
 export const FUJI_PARAMS = {
   chainId: "0x43113",
@@ -43,3 +44,6 @@ export const CONTRACT_ADDRESS_ETH =
 export const ETHERSCAN_TRACKER = "rinkeby.etherscan";
 export const ETH_RPC =
   "https://rinkeby.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d";
+export const ETH_MARKETPLACE_LINK =
+  "https://testnets.opensea.io/assets/rinkeby/";
+//"https://opensea.io/assets/ethereum/";

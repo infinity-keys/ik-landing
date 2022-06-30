@@ -16,33 +16,43 @@ import ContractABI from "./ContractABI.json";
 export const minterUtil = (props: {
   updateLoading: Function;
   updateMinted: Function;
+  puzzleId: number;
 }) => {
   const [account, setAccount] = useState<string>();
   const [library, setLibrary] = useState<ethers.providers.Web3Provider>();
-  const [registry, setRegistry] = useState<ethers.Contract>();
   const [chain, setChain] = useState<number>();
   const [transaction, setTransaction] = useState<any>();
 
-  //TEMPORARY
-  const puzzleId = 1;
-
+  const puzzleId = props.puzzleId;
   const wallet = walletUtil();
 
   const changeLoading = (loading: boolean) => {
     props.updateLoading(loading);
   };
 
+  const changeMinted = (minted: boolean) => {
+    props.updateMinted(minted);
+  };
+
   useEffect(() => {
+    console.log("test");
     if (account) {
       const claimed = checkIfClaimed();
       props.updateMinted(claimed);
     }
-  }, [account]);
+  }, [account, chain]);
 
   useEffect(() => {
     if (account && library && chain) {
       setTransaction(
-        transactionUtil({ chain, puzzleId, library, account, changeLoading })
+        transactionUtil({
+          chain,
+          puzzleId,
+          library,
+          account,
+          changeLoading,
+          changeMinted,
+        })
       );
     }
   }, [account, library, chain]);
