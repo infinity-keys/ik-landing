@@ -31,4 +31,16 @@ describe("infinitykeys.io", () => {
     cy.get(".puzzle-thumb").first().click();
     cy.url().should("include", "/puzzle/");
   });
+
+  it.only("fills out contact form and submits successfully", () => {
+    cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
+      statusCode: 200,
+    });
+    cy.visit("/");
+    cy.get('[data-cy="email-partner"] input').type("you@me.com");
+    cy.get('[data-cy="email-partner"] button').click();
+    cy.get('[data-cy="email-partner-success"]').contains(
+      "Thank you for signing up!"
+    );
+  });
 });
