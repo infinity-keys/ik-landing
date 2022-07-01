@@ -6,7 +6,6 @@ import Wrapper from "@components/wrapper";
 import NavAvalanche from "@components/nav-avalanche";
 import Puzzle from "@components/puzzle";
 import Markdown from "@components/markdown";
-import Video from "public/puzzles/avalanche/video";
 
 import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
