@@ -15,8 +15,9 @@ export default async function handler(
   if (!publicAddress || typeof publicAddress !== "string") {
     return res.status(400).end();
   }
-
   const token = req.cookies[IK_ID_COOKIE];
+  if (!token) return res.status(401).end();
+
   // Validate token first
   let verified = undefined;
   try {

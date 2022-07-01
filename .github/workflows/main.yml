@@ -11,6 +11,13 @@ jobs:
           cache: yarn
       - name: Install deps
         run: yarn install --frozen-lockfile
+      - name: build
+        run: yarn build
+        env:
+          GRAPHQL_ENDPOINT: ${{secrets.GRAPHQL_ENDPOINT}}
+          HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
+          INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS: ${{secrets.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}}
+          INFINITY_KEYS_SECRET: ${{secrets.INFINITY_KEYS_SECRET}}
       - name: eslint
         run: yarn lint
       # Install NPM dependencies, cache them correctly
@@ -18,7 +25,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
-          build: yarn build
+          # build: yarn build
           start: yarn start
           browser: chrome
           headed: false
