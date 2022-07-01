@@ -8,7 +8,7 @@
     "lint": "next lint",
     "generate:once": "graphql-codegen",
     "generate:watch": "graphql-codegen --watch",
-    "fmt": "eslint . --fix",
+    "fmt": "tsc && eslint . --fix",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --headless --browser chrome",
     "cypress:ci": "yarn build && start-server-and-test start http://localhost:3000 cypress:run"
@@ -36,7 +36,7 @@
     "loaders.css": "^0.1.2",
     "lodash": "^4.17.21",
     "nanoid": "^4.0.0",
-    "next": "^12",
+    "next": "12.2.1-canary.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.33.0",

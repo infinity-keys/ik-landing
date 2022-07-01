@@ -36,6 +36,8 @@ export default async function handler(
 
   const token = req.cookies[IK_ID_COOKIE];
 
+  if (!token) throw new Error("Submission without token!");
+
   // Validate token first
   let verified = undefined;
   try {
