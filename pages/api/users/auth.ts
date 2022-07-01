@@ -15,10 +15,10 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { publicAddress, signature } = req.body;
-
-  if (!publicAddress || !signature) return res.status(401).end();
-
   const token = req.cookies[IK_ID_COOKIE];
+
+  if (!publicAddress || !signature || !token) return res.status(401).end();
+
   // Validate token first
   let verified = undefined;
   try {
