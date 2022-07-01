@@ -1,14 +1,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import clsx from "clsx";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useMachine } from "@xstate/react";
 
 import ButtonSocialTwitter from "@components/button-social-twitter";
 import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
-import { walletConnectMachine } from "@lib/walletState";
 import Wallet from "@components/wallet";
 import Alert from "@components/alert";
 import PuzzleButton from "@components/puzzle-button";
@@ -32,7 +29,6 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
   } = useForm<FormProps>();
 
   const [walletSigned, setWalletSigned] = useState(false);
-  const [current, send] = useMachine(walletConnectMachine);
 
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
     const res = await formSubmit({ data });
@@ -92,32 +88,7 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
           </p>
 
           <div className="mb-10">
-            <p
-              className={clsx(
-                "text-md mb-3",
-                current.matches("connect")
-                  ? "font-bold text-neutral-50"
-                  : "line-through font-normal text-neutral-500"
-              )}
-            >
-              1. Connect your wallet
-            </p>
-            <p
-              className={clsx(
-                "text-md mb-8",
-                current.matches("connect") && "font-normal text-neutral-500",
-                current.matches("sign") && "font-bold text-neutral-50",
-                current.matches("disconnect") &&
-                  "font-normal text-neutral-500 line-through"
-              )}
-            >
-              2. Sign message
-            </p>
-            <Wallet
-              onWalletSignature={onWalletSignature}
-              send={send}
-              current={current}
-            />
+            <Wallet onWalletSignature={onWalletSignature} />
           </div>
           <p className="text-center mb-8">- or -</p>
           <p className="text-sm font-normal mb-4">
