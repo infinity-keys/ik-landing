@@ -42,7 +42,7 @@ export const minterUtil = (props: {
 
   const connectWallet = async () => {
     try {
-      { library, account, chain } = await wallet.trigger();
+      const { library, account, chain } = await wallet.trigger();
 
       if (account) {
         checkIfClaimed();
