@@ -21,13 +21,15 @@ export const SNOWTRACE_TRACKER = "testnet.snowtrace";
 export const AVAX_RPC = "https://api.avax-test.network/ext/bc/C/rpc";
 export const AVAX_MARKETPLACE_LINK = "https://joepegs.com/item/";
 
-export const FUJI_PARAMS = {
+export const AVAX_PARAMS = {
   chainId: "0x43113",
   rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
   chainName: "Avalanche FUJI C-Chain",
   nativeCurrency: { name: "AVAX", decimals: 18, symbol: "AVAX" },
   blockExplorerUrls: ["https://testnet.snowtrace.io/"],
 };
+/*
+//real AVAX !! above is fuji
 export const AVAX_PARAMS = {
   "0x43114": {
     chainId: "0x43114",
@@ -37,7 +39,7 @@ export const AVAX_PARAMS = {
     blockExplorerUrls: ["https://snowtrace.io/"],
   },
 };
-
+*/
 export const ETH_CHAIN_ID = 4;
 export const CONTRACT_ADDRESS_ETH =
   "0x17CD37C47A791C3a83460897B430d544f9E2Fb69";

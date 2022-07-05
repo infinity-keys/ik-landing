@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { walletUtil } from "@lib/wallet";
 import {
