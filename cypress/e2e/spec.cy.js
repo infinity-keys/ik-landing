@@ -1,4 +1,5 @@
 const { createPublicKey } = require("crypto");
+const { link } = require("fs");
 
 describe("infinitykeys.io", () => {
   it("root landing page should load", () => {
@@ -32,7 +33,7 @@ describe("infinitykeys.io", () => {
     cy.url().should("include", "/puzzle/");
   });
 
-  it.only("fills out partner contact form and submits successfully", () => {
+  it("fills out partner contact form and submits successfully", () => {
     cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
       statusCode: 200,
     });
@@ -44,7 +45,7 @@ describe("infinitykeys.io", () => {
     );
   });
 
-  it.only("fills out newsletter contact form and submits successfully", () => {
+  it("fills out newsletter contact form and submits successfully", () => {
     cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
       statusCode: 200,
     });
@@ -54,5 +55,35 @@ describe("infinitykeys.io", () => {
     cy.get('[data-cy="email-newsletter-success"]').contains(
       "Thank you for signing up!"
     );
+  });
+
+  it.only("clicks on a link and directs to the expected url", () => {
+    cy.visit("/");
+    cy.contains("Home").click();
+    cy.url().should("include", Cypress.config().baseUrl + "/");
+    cy.go("back");
+
+    cy.visit("/");
+    cy.contains("Hunts").click();
+    cy.url().should("include", "/puzzles");
+    cy.go("back");
+
+    cy.visit("/");
+    cy.contains("Puzzles").click();
+    cy.url().should("include", "/puzzles");
+    cy.go("back");
+
+    cy.visit("/");
+    cy.contains("Thesis").click();
+    cy.url().should(
+      "include",
+      "https://blog.infinitykeys.io/what-is-infinity-keys"
+    );
+    cy.go("back");
+
+    cy.visit("/");
+    cy.contains("Blog").click();
+    cy.url().should("include", "https://blog.infinitykeys.io");
+    cy.go("back");
   });
 });
