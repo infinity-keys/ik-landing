@@ -32,7 +32,7 @@ describe("infinitykeys.io", () => {
     cy.url().should("include", "/puzzle/");
   });
 
-  it.only("fills out contact form and submits successfully", () => {
+  it.only("fills out partner contact form and submits successfully", () => {
     cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
       statusCode: 200,
     });
@@ -40,6 +40,18 @@ describe("infinitykeys.io", () => {
     cy.get('[data-cy="email-partner"] input').type("you@me.com");
     cy.get('[data-cy="email-partner"] button').click();
     cy.get('[data-cy="email-partner-success"]').contains(
+      "Thank you for signing up!"
+    );
+  });
+
+  it.only("fills out newsletter contact form and submits successfully", () => {
+    cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
+      statusCode: 200,
+    });
+    cy.visit("/");
+    cy.get('[data-cy="email-newsletter"] input').type("you@me.com");
+    cy.get('[data-cy="email-newsletter"] button').click();
+    cy.get('[data-cy="email-newsletter-success"]').contains(
       "Thank you for signing up!"
     );
   });
