@@ -2,6 +2,9 @@ const { createPublicKey } = require("crypto");
 const { link } = require("fs");
 
 describe("infinitykeys.io", () => {
+  beforeEach(() => {
+    cy.visit("/");
+  });
   it("root landing page should load", () => {
     cy.visit("/");
     cy.contains("a.play", "Puzzles");
