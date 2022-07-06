@@ -1,4 +1,9 @@
+import { assign } from "lodash";
 import { createMachine } from "xstate";
+
+import { walletUtil } from "./wallet";
+
+const wallet = walletUtil();
 
 export type WalletContext = {
   walletAddress: string;
@@ -35,9 +40,13 @@ export const walletConnectMachine = createMachine<
         on: { requestConnect: "connecting" },
       },
       connecting: {
-        on: {
-          connectionAuthorized: "connected",
-          connectionFailed: "disconnected",
+        invoke: {
+          id: "popWallet",
+          src: (context, event) => wallet.trigger(),
+          onDone: {
+            target: "connected",
+            actions: "setAddress",
+          },
         },
       },
       connected: {
@@ -46,7 +55,6 @@ export const walletConnectMachine = createMachine<
             target: "signing",
           },
         },
-        entry: ["setAddress"],
       },
       signing: {
         on: {
@@ -63,9 +71,11 @@ export const walletConnectMachine = createMachine<
   {
     actions: {
       setAddress: (ctx, event) => {
-        if (event.type === "connectionAuthorized") {
-          ctx.walletAddress = event.address;
-        }
+        console.log(event);
+        ctx.walletAddress = event?.data?.account;
+        // if (event.type === "connectionAuthorized") {
+        //   ctx.walletAddress = event.address;
+        // }
       },
     },
   }

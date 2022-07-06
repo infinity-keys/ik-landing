@@ -14,13 +14,15 @@ const Wallet = ({ onWalletSignature }: WalletProps) => {
 
   const connect = async (): Promise<void> => {
     send("requestConnect");
-    try {
-      const { account } = await wallet.trigger();
-      send({ type: "connectionAuthorized", address: account });
-    } catch (error) {
-      send("connectionFailed");
-      disconnect();
-    }
+
+    // try {
+    //   const { account } = await wallet.trigger();
+    //   send({ type: "connectionAuthorized", address: account });
+    // } catch (error) {
+    //   send("connectionFailed");
+    //   disconnect();
+    // }
+
   };
 
   const sign = async (): Promise<void> => {
@@ -63,6 +65,7 @@ const Wallet = ({ onWalletSignature }: WalletProps) => {
       >
         1. Connect your wallet
       </p>
+      <p>wallet: {current.context.walletAddress}</p>
       <p
         className={clsx("text-md mb-8", {
           "font-normal text-neutral-500": current.matches("disconnected"),
