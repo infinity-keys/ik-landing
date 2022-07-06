@@ -57,7 +57,7 @@ describe("infinitykeys.io", () => {
     );
   });
 
-  it.only("clicks on a link and directs to the expected url", () => {
+  it("clicks on a link and directs to the expected url", () => {
     cy.visit("/");
     cy.contains("Home").click();
     cy.url().should("include", Cypress.config().baseUrl + "/");
@@ -71,7 +71,6 @@ describe("infinitykeys.io", () => {
     cy.visit("/");
     cy.contains("Collab").click();
     cy.url().should("include", Cypress.config().baseUrl + "/#collab");
-    cy.go("back");
 
     cy.visit("/");
     cy.contains("Thesis").click();
@@ -94,5 +93,15 @@ describe("infinitykeys.io", () => {
     cy.visit("/");
     cy.get('[data-cy="ik logo"]').click();
     cy.url().should("include", Cypress.config().baseUrl + "/");
+  });
+
+  it("click on social icon and directs to expected url", () => {
+    cy.visit("/");
+    cy.get('[data-cy="discord"]').invoke("removeAttr", "target").click();
+    cy.url().should("include", "https://discord.com/invite/infinitykeys");
+
+    cy.visit("/");
+    cy.get('[data-cy="twitter"]').invoke("removeAttr", "target").click();
+    cy.url().should("include", "https://twitter.com/InfinityKeys");
   });
 });
