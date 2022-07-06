@@ -48,9 +48,10 @@ const Wallet = ({ onWalletSignature }: WalletProps) => {
   };
 
   const handleClick = () => {
-    if (current.matches("disconnected")) connect();
-    if (current.matches("connected")) sign();
-    if (current.matches("signed")) disconnect();
+    send('next')
+    // if (current.matches("disconnected")) () => send('requestConnect');
+    // if (current.matches("connected")) () => send('signRequest');
+    // if (current.matches("signed")) disconnect();
   };
 
   return (

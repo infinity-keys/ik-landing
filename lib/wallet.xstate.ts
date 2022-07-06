@@ -15,7 +15,8 @@ export type WalletConnectEvents =
   | { type: "connectionFailed" }
   | { type: "signRequest" }
   | { type: "signFailed" }
-  | { type: "signSuccessful" };
+  | { type: "signSuccessful" }
+  | { type: "next" };
 
 export type WalletConnectStates =
   | { value: "disconnected"; context: WalletContext }
@@ -37,7 +38,7 @@ export const walletConnectMachine = createMachine<
     id: "wallet-connect",
     states: {
       disconnected: {
-        on: { requestConnect: "connecting" },
+        on: { requestConnect: "connecting", next: "connecting" },
       },
       connecting: {
         invoke: {
@@ -56,6 +57,7 @@ export const walletConnectMachine = createMachine<
           signRequest: {
             target: "signing",
           },
+          next: "signing",
         },
       },
       signing: {
