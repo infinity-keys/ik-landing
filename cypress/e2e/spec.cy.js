@@ -9,7 +9,7 @@ describe("infinitykeys.io", () => {
     cy.contains("Infinity Keys?");
   });
 
-  it("garbage input shows fail message on landing page", () => {
+  it("garbag input shows fail message on landing page", () => {
     cy.visit("/");
     cy.get(".ik-code-input").eq(0).type("g", { delay: 250 });
     cy.get(".ik-code-input").eq(1).type("a", { delay: 250 });
@@ -69,8 +69,8 @@ describe("infinitykeys.io", () => {
     cy.go("back");
 
     cy.visit("/");
-    cy.contains("Puzzles").click();
-    cy.url().should("include", "/puzzles");
+    cy.contains("Collab").click();
+    cy.url().should("include", Cypress.config().baseUrl + "/#collab");
     cy.go("back");
 
     cy.visit("/");
@@ -85,5 +85,14 @@ describe("infinitykeys.io", () => {
     cy.contains("Blog").click();
     cy.url().should("include", "https://blog.infinitykeys.io");
     cy.go("back");
+
+    cy.visit("/");
+    cy.contains("Puzzles").click();
+    cy.url().should("include", "/puzzles");
+    cy.go("back");
+
+    cy.visit("/");
+    cy.get('[data-cy="ik logo"]').click();
+    cy.url().should("include", Cypress.config().baseUrl + "/");
   });
 });
