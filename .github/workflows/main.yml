@@ -9,8 +9,27 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
       - name: Install deps
         run: yarn install --frozen-lockfile
+      - name: build
+        run: yarn build
+        env:
+          GRAPHQL_ENDPOINT: ${{secrets.GRAPHQL_ENDPOINT}}
+          HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
+          INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS: ${{secrets.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}}
+          INFINITY_KEYS_SECRET: ${{secrets.INFINITY_KEYS_SECRET}}
       - name: eslint
         run: yarn lint
       # Install NPM dependencies, cache them correctly
@@ -18,12 +37,13 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
-          build: yarn build
+          # build: yarn build
           start: yarn start
           browser: chrome
           headed: false
         # Our required env vars
         env:
+          # @TOOD: verify we even need these here
           GRAPHQL_ENDPOINT: ${{secrets.GRAPHQL_ENDPOINT}}
           HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
           INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS: ${{secrets.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}}
