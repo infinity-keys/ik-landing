@@ -139,10 +139,14 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                     Build an Infinity Keys Hunt for your Project
                   </h2>
                   <p className="mt-6 text-lg text-gray-100">
-                    If you would like to use these tools to increase engagement
-                    with your community, users, players, or fans, please reach
-                    out. We are currently selecting projects to work with on
-                    alpha hunts, so please reach out for business inquiries.
+                    Engagement &gt; Impressions.
+                    <br /> <br />
+                    We work with projects to build new types of digital keys for
+                    engaging hunts and puzzles.
+                    <br />
+                    <br />
+                    If you would like to use IK to increase engagement with your
+                    community, users, players, or fans, please reach out.
                   </p>
                 </div>
               </div>
