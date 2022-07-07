@@ -1401,7 +1401,7 @@
     tslib "^2.4.0"
     value-or-promise "1.0.11"
 
-"@graphql-tools/url-loader@7.12.1", "@graphql-tools/url-loader@^7.12.1", "@graphql-tools/url-loader@^7.9.7":
+"@graphql-tools/url-loader@7.12.1", "@graphql-tools/url-loader@^7.12.1":
   version "7.12.1"
   resolved "https://registry.yarnpkg.com/@graphql-tools/url-loader/-/url-loader-7.12.1.tgz#931a65da4faced1a71ddc5af638b87140ff3dfb6"
   integrity sha512-Fd3ZZLEEr9GGFHEbdrcaMHFQu01BLpFnNDBkISupvjokd497O5Uh0xZvsZGC6mxVt0WWQWpgaK2ef+oLuOdLqQ==
@@ -1412,6 +1412,27 @@
     "@n1ru4l/graphql-live-query" "^0.9.0"
     "@types/ws" "^8.0.0"
     cross-undici-fetch "^0.4.11"
+    dset "^3.1.2"
+    extract-files "^11.0.0"
+    graphql-ws "^5.4.1"
+    isomorphic-ws "^5.0.0"
+    meros "^1.1.4"
+    sync-fetch "^0.4.0"
+    tslib "^2.4.0"
+    value-or-promise "^1.0.11"
+    ws "^8.3.0"
+
+"@graphql-tools/url-loader@^7.9.7":
+  version "7.12.0"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/url-loader/-/url-loader-7.12.0.tgz#a80da06c4ccfe12dc983e6638d366a13a9cbf0e3"
+  integrity sha512-V5F3KgU5cpTQ5eghvwUVw1ac784Lxf66WgnmUO1ksFzfwhcvz2RZLvgpFdZ9x6ECnh31VOtxBmIarODnalPzPA==
+  dependencies:
+    "@graphql-tools/delegate" "8.8.0"
+    "@graphql-tools/utils" "8.8.0"
+    "@graphql-tools/wrap" "8.5.0"
+    "@n1ru4l/graphql-live-query" "^0.9.0"
+    "@types/ws" "^8.0.0"
+    cross-undici-fetch "^0.4.0"
     dset "^3.1.2"
     extract-files "^11.0.0"
     graphql-ws "^5.4.1"

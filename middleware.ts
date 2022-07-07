@@ -15,9 +15,9 @@ export async function middleware(req: NextRequest) {
       // No token is nonstarter
       if (!token) throw new Error("No token on solved page");
 
-      // This doesn't work yet, not available before we need to redirect const
-      // success = req.nextUrl.searchParams.get("success"); Instead we'll use
-      // this gross-ass hack: /solved/name-of-puzzle
+      // This doesn't work yet, not available before we need to redirect
+      //const success = req.nextUrl.searchParams.get("success");
+      //Instead we'll use this gross-ass hack: /solved/name-of-puzzle
       const success = req.nextUrl.pathname.split("/")[2];
 
       // Bail if we're not on the solved page
