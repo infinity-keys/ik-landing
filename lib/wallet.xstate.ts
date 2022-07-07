@@ -10,11 +10,7 @@ export type WalletContext = {
 
 export type WalletConnectEvents =
   | { type: "requestConnect" }
-  | { type: "connectionAuthorized"; address: string }
-  | { type: "connectionFailed" }
   | { type: "signRequest" }
-  | { type: "signFailed" }
-  | { type: "signSuccessful" }
   | { type: "next" };
 
 export type WalletConnectStates =
