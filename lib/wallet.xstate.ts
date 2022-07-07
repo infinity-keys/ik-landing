@@ -8,12 +8,10 @@ export type WalletContext = {
   signature: string;
 };
 
-export type WalletConnectEvents =
-  | { type: "requestConnect" }
-  | { type: "signRequest" }
-  | { type: "next" };
+export type WalletConnectEvents = { type: "disconnect" } | { type: "next" };
 
 export type WalletConnectStates =
+  | { value: "unknown"; context: WalletContext }
   | { value: "disconnected"; context: WalletContext }
   | { value: "connecting"; context: WalletContext }
   | { value: "connected"; context: WalletContext }
@@ -24,55 +22,75 @@ export const walletConnectMachine = createMachine<
   WalletContext,
   WalletConnectEvents,
   WalletConnectStates
->({
-  initial: "disconnected",
-  context: {
-    walletAddress: "",
-    signature: "",
-  },
-  id: "wallet-connect",
-  states: {
-    disconnected: {
-      on: {
-        requestConnect: "connecting",
-        next: "connecting",
-      },
+>(
+  {
+    initial: "unknown",
+    context: {
+      walletAddress: "",
+      signature: "",
     },
-    connecting: {
-      invoke: {
-        id: "popWallet",
-        src: () => wallet.trigger(),
-        onDone: {
-          actions: assign({
-            walletAddress: (context, event) => event.data.account,
-          }),
-          target: "connected",
+    id: "wallet-connect",
+    states: {
+      unknown: {
+        on: {
+          next: "connecting",
         },
-        onError: "disconnected",
       },
-    },
-    connected: {
-      on: {
-        signRequest: "signing",
-        next: "signing",
-      },
-    },
-    signing: {
-      invoke: {
-        id: "signReq",
-        src: () => wallet.sign(),
-        onDone: {
-          actions: assign({
-            signature: (context, event) => event.data,
-          }),
-          target: "signed",
+      disconnected: {
+        entry: ["disconnectUser"],
+        on: {
+          next: "connecting",
         },
-        onError: "connected",
       },
-    },
-    signed: {
-      on: {},
-      type: "final",
+      connecting: {
+        invoke: {
+          id: "popWallet",
+          src: () => wallet.trigger(),
+          onDone: {
+            actions: assign({
+              walletAddress: (context, event) => event.data.account,
+            }),
+            target: "connected",
+          },
+          onError: "disconnected",
+        },
+      },
+      connected: {
+        on: {
+          next: "signing",
+          disconnect: "disconnected",
+        },
+      },
+      signing: {
+        invoke: {
+          id: "signReq",
+          src: () => wallet.sign(),
+          onDone: {
+            actions: assign({
+              signature: (context, event) => event.data,
+            }),
+            target: "signed",
+          },
+          onError: "connected",
+        },
+      },
+      signed: {
+        on: {
+          disconnect: "disconnected",
+        },
+      },
     },
   },
-});
+  {
+    actions: {
+      disconnectUser: (context, event) => {
+        wallet.clear();
+        context.walletAddress = "";
+        context.signature = "";
+      },
+    },
+  }
+);
+
+export const selectSignature = (state: typeof walletConnectMachine) =>
+  state.context.signature;
