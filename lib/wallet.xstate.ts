@@ -1,12 +1,11 @@
-// import { assign } from "lodash";
 import { createMachine, assign } from "xstate";
-
 import { walletUtil } from "./wallet";
 
 const wallet = walletUtil();
 
 export type WalletContext = {
   walletAddress: string;
+  signature: string;
 };
 
 export type WalletConnectEvents =
@@ -29,58 +28,55 @@ export const walletConnectMachine = createMachine<
   WalletContext,
   WalletConnectEvents,
   WalletConnectStates
->(
-  {
-    initial: "disconnected",
-    context: {
-      walletAddress: "",
-    },
-    id: "wallet-connect",
-    states: {
-      disconnected: {
-        on: { requestConnect: "connecting", next: "connecting" },
-      },
-      connecting: {
-        invoke: {
-          id: "popWallet",
-          src: () => wallet.trigger(),
-          onDone: {
-            actions: assign({
-              walletAddress: (context, event) => event.data.account,
-            }),
-            target: "connected",
-          },
-        },
-      },
-      connected: {
-        on: {
-          signRequest: {
-            target: "signing",
-          },
-          next: "signing",
-        },
-      },
-      signing: {
-        on: {
-          signSuccessful: "signed",
-          signFailed: "connected",
-        },
-      },
-      signed: {
-        on: {},
-        type: "final",
+>({
+  initial: "disconnected",
+  context: {
+    walletAddress: "",
+    signature: "",
+  },
+  id: "wallet-connect",
+  states: {
+    disconnected: {
+      on: {
+        requestConnect: "connecting",
+        next: "connecting",
       },
     },
-  }
-  // {
-  //   actions: {
-  //     setAddress: (ctx, event) => {
-  //       console.log(event);
-  //       ctx.walletAddress = event?.data?.account;
-  //       // if (event.type === "connectionAuthorized") {
-  //       //   ctx.walletAddress = event.address;
-  //       // }
-  //     },
-  //   },
-  // }
-);
+    connecting: {
+      invoke: {
+        id: "popWallet",
+        src: () => wallet.trigger(),
+        onDone: {
+          actions: assign({
+            walletAddress: (context, event) => event.data.account,
+          }),
+          target: "connected",
+        },
+        onError: "disconnected",
+      },
+    },
+    connected: {
+      on: {
+        signRequest: "signing",
+        next: "signing",
+      },
+    },
+    signing: {
+      invoke: {
+        id: "signReq",
+        src: () => wallet.sign(),
+        onDone: {
+          actions: assign({
+            signature: (context, event) => event.data,
+          }),
+          target: "signed",
+        },
+        onError: "connected",
+      },
+    },
+    signed: {
+      on: {},
+      type: "final",
+    },
+  },
+});

@@ -1,58 +1,22 @@
-import { useMachine } from "@xstate/react";
-import { walletUtil } from "@lib/wallet";
-import { walletConnectMachine } from "@lib/wallet.xstate";
+import { useMachine, useSelector } from "@xstate/react";
+import { State } from "xstate";
 import clsx from "clsx";
-
-const wallet = walletUtil();
+import { walletConnectMachine, WalletConnectStates } from "@lib/wallet.xstate";
 
 interface WalletProps {
   onWalletSignature?: (address: string) => Promise<void>;
 }
 
+const selectSignature = (state: State<WalletConnectStates>) =>
+  state.matches("signed");
+
 const Wallet = ({ onWalletSignature }: WalletProps) => {
-  const [current, send] = useMachine(walletConnectMachine);
+  const [current, send, service] = useMachine(walletConnectMachine);
+  const isSigned = useSelector(service, selectSignature);
 
-  const connect = async (): Promise<void> => {
-    send("requestConnect");
-
-    // try {
-    //   const { account } = await wallet.trigger();
-    //   send({ type: "connectionAuthorized", address: account });
-    // } catch (error) {
-    //   send("connectionFailed");
-    //   disconnect();
-    // }
-
-  };
-
-  const sign = async (): Promise<void> => {
-    send("signRequest");
-    try {
-      await wallet.sign();
-      send("signSuccessful");
-
-      // Call the callback with our wallet address
-      onWalletSignature &&
-        (await onWalletSignature(current.context.walletAddress));
-
-      // const network = await library.getNetwork();
-      // setChainId(network.chainId);
-    } catch (error) {
-      send("signFailed");
-      disconnect();
-    }
-  };
-
-  const disconnect = () => {
-    wallet.clear();
-  };
-
-  const handleClick = () => {
-    send('next')
-    // if (current.matches("disconnected")) () => send('requestConnect');
-    // if (current.matches("connected")) () => send('signRequest');
-    // if (current.matches("signed")) disconnect();
-  };
+  if (isSigned && onWalletSignature) {
+    onWalletSignature(current.context.walletAddress);
+  }
 
   return (
     <>
@@ -66,7 +30,6 @@ const Wallet = ({ onWalletSignature }: WalletProps) => {
       >
         1. Connect your wallet
       </p>
-      <p>wallet: {current.context.walletAddress}</p>
       <p
         className={clsx("text-md mb-8", {
           "font-normal text-neutral-500": current.matches("disconnected"),
@@ -87,12 +50,11 @@ const Wallet = ({ onWalletSignature }: WalletProps) => {
         </div>
       ) : (
         <button
-          onClick={handleClick}
+          onClick={() => send("next")}
           className="text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4 mx-auto block"
         >
           {current.matches("disconnected") && "Connect Wallet"}
           {current.matches("connected") && "Sign Message"}
-          {current.matches("signed") && "Disconnect"}
         </button>
       )}
     </>
