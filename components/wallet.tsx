@@ -1,18 +1,25 @@
 import { useMachine, useSelector } from "@xstate/react";
 import { State } from "xstate";
 import clsx from "clsx";
-import { walletConnectMachine, WalletConnectStates } from "@lib/wallet.xstate";
+import { walletConnectMachine, WalletContext } from "@lib/wallet.xstate";
 
 interface WalletProps {
   onWalletSignature?: (address: string) => Promise<void>;
 }
 
-const selectSignature = (state: State<WalletConnectStates>) =>
-  state.matches("signed");
+const selectSignature = (state: State<WalletContext>) =>
+  state.context.signature;
+
+const compareSignature = (prevSig: string, nextSig: string) =>
+  prevSig === nextSig;
 
 const Wallet = ({ onWalletSignature }: WalletProps) => {
   const [current, send, service] = useMachine(walletConnectMachine);
-  const isSigned = useSelector(service, selectSignature);
+  const isSigned = useSelector(service, selectSignature, compareSignature);
+  const isLoading =
+    current.matches("signing") ||
+    current.matches("connecting") ||
+    current.matches("signed");
 
   if (isSigned && onWalletSignature) {
     onWalletSignature(current.context.walletAddress);
@@ -41,7 +48,7 @@ const Wallet = ({ onWalletSignature }: WalletProps) => {
       >
         2. Sign message
       </p>
-      {current.matches("signing") || current.matches("connecting") ? (
+      {isLoading ? (
         <div className="loader mx-auto h-8 mt-10 flex justify-center">
           <div className="ball-clip-rotate-multiple">
             <div></div>
