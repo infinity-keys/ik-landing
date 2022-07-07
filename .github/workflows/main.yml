@@ -31,6 +31,7 @@ jobs:
           headed: false
         # Our required env vars
         env:
+          # @TOOD: verify we even need these here
           GRAPHQL_ENDPOINT: ${{secrets.GRAPHQL_ENDPOINT}}
           HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
           INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS: ${{secrets.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}}
