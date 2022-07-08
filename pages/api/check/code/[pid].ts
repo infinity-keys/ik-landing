@@ -6,6 +6,7 @@ import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 import { gqlApiSdk } from "@lib/server";
 import { IkJwt, PuzzleApiResponse } from "@lib/types";
 import { makeUserToken, verifyToken } from "@lib/jwt";
+import { routeFailUrl, routeLandingUrl, routeSuccessUrl } from "@lib/utils";
 
 export default async function handler(
   req: NextApiRequest,
@@ -40,8 +41,14 @@ export default async function handler(
     puzzle_id: pid,
     solution: code,
   });
-  const fail_route = fail?.fail_route;
-  const success_route = success[0]?.success_route;
+  const isFinal = success[0]?.final_step;
+  const fail_route = fail?.fail_route && routeFailUrl(fail?.fail_route);
+
+  let success_route = success[0]?.success_route;
+  if (success_route)
+    success_route = isFinal
+      ? routeSuccessUrl(success_route)
+      : routeLandingUrl(success_route);
 
   // Default returned results, defaults to access: false
   const guessResults = {

@@ -71,6 +71,11 @@ const Puzzle = ({
       setIsWrongGuess(true);
     }
 
+    if (success_route) {
+      setIsLoading(false);
+      setIsWrongGuess(false);
+    }
+
     // Do not route if custom success components exist. Show in place.
     if (SuccessComponent) {
       if (success_route) {
@@ -80,12 +85,9 @@ const Puzzle = ({
       }
       return;
     }
-
+    console.log({ success_route, fail_route });
     // If either success or fail exist, turn them into proper paths and route
-    router.push(
-      (success_route && routeSuccessUrl(success_route)) ||
-      (fail_route && routeFailUrl(fail_route))
-    );
+    router.push(success_route || fail_route);
   };
 
   return (
