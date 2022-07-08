@@ -93,22 +93,12 @@ export const walletUtil = () => {
   };
 
   /**
-   * Set chain var to current chain
-   */
-  const setChain = async () => {
-    chain = (await library.getNetwork()).chainId;
-
-    return retrieve();
-  };
-
-  /**
    * Set switch chain var to newChainId
    */
   const switchChain = async (newChainId: number) => {
     if (newChainId !== ETH_CHAIN_ID && newChainId !== AVAX_CHAIN_ID)
       throw new Error("Invalid Chain Id");
 
-    console.log(newChainId, chain);
     if (newChainId === chain) return retrieve(); // same as current chain
 
     if (chain && library?.provider?.request) {
@@ -117,7 +107,7 @@ export const walletUtil = () => {
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(newChainId) }],
         });
-        setChain();
+        chain = newChainId;
       } catch (switchError: any) {
         //I think this should add AVAX to MetaMask if you dont have it yet
         //have not tested
@@ -128,7 +118,7 @@ export const walletUtil = () => {
               method: "wallet_addEthereumChain",
               params: [AVAX_PARAMS],
             });
-            setChain();
+            chain = newChainId;
           } catch (error) {
             console.log(error);
           }
@@ -143,7 +133,6 @@ export const walletUtil = () => {
     trigger,
     retrieve,
     clear,
-    setChain,
     switchChain,
   };
 };
