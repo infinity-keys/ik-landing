@@ -20,7 +20,7 @@ export const CONTRACT_ADDRESS_AVAX =
 export const SNOWTRACE_TRACKER = "testnet.snowtrace";
 export const AVAX_RPC = "https://api.avax-test.network/ext/bc/C/rpc";
 export const AVAX_MARKETPLACE_LINK = "https://joepegs.com/item/";
-
+export const joePegsLink = `${AVAX_MARKETPLACE_LINK}${CONTRACT_ADDRESS_AVAX}/`;
 export const AVAX_PARAMS = {
   chainId: "0x43113",
   rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
@@ -40,6 +40,7 @@ export const AVAX_PARAMS = {
   },
 };
 */
+
 export const ETH_CHAIN_ID = 4;
 export const CONTRACT_ADDRESS_ETH =
   "0x3213E91729c1464B08a50782CF50a63EcD6ab659";
@@ -49,3 +50,4 @@ export const ETH_RPC = `https://rinkeby.infura.io/v3/${ETH_RPC_ID}`;
 export const ETH_MARKETPLACE_LINK =
   "https://testnets.opensea.io/assets/rinkeby/";
 //"https://opensea.io/assets/ethereum/";
+export const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/`;

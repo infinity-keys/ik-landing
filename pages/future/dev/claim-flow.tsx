@@ -8,10 +8,8 @@ import { useState } from "react";
 import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
-  AVAX_MARKETPLACE_LINK,
-  ETH_MARKETPLACE_LINK,
-  CONTRACT_ADDRESS_ETH,
-  CONTRACT_ADDRESS_AVAX,
+  openseaLink,
+  joePegsLink,
 } from "@lib/constants";
 import { wallet } from "@lib/wallet";
 import { minterUtil } from "./minter";
@@ -19,11 +17,6 @@ import { minterUtil } from "./minter";
 const ClaimFlow: NextPage = () => {
   //MOVE TO A PROP
   const puzzleId = 2;
-
-  let minter; //issues with ReturnType<typeof mintUtil> due to promise in mintUtil
-
-  const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/${puzzleId}`;
-  const joePegsLink = `${AVAX_MARKETPLACE_LINK}${CONTRACT_ADDRESS_AVAX}/${puzzleId}`;
 
   const [chain, setChain] = useState<number | null>(null);
   const [isLoadingWallet, setIsLoadingWallet] = useState(false);
@@ -54,17 +47,12 @@ const ClaimFlow: NextPage = () => {
   };
 
   const mint = async () => {
-    minter = await minterUtil(puzzleId);
+    const minter = await minterUtil(puzzleId);
     setIsLoading(true);
     const { txMessage, claimedStatus } = await minter.mint();
     setIsLoading(false);
     setTxMessage(txMessage);
     setClaimed(claimedStatus);
-  };
-
-  const switchChain = async (chainId: number) => {
-    const { chain } = await wallet.switchChain(chainId);
-    setChain(chain);
   };
 
   const buttonClasses =
@@ -125,7 +113,9 @@ const ClaimFlow: NextPage = () => {
                       if (chain === ETH_CHAIN_ID) {
                         mint();
                       } else {
-                        await switchChain(ETH_CHAIN_ID);
+                        setChain(
+                          (await wallet.switchChain(ETH_CHAIN_ID)).chain
+                        );
                       }
                     }}
                   >
@@ -145,7 +135,9 @@ const ClaimFlow: NextPage = () => {
                       if (chain === AVAX_CHAIN_ID) {
                         mint();
                       } else {
-                        await switchChain(AVAX_CHAIN_ID);
+                        setChain(
+                          (await wallet.switchChain(AVAX_CHAIN_ID)).chain
+                        );
                       }
                     }}
                   >
@@ -183,7 +175,9 @@ const ClaimFlow: NextPage = () => {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={chain === ETH_CHAIN_ID ? openseaLink : joePegsLink}
+                  href={`${
+                    chain === ETH_CHAIN_ID ? openseaLink : joePegsLink
+                  }${puzzleId}`}
                   className={buttonPrimaryClasses}
                 >
                   View NFT On {chain === ETH_CHAIN_ID ? "OpenSea" : "JoePegs"}
