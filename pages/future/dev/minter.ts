@@ -1,175 +1,111 @@
 import { ethers } from "ethers";
-import { walletUtil } from "@lib/wallet";
+import { wallet } from "@lib/wallet";
 import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
-  AVAX_PARAMS,
-  ETH_RPC,
-  AVAX_RPC,
-  CONTRACT_ADDRESS_ETH,
   CONTRACT_ADDRESS_AVAX,
+  CONTRACT_ADDRESS_ETH,
+  SNOWTRACE_TRACKER,
+  ETHERSCAN_TRACKER,
 } from "@lib/constants";
-import { transactionUtil } from "./transactions";
 import ContractABI from "./ContractABI.json";
 
-export const minterUtil = (props: {
-  updateLoading: Function;
-  updateMinted: Function;
-  updateTxMessage: Function;
-  updateChain: Function;
-  puzzleId: number;
-}) => {
-  let account: string;
-  let library: ethers.providers.Web3Provider;
-  let chain: number;
-  let transaction: any;
+export const minterUtil = async (puzzleId: number) => {
+  let claimedStatus: boolean;
+  let txMessage: string;
+  let contractAddress: string;
+  let blockTracker: string;
 
-  const puzzleId = props.puzzleId;
-  const wallet = walletUtil();
+  const { library, account, chain } = wallet.retrieve();
 
-  const changeLoading = (loading: boolean) => {
-    props.updateLoading(loading);
-  };
+  if (chain === AVAX_CHAIN_ID) {
+    contractAddress = CONTRACT_ADDRESS_AVAX;
+    blockTracker = SNOWTRACE_TRACKER;
+  } else if (chain === ETH_CHAIN_ID) {
+    contractAddress = CONTRACT_ADDRESS_ETH;
+    blockTracker = ETHERSCAN_TRACKER;
+  } else {
+    // Force them onto ETH if they're not, was unsure how to do this
+    await wallet.switchChain(ETH_CHAIN_ID);
+    const chainId = wallet.retrieve().chain;
 
-  const changeMinted = (minted: boolean) => {
-    props.updateMinted(minted);
-  };
+    if (chainId === ETH_CHAIN_ID) {
+      contractAddress = CONTRACT_ADDRESS_ETH;
+      blockTracker = ETHERSCAN_TRACKER;
+    } else throw new Error("Invalid Chain");
+  }
 
-  const changeTxMessage = (txMessage: string) => {
-    props.updateTxMessage(txMessage);
-  };
+  const contract = new ethers.Contract(contractAddress, ContractABI, library);
 
-  const connectWallet = async () => {
+  const createTx = async (signature: string) => {
     try {
-      const { library, account, chain } = await wallet.trigger();
+      if (contract) {
+        const data = contract.interface.encodeFunctionData("claim", [
+          puzzleId,
+          signature,
+        ]);
 
-      if (account) {
-        checkIfClaimed();
+        const transaction = {
+          to: contractAddress,
+          from: account,
+          data,
+        };
 
-        if (library && chain) {
-          transaction = transactionUtil({
-            chain,
-            puzzleId,
-            library,
-            account,
-            changeLoading,
-            changeMinted,
-            changeTxMessage,
-          });
+        const tx = await library
+          .getSigner()
+          .sendTransaction(transaction)
+          .catch((err) => console.log(err));
+
+        if (!tx) return;
+
+        const txHash = tx.hash;
+
+        try {
+          await tx.wait();
+          txMessage = "https://" + blockTracker + ".io/tx/" + txHash;
+          claimedStatus = true;
+        } catch (error) {
+          txMessage = "https://" + blockTracker + ".io/tx/" + txHash;
+          claimedStatus = false;
+          console.log(error);
         }
       }
-
-      props.updateChain(chain);
     } catch (error) {
       console.log(error);
-      disconnectWallet();
-      return 0;
     }
   };
 
-  const disconnectWallet = () => {
-    wallet.clear();
-  };
-
-  const updateChainID = async () => {
-    if (chain) {
-      chain = (await library.getNetwork()).chainId;
-      props.updateChain(chain);
-      return chain;
-    }
-    return 0;
-  };
-
-  const toHex = (num: number) => {
-    const val = Number(num);
-    return "0x" + val.toString(16);
-  };
-
-  const switchToEth = async () => {
-    if (chain && library?.provider?.request) {
-      try {
-        await library.provider.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: toHex(ETH_CHAIN_ID) }],
-        });
-        updateChainID();
-      } catch (switchError: any) {
-        console.log(switchError);
-      }
-    }
-  };
-
-  const switchToAvax = async () => {
-    if (chain && library?.provider?.request) {
-      try {
-        await library.provider.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: toHex(AVAX_CHAIN_ID) }],
-        });
-        updateChainID();
-      } catch (switchError: any) {
-        //I think this should add AVAX to MetaMask if you dont have it yet
-        //have not tested
-        if (switchError.code === 4902) {
-          try {
-            await library.provider.request({
-              method: "wallet_addEthereumChain",
-              params: [AVAX_PARAMS],
-            });
-            updateChainID();
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      }
+  const verify = async () => {
+    const url = `/api/future/dev/verify?account=${account}&puzzleId=${puzzleId}&chainId=${chain}`;
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        return data?.signature;
+      } else throw await response.text();
+    } catch (error) {
+      throw error;
     }
   };
 
   const mint = async () => {
-    if (library && transaction) {
-      await transaction.createTx();
+    if (library) {
+      try {
+        const signature: string = await verify();
+        if (signature) await createTx(signature);
+        return retrieve();
+      } catch (error) {}
     }
+    return retrieve();
   };
 
-  const verify = () => {};
-
-  const checkIfClaimed = async () => {
-    changeLoading(true);
-    const providerETH = new ethers.providers.JsonRpcProvider(ETH_RPC);
-    const contractETH = new ethers.Contract(
-      CONTRACT_ADDRESS_ETH,
-      ContractABI,
-      providerETH
-    );
-    let resultETH = await contractETH.checkIfClaimed(puzzleId, account);
-    if (resultETH === true) {
-      changeMinted(true);
-      changeLoading(false);
-    }
-
-    const providerAVAX = new ethers.providers.JsonRpcProvider(AVAX_RPC);
-    const contractAVAX = new ethers.Contract(
-      CONTRACT_ADDRESS_AVAX,
-      ContractABI,
-      providerAVAX
-    );
-    let resultAVAX = await contractAVAX.checkIfClaimed(puzzleId, account);
-    if (resultAVAX === true) {
-      changeMinted(true);
-      changeLoading(false);
-    }
-
-    changeMinted(false);
-    changeLoading(false);
-  };
+  const retrieve = () => ({
+    txMessage,
+    claimedStatus,
+  });
 
   return {
-    connectWallet,
-    disconnectWallet,
-    switchToEth,
-    switchToAvax,
-    updateChainID,
+    retrieve,
     mint,
-    checkIfClaimed,
   };
 };

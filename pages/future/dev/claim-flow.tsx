@@ -14,14 +14,12 @@ import {
   CONTRACT_ADDRESS_AVAX,
 } from "@lib/constants";
 import { wallet } from "@lib/wallet";
-import { claimedUtil } from "./new-claimed";
-import { mintUtil } from "./new-minter";
+import { minterUtil } from "./minter";
 
 const ClaimFlow: NextPage = () => {
   //MOVE TO A PROP
   const puzzleId = 2;
 
-  let claim: ReturnType<typeof claimedUtil>;
   let minter; //issues with ReturnType<typeof mintUtil> due to promise in mintUtil
 
   const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/${puzzleId}`;
@@ -34,17 +32,29 @@ const ClaimFlow: NextPage = () => {
   const [txMessage, setTxMessage] = useState<string>();
 
   const connectWallet = async () => {
-    setChain((await wallet.trigger()).chain);
+    const { account, chain } = await wallet.trigger();
+    setChain(chain);
+
     setIsLoadingWallet(true);
     setIsLoading(true);
-    claim = claimedUtil(puzzleId);
-    setClaimed(await claim.checkIfClaimed());
+    setClaimed(await checkIfClaimed(account));
     setIsLoadingWallet(false);
     setIsLoading(false);
   };
 
+  const checkIfClaimed = async (account: string) => {
+    const url = `/api/future/dev/check-achievement?account=${account}&puzzleId=${puzzleId}`;
+    try {
+      const response = await fetch(url);
+      if (response.ok) return (await response.json()).claimed;
+      else throw await response.text();
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const mint = async () => {
-    minter = await mintUtil(puzzleId);
+    minter = await minterUtil(puzzleId);
     setIsLoading(true);
     const { txMessage, claimedStatus } = await minter.mint();
     setIsLoading(false);
