@@ -21,7 +21,7 @@
     "@graphql-codegen/introspection": "^2.1.1",
     "@graphql-codegen/typescript": "^2.5.1",
     "@graphql-codegen/typescript-graphql-request": "^4.4.10",
-    "@graphql-codegen/typescript-operations": "^2.4.2",
+    "@graphql-codegen/typescript-operations": "^2.5.0",
     "@headlessui/react": "^1.6.5",
     "@heroicons/react": "^1.0.6",
     "@tailwindcss/forms": "^0.5",
