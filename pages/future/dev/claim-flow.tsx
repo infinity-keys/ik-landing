@@ -5,8 +5,6 @@ import Wrapper from "@components/wrapper";
 import Header from "@components/header";
 import Footer from "@components/footer";
 import { useState } from "react";
-
-import { minterUtil } from "./minter";
 import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
@@ -15,50 +13,46 @@ import {
   CONTRACT_ADDRESS_ETH,
   CONTRACT_ADDRESS_AVAX,
 } from "@lib/constants";
+import { wallet } from "@lib/wallet";
 import { getChainId } from "web3modal";
+import { walletconnect } from "web3modal/dist/providers/connectors";
+import { claimedUtil } from "./new-claimed";
+import { mintUtil } from "./new-minter";
 
 const ClaimFlow: NextPage = () => {
   //MOVE TO A PROP
-  const puzzleId = 5;
+  const puzzleId = 0;
+
+  let claim: ReturnType<typeof claimedUtil>;
+  let minter; //issues with ReturnType<typeof mintUtil> due to promise in mintUtil
 
   const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/${puzzleId}`;
   const joePegsLink = `${AVAX_MARKETPLACE_LINK}${CONTRACT_ADDRESS_AVAX}/${puzzleId}`;
 
   const [chain, setChain] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [minted, setMinted] = useState(false);
+  const [claimed, setClaimed] = useState(false);
   const [txMessage, setTxMessage] = useState<string>();
 
-  const updateLoading = async (isItLoading: boolean) => {
-    setIsLoading(isItLoading);
-  };
-
-  const updateMinted = async (isItMinted: boolean) => {
-    if (await isItMinted) setMinted(isItMinted);
-  };
-
-  const updateTxMessage = async (newTxMessage: string) => {
-    setTxMessage(newTxMessage);
-  };
-
-  const updateChain = async (newChain: number) => {
-    setChain(newChain);
-  };
-
-  const minter = minterUtil({
-    updateLoading,
-    updateMinted,
-    updateTxMessage,
-    updateChain,
-    puzzleId,
-  });
-
   const connectWallet = async () => {
-    await minter.connectWallet();
+    setChain((await wallet.trigger()).chain);
+    setIsLoading(true);
+    claim = claimedUtil(puzzleId);
+    setClaimed(await claim.checkIfClaimed());
+    setIsLoading(false);
   };
 
-  const mint = async (network: number) => {
-    await minter.mint();
+  const mint = async () => {
+    minter = await mintUtil(puzzleId);
+    const { txMessage, txStatus, claimedStatus } = await minter.mint();
+    setTxMessage(txMessage);
+    setIsLoading(txStatus);
+    setClaimed(claimedStatus);
+  };
+
+  const switchChain = async (chainId: number) => {
+    const { chain } = await wallet.switchChain(chainId);
+    setChain(chain);
   };
 
   const buttonClasses =
@@ -89,7 +83,7 @@ const ClaimFlow: NextPage = () => {
                   ? txMessage
                     ? "Claiming Trophy"
                     : "Connecting Wallet"
-                  : minted
+                  : claimed
                   ? "Your Trophy Has Been Claimed"
                   : "Claim Your Trophy"}
               </h2>
@@ -105,7 +99,7 @@ const ClaimFlow: NextPage = () => {
                 </button>
               )}
 
-              {!isLoading && chain && !minted && (
+              {!isLoading && chain && !claimed && (
                 <>
                   <button
                     className={
@@ -117,10 +111,9 @@ const ClaimFlow: NextPage = () => {
                     value="Join the mailing list"
                     onClick={async () => {
                       if (chain === ETH_CHAIN_ID) {
-                        mint(ETH_CHAIN_ID);
+                        mint();
                       } else {
-                        await minter.switchToEth();
-                        await minter.updateChainID();
+                        await switchChain(ETH_CHAIN_ID);
                       }
                     }}
                   >
@@ -138,10 +131,9 @@ const ClaimFlow: NextPage = () => {
                     value="Join the mailing list"
                     onClick={async () => {
                       if (chain === AVAX_CHAIN_ID) {
-                        mint(AVAX_CHAIN_ID);
+                        mint();
                       } else {
-                        await minter.switchToAvax();
-                        await minter.updateChainID();
+                        await switchChain(AVAX_CHAIN_ID);
                       }
                     }}
                   >
@@ -175,7 +167,7 @@ const ClaimFlow: NextPage = () => {
                 </div>
               )}
 
-              {minted && (
+              {claimed && (
                 <a
                   target="_blank"
                   rel="noopener noreferrer"

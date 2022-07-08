@@ -1,6 +1,5 @@
 import { ethers } from "ethers";
-import { claimUtil } from "./new-claim";
-import { walletUtil } from "@lib/wallet";
+import { wallet } from "@lib/wallet";
 import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
@@ -11,37 +10,38 @@ import {
 } from "@lib/constants";
 import ContractABI from "./ContractABI.json";
 
-export const mintUtil = (
-  claim: ReturnType<typeof claimUtil>,
-  wallet: ReturnType<typeof walletUtil>,
-  puzzleId: number
-) => {
-  let txStatus: boolean;
+export const mintUtil = async (puzzleId: number) => {
+  let claimedStatus: boolean;
+  let txStatus = false;
   let txMessage: string;
   let contractAddress: string;
   let blockTracker: string;
 
-  const { library, account } = wallet.retrieve();
-  let { mintedStatus, globalChainID } = claim.retrieve();
+  const { library, account, chain } = wallet.retrieve();
 
-  if (globalChainID === AVAX_CHAIN_ID) {
+  if (chain === AVAX_CHAIN_ID) {
     contractAddress = CONTRACT_ADDRESS_AVAX;
     blockTracker = SNOWTRACE_TRACKER;
-  } else if (globalChainID === ETH_CHAIN_ID) {
+  } else if (chain === ETH_CHAIN_ID) {
     contractAddress = CONTRACT_ADDRESS_ETH;
     blockTracker = ETHERSCAN_TRACKER;
   } else {
-    //unsure how to do this here
-    claim.switchChain(ETH_CHAIN_ID);
-    return;
+    // Force them onto ETH if they're not, was unsure how to do this
+    await wallet.switchChain(ETH_CHAIN_ID);
+    const chainId = wallet.retrieve().chain;
+
+    if (chainId === ETH_CHAIN_ID) {
+      contractAddress = CONTRACT_ADDRESS_ETH;
+      blockTracker = ETHERSCAN_TRACKER;
+    } else throw new Error("Invalid Chain");
   }
 
-  const registry = new ethers.Contract(contractAddress, ContractABI, library);
+  const contract = new ethers.Contract(contractAddress, ContractABI, library);
 
   const createTx = async (signature: string) => {
     try {
-      if (registry) {
-        const data = registry.interface.encodeFunctionData("claim", [
+      if (contract) {
+        const data = contract.interface.encodeFunctionData("claim", [
           puzzleId,
           signature,
         ]);
@@ -55,7 +55,7 @@ export const mintUtil = (
         const tx = await library
           .getSigner()
           .sendTransaction(transaction)
-          .catch((err) => (txMessage = err));
+          .catch((err) => console.log(err));
 
         if (!tx) return;
 
@@ -64,14 +64,12 @@ export const mintUtil = (
         tx.wait()
           .then(async () => {
             // tx success
-            txMessage = "https://" + blockTracker + ".io/tx/" + txHash;
-            mintedStatus = true;
+            claimedStatus = true;
             txStatus = false;
           })
           .catch(() => {
-            // tex failed
-            txMessage = "https://" + blockTracker + ".io/tx/" + txHash;
-            mintedStatus = false;
+            // tx failed
+            claimedStatus = false;
             txStatus = false;
           });
 
@@ -84,25 +82,34 @@ export const mintUtil = (
     }
   };
 
-  const verify = () => {
-    return "0x123";
+  const verify = async () => {
+    const url = `/api/future/dev/verify?account=${account}&puzzleId=${puzzleId}&chainId=${chain}`;
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        return data?.signature;
+      } else throw await response.text();
+    } catch (error) {
+      throw error;
+    }
   };
 
   const mint = async () => {
     if (library) {
       try {
-        const signature = verify();
-        await createTx(signature);
-      } catch (error) {
-        console.log(error);
-      }
+        const signature: string = await verify();
+        if (signature) await createTx(signature);
+        return retrieve();
+      } catch (error) {}
     }
+    return retrieve();
   };
 
   const retrieve = () => ({
     txStatus,
     txMessage,
-    mintedStatus,
+    claimedStatus,
   });
 
   return {

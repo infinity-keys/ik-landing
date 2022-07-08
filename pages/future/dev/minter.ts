@@ -3,7 +3,7 @@ import { walletUtil } from "@lib/wallet";
 import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
-  FUJI_PARAMS,
+  AVAX_PARAMS,
   ETH_RPC,
   AVAX_RPC,
   CONTRACT_ADDRESS_ETH,
@@ -114,7 +114,7 @@ export const minterUtil = (props: {
           try {
             await library.provider.request({
               method: "wallet_addEthereumChain",
-              params: [FUJI_PARAMS],
+              params: [AVAX_PARAMS],
             });
             updateChainID();
           } catch (error) {

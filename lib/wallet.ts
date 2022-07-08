@@ -2,20 +2,28 @@ import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
+import {
+  AVAX_CHAIN_ID,
+  AVAX_PARAMS,
+  ETH_CHAIN_ID,
+  ETH_RPC_ID,
+  ETH_RPC,
+} from "@lib/constants";
+import { toHex } from "./utils";
 // import Fortmatic from "fortmatic";
 
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider, // required
     options: {
-      infuraId: "c10d222a5bae4a8e97fad0915b06ff5d",
+      infuraId: ETH_RPC_ID,
     },
   },
   coinbasewallet: {
     package: CoinbaseWalletSDK, // Required
     options: {
       appName: "InfinityKeys", // Required
-      infuraId: "c10d222a5bae4a8e97fad0915b06ff5d", // Required
+      infuraId: ETH_RPC_ID, // Required
       chainId: 1, // Optional. It defaults to 1 if not provided
       darkMode: false, // Optional. Use dark theme, defaults to false
     },
@@ -26,7 +34,7 @@ const providerOptions = {
   //     key: "FORTMATIC_KEY", // required
   // network: {
   // // if we don't pass it, it will default to localhost:8454
-  //   rpcUrl: "https://rinkeby.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d",
+  //   rpcUrl: {ETH_RPC},
   //   chainId: 4,
   // },
   //   }
@@ -84,9 +92,60 @@ export const walletUtil = () => {
     web3Modal && web3Modal.clearCachedProvider();
   };
 
+  /**
+   * Set chain var to current chain
+   */
+  const setChain = async () => {
+    chain = (await library.getNetwork()).chainId;
+
+    return retrieve();
+  };
+
+  /**
+   * Set switch chain var to newChainId
+   */
+  const switchChain = async (newChainId: number) => {
+    if (newChainId !== ETH_CHAIN_ID && newChainId !== AVAX_CHAIN_ID)
+      throw new Error("Invalid Chain Id");
+
+    console.log(newChainId, chain);
+    if (newChainId === chain) return retrieve(); // same as current chain
+
+    if (chain && library?.provider?.request) {
+      try {
+        await library.provider.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: toHex(newChainId) }],
+        });
+        setChain();
+      } catch (switchError: any) {
+        //I think this should add AVAX to MetaMask if you dont have it yet
+        //have not tested
+        if (switchError.code === 4902) {
+          //should only happen for AVAX
+          try {
+            await library.provider.request({
+              method: "wallet_addEthereumChain",
+              params: [AVAX_PARAMS],
+            });
+            setChain();
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    }
+
+    return retrieve();
+  };
+
   return {
     trigger,
     retrieve,
     clear,
+    setChain,
+    switchChain,
   };
 };
+
+export const wallet = walletUtil();
