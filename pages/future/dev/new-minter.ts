@@ -12,7 +12,6 @@ import ContractABI from "./ContractABI.json";
 
 export const mintUtil = async (puzzleId: number) => {
   let claimedStatus: boolean;
-  let txStatus = false;
   let txMessage: string;
   let contractAddress: string;
   let blockTracker: string;
@@ -61,21 +60,15 @@ export const mintUtil = async (puzzleId: number) => {
 
         const txHash = tx.hash;
 
-        tx.wait()
-          .then(async () => {
-            // tx success
-            claimedStatus = true;
-            txStatus = false;
-          })
-          .catch(() => {
-            // tx failed
-            claimedStatus = false;
-            txStatus = false;
-          });
-
-        // tx started
-        txMessage = "https://" + blockTracker + ".io/tx/" + txHash;
-        txStatus = true;
+        try {
+          await tx.wait();
+          txMessage = "https://" + blockTracker + ".io/tx/" + txHash;
+          claimedStatus = true;
+        } catch (error) {
+          txMessage = "https://" + blockTracker + ".io/tx/" + txHash;
+          claimedStatus = false;
+          console.log(error);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -107,7 +100,6 @@ export const mintUtil = async (puzzleId: number) => {
   };
 
   const retrieve = () => ({
-    txStatus,
     txMessage,
     claimedStatus,
   });

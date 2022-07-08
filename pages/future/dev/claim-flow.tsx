@@ -14,14 +14,12 @@ import {
   CONTRACT_ADDRESS_AVAX,
 } from "@lib/constants";
 import { wallet } from "@lib/wallet";
-import { getChainId } from "web3modal";
-import { walletconnect } from "web3modal/dist/providers/connectors";
 import { claimedUtil } from "./new-claimed";
 import { mintUtil } from "./new-minter";
 
 const ClaimFlow: NextPage = () => {
   //MOVE TO A PROP
-  const puzzleId = 0;
+  const puzzleId = 2;
 
   let claim: ReturnType<typeof claimedUtil>;
   let minter; //issues with ReturnType<typeof mintUtil> due to promise in mintUtil
@@ -30,23 +28,27 @@ const ClaimFlow: NextPage = () => {
   const joePegsLink = `${AVAX_MARKETPLACE_LINK}${CONTRACT_ADDRESS_AVAX}/${puzzleId}`;
 
   const [chain, setChain] = useState<number | null>(null);
+  const [isLoadingWallet, setIsLoadingWallet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [claimed, setClaimed] = useState(false);
   const [txMessage, setTxMessage] = useState<string>();
 
   const connectWallet = async () => {
     setChain((await wallet.trigger()).chain);
+    setIsLoadingWallet(true);
     setIsLoading(true);
     claim = claimedUtil(puzzleId);
     setClaimed(await claim.checkIfClaimed());
+    setIsLoadingWallet(false);
     setIsLoading(false);
   };
 
   const mint = async () => {
     minter = await mintUtil(puzzleId);
-    const { txMessage, txStatus, claimedStatus } = await minter.mint();
+    setIsLoading(true);
+    const { txMessage, claimedStatus } = await minter.mint();
+    setIsLoading(false);
     setTxMessage(txMessage);
-    setIsLoading(txStatus);
     setClaimed(claimedStatus);
   };
 
@@ -80,9 +82,9 @@ const ClaimFlow: NextPage = () => {
               />
               <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl">
                 {isLoading
-                  ? txMessage
-                    ? "Claiming Trophy"
-                    : "Connecting Wallet"
+                  ? isLoadingWallet
+                    ? "Connecting Wallet"
+                    : "Claiming Trophy"
                   : claimed
                   ? "Your Trophy Has Been Claimed"
                   : "Claim Your Trophy"}
