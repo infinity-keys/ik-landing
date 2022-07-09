@@ -1,18 +1,14 @@
-import { useMachine, useSelector } from "@xstate/react";
 import clsx from "clsx";
 
-import { walletConnectMachine, selectSignature } from "@lib/wallet.xstate";
+import { useWalletConnect } from "@hooks/useWalletConnect";
 
 interface WalletProps {
   onWalletSignature?: (address: string) => Promise<void>;
 }
 
 const Wallet = ({ onWalletSignature }: WalletProps) => {
-  const [current, send, service] = useMachine(walletConnectMachine);
-  const isSigned = useSelector(service, selectSignature);
-  const isLoading = current.matches("signing") || current.matches("connecting");
-  const isNotConnected =
-    current.matches("unknown") || current.matches("disconnected");
+  const { current, send, isSigned, isLoading, isNotConnected } =
+    useWalletConnect();
 
   isSigned &&
     onWalletSignature &&
