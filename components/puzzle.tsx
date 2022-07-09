@@ -10,9 +10,8 @@ import loRange from "lodash/range";
 import clsx from "clsx";
 
 import MaterialIcon from "@components/svg/material-lock-svg";
-
 import { puzzlePost } from "@lib/fetchers";
-import { routeFailUrl, routeSuccessUrl } from "@lib/utils";
+import { PUZZLE_LANDING_BASE } from "@lib/constants";
 import Markdown from "./markdown";
 
 interface PuzzleProps {
@@ -65,15 +64,15 @@ const Puzzle = ({
 
     const { fail_route, success_route } = await res.json();
 
-    // Turn off loading if failed
+    // Turn off loading if failed.
     if (!success_route) {
       setIsLoading(false);
       setIsWrongGuess(true);
     }
 
-    if (success_route) {
+    // Also, turn off if we're routing right back to a puzzle route
+    if (success_route.includes(PUZZLE_LANDING_BASE)) {
       setIsLoading(false);
-      setIsWrongGuess(false);
     }
 
     // Do not route if custom success components exist. Show in place.
@@ -85,7 +84,6 @@ const Puzzle = ({
       }
       return;
     }
-    console.log({ success_route, fail_route });
     // If either success or fail exist, turn them into proper paths and route
     router.push(success_route || fail_route);
   };
