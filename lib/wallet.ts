@@ -1,5 +1,6 @@
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
+import { message } from "@lib/utils";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 // import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 // import Fortmatic from "fortmatic";
@@ -74,6 +75,32 @@ export const walletUtil = () => {
     account,
   });
 
+  const sign = async () => {
+    if (!library?.provider?.request) throw new Error("Library is undefined");
+    if (!account) throw new Error("Account is undefined");
+
+    const nonceReq = await fetch(`/api/users/${account}`);
+    const { nonce } = await nonceReq.json();
+
+    const signature = await library.provider.request({
+      method: "personal_sign",
+      params: [message(nonce), account],
+    });
+
+    // With public address + signature, we can verify the signature
+    const authReq = await fetch(`/api/users/auth`, {
+      body: JSON.stringify({ publicAddress: account, signature }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+
+    if (!authReq.ok) throw new Error("Could not verify signature");
+
+    return signature;
+  };
+
   /**
    * Clear in-memory wallet cache
    */
@@ -84,6 +111,7 @@ export const walletUtil = () => {
   return {
     trigger,
     retrieve,
+    sign,
     clear,
   };
 };
