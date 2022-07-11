@@ -2,9 +2,6 @@ const { createPublicKey } = require("crypto");
 const { link } = require("fs");
 
 describe("infinitykeys.io", () => {
-  beforeEach(() => {
-    cy.visit("/");
-  });
   it("root landing page should load", () => {
     cy.visit("/");
     cy.contains("a.play", "Puzzles");
@@ -68,7 +65,7 @@ describe("infinitykeys.io", () => {
 
     cy.visit("/");
     cy.contains("Hunts").click();
-    cy.url().should("include", "/puzzles");
+    cy.url().should("include", Cypress.config().baseUrl + "/puzzles");
     cy.go("back");
 
     cy.visit("/");
@@ -90,7 +87,7 @@ describe("infinitykeys.io", () => {
 
     cy.visit("/");
     cy.contains("Puzzles").click();
-    cy.url().should("include", "/puzzles");
+    cy.url().should("include", Cypress.config().baseUrl + "/puzzles");
     cy.go("back");
 
     cy.visit("/");
