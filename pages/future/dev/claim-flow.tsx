@@ -16,7 +16,7 @@ import { minterUtil } from "./minter";
 
 const ClaimFlow: NextPage = () => {
   //MOVE TO A PROP
-  const puzzleId = 2;
+  const puzzleId = 4;
 
   const [chain, setChain] = useState<number | null>(null);
   const [isLoadingWallet, setIsLoadingWallet] = useState(false);
