@@ -1,22 +1,17 @@
-const { createPublicKey } = require("crypto");
-const { link } = require("fs");
-
-Cypress.on("uncaught:exception", (err, runnable) => {
-  // returning false here prevents Cypress from
-  // failing the test
-  return false;
+beforeEach(() => {
+  cy.visit("/");
 });
 
 describe("infinitykeys.io", () => {
   it("root landing page should load", () => {
-    cy.visit("/");
+    //cy.visit("/");
     cy.contains("a.play", "Puzzles");
     cy.contains("What is");
     cy.contains("Infinity Keys?");
   });
 
-  it("garbag input shows fail message on landing page", () => {
-    cy.visit("/");
+  it.only("garbag input shows fail message on landing page", () => {
+    //cy.visit("/");
     cy.get(".ik-code-input").eq(0).type("g", { delay: 250 });
     cy.get(".ik-code-input").eq(1).type("a", { delay: 250 });
     cy.get(".ik-code-input").eq(2).type("r", { delay: 250 });
