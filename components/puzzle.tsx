@@ -71,7 +71,7 @@ const Puzzle = ({
     }
 
     // Also, turn off if we're routing right back to a puzzle route
-    if (success_route.includes(PUZZLE_LANDING_BASE)) {
+    if (success_route?.includes(PUZZLE_LANDING_BASE)) {
       setIsLoading(false);
     }
 
