@@ -45,16 +45,19 @@ export default async function handler(
   const fail_route = (fail && routeFailUrl(fail.fail_route)) || "/";
 
   // Actual success results
+  let successSlug = undefined;
   let success_route = undefined;
-  let final_step = undefined;
   if (success.length) {
     // Is this a multi-step puzzle? If not final_step, don't redirect to "solved" form of slug
-    [{ success_route, final_step }] = success;
+    // [{ success_route = successSlug, final_step }] = success;
+    const final_step = success[0].final_step;
 
-    if (success_route)
+    successSlug = success[0].success_route;
+
+    if (successSlug)
       success_route = final_step
-        ? routeSuccessUrl(success_route)
-        : routeLandingUrl(success_route);
+        ? routeSuccessUrl(successSlug)
+        : routeLandingUrl(successSlug);
   }
 
   console.log(success_route);
@@ -75,12 +78,12 @@ export default async function handler(
   });
 
   // Guessed correctly
-  if (success_route) {
+  if (successSlug) {
     // Add solved puzzle route to user's puzzles claims
     const { puzzles } = payload.claims[IK_CLAIMS_NAMESPACE];
     payload.claims[IK_CLAIMS_NAMESPACE].puzzles = uniq([
       ...puzzles,
-      success_route,
+      successSlug,
     ]);
   }
 
