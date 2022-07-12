@@ -2,8 +2,7 @@ import { JWTPayload } from "jose";
 import { IK_CLAIMS_NAMESPACE } from "./constants";
 
 export type PuzzleApiResponse = {
-  access?: boolean;
-  fail_route: string | undefined;
+  fail_route: string;
   success_route: string | undefined;
 };
 export interface IkJwt extends JWTPayload {

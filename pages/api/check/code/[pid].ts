@@ -6,6 +6,7 @@ import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 import { gqlApiSdk } from "@lib/server";
 import { IkJwt, PuzzleApiResponse } from "@lib/types";
 import { makeUserToken, verifyToken } from "@lib/jwt";
+import { routeFailUrl, routeLandingUrl, routeSuccessUrl } from "@lib/utils";
 
 export default async function handler(
   req: NextApiRequest,
@@ -26,7 +27,7 @@ export default async function handler(
   }
 
   const { pid } = req.query;
-  if (!pid || typeof pid === "object") return res.status(400).end();
+  if (!pid || typeof pid !== "string") return res.status(400).end();
 
   const { code } = req.body;
   if (!code) return res.status(400).end();
@@ -40,17 +41,35 @@ export default async function handler(
     puzzle_id: pid,
     solution: code,
   });
-  const fail_route = fail?.fail_route;
-  const success_route = success[0]?.success_route;
 
-  // Default returned results, defaults to access: false
+  const fail_route = (fail && routeFailUrl(fail.fail_route)) || "/";
+
+  // Actual success results
+  let successSlug = undefined;
+  let success_route = undefined;
+  if (success.length) {
+    // Is this a multi-step puzzle? If not final_step, don't redirect to "solved" form of slug
+    // [{ success_route = successSlug, final_step }] = success;
+    const final_step = success[0].final_step;
+
+    successSlug = success[0].success_route;
+
+    if (successSlug)
+      success_route = final_step
+        ? routeSuccessUrl(successSlug)
+        : routeLandingUrl(successSlug);
+  }
+
+  console.log(success_route);
+
+  // Default returned results
   const guessResults = {
-    access: false,
     fail_route,
     success_route,
   };
 
   // Pull payload off the token
+  // @TODO: JWT validate this
   const payload = verified.payload as unknown as IkJwt;
 
   // Throw a user update/create query out
@@ -59,16 +78,13 @@ export default async function handler(
   });
 
   // Guessed correctly
-  if (success_route) {
+  if (successSlug) {
     // Add solved puzzle route to user's puzzles claims
     const { puzzles } = payload.claims[IK_CLAIMS_NAMESPACE];
     payload.claims[IK_CLAIMS_NAMESPACE].puzzles = uniq([
       ...puzzles,
-      success_route,
+      successSlug,
     ]);
-
-    // Give access in response json
-    guessResults.access = true;
   }
 
   const newToken = await makeUserToken(payload);
