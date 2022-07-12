@@ -42,37 +42,10 @@ export default async function handler(
     solution: code,
   });
 
-<<<<<<< HEAD
   // What we actually return as json, build up
   const guessResults: PuzzleApiResponse = {
     fail_route: (fail && routeFailUrl(fail.fail_route)) || "/",
     success_route: undefined,
-=======
-  const fail_route = (fail && routeFailUrl(fail.fail_route)) || "/";
-
-  // Actual success results
-  let successSlug = undefined;
-  let success_route = undefined;
-  if (success.length) {
-    // Is this a multi-step puzzle? If not final_step, don't redirect to "solved" form of slug
-    // [{ success_route = successSlug, final_step }] = success;
-    const final_step = success[0].final_step;
-
-    successSlug = success[0].success_route;
-
-    if (successSlug)
-      success_route = final_step
-        ? routeSuccessUrl(successSlug)
-        : routeLandingUrl(successSlug);
-  }
-
-  console.log(success_route);
-
-  // Default returned results
-  const guessResults = {
-    fail_route,
-    success_route,
->>>>>>> main
   };
 
   // Pull payload off the token
@@ -87,20 +60,11 @@ export default async function handler(
       ? routeSuccessUrl(success_route)
       : routeLandingUrl(success_route);
 
-<<<<<<< HEAD
-=======
-  // Guessed correctly
-  if (successSlug) {
->>>>>>> main
     // Add solved puzzle route to user's puzzles claims
     const { puzzles } = payload.claims[IK_CLAIMS_NAMESPACE];
     payload.claims[IK_CLAIMS_NAMESPACE].puzzles = uniq([
       ...puzzles,
-<<<<<<< HEAD
       success_route,
-=======
-      successSlug,
->>>>>>> main
     ]);
   }
 
