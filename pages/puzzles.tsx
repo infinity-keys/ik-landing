@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
 import clsx from "clsx";
-// import { MailIcon, PhoneIcon } from '@heroicons/react/solid'
+import { ViewListIcon, ViewGridIcon } from "@heroicons/react/solid";
 
 import { gqlApiSdk } from "@lib/server";
 import { PublicPuzzlesQuery } from "@lib/generated/graphql";
@@ -17,9 +17,6 @@ interface PageProps {
 
 const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
   const [isGrid, setIsGrid] = useState(true);
-  const gridlist =
-    "grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 py-8";
-  const gridlistitem = "col-span-1 divide-y divide-gray-200";
 
   return (
     <Wrapper>
@@ -30,24 +27,44 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
         <Header />
 
         <div className="px-4 flex-1 container">
-          <button onClick={() => setIsGrid(!isGrid)}>toggle</button>
+          <button
+            onClick={() => setIsGrid(true)}
+            aria-label="set grid view"
+            className={clsx(
+              "border mr-2 bg-white/10 p-2 rounded-md transition-all duration-200",
+              isGrid ? "border-white/20" : "border-transparent text-gray-400"
+            )}
+          >
+            <ViewGridIcon className="h-5 w-5" aria-hidden="true" />
+          </button>
+          <button
+            onClick={() => setIsGrid(false)}
+            aria-label="set list view"
+            className={clsx(
+              "border mt-8 bg-white/10 p-2 rounded-md transition-all duration-200	",
+              !isGrid ? "border-white/20" : "border-transparent text-gray-400"
+            )}
+          >
+            <ViewListIcon className="h-5 w-5" aria-hidden="true" />
+          </button>
+
           <ul
             role="list"
             className={clsx(
-              "grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 py-8",
-              { "lg:grid-cols-4": isGrid }
+              "grid grid-cols-1 gap-6 py-8 sm:grid-cols-2",
+              isGrid
+                ? "md:grid-cols-3 lg:grid-cols-4"
+                : "lg:grid-cols-3 xl:grid-cols-4"
             )}
           >
-            {[...Array(50).keys()].map(
-              ({ puzzle_id, landing_route, simple_name }) => (
-                <li key={puzzle_id} className="">
-                  <PuzzleThumbnail
-                    grid={isGrid}
-                    {...{ puzzle_id, landing_route, simple_name }}
-                  />
-                </li>
-              )
-            )}
+            {puzzles.map(({ puzzle_id, landing_route, simple_name }) => (
+              <li key={puzzle_id} className="">
+                <PuzzleThumbnail
+                  isGrid={isGrid}
+                  {...{ puzzle_id, landing_route, simple_name }}
+                />
+              </li>
+            ))}
           </ul>
         </div>
 
