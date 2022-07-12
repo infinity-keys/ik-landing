@@ -19,10 +19,10 @@ import "./commands";
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-Cypress.on("uncaught:exception", (err, runnable, promise) => {
-  // returning false here prevents Cypress from
-  // failing the test
-  if (promise) {
-    return false;
-  }
-});
+// Cypress.on("uncaught:exception", (err, runnable, promise) => {
+//   // returning false here prevents Cypress from
+//   // failing the test
+//   if (promise) {
+//     return false;
+//   }
+// });

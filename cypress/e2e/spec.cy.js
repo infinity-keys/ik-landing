@@ -4,14 +4,12 @@ beforeEach(() => {
 
 describe("infinitykeys.io", () => {
   it("root landing page should load", () => {
-    //cy.visit("/");
     cy.contains("a.play", "Puzzles");
     cy.contains("What is");
     cy.contains("Infinity Keys?");
   });
 
-  it.only("garbag input shows fail message on landing page", () => {
-    //cy.visit("/");
+  it("garbag input shows fail message on landing page", () => {
     cy.get(".ik-code-input").eq(0).type("g", { delay: 250 });
     cy.get(".ik-code-input").eq(1).type("a", { delay: 250 });
     cy.get(".ik-code-input").eq(2).type("r", { delay: 250 });
@@ -22,12 +20,10 @@ describe("infinitykeys.io", () => {
   });
 
   it("should navigate to blog from home page", () => {
-    cy.visit("/");
     cy.get('.menu-items a[href="https://blog.infinitykeys.io"]').click();
   });
 
   it("should go to first puzzle on puzzles page when thumbnail clicked", () => {
-    cy.visit("/");
     cy.get("a.play").contains("Puzzles").click();
     cy.url().should("include", "/puzzles");
     cy.get(".puzzle-thumb").first().click();
@@ -38,7 +34,6 @@ describe("infinitykeys.io", () => {
     cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
       statusCode: 200,
     });
-    cy.visit("/");
     cy.get('[data-cy="email-partner"] input').type("you@me.com");
     cy.get('[data-cy="email-partner"] button').click();
     cy.get('[data-cy="email-partner-success"]').contains(
@@ -50,7 +45,6 @@ describe("infinitykeys.io", () => {
     cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
       statusCode: 200,
     });
-    cy.visit("/");
     cy.get('[data-cy="email-newsletter"] input').type("you@me.com");
     cy.get('[data-cy="email-newsletter"] button').click();
     cy.get('[data-cy="email-newsletter-success"]').contains(
@@ -59,7 +53,6 @@ describe("infinitykeys.io", () => {
   });
 
   it("clicks on a link and directs to the expected url", () => {
-    cy.visit("/");
     cy.contains("Home").click();
     cy.url().should("include", Cypress.config().baseUrl + "/");
     cy.go("back");
@@ -97,12 +90,17 @@ describe("infinitykeys.io", () => {
   });
 
   it("click on social icon and directs to expected url", () => {
-    cy.visit("/");
-    cy.get('[data-cy="discord"]').invoke("removeAttr", "target").click();
-    cy.url().should("include", "https://discord.com/invite/infinitykeys");
+    cy.get('[data-cy="discord"]').should(
+      "have.attr",
+      "href",
+      "https://discord.com/invite/infinitykeys"
+    );
 
     cy.visit("/");
-    cy.get('[data-cy="twitter"]').invoke("removeAttr", "target").click();
-    cy.url().should("include", "https://twitter.com/InfinityKeys");
+    cy.get('[data-cy="twitter"]').should(
+      "have.attr",
+      "href",
+      "https://twitter.com/InfinityKeys"
+    );
   });
 });
