@@ -1,6 +1,12 @@
 const { createPublicKey } = require("crypto");
 const { link } = require("fs");
 
+Cypress.on("uncaught:exception", (err, runnable) => {
+  // returning false here prevents Cypress from
+  // failing the test
+  return false;
+});
+
 describe("infinitykeys.io", () => {
   it("root landing page should load", () => {
     cy.visit("/");
