@@ -14,35 +14,25 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  let claimed: boolean;
-
   const { account, puzzleId } = req.query;
-  if (!account || !puzzleId) return res.status(401).end();
 
-  if (typeof puzzleId === "object" || typeof account === "object") {
+  if (!account || !puzzleId) return res.status(500).end();
+  if (typeof puzzleId === "object" || typeof account === "object")
     return res.status(500).end();
-  }
 
   const contractAVAX = ContractABI__factory.connect(
     CONTRACT_ADDRESS_AVAX,
     new ethers.providers.JsonRpcProvider(AVAX_RPC)
   );
-
   const avaxStatus = await contractAVAX.checkIfClaimed(puzzleId, account);
-  if (avaxStatus) claimed = true;
-  else claimed = false;
 
   const contractETH = ContractABI__factory.connect(
     CONTRACT_ADDRESS_ETH,
     new ethers.providers.JsonRpcProvider(ETH_RPC)
   );
+  const ethStatus = await contractETH.checkIfClaimed(puzzleId, account);
 
-  const ethStatus: boolean = await contractETH.checkIfClaimed(
-    puzzleId,
-    account
-  );
-  if (ethStatus) claimed = true;
-  else claimed = false;
+  const claimed = ethStatus || avaxStatus;
 
   res.status(200).json({ claimed: claimed });
 }
