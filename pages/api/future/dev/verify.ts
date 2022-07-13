@@ -11,11 +11,7 @@ import {
 const privateKey = process.env.PRIVATE_KEY_VERIFY;
 const secret = process.env.MINT_SECRET_VERIFY;
 
-let wallet: ethers.Wallet;
-
-if (privateKey) {
-  wallet = new ethers.Wallet(privateKey);
-}
+const wallet = new ethers.Wallet(privateKey || "");
 
 export default async function handler(
   req: NextApiRequest,
@@ -23,13 +19,22 @@ export default async function handler(
 ) {
   const { account, puzzleId, chainId } = req.query;
   if (!account || !puzzleId || !chainId || !wallet)
-    return res.status(401).end();
+    return res.status(500).end();
+
+  if (
+    typeof puzzleId === "object" ||
+    typeof account === "object" ||
+    typeof chainId === "object"
+  )
+    return res.status(500).end();
+
+  const chainIdAsNumber = parseInt(chainId, 10);
 
   let contract: string;
 
-  if (chainId === String(AVAX_CHAIN_ID)) {
+  if (chainIdAsNumber === AVAX_CHAIN_ID) {
     contract = CONTRACT_ADDRESS_AVAX;
-  } else if (chainId === String(ETH_CHAIN_ID)) {
+  } else if (chainIdAsNumber === ETH_CHAIN_ID) {
     contract = CONTRACT_ADDRESS_ETH;
   } else return res.status(404).end();
 
