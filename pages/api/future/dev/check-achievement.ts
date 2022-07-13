@@ -7,7 +7,8 @@ import {
   CONTRACT_ADDRESS_AVAX,
   CONTRACT_ADDRESS_ETH,
 } from "@lib/constants";
-import ContractABI from "../../../future/dev/ContractABI.json";
+
+import { ContractABI__factory } from "../../../../types/ethers-contracts/factories/ContractABI__factory";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,23 +19,22 @@ export default async function handler(
   const { account, puzzleId } = req.query;
   if (!account || !puzzleId) return res.status(401).end();
 
-  const contractAVAX = new ethers.Contract(
+  if (typeof puzzleId === "object" || typeof account === "object") {
+    return res.status(500).end();
+  }
+
+  const contractAVAX = ContractABI__factory.connect(
     CONTRACT_ADDRESS_AVAX,
-    ContractABI,
-    new ethers.providers.JsonRpcProvider(AVAX_RPC) //AVAX RPC provider
+    new ethers.providers.JsonRpcProvider(AVAX_RPC)
   );
 
-  const avaxStatus: boolean = await contractAVAX.checkIfClaimed(
-    puzzleId,
-    account
-  );
+  const avaxStatus = await contractAVAX.checkIfClaimed(puzzleId, account);
   if (avaxStatus) claimed = true;
   else claimed = false;
 
-  const contractETH = new ethers.Contract(
+  const contractETH = ContractABI__factory.connect(
     CONTRACT_ADDRESS_ETH,
-    ContractABI,
-    new ethers.providers.JsonRpcProvider(ETH_RPC) //ETH RPC provider
+    new ethers.providers.JsonRpcProvider(ETH_RPC)
   );
 
   const ethStatus: boolean = await contractETH.checkIfClaimed(

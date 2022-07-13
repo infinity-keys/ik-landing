@@ -6,12 +6,13 @@
     "build": "yarn generate:once && next build",
     "start": "next start",
     "lint": "tsc && next lint",
-    "generate:once": "graphql-codegen",
-    "generate:watch": "graphql-codegen --watch",
+    "generate:once": "yarn run typechain && graphql-codegen",
+    "generate:watch": "yarn run typechain && graphql-codegen --watch",
     "fmt": "eslint . --fix",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --headless --browser chrome",
-    "cypress:ci": "yarn build && start-server-and-test start http://localhost:3000 cypress:run"
+    "cypress:ci": "yarn build && start-server-and-test start http://localhost:3000 cypress:run",
+    "typechain": "typechain --target ethers-v5 \"pages/future/dev/**/*.json\""
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.1",
@@ -48,6 +49,7 @@
     "xstate": "^4.32.1"
   },
   "devDependencies": {
+    "@typechain/ethers-v5": "^10.1.0",
     "@types/lodash": "^4.14.178",
     "@types/node": "^18",
     "@types/react": "^18",
@@ -62,6 +64,7 @@
     "sass": "^1.53.0",
     "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.1.6",
+    "typechain": "^8.1.0",
     "typescript": "^4",
     "yarn-audit-fix": "^9.3.2"
   }
