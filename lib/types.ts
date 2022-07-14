@@ -5,6 +5,7 @@ export type PuzzleApiResponse = {
   fail_route: string;
   success_route: string | undefined;
 };
+
 export interface IkJwt extends JWTPayload {
   claims: {
     [IK_CLAIMS_NAMESPACE]: {

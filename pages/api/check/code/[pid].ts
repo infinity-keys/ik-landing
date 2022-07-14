@@ -42,50 +42,36 @@ export default async function handler(
     solution: code,
   });
 
-  const fail_route = (fail && routeFailUrl(fail.fail_route)) || "/";
-
-  // Actual success results
-  let successSlug = undefined;
-  let success_route = undefined;
-  if (success.length) {
-    // Is this a multi-step puzzle? If not final_step, don't redirect to "solved" form of slug
-    // [{ success_route = successSlug, final_step }] = success;
-    const final_step = success[0].final_step;
-
-    successSlug = success[0].success_route;
-
-    if (successSlug)
-      success_route = final_step
-        ? routeSuccessUrl(successSlug)
-        : routeLandingUrl(successSlug);
-  }
-
-  console.log(success_route);
-
-  // Default returned results
-  const guessResults = {
-    fail_route,
-    success_route,
+  // What we actually return as json, build up
+  const guessResults: PuzzleApiResponse = {
+    fail_route: (fail && routeFailUrl(fail.fail_route)) || "/",
+    success_route: undefined,
   };
 
   // Pull payload off the token
   // @TODO: JWT validate this
   const payload = verified.payload as unknown as IkJwt;
 
-  // Throw a user update/create query out
-  await gql.UpsertUser({
-    userId: payload.sub,
-  });
+  // Actual success results (guessed correctly)
+  if (success.length) {
+    const [{ final_step, success_route }] = success;
 
-  // Guessed correctly
-  if (successSlug) {
+    guessResults.success_route = final_step
+      ? routeSuccessUrl(success_route)
+      : routeLandingUrl(success_route);
+
     // Add solved puzzle route to user's puzzles claims
     const { puzzles } = payload.claims[IK_CLAIMS_NAMESPACE];
     payload.claims[IK_CLAIMS_NAMESPACE].puzzles = uniq([
       ...puzzles,
-      successSlug,
+      success_route,
     ]);
   }
+
+  // Throw a user update/create query out
+  await gql.UpsertUser({
+    userId: payload.sub,
+  });
 
   const newToken = await makeUserToken(payload);
 
