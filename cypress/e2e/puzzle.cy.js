@@ -11,7 +11,7 @@ describe("infinitykeys.io/puzzles", () => {
     cy.url().should("include", "/puzzles");
   });
 
-  it.only("should click on puzzle thumbnail and navigate to puzzle landing page", () => {
+  it("should click on puzzle thumbnail and navigate to puzzle landing page", () => {
     cy.visit("/");
     cy.get("a.play").contains("Puzzles").click();
     cy.url().should("include", "/puzzles");
