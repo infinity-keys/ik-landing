@@ -19,7 +19,7 @@
       "@lib/*": ["lib/*"],
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
-      "@contracts/*": ["contracts/*"]
+      "@nfts/*": ["nfts/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
