@@ -17,6 +17,6 @@ describe("infinitykeys.io/puzzles", () => {
     cy.url().should("include", "/puzzles");
     //cy.get(".puzzle-thumb").first().click();
     cy.get(".puzzle-thumb").click({ multiple: true });
-    //cy.url().should("include", "/puzzle");
+    cy.url().should("include", "/puzzle");
   });
 });
