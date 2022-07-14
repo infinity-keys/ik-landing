@@ -111,7 +111,8 @@ const Puzzle = ({
             <div className={clsx({ invisible: !isWrongGuess })}>
               <div className="opacity-50">
                 <Markdown>
-                  {failMessage || "Incorrect passcode. Try again."}
+                  {failMessage ||
+                    "Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)"}
                 </Markdown>
               </div>
             </div>
