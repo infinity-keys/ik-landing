@@ -1,0 +1,149 @@
+[
+  {
+    "name": "Not Right Puzzle",
+    "description": "Infinity Keys Not Right Puzzle.",
+    "external_url": "https://www.infinitykeys.io/puzzle/notright",
+    "image": "https://gateway.pinata.cloud/ipfs/QmPTxMdkEdEGSP4rm43Lz2Wc7gCKiJGJPPCwBXayKyRa4m/notright.jpg",
+    "attributes": [
+      {
+        "trait_type": "Type",
+        "value": "Passcode"
+      },
+      {
+        "trait_type": "Category",
+        "value": "Dawn"
+      },
+      {
+        "display_type": "number",
+        "trait_type": "Generation",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "name": "Avalanche Puzzle",
+    "description": "Infinity Keys Instagram puzzle.",
+    "external_url": "https://www.infinitykeys.io/puzzle/avalanche",
+    "image": "https://gateway.pinata.cloud/ipfs/QmPTxMdkEdEGSP4rm43Lz2Wc7gCKiJGJPPCwBXayKyRa4m/avalanche.jpg",
+    "attributes": [
+      {
+        "trait_type": "Type",
+        "value": "Passcode"
+      },
+      {
+        "trait_type": "Category",
+        "value": "Dawn"
+      },
+      {
+        "display_type": "number",
+        "trait_type": "Generation",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "name": "Community Code Puzzle",
+    "description": "Infinity Keys Community Code Puzzle.",
+    "external_url": "https://www.infinitykeys.io/puzzle/communitycode",
+    "image": "https://gateway.pinata.cloud/ipfs/QmPTxMdkEdEGSP4rm43Lz2Wc7gCKiJGJPPCwBXayKyRa4m/communitycode.jpg",
+    "attributes": [
+      {
+        "trait_type": "Type",
+        "value": "Passcode"
+      },
+      {
+        "trait_type": "Category",
+        "value": "Community"
+      },
+      {
+        "display_type": "number",
+        "trait_type": "Generation",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "name": "Instagram Puzzle",
+    "description": "Infinity Keys Instagram puzzle.",
+    "external_url": "https://www.infinitykeys.io/puzzle/gram",
+    "image": "https://gateway.pinata.cloud/ipfs/QmPTxMdkEdEGSP4rm43Lz2Wc7gCKiJGJPPCwBXayKyRa4m/gram.jpg",
+    "attributes": [
+      {
+        "trait_type": "Type",
+        "value": "Passcode"
+      },
+      {
+        "trait_type": "Category",
+        "value": "Dawn"
+      },
+      {
+        "display_type": "number",
+        "trait_type": "Generation",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "name": "IK Live Puzzle",
+    "description": "Infinity Keys IK Live NFT",
+    "external_url": "https://www.infinitykeys.io/puzzle/iklive",
+    "image": "https://gateway.pinata.cloud/ipfs/QmPTxMdkEdEGSP4rm43Lz2Wc7gCKiJGJPPCwBXayKyRa4m/IKLive.jpg",
+    "attributes": [
+      {
+        "trait_type": "Type",
+        "value": "Passcode"
+      },
+      {
+        "trait_type": "Category",
+        "value": "Dawn"
+      },
+      {
+        "display_type": "number",
+        "trait_type": "Generation",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "name": "Istanbul Not Constantinople Puzzle",
+    "description": "Infinity Keys Istanbul Not Constantinople Puzzle NFT",
+    "external_url": "https://www.infinitykeys.io/puzzle/istanbulnotconstantinople",
+    "image": "https://gateway.pinata.cloud/ipfs/QmPTxMdkEdEGSP4rm43Lz2Wc7gCKiJGJPPCwBXayKyRa4m/istanbulnotconstantinople.jpg",
+    "attributes": [
+      {
+        "trait_type": "Type",
+        "value": "Passcode"
+      },
+      {
+        "trait_type": "Category",
+        "value": "Dawn"
+      },
+      {
+        "display_type": "number",
+        "trait_type": "Generation",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "name": "Metafest2 Puzzle",
+    "description": "Infinity Keys Metafest2 Puzzle.",
+    "external_url": "https://www.infinitykeys.io/puzzle/metafest2",
+    "image": "https://gateway.pinata.cloud/ipfs/QmPTxMdkEdEGSP4rm43Lz2Wc7gCKiJGJPPCwBXayKyRa4m/metafest2.jpg",
+    "attributes": [
+      {
+        "trait_type": "Type",
+        "value": "Passcode"
+      },
+      {
+        "trait_type": "Category",
+        "value": "Dawn"
+      },
+      {
+        "display_type": "number",
+        "trait_type": "Generation",
+        "value": 1
+      }
+    ]
+  }
+]
