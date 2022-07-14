@@ -93,9 +93,27 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
 };
 export default Puzzles;
 
-export async function getStaticProps(): Promise<{ props: PageProps }> {
+export async function getStaticPaths() {
   const gql = await gqlApiSdk();
   const { puzzles } = await gql.PublicPuzzles();
+  const pages = Math.ceil(puzzles.length / 2) - 1;
+
+  const pagesToGo = Array.from({ length: pages }, (v, i) => i + 1);
+  const paths = pagesToGo.map((p) => ({
+    params: {
+      uid: p.toString(),
+    },
+  }));
+
+  return {
+    paths,
+    fallback: false,
+  };
+}
+
+export async function getStaticProps(): Promise<{ props: PageProps }> {
+  const gql = await gqlApiSdk();
+  const { puzzles } = await gql.PublicPuzzles({ limit: 2, offset: 2 });
 
   return {
     props: {
