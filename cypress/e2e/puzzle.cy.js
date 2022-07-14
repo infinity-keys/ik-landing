@@ -1,4 +1,4 @@
-describe("infinitykeys.io/puzzle", () => {
+describe("infinitykeys.io/puzzles", () => {
   it("should click button and navigate to puzzle dashboard", () => {
     cy.visit("/");
     cy.contains("a.play", "Puzzles").click();
