@@ -1,10 +1,10 @@
 import { NextPage } from "next";
+import { useState } from "react";
 import Head from "next/head";
 import Avatar from "boring-avatars";
 import Wrapper from "@components/wrapper";
 import Header from "@components/header";
 import Footer from "@components/footer";
-import { useState } from "react";
 import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
@@ -12,17 +12,16 @@ import {
   joePegsLink,
 } from "@lib/constants";
 import { wallet } from "@lib/wallet";
-import { minterUtil } from "./minter";
+import { minterUtil } from "@lib/minter";
 
 const ClaimFlow: NextPage = () => {
-  //MOVE TO A PROP
-  const puzzleId = 4;
-
-  const [chain, setChain] = useState<number | null>(null);
+  // TURN INTO PROP
+  const puzzleId = 6;
+  const [chain, setChain] = useState<number>();
   const [isLoadingWallet, setIsLoadingWallet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [claimed, setClaimed] = useState(false);
-  const [txMessage, setTxMessage] = useState<string>();
+  const [txMessage, setTxMessage] = useState<string>("");
 
   const connectWallet = async () => {
     const { account, chain } = await wallet.trigger();
@@ -36,7 +35,7 @@ const ClaimFlow: NextPage = () => {
   };
 
   const checkIfClaimed = async (account: string) => {
-    const url = `/api/future/dev/check-achievement?account=${account}&puzzleId=${puzzleId}`;
+    const url = `/api/minter/achievement?account=${account}&puzzleId=${puzzleId}`;
     try {
       const response = await fetch(url);
       if (response.ok) return (await response.json()).claimed;
@@ -148,13 +147,13 @@ const ClaimFlow: NextPage = () => {
                 </>
               )}
 
-              {txMessage && (
+              {txMessage !== "" && (
                 <div>
                   View Transaction&nbsp;
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={txMessage} //this should know what chain its on. set in transactions util.
+                    href={txMessage}
                     className="underline"
                   >
                     Here

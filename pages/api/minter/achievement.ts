@@ -8,7 +8,7 @@ import {
   CONTRACT_ADDRESS_ETH,
 } from "@lib/constants";
 
-import { ContractABI__factory } from "../../../../types/ethers-contracts/factories/ContractABI__factory";
+import { IKAchievementABI__factory } from "@lib/generated/ethers-contract/factories/IKAchievementABI__factory";
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,16 +20,22 @@ export default async function handler(
   if (typeof puzzleId === "object" || typeof account === "object")
     return res.status(500).end();
 
-  const contractAVAX = ContractABI__factory.connect(
+  const contractAVAX = IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_AVAX,
     new ethers.providers.JsonRpcProvider(AVAX_RPC)
   );
-  const avaxStatus = await contractAVAX.checkIfClaimed(puzzleId, account);
 
-  const contractETH = ContractABI__factory.connect(
+  const contractETH = IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_ETH,
     new ethers.providers.JsonRpcProvider(ETH_RPC)
   );
+
+  // faster call on avax than eth.. theoretically should be the same
+  // ensure puzzle were checking exists
+  if (parseInt(puzzleId, 10) >= (await contractAVAX.totalSupplyAll()).length)
+    return res.status(500).end();
+
+  const avaxStatus = await contractAVAX.checkIfClaimed(puzzleId, account);
   const ethStatus = await contractETH.checkIfClaimed(puzzleId, account);
 
   const claimed = ethStatus || avaxStatus;
