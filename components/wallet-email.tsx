@@ -67,7 +67,8 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
     <>
       {(isSubmitSuccessful || walletSigned) && (
         <>
-          <Alert text="Thanks for joining, we will be in touch!" />
+          <Alert text="You win!" />
+          <PuzzleButton text="More Puzzles" />
         </>
       )}
       {!isSubmitSuccessful && errors?.puzzleId && (
