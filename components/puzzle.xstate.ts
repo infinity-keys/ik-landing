@@ -2,13 +2,17 @@ import { puzzlePost } from "@lib/fetchers";
 import { PuzzleApiResponse } from "@lib/types";
 import { createMachine, assign } from "xstate";
 
-export type PuzzleContext = { text: string; count: number; puzzleId: string };
+export type PuzzleContext = {
+  text: string;
+  count: number;
+  puzzleId: string;
+  redirect: boolean;
+};
 
 export type PuzzleEvents =
   | { type: "INPUT"; text: string }
   | { type: "PUZZLE_INFO"; puzzleInfo: { puzzleId: string; count: number } };
 
-// export const puzzleMachine = (count: number, puzzleId: string) =>
 export const puzzleMachine = createMachine(
   {
     id: "puzzleMachine",
@@ -27,9 +31,11 @@ export const puzzleMachine = createMachine(
       text: "",
       count: 0,
       puzzleId: "",
+      redirect: true,
     },
     states: {
       idle: {
+        entry: ["clearText"],
         on: {
           INPUT: [
             {
@@ -38,6 +44,7 @@ export const puzzleMachine = createMachine(
             },
             {
               target: "idle",
+              internal: true, // so we don't clear text
               actions: ["setText"],
             },
           ],
@@ -63,12 +70,34 @@ export const puzzleMachine = createMachine(
         },
       },
       guessIncorrect: {
-        entry: ["clearText"],
+        entry: ["clearText", "goToFailRoute"],
         on: {
           INPUT: "idle",
         },
       },
-      guessCorrect: {},
+      guessCorrect: {
+        initial: "deciding",
+        states: {
+          deciding: {
+            always: [
+              // We lose the types for the event that leads us here due to `always`:
+              //  https://xstate.js.org/docs/guides/typescript.html#typegen
+              { target: "go", cond: "shouldRedirect" },
+              { target: "stay" },
+            ],
+          },
+          // Do fully redirect
+          go: {
+            entry: ["goToSuccessRoute"],
+          },
+          // Don't forward on success
+          stay: {},
+        },
+        on: {
+          // When a new puzzle streams in, start all over
+          PUZZLE_INFO: "idle",
+        },
+      },
     },
   },
   {
@@ -91,6 +120,7 @@ export const puzzleMachine = createMachine(
     guards: {
       charCountMatches: ({ count }, { text }) => count === text.length,
       isSuccessResponse: (_, { data }) => !!data.success_route,
+      shouldRedirect: ({ redirect }, event) => redirect,
     },
   }
 );
