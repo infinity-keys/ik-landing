@@ -19,7 +19,8 @@
       "@lib/*": ["lib/*"],
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
-      "@nfts/*": ["nfts/*"]
+      "@nfts/*": ["nfts/*"],
+      "@contracts/*": ["lib/generated/ethers-contract/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

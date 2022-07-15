@@ -7,25 +7,29 @@ import {
   SNOWTRACE_TRACKER,
   ETHERSCAN_TRACKER,
 } from "@lib/constants";
-import { IKAchievementABI__factory } from "@lib/generated/ethers-contract/factories/IKAchievementABI__factory";
+import { IKAchievementABI__factory } from "@contracts/factories/IKAchievementABI__factory";
 
 export const minterUtil = async (puzzleId: number) => {
   let claimedStatus = false;
-  let txMessage = "";
-  let contractAddress = "";
-  let blockTracker = "";
+  let txMessage: URL;
 
   const { library, account, chain } = wallet.retrieve();
 
-  if (chain === AVAX_CHAIN_ID) {
-    contractAddress = CONTRACT_ADDRESS_AVAX;
-    blockTracker = SNOWTRACE_TRACKER;
-  } else if (chain === ETH_CHAIN_ID) {
-    contractAddress = CONTRACT_ADDRESS_ETH;
-    blockTracker = ETHERSCAN_TRACKER;
-  } else {
-    throw new Error("Invalid Chain");
-  }
+  const contractAddress =
+    chain === AVAX_CHAIN_ID
+      ? CONTRACT_ADDRESS_AVAX
+      : chain === ETH_CHAIN_ID
+      ? CONTRACT_ADDRESS_ETH
+      : undefined;
+  const blockTracker =
+    chain === AVAX_CHAIN_ID
+      ? SNOWTRACE_TRACKER
+      : chain === ETH_CHAIN_ID
+      ? ETHERSCAN_TRACKER
+      : undefined;
+
+  if (!contractAddress || !blockTracker)
+    throw new Error("Invalid contract address");
 
   const contract = IKAchievementABI__factory.connect(contractAddress, library);
 
@@ -45,27 +49,34 @@ export const minterUtil = async (puzzleId: number) => {
       const tx = await library
         .getSigner()
         .sendTransaction(transaction)
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.code === 4001) {
+            // If user rejects TX don't blow up
+            // Removed this catch but threw error before catching below
+            claimedStatus = false;
+            return;
+          }
+        });
 
       if (!tx) return;
 
-      txMessage = "https://" + blockTracker + ".io/tx/" + tx.hash;
+      txMessage = new URL(`${blockTracker}/tx/${tx.hash}`);
 
-      try {
-        await tx.wait();
-        claimedStatus = true;
-      } catch (error) {
-        claimedStatus = false;
-        console.log(error);
-      }
+      const receipt = await tx.wait();
+      claimedStatus = receipt.status === 1;
     } catch (error) {
-      console.log(error);
-      throw new Error("Transaction failed.");
+      claimedStatus = false;
+      throw error;
     }
   };
 
   const verify = async () => {
-    const url = `/api/minter/verify?account=${account}&puzzleId=${puzzleId}&chainId=${chain}`;
+    const url = new URL("api/minter/verify", "http://localhost:3001/");
+    url.searchParams.append("account", account);
+    url.searchParams.append("puzzleId", puzzleId.toString());
+    url.searchParams.append("chainId", chain.toString());
+    console.log(url);
+
     try {
       const response = await fetch(url);
       if (response.ok) {

@@ -16,12 +16,12 @@ import { minterUtil } from "@lib/minter";
 
 const ClaimFlow: NextPage = () => {
   // TURN INTO PROP
-  const puzzleId = 6;
+  const puzzleId = 4;
   const [chain, setChain] = useState<number>();
   const [isLoadingWallet, setIsLoadingWallet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [claimed, setClaimed] = useState(false);
-  const [txMessage, setTxMessage] = useState<string>("");
+  const [txMessage, setTxMessage] = useState<URL>();
 
   const connectWallet = async () => {
     const { account, chain } = await wallet.trigger();
@@ -147,13 +147,13 @@ const ClaimFlow: NextPage = () => {
                 </>
               )}
 
-              {txMessage !== "" && (
+              {txMessage && (
                 <div>
                   View Transaction&nbsp;
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={txMessage}
+                    href={txMessage.toString()}
                     className="underline"
                   >
                     Here
