@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
+
 import Head from "next/head";
 import clsx from "clsx";
 import {
@@ -14,6 +16,7 @@ import Wrapper from "@components/wrapper";
 import Header from "@components/header";
 import Footer from "@components/footer";
 import PuzzleThumbnail from "@components/puzzle-thumbnail";
+import Link from "next/link";
 
 interface PageProps {
   puzzles: PublicPuzzlesQuery["puzzles"];
@@ -21,7 +24,9 @@ interface PageProps {
 
 const PuzzlesLayout: NextPage<PageProps> = ({ puzzles }) => {
   const [isGrid, setIsGrid] = useState<boolean | null>(null);
+  const router = useRouter();
 
+  console.log("id: ", router.query.puzzlesArgs);
   useEffect(() => {
     const puzzlesView = window.localStorage.getItem("puzzlesView");
     setIsGrid(puzzlesView !== null ? JSON.parse(puzzlesView) : true);
@@ -87,13 +92,15 @@ const PuzzlesLayout: NextPage<PageProps> = ({ puzzles }) => {
                 ))}
               </ul>
               <div className="flex justify-between mb-8">
-                <button className="flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
-                  <ArrowSmLeftIcon
-                    className="h-4 w-4 mr-2"
-                    aria-hidden="true"
-                  />{" "}
-                  Previous
-                </button>
+                <Link href="/puzzles/8/2">
+                  <a className="flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
+                    <ArrowSmLeftIcon
+                      className="h-4 w-4 mr-2"
+                      aria-hidden="true"
+                    />{" "}
+                    Previous
+                  </a>
+                </Link>
                 <button className="flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 hover:text transition ">
                   Next
                   <ArrowSmRightIcon
