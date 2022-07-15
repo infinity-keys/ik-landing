@@ -11,7 +11,6 @@ import Alert from "@components/alert";
 import PuzzleButton from "@components/puzzle-button";
 
 interface FormProps extends PuzzleInput {
-  name: string;
   email: string;
   address?: string;
 }
@@ -94,14 +93,6 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
             Drop your email if web3 is not your thing.
           </p>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <input
-              className="mb-6 block w-full lowercase rounded-md text-gray-150 placeholder:text-gray-150 text-sm py-2 px-4 bg-gray-500"
-              type="text"
-              placeholder="&rsaquo; Enter your name"
-              id="name"
-              {...register("name")}
-            />
-
             <input
               className="mb-6 block w-full lowercase rounded-md text-gray-150 placeholder:text-gray-150 text-sm py-2 px-4 bg-gray-500"
               type="email"
