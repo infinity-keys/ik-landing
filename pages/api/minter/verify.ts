@@ -21,12 +21,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Signature>
 ) {
-  const { account, puzzleId, chainId } = req.query;
-  if (!account || !puzzleId || !chainId || !wallet)
-    return res.status(500).end();
+  const { account, tokenId, chainId } = req.query;
+  if (!account || !tokenId || !chainId || !wallet) return res.status(500).end();
 
   if (
-    typeof puzzleId === "object" ||
+    typeof tokenId === "object" ||
     typeof account === "object" ||
     typeof chainId === "object"
   )
@@ -44,7 +43,7 @@ export default async function handler(
 
   const hash = ethers.utils.solidityKeccak256(
     ["address", "address", "string", "string"],
-    [contractAddress, account, puzzleId, secret]
+    [contractAddress, account, tokenId, secret]
   );
 
   const signature = await wallet.signMessage(ethers.utils.arrayify(hash));

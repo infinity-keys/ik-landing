@@ -14,10 +14,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { account, puzzleId } = req.query;
+  const { account, tokenId } = req.query;
 
-  if (!account || !puzzleId) return res.status(500).end();
-  if (typeof puzzleId === "object" || typeof account === "object")
+  if (!account || !tokenId) return res.status(500).end();
+  if (typeof tokenId === "object" || typeof account === "object")
     return res.status(500).end();
 
   const contractAVAX = IKAchievementABI__factory.connect(
@@ -31,12 +31,12 @@ export default async function handler(
   );
 
   // faster call on avax than eth.. theoretically should be the same
-  // ensure puzzle were checking exists
-  if (parseInt(puzzleId, 10) >= (await contractAVAX.totalSupplyAll()).length)
+  // ensure token were checking exists
+  if (parseInt(tokenId, 10) >= (await contractAVAX.totalSupplyAll()).length)
     return res.status(500).end();
 
-  const avaxStatus = await contractAVAX.checkIfClaimed(puzzleId, account);
-  const ethStatus = await contractETH.checkIfClaimed(puzzleId, account);
+  const avaxStatus = await contractAVAX.checkIfClaimed(tokenId, account);
+  const ethStatus = await contractETH.checkIfClaimed(tokenId, account);
 
   const claimed = ethStatus || avaxStatus;
 

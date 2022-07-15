@@ -9,7 +9,7 @@ import {
 } from "@lib/constants";
 import { IKAchievementABI__factory } from "@contracts/factories/IKAchievementABI__factory";
 
-export const minterUtil = async (puzzleId: number) => {
+export const minterUtil = async (tokenId: number) => {
   let claimedStatus = false;
   let txMessage: URL;
 
@@ -36,7 +36,7 @@ export const minterUtil = async (puzzleId: number) => {
   const createTx = async (signature: string) => {
     try {
       const data = contract.interface.encodeFunctionData("claim", [
-        puzzleId,
+        tokenId,
         signature,
       ]);
 
@@ -73,7 +73,7 @@ export const minterUtil = async (puzzleId: number) => {
   const verify = async () => {
     const url = new URL("api/minter/verify", "http://localhost:3001/");
     url.searchParams.append("account", account);
-    url.searchParams.append("puzzleId", puzzleId.toString());
+    url.searchParams.append("tokenId", tokenId.toString());
     url.searchParams.append("chainId", chain.toString());
 
     try {

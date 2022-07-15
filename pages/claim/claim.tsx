@@ -16,7 +16,7 @@ import { minterUtil } from "@lib/minter";
 
 const ClaimFlow: NextPage = () => {
   // TURN INTO PROP
-  const puzzleId = 4;
+  const tokenId = 4;
   const [chain, setChain] = useState<number>();
   const [isLoadingWallet, setIsLoadingWallet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,10 @@ const ClaimFlow: NextPage = () => {
   };
 
   const checkIfClaimed = async (account: string) => {
-    const url = `/api/minter/achievement?account=${account}&puzzleId=${puzzleId}`;
+    const url = new URL("api/minter/achievement", "http://localhost:3001/");
+    url.searchParams.append("account", account);
+    url.searchParams.append("tokenId", tokenId.toString());
+
     try {
       const response = await fetch(url);
       if (response.ok) return (await response.json()).claimed;
@@ -46,7 +49,7 @@ const ClaimFlow: NextPage = () => {
   };
 
   const mint = async () => {
-    const minter = await minterUtil(puzzleId);
+    const minter = await minterUtil(tokenId);
     setIsLoading(true);
     const { txMessage, claimedStatus } = await minter.mint();
     setIsLoading(false);
@@ -176,7 +179,7 @@ const ClaimFlow: NextPage = () => {
                   rel="noopener noreferrer"
                   href={`${
                     chain === ETH_CHAIN_ID ? openseaLink : joePegsLink
-                  }${puzzleId}`}
+                  }${tokenId}`}
                   className={buttonPrimaryClasses}
                 >
                   View NFT On {chain === ETH_CHAIN_ID ? "OpenSea" : "JoePegs"}
