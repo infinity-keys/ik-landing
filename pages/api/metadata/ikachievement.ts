@@ -5,13 +5,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { puzzleid } = req.query;
+  const { tokenid } = req.query;
 
-  if (!puzzleid || typeof puzzleid === "object") return res.status(500).end();
+  if (!tokenid || typeof tokenid === "object") return res.status(500).end();
 
-  const puzzleId = parseInt(puzzleid, 10);
+  const tokenId = parseInt(tokenid, 10);
 
-  if (puzzleId >= metadata.length) return res.status(500).end();
+  if (tokenId >= metadata.length) return res.status(500).end();
 
-  res.status(200).json(metadata[puzzleId]);
+  res.status(200).json(metadata[tokenId]);
 }
