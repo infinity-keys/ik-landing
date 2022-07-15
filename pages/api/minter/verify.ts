@@ -13,9 +13,13 @@ const secret = process.env.MINT_SECRET_VERIFY;
 
 const wallet = new ethers.Wallet(privateKey || "");
 
+type Signature = {
+  signature: string;
+};
+
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<Signature>
 ) {
   const { account, puzzleId, chainId } = req.query;
   if (!account || !puzzleId || !chainId || !wallet)
@@ -30,20 +34,20 @@ export default async function handler(
 
   const chainIdAsNumber = parseInt(chainId, 10);
 
-  let contract: string;
-
-  if (chainIdAsNumber === AVAX_CHAIN_ID) {
-    contract = CONTRACT_ADDRESS_AVAX;
-  } else if (chainIdAsNumber === ETH_CHAIN_ID) {
-    contract = CONTRACT_ADDRESS_ETH;
-  } else return res.status(404).end();
+  const contractAddress =
+    chainIdAsNumber === AVAX_CHAIN_ID
+      ? CONTRACT_ADDRESS_AVAX
+      : chainIdAsNumber === ETH_CHAIN_ID
+      ? CONTRACT_ADDRESS_ETH
+      : undefined;
+  if (!contractAddress) return res.status(500).end();
 
   const hash = ethers.utils.solidityKeccak256(
     ["address", "address", "string", "string"],
-    [contract, account, puzzleId, secret]
+    [contractAddress, account, puzzleId, secret]
   );
 
-  const signatureObject = await wallet.signMessage(ethers.utils.arrayify(hash));
+  const signature = await wallet.signMessage(ethers.utils.arrayify(hash));
 
-  res.status(200).json({ signature: signatureObject });
+  res.status(200).json({ signature: signature });
 }

@@ -75,7 +75,6 @@ export const minterUtil = async (puzzleId: number) => {
     url.searchParams.append("account", account);
     url.searchParams.append("puzzleId", puzzleId.toString());
     url.searchParams.append("chainId", chain.toString());
-    console.log(url);
 
     try {
       const response = await fetch(url);
@@ -91,7 +90,7 @@ export const minterUtil = async (puzzleId: number) => {
   const mint = async () => {
     if (library) {
       try {
-        const signature: string = await verify();
+        const signature = await verify();
         if (signature) await createTx(signature);
         return retrieve();
       } catch (error) {
