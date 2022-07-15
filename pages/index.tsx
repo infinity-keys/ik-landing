@@ -84,11 +84,22 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
                       </span>
                     </h1>
                     <p className="mt-6 pb-6 text-base text-left text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                      Infinity Keys is a puzzle game that takes players on hunts
-                      through our digital world. Players find clues, decipher
-                      keys, and claim treasure. It&apos;s also a platform where
-                      anyone can build their own hunts, keys, and treasure to
-                      create engaging experiences for others.
+                      Infinity Keys is a no-code creator tools platform for
+                      brands and fans to build engaging metaverse treasure hunt
+                      experiences.
+                      <br />
+                      <br />
+                      The IK team and community are building a series of demo
+                      hunts and puzzles to show the power of engagement using
+                      scalable games with opt-in Web3 NFTs as an alternative to
+                      passive, impression-based marketing.
+                      <br />
+                      <br />
+                      If you&apos;re a player, find clues, decipher keys, and
+                      claim treasure. Join our online communities on Twitter and
+                      Discord to connect with other players and builders - and
+                      click on the Puzzles button up top to see the variety of
+                      hunts, clues, puzzles, and treasure live now.
                     </p>
                     {/* <p className="mt-5 text-base text-left  text-gray-300 sm:pb-6 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Find out how it works below.
