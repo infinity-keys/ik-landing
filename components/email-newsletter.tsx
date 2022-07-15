@@ -4,10 +4,13 @@ import { useForm } from "@formspree/react";
 export default function NewsLetterForm() {
   const [state, handleSubmit] = useForm("mdobjayl");
   if (state.succeeded) {
-    return <div>Thank you for signing up!</div>;
+    return (
+      <div data-cy="email-newsletter-success">Thank you for signing up!</div>
+    );
   }
   return (
     <form
+      data-cy="email-newsletter"
       action="https://formspree.io/f/mdobjayl"
       onSubmit={handleSubmit}
       method="POST"
