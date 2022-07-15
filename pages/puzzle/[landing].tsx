@@ -46,6 +46,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
               <Link href={"/"}>
                 <a>
                   <Image
+                    priority={true}
                     src="/logo.svg"
                     alt="Infinity Keys logo"
                     width={100}
