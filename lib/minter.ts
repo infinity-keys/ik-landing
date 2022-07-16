@@ -77,7 +77,7 @@ export const minterUtil = async (tokenId: number) => {
     url.searchParams.append("chainId", chain.toString());
 
     try {
-      const response = await fetch(url);
+      const response = await fetch(url.toString());
       if (response.ok) {
         const data = await response.json();
         return data?.signature;
