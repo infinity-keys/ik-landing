@@ -43,8 +43,6 @@ export const puzzleMachine = createMachine(
               cond: "charCountMatches",
             },
             {
-              target: "idle",
-              internal: true, // so we don't clear text
               actions: ["setText"],
             },
           ],
@@ -95,7 +93,10 @@ export const puzzleMachine = createMachine(
         },
         on: {
           // When a new puzzle streams in, start all over
-          PUZZLE_INFO: "idle",
+          PUZZLE_INFO: {
+            target: "idle",
+            actions: ["setPuzzleInfo"],
+          },
         },
       },
     },

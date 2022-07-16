@@ -5,7 +5,7 @@ export interface Typegen0 {
   eventsCausingActions: {
     setText: "INPUT";
     setPuzzleInfo: "PUZZLE_INFO";
-    clearText: "INPUT" | "PUZZLE_INFO" | "done.invoke.guess";
+    clearText: "PUZZLE_INFO" | "INPUT" | "done.invoke.guess";
     goToFailRoute: "done.invoke.guess";
     goToSuccessRoute: "";
   };
