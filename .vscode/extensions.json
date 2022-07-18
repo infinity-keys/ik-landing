@@ -4,6 +4,9 @@
     "bradlc.vscode-tailwindcss",
     "apollographql.vscode-apollo",
     "irongeek.vscode-env",
-    "dbaeumer.vscode-eslint"
+    "dbaeumer.vscode-eslint",
+    "statelyai.stately-vscode",
+    "esbenp.prettier-vscode",
+    "eamodio.gitlens"
   ]
 }

@@ -1,15 +1,18 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
+// import { useMachine } from "@xstate/react";
 
 import Wrapper from "@components/wrapper";
 import NavAvalanche from "@components/nav-avalanche";
 import Puzzle from "@components/puzzle";
 import Markdown from "@components/markdown";
+// import { puzzleMachine } from "@components/puzzle.xstate";
 
 import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
-import Link from "next/link";
+
 
 export interface PuzzlePageProps {
   name: string;
@@ -46,6 +49,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
               <Link href={"/"}>
                 <a>
                   <Image
+                    priority={true}
                     src="/logo.svg"
                     alt="Infinity Keys logo"
                     width={100}
