@@ -1,10 +1,18 @@
+import { z } from "zod";
 import { JWTPayload } from "jose";
 import { IK_CLAIMS_NAMESPACE } from "./constants";
 
-export type PuzzleApiResponse = {
-  fail_route: string;
-  success_route: string | undefined;
-};
+export const PuzzleApiResponseSchema = z.object({
+  fail_route: z.string(),
+  success_route: z.optional(z.string()),
+});
+export type PuzzleApiResponse = z.infer<typeof PuzzleApiResponseSchema>;
+
+export const GuessSchema = z.object({
+  puzzleId: z.string(),
+  code: z.string(),
+});
+export type Guess = z.infer<typeof GuessSchema>;
 
 export interface IkJwt extends JWTPayload {
   claims: {
