@@ -26,7 +26,7 @@ describe("infinitykeys.io/puzzles", () => {
     cy.go("back");
   });
 
-  it.only("go to landing page and verify input boxes", () => {
+  it("go to landing page and verify input boxes", () => {
     cy.visit("/");
     cy.get("a.play").contains("Puzzles").click();
     cy.get(".puzzle-thumb").contains("notright").click();
@@ -34,7 +34,7 @@ describe("infinitykeys.io/puzzles", () => {
     cy.get("input").should("have.length", 5);
   });
 
-  it.only("go to landing page and verify input field", () => {
+  it("go to landing page and verify input field", () => {
     cy.visit("/");
     cy.get("a.play").contains("Puzzles").click();
     cy.get(".puzzle-thumb").contains("communitycode").click();
