@@ -37,7 +37,7 @@ const PuzzlesDropdown = ({ currentCount }: PuzzlesDropdownProps) => {
                 <Menu.Item key={count}>
                   <a
                     style={{ pointerEvents: active ? "none" : "auto" }}
-                    href={`/puzzles/${count}/1`}
+                    href={count === 8 ? "/puzzles" : `/puzzles/${count}/1`}
                     className={clsx(
                       active
                         ? "bg-turquoise font-medium"

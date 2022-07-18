@@ -16,6 +16,8 @@ const PuzzlesPagination = ({
   puzzlesCount,
   pageNum,
 }: PuzzlesPaginationProps) => {
+  const toDefaultPage = puzzlesCount === 8 && pageNum === 2;
+
   return (
     <div
       className={clsx(
@@ -24,7 +26,13 @@ const PuzzlesPagination = ({
       )}
     >
       {!isFirstPage && (
-        <Link href={`/puzzles/${puzzlesCount}/${pageNum - 1}`}>
+        <Link
+          href={
+            toDefaultPage
+              ? "/puzzles"
+              : `/puzzles/${puzzlesCount}/${pageNum - 1}`
+          }
+        >
           <a className="flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
             <ArrowSmLeftIcon className="h-4 w-4 mr-2" aria-hidden="true" />{" "}
             Previous
