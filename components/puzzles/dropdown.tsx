@@ -1,15 +1,16 @@
 import { Fragment } from "react";
-import { NextPage } from "next";
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
+
 import { ChevronDownIcon } from "@heroicons/react/solid";
+
 import { PAGINATION_COUNTS } from "@lib/constants";
 
 interface PuzzlesDropdownProps {
-  currentCount: string;
+  currentCount: number;
 }
 
-const PuzzlesDropdown: NextPage = ({ currentCount }: PuzzlesDropdownProps) => {
+const PuzzlesDropdown = ({ currentCount }: PuzzlesDropdownProps) => {
   return (
     <Menu as="div" className="relative inline-block text-left ml-5">
       <div>
@@ -31,7 +32,7 @@ const PuzzlesDropdown: NextPage = ({ currentCount }: PuzzlesDropdownProps) => {
         <Menu.Items className="origin-top-right absolute w-full right-0 mt-2 text-right rounded-md shadow-lg bg-blue border border-white/20 ring-1 ring-black ring-opacity-5 overflow-hidden focus:outline-none">
           <div className="">
             {PAGINATION_COUNTS.map((count) => {
-              const active = parseInt(currentCount) === count;
+              const active = currentCount === count;
               return (
                 <Menu.Item key={count}>
                   <a
