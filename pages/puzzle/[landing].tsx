@@ -13,7 +13,6 @@ import Markdown from "@components/markdown";
 import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
 
-
 export interface PuzzlePageProps {
   name: string;
   count: number;
@@ -44,7 +43,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
             <title>Infinity Keys</title>
           </Head>
 
-          <main className="input text-center pt-5">
+          <main className="text-center pt-5">
             <div className="pb-16">
               <Link href={"/"}>
                 <a>

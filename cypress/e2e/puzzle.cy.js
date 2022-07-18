@@ -19,18 +19,26 @@ describe("infinitykeys.io/puzzles", () => {
     cy.url().should("include", Cypress.config().baseUrl + "/puzzle");
   });
 
-  it.only("should click on multiple thumbnails", () => {
+  it("should click on multiple thumbnails", () => {
     cy.visit("/");
     cy.contains("Hunts").click();
     cy.get(".puzzle-thumb").click({ multiple: true });
+    cy.go("back");
   });
 
-  it("go to solved page and verify input", () => {
+  it.only("go to landing page and verify input boxes", () => {
     cy.visit("/");
     cy.get("a.play").contains("Puzzles").click();
     cy.get(".puzzle-thumb").contains("notright").click();
-    cy.url().should("include", Cypress.config().baseUrl + "/puzzle/notright");
+    cy.url().should("include", "/puzzle/notright");
     cy.get("input").should("have.length", 5);
-    //cy.url().should("include", "/solved/notright");
+  });
+
+  it.only("go to landing page and verify input field", () => {
+    cy.visit("/");
+    cy.get("a.play").contains("Puzzles").click();
+    cy.get(".puzzle-thumb").contains("communitycode").click();
+    cy.url().should("include", "/puzzle/communitycode");
+    cy.get("input").should("have.length", 1);
   });
 });
