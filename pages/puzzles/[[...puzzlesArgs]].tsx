@@ -17,8 +17,14 @@ interface PageParams {
   };
 }
 
-const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
-  return <PuzzlesLayout puzzles={puzzles} />;
+const Puzzles: NextPage<PageProps> = ({ puzzles, isFirstPage, isLastPage }) => {
+  return (
+    <PuzzlesLayout
+      puzzles={puzzles}
+      isFirstPage={isFirstPage}
+      isLastPage={isLastPage}
+    />
+  );
 };
 
 export default Puzzles;
@@ -37,9 +43,7 @@ export async function getStaticPaths() {
 
       const slug = {
         params: {
-          puzzlesArgs: defaultPage
-            ? null // catches /puzzles page
-            : [puzzlesPerPage.toString(), (pageNum + 1).toString()],
+          puzzlesArgs: [puzzlesPerPage.toString(), (pageNum + 1).toString()],
         },
       };
       return slug;
@@ -81,3 +85,11 @@ export async function getStaticProps({
     },
   };
 }
+
+paths: [
+  { params: { puzzlesArgs: ["8", "1"] } },
+  { params: { puzzlesArgs: ["8", "2"] } },
+  { params: { puzzlesArgs: ["16", "1"] } },
+  { params: { puzzlesArgs: ["32", "1"] } },
+  { params: { puzzlesArgs: ["64", "1"] } },
+];

@@ -16,17 +16,25 @@ import Wrapper from "@components/wrapper";
 import Header from "@components/header";
 import Footer from "@components/footer";
 import PuzzleThumbnail from "@components/puzzle-thumbnail";
+import PuzzlesDropdown from "@components/puzzles-dropdown";
 import Link from "next/link";
 
 interface PageProps {
   puzzles: PublicPuzzlesQuery["puzzles"];
+  isFirstPage: Boolean;
+  isLastPage: Boolean;
 }
 
-const PuzzlesLayout: NextPage<PageProps> = ({ puzzles }) => {
+const PuzzlesLayout: NextPage<PageProps> = ({
+  puzzles,
+  isFirstPage,
+  isLastPage,
+}) => {
   const [isGrid, setIsGrid] = useState<boolean | null>(null);
-  const router = useRouter();
+  const { query } = useRouter();
+  const [count, page] = query.puzzlesArgs;
+  const puzzlesCount = parseInt(count);
 
-  console.log("id: ", router.query.puzzlesArgs);
   useEffect(() => {
     const puzzlesView = window.localStorage.getItem("puzzlesView");
     setIsGrid(puzzlesView !== null ? JSON.parse(puzzlesView) : true);
@@ -48,30 +56,33 @@ const PuzzlesLayout: NextPage<PageProps> = ({ puzzles }) => {
         <div className="px-4 flex-1 container">
           {isGrid !== null && (
             <>
-              <button
-                onClick={() => setView({ gridView: true })}
-                aria-label="set grid view"
-                className={clsx(
-                  "border mr-2 bg-white/10 p-2 rounded-md transition-all duration-200",
-                  isGrid
-                    ? "border-white/20"
-                    : "border-transparent text-gray-400"
-                )}
-              >
-                <ViewGridIcon className="h-5 w-5" aria-hidden="true" />
-              </button>
-              <button
-                onClick={() => setView({ gridView: false })}
-                aria-label="set list view"
-                className={clsx(
-                  "border mt-8 bg-white/10 p-2 rounded-md transition-all duration-200	",
-                  !isGrid
-                    ? "border-white/20"
-                    : "border-transparent text-gray-400"
-                )}
-              >
-                <ViewListIcon className="h-5 w-5" aria-hidden="true" />
-              </button>
+              <div className="flex  mt-8">
+                <button
+                  onClick={() => setView({ gridView: true })}
+                  aria-label="set grid view"
+                  className={clsx(
+                    "border mr-2 bg-white/10 p-2 rounded-md transition-all duration-200",
+                    isGrid
+                      ? "border-white/20"
+                      : "border-transparent text-gray-400"
+                  )}
+                >
+                  <ViewGridIcon className="h-5 w-5" aria-hidden="true" />
+                </button>
+                <button
+                  onClick={() => setView({ gridView: false })}
+                  aria-label="set list view"
+                  className={clsx(
+                    "border bg-white/10 p-2 rounded-md transition-all duration-200	",
+                    !isGrid
+                      ? "border-white/20"
+                      : "border-transparent text-gray-400"
+                  )}
+                >
+                  <ViewListIcon className="h-5 w-5" aria-hidden="true" />
+                </button>
+                <PuzzlesDropdown currentCount={puzzlesCount || 8} />
+              </div>
 
               <ul
                 role="list"
@@ -91,23 +102,34 @@ const PuzzlesLayout: NextPage<PageProps> = ({ puzzles }) => {
                   </li>
                 ))}
               </ul>
-              <div className="flex justify-between mb-8">
-                <Link href="/puzzles/8/2">
-                  <a className="flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
-                    <ArrowSmLeftIcon
-                      className="h-4 w-4 mr-2"
-                      aria-hidden="true"
-                    />{" "}
-                    Previous
-                  </a>
-                </Link>
-                <button className="flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 hover:text transition ">
-                  Next
-                  <ArrowSmRightIcon
-                    className="h-4 w-4 ml-2"
-                    aria-hidden="true"
-                  />
-                </button>
+              <div
+                className={clsx(
+                  "flex mb-8",
+                  isFirstPage && !isLastPage ? "justify-end" : "justify-between"
+                )}
+              >
+                {!isFirstPage && (
+                  <Link href={`/puzzles/${count}/${parseInt(page) - 1}`}>
+                    <a className="flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
+                      <ArrowSmLeftIcon
+                        className="h-4 w-4 mr-2"
+                        aria-hidden="true"
+                      />{" "}
+                      Previous
+                    </a>
+                  </Link>
+                )}
+                {!isLastPage && (
+                  <Link href={`/puzzles/${count}/${parseInt(page) + 1}`}>
+                    <a className="flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
+                      Next
+                      <ArrowSmRightIcon
+                        className="h-4 w-4 ml-2"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  </Link>
+                )}
               </div>
             </>
           )}

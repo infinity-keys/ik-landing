@@ -8,6 +8,7 @@ const nextConfig = {
     return [
       // Forward old avalanche page to new
       { source: "/avalanche", destination: "/puzzle/avalanche" },
+      // { source: "/puzzles/8/1", destination: "/puzzles" },
     ];
   },
 };
