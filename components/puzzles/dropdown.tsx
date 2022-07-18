@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import Link from "next/link";
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 
@@ -35,18 +36,19 @@ const PuzzlesDropdown = ({ currentCount }: PuzzlesDropdownProps) => {
               const active = currentCount === count;
               return (
                 <Menu.Item key={count}>
-                  <a
-                    style={{ pointerEvents: active ? "none" : "auto" }}
-                    href={count === 8 ? "/puzzles" : `/puzzles/${count}/1`}
-                    className={clsx(
-                      active
-                        ? "bg-turquoise font-medium"
-                        : "hover:bg-indigo-500",
-                      "block px-4 py-4 text-sm md:py-2"
-                    )}
-                  >
-                    {count}
-                  </a>
+                  <Link href={count === 8 ? "/puzzles" : `/puzzles/${count}/1`}>
+                    <a
+                      style={{ pointerEvents: active ? "none" : "auto" }}
+                      className={clsx(
+                        active
+                          ? "bg-turquoise font-medium"
+                          : "hover:bg-indigo-500",
+                        "block px-4 py-4 text-sm md:py-2"
+                      )}
+                    >
+                      {count}
+                    </a>
+                  </Link>
                 </Menu.Item>
               );
             })}
