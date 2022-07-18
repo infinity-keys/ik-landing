@@ -6,7 +6,6 @@ import { inspect } from '@xstate/inspect'
 
 import "loaders.css/loaders.min.css";
 import "../styles/globals.css";
-import "../styles/scanlines.scss";
 
 if (typeof window !== "undefined") {
   inspect({
