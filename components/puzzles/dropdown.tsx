@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, forwardRef } from "react";
 import Link from "next/link";
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
@@ -10,6 +10,19 @@ import { PAGINATION_COUNTS } from "@lib/constants";
 interface PuzzlesDropdownProps {
   currentCount: number;
 }
+
+const DropdownLink = forwardRef<HTMLAnchorElement, any>((props, ref) => {
+  let { href, children, ...rest } = props;
+  return (
+    <Link href={href}>
+      <a ref={ref} {...rest}>
+        {children}
+      </a>
+    </Link>
+  );
+});
+
+DropdownLink.displayName = "DropdownLink";
 
 const PuzzlesDropdown = ({ currentCount }: PuzzlesDropdownProps) => {
   return (
@@ -33,22 +46,26 @@ const PuzzlesDropdown = ({ currentCount }: PuzzlesDropdownProps) => {
         <Menu.Items className="origin-top-right absolute w-full right-0 mt-2 text-right rounded-md shadow-lg bg-blue border border-white/20 ring-1 ring-black ring-opacity-5 overflow-hidden focus:outline-none">
           <div className="">
             {PAGINATION_COUNTS.map((count) => {
-              const active = currentCount === count;
+              const selectedCount = currentCount === count;
               return (
-                <Menu.Item key={count}>
-                  <Link href={count === 8 ? "/puzzles" : `/puzzles/${count}/1`}>
-                    <a
-                      style={{ pointerEvents: active ? "none" : "auto" }}
+                <Menu.Item key={count} disabled={selectedCount}>
+                  {({ active }) => (
+                    <DropdownLink
+                      href={count === 8 ? "/puzzles" : `/puzzles/${count}/1`}
+                      style={{
+                        pointerEvents: selectedCount ? "none" : "auto",
+                      }}
                       className={clsx(
-                        active
-                          ? "bg-turquoise font-medium"
-                          : "hover:bg-indigo-500",
-                        "block px-4 py-4 text-sm md:py-2"
+                        {
+                          "bg-turquoise font-medium": selectedCount,
+                          "bg-indigo-500": active,
+                        },
+                        "block px-4 py-4 text-sm md:py-2 hover:bg-indigo-500"
                       )}
                     >
                       {count}
-                    </a>
-                  </Link>
+                    </DropdownLink>
+                  )}
                 </Menu.Item>
               );
             })}
