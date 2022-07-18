@@ -16,7 +16,7 @@ describe("infinitykeys.io", () => {
     cy.get(".ik-code-input").eq(3).type("b", { delay: 250 });
     cy.get(".ik-code-input").eq(4).type("a", { delay: 250 });
     cy.get(".ik-code-input").eq(5).type("g", { delay: 250 });
-    cy.contains("Incorrect passcode. Try again.");
+    cy.contains("Thats not it. Need help?");
   });
 
   it("should navigate to blog from home page", () => {
