@@ -19,20 +19,20 @@ const PuzzlesLayout: NextPage<PageProps> = ({
   isFirstPage,
   isLastPage,
 }) => {
-  const [isGrid, setIsGrid] = useState<boolean | null>(null);
+  const [layout, setLayout] = useState<"grid" | "list" | "unknown">("unknown");
   const { query } = useRouter();
   const [count, page] = query.puzzlesArgs || ["8", "1"];
   const puzzlesCount = parseInt(count);
   const pageNum = parseInt(page);
 
   useEffect(() => {
-    const puzzlesView = window.localStorage.getItem("puzzlesView");
-    setIsGrid(puzzlesView !== null ? JSON.parse(puzzlesView) : true);
+    const puzzlesLayout = window.localStorage.getItem("puzzlesLayout");
+    setLayout(puzzlesLayout ? JSON.parse(puzzlesLayout) : "list");
   }, []);
 
-  const setView = ({ gridView }: { gridView: boolean }) => {
-    setIsGrid(gridView);
-    window.localStorage.setItem("puzzlesView", JSON.stringify(gridView));
+  const setView = (gridLayout: "grid" | "list") => {
+    setLayout(gridLayout);
+    window.localStorage.setItem("puzzlesLayout", JSON.stringify(gridLayout));
   };
 
   return (
@@ -44,10 +44,10 @@ const PuzzlesLayout: NextPage<PageProps> = ({
         <Header />
 
         <div className="px-4 flex-1 container">
-          {isGrid !== null && (
+          {layout !== "unknown" && (
             <>
               <LayoutButtons
-                isGrid={isGrid}
+                isGrid={layout === "grid"}
                 puzzlesCount={puzzlesCount}
                 setView={setView}
               />
@@ -56,7 +56,7 @@ const PuzzlesLayout: NextPage<PageProps> = ({
                 role="list"
                 className={clsx(
                   "grid grid-cols-1 gap-6 py-8 sm:grid-cols-2",
-                  isGrid
+                  layout === "grid"
                     ? "md:grid-cols-3 lg:grid-cols-4"
                     : "lg:grid-cols-3 xl:grid-cols-4"
                 )}
@@ -64,7 +64,7 @@ const PuzzlesLayout: NextPage<PageProps> = ({
                 {puzzles.map(({ puzzle_id, landing_route, simple_name }) => (
                   <li key={puzzle_id} className="">
                     <PuzzleThumbnail
-                      isGrid={isGrid}
+                      isGrid={layout === "grid"}
                       {...{ puzzle_id, landing_route, simple_name }}
                     />
                   </li>
