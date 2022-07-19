@@ -41,10 +41,24 @@ export default function Footer() {
             </div> */}
             <div className="flex items-center space-x-4">
               <div className="twitterIcon hover: fill-twitterBlue">
-                <TwitterIcon />
+                <a
+                  data-cy="twitter"
+                  href="https://twitter.com/InfinityKeys"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <TwitterIcon />
+                </a>
               </div>
               <div className="discordIcon hover: fill-discordPurple">
-                <Discord />
+                <a
+                  data-cy="discord"
+                  href="https://discord.com/invite/infinitykeys"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Discord />
+                </a>
               </div>
             </div>
             {/* right */}

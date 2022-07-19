@@ -31,8 +31,8 @@ export default function Header() {
             <div className="relative flex items-center justify-between h-20">
               <div className="logo flex-shrink-0 flex items-center">
                 <div className="block lg:hidden h-12 w-auto">
-                  <Link href={"/"}>
-                    <a>
+                  <Link href="/">
+                    <a data-cy="ik logo">
                       <Image
                         src="/logo.svg"
                         width={100}
