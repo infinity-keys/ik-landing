@@ -16,7 +16,7 @@ import { minterUtil } from "@lib/minter";
 
 const ClaimFlow: NextPage = () => {
   // TURN INTO PROP
-  const tokenId = 0;
+  const tokenId = 2;
   const [chain, setChain] = useState<number>();
   const [isLoadingWallet, setIsLoadingWallet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

@@ -8,7 +8,6 @@ import {
   AVAX_PARAMS,
   ETH_CHAIN_ID,
   ETH_RPC_ID,
-  ETH_RPC,
 } from "@lib/constants";
 import { toHex } from "./utils";
 // import Fortmatic from "fortmatic";
@@ -25,8 +24,8 @@ const providerOptions = {
     options: {
       appName: "InfinityKeys", // Required
       infuraId: ETH_RPC_ID, // Required
-      chainId: 1, // Optional. It defaults to 1 if not provided
-      darkMode: false, // Optional. Use dark theme, defaults to false
+      chainId: 1,
+      darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
     },
   },
   // fortmatic: {
@@ -46,7 +45,6 @@ const providerOptions = {
 const web3Modal: Web3Modal | undefined =
   typeof window !== "undefined"
     ? new Web3Modal({
-        //network: "rinkeby", // optional- we dont care for now I think, but will be important once we add NFT claiming/anything on chain
         cacheProvider: false, // optional- can set to false if we want them to connect every time
         providerOptions,
       })

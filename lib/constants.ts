@@ -16,7 +16,7 @@ export const PUZZLE_FAILED_BASE = "puzzle"; // back to landing
 //(CURRENTLY SET FOR FUJI + RINKEBY)
 export const AVAX_CHAIN_ID = 43113;
 export const CONTRACT_ADDRESS_AVAX =
-  "0x872F226b0B40c767Eea4Fd72530727e2B67533b4";
+  "0xf81F24cA94CF722e6731fF1A7B5aF1189ace78EC";
 export const SNOWTRACE_TRACKER = "https://testnet.snowtrace.io";
 export const AVAX_RPC = "https://api.avax-test.network/ext/bc/C/rpc";
 export const AVAX_MARKETPLACE_LINK = "https://joepegs.com/item/";
@@ -43,7 +43,7 @@ export const AVAX_PARAMS = {
 
 export const ETH_CHAIN_ID = 4;
 export const CONTRACT_ADDRESS_ETH =
-  "0x623bb752C5EB3F4673D959fDe2a77984E27444Ea";
+  "0x49B28d2a40C8a8dD7cdFDfBc345F2d0A3f1Ef4E7";
 export const ETHERSCAN_TRACKER = "https://rinkeby.etherscan.io";
 export const ETH_RPC_ID = "c10d222a5bae4a8e97fad0915b06ff5d";
 export const ETH_RPC = `https://rinkeby.infura.io/v3/${ETH_RPC_ID}`;
