@@ -18,16 +18,16 @@ interface PageProps {
 }
 
 const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
-  const [isGrid, setIsGrid] = useState<boolean | null>(null);
+  const [layout, setLayout] = useState<"grid" | "list" | "unknown">("unknown");
 
   useEffect(() => {
-    const puzzlesView = window.localStorage.getItem("puzzlesView");
-    setIsGrid(puzzlesView !== null ? JSON.parse(puzzlesView) : true);
+    const puzzlesLayout = window.localStorage.getItem("puzzlesLayout");
+    setLayout(puzzlesLayout ? JSON.parse(puzzlesLayout) : "grid");
   }, []);
 
-  const setView = (gridView: boolean) => {
-    setIsGrid(gridView);
-    window.localStorage.setItem("puzzlesView", JSON.stringify(gridView));
+  const setView = (gridLayout: "grid" | "list") => {
+    setLayout(gridLayout);
+    window.localStorage.setItem("puzzlesLayout", JSON.stringify(gridLayout));
   };
 
   return (
@@ -39,14 +39,14 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
         <Header />
 
         <div className="px-4 flex-1 container">
-          {isGrid !== null && (
+          {layout !== "unknown" && (
             <>
               <button
-                onClick={() => setView(true)}
+                onClick={() => setLayout("grid")}
                 aria-label="set grid view"
                 className={clsx(
                   "border mr-2 bg-white/10 p-2 rounded-md transition-all duration-200",
-                  isGrid
+                  layout === "grid"
                     ? "border-white/20"
                     : "border-transparent text-gray-400"
                 )}
@@ -54,11 +54,11 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
                 <ViewGridIcon className="h-5 w-5" aria-hidden="true" />
               </button>
               <button
-                onClick={() => setView(false)}
+                onClick={() => setView("list")}
                 aria-label="set list view"
                 className={clsx(
                   "border mt-8 bg-white/10 p-2 rounded-md transition-all duration-200	",
-                  !isGrid
+                  layout === "list"
                     ? "border-white/20"
                     : "border-transparent text-gray-400"
                 )}
@@ -70,7 +70,7 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
                 role="list"
                 className={clsx(
                   "grid grid-cols-1 gap-6 py-8 sm:grid-cols-2",
-                  isGrid
+                  layout === "grid"
                     ? "md:grid-cols-3 lg:grid-cols-4"
                     : "lg:grid-cols-3 xl:grid-cols-4"
                 )}
@@ -78,7 +78,7 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
                 {puzzles.map(({ puzzle_id, landing_route, simple_name }) => (
                   <li key={puzzle_id} className="">
                     <PuzzleThumbnail
-                      isGrid={isGrid}
+                      isGrid={layout === "grid"}
                       {...{ puzzle_id, landing_route, simple_name }}
                     />
                   </li>
