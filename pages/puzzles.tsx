@@ -42,7 +42,7 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
           {layout !== "unknown" && (
             <>
               <button
-                onClick={() => setLayout("grid")}
+                onClick={() => setView("grid")}
                 aria-label="set grid view"
                 className={clsx(
                   "border mr-2 bg-white/10 p-2 rounded-md transition-all duration-200",
