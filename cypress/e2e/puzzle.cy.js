@@ -5,9 +5,9 @@ describe("infinitykeys.io/puzzles", () => {
     cy.url().should("include", Cypress.config().baseUrl + "/puzzles");
   });
 
-  it("should click hunts link and navigate to puzzle dashboard", () => {
+  it.only("should click hunts link and navigate to puzzle dashboard", () => {
     cy.visit("/");
-    cy.contains("Hunts").click();
+    cy.get("a.link").contains("Hunts").click();
     cy.url().should("include", Cypress.config().baseUrl + "/puzzles");
   });
 
@@ -19,9 +19,9 @@ describe("infinitykeys.io/puzzles", () => {
     cy.url().should("include", Cypress.config().baseUrl + "/puzzle");
   });
 
-  it("should click on multiple thumbnails", () => {
+  it.only("should click on multiple thumbnails", () => {
     cy.visit("/");
-    cy.contains("Hunts").click();
+    cy.get("a.link").contains("Hunts").click();
     cy.get(".puzzle-thumb").click({ multiple: true });
     cy.go("back");
   });
