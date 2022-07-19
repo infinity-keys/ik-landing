@@ -25,7 +25,6 @@ const providerOptions = {
       appName: "InfinityKeys", // Required
       infuraId: ETH_RPC_ID, // Required
       chainId: 1,
-      darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
     },
   },
   // fortmatic: {
