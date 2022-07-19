@@ -1,5 +1,11 @@
-import { Fragment, forwardRef } from "react";
-import Link from "next/link";
+import {
+  Fragment,
+  forwardRef,
+  ReactNode,
+  PropsWithChildren,
+  HTMLProps,
+} from "react";
+import Link, { LinkProps } from "next/link";
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 
@@ -11,16 +17,23 @@ interface PuzzlesDropdownProps {
   currentCount: number;
 }
 
-const DropdownLink = forwardRef<HTMLAnchorElement, any>((props, ref) => {
-  let { href, children, ...rest } = props;
-  return (
-    <Link href={href}>
-      <a ref={ref} {...rest}>
-        {children}
-      </a>
-    </Link>
-  );
-});
+interface DropdownLinkProps extends HTMLProps<HTMLAnchorElement> {
+  href: string;
+}
+
+// required for close on select with Next Link in Menu dropdown
+const DropdownLink = forwardRef<HTMLAnchorElement, DropdownLinkProps>(
+  (props, ref) => {
+    let { href, children, ...rest } = props;
+    return (
+      <Link href={href}>
+        <a ref={ref} {...rest}>
+          {children}
+        </a>
+      </Link>
+    );
+  }
+);
 
 DropdownLink.displayName = "DropdownLink";
 
