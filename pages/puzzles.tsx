@@ -22,7 +22,7 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
 
   useEffect(() => {
     const puzzlesLayout = window.localStorage.getItem("puzzlesLayout");
-    setLayout(puzzlesLayout ? JSON.parse(puzzlesLayout) : "grid");
+    setLayout(puzzlesLayout ? JSON.parse(puzzlesLayout) : "list");
   }, []);
 
   const setView = (gridLayout: "grid" | "list") => {
@@ -42,28 +42,28 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
           {layout !== "unknown" && (
             <>
               <button
-                onClick={() => setView("grid")}
-                aria-label="set grid view"
-                className={clsx(
-                  "border mr-2 bg-white/10 p-2 rounded-md transition-all duration-200",
-                  layout === "grid"
-                    ? "border-white/20"
-                    : "border-transparent text-gray-400"
-                )}
-              >
-                <ViewGridIcon className="h-5 w-5" aria-hidden="true" />
-              </button>
-              <button
                 onClick={() => setView("list")}
                 aria-label="set list view"
                 className={clsx(
-                  "border mt-8 bg-white/10 p-2 rounded-md transition-all duration-200	",
+                  "border mr-2 mt-8 bg-white/10 p-2 rounded-md transition-all duration-200	",
                   layout === "list"
                     ? "border-white/20"
                     : "border-transparent text-gray-400"
                 )}
               >
                 <ViewListIcon className="h-5 w-5" aria-hidden="true" />
+              </button>
+              <button
+                onClick={() => setView("grid")}
+                aria-label="set grid view"
+                className={clsx(
+                  "border bg-white/10 p-2 rounded-md transition-all duration-200",
+                  layout === "grid"
+                    ? "border-white/20"
+                    : "border-transparent text-gray-400"
+                )}
+              >
+                <ViewGridIcon className="h-5 w-5" aria-hidden="true" />
               </button>
 
               <ul

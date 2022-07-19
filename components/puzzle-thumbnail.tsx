@@ -32,7 +32,7 @@ const PuzzleThumbnail = (puzzle: PuzzleThumbProps) => {
           <div
             className={clsx(
               "flex-shrink-0",
-              puzzle.isGrid ? "w-32 h-32 mx-auto" : "mr-4 lg:mr-8"
+              puzzle.isGrid ? "w-32 h-32 mx-auto" : "mr-4"
             )}
           >
             <Avatar
