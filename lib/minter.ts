@@ -11,7 +11,7 @@ import { IKAchievementABI__factory } from "@contracts/factories/IKAchievementABI
 
 export const minterUtil = async (tokenId: number) => {
   let claimedStatus = false;
-  let txMessage: URL;
+  let txMessage: string;
 
   const { library, account, chain } = wallet.retrieve();
 
@@ -60,7 +60,7 @@ export const minterUtil = async (tokenId: number) => {
 
       if (!tx) return;
 
-      txMessage = new URL(`${blockTracker}/tx/${tx.hash}`);
+      txMessage = `${blockTracker}/tx/${tx.hash}`;
 
       const receipt = await tx.wait();
       claimedStatus = receipt.status === 1;
@@ -71,13 +71,10 @@ export const minterUtil = async (tokenId: number) => {
   };
 
   const verify = async () => {
-    const url = new URL("api/minter/verify", "http://localhost:3001/");
-    url.searchParams.append("account", account);
-    url.searchParams.append("tokenId", tokenId.toString());
-    url.searchParams.append("chainId", chain.toString());
+    const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}`;
 
     try {
-      const response = await fetch(url.toString());
+      const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
         return data?.signature;

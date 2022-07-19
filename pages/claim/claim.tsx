@@ -35,9 +35,7 @@ const ClaimFlow: NextPage = () => {
   };
 
   const checkIfClaimed = async (account: string) => {
-    const url = new URL("api/minter/achievement", "http://localhost:3001/");
-    url.searchParams.append("account", account);
-    url.searchParams.append("tokenId", tokenId.toString());
+    const url = `/api/minter/achievement?account=${account}&tokenId=${tokenId.toString()}`;
 
     try {
       const response = await fetch(url);
@@ -86,8 +84,8 @@ const ClaimFlow: NextPage = () => {
                     ? "Connecting Wallet"
                     : "Claiming Trophy"
                   : claimed
-                  ? "Your Trophy Has Been Claimed"
-                  : "Claim Your Trophy"}
+                    ? "Your Trophy Has Been Claimed"
+                    : "Claim Your Trophy"}
               </h2>
 
               {!chain && (
@@ -177,9 +175,8 @@ const ClaimFlow: NextPage = () => {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={`${
-                    chain === ETH_CHAIN_ID ? openseaLink : joePegsLink
-                  }${tokenId}`}
+                  href={`${chain === ETH_CHAIN_ID ? openseaLink : joePegsLink
+                    }${tokenId}`}
                   className={buttonPrimaryClasses}
                 >
                   View NFT On {chain === ETH_CHAIN_ID ? "OpenSea" : "JoePegs"}
