@@ -1,7 +1,8 @@
 import Link from "next/link";
 import clsx from "clsx";
 
-import { ArrowSmLeftIcon, ArrowSmRightIcon } from "@heroicons/react/solid";
+import ArrowSmLeftIcon from "@heroicons/react/solid/ArrowSmLeftIcon";
+import ArrowSmRightIcon from "@heroicons/react/solid/ArrowSmRightIcon";
 
 export interface PuzzlesPaginationProps {
   isFirstPage: Boolean;

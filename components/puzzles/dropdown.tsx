@@ -1,15 +1,9 @@
-import {
-  Fragment,
-  forwardRef,
-  ReactNode,
-  PropsWithChildren,
-  HTMLProps,
-} from "react";
-import Link, { LinkProps } from "next/link";
+import { Fragment, forwardRef, HTMLProps } from "react";
+import Link from "next/link";
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 
-import { ChevronDownIcon } from "@heroicons/react/solid";
+import ChevronDownIcon from "@heroicons/react/solid/ChevronDownIcon";
 
 import { PAGINATION_COUNTS } from "@lib/constants";
 

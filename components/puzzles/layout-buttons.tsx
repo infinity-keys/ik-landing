@@ -1,6 +1,10 @@
 import clsx from "clsx";
-import { ViewListIcon, ViewGridIcon } from "@heroicons/react/solid";
+
+import ViewListIcon from "@heroicons/react/solid/ViewListIcon";
+import ViewGridIcon from "@heroicons/react/solid/ViewGridIcon";
+
 import PuzzlesDropdown from "@components/puzzles/dropdown";
+
 import { GridType } from "@components/puzzles/layout";
 
 export interface LayoutButtonsProps {
