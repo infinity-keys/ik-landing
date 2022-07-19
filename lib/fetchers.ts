@@ -1,11 +1,10 @@
+import { PuzzleApiResponse, Guess } from "./types";
+
 // Client
 export const puzzlePost = async ({
   puzzleId,
   code,
-}: {
-  puzzleId: string;
-  code: string;
-}) => {
+}: Guess): Promise<PuzzleApiResponse> => {
   const res = await fetch(`/api/check/code/${puzzleId}`, {
     method: "POST",
     headers: {
@@ -13,8 +12,7 @@ export const puzzlePost = async ({
     },
     body: JSON.stringify({ code }),
   });
-
-  return res;
+  return await res.json();
 };
 
 export const formSubmit = async ({ data }: { data: unknown }) => {
