@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
 import clsx from "clsx";
-import { ViewListIcon, ViewGridIcon } from "@heroicons/react/solid";
+
+import ViewListIcon from "@heroicons/react/solid/ViewListIcon";
+import ViewGridIcon from "@heroicons/react/solid/ViewGridIcon";
 
 import { gqlApiSdk } from "@lib/server";
 import { PublicPuzzlesQuery } from "@lib/generated/graphql";
@@ -23,7 +25,7 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
     setIsGrid(puzzlesView !== null ? JSON.parse(puzzlesView) : true);
   }, []);
 
-  const setView = ({ gridView }: { gridView: boolean }) => {
+  const setView = (gridView: boolean) => {
     setIsGrid(gridView);
     window.localStorage.setItem("puzzlesView", JSON.stringify(gridView));
   };
@@ -40,7 +42,7 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
           {isGrid !== null && (
             <>
               <button
-                onClick={() => setView({ gridView: true })}
+                onClick={() => setView(true)}
                 aria-label="set grid view"
                 className={clsx(
                   "border mr-2 bg-white/10 p-2 rounded-md transition-all duration-200",
@@ -52,7 +54,7 @@ const Puzzles: NextPage<PageProps> = ({ puzzles }) => {
                 <ViewGridIcon className="h-5 w-5" aria-hidden="true" />
               </button>
               <button
-                onClick={() => setView({ gridView: false })}
+                onClick={() => setView(false)}
                 aria-label="set list view"
                 className={clsx(
                   "border mt-8 bg-white/10 p-2 rounded-md transition-all duration-200	",
