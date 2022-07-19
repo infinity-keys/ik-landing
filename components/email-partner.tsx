@@ -4,10 +4,11 @@ import { useForm } from "@formspree/react";
 export default function PartnerForm() {
   const [state, handleSubmit] = useForm("mdobjayl");
   if (state.succeeded) {
-    return <div>Thank you for signing up!</div>;
+    return <div data-cy="email-partner-success">Thank you for signing up!</div>;
   }
   return (
     <form
+      data-cy="email-partner"
       action="https://formspree.io/f/mdobjayl"
       onSubmit={handleSubmit}
       method="POST"
