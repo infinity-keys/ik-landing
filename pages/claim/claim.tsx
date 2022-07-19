@@ -16,12 +16,12 @@ import { minterUtil } from "@lib/minter";
 
 const ClaimFlow: NextPage = () => {
   // TURN INTO PROP
-  const tokenId = 2;
+  const tokenId = 0;
   const [chain, setChain] = useState<number>();
   const [isLoadingWallet, setIsLoadingWallet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [claimed, setClaimed] = useState(false);
-  const [txMessage, setTxMessage] = useState<URL>();
+  const [txMessage, setTxMessage] = useState<string>();
 
   const connectWallet = async () => {
     const { account, chain } = await wallet.trigger();
