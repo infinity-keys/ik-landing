@@ -12,6 +12,8 @@ const nextConfig = {
     return [
       // Forward old avalanche page to new
       { source: "/avalanche", destination: "/puzzle/avalanche" },
+      // Alias default puzzle count and page to /puzzles
+      { source: "/puzzles/8/1", destination: "/puzzles" },
     ];
   },
 };

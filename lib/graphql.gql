@@ -116,11 +116,20 @@ query MigrateUserSubmissions($fromUser: uuid, $toUser: uuid) {
   }
 }
 
-query PublicPuzzles {
-  puzzles(where: { list_pubicly: { _eq: true } }) {
+query PublicPuzzles($limit: Int = 10, $offset: Int = 0) {
+  puzzles(
+    limit: $limit
+    offset: $offset
+    where: { list_pubicly: { _eq: true } }
+  ) {
     puzzle_id
     landing_route
     simple_name
     solution_char_count
+  }
+  count: puzzles_aggregate(where: { list_pubicly: { _eq: true } }) {
+    aggregate {
+      count
+    }
   }
 }
