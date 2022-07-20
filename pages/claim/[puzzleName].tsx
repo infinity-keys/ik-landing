@@ -8,8 +8,10 @@ import Footer from "@components/footer";
 import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
+  POLYGON_CHAIN_ID,
   openseaLink,
   joePegsLink,
+  openseaPolygonLink,
 } from "@lib/constants";
 import { wallet } from "@lib/wallet";
 import { minterUtil } from "@lib/minter";
@@ -64,10 +66,10 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
   };
 
   const buttonClasses =
-    "text-sm text-turquoise border-solid border-2 border-turquoise bg-transparent font-bold bg-turquoise hover:bg-turquoiseDark hover:text-blue rounded-md py-2 px-4 mt-6";
+    "text-sm text-turquoise border-solid border-2 border-turquoise bg-transparent font-bold bg-turquoise hover:bg-turquoiseDark hover:text-blue rounded-md py-2 w-44 mt-6";
 
   const buttonPrimaryClasses =
-    "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4 mt-6";
+    "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark rounded-md py-2 w-44 mt-6";
 
   return (
     <Wrapper>
@@ -116,7 +118,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
                         : buttonClasses
                     }
                     type="submit"
-                    value="Join the mailing list"
+                    value="Use Ethereum Mainnet"
                     onClick={async () => {
                       if (chain === ETH_CHAIN_ID) {
                         mint();
@@ -131,6 +133,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
                       ? "Claim on Ethereum"
                       : "Switch to Ethereum"}
                   </button>
+
                   <button
                     className={
                       chain === AVAX_CHAIN_ID
@@ -138,7 +141,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
                         : buttonClasses
                     }
                     type="submit"
-                    value="Join the mailing list"
+                    value="Use Avalanche"
                     onClick={async () => {
                       if (chain === AVAX_CHAIN_ID) {
                         mint();
@@ -152,6 +155,29 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
                     {chain === AVAX_CHAIN_ID
                       ? "Claim on Avalanche"
                       : "Switch to Avalanche"}
+                  </button>
+
+                  <button
+                    className={
+                      chain === POLYGON_CHAIN_ID
+                        ? buttonPrimaryClasses
+                        : buttonClasses
+                    }
+                    type="submit"
+                    value="Use Polygon"
+                    onClick={async () => {
+                      if (chain === POLYGON_CHAIN_ID) {
+                        mint();
+                      } else {
+                        setChain(
+                          (await wallet.switchChain(POLYGON_CHAIN_ID)).chain
+                        );
+                      }
+                    }}
+                  >
+                    {chain === POLYGON_CHAIN_ID
+                      ? "Claim on Polygon"
+                      : "Switch to Polygon"}
                   </button>
                 </>
               )}
@@ -184,11 +210,20 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   href={`${
-                    chain === ETH_CHAIN_ID ? openseaLink : joePegsLink
+                    chain === ETH_CHAIN_ID
+                      ? openseaLink
+                      : chain === AVAX_CHAIN_ID
+                      ? joePegsLink
+                      : chain === POLYGON_CHAIN_ID
+                      ? openseaPolygonLink
+                      : undefined
                   }${tokenId}`}
                   className={buttonPrimaryClasses}
                 >
-                  View NFT On {chain === ETH_CHAIN_ID ? "OpenSea" : "JoePegs"}
+                  View NFT On{" "}
+                  {chain === ETH_CHAIN_ID || chain === POLYGON_CHAIN_ID
+                    ? "OpenSea"
+                    : "JoePegs"}
                 </a>
               )}
             </div>

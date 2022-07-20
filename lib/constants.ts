@@ -43,6 +43,7 @@ export const AVAX_PARAMS = {
 };
 */
 
+// ETH PARAMS
 export const ETH_CHAIN_ID = 4;
 export const CONTRACT_ADDRESS_ETH =
   "0x49B28d2a40C8a8dD7cdFDfBc345F2d0A3f1Ef4E7";
@@ -54,6 +55,7 @@ export const ETH_MARKETPLACE_LINK =
 //"https://opensea.io/assets/ethereum/";
 export const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/`;
 
+// POLYGON PARAMS
 export const POLYGON_CHAIN_ID = 137;
 export const CONTRACT_ADDRESS_POLYGON =
   "0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9";
