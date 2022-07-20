@@ -49,6 +49,7 @@ export default async function handler(
   const payload = verified.payload as unknown as IkJwt;
 
   // Entire form submission
+  // @TODO: use zod and zorm for this
   const submission = req.body as UserSubmission;
   // Pull out the hidden puzzleId field
   const { puzzleId, ...formData } = submission;
@@ -70,10 +71,12 @@ export default async function handler(
   }
 
   try {
+    const { email } = formData;
     await gql.UserSubmission({
       puzzle_id: puzzleId, // comes from hidden field in form
       user_id: payload.sub, // user id from jwt
       form_data: formData,
+      email, // can be possibly undefined
     });
     return res.status(200).end();
   } catch (e) {
