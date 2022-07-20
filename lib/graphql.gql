@@ -56,13 +56,25 @@ query UserPuzzlesInSubmitted($puzzleId: uuid, $puzzleRoutes: [String!]) {
   }
 }
 # A user submits a form after completing a puzzle
-mutation UserSubmission($puzzle_id: uuid, $user_id: uuid, $form_data: jsonb) {
+mutation UserSubmission(
+  $puzzle_id: uuid!
+  $user_id: uuid!
+  $form_data: jsonb
+  $email: String
+) {
   insert_submissions_one(
     object: { user_id: $user_id, puzzle_id: $puzzle_id, form_data: $form_data }
   ) {
     user_id
     puzzle_id
     form_data
+  }
+  update_users_by_pk(
+    pk_columns: { user_id: $user_id }
+    _set: { email: $email }
+  ) {
+    user_id
+    email
   }
 }
 
