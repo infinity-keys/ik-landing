@@ -27,3 +27,9 @@ export interface IkJwt extends JWTPayload {
 export interface PuzzleInput {
   puzzleId: string;
 }
+
+export enum PuzzleLayoutType {
+  Grid = "grid",
+  List = "list",
+  Unknown = "unknown",
+}

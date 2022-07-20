@@ -3,6 +3,7 @@ import clsx from "clsx";
 
 import ArrowSmLeftIcon from "@heroicons/react/solid/ArrowSmLeftIcon";
 import ArrowSmRightIcon from "@heroicons/react/solid/ArrowSmRightIcon";
+import { PAGINATION_COUNTS } from "@lib/constants";
 
 export interface PuzzlesPaginationProps {
   isFirstPage: Boolean;
@@ -17,7 +18,8 @@ const PuzzlesPagination = ({
   puzzlesCount,
   pageNum,
 }: PuzzlesPaginationProps) => {
-  const toDefaultPage = puzzlesCount === 8 && pageNum === 2;
+  const [smallestPuzzleCount] = PAGINATION_COUNTS;
+  const toDefaultPage = puzzlesCount === smallestPuzzleCount && pageNum === 2;
 
   return (
     <div

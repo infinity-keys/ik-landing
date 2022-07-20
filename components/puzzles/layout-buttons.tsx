@@ -5,12 +5,13 @@ import ViewGridIcon from "@heroicons/react/solid/ViewGridIcon";
 
 import PuzzlesDropdown from "@components/puzzles/dropdown";
 
-import { GridType } from "@components/puzzles/layout";
+import { PuzzleLayoutType } from "@lib/types";
+import { PAGINATION_COUNTS } from "@lib/constants";
 
 export interface LayoutButtonsProps {
   isGrid: boolean;
   puzzlesCount: number;
-  setView: (gridLayout: GridType) => void;
+  setView: (gridLayout: PuzzleLayoutType) => void;
 }
 
 const LayoutButtons = ({
@@ -18,10 +19,12 @@ const LayoutButtons = ({
   puzzlesCount,
   setView,
 }: LayoutButtonsProps) => {
+  const [smallestPuzzleCount] = PAGINATION_COUNTS;
+
   return (
     <div className="flex mt-8">
       <button
-        onClick={() => setView(GridType.List)}
+        onClick={() => setView(PuzzleLayoutType.List)}
         aria-label="set list view"
         className={clsx(
           "border mr-2 bg-white/10 p-2 rounded-md transition-all duration-200",
@@ -31,7 +34,7 @@ const LayoutButtons = ({
         <ViewListIcon className="h-5 w-5" aria-hidden="true" />
       </button>
       <button
-        onClick={() => setView(GridType.Grid)}
+        onClick={() => setView(PuzzleLayoutType.Grid)}
         aria-label="set grid view"
         className={clsx(
           "border bg-white/10 p-2 rounded-md transition-all duration-200 hover:bg-white/20",
@@ -40,7 +43,7 @@ const LayoutButtons = ({
       >
         <ViewGridIcon className="h-5 w-5" aria-hidden="true" />
       </button>
-      <PuzzlesDropdown currentCount={puzzlesCount || 8} />
+      <PuzzlesDropdown currentCount={puzzlesCount || smallestPuzzleCount} />
     </div>
   );
 };

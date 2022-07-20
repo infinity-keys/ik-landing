@@ -54,11 +54,17 @@ const PuzzlesDropdown = ({ currentCount }: PuzzlesDropdownProps) => {
           <div className="">
             {PAGINATION_COUNTS.map((count) => {
               const selectedCount = currentCount === count;
+              const [smallestPuzzleCount] = PAGINATION_COUNTS;
+
               return (
                 <Menu.Item key={count} disabled={selectedCount}>
                   {({ active }) => (
                     <DropdownLink
-                      href={count === 8 ? "/puzzles" : `/puzzles/${count}/1`}
+                      href={
+                        count === smallestPuzzleCount
+                          ? "/puzzles"
+                          : `/puzzles/${count}/1`
+                      }
                       style={{
                         pointerEvents: selectedCount ? "none" : "auto",
                       }}

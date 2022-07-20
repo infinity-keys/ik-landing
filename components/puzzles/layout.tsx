@@ -11,32 +11,37 @@ import Footer from "@components/footer";
 import PuzzleThumbnail from "@components/puzzle-thumbnail";
 import PuzzlesPagination from "@components/puzzles/pagination";
 import LayoutButtons from "@components/puzzles/layout-buttons";
+import { PAGINATION_COUNTS } from "@lib/constants";
 
+import { PuzzleLayoutType } from "@lib/types";
 import { PageProps } from "pages/puzzles/[[...puzzlesArgs]]";
 
-export enum GridType {
-  Grid = "grid",
-  List = "list",
-  Unknown = "unknown",
-}
+const toNumber = (num: number | string) => {
+  return typeof num === "number" ? num : parseInt(num);
+};
 
 const PuzzlesLayout: NextPage<PageProps> = ({
   puzzles,
   isFirstPage,
   isLastPage,
 }) => {
-  const [layout, setLayout] = useState<GridType>(GridType.Unknown);
+  const [layout, setLayout] = useState<PuzzleLayoutType>(
+    PuzzleLayoutType.Unknown
+  );
+  const [smallestPuzzleCount] = PAGINATION_COUNTS;
   const { query } = useRouter();
-  const [count, page] = query.puzzlesArgs || ["8", "1"];
-  const puzzlesCount = parseInt(count);
-  const pageNum = parseInt(page);
+  const [count, page] = query.puzzlesArgs || [smallestPuzzleCount, "1"];
+  const puzzlesCount = toNumber(count);
+  const pageNum = toNumber(page);
 
   useEffect(() => {
     const puzzlesLayout = window.localStorage.getItem("puzzlesLayout");
-    setLayout(puzzlesLayout ? JSON.parse(puzzlesLayout) : GridType.List);
+    setLayout(
+      puzzlesLayout ? JSON.parse(puzzlesLayout) : PuzzleLayoutType.List
+    );
   }, []);
 
-  const setView = (gridLayout: GridType) => {
+  const setView = (gridLayout: PuzzleLayoutType) => {
     setLayout(gridLayout);
     window.localStorage.setItem("puzzlesLayout", JSON.stringify(gridLayout));
   };
@@ -50,10 +55,10 @@ const PuzzlesLayout: NextPage<PageProps> = ({
         <Header />
 
         <div className="px-4 flex-1 container">
-          {layout !== GridType.Unknown && (
+          {layout !== PuzzleLayoutType.Unknown && (
             <>
               <LayoutButtons
-                isGrid={layout === GridType.Grid}
+                isGrid={layout === PuzzleLayoutType.Grid}
                 puzzlesCount={puzzlesCount}
                 setView={setView}
               />
@@ -62,7 +67,7 @@ const PuzzlesLayout: NextPage<PageProps> = ({
                 role="list"
                 className={clsx(
                   "grid grid-cols-1 gap-6 py-8 sm:grid-cols-2",
-                  layout === GridType.Grid
+                  layout === PuzzleLayoutType.Grid
                     ? "md:grid-cols-3 lg:grid-cols-4"
                     : "lg:grid-cols-3 xl:grid-cols-4"
                 )}
@@ -70,7 +75,7 @@ const PuzzlesLayout: NextPage<PageProps> = ({
                 {puzzles.map(({ puzzle_id, landing_route, simple_name }) => (
                   <li key={puzzle_id}>
                     <PuzzleThumbnail
-                      isGrid={layout === GridType.Grid}
+                      isGrid={layout === PuzzleLayoutType.Grid}
                       {...{ puzzle_id, landing_route, simple_name }}
                     />
                   </li>
