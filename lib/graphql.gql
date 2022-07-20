@@ -121,6 +121,7 @@ query PublicPuzzles($limit: Int = 10, $offset: Int = 0) {
     limit: $limit
     offset: $offset
     where: { list_pubicly: { _eq: true } }
+    order_by: { sort_weight: asc, simple_name: asc }
   ) {
     puzzle_id
     landing_route
