@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-
+import toNumber from "lodash/toNumber";
 import Head from "next/head";
 import clsx from "clsx";
 
@@ -15,10 +15,6 @@ import { PAGINATION_COUNTS } from "@lib/constants";
 
 import { PuzzleLayoutType } from "@lib/types";
 import { PageProps } from "pages/puzzles/[[...puzzlesArgs]]";
-
-const toNumber = (num: number | string) => {
-  return typeof num === "number" ? num : parseInt(num);
-};
 
 const PuzzlesLayout: NextPage<PageProps> = ({
   puzzles,
