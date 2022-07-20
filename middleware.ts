@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 
 import { makeUserToken, verifyToken } from "@lib/jwt";
-import { responsePathAsArray } from "graphql";
 import { IkJwt } from "@lib/types";
 
 export async function middleware(req: NextRequest) {

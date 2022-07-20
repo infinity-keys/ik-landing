@@ -12,7 +12,8 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --headless --browser chrome",
     "cypress:ci": "yarn build && start-server-and-test start http://localhost:3000 cypress:run",
-    "typechain": "typechain --target ethers-v5 \"nfts/contracts/**/*.json\" --out-dir lib/generated/ethers-contract"
+    "typechain": "typechain --target ethers-v5 \"nfts/contracts/**/*.json\" --out-dir lib/generated/ethers-contract",
+    "analyze": "ANALYZE=true yarn build"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.1",
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^10.1.0",
+    "@next/bundle-analyzer": "^12.2.2",
     "@types/lodash": "^4.14.178",
     "@types/node": "^18",
     "@types/react": "^18",
