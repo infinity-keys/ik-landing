@@ -29,7 +29,6 @@ describe("infinitykeys.io/puzzles", () => {
     // cy.visit("/");
     cy.get("a.link").contains("Hunts").click();
     cy.get(".puzzle-thumb").first().click();
-    cy.go("back");
     cy.get(".puzzle-thumb").last().click();
     cy.go("back");
   });
