@@ -53,3 +53,18 @@ export const ETH_MARKETPLACE_LINK =
   "https://testnets.opensea.io/assets/rinkeby/";
 //"https://opensea.io/assets/ethereum/";
 export const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/`;
+
+export const POLYGON_CHAIN_ID = 137;
+export const CONTRACT_ADDRESS_POLYGON =
+  "0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9";
+export const POLYGONSCAN_TRACKER = "https://polygonscan.com/";
+export const POLYGON_RPC = "https://polygon-rpc.com";
+export const POLYGON_MARKETPLACE_LINK = "https://opensea.io/assets/matic/";
+export const openseaPolygonLink = `${POLYGON_MARKETPLACE_LINK}${CONTRACT_ADDRESS_POLYGON}/`;
+export const POLYGON_PARAMS = {
+  chainId: `0x${POLYGON_CHAIN_ID}`,
+  rpcUrls: [{ POLYGON_RPC }],
+  chainName: "Polygon",
+  nativeCurrency: { name: "MATIC", decimals: 18, symbol: "MATIC" },
+  blockExplorerUrls: [{ POLYGONSCAN_TRACKER }],
+};
