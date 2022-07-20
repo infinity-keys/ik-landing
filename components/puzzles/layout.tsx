@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import toNumber from "lodash/toNumber";
 import Head from "next/head";
+
+import toNumber from "lodash/toNumber";
 import clsx from "clsx";
 
 import Wrapper from "@components/wrapper";
