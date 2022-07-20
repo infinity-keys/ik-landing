@@ -11,7 +11,8 @@
     "fmt": "eslint . --fix",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --headless --browser chrome",
-    "cypress:ci": "yarn build && start-server-and-test start http://localhost:3000 cypress:run"
+    "cypress:ci": "yarn build && start-server-and-test start http://localhost:3000 cypress:run",
+    "analyze": "ANALYZE=true yarn build"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.1",
@@ -49,6 +50,7 @@
     "zod": "^3.17.9"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^12.2.2",
     "@types/lodash": "^4.14.178",
     "@types/node": "^18",
     "@types/react": "^18",
