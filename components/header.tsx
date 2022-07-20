@@ -60,7 +60,7 @@ export default function Header() {
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <Link href={item.href} key={item.name}>
-                        <a className="link text-2xl font-medium hover:text-turquoise">
+                        <a className="header-nav--link text-2xl font-medium hover:text-turquoise">
                           {item.name}
                         </a>
                       </Link>
