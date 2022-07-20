@@ -85,16 +85,13 @@ export const minterUtil = async (tokenId: number) => {
   };
 
   const mint = async () => {
-    if (library) {
-      try {
-        const signature = await verify();
-        if (signature) await createTx(signature);
-        return retrieve();
-      } catch (error) {
-        throw error;
-      }
+    try {
+      const signature = await verify();
+      if (signature) await createTx(signature);
+      return retrieve();
+    } catch (error) {
+      throw error;
     }
-    return retrieve();
   };
 
   const retrieve = () => ({

@@ -20,11 +20,10 @@ interface ClaimsPageProps {
 }
 
 interface ClaimsPageParams {
-  params: { puzzleName: string }
+  params: { puzzleName: string };
 }
 
 const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
-  // TURN INTO PROP
   const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
   const [chain, setChain] = useState<number>();
   const [isLoadingWallet, setIsLoadingWallet] = useState(false);
@@ -93,8 +92,8 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
                     ? "Connecting Wallet"
                     : "Claiming Trophy"
                   : claimed
-                    ? "Your Trophy Has Been Claimed"
-                    : "Claim Your Trophy"}
+                  ? "Your Trophy Has Been Claimed"
+                  : "Claim Your Trophy"}
               </h2>
 
               {!chain && (
@@ -184,8 +183,9 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={`${chain === ETH_CHAIN_ID ? openseaLink : joePegsLink
-                    }${tokenId}`}
+                  href={`${
+                    chain === ETH_CHAIN_ID ? openseaLink : joePegsLink
+                  }${tokenId}`}
                   className={buttonPrimaryClasses}
                 >
                   View NFT On {chain === ETH_CHAIN_ID ? "OpenSea" : "JoePegs"}
@@ -203,16 +203,18 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
 
 export default ClaimFlow;
 
-export async function getStaticProps({ params: { puzzleName } }: ClaimsPageParams): Promise<{ props: ClaimsPageProps }> {
+export async function getStaticProps({
+  params: { puzzleName },
+}: ClaimsPageParams): Promise<{ props: ClaimsPageProps }> {
   const gql = await gqlApiSdk();
-  const { nfts } = await gql.GetNftIdByPuzzleName({ puzzleName })
+  const { nfts } = await gql.GetNftIdByPuzzleName({ puzzleName });
 
-  const nftTokenIds = nfts.map(nft => parseInt(nft.tokenId));
+  const nftTokenIds = nfts.map((nft) => parseInt(nft.tokenId));
 
   return {
     props: {
       nftTokenIds,
-    }
+    },
   };
 }
 
@@ -221,11 +223,11 @@ export async function getStaticPaths() {
   const { nfts } = await gql.GetAllNftClaims();
 
   // https://nextjs.org/docs/api-reference/data-fetching/get-static-paths
-  const paths = nfts.map(nft => ({
+  const paths = nfts.map((nft) => ({
     params: {
-      puzzleName: nft.puzzle.simple_name
-    }
-  }))
+      puzzleName: nft.puzzle.simple_name,
+    },
+  }));
 
   return {
     paths,
