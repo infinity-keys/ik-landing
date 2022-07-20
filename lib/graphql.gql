@@ -117,7 +117,10 @@ query MigrateUserSubmissions($fromUser: uuid, $toUser: uuid) {
 }
 
 query PublicPuzzles {
-  puzzles(where: { list_pubicly: { _eq: true } }) {
+  puzzles(
+    where: { list_pubicly: { _eq: true } }
+    order_by: { sort_weight: asc, simple_name: asc }
+  ) {
     puzzle_id
     landing_route
     simple_name
