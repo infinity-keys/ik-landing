@@ -12,6 +12,8 @@ export const PUZZLE_LANDING_BASE = "puzzle";
 export const PUZZLE_SUCCESS_BASE = "solved";
 export const PUZZLE_FAILED_BASE = "puzzle"; // back to landing
 
+export const PAGINATION_COUNTS = [8, 16, 32, 64];
+
 //Minting Stuff
 //(CURRENTLY SET FOR FUJI + RINKEBY)
 export const AVAX_CHAIN_ID = 43113;
