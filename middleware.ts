@@ -10,7 +10,10 @@ export async function middleware(req: NextRequest) {
 
   let token = req.cookies.get(IK_ID_COOKIE);
 
-  if (req.nextUrl.pathname.startsWith("/solved")) {
+  if (
+    req.nextUrl.pathname.startsWith("/solved") ||
+    req.nextUrl.pathname.startsWith("/claim")
+  ) {
     try {
       // No token is nonstarter
       if (!token) throw new Error("No token on solved page");
@@ -21,7 +24,7 @@ export async function middleware(req: NextRequest) {
       const success = req.nextUrl.pathname.split("/")[2];
 
       // Bail if we're not on the solved page
-      if (!success) throw new Error('"success" param not found on solved page');
+      if (!success) throw new Error('"success" param not found on gated page');
 
       const verified = await verifyToken(token);
       // @TOOD: pull in superstruct or use jose's validator to ensure shape

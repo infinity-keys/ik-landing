@@ -13,10 +13,19 @@ import {
 } from "@lib/constants";
 import { wallet } from "@lib/wallet";
 import { minterUtil } from "@lib/minter";
+import { gqlApiSdk } from "@lib/server";
 
-const ClaimFlow: NextPage = () => {
+interface ClaimsPageProps {
+  nftTokenIds: number[];
+}
+
+interface ClaimsPageParams {
+  params: { puzzleName: string }
+}
+
+const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
   // TURN INTO PROP
-  const tokenId = 0;
+  const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
   const [chain, setChain] = useState<number>();
   const [isLoadingWallet, setIsLoadingWallet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -193,3 +202,33 @@ const ClaimFlow: NextPage = () => {
 };
 
 export default ClaimFlow;
+
+export async function getStaticProps({ params: { puzzleName } }: ClaimsPageParams): Promise<{ props: ClaimsPageProps }> {
+  const gql = await gqlApiSdk();
+  const { nfts } = await gql.GetNftIdByPuzzleName({ puzzleName })
+
+  const nftTokenIds = nfts.map(nft => parseInt(nft.tokenId));
+
+  return {
+    props: {
+      nftTokenIds,
+    }
+  };
+}
+
+export async function getStaticPaths() {
+  const gql = await gqlApiSdk();
+  const { nfts } = await gql.GetAllNftClaims();
+
+  // https://nextjs.org/docs/api-reference/data-fetching/get-static-paths
+  const paths = nfts.map(nft => ({
+    params: {
+      puzzleName: nft.puzzle.simple_name
+    }
+  }))
+
+  return {
+    paths,
+    fallback: false,
+  };
+}

@@ -124,3 +124,16 @@ query PublicPuzzles {
     solution_char_count
   }
 }
+
+query GetNftIdByPuzzleName($puzzleName: String) {
+  nfts(where: { puzzle: { simple_name: { _eq: $puzzleName } } }) {
+    tokenId
+  }
+}
+query GetAllNftClaims {
+  nfts {
+    puzzle {
+      simple_name
+    }
+  }
+}
