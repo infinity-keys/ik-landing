@@ -6,7 +6,10 @@ import {
   CONTRACT_ADDRESS_AVAX,
   CONTRACT_ADDRESS_ETH,
   ETH_CHAIN_ID,
+  IK_ID_COOKIE,
 } from "@lib/constants";
+import { gqlApiSdk } from "@lib/server";
+import { jwtHasClaim } from "@lib/jwt";
 
 const privateKey = process.env.PRIVATE_KEY_VERIFY;
 const secret = process.env.MINT_SECRET_VERIFY;
@@ -29,6 +32,15 @@ export default async function handler(
     typeof chainId !== "string"
   )
     return res.status(500).end();
+
+  // Check if we're supposed to be here
+  const jwt = req.cookies[IK_ID_COOKIE];
+  if (!jwt) return res.status(401).end();
+  const gql = await gqlApiSdk();
+  const { puzzles } = await gql.GetPuzzleInfoByNftId({ nftId: tokenId });
+  const puzzleNames = puzzles.map(({ simple_name }) => simple_name);
+  const canAccess = await jwtHasClaim(jwt, puzzleNames);
+  if (!canAccess) return res.status(403).end();
 
   const chainIdAsNumber = parseInt(chainId, 10);
 

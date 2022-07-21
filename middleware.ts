@@ -24,7 +24,7 @@ export async function middleware(req: NextRequest) {
       // Bail if we're not on the solved page
       if (!success) throw new Error('"success" param not found on gated page');
 
-      const allowedToView = await jwtHasClaim(token, success);
+      const allowedToView = await jwtHasClaim(token, [success]);
 
       if (allowedToView) return response;
       // Otherwise bail

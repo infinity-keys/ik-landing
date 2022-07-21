@@ -6,9 +6,12 @@ import {
   AVAX_RPC,
   CONTRACT_ADDRESS_AVAX,
   CONTRACT_ADDRESS_ETH,
+  IK_ID_COOKIE,
 } from "@lib/constants";
+import { gqlApiSdk } from "@lib/server";
 
 import { IKAchievementABI__factory } from "@lib/generated/ethers-contract/factories/IKAchievementABI__factory";
+import { jwtHasClaim } from "@lib/jwt";
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,6 +23,13 @@ export default async function handler(
     return res.status(500).end();
 
   // Using NFT tokenId, lookup puzzles names allowed to claim
+  const jwt = req.cookies[IK_ID_COOKIE];
+  if (!jwt) return res.status(401).end();
+  const gql = await gqlApiSdk();
+  const { puzzles } = await gql.GetPuzzleInfoByNftId({ nftId: tokenId });
+  const puzzleNames = puzzles.map(({ simple_name }) => simple_name);
+  const canAccess = await jwtHasClaim(jwt, puzzleNames);
+  if (!canAccess) return res.status(403).end();
 
   const contractAVAX = IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_AVAX,
@@ -41,5 +51,5 @@ export default async function handler(
 
   const claimed = ethStatus || avaxStatus;
 
-  res.status(200).json({ claimed: claimed });
+  res.json({ claimed: claimed });
 }
