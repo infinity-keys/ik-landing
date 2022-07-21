@@ -16,9 +16,10 @@ export default async function handler(
 ) {
   const { account, tokenId } = req.query;
 
-  if (!account || !tokenId) return res.status(500).end();
-  if (typeof tokenId === "object" || typeof account === "object")
+  if (typeof tokenId !== "string" || typeof account !== "string")
     return res.status(500).end();
+
+  // Using NFT tokenId, lookup puzzles names allowed to claim
 
   const contractAVAX = IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_AVAX,

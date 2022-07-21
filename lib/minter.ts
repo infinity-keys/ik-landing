@@ -73,25 +73,19 @@ export const minterUtil = async (tokenId: number) => {
   const verify = async () => {
     const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}`;
 
-    try {
-      const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
-        return data?.signature;
-      } else throw await response.text();
-    } catch (error) {
-      throw error;
+    const response = await fetch(url);
+    if (response.ok) {
+      const data = await response.json();
+      return data?.signature;
     }
+
+    throw await response.text();
   };
 
   const mint = async () => {
-    try {
-      const signature = await verify();
-      if (signature) await createTx(signature);
-      return retrieve();
-    } catch (error) {
-      throw error;
-    }
+    const signature = await verify();
+    if (signature) await createTx(signature);
+    return retrieve();
   };
 
   const retrieve = () => ({

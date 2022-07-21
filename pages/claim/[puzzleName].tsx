@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
+
 import Avatar from "boring-avatars";
 import Wrapper from "@components/wrapper";
 import Header from "@components/header";
@@ -16,6 +17,7 @@ import { minterUtil } from "@lib/minter";
 import { gqlApiSdk } from "@lib/server";
 
 interface ClaimsPageProps {
+  puzzleId: string;
   nftTokenIds: number[];
 }
 
@@ -23,7 +25,7 @@ interface ClaimsPageParams {
   params: { puzzleName: string };
 }
 
-const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
+const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
   const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
   const [chain, setChain] = useState<number>();
   const [isLoadingWallet, setIsLoadingWallet] = useState(false);
@@ -45,13 +47,10 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
   const checkIfClaimed = async (account: string) => {
     const url = `/api/minter/achievement?account=${account}&tokenId=${tokenId.toString()}`;
 
-    try {
-      const response = await fetch(url);
-      if (response.ok) return (await response.json()).claimed;
-      else throw await response.text();
-    } catch (error) {
-      throw error;
-    }
+    const response = await fetch(url);
+    if (response.ok) return (await response.json()).claimed;
+    else throw await response.text();
+
   };
 
   const mint = async () => {
@@ -63,11 +62,12 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
     setClaimed(claimedStatus);
   };
 
+  // @TODO: refactor into button component, use clx for classes at least
   const buttonClasses =
-    "text-sm text-turquoise border-solid border-2 border-turquoise bg-transparent font-bold bg-turquoise hover:bg-turquoiseDark hover:text-blue rounded-md py-2 px-4 mt-6";
+    "text-sm border-solid border-2 border-turquoise bg-transparent font-bold bg-turquoise hover:bg-turquoiseDark hover:text-blue rounded-md py-2 px-4 mt-6 text-turquoise";
 
   const buttonPrimaryClasses =
-    "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4 mt-6";
+    "text-sm font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4 mt-6 text-blue";
 
   return (
     <Wrapper>
@@ -82,7 +82,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
             <div className="flex flex-col items-center">
               <Avatar
                 size={128}
-                name="nftz"
+                name={puzzleId}
                 variant="marble"
                 colors={["#101D42", "#E400FF", "#3FCCBB", "#8500AC", "#303B5B"]}
               />
@@ -92,8 +92,8 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
                     ? "Connecting Wallet"
                     : "Claiming Trophy"
                   : claimed
-                  ? "Your Trophy Has Been Claimed"
-                  : "Claim Your Trophy"}
+                    ? "Your Trophy Has Been Claimed"
+                    : "Claim Your Trophy"}
               </h2>
 
               {!chain && (
@@ -183,9 +183,8 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={`${
-                    chain === ETH_CHAIN_ID ? openseaLink : joePegsLink
-                  }${tokenId}`}
+                  href={`${chain === ETH_CHAIN_ID ? openseaLink : joePegsLink
+                    }${tokenId}`}
                   className={buttonPrimaryClasses}
                 >
                   View NFT On {chain === ETH_CHAIN_ID ? "OpenSea" : "JoePegs"}
@@ -207,12 +206,16 @@ export async function getStaticProps({
   params: { puzzleName },
 }: ClaimsPageParams): Promise<{ props: ClaimsPageProps }> {
   const gql = await gqlApiSdk();
-  const { nfts } = await gql.GetNftIdByPuzzleName({ puzzleName });
 
+  const { nfts } = await gql.GetNftIdByPuzzleName({ puzzleName });
   const nftTokenIds = nfts.map((nft) => parseInt(nft.tokenId));
+
+  const { puzzles } = await gql.PuzzleInfoBySuccess({ success: puzzleName })
+  const [{ puzzle_id: puzzleId }] = puzzles;
 
   return {
     props: {
+      puzzleId,
       nftTokenIds,
     },
   };

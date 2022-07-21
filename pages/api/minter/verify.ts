@@ -22,12 +22,11 @@ export default async function handler(
   res: NextApiResponse<Signature>
 ) {
   const { account, tokenId, chainId } = req.query;
-  if (!account || !tokenId || !chainId || !wallet) return res.status(500).end();
 
   if (
-    typeof tokenId === "object" ||
-    typeof account === "object" ||
-    typeof chainId === "object"
+    typeof tokenId !== "string" ||
+    typeof account !== "string" ||
+    typeof chainId !== "string"
   )
     return res.status(500).end();
 
@@ -48,5 +47,5 @@ export default async function handler(
 
   const signature = await wallet.signMessage(ethers.utils.arrayify(hash));
 
-  res.status(200).json({ signature: signature });
+  res.json({ signature });
 }
