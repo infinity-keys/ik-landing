@@ -25,6 +25,21 @@ interface ClaimsPageParams {
   params: { puzzleName: string };
 }
 
+const buttonData = [
+  {
+    chain_id: ETH_CHAIN_ID,
+    name: "Ethereum",
+  },
+  {
+    chain_id: AVAX_CHAIN_ID,
+    name: "Avalanche",
+  },
+  {
+    chain_id: POLYGON_CHAIN_ID,
+    name: "Polygon",
+  },
+];
+
 const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
   const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
   const [chain, setChain] = useState<number>();
@@ -111,74 +126,27 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ nftTokenIds }) => {
 
               {!isLoading && chain && !claimed && (
                 <>
-                  <button
-                    className={
-                      chain === ETH_CHAIN_ID
-                        ? buttonPrimaryClasses
-                        : buttonClasses
-                    }
-                    type="submit"
-                    value="Use Ethereum Mainnet"
-                    onClick={async () => {
-                      if (chain === ETH_CHAIN_ID) {
-                        mint();
-                      } else {
-                        setChain(
-                          (await wallet.switchChain(ETH_CHAIN_ID)).chain
-                        );
+                  {buttonData.map(({ chain_id, name }) => (
+                    <button
+                      key={chain_id}
+                      className={
+                        chain === chain_id
+                          ? buttonPrimaryClasses
+                          : buttonClasses
                       }
-                    }}
-                  >
-                    {chain === ETH_CHAIN_ID
-                      ? "Claim on Ethereum"
-                      : "Switch to Ethereum"}
-                  </button>
-
-                  <button
-                    className={
-                      chain === AVAX_CHAIN_ID
-                        ? buttonPrimaryClasses
-                        : buttonClasses
-                    }
-                    type="submit"
-                    value="Use Avalanche"
-                    onClick={async () => {
-                      if (chain === AVAX_CHAIN_ID) {
-                        mint();
-                      } else {
-                        setChain(
-                          (await wallet.switchChain(AVAX_CHAIN_ID)).chain
-                        );
-                      }
-                    }}
-                  >
-                    {chain === AVAX_CHAIN_ID
-                      ? "Claim on Avalanche"
-                      : "Switch to Avalanche"}
-                  </button>
-
-                  <button
-                    className={
-                      chain === POLYGON_CHAIN_ID
-                        ? buttonPrimaryClasses
-                        : buttonClasses
-                    }
-                    type="submit"
-                    value="Use Polygon"
-                    onClick={async () => {
-                      if (chain === POLYGON_CHAIN_ID) {
-                        mint();
-                      } else {
-                        setChain(
-                          (await wallet.switchChain(POLYGON_CHAIN_ID)).chain
-                        );
-                      }
-                    }}
-                  >
-                    {chain === POLYGON_CHAIN_ID
-                      ? "Claim on Polygon"
-                      : "Switch to Polygon"}
-                  </button>
+                      onClick={async () => {
+                        if (chain === chain_id) {
+                          mint();
+                        } else {
+                          setChain((await wallet.switchChain(chain_id)).chain);
+                        }
+                      }}
+                    >
+                      {chain === chain_id
+                        ? `Claim on ${name}`
+                        : `Switch to ${name}`}
+                    </button>
+                  ))}
                 </>
               )}
 
