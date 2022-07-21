@@ -51,7 +51,7 @@ describe("infinitykeys.io/puzzles", () => {
     cy.get(".ik-code-input").eq(1).type("r", { delay: 250 });
     cy.get(".ik-code-input").eq(2).type("o", { delay: 250 });
     cy.get(".ik-code-input").eq(3).type("n", { delay: 250 });
-    cy.get(".ik-code-input").eq(4).type("g");
+    cy.get(".ik-code-input").eq(4).type("g", { delay: 250 });
     cy.url().should("include", "/solved/notright");
   });
 
