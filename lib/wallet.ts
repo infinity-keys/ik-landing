@@ -8,6 +8,9 @@ import {
   AVAX_PARAMS,
   ETH_CHAIN_ID,
   ETH_RPC_ID,
+  POLYGON_CHAIN_ID,
+  POLYGON_PARAMS,
+  POLYGON_RPC,
 } from "@lib/constants";
 import { toHex } from "./utils";
 // import Fortmatic from "fortmatic";
@@ -120,7 +123,11 @@ export const walletUtil = () => {
    * Set switch chain var to newChainId
    */
   const switchChain = async (newChainId: number) => {
-    if (newChainId !== ETH_CHAIN_ID && newChainId !== AVAX_CHAIN_ID)
+    if (
+      newChainId !== ETH_CHAIN_ID &&
+      newChainId !== AVAX_CHAIN_ID &&
+      newChainId !== POLYGON_CHAIN_ID
+    )
       throw new Error("Invalid Chain Id");
 
     if (newChainId === chain) return retrieve(); // same as current chain
@@ -135,12 +142,24 @@ export const walletUtil = () => {
       } catch (switchError: any) {
         //I think this should add AVAX to MetaMask if you dont have it yet
         //have not tested
-        if (switchError.code === 4902) {
-          //should only happen for AVAX
+        // may need to call switch ethereum chain after adding- unsure if auto
+        if (
+          switchError.code === 4902 ||
+          switchError?.data?.orginalError?.code === 4902
+        ) {
+          const chainParams =
+            newChainId === AVAX_CHAIN_ID
+              ? AVAX_PARAMS
+              : newChainId === POLYGON_CHAIN_ID
+              ? POLYGON_PARAMS
+              : undefined;
+
+          if (!chainParams) throw new Error("Invalid Chain Id.");
+
           try {
             await library.provider.request({
               method: "wallet_addEthereumChain",
-              params: [AVAX_PARAMS],
+              params: [chainParams],
             });
             chain = newChainId;
           } catch (error) {

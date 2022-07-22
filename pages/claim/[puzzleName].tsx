@@ -9,8 +9,10 @@ import Footer from "@components/footer";
 import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
+  POLYGON_CHAIN_ID,
   openseaLink,
   joePegsLink,
+  openseaPolygonLink,
 } from "@lib/constants";
 import { wallet } from "@lib/wallet";
 import { minterUtil } from "@lib/minter";
@@ -24,6 +26,21 @@ interface ClaimsPageProps {
 interface ClaimsPageParams {
   params: { puzzleName: string };
 }
+
+const buttonData = [
+  {
+    chain_id: ETH_CHAIN_ID,
+    name: "Ethereum",
+  },
+  {
+    chain_id: AVAX_CHAIN_ID,
+    name: "Avalanche",
+  },
+  {
+    chain_id: POLYGON_CHAIN_ID,
+    name: "Polygon",
+  },
+];
 
 const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
   const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
@@ -64,10 +81,10 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
 
   // @TODO: refactor into button component, use clx for classes at least
   const buttonClasses =
-    "text-sm border-solid border-2 border-turquoise bg-transparent font-bold bg-turquoise hover:bg-turquoiseDark hover:text-blue rounded-md py-2 px-4 mt-6 text-turquoise";
+    "text-sm text-turquoise border-solid border-2 border-turquoise bg-transparent font-bold bg-turquoise hover:bg-turquoiseDark hover:text-blue rounded-md py-2 w-44 mt-6";
 
   const buttonPrimaryClasses =
-    "text-sm font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4 mt-6 text-blue";
+    "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark rounded-md py-2 w-44 mt-6";
 
   return (
     <Wrapper>
@@ -109,50 +126,27 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
 
               {!isLoading && chain && !claimed && (
                 <>
-                  <button
-                    className={
-                      chain === ETH_CHAIN_ID
-                        ? buttonPrimaryClasses
-                        : buttonClasses
-                    }
-                    type="submit"
-                    value="Join the mailing list"
-                    onClick={async () => {
-                      if (chain === ETH_CHAIN_ID) {
-                        mint();
-                      } else {
-                        setChain(
-                          (await wallet.switchChain(ETH_CHAIN_ID)).chain
-                        );
+                  {buttonData.map(({ chain_id, name }) => (
+                    <button
+                      key={chain_id}
+                      className={
+                        chain === chain_id
+                          ? buttonPrimaryClasses
+                          : buttonClasses
                       }
-                    }}
-                  >
-                    {chain === ETH_CHAIN_ID
-                      ? "Claim on Ethereum"
-                      : "Switch to Ethereum"}
-                  </button>
-                  <button
-                    className={
-                      chain === AVAX_CHAIN_ID
-                        ? buttonPrimaryClasses
-                        : buttonClasses
-                    }
-                    type="submit"
-                    value="Join the mailing list"
-                    onClick={async () => {
-                      if (chain === AVAX_CHAIN_ID) {
-                        mint();
-                      } else {
-                        setChain(
-                          (await wallet.switchChain(AVAX_CHAIN_ID)).chain
-                        );
-                      }
-                    }}
-                  >
-                    {chain === AVAX_CHAIN_ID
-                      ? "Claim on Avalanche"
-                      : "Switch to Avalanche"}
-                  </button>
+                      onClick={async () => {
+                        if (chain === chain_id) {
+                          mint();
+                        } else {
+                          setChain((await wallet.switchChain(chain_id)).chain);
+                        }
+                      }}
+                    >
+                      {chain === chain_id
+                        ? `Claim on ${name}`
+                        : `Switch to ${name}`}
+                    </button>
+                  ))}
                 </>
               )}
 
@@ -183,11 +177,20 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={`${chain === ETH_CHAIN_ID ? openseaLink : joePegsLink
+                  href={`${chain === ETH_CHAIN_ID
+                    ? openseaLink
+                    : chain === AVAX_CHAIN_ID
+                      ? joePegsLink
+                      : chain === POLYGON_CHAIN_ID
+                        ? openseaPolygonLink
+                        : undefined
                     }${tokenId}`}
                   className={buttonPrimaryClasses}
                 >
-                  View NFT On {chain === ETH_CHAIN_ID ? "OpenSea" : "JoePegs"}
+                  View NFT On{" "}
+                  {chain === ETH_CHAIN_ID || chain === POLYGON_CHAIN_ID
+                    ? "OpenSea"
+                    : "JoePegs"}
                 </a>
               )}
             </div>

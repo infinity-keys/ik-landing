@@ -5,7 +5,9 @@ import {
   AVAX_CHAIN_ID,
   CONTRACT_ADDRESS_AVAX,
   CONTRACT_ADDRESS_ETH,
+  CONTRACT_ADDRESS_POLYGON,
   ETH_CHAIN_ID,
+  POLYGON_CHAIN_ID,
   IK_ID_COOKIE,
 } from "@lib/constants";
 import { gqlApiSdk } from "@lib/server";
@@ -49,6 +51,8 @@ export default async function handler(
       ? CONTRACT_ADDRESS_AVAX
       : chainIdAsNumber === ETH_CHAIN_ID
       ? CONTRACT_ADDRESS_ETH
+      : chainIdAsNumber === POLYGON_CHAIN_ID
+      ? CONTRACT_ADDRESS_POLYGON
       : undefined;
   if (!contractAddress) return res.status(500).end();
 

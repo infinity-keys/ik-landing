@@ -2,10 +2,13 @@ import { wallet } from "@lib/wallet";
 import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
+  POLYGON_CHAIN_ID,
   CONTRACT_ADDRESS_AVAX,
   CONTRACT_ADDRESS_ETH,
+  CONTRACT_ADDRESS_POLYGON,
   SNOWTRACE_TRACKER,
   ETHERSCAN_TRACKER,
+  POLYGONSCAN_TRACKER,
 } from "@lib/constants";
 import { IKAchievementABI__factory } from "@contracts/factories/IKAchievementABI__factory";
 
@@ -20,16 +23,19 @@ export const minterUtil = async (tokenId: number) => {
       ? CONTRACT_ADDRESS_AVAX
       : chain === ETH_CHAIN_ID
       ? CONTRACT_ADDRESS_ETH
+      : chain === POLYGON_CHAIN_ID
+      ? CONTRACT_ADDRESS_POLYGON
       : undefined;
   const blockTracker =
     chain === AVAX_CHAIN_ID
       ? SNOWTRACE_TRACKER
       : chain === ETH_CHAIN_ID
       ? ETHERSCAN_TRACKER
+      : chain === POLYGON_CHAIN_ID
+      ? POLYGONSCAN_TRACKER
       : undefined;
 
-  if (!contractAddress || !blockTracker)
-    throw new Error("Invalid contract address");
+  if (!contractAddress || !blockTracker) throw new Error("Invalid chain.");
 
   const contract = IKAchievementABI__factory.connect(contractAddress, library);
 
