@@ -15,6 +15,13 @@ export const PUZZLE_FAILED_BASE = "puzzle"; // back to landing
 export const PAGINATION_COUNTS = [8, 16, 32, 64];
 
 //Minting Stuff
+//tried importing from utils.ts but was getting Reference error in vercel
+//since it wasn't defined yet
+const toHex = (num: number) => {
+  const val = Number(num);
+  return "0x" + val.toString(16);
+};
+
 //AVAX
 export const AVAX_CHAIN_ID = 43114;
 export const CONTRACT_ADDRESS_AVAX =
@@ -24,8 +31,8 @@ export const AVAX_RPC = "https://api.avax.network/ext/bc/C/rpc";
 export const AVAX_MARKETPLACE_LINK = "https://joepegs.com/item/";
 export const joePegsLink = `${AVAX_MARKETPLACE_LINK}${CONTRACT_ADDRESS_AVAX}/`;
 export const AVAX_PARAMS = {
-  chainId: AVAX_CHAIN_ID,
-  rpcUrls: [AVAX_RPC],
+  chainId: toHex(AVAX_CHAIN_ID),
+  rpcUrls: [AVAX_RPC, "https://rpc.ankr.com/avalanche"],
   chainName: "Avalanche Network",
   nativeCurrency: { name: "AVAX", decimals: 18, symbol: "AVAX" },
   blockExplorerUrls: [SNOWTRACE_TRACKER],
@@ -50,9 +57,9 @@ export const POLYGON_RPC = "https://polygon-rpc.com";
 export const POLYGON_MARKETPLACE_LINK = "https://opensea.io/assets/matic/";
 export const openseaPolygonLink = `${POLYGON_MARKETPLACE_LINK}${CONTRACT_ADDRESS_POLYGON}/`;
 export const POLYGON_PARAMS = {
-  chainId: `0x${POLYGON_CHAIN_ID}`,
-  rpcUrls: [{ POLYGON_RPC }],
+  chainId: toHex(POLYGON_CHAIN_ID),
+  rpcUrls: [POLYGON_RPC],
   chainName: "Polygon",
   nativeCurrency: { name: "MATIC", decimals: 18, symbol: "MATIC" },
-  blockExplorerUrls: [{ POLYGONSCAN_TRACKER }],
+  blockExplorerUrls: [POLYGONSCAN_TRACKER],
 };
