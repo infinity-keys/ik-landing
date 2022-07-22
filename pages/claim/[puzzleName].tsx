@@ -70,8 +70,8 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
   };
 
   const mint = async () => {
-    const minter = await minterUtil(tokenId);
     setIsLoading(true);
+    const minter = await minterUtil(tokenId);
     const { txMessage, claimedStatus } = await minter.mint();
     setIsLoading(false);
     setTxMessage(txMessage);
