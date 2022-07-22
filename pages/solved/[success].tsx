@@ -11,6 +11,7 @@ interface SuccessPageProps {
   name: string;
   puzzleId: string;
   successMessage?: string;
+  nftId?: string;
 }
 interface SuccessPageParams {
   params: { success: string };
@@ -20,6 +21,7 @@ const Dev: NextPage<SuccessPageProps> = ({
   puzzleId,
   name,
   successMessage,
+  nftId,
 }) => {
   return (
     <Wrapper>
@@ -38,7 +40,12 @@ const Dev: NextPage<SuccessPageProps> = ({
           </header>
 
           <main className="flex flex-col grow-0 items-center justify-center w-full flex-1">
-            <WalletEmail puzzleId={puzzleId} successMessage={successMessage} />
+            <WalletEmail
+              puzzleId={puzzleId}
+              successMessage={successMessage}
+              nftId={nftId}
+              name={name}
+            />
           </main>
         </div>
       </div>
@@ -55,13 +62,12 @@ export async function getStaticProps({
   const { puzzles } = await gql.PuzzleInfoBySuccess({ success });
   const [{ puzzle_id, simple_name, success_message, nft }] = puzzles;
 
-  // @TODO: check the puzzle has an NFT, do something above with it
-
   return {
     props: {
       name: simple_name,
       puzzleId: puzzle_id,
       successMessage: success_message || "",
+      nftId: nft?.tokenId.toString() || null,
     },
   };
 }
