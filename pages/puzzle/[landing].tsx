@@ -13,7 +13,6 @@ import Markdown from "@components/markdown";
 import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
 
-
 export interface PuzzlePageProps {
   name: string;
   count: number;
