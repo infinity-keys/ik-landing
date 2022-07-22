@@ -53,7 +53,9 @@ export async function getStaticProps({
 }: SuccessPageParams): Promise<{ props: SuccessPageProps }> {
   const gql = await gqlApiSdk();
   const { puzzles } = await gql.PuzzleInfoBySuccess({ success });
-  const [{ puzzle_id, simple_name, success_message }] = puzzles;
+  const [{ puzzle_id, simple_name, success_message, nft }] = puzzles;
+
+  // @TODO: check the puzzle has an NFT, do something above with it
 
   return {
     props: {
