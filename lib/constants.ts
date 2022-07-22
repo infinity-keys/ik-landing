@@ -1,4 +1,3 @@
-import { toHex } from "./utils";
 // JWT stuff
 export const JWT_SECRET_KEY = process.env.INFINITY_KEYS_SECRET;
 export const IK_ID_COOKIE = "ik-id";
@@ -16,6 +15,13 @@ export const PUZZLE_FAILED_BASE = "puzzle"; // back to landing
 export const PAGINATION_COUNTS = [8, 16, 32, 64];
 
 //Minting Stuff
+//tried importing from utils.ts but was getting Reference error in vercel
+//since it wasn't defined yet
+const toHex = (num: number) => {
+  const val = Number(num);
+  return "0x" + val.toString(16);
+};
+
 //AVAX
 export const AVAX_CHAIN_ID = 43114;
 export const CONTRACT_ADDRESS_AVAX =
