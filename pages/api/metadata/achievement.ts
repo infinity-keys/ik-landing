@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-//import metadata from "@nfts/metadata/IKAchievementMetadata.json";
 import { gqlApiSdk } from "@lib/server";
 import { IKAchievementABI__factory } from "@lib/generated/ethers-contract";
 import { CONTRACT_ADDRESS_POLYGON, POLYGON_RPC } from "@lib/constants";
