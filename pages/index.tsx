@@ -6,8 +6,6 @@ import { gqlApiSdk } from "@lib/server";
 import Wrapper from "@components/wrapper";
 import Puzzle from "@components/puzzle";
 import Map from "@components/svg/map-svg";
-import Header from "@components/header";
-import Footer from "@components/footer";
 import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
 import WalletEmail from "@components/wallet-email";
@@ -32,9 +30,6 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       </Head>
 
       <div className="scanlines">
-        {/* Navigation Header */}
-        <Header />
-
         {/* Top puzzle */}
         <div className="slice--top w-full pt-4 pb-4 min-h-0 flex items-center radial-bg relative z-0">
           <div className="w-full mr-auto ml-auto px-4 sm:px-6 lg:px-8">
@@ -192,8 +187,6 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
           </div>
         </div>
 
-        {/* Footer */}
-        <Footer />
         {/* End scanlines wrapper */}
       </div>
     </Wrapper>

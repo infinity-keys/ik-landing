@@ -30,7 +30,7 @@ const Dev: NextPage<SuccessPageProps> = ({
       </Head>
 
       <div className="ik-page radial-bg scanlines">
-        <div className="container px-4 flex flex-col items-center justify-center min-h-screen max-w-sm ">
+        <div className="container px-4 flex flex-col items-center justify-center min-h-[calc(100vh-80px)] max-w-sm ">
           <header className="pt-4 md:pt-14 pb-4 block w-full">
             <Link href="/">
               <a>

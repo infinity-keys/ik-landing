@@ -22,7 +22,7 @@ interface PuzzleProps {
   SuccessComponent?: ComponentType<{}>;
 }
 
-const { NODE_ENV } = process.env
+const { NODE_ENV } = process.env;
 
 const Puzzle = ({
   // Used to show number of boxes/remaining characters. Usually pulled in via
@@ -39,28 +39,30 @@ const Puzzle = ({
   SuccessComponent,
 }: PuzzleProps) => {
   const router = useRouter();
-  const [{ context, matches }, send] = useMachine(puzzleMachine,
-    {
-      context: { count, puzzleId, redirect: !SuccessComponent },
-      // Use the router hook from within react to fire the action within xstate
-      actions: {
-        // The TS error below is a bug in xstate, https://xstate.js.org/docs/guides/typescript.html#typegen
-        // @TODO: remove @ts-ignore when fixed
-        // @ts-ignore
-        goToSuccessRoute: (context, event) => router.push(event.data?.success_route || "/"),
-        goToFailRoute: (context, event) => router.push(event.data.fail_route),
-      },
-      devTools: NODE_ENV === "development"
-    });
+  const [{ context, matches }, send] = useMachine(puzzleMachine, {
+    context: { count, puzzleId, redirect: !SuccessComponent },
+    // Use the router hook from within react to fire the action within xstate
+    actions: {
+      // The TS error below is a bug in xstate, https://xstate.js.org/docs/guides/typescript.html#typegen
+      // @TODO: remove @ts-ignore when fixed
+      // @ts-ignore
+      goToSuccessRoute: (context, event) =>
+        router.push(event.data?.success_route || "/"),
+      goToFailRoute: (context, event) => router.push(event.data.fail_route),
+    },
+    devTools: NODE_ENV === "development",
+  });
 
   useEffect(() => {
-    send({ type: 'PUZZLE_INFO', puzzleInfo: { puzzleId, count } });
-  }, [send, puzzleId, count])
+    send({ type: "PUZZLE_INFO", puzzleInfo: { puzzleId, count } });
+  }, [send, puzzleId, count]);
 
   return (
     <>
-      {(matches('guessing') || matches('guessCorrect.go')) && (
-        <div className="loader mx-auto w-8 h-8 mt-10">
+      {(matches("guessing") || matches("guessCorrect.go")) && (
+        // adding padding and margin to make loading ball same height as
+        // the boxes for guessing
+        <div className="loader mx-auto w-8 h-8 m-24 p-6">
           <div className="ball-clip-rotate-multiple">
             <div></div>
             <div></div>
@@ -68,7 +70,7 @@ const Puzzle = ({
         </div>
       )}
 
-      {(matches('idle') || matches('guessIncorrect')) && (
+      {(matches("idle") || matches("guessIncorrect")) && (
         <div className="flex justify-center z-10">
           <div>
             <div className="flex py-5">
@@ -77,7 +79,7 @@ const Puzzle = ({
               </div>
               <h1 className="text-base font-bold pt-2 pl-4">Solve Puzzle</h1>
             </div>
-            <div className={clsx({ invisible: !matches('guessIncorrect') })}>
+            <div className={clsx({ invisible: !matches("guessIncorrect") })}>
               <div className="opacity-50">
                 <Markdown>
                   {failMessage ||
@@ -89,7 +91,7 @@ const Puzzle = ({
               {boxes && (
                 <RICIBs
                   amount={context.count}
-                  handleOutputString={(text) => send({ type: 'INPUT', text })}
+                  handleOutputString={(text) => send({ type: "INPUT", text })}
                   inputRegExp={/^.*$/}
                   autoFocus={true}
                   inputProps={loRange(context.count).map(() => ({
@@ -100,7 +102,9 @@ const Puzzle = ({
               {!boxes && (
                 <div className="flex items-center sm:w-full">
                   <input
-                    onChange={(e) => send({ type: 'INPUT', text: e.target.value })}
+                    onChange={(e) =>
+                      send({ type: "INPUT", text: e.target.value })
+                    }
                     type="text"
                     className="text-blue-800 w-full"
                     size={context.count}
@@ -118,7 +122,7 @@ const Puzzle = ({
         </div>
       )}
 
-      {matches('guessCorrect.stay') && SuccessComponent && <SuccessComponent />}
+      {matches("guessCorrect.stay") && SuccessComponent && <SuccessComponent />}
     </>
   );
 };

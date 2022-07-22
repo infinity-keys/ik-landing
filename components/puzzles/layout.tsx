@@ -7,8 +7,6 @@ import toNumber from "lodash/toNumber";
 import clsx from "clsx";
 
 import Wrapper from "@components/wrapper";
-import Header from "@components/header";
-import Footer from "@components/footer";
 import PuzzleThumbnail from "@components/puzzle-thumbnail";
 import PuzzlesPagination from "@components/puzzles/pagination";
 import LayoutButtons from "@components/puzzles/layout-buttons";
@@ -48,9 +46,7 @@ const PuzzlesLayout: NextPage<PageProps> = ({
       <Head>
         <title>Infinity Keys Puzzles</title>
       </Head>
-      <div className="radial-bg scanlines min-h-screen flex flex-col">
-        <Header />
-
+      <div className="radial-bg scanlines min-h-[calc(100vh-80px)] flex flex-col">
         <div className="px-4 flex-1 container">
           {layout !== PuzzleLayoutType.Unknown && (
             <>
@@ -88,8 +84,6 @@ const PuzzlesLayout: NextPage<PageProps> = ({
             </>
           )}
         </div>
-
-        <Footer />
       </div>
     </Wrapper>
   );
