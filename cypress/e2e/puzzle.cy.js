@@ -42,6 +42,7 @@ describe("infinitykeys.io/puzzles", () => {
     cy.get("a.play").contains("Puzzles").click();
     cy.get("a.next").contains("Next").click();
     cy.get("a.previous").contains("Previous").click();
+    cy.go("back");
   });
 
   it("correct input using input boxes navigates to puzzle solved page", () => {
