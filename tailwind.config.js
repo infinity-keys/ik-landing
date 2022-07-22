@@ -1,7 +1,7 @@
 const tailwindforms = require("@tailwindcss/forms");
 
 module.exports = {
-  content: ["./*{pages,components}/**/*.{js,ts,jsx,tsx,scss}"],
+  content: ["./*{pages,components}/**/*.{js,ts,jsx,tsx}"],
   theme: {
     container: {
       center: true,

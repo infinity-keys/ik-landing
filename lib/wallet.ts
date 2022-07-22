@@ -2,33 +2,41 @@ import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import { message } from "@lib/utils";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-// import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
+import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
+import {
+  AVAX_CHAIN_ID,
+  AVAX_PARAMS,
+  ETH_CHAIN_ID,
+  ETH_RPC_ID,
+  POLYGON_CHAIN_ID,
+  POLYGON_PARAMS,
+  POLYGON_RPC,
+} from "@lib/constants";
+import { toHex } from "./utils";
 // import Fortmatic from "fortmatic";
 
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider, // required
     options: {
-      infuraId: "c10d222a5bae4a8e97fad0915b06ff5d",
+      infuraId: ETH_RPC_ID,
     },
   },
-  // coinbasewallet: {
-  //   package: CoinbaseWalletSDK, // Required
-  //   options: {
-  //     appName: "My Awesome App", // Required
-  //     infuraId: "INFURA_ID", // Required
-  //     rpc: "", // Optional if `infuraId` is provided; otherwise it's required
-  //     chainId: 1, // Optional. It defaults to 1 if not provided
-  //     darkMode: false // Optional. Use dark theme, defaults to false
-  //   }
-  // },
+  coinbasewallet: {
+    package: CoinbaseWalletSDK, // Required
+    options: {
+      appName: "InfinityKeys", // Required
+      infuraId: ETH_RPC_ID, // Required
+      chainId: 1,
+    },
+  },
   // fortmatic: {
   //   package: Fortmatic, // required
   //   options: {
   //     key: "FORTMATIC_KEY", // required
   // network: {
   // // if we don't pass it, it will default to localhost:8454
-  //   rpcUrl: "https://rinkeby.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d",
+  //   rpcUrl: {ETH_RPC},
   //   chainId: 4,
   // },
   //   }
@@ -39,7 +47,6 @@ const providerOptions = {
 const web3Modal: Web3Modal | undefined =
   typeof window !== "undefined"
     ? new Web3Modal({
-        //network: "rinkeby", // optional- we dont care for now I think, but will be important once we add NFT claiming/anything on chain
         cacheProvider: false, // optional- can set to false if we want them to connect every time
         providerOptions,
       })
@@ -49,6 +56,7 @@ export const walletUtil = () => {
   let provider: ethers.providers.ExternalProvider;
   let library: ethers.providers.Web3Provider;
   let account: string;
+  let chain: number;
 
   /**
    * Pop the modal and set vars we may need later
@@ -57,11 +65,13 @@ export const walletUtil = () => {
     if (!web3Modal) throw new Error("No web3Modal");
 
     provider = await web3Modal.connect();
-    library = new ethers.providers.Web3Provider(provider);
+    library = new ethers.providers.Web3Provider(provider, "any");
 
     const accounts = await library.listAccounts();
     if (!accounts.length) throw new Error("No accounts found");
     account = accounts[0];
+
+    chain = (await library.getNetwork()).chainId;
 
     return retrieve();
   };
@@ -73,6 +83,7 @@ export const walletUtil = () => {
     provider,
     library,
     account,
+    chain,
   });
 
   const sign = async () => {
@@ -108,10 +119,66 @@ export const walletUtil = () => {
     web3Modal && web3Modal.clearCachedProvider();
   };
 
+  /**
+   * Set switch chain var to newChainId
+   */
+  const switchChain = async (newChainId: number) => {
+    if (
+      newChainId !== ETH_CHAIN_ID &&
+      newChainId !== AVAX_CHAIN_ID &&
+      newChainId !== POLYGON_CHAIN_ID
+    )
+      throw new Error("Invalid Chain Id");
+
+    if (newChainId === chain) return retrieve(); // same as current chain
+
+    if (chain && library?.provider?.request) {
+      try {
+        await library.provider.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: toHex(newChainId) }],
+        });
+        chain = newChainId;
+      } catch (switchError: any) {
+        //I think this should add AVAX to MetaMask if you dont have it yet
+        //have not tested
+        // may need to call switch ethereum chain after adding- unsure if auto
+        if (
+          switchError.code === 4902 ||
+          switchError?.data?.orginalError?.code === 4902
+        ) {
+          const chainParams =
+            newChainId === AVAX_CHAIN_ID
+              ? AVAX_PARAMS
+              : newChainId === POLYGON_CHAIN_ID
+              ? POLYGON_PARAMS
+              : undefined;
+
+          if (!chainParams) throw new Error("Invalid Chain Id.");
+
+          try {
+            await library.provider.request({
+              method: "wallet_addEthereumChain",
+              params: [chainParams],
+            });
+            chain = newChainId;
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    }
+
+    return retrieve();
+  };
+
   return {
     trigger,
     retrieve,
     sign,
     clear,
+    switchChain,
   };
 };
+
+export const wallet = walletUtil();

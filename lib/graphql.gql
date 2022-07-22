@@ -28,6 +28,9 @@ query PuzzleInfoBySuccess($success: String!) {
     simple_name
     puzzle_id
     success_message
+    nft {
+      tokenId
+    }
   }
 }
 
@@ -56,13 +59,25 @@ query UserPuzzlesInSubmitted($puzzleId: uuid, $puzzleRoutes: [String!]) {
   }
 }
 # A user submits a form after completing a puzzle
-mutation UserSubmission($puzzle_id: uuid, $user_id: uuid, $form_data: jsonb) {
+mutation UserSubmission(
+  $puzzle_id: uuid!
+  $user_id: uuid!
+  $form_data: jsonb
+  $email: String
+) {
   insert_submissions_one(
     object: { user_id: $user_id, puzzle_id: $puzzle_id, form_data: $form_data }
   ) {
     user_id
     puzzle_id
     form_data
+  }
+  update_users_by_pk(
+    pk_columns: { user_id: $user_id }
+    _set: { email: $email }
+  ) {
+    user_id
+    email
   }
 }
 
@@ -116,11 +131,41 @@ query MigrateUserSubmissions($fromUser: uuid, $toUser: uuid) {
   }
 }
 
-query PublicPuzzles {
-  puzzles(where: { list_pubicly: { _eq: true } }) {
+query PublicPuzzles($limit: Int = 10, $offset: Int = 0) {
+  puzzles(
+    limit: $limit
+    offset: $offset
+    where: { list_pubicly: { _eq: true } }
+    order_by: { sort_weight: asc, simple_name: asc }
+  ) {
     puzzle_id
     landing_route
     simple_name
     solution_char_count
+  }
+  count: puzzles_aggregate(where: { list_pubicly: { _eq: true } }) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query GetNftIdByPuzzleName($puzzleName: String) {
+  nfts(where: { puzzle: { simple_name: { _eq: $puzzleName } } }) {
+    tokenId
+  }
+}
+query GetAllNftClaims {
+  nfts {
+    puzzle {
+      simple_name
+    }
+  }
+}
+
+query GetPuzzleInfoByNftId($nftId: numeric) {
+  puzzles(where: { nft: { tokenId: { _eq: $nftId } } }) {
+    simple_name
+    puzzle_id
   }
 }

@@ -11,16 +11,22 @@ import Alert from "@components/alert";
 import PuzzleButton from "@components/puzzle-button";
 
 interface FormProps extends PuzzleInput {
-  name: string;
   email: string;
   address?: string;
 }
 
 interface ComponentProps extends PuzzleInput {
   successMessage?: string;
+  nftId?: string;
+  name: string;
 }
 
-const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
+const WalletEmail = ({
+  puzzleId,
+  successMessage,
+  nftId,
+  name,
+}: ComponentProps) => {
   const {
     register,
     handleSubmit,
@@ -67,12 +73,14 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
     <>
       {(isSubmitSuccessful || walletSigned) && (
         <>
-          <Alert text="Thanks for joining, we will be in touch!" />
+          <Alert text="You win!" />
+          <PuzzleButton text="More Puzzles" />
         </>
       )}
       {!isSubmitSuccessful && errors?.puzzleId && (
         <>
           <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
+          <PuzzleButton text="More Puzzles" />
         </>
       )}
       {!isSubmitSuccessful && !errors?.puzzleId && !walletSigned && (
@@ -81,27 +89,29 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
             <Alert text={successMessage || "You did it!"} />
           </div>
 
-          <p className="text-sm font-normal mb-8">
-            Connect your web3 wallet and sign the message to be part of an early
-            player leaderboard.
-          </p>
+          {!nftId && (
+            <p className="text-sm font-normal mb-8">
+              Connect your web3 wallet and sign the message to be part of an
+              early player leaderboard.
+            </p>
+          )}
 
           <div className="mb-10">
-            <Wallet onWalletSignature={onWalletSignature} />
+            {nftId ? (
+              <Link href={`/claim/${name}`}>
+                <a className="text-center text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4 mx-auto block">
+                  Claim NFT Treasure
+                </a>
+              </Link>
+            ) : (
+              <Wallet onWalletSignature={onWalletSignature} />
+            )}
           </div>
           <p className="text-center mb-8">- or -</p>
           <p className="text-sm font-normal mb-4">
             Drop your email if web3 is not your thing.
           </p>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <input
-              className="mb-6 block w-full lowercase rounded-md text-gray-150 placeholder:text-gray-150 text-sm py-2 px-4 bg-gray-500"
-              type="text"
-              placeholder="&rsaquo; Enter your name"
-              id="name"
-              {...register("name")}
-            />
-
             <input
               className="mb-6 block w-full lowercase rounded-md text-gray-150 placeholder:text-gray-150 text-sm py-2 px-4 bg-gray-500"
               type="email"

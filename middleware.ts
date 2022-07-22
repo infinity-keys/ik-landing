@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 
-import { makeUserToken, verifyToken } from "@lib/jwt";
-import { responsePathAsArray } from "graphql";
-import { IkJwt } from "@lib/types";
+import { jwtHasClaim, makeUserToken } from "@lib/jwt";
 
 export async function middleware(req: NextRequest) {
   const response = NextResponse.next();
 
   let token = req.cookies.get(IK_ID_COOKIE);
 
-  if (req.nextUrl.pathname.startsWith("/solved")) {
+  if (
+    req.nextUrl.pathname.startsWith("/solved") ||
+    req.nextUrl.pathname.startsWith("/claim")
+  ) {
     try {
       // No token is nonstarter
       if (!token) throw new Error("No token on solved page");
@@ -21,15 +22,11 @@ export async function middleware(req: NextRequest) {
       const success = req.nextUrl.pathname.split("/")[2];
 
       // Bail if we're not on the solved page
-      if (!success) throw new Error('"success" param not found on solved page');
+      if (!success) throw new Error('"success" param not found on gated page');
 
-      const verified = await verifyToken(token);
-      // @TOOD: pull in superstruct or use jose's validator to ensure shape
-      const payload = verified.payload as unknown as IkJwt;
+      const allowedToView = await jwtHasClaim(token, [success]);
 
-      // Allow through if the user has this puzzle on their claims
-      if (payload?.claims?.[IK_CLAIMS_NAMESPACE].puzzles.includes(success))
-        return response;
+      if (allowedToView) return response;
       // Otherwise bail
       throw new Error("User does not have solved puzzle claim");
     } catch (e) {
@@ -39,6 +36,7 @@ export async function middleware(req: NextRequest) {
   }
 
   // No need to create new token if they've already got one
+  // @TODO: check token expiration time and refresh
   if (token) return response;
 
   // Anonymous users get a JWT for their session, the JWT does not expire since

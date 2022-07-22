@@ -6,18 +6,20 @@
     "build": "yarn generate:once && next build",
     "start": "next start",
     "lint": "tsc && next lint",
-    "generate:once": "graphql-codegen",
-    "generate:watch": "graphql-codegen --watch",
+    "generate:once": "yarn run typechain && graphql-codegen",
+    "generate:watch": "yarn run typechain && graphql-codegen --watch",
     "fmt": "eslint . --fix",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --headless --browser chrome",
-    "cypress:ci": "yarn build && start-server-and-test start http://localhost:3000 cypress:run"
+    "cypress:ci": "yarn build && start-server-and-test start http://localhost:3000 cypress:run",
+    "typechain": "typechain --target ethers-v5 \"nfts/contracts/**/*.json\" --out-dir lib/generated/ethers-contract",
+    "analyze": "ANALYZE=true yarn build"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.1",
     "@coinbase/wallet-sdk": "^3.3.0",
     "@formspree/react": "^2.2.4",
-    "@graphql-codegen/cli": "^2.7.0",
+    "@graphql-codegen/cli": "^2.9.1",
     "@graphql-codegen/introspection": "^2.1.1",
     "@graphql-codegen/typescript": "^2.5.1",
     "@graphql-codegen/typescript-graphql-request": "^4.4.10",
@@ -45,13 +47,17 @@
     "react-markdown": "^8.0.3",
     "uuid": "^8.3.2",
     "web3modal": "^1.9.8",
-    "xstate": "^4.32.1"
+    "xstate": "^4.32.1",
+    "zod": "^3.17.9"
   },
   "devDependencies": {
+    "@typechain/ethers-v5": "^10.1.0",
+    "@next/bundle-analyzer": "^12.2.2",
     "@types/lodash": "^4.14.178",
     "@types/node": "^18",
     "@types/react": "^18",
     "@types/uuid": "^8.3.4",
+    "@xstate/inspect": "^0.7.0",
     "cypress": "^10.3.0",
     "eslint": "^8",
     "eslint-config-next": "^12",
@@ -59,9 +65,9 @@
     "postcss": "^8.4.5",
     "postcss-preset-env": "^7.7.2",
     "prettier": "^2.7.1",
-    "sass": "^1.53.0",
     "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.1.6",
+    "typechain": "^8.1.0",
     "typescript": "^4",
     "yarn-audit-fix": "^9.3.2"
   }

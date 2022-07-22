@@ -24,3 +24,8 @@ export const message = (nonce: string) => `${welcome}\n\n${nonce}`;
  */
 export const cleanGqlMarkdown = (markdown: string) =>
   markdown.split(/\\n/).join("\n");
+
+export const toHex = (num: number) => {
+  const val = Number(num);
+  return "0x" + val.toString(16);
+};

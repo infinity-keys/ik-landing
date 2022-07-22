@@ -31,8 +31,8 @@ export default function Header() {
             <div className="relative flex items-center justify-between h-20">
               <div className="logo flex-shrink-0 flex items-center">
                 <div className="block lg:hidden h-12 w-auto">
-                  <Link href={"/"}>
-                    <a>
+                  <Link href="/">
+                    <a data-cy="ik logo">
                       <Image
                         src="/logo.svg"
                         width={100}
@@ -60,7 +60,7 @@ export default function Header() {
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <Link href={item.href} key={item.name}>
-                        <a className="text-2xl font-medium hover:text-turquoise">
+                        <a className="header-nav--link text-2xl font-medium hover:text-turquoise">
                           {item.name}
                         </a>
                       </Link>

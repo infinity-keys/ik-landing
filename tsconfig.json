@@ -9,6 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
+    "downlevelIteration": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -19,7 +20,8 @@
       "@lib/*": ["lib/*"],
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
-      "@nfts/*": ["nfts/*"]
+      "@nfts/*": ["nfts/*"],
+      "@contracts/*": ["lib/generated/ethers-contract/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
