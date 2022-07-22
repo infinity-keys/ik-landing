@@ -146,3 +146,23 @@ query PublicPuzzles($limit: Int = 10, $offset: Int = 0) {
     }
   }
 }
+
+query GetNftIdByPuzzleName($puzzleName: String) {
+  nfts(where: { puzzle: { simple_name: { _eq: $puzzleName } } }) {
+    tokenId
+  }
+}
+query GetAllNftClaims {
+  nfts {
+    puzzle {
+      simple_name
+    }
+  }
+}
+
+query GetPuzzleInfoByNftId($nftId: numeric) {
+  puzzles(where: { nft: { tokenId: { _eq: $nftId } } }) {
+    simple_name
+    puzzle_id
+  }
+}
