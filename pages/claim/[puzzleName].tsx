@@ -163,7 +163,8 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
                   </a>
                 </div>
               )}
-
+              
+              {/* @TODO: refactor this to be a shared loader component */}
               {isLoading && (
                 <div className="loader mx-auto mt-10">
                   <div className="ball-clip-rotate-multiple">
