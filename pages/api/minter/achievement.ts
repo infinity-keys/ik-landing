@@ -11,6 +11,7 @@ import {
 } from "@lib/constants";
 
 import { IKAchievementABI__factory } from "@lib/generated/ethers-contract/factories/IKAchievementABI__factory";
+import { jwtHasClaim } from "@lib/jwt";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,8 +19,7 @@ export default async function handler(
 ) {
   const { account, tokenId } = req.query;
 
-  if (!account || !tokenId) return res.status(500).end();
-  if (typeof tokenId === "object" || typeof account === "object")
+  if (typeof tokenId !== "string" || typeof account !== "string")
     return res.status(500).end();
 
   const contractAVAX = IKAchievementABI__factory.connect(
@@ -48,5 +48,5 @@ export default async function handler(
 
   const claimed = ethStatus || avaxStatus || polygonStatus;
 
-  res.status(200).json({ claimed: claimed });
+  res.json({ claimed: claimed });
 }

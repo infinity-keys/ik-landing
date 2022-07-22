@@ -1,8 +1,9 @@
 import { jwtVerify, SignJWT } from "jose";
 import { nanoid } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
+import isEmpty from "lodash/isEmpty";
 
-import { JWT_SECRET_KEY } from "@lib/constants";
+import { IK_CLAIMS_NAMESPACE, JWT_SECRET_KEY } from "@lib/constants";
 import { epochMinus30s } from "./utils";
 import { IkJwt } from "./types";
 
@@ -15,10 +16,9 @@ export interface HasuraClaims {
   };
 }
 
-// const anonymousClaims: HasuraClaims = {
-//   "https://hasura.io/jwt/claims": {
-//     "x-hasura-allowed-roles": ["anonymous", "user", "manager", "api", "admin"],
-//     "x-hasura-default-role": "anonymous",
+// const anonymousClaims: HasuraClaims = { "https://hasura.io/jwt/claims": {
+//   "x-hasura-allowed-roles": ["anonymous", "user", "manager", "api", "admin"],
+//   "x-hasura-default-role": "anonymous",
 //   },
 // };
 const apiClaims: HasuraClaims = {
@@ -55,8 +55,8 @@ export const makeUserToken = (payload: IkJwt, userId?: string) => {
     .setIssuedAt(epochMinus30s())
     .setJti(nanoid());
 
-  // If there is no subject in payload - or a userId is provided - set the subject
-  // to either the userId or uuid()
+  // If there is no subject in payload - or a userId is provided - set the subject to either the
+  // userId or uuid()
   if (!payload.sub || userId) {
     token.setSubject(userId ?? uuidv4());
   }
@@ -69,3 +69,19 @@ export const makeUserToken = (payload: IkJwt, userId?: string) => {
  */
 export const verifyToken = (token: string) =>
   jwtVerify(token, new TextEncoder().encode(JWT_SECRET_KEY));
+
+/**
+ * Given a JWT string, check that the users claims claim one or mroe puzzle
+ * namespaces
+ */
+export const jwtHasClaim = async (jwt: string, puzzle: string[]) => {
+  const verified = await verifyToken(jwt);
+  if (!verified) return false;
+
+  // @TOOD: pull in superstruct or use jose's validator to ensure shape
+  const payload = verified.payload as unknown as IkJwt;
+
+  return !!puzzle.filter((puzzle) =>
+    payload?.claims?.[IK_CLAIMS_NAMESPACE].puzzles.includes(puzzle)
+  ).length;
+};

@@ -8,7 +8,10 @@ import {
   CONTRACT_ADDRESS_POLYGON,
   ETH_CHAIN_ID,
   POLYGON_CHAIN_ID,
+  IK_ID_COOKIE,
 } from "@lib/constants";
+import { gqlApiSdk } from "@lib/server";
+import { jwtHasClaim } from "@lib/jwt";
 
 const privateKey = process.env.PRIVATE_KEY_VERIFY;
 const secret = process.env.MINT_SECRET_VERIFY;
@@ -24,14 +27,22 @@ export default async function handler(
   res: NextApiResponse<Signature>
 ) {
   const { account, tokenId, chainId } = req.query;
-  if (!account || !tokenId || !chainId || !wallet) return res.status(500).end();
 
   if (
-    typeof tokenId === "object" ||
-    typeof account === "object" ||
-    typeof chainId === "object"
+    typeof tokenId !== "string" ||
+    typeof account !== "string" ||
+    typeof chainId !== "string"
   )
     return res.status(500).end();
+
+  // Check if we're supposed to be here
+  const jwt = req.cookies[IK_ID_COOKIE];
+  if (!jwt) return res.status(401).end();
+  const gql = await gqlApiSdk();
+  const { puzzles } = await gql.GetPuzzleInfoByNftId({ nftId: tokenId });
+  const puzzleNames = puzzles.map(({ simple_name }) => simple_name);
+  const canAccess = await jwtHasClaim(jwt, puzzleNames);
+  if (!canAccess) return res.status(403).end();
 
   const chainIdAsNumber = parseInt(chainId, 10);
 
@@ -52,5 +63,5 @@ export default async function handler(
 
   const signature = await wallet.signMessage(ethers.utils.arrayify(hash));
 
-  res.status(200).json({ signature: signature });
+  res.json({ signature });
 }
