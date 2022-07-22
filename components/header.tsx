@@ -78,7 +78,7 @@ export default function Header() {
                 </div>
               </div> */}
 
-              <PuzzleButton />
+              <PuzzleButton text="Puzzles" href="/puzzles" />
 
               {/* hamburger icon, visible mobile only */}
               <div className="hamburger flex items-center pr-4 sm:hidden">
