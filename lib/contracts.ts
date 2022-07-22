@@ -6,7 +6,7 @@ export let contractPolygon:
   | undefined
   | ReturnType<typeof IKAchievementABI__factory.connect> = undefined;
 
-const getcontractPolygon = () => {
+export const getcontractPolygon = () => {
   if (contractPolygon) return contractPolygon;
 
   contractPolygon = IKAchievementABI__factory.connect(
