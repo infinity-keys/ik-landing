@@ -15,44 +15,30 @@ export const PUZZLE_FAILED_BASE = "puzzle"; // back to landing
 export const PAGINATION_COUNTS = [8, 16, 32, 64];
 
 //Minting Stuff
-//(CURRENTLY SET FOR FUJI + RINKEBY)
-export const AVAX_CHAIN_ID = 43113;
+//AVAX
+export const AVAX_CHAIN_ID = 43114;
 export const CONTRACT_ADDRESS_AVAX =
-  "0xf81F24cA94CF722e6731fF1A7B5aF1189ace78EC";
-export const SNOWTRACE_TRACKER = "https://testnet.snowtrace.io";
-export const AVAX_RPC = "https://api.avax-test.network/ext/bc/C/rpc";
+  "0xB40fD6825a366081192d890d2760113C066761Ef";
+export const SNOWTRACE_TRACKER = "https://snowtrace.io";
+export const AVAX_RPC = "https://api.avax.network/ext/bc/C/rpc";
 export const AVAX_MARKETPLACE_LINK = "https://joepegs.com/item/";
 export const joePegsLink = `${AVAX_MARKETPLACE_LINK}${CONTRACT_ADDRESS_AVAX}/`;
 export const AVAX_PARAMS = {
-  chainId: "0x43113",
-  rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
-  chainName: "Avalanche FUJI C-Chain",
+  chainId: AVAX_CHAIN_ID,
+  rpcUrls: [AVAX_RPC],
+  chainName: "Avalanche Network",
   nativeCurrency: { name: "AVAX", decimals: 18, symbol: "AVAX" },
-  blockExplorerUrls: ["https://testnet.snowtrace.io/"],
+  blockExplorerUrls: [SNOWTRACE_TRACKER],
 };
-/*
-//real AVAX !! above is fuji
-export const AVAX_PARAMS = {
-  "0x43114": {
-    chainId: "0x43114",
-    rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
-    chainName: "Avalanche Network",
-    nativeCurrency: { name: "AVAX", decimals: 18, symbol: "AVAX" },
-    blockExplorerUrls: ["https://snowtrace.io/"],
-  },
-};
-*/
 
 // ETH PARAMS
-export const ETH_CHAIN_ID = 4;
+export const ETH_CHAIN_ID = 1;
 export const CONTRACT_ADDRESS_ETH =
-  "0x49B28d2a40C8a8dD7cdFDfBc345F2d0A3f1Ef4E7";
-export const ETHERSCAN_TRACKER = "https://rinkeby.etherscan.io";
+  "0x54b743D6055e3BBBF13eb2C748A3783516156e5B";
+export const ETHERSCAN_TRACKER = "https://etherscan.io";
 export const ETH_RPC_ID = "c10d222a5bae4a8e97fad0915b06ff5d";
-export const ETH_RPC = `https://rinkeby.infura.io/v3/${ETH_RPC_ID}`;
-export const ETH_MARKETPLACE_LINK =
-  "https://testnets.opensea.io/assets/rinkeby/";
-//"https://opensea.io/assets/ethereum/";
+export const ETH_RPC = `https://mainnet.infura.io/v3/${ETH_RPC_ID}`;
+export const ETH_MARKETPLACE_LINK = "https://opensea.io/assets/ethereum/";
 export const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/`;
 
 // POLYGON PARAMS
