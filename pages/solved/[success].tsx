@@ -67,7 +67,7 @@ export async function getStaticProps({
       name: simple_name,
       puzzleId: puzzle_id,
       successMessage: success_message || "",
-      nftId: nft?.tokenId.toString() || null,
+      nftId: nft?.tokenId.toString() || "",
     },
   };
 }
