@@ -17,9 +17,16 @@ interface FormProps extends PuzzleInput {
 
 interface ComponentProps extends PuzzleInput {
   successMessage?: string;
+  nftId?: string;
+  name: string;
 }
 
-const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
+const WalletEmail = ({
+  puzzleId,
+  successMessage,
+  nftId,
+  name,
+}: ComponentProps) => {
   const {
     register,
     handleSubmit,
@@ -82,13 +89,23 @@ const WalletEmail = ({ puzzleId, successMessage }: ComponentProps) => {
             <Alert text={successMessage || "You did it!"} />
           </div>
 
-          <p className="text-sm font-normal mb-8">
-            Connect your web3 wallet and sign the message to be part of an early
-            player leaderboard.
-          </p>
+          {!nftId && (
+            <p className="text-sm font-normal mb-8">
+              Connect your web3 wallet and sign the message to be part of an
+              early player leaderboard.
+            </p>
+          )}
 
           <div className="mb-10">
-            <Wallet onWalletSignature={onWalletSignature} />
+            {nftId ? (
+              <Link href={`/claim/${name}`}>
+                <a className="text-center text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4 mx-auto block">
+                  Claim NFT Treasure
+                </a>
+              </Link>
+            ) : (
+              <Wallet onWalletSignature={onWalletSignature} />
+            )}
           </div>
           <p className="text-center mb-8">- or -</p>
           <p className="text-sm font-normal mb-4">
