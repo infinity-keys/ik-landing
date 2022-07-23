@@ -169,3 +169,19 @@ query GetPuzzleInfoByNftId($nftId: numeric) {
     puzzle_id
   }
 }
+
+query StarterPackPuzzles {
+  puzzles(
+    where: {
+      _or: [
+        { simple_name: { _eq: "notright" } }
+        { simple_name: { _eq: "communitycode" } }
+        { simple_name: { _eq: "thesis" } }
+      ]
+    }
+  ) {
+    simple_name
+    landing_route
+    puzzle_id
+  }
+}
