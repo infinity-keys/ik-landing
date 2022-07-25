@@ -6,6 +6,10 @@ interface ButtonProps {
   href?: string;
   textColor?: "dark" | "light";
   fullWidth?: boolean;
+  type?: "button" | "submit" | "reset";
+  value?: string;
+  onclick?: any;
+  disabled?: boolean;
 }
 
 export default function Button({
@@ -13,6 +17,9 @@ export default function Button({
   href,
   textColor = "dark",
   fullWidth = false,
+  type,
+  onclick,
+  disabled,
 }: ButtonProps) {
   const classes = clsx(
     "bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-lg font-medium text-center text-white hover:text-blue",
@@ -31,5 +38,9 @@ export default function Button({
     );
   }
 
-  return <button className={classes}>{text}</button>;
+  return (
+    <button className={classes} type={type} onClick={onclick} disabled>
+      {text}
+    </button>
+  );
 }

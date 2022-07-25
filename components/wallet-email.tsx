@@ -116,14 +116,13 @@ const WalletEmail = ({
             />
 
             <input type="hidden" {...register("puzzleId")} value={puzzleId} />
-            <button
-              className="block w-full text-xs text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4"
+            <Button
+              text="Join the mailing list"
+              fullWidth={true}
               type="submit"
               value="Join the mailing list"
               disabled={!isValid}
-            >
-              Join the mailing list
-            </button>
+            />
           </form>
           <div className="mt-6 flex">
             <div className="w-full flex items-center justify-center">
