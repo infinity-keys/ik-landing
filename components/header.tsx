@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
-import PuzzleButton from "./puzzle-button";
+import Button from "./button";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -78,7 +78,7 @@ export default function Header() {
                 </div>
               </div> */}
 
-              <PuzzleButton text="Puzzles" href="/puzzles" />
+              <Button text="Puzzles" href="/puzzles" />
 
               {/* hamburger icon, visible mobile only */}
               <div className="hamburger flex items-center pr-4 sm:hidden">

@@ -1,6 +1,6 @@
 import TwitterIcon from "./svg/twitter-icon-svg";
 import Discord from "./svg/discord-svg";
-import PuzzleButton from "./puzzle-button";
+import Button from "./button";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -63,7 +63,7 @@ export default function Footer() {
             </div>
             {/* right */}
             <div className="pl-6">
-              <PuzzleButton text="Puzzles" href="/puzzles" />
+              <Button text="Puzzles" href="/puzzles" />
             </div>
             {/* <div className="ml-10 space-x-4">
               <a

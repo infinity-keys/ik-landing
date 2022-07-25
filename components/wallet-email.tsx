@@ -8,7 +8,7 @@ import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
 import Wallet from "@components/wallet";
 import Alert from "@components/alert";
-import PuzzleButton from "@components/puzzle-button";
+import Button from "@components/button";
 
 interface FormProps extends PuzzleInput {
   email: string;
@@ -76,7 +76,7 @@ const WalletEmail = ({
         {!isSubmitSuccessful && errors?.puzzleId && (
           <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
         )}
-        <PuzzleButton text="More Puzzles" href="/puzzles" />
+        <Button text="More Puzzles" href="/puzzles" />
       </>
       {!isSubmitSuccessful && !errors?.puzzleId && !walletSigned && (
         <div className="">
@@ -93,11 +93,11 @@ const WalletEmail = ({
 
           <div className="mb-10">
             {nftId ? (
-              <Link href={`/claim/${name}`}>
-                <a className="text-center text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4 mx-auto block">
-                  Claim NFT Treasure
-                </a>
-              </Link>
+              <Button
+                text="Claim NFT Treasure"
+                href={`/claim/${name}`}
+                fullWidth={true}
+              />
             ) : (
               <Wallet onWalletSignature={onWalletSignature} />
             )}
