@@ -34,7 +34,6 @@ const buttonData = [
 const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
   const width = useCurrentWidth();
   const layout = width < 640 ? PuzzleLayoutType.List : PuzzleLayoutType.Grid;
-  console.log("width: ", width);
 
   return (
     <Wrapper>
