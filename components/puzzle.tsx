@@ -62,8 +62,8 @@ const Puzzle = ({
       {(matches("guessing") || matches("guessCorrect.go")) && (
         // adding padding and margin to make loading ball same height as
         // the boxes for guessing
-        <div className="loader mx-auto w-8 h-8 m-24 p-6">
-          <div className="ball-clip-rotate-multiple">
+        <div className="loader mx-auto w-8 h-8 lg:my-[27.5%] lg:mx-auto m-[22.5%]">
+          <div className="ball-clip-rotate-multiple ml-[18px]">
             <div></div>
             <div></div>
           </div>
