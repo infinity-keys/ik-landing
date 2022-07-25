@@ -22,6 +22,7 @@ import {
   openseaPolygonLink,
 } from "@lib/constants";
 import { useState } from "react";
+import { minterUtil } from "@lib/minter";
 
 interface PageProps {
   puzzles: StarterPackPuzzlesQuery["puzzles"];
@@ -43,14 +44,52 @@ const buttonData = [
 ];
 
 const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
+  // abstract this away at some point- requisite tokenIds for pack
+  const tokenIds = [0];
+
   const width = useCurrentWidth();
   const layout = width < 640 ? PuzzleLayoutType.List : PuzzleLayoutType.Grid;
   const [chain, setChain] = useState<number>();
+  const [owned, setOwned] = useState(false);
+  const [account, setAccount] = useState<string>();
 
   const connectWallet = async () => {
     const { account, chain } = await wallet.trigger();
     setChain(chain);
+    setAccount(account);
+
+    //can we add the fun spinny ball for this part?
+    setOwned(await checkIfOwned(account, tokenIds, chain));
   };
+
+  const checkIfOwned = async (
+    account: string,
+    tokenids: number[],
+    chainId: number
+  ) => {
+    let tokenIds = "";
+    for (let i = 0; i < tokenids.length; i++) {
+      tokenIds += `tokenids=${tokenids[i].toString()}&`;
+    }
+    const url = `/api/minter/check-balance?account=${account}&${tokenIds}chainId=${chainId}`;
+
+    const response = await fetch(url);
+    if (response.ok) return (await response.json()).claimed;
+    else throw await response.text();
+  };
+
+  // Commented this out due to it being mainnet!!!
+  //dont want to accidentally test there
+
+  // const mint = async () => {
+  //   //ideally not hardcoded! tokenId to claim
+  //   const minter = await minterUtil(3);
+  //   //setIsLoading(true); //spinny ball of fun!
+  //   const { txMessage, claimedStatus } = await minter.mint();
+  //   //setIsLoading(false);
+  //   //setTxMessage(txMessage);
+  //   //setClaimed(claimedStatus);
+  // };
 
   return (
     <Wrapper>
@@ -90,7 +129,7 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
                 className="text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark rounded-md py-2 w-44 mb-8"
                 onClick={() => connectWallet()}
               >
-                {chain ? "Check Wallet" : "Connect Wallet"}
+                {owned ? "Mint" : "Connect Wallet"}
               </button>
 
               {chain && (
@@ -105,9 +144,14 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
                         }
                       )}
                       key={name}
-                      onClick={async () =>
-                        setChain((await wallet.switchChain(chain_id)).chain)
-                      }
+                      onClick={async () => {
+                        const newChain = (await wallet.switchChain(chain_id))
+                          .chain;
+                        setChain(newChain);
+                        setOwned(
+                          await checkIfOwned(account, tokenIds, newChain)
+                        );
+                      }}
                       disabled={chain === chain_id}
                     >
                       {chain === chain_id
