@@ -44,7 +44,7 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
 
       <div className="w-full pt-4 pb-4 min-h-screen radial-bg relative z-0">
         <div className="container px-4 max-w-3xl">
-          <p className="mt-12">
+          <p className="mt-12 sm:mt-16">
             To be eligible to claim the Starter Pack Achievement you must
             successfully complete the following puzzles and claim the
             corresponding achievement NFT. All three NFTs should be claimed on
