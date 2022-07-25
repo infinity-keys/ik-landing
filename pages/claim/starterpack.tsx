@@ -10,7 +10,18 @@ import Wrapper from "@components/wrapper";
 import PuzzleThumbnail from "@components/puzzle-thumbnail";
 import { StarterPackPuzzlesQuery } from "@lib/generated/graphql";
 import { PuzzleLayoutType } from "@lib/types";
+import { wallet } from "@lib/wallet";
 import useCurrentWidth from "@hooks/useCurrentWidth";
+
+import {
+  AVAX_CHAIN_ID,
+  ETH_CHAIN_ID,
+  POLYGON_CHAIN_ID,
+  openseaLink,
+  joePegsLink,
+  openseaPolygonLink,
+} from "@lib/constants";
+import { useState } from "react";
 
 interface PageProps {
   puzzles: StarterPackPuzzlesQuery["puzzles"];
@@ -18,15 +29,15 @@ interface PageProps {
 
 const buttonData = [
   {
-    // chain_id: ETH_CHAIN_ID,
+    chain_id: ETH_CHAIN_ID,
     name: "Ethereum",
   },
   {
-    // chain_id: AVAX_CHAIN_ID,
+    chain_id: AVAX_CHAIN_ID,
     name: "Avalanche",
   },
   {
-    // chain_id: POLYGON_CHAIN_ID,
+    chain_id: POLYGON_CHAIN_ID,
     name: "Polygon",
   },
 ];
@@ -34,6 +45,12 @@ const buttonData = [
 const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
   const width = useCurrentWidth();
   const layout = width < 640 ? PuzzleLayoutType.List : PuzzleLayoutType.Grid;
+  const [chain, setChain] = useState<number>();
+
+  const connectWallet = async () => {
+    const { account, chain } = await wallet.trigger();
+    setChain(chain);
+  };
 
   return (
     <Wrapper>
@@ -69,20 +86,37 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
             </ul>
 
             <div className="text-center mb-12">
-              <button className="text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark rounded-md py-2 w-44 mb-8">
-                Check Wallet
+              <button
+                className="text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark rounded-md py-2 w-44 mb-8"
+                onClick={() => connectWallet()}
+              >
+                {chain ? "Check Wallet" : "Connect Wallet"}
               </button>
 
-              <div className="text-white/75 flex flex-col md:block">
-                {buttonData.map(({ name }) => (
-                  <button
-                    className="transition my-2 hover:text-turquoise md:mx-4 md:my-0"
-                    key={name}
-                  >
-                    Switch to {name}
-                  </button>
-                ))}
-              </div>
+              {chain && (
+                <div className="text-white/75 flex flex-col md:block">
+                  {buttonData.map(({ name, chain_id }) => (
+                    <button
+                      className={clsx(
+                        "transition my-2 hover:text-turquoise md:mx-4 md:my-0",
+                        {
+                          "text-white/50 hover:text-white/50":
+                            chain === chain_id,
+                        }
+                      )}
+                      key={name}
+                      onClick={async () =>
+                        setChain((await wallet.switchChain(chain_id)).chain)
+                      }
+                      disabled={chain === chain_id}
+                    >
+                      {chain === chain_id
+                        ? `Connected to ${name}`
+                        : `Switch to ${name}`}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
