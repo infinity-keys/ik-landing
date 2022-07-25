@@ -10,6 +10,7 @@ import Wrapper from "@components/wrapper";
 import PuzzleThumbnail from "@components/puzzle-thumbnail";
 import { StarterPackPuzzlesQuery } from "@lib/generated/graphql";
 import { PuzzleLayoutType } from "@lib/types";
+import useCurrentWidth from "@hooks/useCurrentWidth";
 
 interface PageProps {
   puzzles: StarterPackPuzzlesQuery["puzzles"];
@@ -31,7 +32,8 @@ const buttonData = [
 ];
 
 const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
-  const layout = PuzzleLayoutType.Grid;
+  const width = useCurrentWidth();
+  const layout = width < 640 ? PuzzleLayoutType.List : PuzzleLayoutType.Grid;
 
   return (
     <Wrapper>
@@ -52,7 +54,7 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
           <ul
             role="list"
             className={clsx(
-              "grid grid-cols-1 gap-6 py-8 sm:grid-cols-2 md:grid-cols-3 my-14"
+              "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 my-10 sm:my-14"
             )}
           >
             {puzzles.map(({ puzzle_id, landing_route, simple_name }) => (
@@ -65,7 +67,7 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
             ))}
           </ul>
 
-          <div className="text-center">
+          <div className="text-center mb-12">
             <button className="text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark rounded-md py-2 w-44 mb-8">
               Check Wallet
             </button>
