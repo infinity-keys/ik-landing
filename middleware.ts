@@ -6,6 +6,8 @@ import { jwtHasClaim, makeUserToken } from "@lib/jwt";
 export async function middleware(req: NextRequest) {
   const response = NextResponse.next();
 
+  if (req.nextUrl.pathname === "/claim/starterpack") return response;
+
   let token = req.cookies.get(IK_ID_COOKIE);
 
   if (
@@ -24,9 +26,7 @@ export async function middleware(req: NextRequest) {
       // Bail if we're not on the solved page
       if (!success) throw new Error('"success" param not found on gated page');
 
-      const allowedToView =
-        (await jwtHasClaim(token, [success])) ||
-        req.nextUrl.pathname.startsWith("/claim/starterpack");
+      const allowedToView = await jwtHasClaim(token, [success]);
 
       if (allowedToView) return response;
       // Otherwise bail
