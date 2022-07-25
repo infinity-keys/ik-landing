@@ -71,18 +71,13 @@ const WalletEmail = ({
 
   return (
     <>
-      {(isSubmitSuccessful || walletSigned) && (
-        <>
-          <Alert text="You win!" />
-          <PuzzleButton text="More Puzzles" />
-        </>
-      )}
-      {!isSubmitSuccessful && errors?.puzzleId && (
-        <>
+      <>
+        {(isSubmitSuccessful || walletSigned) && <Alert text="You win!" />}
+        {!isSubmitSuccessful && errors?.puzzleId && (
           <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
-          <PuzzleButton text="More Puzzles" />
-        </>
-      )}
+        )}
+        <PuzzleButton text="More Puzzles" href="/puzzles" />
+      </>
       {!isSubmitSuccessful && !errors?.puzzleId && !walletSigned && (
         <div className="">
           <div className="mb-8">

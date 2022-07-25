@@ -63,7 +63,7 @@ export default function Footer() {
             </div>
             {/* right */}
             <div className="pl-6">
-              <PuzzleButton />
+              <PuzzleButton text="Puzzles" href="/puzzles" />
             </div>
             {/* <div className="ml-10 space-x-4">
               <a
