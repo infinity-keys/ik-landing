@@ -13,8 +13,8 @@ export default function PuzzleButton({
   textColor = "dark",
 }: PuzzleButtonProps) {
   const classes = clsx(
-    "play inline-block bg-turquoise hover:bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-xl font-medium text-white hover:text-blue",
-    { "text-black": textColor === "dark" }
+    "play inline-block bg-turquoise hover:bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-xl font-medium hover:text-blue",
+    { "text-white": textColor === "dark" }
   );
 
   if (href) {
