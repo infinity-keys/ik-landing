@@ -38,7 +38,7 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
   return (
     <Wrapper>
       <Head>
-        <title>Infinity Keys</title>
+        <title>Starter Pack - Infinity Keys</title>
       </Head>
       <Header />
 
