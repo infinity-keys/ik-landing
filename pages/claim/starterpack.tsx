@@ -8,6 +8,7 @@ import Header from "@components/header";
 import Footer from "@components/footer";
 import Wrapper from "@components/wrapper";
 import PuzzleThumbnail from "@components/puzzle-thumbnail";
+import Alert from "@components/alert";
 import { StarterPackPuzzlesQuery } from "@lib/generated/graphql";
 import { PuzzleLayoutType } from "@lib/types";
 import { wallet } from "@lib/wallet";
@@ -49,17 +50,21 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
 
   const width = useCurrentWidth();
   const layout = width < 640 ? PuzzleLayoutType.List : PuzzleLayoutType.Grid;
-  const [chain, setChain] = useState<number>();
-  const [owned, setOwned] = useState(false);
-  const [account, setAccount] = useState<string>();
+  const [chain, setChain] = useState<number | undefined>();
+  const [owned, setOwned] = useState<boolean>(false);
+  const [account, setAccount] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const connectWallet = async () => {
-    const { account, chain } = await wallet.trigger();
-    setChain(chain);
-    setAccount(account);
-
-    //can we add the fun spinny ball for this part?
-    setOwned(await checkIfOwned(account, tokenIds, chain));
+    try {
+      const { account, chain } = await wallet.trigger();
+      setChain(chain);
+      setAccount(account);
+      setOwned(await checkIfOwned(account, tokenIds, chain));
+    } catch (err) {
+      console.log("err: ", err);
+    }
   };
 
   const checkIfOwned = async (
@@ -67,19 +72,37 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
     tokenids: number[],
     chainId: number
   ) => {
+    setMessage("");
+    setLoading(true);
     let tokenIds = "";
+
     for (let i = 0; i < tokenids.length; i++) {
       tokenIds += `tokenids=${tokenids[i].toString()}&`;
     }
+
     const url = `/api/minter/check-balance?account=${account}&${tokenIds}chainId=${chainId}`;
 
     const response = await fetch(url);
-    if (response.ok) return (await response.json()).claimed;
-    else throw await response.text();
+
+    if (response.ok) {
+      const data = await response.json();
+      if (!data.claimed)
+        setMessage(
+          "You do not have the required NFTS on this chain. Please ensure you have completed the above puzzles and are on the correct chain."
+        );
+      setLoading(false);
+      return data.claimed;
+    } else {
+      setLoading(false);
+      setMessage("Something went wrong. Please try");
+      throw await response.text();
+    }
   };
 
   // Commented this out due to it being mainnet!!!
   //dont want to accidentally test there
+
+  const mint = () => console.log("owned: ", owned);
 
   // const mint = async () => {
   //   //ideally not hardcoded! tokenId to claim
@@ -124,12 +147,38 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
               ))}
             </ul>
 
+            {message && (
+              <div className="max-w-lg mx-auto mb-4">
+                <Alert text={message} />
+              </div>
+            )}
+
+            {loading && (
+              <div className="loader mx-auto h-8 w-8 flex justify-center">
+                <div className="ball-clip-rotate-multiple">
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+            )}
+
             <div className="text-center mb-12">
               <button
-                className="text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark rounded-md py-2 w-44 mb-8"
-                onClick={() => connectWallet()}
+                className={clsx(
+                  "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 w-44 mb-8",
+
+                  chain !== undefined && !owned
+                    ? "bg-gray-150 border-gray-150"
+                    : "bg-turquoise border-turquoise hover:bg-turquoiseDark"
+                )}
+                onClick={() => (owned ? mint() : connectWallet())}
+                disabled={chain !== undefined && !owned}
               >
-                {owned ? "Mint" : "Connect Wallet"}
+                {owned
+                  ? "Mint"
+                  : !owned && chain !== undefined
+                  ? "Wallet Connected"
+                  : "Connect Wallet"}
               </button>
 
               {chain && (
@@ -137,7 +186,7 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
                   {buttonData.map(({ name, chain_id }) => (
                     <button
                       className={clsx(
-                        "transition my-2 hover:text-turquoise md:mx-4 md:my-0",
+                        "transition my-2 hover:text-white text-turquoise md:mx-4 md:my-0",
                         {
                           "text-white/50 hover:text-white/50":
                             chain === chain_id,
@@ -145,12 +194,16 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
                       )}
                       key={name}
                       onClick={async () => {
-                        const newChain = (await wallet.switchChain(chain_id))
-                          .chain;
-                        setChain(newChain);
-                        setOwned(
-                          await checkIfOwned(account, tokenIds, newChain)
-                        );
+                        try {
+                          const newChain = (await wallet.switchChain(chain_id))
+                            .chain;
+                          setChain(newChain);
+                          setOwned(
+                            await checkIfOwned(account, tokenIds, newChain)
+                          );
+                        } catch (err) {
+                          // console.log("err: ", err);
+                        }
                       }}
                       disabled={chain === chain_id}
                     >
