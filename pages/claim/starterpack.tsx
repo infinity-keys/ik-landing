@@ -69,18 +69,18 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
 
   const checkIfOwned = async (
     account: string,
-    tokenids: number[],
+    tokenIds: number[],
     chainId: number
   ) => {
     setMessage("");
     setLoading(true);
-    let tokenIds = "";
+    let tokenIdsParams = "";
 
-    for (let i = 0; i < tokenids.length; i++) {
-      tokenIds += `tokenids=${tokenids[i].toString()}&`;
-    }
+    tokenIds.forEach((id) => {
+      tokenIdsParams += `tokenids=${id.toString()}&`;
+    });
 
-    const url = `/api/minter/check-balance?account=${account}&${tokenIds}chainId=${chainId}`;
+    const url = `/api/minter/check-balance?account=${account}&${tokenIdsParams}chainId=${chainId}`;
 
     const response = await fetch(url);
 
@@ -123,7 +123,7 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
 
       <div className="w-full pt-4 pb-4 min-h-screen radial-bg relative z-0">
         <div className="container px-4 max-w-3xl">
-          <p className="mt-12 sm:mt-16">
+          <p className="mt-10 sm:mt-14">
             To be eligible to claim the Starter Pack Achievement you must
             successfully complete the following puzzles and claim the
             corresponding achievement NFT. All three NFTs should be claimed on
@@ -133,11 +133,10 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
           <div className={clsx({ "opacity-0": width === 0 })}>
             <ul
               role="list"
-              className={
-                message || loading
-                  ? "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 my-12 sm:mt-14 sm:mb-0 sm:pb-0"
-                  : "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 my-10 sm:my-14"
-              }
+              className={clsx(
+                "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 sm:mt-6",
+                message || loading ? "my-12 sm:mb-0" : "my-10"
+              )}
             >
               {puzzles.map(({ puzzle_id, landing_route, simple_name }) => (
                 <li key={puzzle_id}>
