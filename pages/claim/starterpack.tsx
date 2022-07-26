@@ -94,7 +94,7 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
       return data.claimed;
     } else {
       setLoading(false);
-      setMessage("Something went wrong. Please try");
+      setMessage("Something went wrong. Please try again.");
       throw await response.text();
     }
   };
@@ -133,9 +133,11 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
           <div className={clsx({ "opacity-0": width === 0 })}>
             <ul
               role="list"
-              className={clsx(
-                "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 my-10 sm:my-14"
-              )}
+              className={
+                message || loading
+                  ? "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 my-12 sm:mt-14 sm:mb-0 sm:pb-0"
+                  : "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 my-10 sm:my-14"
+              }
             >
               {puzzles.map(({ puzzle_id, landing_route, simple_name }) => (
                 <li key={puzzle_id}>
@@ -148,13 +150,13 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
             </ul>
 
             {message && (
-              <div className="max-w-lg mx-auto mb-4">
+              <div className="max-w-xl mx-auto mb-2 mt-2">
                 <Alert text={message} />
               </div>
             )}
 
             {loading && (
-              <div className="loader mx-auto h-8 w-8 flex justify-center">
+              <div className="loader mx-auto h-8 w-8 flex justify-center sm:mt-14">
                 <div className="ball-clip-rotate-multiple">
                   <div></div>
                   <div></div>
@@ -194,15 +196,13 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
                       )}
                       key={name}
                       onClick={async () => {
-                        try {
-                          const newChain = (await wallet.switchChain(chain_id))
-                            .chain;
-                          setChain(newChain);
+                        const newChain = (await wallet.switchChain(chain_id))
+                          .chain;
+                        if (chain !== newChain) {
                           setOwned(
                             await checkIfOwned(account, tokenIds, newChain)
                           );
-                        } catch (err) {
-                          // console.log("err: ", err);
+                          setChain(newChain);
                         }
                       }}
                       disabled={chain === chain_id}

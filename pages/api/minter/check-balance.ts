@@ -76,7 +76,6 @@ export default async function handler(
   const claimed = !balances?.every(function (e) {
     return e.toNumber() === 0;
   });
-  console.log(claimed);
 
   res.json({ claimed: claimed });
 }
