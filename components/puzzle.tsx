@@ -3,7 +3,7 @@
  *
  * The embedded puzzle form used to attmpt solution.
  */
-import { ComponentType, useEffect } from "react";
+import { ComponentType, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
@@ -13,6 +13,7 @@ import { useMachine } from "@xstate/react";
 import LockSvg from "@components/svg/material-lock-svg";
 import Markdown from "./markdown";
 import { puzzleMachine } from "./puzzle.xstate";
+import useCurrentWidth from "@hooks/useCurrentWidth";
 
 interface PuzzleProps {
   count: number;
@@ -45,33 +46,41 @@ const Puzzle = ({
     actions: {
       // The TS error below is a bug in xstate, https://xstate.js.org/docs/guides/typescript.html#typegen
       // @TODO: remove @ts-ignore when fixed
+      // @ts-ignore
       goToSuccessRoute: (context, event) =>
-        //@ts-ignore
         router.push(event.data?.success_route || "/"),
       goToFailRoute: (context, event) => router.push(event.data.fail_route),
     },
     devTools: NODE_ENV === "development",
   });
 
+  const [height, setHeight] = useState(0);
+  const width = useCurrentWidth();
+  const ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     send({ type: "PUZZLE_INFO", puzzleInfo: { puzzleId, count } });
   }, [send, puzzleId, count]);
 
+  useEffect(() => {
+    if (ref.current) setHeight(ref.current.clientHeight);
+  }, [width]);
+
   return (
     <>
       {(matches("guessing") || matches("guessCorrect.go")) && (
-        // adding padding and margin to make loading ball same height as
-        // the boxes for guessing
-        <div className="loader mx-auto w-8 h-8 lg:my-[27.5%] lg:mx-auto m-[22.5%]">
-          <div className="ball-clip-rotate-multiple ml-[18px]">
-            <div></div>
-            <div></div>
+        <div style={{ height }} className="flex justify-center items-center">
+          <div className="loader mx-auto w-8 h-8">
+            <div className="ball-clip-rotate-multiple translate-x-1/2">
+              <div></div>
+              <div></div>
+            </div>
           </div>
         </div>
       )}
 
       {(matches("idle") || matches("guessIncorrect")) && (
-        <div className="flex justify-center z-10">
+        <div className="flex justify-center z-10" ref={ref}>
           <div>
             <div className="flex py-5">
               <div className="w-6">
