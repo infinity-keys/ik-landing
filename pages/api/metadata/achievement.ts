@@ -19,7 +19,7 @@ export default async function handler(
     new ethers.providers.JsonRpcProvider(POLYGON_RPC)
   );
   const numTokens = (await contractPolygon.totalSupplyAll()).length;
-  if (nftId >= numTokens) return res.status(500).end();
+  //if (nftId >= numTokens) return res.status(500).end();
 
   const gql = await gqlApiSdk();
   const { nft_metadata_by_pk } = await gql.NftMetadata({
