@@ -118,7 +118,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
                   text="Connect Wallet"
                   type="submit"
                   value="Join the mailing list"
-                  onclick={() => connectWallet()}
+                  onClick={() => connectWallet()}
                 />
               )}
 
