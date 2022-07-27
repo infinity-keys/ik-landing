@@ -4,7 +4,7 @@ beforeEach(() => {
 
 describe("infinitykeys.io/puzzles", () => {
   it("should click puzzle button and navigate to puzzle dashboard", () => {
-    cy.contains("a.play", "Puzzles").click();
+    cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
     cy.url().should("include", "/puzzles");
     cy.go("back");
   });
@@ -23,7 +23,7 @@ describe("infinitykeys.io/puzzles", () => {
   });
 
   it("go to landing page and verify input boxes", () => {
-    cy.get("a.play").contains("Puzzles").click();
+    cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
     cy.get(".puzzle-thumb").contains("notright").click();
     cy.url().should("include", "/puzzle/notright");
     cy.get("input").should("have.length", 5);
@@ -31,7 +31,7 @@ describe("infinitykeys.io/puzzles", () => {
   });
 
   it("go to landing page and verify input field", () => {
-    cy.get("a.play").contains("Puzzles").click();
+    cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
     cy.get(".puzzle-thumb").contains("communitycode").click();
     cy.url().should("include", "/puzzle/communitycode");
     cy.get("input").should("have.length", 1);
@@ -39,7 +39,7 @@ describe("infinitykeys.io/puzzles", () => {
   });
 
   it("should click on next and previous buttons", () => {
-    cy.get("a.play").contains("Puzzles").click();
+    cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
     cy.get("a.next").contains("Next").click();
     cy.get("a.previous").contains("Previous").click();
     cy.go("back");

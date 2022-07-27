@@ -28,7 +28,10 @@ export default function Header() {
             className="sm:px-6 lg:px-8 border-b border-indigo-500 lg:border-none"
             aria-label="Top"
           >
-            <div className="relative flex items-center justify-between h-20">
+            <div
+              data-cy="puzzle-link"
+              className="relative flex items-center justify-between h-20"
+            >
               <div className="logo flex-shrink-0 flex items-center">
                 <div className="block lg:hidden h-12 w-auto">
                   <Link href="/">
