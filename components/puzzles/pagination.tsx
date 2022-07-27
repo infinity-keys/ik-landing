@@ -36,7 +36,7 @@ const PuzzlesPagination = ({
               : `/puzzles/${puzzlesCount}/${pageNum - 1}`
           }
         >
-          <a className="flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
+          <a className="previous flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
             <ArrowSmLeftIcon className="h-4 w-4 mr-2" aria-hidden="true" />{" "}
             Previous
           </a>
@@ -45,7 +45,7 @@ const PuzzlesPagination = ({
 
       {!isLastPage && (
         <Link href={`/puzzles/${puzzlesCount}/${pageNum + 1}`}>
-          <a className="flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
+          <a className="next flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
             Next
             <ArrowSmRightIcon className="h-4 w-4 ml-2" aria-hidden="true" />
           </a>
