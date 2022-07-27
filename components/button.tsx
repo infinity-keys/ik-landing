@@ -8,7 +8,7 @@ interface ButtonProps {
   fullWidth?: boolean;
   type?: "button" | "submit" | "reset";
   value?: string;
-  onclick?: any;
+  onClick?: any;
   disabled?: boolean;
 }
 
@@ -18,7 +18,7 @@ export default function Button({
   textColor = "dark",
   fullWidth = false,
   type,
-  onclick,
+  onClick,
   disabled,
 }: ButtonProps) {
   const classes = clsx(
@@ -26,7 +26,8 @@ export default function Button({
     {
       "text-blue": textColor === "light",
       "inline-block": fullWidth === false,
-      block: fullWidth === true,
+      "block w-full": fullWidth === true,
+      isValid: disabled === true,
     }
   );
 
@@ -39,7 +40,7 @@ export default function Button({
   }
 
   return (
-    <button className={classes} type={type} onClick={onclick} disabled>
+    <button className={classes} type={type} onClick={onClick}>
       {text}
     </button>
   );

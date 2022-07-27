@@ -118,9 +118,9 @@ const WalletEmail = ({
             <input type="hidden" {...register("puzzleId")} value={puzzleId} />
             <Button
               text="Join the mailing list"
+              value="Join the mailing list"
               fullWidth={true}
               type="submit"
-              value="Join the mailing list"
               disabled={!isValid}
             />
           </form>
