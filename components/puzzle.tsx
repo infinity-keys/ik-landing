@@ -46,8 +46,8 @@ const Puzzle = ({
     actions: {
       // The TS error below is a bug in xstate, https://xstate.js.org/docs/guides/typescript.html#typegen
       // @TODO: remove @ts-ignore when fixed
-      // @ts-ignore
       goToSuccessRoute: (context, event) =>
+        // @ts-ignore
         router.push(event.data?.success_route || "/"),
       goToFailRoute: (context, event) => router.push(event.data.fail_route),
     },
