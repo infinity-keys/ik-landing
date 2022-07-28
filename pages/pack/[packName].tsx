@@ -57,10 +57,8 @@ const buttonData = [
 ];
 
 const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
-  // const tokenIds = puzzlesNftIds;
-  // const nftId = pack.nftId;
-  const tokenIds = [0];
-  const nftId = 2;
+  const tokenIds = puzzlesNftIds;
+  const nftId = pack.nftId;
 
   const width = useCurrentWidth();
   const layout = width < 640 ? PuzzleLayoutType.List : PuzzleLayoutType.Grid;
