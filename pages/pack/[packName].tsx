@@ -57,6 +57,8 @@ const buttonData = [
 ];
 
 const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
+  // const tokenIds = puzzlesNftIds;
+  // const nftId = pack.nftId;
   const tokenIds = [0];
   const nftId = 2;
 
