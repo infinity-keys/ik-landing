@@ -76,9 +76,10 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
       setAccount(account);
 
       setLoading(true);
-      const claimed = await checkIfClaimed(account);
-      setClaimed(claimed);
-      if (claimed) {
+      const claimedNft = await checkIfClaimed(account);
+      setClaimed(claimedNft);
+
+      if (claimedNft) {
         setLoading(false);
         return;
       }
@@ -94,13 +95,12 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
     chainId: number
   ) => {
     setMessage("");
-    let tokenIdsParams = "";
 
-    tokenIds.forEach((id) => {
-      tokenIdsParams += `tokenids=${id.toString()}&`;
-    });
+    const tokenIdsParams = tokenIds
+      .map((id) => `tokenids=${id.toString()}`)
+      .join("&");
 
-    const url = `/api/minter/check-balance?account=${account}&${tokenIdsParams}chainId=${chainId}`;
+    const url = `/api/minter/check-balance?account=${account}&${tokenIdsParams}&chainId=${chainId}`;
 
     const response = await fetch(url);
 
@@ -128,15 +128,14 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   };
 
   const mint = async () => {
-    if (nftId) {
-      setLoading(true);
-      const minter = await minterUtil(nftId, owned);
-      const { txMessage, claimedStatus } = await minter.mint();
-      console.log(txMessage);
-      setLoading(false);
-      setMessage("Congrats on claiming your NFT!");
-      setClaimed(claimedStatus);
-    }
+    if (!nftId) return;
+
+    setLoading(true);
+    const minter = await minterUtil(nftId, owned);
+    const { claimedStatus } = await minter.mint();
+    setLoading(false);
+    setMessage("Congrats on claiming your NFT!");
+    setClaimed(claimedStatus);
   };
 
   return (
