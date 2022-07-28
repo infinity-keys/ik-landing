@@ -62,6 +62,7 @@ export default async function handler(
   // faster call on avax than eth..
   const numTokens = (await contractAVAX.totalSupplyAll()).length;
 
+  // check if token Ids exist
   const validIds = tokenIds.every(function (e) {
     return parseInt(e, 10) < numTokens;
   });

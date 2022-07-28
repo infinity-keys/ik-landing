@@ -47,11 +47,13 @@ const buttonData = [
 const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
   // abstract this away at some point- requisite tokenIds for pack
   const tokenIds = [0];
+  const nftId = 2;
 
   const width = useCurrentWidth();
   const layout = width < 640 ? PuzzleLayoutType.List : PuzzleLayoutType.Grid;
   const [chain, setChain] = useState<number | undefined>();
   const [owned, setOwned] = useState<boolean>(false);
+  const [claimed, setClaimed] = useState<boolean>(false);
   const [account, setAccount] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -61,6 +63,14 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
       const { account, chain } = await wallet.trigger();
       setChain(chain);
       setAccount(account);
+
+      setLoading(true);
+      const claimed = await checkIfClaimed(account);
+      setClaimed(claimed);
+      if (claimed) {
+        setLoading(false);
+        return;
+      }
       setOwned(await checkIfOwned(account, tokenIds, chain));
     } catch (err) {
       console.log("err: ", err);
@@ -73,7 +83,6 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
     chainId: number
   ) => {
     setMessage("");
-    setLoading(true);
     let tokenIdsParams = "";
 
     tokenIds.forEach((id) => {
@@ -99,20 +108,22 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
     }
   };
 
-  // Commented this out due to it being mainnet!!!
-  //dont want to accidentally test there
+  const checkIfClaimed = async (account: string) => {
+    const url = `/api/minter/check-claimed?account=${account}&tokenId=${nftId.toString()}`;
 
-  const mint = () => console.log("owned: ", owned);
+    const response = await fetch(url);
+    if (response.ok) return (await response.json()).claimed;
+    else throw await response.text();
+  };
 
-  // const mint = async () => {
-  //   //ideally not hardcoded! tokenId to claim
-  //   const minter = await minterUtil(3);
-  //   //setIsLoading(true); //spinny ball of fun!
-  //   const { txMessage, claimedStatus } = await minter.mint();
-  //   //setIsLoading(false);
-  //   //setTxMessage(txMessage);
-  //   //setClaimed(claimedStatus);
-  // };
+  const mint = async () => {
+    setLoading(true);
+    const minter = await minterUtil(nftId, owned);
+    const { txMessage, claimedStatus } = await minter.mint();
+    setLoading(false);
+    setMessage(txMessage);
+    setClaimed(claimedStatus);
+  };
 
   return (
     <Wrapper>
@@ -164,23 +175,50 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
             )}
 
             <div className="text-center mb-12">
-              <button
-                className={clsx(
-                  "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 w-44 mb-8",
+              {claimed ? (
+                <button
+                  className={clsx(
+                    "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 px-4 mb-8 bg-turquoise border-turquoise hover:bg-turquoiseDark"
+                  )}
+                >
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`${
+                      chain === ETH_CHAIN_ID
+                        ? openseaLink
+                        : chain === AVAX_CHAIN_ID
+                        ? joePegsLink
+                        : chain === POLYGON_CHAIN_ID
+                        ? openseaPolygonLink
+                        : undefined
+                    }${nftId}`}
+                  >
+                    View NFT On{" "}
+                    {chain === ETH_CHAIN_ID || chain === POLYGON_CHAIN_ID
+                      ? "OpenSea"
+                      : "JoePegs"}
+                  </a>
+                </button>
+              ) : (
+                <button
+                  className={clsx(
+                    "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 w-44 mb-8",
 
-                  chain !== undefined && !owned
-                    ? "bg-gray-150 border-gray-150"
-                    : "bg-turquoise border-turquoise hover:bg-turquoiseDark"
-                )}
-                onClick={() => (owned ? mint() : connectWallet())}
-                disabled={chain !== undefined && !owned}
-              >
-                {owned
-                  ? "Mint"
-                  : !owned && chain !== undefined
-                  ? "Wallet Connected"
-                  : "Connect Wallet"}
-              </button>
+                    chain !== undefined && !owned
+                      ? "bg-gray-150 border-gray-150"
+                      : "bg-turquoise border-turquoise hover:bg-turquoiseDark"
+                  )}
+                  onClick={() => (owned ? mint() : connectWallet())}
+                  disabled={chain !== undefined && !owned}
+                >
+                  {owned
+                    ? "Mint"
+                    : !owned && chain !== undefined
+                    ? "Wallet Connected"
+                    : "Connect Wallet"}
+                </button>
+              )}
 
               {chain && (
                 <div className="text-white/75 flex flex-col md:block">

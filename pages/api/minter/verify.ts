@@ -26,7 +26,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Signature>
 ) {
-  const { account, tokenId, chainId } = req.query;
+  const { account, tokenId, chainId, requisite } = req.query;
 
   if (
     typeof tokenId !== "string" ||
@@ -36,13 +36,15 @@ export default async function handler(
     return res.status(500).end();
 
   // Check if we're supposed to be here
-  const jwt = req.cookies[IK_ID_COOKIE];
-  if (!jwt) return res.status(401).end();
-  const gql = await gqlApiSdk();
-  const { puzzles } = await gql.GetPuzzleInfoByNftId({ nftId: tokenId });
-  const puzzleNames = puzzles.map(({ simple_name }) => simple_name);
-  const canAccess = await jwtHasClaim(jwt, puzzleNames);
-  if (!canAccess) return res.status(403).end();
+  if (!requisite) {
+    const jwt = req.cookies[IK_ID_COOKIE];
+    if (!jwt) return res.status(401).end();
+    const gql = await gqlApiSdk();
+    const { puzzles } = await gql.GetPuzzleInfoByNftId({ nftId: tokenId });
+    const puzzleNames = puzzles.map(({ simple_name }) => simple_name);
+    const canAccess = await jwtHasClaim(jwt, puzzleNames);
+    if (!canAccess) return res.status(403).end();
+  }
 
   const chainIdAsNumber = parseInt(chainId, 10);
 
