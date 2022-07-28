@@ -120,8 +120,9 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
     setLoading(true);
     const minter = await minterUtil(nftId, owned);
     const { txMessage, claimedStatus } = await minter.mint();
+    console.log(txMessage);
     setLoading(false);
-    setMessage(txMessage);
+    setMessage("Congrats on claiming your NFT!");
     setClaimed(claimedStatus);
   };
 
@@ -175,49 +176,53 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
             )}
 
             <div className="text-center mb-12">
-              {claimed ? (
-                <button
-                  className={clsx(
-                    "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 px-4 mb-8 bg-turquoise border-turquoise hover:bg-turquoiseDark"
-                  )}
-                >
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={`${
-                      chain === ETH_CHAIN_ID
-                        ? openseaLink
-                        : chain === AVAX_CHAIN_ID
-                        ? joePegsLink
-                        : chain === POLYGON_CHAIN_ID
-                        ? openseaPolygonLink
-                        : undefined
-                    }${nftId}`}
-                  >
-                    View NFT On{" "}
-                    {chain === ETH_CHAIN_ID || chain === POLYGON_CHAIN_ID
-                      ? "OpenSea"
-                      : "JoePegs"}
-                  </a>
-                </button>
-              ) : (
-                <button
-                  className={clsx(
-                    "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 w-44 mb-8",
+              {!loading && (
+                <div>
+                  {claimed ? (
+                    <button
+                      className={clsx(
+                        "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 px-4 mb-8 bg-turquoise border-turquoise hover:bg-turquoiseDark"
+                      )}
+                    >
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`${
+                          chain === ETH_CHAIN_ID
+                            ? openseaLink
+                            : chain === AVAX_CHAIN_ID
+                            ? joePegsLink
+                            : chain === POLYGON_CHAIN_ID
+                            ? openseaPolygonLink
+                            : undefined
+                        }${nftId}`}
+                      >
+                        View NFT On{" "}
+                        {chain === ETH_CHAIN_ID || chain === POLYGON_CHAIN_ID
+                          ? "OpenSea"
+                          : "JoePegs"}
+                      </a>
+                    </button>
+                  ) : (
+                    <button
+                      className={clsx(
+                        "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 w-44 mb-8",
 
-                    chain !== undefined && !owned
-                      ? "bg-gray-150 border-gray-150"
-                      : "bg-turquoise border-turquoise hover:bg-turquoiseDark"
+                        chain !== undefined && !owned
+                          ? "bg-gray-150 border-gray-150"
+                          : "bg-turquoise border-turquoise hover:bg-turquoiseDark"
+                      )}
+                      onClick={() => (owned ? mint() : connectWallet())}
+                      disabled={chain !== undefined && !owned}
+                    >
+                      {owned
+                        ? "Mint"
+                        : !owned && chain !== undefined
+                        ? "Wallet Connected"
+                        : "Connect Wallet"}
+                    </button>
                   )}
-                  onClick={() => (owned ? mint() : connectWallet())}
-                  disabled={chain !== undefined && !owned}
-                >
-                  {owned
-                    ? "Mint"
-                    : !owned && chain !== undefined
-                    ? "Wallet Connected"
-                    : "Connect Wallet"}
-                </button>
+                </div>
               )}
 
               {chain && (
