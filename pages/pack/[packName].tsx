@@ -120,7 +120,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   };
 
   const checkIfClaimed = async (account: string) => {
-    const url = `/api/minter/check-claimed?account=${account}&tokenId=${nftId.toString()}`;
+    const url = `/api/minter/check-claimed?account=${account}&tokenId=${nftId?.toString()}`;
 
     const response = await fetch(url);
     if (response.ok) return (await response.json()).claimed;
@@ -128,13 +128,15 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   };
 
   const mint = async () => {
-    setLoading(true);
-    const minter = await minterUtil(nftId, owned);
-    const { txMessage, claimedStatus } = await minter.mint();
-    console.log(txMessage);
-    setLoading(false);
-    setMessage("Congrats on claiming your NFT!");
-    setClaimed(claimedStatus);
+    if (nftId) {
+      setLoading(true);
+      const minter = await minterUtil(nftId, owned);
+      const { txMessage, claimedStatus } = await minter.mint();
+      console.log(txMessage);
+      setLoading(false);
+      setMessage("Congrats on claiming your NFT!");
+      setClaimed(claimedStatus);
+    }
   };
 
   return (
