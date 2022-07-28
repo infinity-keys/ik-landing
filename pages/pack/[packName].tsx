@@ -65,7 +65,6 @@ export async function getStaticProps({
   const { packName } = params;
   const gql = await gqlApiSdk();
   const { puzzles, pack } = await gql.GetPuzzlesByPack({ packName });
-  console.log("pack: ", pack);
   const puzzlesNftIds = puzzles.map(({ nft }) => nft?.tokenId);
 
   return {
