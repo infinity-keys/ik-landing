@@ -2,14 +2,15 @@ import { NextPage } from "next";
 import Head from "next/head";
 import clsx from "clsx";
 
-import { gqlApiSdk } from "@lib/server";
 // @TODO: remove when updated with Ham's layout
 import Header from "@components/header";
 import Footer from "@components/footer";
 import Wrapper from "@components/wrapper";
 import PuzzleThumbnail from "@components/puzzle-thumbnail";
 import Alert from "@components/alert";
-import { StarterPackPuzzlesQuery } from "@lib/generated/graphql";
+
+import { gqlApiSdk } from "@lib/server";
+import { GetPuzzlesByPackQuery } from "@lib/generated/graphql";
 import { PuzzleLayoutType } from "@lib/types";
 import { wallet } from "@lib/wallet";
 import useCurrentWidth from "@hooks/useCurrentWidth";
@@ -26,7 +27,18 @@ import { useState } from "react";
 import { minterUtil } from "@lib/minter";
 
 interface PageProps {
-  puzzles: StarterPackPuzzlesQuery["puzzles"];
+  puzzles: GetPuzzlesByPackQuery["puzzles"];
+  puzzlesNftIds: number[];
+  pack: {
+    pack_name: string;
+    nftId?: number;
+  };
+}
+
+interface PageParams {
+  params: {
+    packName: string;
+  };
 }
 
 const buttonData = [
@@ -44,8 +56,7 @@ const buttonData = [
   },
 ];
 
-const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
-  // abstract this away at some point- requisite tokenIds for pack
+const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   const tokenIds = [0];
   const nftId = 2;
 
@@ -128,14 +139,14 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
   return (
     <Wrapper>
       <Head>
-        <title>Starter Pack - Infinity Keys</title>
+        <title>{pack.pack_name}</title>
       </Head>
       <Header />
 
       <div className="w-full pt-4 pb-4 min-h-screen radial-bg relative z-0">
         <div className="container px-4 max-w-3xl">
           <p className="mt-10 sm:mt-14">
-            To be eligible to claim the Starter Pack Achievement you must
+            To be eligible to claim the {pack.pack_name} Achievement you must
             successfully complete the following puzzles and claim the
             corresponding achievement NFT. All three NFTs should be claimed on
             the same chain to qualify.
@@ -261,15 +272,35 @@ const StarterPack: NextPage<PageProps> = ({ puzzles }) => {
   );
 };
 
-export default StarterPack;
+export default PacksPage;
 
-export async function getStaticProps(): Promise<{ props: PageProps }> {
+export async function getStaticPaths() {
   const gql = await gqlApiSdk();
-  const { puzzles } = await gql.StarterPackPuzzles();
+  const { packs } = await gql.GetAllPacks();
+
+  const paths = packs.map(({ simple_name }) => ({
+    params: { packName: simple_name },
+  }));
+
+  return {
+    paths,
+    fallback: false,
+  };
+}
+
+export async function getStaticProps({
+  params,
+}: PageParams): Promise<{ props: PageProps }> {
+  const { packName } = params;
+  const gql = await gqlApiSdk();
+  const { puzzles, pack } = await gql.GetPuzzlesByPack({ packName });
+  const puzzlesNftIds = puzzles.map(({ nft }) => nft?.tokenId);
 
   return {
     props: {
       puzzles,
+      puzzlesNftIds,
+      pack: pack[0],
     },
   };
 }

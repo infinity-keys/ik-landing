@@ -6,8 +6,6 @@ import { jwtHasClaim, makeUserToken } from "@lib/jwt";
 export async function middleware(req: NextRequest) {
   const response = NextResponse.next();
 
-  if (req.nextUrl.pathname === "/claim/starterpack") return response;
-
   let token = req.cookies.get(IK_ID_COOKIE);
 
   if (
