@@ -185,3 +185,11 @@ query StarterPackPuzzles {
     puzzle_id
   }
 }
+
+query NftMetadata($nftId: Int!, $contractName: String!) {
+  nft_metadata_by_pk(contract_name: $contractName, token_id: $nftId) {
+    contract_name
+    data
+    token_id
+  }
+}
