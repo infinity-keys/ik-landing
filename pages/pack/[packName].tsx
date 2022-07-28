@@ -28,7 +28,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   return (
     <Wrapper>
       <Head>
-        <title>{} - Infinity Keys</title>
+        <title>{pack.pack_name} - Infinity Keys</title>
       </Head>
       <Header />
 
