@@ -207,13 +207,11 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
                             ? joePegsLink
                             : chain === POLYGON_CHAIN_ID
                             ? openseaPolygonLink
-                            : undefined
+                            : openseaLink
                         }${nftId}`}
                       >
                         View NFT On{" "}
-                        {chain === ETH_CHAIN_ID || chain === POLYGON_CHAIN_ID
-                          ? "OpenSea"
-                          : "JoePegs"}
+                        {chain === AVAX_CHAIN_ID ? "JoePegs" : "OpenSea"}
                       </a>
                     </button>
                   ) : (
