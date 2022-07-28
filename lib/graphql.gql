@@ -170,7 +170,7 @@ query GetPuzzleInfoByNftId($nftId: numeric) {
   }
 }
 
-query AllPacks {
+query GetAllPacks {
   packs {
     simple_name
   }
