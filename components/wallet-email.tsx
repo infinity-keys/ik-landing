@@ -34,6 +34,8 @@ const WalletEmail = ({
     formState: { errors, isValid, isSubmitSuccessful },
   } = useForm<FormProps>();
 
+  console.log(isValid);
+
   const [walletSigned, setWalletSigned] = useState(false);
 
   const onSubmit: SubmitHandler<FormProps> = async (data) => {

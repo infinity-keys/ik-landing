@@ -45,25 +45,17 @@ describe("infinitykeys.io/puzzles", () => {
     cy.go("back");
   });
 
-  it("correct input using input boxes navigates to puzzle solved page", () => {
+  it.only("correct input using input boxes navigates to puzzle solved page", () => {
     cy.contains("a.header-nav--link", "Hunts").click();
     cy.get(".puzzle-thumb").contains("notright").click();
-    cy.get(".ik-code-input").eq(0).type("w", { delay: 250 });
-    cy.get(".ik-code-input").eq(1).type("r", { delay: 250 });
-    cy.get(".ik-code-input").eq(2).type("o", { delay: 250 });
-    cy.get(".ik-code-input").eq(3).type("n", { delay: 250 });
-    cy.get(".ik-code-input").eq(4).type("g", { delay: 250 });
+    cy.get(".ik-code-input").first().wait(1000).type("wrong", { delay: 750 });
     cy.url().should("include", "/solved/notright");
   });
 
-  it("incorrect input using input boxes displays fail message", () => {
+  it.only("incorrect input using input boxes displays fail message", () => {
     cy.contains("a.header-nav--link", "Hunts").click();
     cy.get(".puzzle-thumb").contains("notright").click();
-    cy.get(".ik-code-input").eq(0).type("a", { delay: 250 });
-    cy.get(".ik-code-input").eq(1).type("s", { delay: 250 });
-    cy.get(".ik-code-input").eq(2).type("d", { delay: 250 });
-    cy.get(".ik-code-input").eq(3).type("f", { delay: 250 });
-    cy.get(".ik-code-input").eq(4).type("h", { delay: 250 });
+    cy.get(".ik-code-input").first().wait(1000).type("asdfg", { delay: 750 });
     cy.contains("Sorry, that answer was correct. Try wrong this time.");
   });
 
