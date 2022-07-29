@@ -25,13 +25,11 @@ export default function Header() {
       {({ open }) => (
         <>
           <div
+            data-cy="puzzle-link"
             className="sm:px-6 lg:px-8 border-b border-indigo-500 lg:border-none"
             aria-label="Top"
           >
-            <div
-              data-cy="puzzle-link"
-              className="relative flex items-center justify-between h-20"
-            >
+            <div className="relative flex items-center justify-between h-20">
               <div className="logo flex-shrink-0 flex items-center">
                 <div className="block lg:hidden h-12 w-auto">
                   <Link href="/">
@@ -71,16 +69,6 @@ export default function Header() {
                   </div>
                 </div>
               </div>
-
-              {/* <div className="social flex items-center space-x-4">
-                <div className="twitterIcon">
-                  <TwitterIcon />
-                </div>
-                <div className="discordIcon">
-                  <Discord />
-                </div>
-              </div> */}
-
               <Button text="Puzzles" href="/puzzles" />
 
               {/* hamburger icon, visible mobile only */}

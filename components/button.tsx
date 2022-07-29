@@ -7,9 +7,7 @@ interface ButtonProps {
   textColor?: "dark" | "light";
   fullWidth?: boolean;
   type?: "button" | "submit" | "reset";
-  value?: string;
   onClick?: any;
-  disabled?: boolean;
 }
 
 export default function Button({
@@ -17,17 +15,14 @@ export default function Button({
   href,
   textColor = "dark",
   fullWidth = false,
-  type,
+  type = "submit",
   onClick,
-  disabled,
 }: ButtonProps) {
   const classes = clsx(
-    "bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-lg font-medium text-center text-white hover:text-blue",
+    "inline-block bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-lg font-medium text-center text-white hover:text-blue",
     {
       "text-blue": textColor === "light",
-      "inline-block": fullWidth === false,
       "block w-full": fullWidth === true,
-      isValid: disabled === true,
     }
   );
 

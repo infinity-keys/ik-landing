@@ -76,7 +76,6 @@ const WalletEmail = ({
         {!isSubmitSuccessful && errors?.puzzleId && (
           <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
         )}
-        <Button text="More Puzzles" href="/puzzles" />
       </>
       {!isSubmitSuccessful && !errors?.puzzleId && !walletSigned && (
         <div className="">
@@ -118,10 +117,8 @@ const WalletEmail = ({
             <input type="hidden" {...register("puzzleId")} value={puzzleId} />
             <Button
               text="Join the mailing list"
-              value="Join the mailing list"
               fullWidth={true}
               type="submit"
-              disabled={!isValid}
             />
           </form>
           <div className="mt-6 flex">
