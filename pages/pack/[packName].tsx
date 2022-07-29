@@ -134,7 +134,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
     const minter = await minterUtil(nftId, owned);
     const { claimedStatus } = await minter.mint();
     setLoading(false);
-    setMessage("Congrats on claiming your NFT!");
+    if (claimedStatus) setMessage("Congrats on claiming your NFT!");
     setClaimed(claimedStatus);
   };
 
