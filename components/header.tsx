@@ -55,8 +55,8 @@ export default function Header() {
                   </Link>
                 </div>
               </div>
-              <div className="menu-items flex items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="hidden sm:block sm:ml-6">
+              <div className="menu-items items-center justify-center sm:items-stretch sm:justify-start hidden lg:block">
+                <div className="sm:ml-6">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <Link href={item.href} key={item.name}>
@@ -78,10 +78,18 @@ export default function Header() {
                 </div>
               </div> */}
 
-              <PuzzleButton />
+              <div>
+                <Link href="/pack/starter-pack">
+                  <a className="mr-4 hover:bg-turquoise py-2 px-4 border-2 border-turquoise hover:border-white rounded-md text-xl font-medium text-white hover:text-blue box-border hidden xs:inline-block">
+                    Starter Pack
+                  </a>
+                </Link>
+
+                <PuzzleButton />
+              </div>
 
               {/* hamburger icon, visible mobile only */}
-              <div className="hamburger flex items-center pr-4 sm:hidden">
+              <div className="hamburger flex items-center pr-4 lg:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
@@ -95,7 +103,7 @@ export default function Header() {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
+          <Disclosure.Panel className="lg:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => (
                 <Disclosure.Button
@@ -108,6 +116,11 @@ export default function Header() {
                   {item.name}
                 </Disclosure.Button>
               ))}
+              <Link href="/pack/starter-pack">
+                <a className="hover:bg-turquoise py-2 px-4 border-2 border-turquoise hover:border-white rounded-md text-xl font-medium text-white hover:text-blue box-border inline-block xs:hidden">
+                  Starter Pack
+                </a>
+              </Link>
             </div>
           </Disclosure.Panel>
         </>
