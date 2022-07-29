@@ -22,7 +22,7 @@ export default function Button({
     "inline-block bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-lg font-medium text-center text-white hover:text-blue",
     {
       "text-blue": textColor === "light",
-      "block w-full": fullWidth === true,
+      "block w-full": fullWidth,
     }
   );
 
