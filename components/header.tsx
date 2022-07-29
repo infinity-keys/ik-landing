@@ -25,7 +25,6 @@ export default function Header() {
       {({ open }) => (
         <>
           <div
-            data-cy="puzzle-link"
             className="sm:px-6 lg:px-8 border-b border-indigo-500 lg:border-none"
             aria-label="Top"
           >
@@ -69,7 +68,9 @@ export default function Header() {
                   </div>
                 </div>
               </div>
-              <Button text="Puzzles" href="/puzzles" />
+              <div data-cy="puzzle-link">
+                <Button text="Puzzles" href="/puzzles" />
+              </div>
 
               {/* hamburger icon, visible mobile only */}
               <div className="hamburger flex items-center pr-4 sm:hidden">
