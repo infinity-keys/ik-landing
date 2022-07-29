@@ -44,19 +44,23 @@ const buttonData = [
 
 const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
   const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
+  const [account, setAccount] = useState<string>();
   const [chain, setChain] = useState<number>();
   const [isLoadingWallet, setIsLoadingWallet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [claimed, setClaimed] = useState(false);
+  const [signature, setSignature] = useState("");
   const [txMessage, setTxMessage] = useState<string>();
 
   const connectWallet = async () => {
     const { account, chain } = await wallet.trigger();
     setChain(chain);
+    setAccount(account);
 
     setIsLoadingWallet(true);
     setIsLoading(true);
     setClaimed(await checkIfClaimed(account));
+    setSignature(await verify(account, tokenId, chain));
     setIsLoadingWallet(false);
     setIsLoading(false);
   };
@@ -69,8 +73,20 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
     else throw await response.text();
   };
 
+  const verify = async (account: string, tokenId: number, chain: number) => {
+    const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}}`;
+
+    const response = await fetch(url);
+    if (response.ok) {
+      const { signature } = await response.json();
+      return signature;
+    }
+
+    throw await response.text();
+  };
+
   const mint = async () => {
-    const minter = await minterUtil(tokenId, false);
+    const minter = await minterUtil(tokenId, signature);
     setIsLoading(true);
     const { txMessage, claimedStatus } = await minter.mint();
     setIsLoading(false);
@@ -138,6 +154,10 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
                           mint();
                         } else {
                           setChain((await wallet.switchChain(chain_id)).chain);
+                          if (!account) return;
+                          setSignature(
+                            await verify(account, tokenId, chain_id)
+                          );
                         }
                       }}
                     >
