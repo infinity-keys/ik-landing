@@ -119,6 +119,7 @@ const WalletEmail = ({
               text="Join the mailing list"
               fullWidth={true}
               type="submit"
+              disabled={!isValid}
             />
           </form>
           <div className="mt-6 flex">
