@@ -19,7 +19,7 @@
     "@auth0/nextjs-auth0": "^1.9.1",
     "@coinbase/wallet-sdk": "^3.3.0",
     "@formspree/react": "^2.2.4",
-    "@graphql-codegen/cli": "^2.11.0",
+    "@graphql-codegen/cli": "^2.11.2",
     "@graphql-codegen/introspection": "^2.1.1",
     "@graphql-codegen/typescript": "^2.5.1",
     "@graphql-codegen/typescript-graphql-request": "^4.4.10",
