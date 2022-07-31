@@ -108,36 +108,6 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
     throw await response.text();
   };
 
-  // const checkIfOwned = async (
-  //   account: string,
-  //   tokenIds: number[],
-  //   chainId: number
-  // ) => {
-  //   setMessage("");
-
-  //   const tokenIdsParams = tokenIds
-  //     .map((id) => `tokenids=${id.toString()}`)
-  //     .join("&");
-
-  //   const url = `/api/minter/check-balance?account=${account}&${tokenIdsParams}&chainId=${chainId}`;
-
-  //   const response = await fetch(url);
-
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     if (!data.claimed)
-  //       setMessage(
-  //         "You do not have the required NFTS on this chain. Please ensure you have completed the above puzzles and are on the correct chain."
-  //       );
-  //     setLoading(false);
-  //     return data.claimed;
-  //   } else {
-  //     setLoading(false);
-  //     setMessage("Something went wrong. Please try again.");
-  //     throw await response.text();
-  //   }
-  // };
-
   const checkIfClaimed = async (account: string) => {
     const url = `/api/minter/check-claimed?account=${account}&tokenId=${nftId?.toString()}`;
 
