@@ -9,7 +9,7 @@
     "generate:once": "yarn run typechain && graphql-codegen",
     "generate:watch": "yarn run typechain && graphql-codegen --watch",
     "fmt": "eslint . --fix",
-    "cypress:open": "NODE_ENV=testing cypress open",
+    "cypress:open": "NODE_ENV=test cypress open",
     "cypress:run": "cypress run --headless --browser chrome",
     "cypress:ci": "yarn build && start-server-and-test start http://localhost:3000 cypress:run",
     "typechain": "typechain --target ethers-v5 \"nfts/contracts/**/*.json\" --out-dir lib/generated/ethers-contract",

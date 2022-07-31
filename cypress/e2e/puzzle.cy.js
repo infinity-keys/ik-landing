@@ -6,20 +6,20 @@ describe("infinitykeys.io/puzzles", () => {
   it("should click puzzle button and navigate to puzzle dashboard", () => {
     cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
     cy.url().should("include", "/puzzles");
-    cy.go("back");
   });
 
   it("should click hunts link and navigate to puzzle dashboard", () => {
     cy.contains("a.header-nav--link", "Hunts").click();
     cy.url().should("include", "/puzzles");
-    cy.go("back");
   });
 
   it("should click on multiple thumbnails", () => {
     cy.get("a.header-nav--link").contains("Hunts").click();
     cy.get(".puzzle-thumb").first().click();
-    cy.get(".puzzle-thumb").last().click();
+    cy.get(".magic-input");
     cy.go("back");
+    cy.get(".puzzle-thumb").last().click();
+    cy.get(".magic-input");
   });
 
   it("go to landing page and verify input boxes", () => {
@@ -27,7 +27,6 @@ describe("infinitykeys.io/puzzles", () => {
     cy.get(".puzzle-thumb").contains("notright").click();
     cy.url().should("include", "/puzzle/notright");
     cy.get("input").should("have.length", 5);
-    cy.go("back");
   });
 
   it("go to landing page and verify input field", () => {
@@ -35,14 +34,12 @@ describe("infinitykeys.io/puzzles", () => {
     cy.get(".puzzle-thumb").contains("communitycode").click();
     cy.url().should("include", "/puzzle/communitycode");
     cy.get("input").should("have.length", 1);
-    cy.go("back");
   });
 
   it("should click on next and previous buttons", () => {
     cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
     cy.get("a.next").contains("Next").click();
     cy.get("a.previous").contains("Previous").click();
-    cy.go("back");
   });
 
   it("correct input using input boxes navigates to puzzle solved page", () => {
