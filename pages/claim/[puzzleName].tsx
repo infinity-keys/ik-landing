@@ -6,6 +6,7 @@ import Avatar from "boring-avatars";
 import Wrapper from "@components/wrapper";
 import Header from "@components/header";
 import Footer from "@components/footer";
+import Button from "@components/button";
 import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
@@ -129,14 +130,11 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
               </h2>
 
               {!chain && (
-                <button
-                  className={buttonPrimaryClasses}
+                <Button
+                  text="Connect Wallet"
                   type="submit"
-                  value="Join the mailing list"
                   onClick={() => connectWallet()}
-                >
-                  Connect Wallet
-                </button>
+                />
               )}
 
               {!isLoading && chain && !claimed && (
