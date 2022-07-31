@@ -9,8 +9,6 @@ const { NODE_ENV } = process.env;
 import "loaders.css/loaders.min.css";
 import "../styles/globals.css";
 
-console.log(NODE_ENV);
-
 if (typeof window !== "undefined" && NODE_ENV === "development") {
   inspect({
     iframe: false, // open in new window
