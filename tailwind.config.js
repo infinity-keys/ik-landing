@@ -1,5 +1,4 @@
 const tailwindforms = require("@tailwindcss/forms");
-const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   content: ["./*{pages,components}/**/*.{js,ts,jsx,tsx}"],

@@ -112,11 +112,6 @@ export default function Header() {
                   {item.name}
                 </Disclosure.Button>
               ))}
-              <Link href="/pack/starter-pack">
-                <a className="hover:bg-turquoise py-2 px-4 border-2 border-turquoise hover:border-white rounded-md text-xl font-medium text-white hover:text-blue box-border inline-block sm:hidden">
-                  Starter Pack
-                </a>
-              </Link>
             </div>
           </Disclosure.Panel>
         </>
