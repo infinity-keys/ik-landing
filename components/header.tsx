@@ -29,10 +29,13 @@ export default function Header() {
             aria-label="Top"
           >
             <div className="relative flex items-center justify-between h-20">
-              <div className="logo flex-shrink-0 flex items-center">
+              <div
+                data-cy="ik logo"
+                className="logo flex-shrink-0 flex items-center"
+              >
                 <div className="block sm:hidden h-12 w-auto">
                   <Link href="/">
-                    <a data-cy="ik logo">
+                    <a>
                       <Image
                         src="/logo-mobile.svg"
                         width={19.7}
