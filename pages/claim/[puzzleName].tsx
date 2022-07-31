@@ -6,6 +6,7 @@ import Avatar from "boring-avatars";
 import Wrapper from "@components/wrapper";
 import Header from "@components/header";
 import Footer from "@components/footer";
+import Button from "@components/button";
 import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
@@ -67,7 +68,6 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
     const response = await fetch(url);
     if (response.ok) return (await response.json()).claimed;
     else throw await response.text();
-
   };
 
   const mint = async () => {
@@ -109,19 +109,16 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
                     ? "Connecting Wallet"
                     : "Claiming Trophy"
                   : claimed
-                    ? "Your Trophy Has Been Claimed"
-                    : "Claim Your Trophy"}
+                  ? "Your Trophy Has Been Claimed"
+                  : "Claim Your Trophy"}
               </h2>
 
               {!chain && (
-                <button
-                  className={buttonPrimaryClasses}
+                <Button
+                  text="Connect Wallet"
                   type="submit"
-                  value="Join the mailing list"
                   onClick={() => connectWallet()}
-                >
-                  Connect Wallet
-                </button>
+                />
               )}
 
               {!isLoading && chain && !claimed && (
@@ -163,7 +160,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
                   </a>
                 </div>
               )}
-              
+
               {/* @TODO: refactor this to be a shared loader component */}
               {isLoading && (
                 <div className="loader mx-auto mt-10">
@@ -178,14 +175,15 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={`${chain === ETH_CHAIN_ID
-                    ? openseaLink
-                    : chain === AVAX_CHAIN_ID
+                  href={`${
+                    chain === ETH_CHAIN_ID
+                      ? openseaLink
+                      : chain === AVAX_CHAIN_ID
                       ? joePegsLink
                       : chain === POLYGON_CHAIN_ID
-                        ? openseaPolygonLink
-                        : undefined
-                    }${tokenId}`}
+                      ? openseaPolygonLink
+                      : undefined
+                  }${tokenId}`}
                   className={buttonPrimaryClasses}
                 >
                   View NFT On{" "}
@@ -214,7 +212,7 @@ export async function getStaticProps({
   const { nfts } = await gql.GetNftIdByPuzzleName({ puzzleName });
   const nftTokenIds = nfts.map((nft) => parseInt(nft.tokenId));
 
-  const { puzzles } = await gql.PuzzleInfoBySuccess({ success: puzzleName })
+  const { puzzles } = await gql.PuzzleInfoBySuccess({ success: puzzleName });
   const [{ puzzle_id: puzzleId }] = puzzles;
 
   return {

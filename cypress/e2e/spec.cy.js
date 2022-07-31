@@ -4,7 +4,7 @@ beforeEach(() => {
 
 describe("infinitykeys.io", () => {
   it("root landing page should load", () => {
-    cy.contains("a.play", "Puzzles");
+    cy.get('[data-cy="puzzle-link"]').contains("Puzzles");
     cy.contains("What is");
     cy.contains("Infinity Keys?");
   });
@@ -24,7 +24,7 @@ describe("infinitykeys.io", () => {
   });
 
   it("should go to first puzzle on puzzles page when thumbnail clicked", () => {
-    cy.get("a.play").contains("Puzzles").click();
+    cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
     cy.url().should("include", "/puzzles");
     cy.get(".puzzle-thumb").first().click();
     cy.url().should("include", "/puzzle/");
