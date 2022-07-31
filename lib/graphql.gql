@@ -4,7 +4,7 @@ query Guess($puzzle_id: uuid!, $solution: String!) {
     fail_route
   }
   success: puzzles(
-    where: { puzzle_id: { _eq: $puzzle_id }, solution: { _ilike: $solution } }
+    where: { puzzle_id: { _eq: $puzzle_id }, solution: { _eq: $solution } }
   ) {
     success_route
     final_step
