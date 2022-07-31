@@ -16,8 +16,10 @@ describe("infinitykeys.io/puzzles", () => {
   it("should click on multiple thumbnails", () => {
     cy.get("a.header-nav--link").contains("Hunts").click();
     cy.get(".puzzle-thumb").first().click();
+    cy.get(".magic-input");
     cy.go("back");
     cy.get(".puzzle-thumb").last().click();
+    cy.get(".magic-input");
   });
 
   it("go to landing page and verify input boxes", () => {
