@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import Head from "next/head";
 import clsx from "clsx";
 
-// @TODO: remove when updated with Ham's layout
 import Header from "@components/header";
 import Footer from "@components/footer";
 import Wrapper from "@components/wrapper";
@@ -57,16 +56,17 @@ const buttonData = [
 ];
 
 const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
-  const tokenIds = puzzlesNftIds;
+  const gatedIds = puzzlesNftIds;
+  const gatedIdsString = gatedIds.map((id) => `gatedIds=${id}`).join("&");
   const nftId = pack.nftId;
 
   const width = useCurrentWidth();
   const layout = width < 640 ? PuzzleLayoutType.List : PuzzleLayoutType.Grid;
   const [chain, setChain] = useState<number | undefined>();
-  const [owned, setOwned] = useState<boolean>(false);
   const [claimed, setClaimed] = useState<boolean>(false);
   const [account, setAccount] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [signature, setSignature] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const connectWallet = async () => {
@@ -83,41 +83,60 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
         setLoading(false);
         return;
       }
-      setOwned(await checkIfOwned(account, tokenIds, chain));
+
+      if (!nftId) return;
+      const sig = await verify(account, nftId, chain);
+      setSignature(sig);
     } catch (err) {
       console.log("err: ", err);
     }
   };
 
-  const checkIfOwned = async (
-    account: string,
-    tokenIds: number[],
-    chainId: number
-  ) => {
-    setMessage("");
-
-    const tokenIdsParams = tokenIds
-      .map((id) => `tokenids=${id.toString()}`)
-      .join("&");
-
-    const url = `/api/minter/check-balance?account=${account}&${tokenIdsParams}&chainId=${chainId}`;
+  const verify = async (account: string, tokenId: number, chain: number) => {
+    setLoading(true);
+    const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}&${gatedIdsString}`;
 
     const response = await fetch(url);
-
     if (response.ok) {
       const data = await response.json();
-      if (!data.claimed)
-        setMessage(
-          "You do not have the required NFTS on this chain. Please ensure you have completed the above puzzles and are on the correct chain."
-        );
+      setMessage(data?.message);
       setLoading(false);
-      return data.claimed;
-    } else {
-      setLoading(false);
-      setMessage("Something went wrong. Please try again.");
-      throw await response.text();
+      return data?.signature;
     }
+
+    setLoading(false);
+    throw await response.text();
   };
+
+  // const checkIfOwned = async (
+  //   account: string,
+  //   tokenIds: number[],
+  //   chainId: number
+  // ) => {
+  //   setMessage("");
+
+  //   const tokenIdsParams = tokenIds
+  //     .map((id) => `tokenids=${id.toString()}`)
+  //     .join("&");
+
+  //   const url = `/api/minter/check-balance?account=${account}&${tokenIdsParams}&chainId=${chainId}`;
+
+  //   const response = await fetch(url);
+
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     if (!data.claimed)
+  //       setMessage(
+  //         "You do not have the required NFTS on this chain. Please ensure you have completed the above puzzles and are on the correct chain."
+  //       );
+  //     setLoading(false);
+  //     return data.claimed;
+  //   } else {
+  //     setLoading(false);
+  //     setMessage("Something went wrong. Please try again.");
+  //     throw await response.text();
+  //   }
+  // };
 
   const checkIfClaimed = async (account: string) => {
     const url = `/api/minter/check-claimed?account=${account}&tokenId=${nftId?.toString()}`;
@@ -131,10 +150,10 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
     if (!nftId) return;
 
     setLoading(true);
-    const minter = await minterUtil(nftId, owned);
+    const minter = await minterUtil(nftId, signature);
     const { claimedStatus } = await minter.mint();
     setLoading(false);
-    setMessage("Congrats on claiming your NFT!");
+    if (claimedStatus) setMessage("Congrats on claiming your NFT!");
     setClaimed(claimedStatus);
   };
 
@@ -218,16 +237,16 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
                       className={clsx(
                         "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 w-44 mb-8",
 
-                        chain !== undefined && !owned
+                        chain !== undefined && !signature
                           ? "bg-gray-150 border-gray-150"
                           : "bg-turquoise border-turquoise hover:bg-turquoiseDark"
                       )}
-                      onClick={() => (owned ? mint() : connectWallet())}
-                      disabled={chain !== undefined && !owned}
+                      onClick={() => (signature ? mint() : connectWallet())}
+                      disabled={chain !== undefined && !signature}
                     >
-                      {owned
+                      {signature
                         ? "Mint"
-                        : !owned && chain !== undefined
+                        : !signature && chain !== undefined
                         ? "Wallet Connected"
                         : "Connect Wallet"}
                     </button>
@@ -250,10 +269,8 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
                       onClick={async () => {
                         const newChain = (await wallet.switchChain(chain_id))
                           .chain;
-                        if (chain !== newChain) {
-                          setOwned(
-                            await checkIfOwned(account, tokenIds, newChain)
-                          );
+                        if (chain !== newChain && nftId) {
+                          setSignature(await verify(account, nftId, newChain));
                           setChain(newChain);
                         }
                       }}

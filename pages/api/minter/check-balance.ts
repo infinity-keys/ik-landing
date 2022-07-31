@@ -67,7 +67,7 @@ export default async function handler(
     return parseInt(e, 10) < numTokens;
   });
 
-  if (!validIds) return res.status(500).end();
+  if (!validIds || !contract) return res.status(500).end();
 
   const accountArray = Array(tokenIds.length).fill(account);
 
