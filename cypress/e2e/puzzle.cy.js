@@ -52,7 +52,7 @@ describe("infinitykeys.io/puzzles", () => {
     cy.url().should("include", "/solved/notright");
   });
 
-  it.only("incorrect input using input boxes displays fail message", () => {
+  it("incorrect input using input boxes displays fail message", () => {
     cy.contains("a.header-nav--link", "Hunts").click();
     cy.get(".puzzle-thumb").contains("notright").click();
     cy.get(".ik-code-input").first().wait(1000).type("asdfg", { delay: 750 });
