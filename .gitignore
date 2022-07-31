@@ -1,6 +1,7 @@
 lib/generated
 graphql.schema.json
-cypress/videos/*
+cypress/videos/
+cypress/screenshots/
 
 # dependencies
 /node_modules
