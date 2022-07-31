@@ -2,21 +2,14 @@
 
 export interface Typegen0 {
   "@@xstate/typegen": true;
-  eventsCausingActions: {
-    setText: "INPUT";
-    setPuzzleInfo: "PUZZLE_INFO";
-    clearText: "PUZZLE_INFO" | "INPUT" | "done.invoke.guess";
-    goToFailRoute: "done.invoke.guess";
-    goToSuccessRoute: "";
-  };
   internalEvents: {
+    "xstate.init": { type: "xstate.init" };
     "done.invoke.guess": {
       type: "done.invoke.guess";
       data: unknown;
       __tip: "See the XState TS docs to learn how to strongly type this.";
     };
     "": { type: "" };
-    "xstate.init": { type: "xstate.init" };
     "error.platform.guess": { type: "error.platform.guess"; data: unknown };
   };
   invokeSrcNameMap: {
@@ -27,6 +20,13 @@ export interface Typegen0 {
     services: never;
     guards: never;
     delays: never;
+  };
+  eventsCausingActions: {
+    setText: "INPUT";
+    setPuzzleInfo: "PUZZLE_INFO";
+    clearText: "xstate.init" | "PUZZLE_INFO" | "INPUT" | "done.invoke.guess";
+    goToFailRoute: "done.invoke.guess";
+    goToSuccessRoute: "";
   };
   eventsCausingServices: {
     sendGuess: "INPUT";
