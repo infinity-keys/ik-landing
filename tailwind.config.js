@@ -7,10 +7,6 @@ module.exports = {
     container: {
       center: true,
     },
-    screens: {
-      xs: "475px",
-      ...defaultTheme.screens,
-    },
     extend: {
       colors: {
         transparent: "transparent",
