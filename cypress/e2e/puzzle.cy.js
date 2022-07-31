@@ -45,7 +45,7 @@ describe("infinitykeys.io/puzzles", () => {
     cy.go("back");
   });
 
-  it.only("correct input using input boxes navigates to puzzle solved page", () => {
+  it("correct input using input boxes navigates to puzzle solved page", () => {
     cy.contains("a.header-nav--link", "Hunts").click();
     cy.get(".puzzle-thumb").contains("notright").click();
     cy.get(".ik-code-input").first().wait(1000).type("wrong", { delay: 750 });
