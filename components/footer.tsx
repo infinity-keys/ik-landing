@@ -63,23 +63,17 @@ export default function Footer() {
               </div>
             </div>
             {/* right */}
-            <Link href="/pack/starter-pack">
-              <a className="sm:ml-6 hover:bg-turquoise py-2 px-4 border-2 border-turquoise hover:border-white rounded-md text-xl font-medium text-white hover:text-blue box-border mb-4 sm:mb-0">
-                Starter Pack
-              </a>
-            </Link>
+            <div className="mb-4 sm:mb-0 sm:ml-6">
+              <Button
+                text="Starter Pack"
+                href="/pack/starter-pack"
+                variant="outline"
+              />
+            </div>
 
-            <div className="sm:pl-6">
+            <div className="sm:ml-6">
               <Button text="Puzzles" href="/puzzles" />
             </div>
-            {/* <div className="ml-10 space-x-4">
-              <a
-                href="#"
-                className="inline-block bg-turquoise hover:bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-2xl font-medium text-white hover:text-blue"
-              >
-                Puzzles
-              </a>
-            </div> */}
           </div>
         </nav>
         <p className="mt-8 text-center text-base text-gray-500">
