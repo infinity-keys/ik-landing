@@ -29,29 +29,27 @@ export default async function handler(
 
   const chainIdAsNumber = parseInt(chainId, 10);
 
-  const contractAVAX = IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_AVAX,
-    new ethers.providers.JsonRpcProvider(AVAX_RPC)
-  );
+  // @TODO: move this to a helper util
+  const contractLookup: {
+    [key: number]: ReturnType<typeof IKAchievementABI__factory.connect>;
+  } = {
+    [AVAX_CHAIN_ID]: IKAchievementABI__factory.connect(
+      CONTRACT_ADDRESS_AVAX,
+      new ethers.providers.JsonRpcProvider(AVAX_RPC)
+    ),
+    [ETH_CHAIN_ID]: IKAchievementABI__factory.connect(
+      CONTRACT_ADDRESS_ETH,
+      new ethers.providers.JsonRpcProvider(ETH_RPC)
+    ),
+    [POLYGON_CHAIN_ID]: IKAchievementABI__factory.connect(
+      CONTRACT_ADDRESS_POLYGON,
+      new ethers.providers.JsonRpcProvider(POLYGON_RPC)
+    ),
+  };
 
-  const contractPolygon = IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_POLYGON,
-    new ethers.providers.JsonRpcProvider(POLYGON_RPC)
-  );
-
-  const contractETH = IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_ETH,
-    new ethers.providers.JsonRpcProvider(ETH_RPC)
-  );
-
-  const contract =
-    chainIdAsNumber === AVAX_CHAIN_ID
-      ? contractAVAX
-      : chainIdAsNumber === ETH_CHAIN_ID
-      ? contractETH
-      : chainIdAsNumber === POLYGON_CHAIN_ID
-      ? contractPolygon
-      : undefined;
+  const contract = contractLookup[chainIdAsNumber];
+  if (!contract) return res.status(500).end();
+  const contractAVAX = contractLookup[AVAX_CHAIN_ID];
 
   // faster call on avax than eth..
   const numTokens = (await contractAVAX.totalSupplyAll()).length;
