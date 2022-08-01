@@ -132,7 +132,6 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
       <Head>
         <title>{pack.pack_name}</title>
       </Head>
-      <Header />
 
       <div className="w-full pt-4 pb-4 min-h-screen radial-bg relative z-0">
         <div className="container px-4 max-w-3xl">
@@ -257,8 +256,6 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
           </div>
         </div>
       </div>
-
-      <Footer />
     </Wrapper>
   );
 };

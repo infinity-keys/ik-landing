@@ -8,8 +8,6 @@ const { NODE_ENV } = process.env;
 
 import "loaders.css/loaders.min.css";
 import "../styles/globals.css";
-import Header from "@components/header";
-import Footer from "@components/footer";
 
 if (typeof window !== "undefined" && NODE_ENV === "development") {
   inspect({
@@ -18,13 +16,7 @@ if (typeof window !== "undefined" && NODE_ENV === "development") {
 }
 
 function InfinityKeysApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <Header />
-      <Component {...pageProps} />
-      <Footer />
-    </>
-  );
+  return <Component {...pageProps} />;
 }
 
 export default InfinityKeysApp;

@@ -5,13 +5,13 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 import Button from "./button";
 
-const navigation = [
+export const navigation = [
   { name: "Home", href: "/" },
   {
     name: "Hunts",
     href: "/puzzles",
   },
-  { name: "Collab", href: "#collab" },
+  { name: "Collab", href: "/#collab" },
   {
     name: "Thesis",
     href: "https://blog.infinitykeys.io/what-is-infinity-keys",

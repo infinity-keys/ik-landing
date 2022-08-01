@@ -52,14 +52,13 @@ describe("infinitykeys.io", () => {
     );
   });
 
-  it("clicks on a link and directs to the expected url", () => {
+  it("clicks on nav link and directs to the expected url", () => {
     cy.get(".header").contains("Home").click();
     cy.url().should("include", Cypress.config().baseUrl + "/");
 
     cy.visit("/");
     cy.get(".header").contains("Hunts").click();
     cy.url().should("include", Cypress.config().baseUrl + "/puzzles");
-    cy.go("back");
 
     cy.visit("/");
     cy.get(".header").contains("Collab").click();
