@@ -26,7 +26,6 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: build
         run: yarn build
-        if: steps.build-cache.outputs.cache-hit != 'true'
         env:
           GRAPHQL_ENDPOINT: ${{secrets.GRAPHQL_ENDPOINT}}
           HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
