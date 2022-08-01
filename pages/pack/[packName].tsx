@@ -2,8 +2,6 @@ import { NextPage } from "next";
 import Head from "next/head";
 import clsx from "clsx";
 
-import Header from "@components/header";
-import Footer from "@components/footer";
 import Wrapper from "@components/wrapper";
 import PuzzleThumbnail from "@components/puzzle-thumbnail";
 import Alert from "@components/alert";
