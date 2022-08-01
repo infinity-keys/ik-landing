@@ -37,46 +37,40 @@ const Dev: NextPage<PuzzlePageProps> = ({
 }) => {
   return (
     <Wrapper>
-      <div className="ik-page scanlines">
-        <div className="container px-4 flex flex-col items-center justify-center min-h-[calc(100vh-80px)]">
-          <Head>
-            <title>Infinity Keys</title>
-          </Head>
+      <Head>
+        <title>Infinity Keys</title>
+      </Head>
 
-          <main className="text-center pt-5">
-            <div className="pb-16">
-              <Link href={"/"}>
-                <a>
-                  <Image
-                    priority={true}
-                    src="/logo.svg"
-                    alt="Infinity Keys logo"
-                    width={100}
-                    height={62.72}
-                  />
-                </a>
-              </Link>
-            </div>
-
-            {landingMessage && (
-              <div className="pb-16 text-center text-lg text-gray-100">
-                <Markdown>{landingMessage}</Markdown>
-              </div>
-            )}
-
-            <Puzzle
-              count={count}
-              puzzleId={puzzleId}
-              boxes={inputType === "boxes"}
-              failMessage={failMessage}
-            />
-          </main>
-
-          <footer className="ik-front-bottom w-full">
-            <NavAvalanche showAvalanche={false} />
-          </footer>
+      <main className="text-center pt-5">
+        <div className="pb-16">
+          <Link href={"/"}>
+            <a>
+              <Image
+                priority={true}
+                src="/logo.svg"
+                alt="Infinity Keys logo"
+                width={100}
+                height={62.72}
+              />
+            </a>
+          </Link>
         </div>
-      </div>
+
+        {landingMessage && (
+          <div className="pb-16 text-center text-lg text-gray-100">
+            <Markdown>{landingMessage}</Markdown>
+          </div>
+        )}
+
+        <Puzzle
+          count={count}
+          puzzleId={puzzleId}
+          boxes={inputType === "boxes"}
+          failMessage={failMessage}
+        />
+      </main>
+
+      <NavAvalanche showAvalanche={false} />
     </Wrapper>
   );
 };

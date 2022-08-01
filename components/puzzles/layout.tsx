@@ -46,45 +46,42 @@ const PuzzlesLayout: NextPage<PageProps> = ({
       <Head>
         <title>Infinity Keys Puzzles</title>
       </Head>
-      <div className="radial-bg scanlines min-h-[calc(100vh-80px)] flex flex-col">
-        <div className="px-4 flex-1 container">
-          {layout !== PuzzleLayoutType.Unknown && (
-            <>
-              <LayoutButtons
-                isGrid={layout === PuzzleLayoutType.Grid}
-                puzzlesCount={puzzlesCount}
-                setView={setView}
-              />
 
-              <ul
-                role="list"
-                className={clsx(
-                  "grid grid-cols-1 gap-6 py-8 sm:grid-cols-2",
-                  layout === PuzzleLayoutType.Grid
-                    ? "md:grid-cols-3 lg:grid-cols-4"
-                    : "lg:grid-cols-3 xl:grid-cols-4"
-                )}
-              >
-                {puzzles.map(({ puzzle_id, landing_route, simple_name }) => (
-                  <li key={puzzle_id}>
-                    <PuzzleThumbnail
-                      isGrid={layout === PuzzleLayoutType.Grid}
-                      {...{ puzzle_id, landing_route, simple_name }}
-                    />
-                  </li>
-                ))}
-              </ul>
+      {layout !== PuzzleLayoutType.Unknown && (
+        <>
+          <LayoutButtons
+            isGrid={layout === PuzzleLayoutType.Grid}
+            puzzlesCount={puzzlesCount}
+            setView={setView}
+          />
 
-              <PuzzlesPagination
-                isFirstPage={isFirstPage}
-                isLastPage={isLastPage}
-                pageNum={pageNum}
-                puzzlesCount={puzzlesCount}
-              />
-            </>
-          )}
-        </div>
-      </div>
+          <ul
+            role="list"
+            className={clsx(
+              "grid grid-cols-1 gap-6 py-8 sm:grid-cols-2",
+              layout === PuzzleLayoutType.Grid
+                ? "md:grid-cols-3 lg:grid-cols-4"
+                : "lg:grid-cols-3 xl:grid-cols-4"
+            )}
+          >
+            {puzzles.map(({ puzzle_id, landing_route, simple_name }) => (
+              <li key={puzzle_id}>
+                <PuzzleThumbnail
+                  isGrid={layout === PuzzleLayoutType.Grid}
+                  {...{ puzzle_id, landing_route, simple_name }}
+                />
+              </li>
+            ))}
+          </ul>
+
+          <PuzzlesPagination
+            isFirstPage={isFirstPage}
+            isLastPage={isLastPage}
+            pageNum={pageNum}
+            puzzlesCount={puzzlesCount}
+          />
+        </>
+      )}
     </Wrapper>
   );
 };

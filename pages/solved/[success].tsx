@@ -29,25 +29,23 @@ const Dev: NextPage<SuccessPageProps> = ({
         <title>Congrats</title>
       </Head>
 
-      <div className="ik-page radial-bg scanlines">
-        <div className="container px-4 flex flex-col items-center justify-center min-h-[calc(100vh-80px)] max-w-sm ">
-          <header className="pt-4 md:pt-14 pb-4 block w-full">
-            <Link href="/">
-              <a>
-                <Image src="/logo.svg" width={100} height={63} alt="IK logo" />
-              </a>
-            </Link>
-          </header>
-
-          <main className="flex flex-col grow-0 items-center justify-center w-full flex-1">
-            <WalletEmail
-              puzzleId={puzzleId}
-              successMessage={successMessage}
-              nftId={nftId}
-              name={name}
-            />
-          </main>
+      <div className="max-w-sm">
+        <div className="pt-4 md:pt-14 pb-4 block w-full">
+          <Link href="/">
+            <a>
+              <Image src="/logo.svg" width={100} height={63} alt="IK logo" />
+            </a>
+          </Link>
         </div>
+
+        <main className="flex flex-col grow-0 items-center justify-center w-full flex-1">
+          <WalletEmail
+            puzzleId={puzzleId}
+            successMessage={successMessage}
+            nftId={nftId}
+            name={name}
+          />
+        </main>
       </div>
     </Wrapper>
   );
