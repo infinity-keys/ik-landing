@@ -132,133 +132,127 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
       <Head>
         <title>{pack.pack_name}</title>
       </Head>
-      <Header />
 
-      <div className="w-full pt-4 pb-4 min-h-screen radial-bg relative z-0">
-        <div className="container px-4 max-w-3xl">
-          <p className="mt-10 sm:mt-14">
-            To be eligible to claim the {pack.pack_name} Achievement you must
-            successfully complete the following puzzles and claim the
-            corresponding achievement NFT. All three NFTs should be claimed on
-            the same chain to qualify.
-          </p>
+      <div className="max-w-3xl">
+        <p className="mt-10 sm:mt-14">
+          To be eligible to claim the {pack.pack_name} Achievement you must
+          successfully complete the following puzzles and claim the
+          corresponding achievement NFT. All three NFTs should be claimed on the
+          same chain to qualify.
+        </p>
 
-          <div className={clsx({ "opacity-0": width === 0 })}>
-            <ul
-              role="list"
-              className={clsx(
-                "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 sm:mt-6",
-                message || loading ? "my-12 sm:mb-0" : "my-10"
-              )}
-            >
-              {puzzles.map(({ puzzle_id, landing_route, simple_name }) => (
-                <li key={puzzle_id}>
-                  <PuzzleThumbnail
-                    isGrid={layout === PuzzleLayoutType.Grid}
-                    {...{ puzzle_id, landing_route, simple_name }}
-                  />
-                </li>
-              ))}
-            </ul>
-
-            {message && (
-              <div className="max-w-xl mx-auto mb-2 mt-2">
-                <Alert text={message} />
-              </div>
+        <div className={clsx({ "opacity-0": width === 0 })}>
+          <ul
+            role="list"
+            className={clsx(
+              "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 sm:mt-6",
+              message || loading ? "my-12 sm:mb-0" : "my-10"
             )}
+          >
+            {puzzles.map(({ puzzle_id, landing_route, simple_name }) => (
+              <li key={puzzle_id}>
+                <PuzzleThumbnail
+                  isGrid={layout === PuzzleLayoutType.Grid}
+                  {...{ puzzle_id, landing_route, simple_name }}
+                />
+              </li>
+            ))}
+          </ul>
 
-            {loading && (
-              <div className="loader mx-auto h-8 w-8 flex justify-center sm:mt-14">
-                <div className="ball-clip-rotate-multiple">
-                  <div></div>
-                  <div></div>
-                </div>
-              </div>
-            )}
-
-            <div className="text-center mb-12">
-              {!loading && (
-                <div>
-                  {claimed ? (
-                    <button
-                      className={clsx(
-                        "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 px-4 mb-8 bg-turquoise border-turquoise hover:bg-turquoiseDark"
-                      )}
-                    >
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={`${
-                          chain === ETH_CHAIN_ID
-                            ? openseaLink
-                            : chain === AVAX_CHAIN_ID
-                            ? joePegsLink
-                            : chain === POLYGON_CHAIN_ID
-                            ? openseaPolygonLink
-                            : openseaLink
-                        }${nftId}`}
-                      >
-                        View NFT On{" "}
-                        {chain === AVAX_CHAIN_ID ? "JoePegs" : "OpenSea"}
-                      </a>
-                    </button>
-                  ) : (
-                    <button
-                      className={clsx(
-                        "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 w-44 mb-8",
-
-                        chain !== undefined && !signature
-                          ? "bg-gray-150 border-gray-150"
-                          : "bg-turquoise border-turquoise hover:bg-turquoiseDark"
-                      )}
-                      onClick={() => (signature ? mint() : connectWallet())}
-                      disabled={chain !== undefined && !signature}
-                    >
-                      {signature
-                        ? "Mint"
-                        : !signature && chain !== undefined
-                        ? "Wallet Connected"
-                        : "Connect Wallet"}
-                    </button>
-                  )}
-                </div>
-              )}
-
-              {chain && (
-                <div className="text-white/75 flex flex-col md:block">
-                  {buttonData.map(({ name, chain_id }) => (
-                    <button
-                      className={clsx(
-                        "transition my-2 hover:text-white text-turquoise md:mx-4 md:my-0",
-                        {
-                          "text-white/50 hover:text-white/50":
-                            chain === chain_id,
-                        }
-                      )}
-                      key={name}
-                      onClick={async () => {
-                        const newChain = (await wallet.switchChain(chain_id))
-                          .chain;
-                        if (chain !== newChain && nftId) {
-                          setSignature(await verify(account, nftId, newChain));
-                          setChain(newChain);
-                        }
-                      }}
-                      disabled={chain === chain_id}
-                    >
-                      {chain === chain_id
-                        ? `Connected to ${name}`
-                        : `Switch to ${name}`}
-                    </button>
-                  ))}
-                </div>
-              )}
+          {message && (
+            <div className="max-w-xl mx-auto mb-2 mt-2">
+              <Alert text={message} />
             </div>
+          )}
+
+          {loading && (
+            <div className="loader mx-auto h-8 w-8 flex justify-center sm:mt-14">
+              <div className="ball-clip-rotate-multiple">
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          )}
+
+          <div className="text-center mb-12">
+            {!loading && (
+              <div>
+                {claimed ? (
+                  <button
+                    className={clsx(
+                      "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 px-4 mb-8 bg-turquoise border-turquoise hover:bg-turquoiseDark"
+                    )}
+                  >
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`${
+                        chain === ETH_CHAIN_ID
+                          ? openseaLink
+                          : chain === AVAX_CHAIN_ID
+                          ? joePegsLink
+                          : chain === POLYGON_CHAIN_ID
+                          ? openseaPolygonLink
+                          : openseaLink
+                      }${nftId}`}
+                    >
+                      View NFT On{" "}
+                      {chain === AVAX_CHAIN_ID ? "JoePegs" : "OpenSea"}
+                    </a>
+                  </button>
+                ) : (
+                  <button
+                    className={clsx(
+                      "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 w-44 mb-8",
+
+                      chain !== undefined && !signature
+                        ? "bg-gray-150 border-gray-150"
+                        : "bg-turquoise border-turquoise hover:bg-turquoiseDark"
+                    )}
+                    onClick={() => (signature ? mint() : connectWallet())}
+                    disabled={chain !== undefined && !signature}
+                  >
+                    {signature
+                      ? "Mint"
+                      : !signature && chain !== undefined
+                      ? "Wallet Connected"
+                      : "Connect Wallet"}
+                  </button>
+                )}
+              </div>
+            )}
+
+            {chain && (
+              <div className="text-white/75 flex flex-col md:block">
+                {buttonData.map(({ name, chain_id }) => (
+                  <button
+                    className={clsx(
+                      "transition my-2 hover:text-white text-turquoise md:mx-4 md:my-0",
+                      {
+                        "text-white/50 hover:text-white/50": chain === chain_id,
+                      }
+                    )}
+                    key={name}
+                    onClick={async () => {
+                      const newChain = (await wallet.switchChain(chain_id))
+                        .chain;
+                      if (chain !== newChain && nftId) {
+                        setSignature(await verify(account, nftId, newChain));
+                        setChain(newChain);
+                      }
+                    }}
+                    disabled={chain === chain_id}
+                  >
+                    {chain === chain_id
+                      ? `Connected to ${name}`
+                      : `Switch to ${name}`}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
-
-      <Footer />
     </Wrapper>
   );
 };

@@ -5,13 +5,13 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 import Button from "./button";
 
-const navigation = [
+export const navigation = [
   { name: "Home", href: "/" },
   {
     name: "Hunts",
     href: "/puzzles",
   },
-  { name: "Collab", href: "#collab" },
+  { name: "Collab", href: "/#collab" },
   {
     name: "Thesis",
     href: "https://blog.infinitykeys.io/what-is-infinity-keys",
@@ -21,7 +21,7 @@ const navigation = [
 
 export default function Header() {
   return (
-    <Disclosure as="nav" className="header w-full sticky top-0 z-50 bg-blue">
+    <Disclosure as="header" className="header w-full sticky top-0 z-50 bg-blue">
       {({ open }) => (
         <>
           <div
@@ -60,17 +60,15 @@ export default function Header() {
               </div>
 
               <div className="menu-items items-center justify-center sm:items-stretch sm:justify-start hidden lg:flex">
-                <div className="sm:ml-6">
-                  <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <Link href={item.href} key={item.name}>
-                        <a className="header-nav--link text-2xl font-medium hover:text-turquoise">
-                          {item.name}
-                        </a>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
+                <nav className="flex space-x-4">
+                  {navigation.map((item) => (
+                    <Link href={item.href} key={item.name}>
+                      <a className="header-nav--link text-2xl font-medium text-white hover:text-turquoise">
+                        {item.name}
+                      </a>
+                    </Link>
+                  ))}
+                </nav>
               </div>
 
               <div

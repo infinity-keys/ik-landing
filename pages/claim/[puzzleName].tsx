@@ -107,116 +107,102 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
       <Head>
         <title>Infinity Keys</title>
       </Head>
-      <div className="scanlines">
-        <Header />
 
-        <div className="radial-bg min-h-screen flex items-center">
-          <div className="container p-4 text-center">
-            <div className="flex flex-col items-center">
-              <Avatar
-                size={128}
-                name={puzzleId}
-                variant="marble"
-                colors={["#101D42", "#E400FF", "#3FCCBB", "#8500AC", "#303B5B"]}
-              />
-              <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl">
-                {isLoading
-                  ? isLoadingWallet
-                    ? "Connecting Wallet"
-                    : "Claiming Trophy"
-                  : claimed
-                  ? "Your Trophy Has Been Claimed"
-                  : "Claim Your Trophy"}
-              </h2>
+      <div className="flex flex-col items-center text-center">
+        <Avatar
+          size={128}
+          name={puzzleId}
+          variant="marble"
+          colors={["#101D42", "#E400FF", "#3FCCBB", "#8500AC", "#303B5B"]}
+        />
 
-              {!chain && (
-                <Button
-                  text="Connect Wallet"
-                  type="submit"
-                  onClick={() => connectWallet()}
-                />
-              )}
+        <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+          {isLoading
+            ? isLoadingWallet
+              ? "Connecting Wallet"
+              : "Claiming Trophy"
+            : claimed
+            ? "Your Trophy Has Been Claimed"
+            : "Claim Your Trophy"}
+        </h2>
 
-              {!isLoading && chain && !claimed && (
-                <>
-                  {buttonData.map(({ chain_id, name }) => (
-                    <button
-                      key={chain_id}
-                      className={
-                        chain === chain_id
-                          ? buttonPrimaryClasses
-                          : buttonClasses
-                      }
-                      onClick={async () => {
-                        if (chain === chain_id) {
-                          mint();
-                        } else {
-                          setChain((await wallet.switchChain(chain_id)).chain);
-                          if (!account) return;
-                          setSignature(
-                            await verify(account, tokenId, chain_id)
-                          );
-                        }
-                      }}
-                    >
-                      {chain === chain_id
-                        ? `Claim on ${name}`
-                        : `Switch to ${name}`}
-                    </button>
-                  ))}
-                </>
-              )}
+        {!chain && (
+          <Button
+            text="Connect Wallet"
+            type="submit"
+            onClick={() => connectWallet()}
+          />
+        )}
 
-              {txMessage && (
-                <div>
-                  View Transaction&nbsp;
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={txMessage.toString()}
-                    className="underline"
-                  >
-                    Here
-                  </a>
-                </div>
-              )}
+        {!isLoading && chain && !claimed && (
+          <>
+            {buttonData.map(({ chain_id, name }) => (
+              <button
+                key={chain_id}
+                className={
+                  chain === chain_id ? buttonPrimaryClasses : buttonClasses
+                }
+                onClick={async () => {
+                  if (chain === chain_id) {
+                    mint();
+                  } else {
+                    setChain((await wallet.switchChain(chain_id)).chain);
+                    if (!account) return;
+                    setSignature(await verify(account, tokenId, chain_id));
+                  }
+                }}
+              >
+                {chain === chain_id ? `Claim on ${name}` : `Switch to ${name}`}
+              </button>
+            ))}
+          </>
+        )}
 
-              {/* @TODO: refactor this to be a shared loader component */}
-              {isLoading && (
-                <div className="loader mx-auto mt-10">
-                  <div className="ball-clip-rotate-multiple">
-                    <div></div>
-                    <div></div>
-                  </div>
-                </div>
-              )}
+        {txMessage && (
+          <div>
+            View Transaction&nbsp;
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={txMessage.toString()}
+              className="underline"
+            >
+              Here
+            </a>
+          </div>
+        )}
 
-              {claimed && (
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={`${
-                    chain === ETH_CHAIN_ID
-                      ? openseaLink
-                      : chain === AVAX_CHAIN_ID
-                      ? joePegsLink
-                      : chain === POLYGON_CHAIN_ID
-                      ? openseaPolygonLink
-                      : undefined
-                  }${tokenId}`}
-                  className={buttonPrimaryClasses}
-                >
-                  View NFT On{" "}
-                  {chain === ETH_CHAIN_ID || chain === POLYGON_CHAIN_ID
-                    ? "OpenSea"
-                    : "JoePegs"}
-                </a>
-              )}
+        {/* @TODO: refactor this to be a shared loader component */}
+        {isLoading && (
+          <div className="loader mx-auto mt-10">
+            <div className="ball-clip-rotate-multiple">
+              <div></div>
+              <div></div>
             </div>
           </div>
-        </div>
+        )}
 
-        <Footer />
+        {claimed && (
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`${
+              chain === ETH_CHAIN_ID
+                ? openseaLink
+                : chain === AVAX_CHAIN_ID
+                ? joePegsLink
+                : chain === POLYGON_CHAIN_ID
+                ? openseaPolygonLink
+                : undefined
+            }${tokenId}`}
+            className={buttonPrimaryClasses}
+          >
+            View NFT On{" "}
+            {chain === ETH_CHAIN_ID || chain === POLYGON_CHAIN_ID
+              ? "OpenSea"
+              : "JoePegs"}
+          </a>
+        )}
       </div>
     </Wrapper>
   );

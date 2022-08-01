@@ -9,7 +9,7 @@
     "generate:once": "yarn run typechain && graphql-codegen",
     "generate:watch": "yarn run typechain && graphql-codegen --watch",
     "fmt": "eslint . --fix",
-    "cypress:open": "NODE_ENV=test cypress open",
+    "cypress:open": "start-server-and-test dev http://localhost:3000 \"cypress open\"",
     "cypress:run": "cypress run --headless --browser chrome",
     "cypress:ci": "yarn build && start-server-and-test start http://localhost:3000 cypress:run",
     "typechain": "typechain --target ethers-v5 \"nfts/contracts/**/*.json\" --out-dir lib/generated/ethers-contract",
@@ -40,6 +40,7 @@
     "lodash": "^4.17.21",
     "nanoid": "^4.0.0",
     "next": "12.2.3",
+    "nprogress": "^0.2.0",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.34.0",
@@ -51,10 +52,11 @@
     "zod": "^3.17.10"
   },
   "devDependencies": {
-    "@typechain/ethers-v5": "^10.1.0",
     "@next/bundle-analyzer": "^12.2.3",
+    "@typechain/ethers-v5": "^10.1.0",
     "@types/lodash": "^4.14.178",
     "@types/node": "^18",
+    "@types/nprogress": "^0.2.0",
     "@types/react": "^18",
     "@types/uuid": "^8.3.4",
     "@xstate/inspect": "^0.7.0",
@@ -70,5 +72,8 @@
     "typechain": "^8.1.0",
     "typescript": "^4",
     "yarn-audit-fix": "^9.3.3"
+  },
+  "resolutions": {
+    "ethereumjs-abi": "https://registry.npmjs.org/ethereumjs-abi/-/ethereumjs-abi-0.6.8.tgz"
   }
 }
