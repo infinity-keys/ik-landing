@@ -36,8 +36,7 @@ export default async function handler(
     typeof chainId !== "string"
   )
     return res.status(500).end();
-
-  const gatedTokenIds = castArray(gatedIds);
+  const gatedTokenIds = gatedIds && castArray(gatedIds);
 
   // If not gated- its a single puzzle and we need to check cookie
   // If gated- its a pack, check the balance of the gatedIds

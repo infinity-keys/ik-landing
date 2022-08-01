@@ -75,7 +75,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
   };
 
   const verify = async (account: string, tokenId: number, chain: number) => {
-    const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}}`;
+    const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}`;
 
     const response = await fetch(url);
     if (response.ok) {
@@ -148,7 +148,8 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
                   } else {
                     setChain((await wallet.switchChain(chain_id)).chain);
                     if (!account) return;
-                    setSignature(await verify(account, tokenId, chain_id));
+                    const signature = await verify(account, tokenId, chain_id);
+                    setSignature(signature);
                   }
                 }}
               >

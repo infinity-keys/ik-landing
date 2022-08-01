@@ -62,7 +62,7 @@ export async function getStaticProps({
   params,
 }: PageParams): Promise<{ props: PageProps }> {
   const { puzzlesArgs } = params;
-  const [puzzlesPerPage, page] = puzzlesArgs || ["8", "1"];
+  const [puzzlesPerPage, page] = puzzlesArgs || ["16", "1"];
 
   const limit = parseInt(puzzlesPerPage);
   const pageNum = parseInt(page);
