@@ -41,7 +41,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
         <title>Infinity Keys</title>
       </Head>
 
-      <main className="text-center pt-5">
+      <main className="text-center pt-5 max-w-3xl">
         <div className="pb-16">
           <Link href={"/"}>
             <a>

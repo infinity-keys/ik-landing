@@ -1,4 +1,6 @@
 import type { AppProps } from "next/app";
+import Router from "next/router";
+import NProgress from "nprogress";
 import { inspect } from "@xstate/inspect";
 
 const { NODE_ENV } = process.env;
@@ -8,12 +10,17 @@ const { NODE_ENV } = process.env;
 
 import "loaders.css/loaders.min.css";
 import "../styles/globals.css";
+import "nprogress/nprogress.css";
 
 if (typeof window !== "undefined" && NODE_ENV === "development") {
   inspect({
     iframe: false, // open in new window
   });
 }
+
+Router.events.on("routeChangeStart", () => NProgress.start());
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
 
 function InfinityKeysApp({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;
