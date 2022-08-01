@@ -57,7 +57,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
         </div>
 
         {landingMessage && (
-          <div className="pb-16 text-center text-lg text-gray-100 max-w-2xl">
+          <div className="pb-16 text-center text-lg text-gray-100 max-w-2xl mx-auto">
             <Markdown>{landingMessage}</Markdown>
           </div>
         )}
