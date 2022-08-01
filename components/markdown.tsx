@@ -11,7 +11,10 @@ const Markdown = ({ children }: Props) => (
   <ReactMarkdown
     components={{
       a: (props) => {
-        if (props.href?.startsWith("https://www.youtube.com/embed")) {
+        if (
+          props.href?.startsWith("https://www.youtube.com/embed") ||
+          props.href?.startsWith("https://www.gstop-content.com/ipfs")
+        ) {
           return (
             <Video
               src={props.href}

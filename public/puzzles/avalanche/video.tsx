@@ -13,7 +13,8 @@ const Video: FC<VideoProps> = ({ src, title }) => (
       src={src}
       title={title}
       frameBorder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      sandbox="allow-scripts"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; camera; microphone; xr-spatial-tracking; scrolling; fullscreen"
       allowFullScreen
     />
   </span>
