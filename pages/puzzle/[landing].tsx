@@ -41,7 +41,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
         <title>Infinity Keys</title>
       </Head>
 
-      <main className="text-center pt-5 max-w-3xl">
+      <main className="text-center pt-5">
         <div className="pb-16">
           <Link href={"/"}>
             <a>
@@ -57,7 +57,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
         </div>
 
         {landingMessage && (
-          <div className="pb-16 text-center text-lg text-gray-100">
+          <div className="pb-16 text-center text-lg text-gray-100 max-w-2xl">
             <Markdown>{landingMessage}</Markdown>
           </div>
         )}
