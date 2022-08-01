@@ -4,7 +4,7 @@ query Guess($puzzle_id: uuid!, $solution: String!) {
     fail_route
   }
   success: puzzles(
-    where: { puzzle_id: { _eq: $puzzle_id }, solution: { _ilike: $solution } }
+    where: { puzzle_id: { _eq: $puzzle_id }, solution: { _eq: $solution } }
   ) {
     success_route
     final_step
@@ -167,5 +167,36 @@ query GetPuzzleInfoByNftId($nftId: numeric) {
   puzzles(where: { nft: { tokenId: { _eq: $nftId } } }) {
     simple_name
     puzzle_id
+  }
+}
+
+query GetAllPacks {
+  packs {
+    simple_name
+  }
+}
+
+query GetPuzzlesByPack($packName: String!) {
+  puzzles(
+    where: { pack_puzzles: { pack: { simple_name: { _eq: $packName } } } }
+  ) {
+    simple_name
+    landing_route
+    puzzle_id
+    nft {
+      tokenId
+    }
+  }
+  pack: packs(where: { simple_name: { _eq: $packName } }) {
+    pack_name
+    nftId
+  }
+}
+
+query NftMetadata($nftId: Int!, $contractName: String!) {
+  nft_metadata_by_pk(contract_name: $contractName, token_id: $nftId) {
+    contract_name
+    data
+    token_id
   }
 }

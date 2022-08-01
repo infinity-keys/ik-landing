@@ -8,7 +8,7 @@ import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
 import Wallet from "@components/wallet";
 import Alert from "@components/alert";
-import PuzzleButton from "@components/puzzle-button";
+import Button from "@components/button";
 
 interface FormProps extends PuzzleInput {
   email: string;
@@ -71,18 +71,12 @@ const WalletEmail = ({
 
   return (
     <>
-      {(isSubmitSuccessful || walletSigned) && (
-        <>
-          <Alert text="You win!" />
-          <PuzzleButton text="More Puzzles" />
-        </>
-      )}
-      {!isSubmitSuccessful && errors?.puzzleId && (
-        <>
+      <>
+        {(isSubmitSuccessful || walletSigned) && <Alert text="You win!" />}
+        {!isSubmitSuccessful && errors?.puzzleId && (
           <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
-          <PuzzleButton text="More Puzzles" />
-        </>
-      )}
+        )}
+      </>
       {!isSubmitSuccessful && !errors?.puzzleId && !walletSigned && (
         <div className="">
           <div className="mb-8">
@@ -98,11 +92,11 @@ const WalletEmail = ({
 
           <div className="mb-10">
             {nftId ? (
-              <Link href={`/claim/${name}`}>
-                <a className="text-center text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4 mx-auto block">
-                  Claim NFT Treasure
-                </a>
-              </Link>
+              <Button
+                text="Claim NFT Treasure"
+                href={`/claim/${name}`}
+                fullWidth={true}
+              />
             ) : (
               <Wallet onWalletSignature={onWalletSignature} />
             )}
@@ -121,14 +115,12 @@ const WalletEmail = ({
             />
 
             <input type="hidden" {...register("puzzleId")} value={puzzleId} />
-            <button
-              className="block w-full text-xs text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4"
+            <Button
+              text="Join the mailing list"
+              fullWidth={true}
               type="submit"
-              value="Join the mailing list"
               disabled={!isValid}
-            >
-              Join the mailing list
-            </button>
+            />
           </form>
           <div className="mt-6 flex">
             <div className="w-full flex items-center justify-center">

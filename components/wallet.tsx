@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import Button from "./button";
 
 import { useWalletConnect } from "@hooks/useWalletConnect";
 
@@ -48,12 +49,12 @@ const Wallet = ({ onWalletSignature }: WalletProps) => {
       )}
 
       {!isLoading && !isSigned && (
-        <button
+        <Button
           onClick={() => send("next")}
-          className="text-blue font-bold bg-turquoise hover:bg-turquoiseDark rounded-md py-2 px-4 mx-auto block"
-        >
-          {current.matches("connected") ? "Sign Message" : "Connect Wallet"}
-        </button>
+          text={
+            current.matches("connected") ? "Sign Message" : "Connect Wallet"
+          }
+        />
       )}
 
       <button
