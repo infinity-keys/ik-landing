@@ -12,7 +12,7 @@ import {
 } from "@lib/constants";
 import { IKAchievementABI__factory } from "@contracts/factories/IKAchievementABI__factory";
 
-export const minterUtil = async (tokenId: number) => {
+export const minterUtil = async (tokenId: number, signature: string) => {
   let claimedStatus = false;
   let txMessage: string;
 
@@ -76,20 +76,7 @@ export const minterUtil = async (tokenId: number) => {
     }
   };
 
-  const verify = async () => {
-    const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}`;
-
-    const response = await fetch(url);
-    if (response.ok) {
-      const data = await response.json();
-      return data?.signature;
-    }
-
-    throw await response.text();
-  };
-
   const mint = async () => {
-    const signature = await verify();
     if (signature) await createTx(signature);
     return retrieve();
   };

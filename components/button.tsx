@@ -7,26 +7,50 @@ interface ButtonProps {
   textColor?: "dark" | "light";
   fullWidth?: boolean;
   type?: "button" | "submit" | "reset";
+  size?: "small" | "medium";
+  variant?: "solid" | "outline";
   onClick?: any;
   disabled?: boolean;
+  responsive?: boolean;
 }
 
 export default function Button({
   text,
   href,
-  textColor = "dark",
+  textColor = "light",
   fullWidth = false,
   type = "submit",
+  size = "medium",
+  variant = "solid",
   onClick,
   disabled = false,
+  responsive = false,
 }: ButtonProps) {
   const classes = clsx(
-    "inline-block bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-lg font-medium text-center text-white hover:text-blue",
-    {
-      "text-blue": textColor === "light",
-      "block w-full": fullWidth,
-      "bg-turquoise/50": disabled,
-    }
+    "inline-block border border-turquoise hover:border-white rounded-md font-medium text-center",
+    // Sizing
+    { "block w-full": fullWidth },
+    // Text color
+    [
+      textColor === "light" && "text-white hover:text-blue",
+      textColor === "dark" && "text-blue hover:text-white",
+    ],
+    // Variants
+    [
+      variant === "solid" && {
+        "bg-turquoise": true,
+        "bg-turquoise/50": disabled,
+      },
+      variant === "outline" && "text-white hover:bg-turquoise",
+    ],
+    // Sizes and responsive sizes
+    [
+      responsive && "py-1 px-2 text-base sm:py-2 sm:px-4 sm:text-lg",
+      !responsive && {
+        "py-1 px-2 text-base": size === "small",
+        "py-2 px-4 text-lg": size === "medium",
+      },
+    ]
   );
 
   if (href) {

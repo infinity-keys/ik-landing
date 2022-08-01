@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ethers } from "ethers";
+import castArray from "lodash/castArray";
 import {
   AVAX_CHAIN_ID,
   CONTRACT_ADDRESS_AVAX,
@@ -20,13 +21,14 @@ const wallet = new ethers.Wallet(privateKey || "");
 
 type Signature = {
   signature: string;
+  message: string;
 };
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Signature>
 ) {
-  const { account, tokenId, chainId } = req.query;
+  const { account, tokenId, chainId, gatedIds } = req.query;
 
   if (
     typeof tokenId !== "string" ||
@@ -35,17 +37,33 @@ export default async function handler(
   )
     return res.status(500).end();
 
-  // Check if we're supposed to be here
-  const jwt = req.cookies[IK_ID_COOKIE];
-  if (!jwt) return res.status(401).end();
-  const gql = await gqlApiSdk();
-  const { puzzles } = await gql.GetPuzzleInfoByNftId({ nftId: tokenId });
-  const puzzleNames = puzzles.map(({ simple_name }) => simple_name);
-  const canAccess = await jwtHasClaim(jwt, puzzleNames);
-  if (!canAccess) return res.status(403).end();
+  const gatedTokenIds = castArray(gatedIds);
+
+  // If not gated- its a single puzzle and we need to check cookie
+  // If gated- its a pack, check the balance of the gatedIds
+  if (!gatedTokenIds) {
+    const jwt = req.cookies[IK_ID_COOKIE];
+    if (!jwt) return res.status(401).end();
+    const gql = await gqlApiSdk();
+    const { puzzles } = await gql.GetPuzzleInfoByNftId({ nftId: tokenId });
+    const puzzleNames = puzzles.map(({ simple_name }) => simple_name);
+    const canAccess = await jwtHasClaim(jwt, puzzleNames);
+    if (!canAccess) return res.status(403).end();
+  } else {
+    const baseUrl = req.headers.host || "infinitykeys.io";
+    const { ownedStatus, message } = await checkIfOwned(
+      account,
+      gatedTokenIds,
+      chainId,
+      baseUrl
+    );
+    if (typeof message !== "string") return res.status(500);
+    if (!ownedStatus) return res.json({ signature: "", message: message });
+  }
 
   const chainIdAsNumber = parseInt(chainId, 10);
 
+  // @TODO: Move this to a lookup table
   const contractAddress =
     chainIdAsNumber === AVAX_CHAIN_ID
       ? CONTRACT_ADDRESS_AVAX
@@ -63,5 +81,30 @@ export default async function handler(
 
   const signature = await wallet.signMessage(ethers.utils.arrayify(hash));
 
-  res.json({ signature });
+  res.json({ signature, message: "" });
 }
+
+const checkIfOwned = async (
+  account: string,
+  tokenIds: string[],
+  chainId: string,
+  baseUrl: string
+) => {
+  const tokenIdsParams = tokenIds.map((id) => `tokenids=${id}`).join("&");
+
+  const url = `http://${baseUrl}/api/minter/check-balance?account=${account}&${tokenIdsParams}&chainId=${chainId}`;
+  const response = await fetch(url);
+
+  let message = "";
+  if (response.ok) {
+    const data = await response.json();
+    if (!data.claimed) {
+      message =
+        "You do not have the required NFTS on this chain. Please ensure you have completed the above puzzles and are on the correct chain.";
+    }
+    return { ownedStatus: data.claimed, message };
+  } else {
+    const message = "Something went wrong. Please try again.";
+    return { ownedStatus: false, message };
+  }
+};

@@ -53,36 +53,32 @@ describe("infinitykeys.io", () => {
   });
 
   it("clicks on a link and directs to the expected url", () => {
-    cy.contains("Home").click();
+    cy.get(".header").contains("Home").click();
     cy.url().should("include", Cypress.config().baseUrl + "/");
-    cy.go("back");
 
     cy.visit("/");
-    cy.contains("Hunts").click();
+    cy.get(".header").contains("Hunts").click();
     cy.url().should("include", Cypress.config().baseUrl + "/puzzles");
     cy.go("back");
 
     cy.visit("/");
-    cy.contains("Collab").click();
+    cy.get(".header").contains("Collab").click();
     cy.url().should("include", Cypress.config().baseUrl + "/#collab");
 
     cy.visit("/");
-    cy.contains("Thesis").click();
+    cy.get(".header").contains("Thesis").click();
     cy.url().should(
       "include",
       "https://blog.infinitykeys.io/what-is-infinity-keys"
     );
-    cy.go("back");
 
     cy.visit("/");
-    cy.contains("Blog").click();
+    cy.get(".header").contains("Blog").click();
     cy.url().should("include", "https://blog.infinitykeys.io");
-    cy.go("back");
 
     cy.visit("/");
-    cy.contains("Puzzles").click();
+    cy.get(".header").contains("Puzzles").click();
     cy.url().should("include", Cypress.config().baseUrl + "/puzzles");
-    cy.go("back");
 
     cy.visit("/");
     cy.get('[data-cy="ik logo"]').click();

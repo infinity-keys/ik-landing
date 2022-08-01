@@ -21,28 +21,31 @@ const navigation = [
 
 export default function Header() {
   return (
-    <Disclosure as="nav" className="w-full sticky top-0 z-50 bg-blue">
+    <Disclosure as="nav" className="header w-full sticky top-0 z-50 bg-blue">
       {({ open }) => (
         <>
           <div
-            className="sm:px-6 lg:px-8 border-b border-indigo-500 lg:border-none"
+            className="px-4 sm:px-6 lg:px-8 border-b border-indigo-500 lg:border-none"
             aria-label="Top"
           >
             <div className="relative flex items-center justify-between h-20">
-              <div className="logo flex-shrink-0 flex items-center">
-                <div className="block lg:hidden h-12 w-auto">
+              <div
+                data-cy="ik logo"
+                className="logo flex-shrink-0 flex items-center"
+              >
+                <div className="block sm:hidden h-12 w-auto">
                   <Link href="/">
-                    <a data-cy="ik logo">
+                    <a>
                       <Image
-                        src="/logo.svg"
-                        width={100}
-                        height={55}
+                        src="/logo-mobile.svg"
+                        width={19.7}
+                        height={48}
                         alt="IK logo"
                       />
                     </a>
                   </Link>
                 </div>
-                <div className="hidden lg:block h-12 w-auto">
+                <div className="hidden sm:block h-12 w-auto">
                   <Link href={"/"}>
                     <a>
                       <Image
@@ -55,8 +58,9 @@ export default function Header() {
                   </Link>
                 </div>
               </div>
-              <div className="menu-items flex items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="hidden sm:block sm:ml-6">
+
+              <div className="menu-items items-center justify-center sm:items-stretch sm:justify-start hidden lg:flex">
+                <div className="sm:ml-6">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <Link href={item.href} key={item.name}>
@@ -68,12 +72,23 @@ export default function Header() {
                   </div>
                 </div>
               </div>
-              <div data-cy="puzzle-link">
-                <Button text="Puzzles" href="/puzzles" />
+
+              <div
+                data-cy="puzzle-link"
+                className="grid grid-cols-2 gap-1 sm:gap-4"
+              >
+                <Button
+                  text="Starter Pack"
+                  href="/pack/starter-pack"
+                  variant="outline"
+                  responsive
+                />
+
+                <Button text="Puzzles" href="/puzzles" responsive />
               </div>
 
               {/* hamburger icon, visible mobile only */}
-              <div className="hamburger flex items-center pr-4 sm:hidden">
+              <div className="hamburger flex items-center lg:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
@@ -87,7 +102,7 @@ export default function Header() {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
+          <Disclosure.Panel className="lg:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => (
                 <Disclosure.Button
