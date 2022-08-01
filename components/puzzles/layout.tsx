@@ -48,7 +48,7 @@ const PuzzlesLayout: NextPage<PageProps> = ({
       </Head>
 
       {layout !== PuzzleLayoutType.Unknown && (
-        <>
+        <div className="w-full">
           <LayoutButtons
             isGrid={layout === PuzzleLayoutType.Grid}
             puzzlesCount={puzzlesCount}
@@ -80,7 +80,7 @@ const PuzzlesLayout: NextPage<PageProps> = ({
             pageNum={pageNum}
             puzzlesCount={puzzlesCount}
           />
-        </>
+        </div>
       )}
     </Wrapper>
   );
