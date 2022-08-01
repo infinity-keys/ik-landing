@@ -1,5 +1,5 @@
 import ReactMarkdown from "react-markdown";
-import Video from "public/puzzles/avalanche/video";
+import Video from "./video";
 
 import { cleanGqlMarkdown } from "@lib/utils";
 
