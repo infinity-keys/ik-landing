@@ -11,7 +11,6 @@ import {
 } from "@lib/constants";
 
 import { IKAchievementABI__factory } from "@lib/generated/ethers-contract/factories/IKAchievementABI__factory";
-import { jwtHasClaim } from "@lib/jwt";
 
 export default async function handler(
   req: NextApiRequest,

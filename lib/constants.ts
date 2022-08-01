@@ -39,14 +39,14 @@ export const AVAX_PARAMS = {
 };
 
 // ETH PARAMS
-export const ETH_CHAIN_ID = 1;
-export const CONTRACT_ADDRESS_ETH =
-  "0x54b743D6055e3BBBF13eb2C748A3783516156e5B";
-export const ETHERSCAN_TRACKER = "https://etherscan.io";
-export const ETH_RPC_ID = "c10d222a5bae4a8e97fad0915b06ff5d";
-export const ETH_RPC = `https://mainnet.infura.io/v3/${ETH_RPC_ID}`;
-export const ETH_MARKETPLACE_LINK = "https://opensea.io/assets/ethereum/";
-export const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/`;
+// export const ETH_CHAIN_ID = 1;
+// export const CONTRACT_ADDRESS_ETH =
+//   "0x54b743D6055e3BBBF13eb2C748A3783516156e5B";
+// export const ETHERSCAN_TRACKER = "https://etherscan.io";
+// export const ETH_RPC_ID = "c10d222a5bae4a8e97fad0915b06ff5d";
+// export const ETH_RPC = `https://mainnet.infura.io/v3/${ETH_RPC_ID}`;
+// export const ETH_MARKETPLACE_LINK = "https://opensea.io/assets/ethereum/";
+// export const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/`;
 
 // POLYGON PARAMS
 export const POLYGON_CHAIN_ID = 137;
@@ -63,3 +63,14 @@ export const POLYGON_PARAMS = {
   nativeCurrency: { name: "MATIC", decimals: 18, symbol: "MATIC" },
   blockExplorerUrls: [POLYGONSCAN_TRACKER],
 };
+
+// RINKEBY PARAMS
+export const ETH_CHAIN_ID = 4;
+export const CONTRACT_ADDRESS_ETH =
+  "0xBCEBf2f7F6D23287054008Aeb028F2092262d1a3";
+export const ETHERSCAN_TRACKER = "https://rinkeby.etherscan.io";
+export const ETH_RPC_ID = "c10d222a5bae4a8e97fad0915b06ff5d";
+export const ETH_RPC = `https://rinkeby.infura.io/v3/${ETH_RPC_ID}`;
+export const ETH_MARKETPLACE_LINK =
+  "https://testnets.opensea.io/assets/ethereum/";
+export const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/`;

@@ -10,6 +10,7 @@ jobs:
           node-version: 16
           cache: yarn
       - name: nextjs cache
+        id: build-cache
         uses: actions/cache@v3
         with:
           path: |
@@ -25,6 +26,7 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: build
         run: yarn build
+        if: steps.build-cache.outputs.cache-hit != 'true'
         env:
           GRAPHQL_ENDPOINT: ${{secrets.GRAPHQL_ENDPOINT}}
           HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}

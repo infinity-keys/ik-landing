@@ -1,5 +1,6 @@
 import TwitterIcon from "./svg/twitter-icon-svg";
 import Discord from "./svg/discord-svg";
+import Link from "next/link";
 import Button from "./button";
 
 const navigation = [
@@ -14,7 +15,7 @@ export default function Footer() {
     <footer className="">
       <div className="py-12 px-4 overflow-hidden sm:px-6 lg:px-8 bg-blue">
         <nav className="px-4 sm:px-6 lg:px-8" aria-label="Top">
-          <div className="w-full py-6 flex items-center justify-center border-b border-indigo-500 lg:border-none">
+          <div className="w-full py-6 flex flex-col sm:flex-row items-center justify-center border-b border-indigo-500 lg:border-none">
             {/* <div className="logo flex-shrink-0 flex items-center">
               <div className="block lg:hidden h-12 w-auto">
                 <Image src="/logo.svg" width={100} height={55} alt="IK logo" />
@@ -39,7 +40,7 @@ export default function Footer() {
                 </div>
               </div>
             </div> */}
-            <div className="flex items-center space-x-4 text-white">
+            <div className="flex items-center space-x-4 mb-4 sm:mb-0">
               <div className="twitterIcon hover: fill-twitterBlue">
                 <a
                   data-cy="twitter"
@@ -62,17 +63,17 @@ export default function Footer() {
               </div>
             </div>
             {/* right */}
-            <div className="pl-6">
+            <div className="mb-4 sm:mb-0 sm:ml-6">
+              <Button
+                text="Starter Pack"
+                href="/pack/starter-pack"
+                variant="outline"
+              />
+            </div>
+
+            <div className="sm:ml-6">
               <Button text="Puzzles" href="/puzzles" />
             </div>
-            {/* <div className="ml-10 space-x-4">
-              <a
-                href="#"
-                className="inline-block bg-turquoise hover:bg-turquoise py-2 px-4 border border-turquoise hover:border-white rounded-md text-2xl font-medium text-white hover:text-blue"
-              >
-                Puzzles
-              </a>
-            </div> */}
           </div>
         </nav>
         <p className="mt-8 text-center text-base text-gray-500">
