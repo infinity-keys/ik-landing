@@ -65,7 +65,7 @@ export default function Header() {
                   </Link>
                 </div>
                 <div className="hidden sm:block h-12 w-auto">
-                  <Link href={"/"}>
+                  <Link href="/">
                     <a>
                       <Image
                         src="/logo.svg"
