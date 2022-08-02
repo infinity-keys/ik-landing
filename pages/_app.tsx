@@ -3,6 +3,8 @@ import Router from "next/router";
 import NProgress from "nprogress";
 import { inspect } from "@xstate/inspect";
 
+import { GlobalWalletProvider } from "@ik-xstate/global-wallet";
+
 const { NODE_ENV } = process.env;
 
 // Re-enable here and below for auth via auth0
@@ -24,7 +26,11 @@ Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
 function InfinityKeysApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <GlobalWalletProvider>
+      <Component {...pageProps} />
+    </GlobalWalletProvider>
+  );
 }
 
 export default InfinityKeysApp;

@@ -1,9 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
-import Button from "./button";
+import BeakerIcon from "@heroicons/react/outline/BeakerIcon";
+import MenuIcon from "@heroicons/react/outline/MenuIcon";
+import XIcon from "@heroicons/react/outline/XIcon";
+
+import Button from "@components/button";
 
 export const navigation = [
   { name: "Home", href: "/" },
@@ -73,7 +76,7 @@ export default function Header() {
 
               <div
                 data-cy="puzzle-link"
-                className="grid grid-cols-2 gap-1 sm:gap-4"
+                className="grid grid-flow-col gap-1 sm:gap-4"
               >
                 <Button
                   text="Starter Pack"
@@ -83,6 +86,10 @@ export default function Header() {
                 />
 
                 <Button text="Puzzles" href="/puzzles" responsive />
+
+                <button className="flex p-2 justify-center items-center text-white hover:text-turquoise">
+                  <BeakerIcon className="block h-6 w-6" aria-hidden="true" />
+                </button>
               </div>
 
               {/* hamburger icon, visible mobile only */}

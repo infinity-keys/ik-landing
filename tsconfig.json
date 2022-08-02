@@ -22,7 +22,7 @@
       "@hooks/*": ["hooks/*"],
       "@nfts/*": ["nfts/*"],
       "@contracts/*": ["lib/generated/ethers-contract/*"],
-      "@xstate/*": ["xstate/*"]
+      "@ik-xstate/*": ["xstate/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

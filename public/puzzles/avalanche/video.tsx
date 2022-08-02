@@ -6,7 +6,7 @@ interface VideoProps {
 }
 
 const Video: FC<VideoProps> = ({ src, title }) => (
-  <span className="container block max-w-xl videoAspect">
+  <span className="container block max-w-xl aspect-video">
     <iframe
       height="100%"
       width="100%"
