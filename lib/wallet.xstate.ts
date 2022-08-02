@@ -1,4 +1,5 @@
 import { createMachine, assign } from "xstate";
+
 import { walletUtil } from "./wallet";
 
 const wallet = walletUtil();

@@ -1,6 +1,7 @@
+import { createMachine, assign } from "xstate";
+
 import { puzzlePost } from "@lib/fetchers";
 import { PuzzleApiResponse } from "@lib/types";
-import { createMachine, assign } from "xstate";
 
 export type PuzzleContext = {
   text: string;

@@ -21,7 +21,8 @@
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
       "@nfts/*": ["nfts/*"],
-      "@contracts/*": ["lib/generated/ethers-contract/*"]
+      "@contracts/*": ["lib/generated/ethers-contract/*"],
+      "@xstate/*": ["xstate/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
