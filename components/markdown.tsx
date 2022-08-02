@@ -1,5 +1,5 @@
 import ReactMarkdown from "react-markdown";
-import Iframe from "./iframe";
+import Iframe from "@components/iframe";
 
 import { cleanGqlMarkdown } from "@lib/utils";
 
