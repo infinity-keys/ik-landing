@@ -4,6 +4,8 @@ import { useInterpret } from "@xstate/react";
 import { walletMachine } from "@ik-xstate/wallet.xstate";
 import { InterpreterFrom } from "xstate";
 
+export { createSelector } from "@ik-xstate/wallet.xstate";
+
 export const GlobalWalletContext = createContext(
   {} as InterpreterFrom<typeof walletMachine>
 );
@@ -11,7 +13,7 @@ export const GlobalWalletContext = createContext(
 type Props = { children: ReactNode };
 
 export const GlobalWalletProvider = ({ children }: Props) => {
-  const walletService = useInterpret(walletMachine);
+  const walletService = useInterpret(walletMachine, { devTools: true });
 
   return (
     <GlobalWalletContext.Provider value={walletService}>

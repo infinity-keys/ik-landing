@@ -1,6 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useContext } from "react";
 import { Disclosure } from "@headlessui/react";
+import { useSelector } from "@xstate/react";
+
+import { GlobalWalletContext, createSelector } from "@ik-xstate/global-wallet";
 
 import BeakerIcon from "@heroicons/react/outline/BeakerIcon";
 import MenuIcon from "@heroicons/react/outline/MenuIcon";
@@ -22,7 +26,19 @@ export const navigation = [
   { name: "Blog", href: "https://blog.infinitykeys.io" },
 ];
 
+const isConnectingSelector = createSelector((state) =>
+  state.matches("connecting")
+);
+const isConnectedSelector = createSelector((state) =>
+  state.matches("connected")
+);
+
 export default function Header() {
+  const globalWalletService = useContext(GlobalWalletContext);
+  const isConnecting = useSelector(globalWalletService, isConnectingSelector);
+  const isConnected = useSelector(globalWalletService, isConnectedSelector);
+  const { send } = globalWalletService;
+
   return (
     <Disclosure as="header" className="header w-full sticky top-0 z-50 bg-blue">
       {({ open }) => (
@@ -87,8 +103,17 @@ export default function Header() {
 
                 <Button text="Puzzles" href="/puzzles" responsive />
 
-                <button className="flex p-2 justify-center items-center text-white hover:text-turquoise">
+                <button
+                  onClick={() =>
+                    isConnected
+                      ? send("DISCONNECT_WALLET")
+                      : send("CONNECT_WALLET")
+                  }
+                  className="flex p-2 justify-center items-center text-white hover:text-turquoise"
+                >
                   <BeakerIcon className="block h-6 w-6" aria-hidden="true" />
+                  {isConnecting && "connecting..."}
+                  {isConnected && "connected"}
                 </button>
               </div>
 
