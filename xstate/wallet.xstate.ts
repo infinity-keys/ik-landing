@@ -29,16 +29,13 @@ export const walletMachine = createMachine(
       events: {} as WalletEvents,
       services: {} as {
         connectWallet: {
-          data: {
-            account: string;
-            chain: number;
-          };
+          data: Awaited<ReturnType<typeof wallet.trigger>>;
         };
         checkWalletCache: {
-          data: boolean;
+          data: ReturnType<typeof wallet.isCached>;
         };
         clearWalletCache: {
-          data: void;
+          data: ReturnType<typeof wallet.clear>;
         };
       },
     },
