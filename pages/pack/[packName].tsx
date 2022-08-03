@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import clsx from "clsx";
+import isNumber from "lodash/isNumber";
 
 import Wrapper from "@components/wrapper";
 import PuzzleThumbnail from "@components/puzzle-thumbnail";
@@ -278,6 +279,10 @@ export async function getStaticProps({
   const gql = await gqlApiSdk();
   const { puzzles, pack } = await gql.GetPuzzlesByPack({ packName });
   const puzzlesNftIds = puzzles.map(({ nft }) => nft?.tokenId);
+
+  if (!puzzlesNftIds.every(isNumber)) {
+    throw new Error("Either no NFTs or NFT IDs are not numbers");
+  }
 
   return {
     props: {

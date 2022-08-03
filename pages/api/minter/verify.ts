@@ -44,7 +44,9 @@ export default async function handler(
     const jwt = req.cookies[IK_ID_COOKIE];
     if (!jwt) return res.status(401).end();
     const gql = await gqlApiSdk();
-    const { puzzles } = await gql.GetPuzzleInfoByNftId({ nftId: tokenId });
+    const { puzzles } = await gql.GetPuzzleInfoByNftId({
+      nftId: parseInt(tokenId, 10),
+    });
     const puzzleNames = puzzles.map(({ simple_name }) => simple_name);
     const canAccess = await jwtHasClaim(jwt, puzzleNames);
     if (!canAccess) return res.status(403).end();
