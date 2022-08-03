@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { useSelector } from "@xstate/react";
 
-import BeakerIcon from "@heroicons/react/outline/BeakerIcon";
+import LoginIcon from "@heroicons/react/outline/LoginIcon";
+import LogoutIcon from "@heroicons/react/outline/LogoutIcon";
 
 import { GlobalWalletContext, createSelector } from "@ik-xstate/global-wallet";
 
@@ -30,7 +31,13 @@ const WalletGlobal = () => {
       }
       className="flex p-2 justify-center items-center text-white hover:text-turquoise"
     >
-      <BeakerIcon className="block h-6 w-6 mr-2" aria-hidden="true" />
+      {!isConnected && (
+        <LoginIcon className="block h-6 w-6 mr-2" aria-hidden="true" />
+      )}
+
+      {isConnected && (
+        <LogoutIcon className="block h-6 w-6 mr-2" aria-hidden="true" />
+      )}
       <span>
         {isConnecting && "connecting"}
         {isConnected && address && address.slice(0, 8) + "..."}

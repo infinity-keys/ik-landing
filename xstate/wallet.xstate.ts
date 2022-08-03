@@ -19,6 +19,17 @@ export type WalletStates =
   | { value: "signing"; context: WalletContext }
   | { value: "signed"; context: WalletContext }
   | { value: "choosingChain"; context: WalletContext };
+export type WalletServices = {
+  connectWallet: {
+    data: Awaited<ReturnType<typeof wallet.trigger>>;
+  };
+  checkWalletCache: {
+    data: ReturnType<typeof wallet.isCached>;
+  };
+  clearWalletCache: {
+    data: ReturnType<typeof wallet.clear>;
+  };
+};
 
 export const walletMachine = createMachine(
   {
@@ -27,17 +38,7 @@ export const walletMachine = createMachine(
     schema: {
       context: {} as WalletContext,
       events: {} as WalletEvents,
-      services: {} as {
-        connectWallet: {
-          data: Awaited<ReturnType<typeof wallet.trigger>>;
-        };
-        checkWalletCache: {
-          data: ReturnType<typeof wallet.isCached>;
-        };
-        clearWalletCache: {
-          data: ReturnType<typeof wallet.clear>;
-        };
-      },
+      services: {} as WalletServices,
     },
     initial: "checking",
     context: {
