@@ -1,7 +1,5 @@
-import { walletUtil } from "@lib/wallet";
+import { wallet } from "@lib/wallet";
 import { createMachine, assign, StateFrom } from "xstate";
-
-const wallet = walletUtil();
 
 export type WalletContext = {
   walletAddress: string;
@@ -14,7 +12,7 @@ export type WalletEvents =
   | { type: "DISCONNECT_WALLET" }
   | { type: "CHOOSE_CHAIN"; chain: string };
 export type WalletStates =
-  | { value: "unknown"; context: WalletContext }
+  | { value: "checking"; context: WalletContext }
   | { value: "disconnected"; context: WalletContext }
   | { value: "connecting"; context: WalletContext }
   | { value: "connected"; context: WalletContext }
@@ -35,16 +33,35 @@ export const walletMachine = createMachine(
             account: string;
           };
         };
+        checkWalletCache: {
+          data: boolean;
+        };
       },
     },
-    initial: "unknown",
+    initial: "checking",
     context: {
       walletAddress: "",
       signature: "",
       chain: "",
     },
     states: {
-      unknown: {
+      checking: {
+        invoke: {
+          id: "checkingWalletConnectCache",
+          src: "checkWalletCache",
+          onDone: [
+            {
+              target: "connecting",
+              cond: "isWalletCached",
+            },
+            {
+              target: "disconnected",
+            },
+          ],
+          onError: {
+            target: "disconnected",
+          },
+        },
         on: {
           CONNECT_WALLET: "connecting",
         },
@@ -66,6 +83,7 @@ export const walletMachine = createMachine(
         },
       },
       disconnected: {
+        entry: ["clearWallet"],
         on: {
           CONNECT_WALLET: "connecting",
         },
@@ -78,11 +96,23 @@ export const walletMachine = createMachine(
   {
     services: {
       connectWallet: wallet.trigger,
+      checkWalletCache: async () => wallet.isCached(),
     },
     actions: {
       setWalletAddress: assign({
         walletAddress: (_, { data }) => data.account,
       }),
+      clearWallet: assign({
+        walletAddress: "",
+        signature: "",
+        chain: "",
+      }),
+    },
+    guards: {
+      isWalletCached: (_, event) => {
+        console.log(event);
+        return true;
+      },
     },
   }
 );

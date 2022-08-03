@@ -26,18 +26,23 @@ export const navigation = [
   { name: "Blog", href: "https://blog.infinitykeys.io" },
 ];
 
+// xstate:state
 const isConnectingSelector = createSelector((state) =>
   state.matches("connecting")
 );
 const isConnectedSelector = createSelector((state) =>
   state.matches("connected")
 );
+// xstate:context
+const addressSelector = createSelector((state) => state.context.walletAddress);
 
 export default function Header() {
   const globalWalletService = useContext(GlobalWalletContext);
+  const { send } = globalWalletService;
+
   const isConnecting = useSelector(globalWalletService, isConnectingSelector);
   const isConnected = useSelector(globalWalletService, isConnectedSelector);
-  const { send } = globalWalletService;
+  const address = useSelector(globalWalletService, addressSelector);
 
   return (
     <Disclosure as="header" className="header w-full sticky top-0 z-50 bg-blue">
@@ -48,11 +53,8 @@ export default function Header() {
             aria-label="Top"
           >
             <div className="relative flex items-center justify-between h-20">
-              <div
-                data-cy="ik logo"
-                className="logo flex-shrink-0 flex items-center"
-              >
-                <div className="block sm:hidden h-12 w-auto">
+              <div data-cy="ik logo" className="logo">
+                <div className="block sm:hidden">
                   <Link href="/">
                     <a>
                       <Image
@@ -64,7 +66,7 @@ export default function Header() {
                     </a>
                   </Link>
                 </div>
-                <div className="hidden sm:block h-12 w-auto">
+                <div className="hidden sm:block">
                   <Link href="/">
                     <a>
                       <Image
@@ -112,8 +114,9 @@ export default function Header() {
                   className="flex p-2 justify-center items-center text-white hover:text-turquoise"
                 >
                   <BeakerIcon className="block h-6 w-6" aria-hidden="true" />
-                  {isConnecting && "connecting..."}
-                  {isConnected && "connected"}
+                  {isConnecting && "connecting... "}
+                  {isConnected && "connected "}
+                  {address && address.slice(0, 6) + "..."}
                 </button>
               </div>
 

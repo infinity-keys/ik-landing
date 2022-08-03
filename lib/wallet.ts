@@ -47,8 +47,9 @@ const providerOptions = {
 const web3Modal: Web3Modal | undefined =
   typeof window !== "undefined"
     ? new Web3Modal({
-        cacheProvider: false, // optional- can set to false if we want them to connect every time
+        cacheProvider: true, // optional- can set to false if we want them to connect every time
         providerOptions,
+        theme: "dark",
       })
     : undefined;
 
@@ -57,6 +58,24 @@ export const walletUtil = () => {
   let library: ethers.providers.Web3Provider;
   let account: string;
   let chain: number;
+
+  // @DEBUG
+  web3Modal &&
+    web3Modal.on("accountsChanged", (accounts: string[]) => {
+      console.log("accountsChanged", accounts);
+    });
+  web3Modal &&
+    web3Modal.on("chainsChanged", (chainId: number) => {
+      console.log("chainChanged", chainId);
+    });
+  web3Modal &&
+    web3Modal.on("connect", (info: { chainId: number }) => {
+      console.log("connect", info);
+    });
+  web3Modal &&
+    web3Modal.on("disconnect", (error: { code: number; message: string }) => {
+      console.log("disconnect", error);
+    });
 
   /**
    * Pop the modal and set vars we may need later
@@ -172,12 +191,15 @@ export const walletUtil = () => {
     return retrieve();
   };
 
+  const isCached = () => !!(web3Modal && !!web3Modal.cachedProvider);
+
   return {
     trigger,
     retrieve,
     sign,
     clear,
     switchChain,
+    isCached,
   };
 };
 

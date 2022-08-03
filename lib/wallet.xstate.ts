@@ -1,6 +1,6 @@
 import { createMachine, assign } from "xstate";
 
-import { walletUtil } from "./wallet";
+import { walletUtil } from "@lib/wallet";
 
 const wallet = walletUtil();
 
