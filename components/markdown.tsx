@@ -11,8 +11,6 @@ const Markdown = ({ children }: Props) => (
   <ReactMarkdown
     components={{
       a: (props) => {
-        // Convert video cpt to iframe cpt
-        // if/then to check for youtube or gamestop
         if (
           props.href?.startsWith("https://www.youtube.com/embed") ||
           props.href?.startsWith("https://www.gstop-content.com/ipfs")
