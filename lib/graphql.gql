@@ -192,6 +192,9 @@ query GetPuzzlesByPack($packName: String!) {
     puzzle_id
     nft {
       tokenId
+      nft_metadatum {
+        cloudinary_id
+      }
     }
   }
   pack: packs(where: { simple_name: { _eq: $packName } }) {
