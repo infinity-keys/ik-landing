@@ -283,7 +283,6 @@ export async function getStaticProps({
   if (!puzzlesNftIds.every(isNumber)) {
     throw new Error("Either no NFTs or NFT IDs are not numbers");
   }
-
   return {
     props: {
       puzzles,
