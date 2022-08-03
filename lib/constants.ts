@@ -12,7 +12,11 @@ export const PUZZLE_LANDING_BASE = "puzzle";
 export const PUZZLE_SUCCESS_BASE = "solved";
 export const PUZZLE_FAILED_BASE = "puzzle"; // back to landing
 
+// Puzzles per page
 export const PAGINATION_COUNTS = [16, 32, 64];
+
+// Cloudinary
+export const CLOUDINARY_CLOUD_NAME = "infinity-keys";
 
 //Minting Stuff
 //tried importing from utils.ts but was getting Reference error in vercel
