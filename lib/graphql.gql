@@ -163,7 +163,7 @@ query GetAllNftClaims {
   }
 }
 
-query GetPuzzleInfoByNftId($nftId: numeric) {
+query GetPuzzleInfoByNftId($nftId: Int!) {
   puzzles(where: { nft: { tokenId: { _eq: $nftId } } }) {
     simple_name
     puzzle_id
