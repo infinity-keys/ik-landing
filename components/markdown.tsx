@@ -13,7 +13,7 @@ const Markdown = ({ children }: Props) => (
       a: (props) => {
         if (
           props.href?.startsWith("https://www.youtube.com/embed") ||
-          props.href?.startsWith("https://www.gstop-content.com/ipfs")
+          props.href?.startsWith("https://www.gstop-content.com/ipfs/")
         ) {
           return (
             <Iframe
