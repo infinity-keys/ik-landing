@@ -11,8 +11,18 @@ const Markdown = ({ children }: Props) => (
   <ReactMarkdown
     components={{
       a: (props) => {
-        if (
-          props.href?.startsWith("https://www.youtube.com/embed") ||
+        if (props.href?.startsWith("https://www.youtube.com/embed")) {
+          return (
+            <Iframe
+              src={props.href}
+              title={
+                props.children.length > 0
+                  ? props.children[0]?.toString()
+                  : "embed video"
+              }
+            />
+          );
+        } else if (
           props.href?.startsWith("https://www.gstop-content.com/ipfs/")
         ) {
           return (
@@ -23,6 +33,7 @@ const Markdown = ({ children }: Props) => (
                   ? props.children[0]?.toString()
                   : "embed video"
               }
+              sandbox="allow-scripts"
             />
           );
         }
