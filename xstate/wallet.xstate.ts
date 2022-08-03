@@ -3,8 +3,8 @@ import { createMachine, assign, StateFrom } from "xstate";
 
 export type WalletContext = {
   walletAddress: string;
+  chain: number;
   signature: string;
-  chain: string;
 };
 export type WalletEvents =
   | { type: "CONNECT_WALLET" }
@@ -31,18 +31,22 @@ export const walletMachine = createMachine(
         connectWallet: {
           data: {
             account: string;
+            chain: number;
           };
         };
         checkWalletCache: {
           data: boolean;
+        };
+        clearWalletCache: {
+          data: void;
         };
       },
     },
     initial: "checking",
     context: {
       walletAddress: "",
+      chain: 0,
       signature: "",
-      chain: "",
     },
     states: {
       checking: {
@@ -62,16 +66,13 @@ export const walletMachine = createMachine(
             target: "disconnected",
           },
         },
-        on: {
-          CONNECT_WALLET: "connecting",
-        },
       },
       connecting: {
         invoke: {
           id: "popWallet",
           src: "connectWallet",
           onDone: {
-            actions: ["setWalletAddress"],
+            actions: ["setWalletInfo"],
             target: "connected",
           },
           onError: "disconnected",
@@ -83,7 +84,13 @@ export const walletMachine = createMachine(
         },
       },
       disconnected: {
-        entry: ["clearWallet"],
+        invoke: {
+          id: "invokeClearWallet",
+          src: "clearWalletCache",
+          onDone: {
+            actions: ["clearWallet"],
+          },
+        },
         on: {
           CONNECT_WALLET: "connecting",
         },
@@ -97,22 +104,17 @@ export const walletMachine = createMachine(
     services: {
       connectWallet: wallet.trigger,
       checkWalletCache: async () => wallet.isCached(),
+      clearWalletCache: async () => wallet.clear(),
     },
     actions: {
-      setWalletAddress: assign({
+      setWalletInfo: assign({
         walletAddress: (_, { data }) => data.account,
+        chain: (_, { data }) => data.chain,
       }),
-      clearWallet: assign({
-        walletAddress: "",
-        signature: "",
-        chain: "",
-      }),
+      clearWallet: assign({ walletAddress: "", chain: 0, signature: "" }),
     },
     guards: {
-      isWalletCached: (_, event) => {
-        console.log(event);
-        return true;
-      },
+      isWalletCached: (_, { data }) => data,
     },
   }
 );

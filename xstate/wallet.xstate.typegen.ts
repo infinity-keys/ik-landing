@@ -8,6 +8,12 @@ export interface Typegen0 {
       data: unknown;
       __tip: "See the XState TS docs to learn how to strongly type this.";
     };
+    "done.invoke.invokeClearWallet": {
+      type: "done.invoke.invokeClearWallet";
+      data: unknown;
+      __tip: "See the XState TS docs to learn how to strongly type this.";
+    };
+    "xstate.init": { type: "xstate.init" };
     "done.invoke.checkingWalletConnectCache": {
       type: "done.invoke.checkingWalletConnectCache";
       data: unknown;
@@ -21,11 +27,15 @@ export interface Typegen0 {
       type: "error.platform.popWallet";
       data: unknown;
     };
-    "xstate.init": { type: "xstate.init" };
+    "error.platform.invokeClearWallet": {
+      type: "error.platform.invokeClearWallet";
+      data: unknown;
+    };
   };
   invokeSrcNameMap: {
     checkWalletCache: "done.invoke.checkingWalletConnectCache";
     connectWallet: "done.invoke.popWallet";
+    clearWalletCache: "done.invoke.invokeClearWallet";
   };
   missingImplementations: {
     actions: never;
@@ -34,16 +44,17 @@ export interface Typegen0 {
     delays: never;
   };
   eventsCausingActions: {
-    setWalletAddress: "done.invoke.popWallet";
-    clearWallet:
-      | "done.invoke.checkingWalletConnectCache"
-      | "error.platform.checkingWalletConnectCache"
-      | "error.platform.popWallet"
-      | "DISCONNECT_WALLET";
+    setWalletInfo: "done.invoke.popWallet";
+    clearWallet: "done.invoke.invokeClearWallet";
   };
   eventsCausingServices: {
     checkWalletCache: "xstate.init";
     connectWallet: "done.invoke.checkingWalletConnectCache" | "CONNECT_WALLET";
+    clearWalletCache:
+      | "done.invoke.checkingWalletConnectCache"
+      | "error.platform.checkingWalletConnectCache"
+      | "error.platform.popWallet"
+      | "DISCONNECT_WALLET";
   };
   eventsCausingGuards: {
     isWalletCached: "done.invoke.checkingWalletConnectCache";

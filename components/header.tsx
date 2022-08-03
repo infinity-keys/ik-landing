@@ -1,15 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useContext } from "react";
 import { Disclosure } from "@headlessui/react";
-import { useSelector } from "@xstate/react";
 
-import { GlobalWalletContext, createSelector } from "@ik-xstate/global-wallet";
-
-import BeakerIcon from "@heroicons/react/outline/BeakerIcon";
 import MenuIcon from "@heroicons/react/outline/MenuIcon";
 import XIcon from "@heroicons/react/outline/XIcon";
 
+import WalletGlobal from "@components/wallet-global";
 import Button from "@components/button";
 
 export const navigation = [
@@ -26,24 +22,7 @@ export const navigation = [
   { name: "Blog", href: "https://blog.infinitykeys.io" },
 ];
 
-// xstate:state
-const isConnectingSelector = createSelector((state) =>
-  state.matches("connecting")
-);
-const isConnectedSelector = createSelector((state) =>
-  state.matches("connected")
-);
-// xstate:context
-const addressSelector = createSelector((state) => state.context.walletAddress);
-
 export default function Header() {
-  const globalWalletService = useContext(GlobalWalletContext);
-  const { send } = globalWalletService;
-
-  const isConnecting = useSelector(globalWalletService, isConnectingSelector);
-  const isConnected = useSelector(globalWalletService, isConnectedSelector);
-  const address = useSelector(globalWalletService, addressSelector);
-
   return (
     <Disclosure as="header" className="header w-full sticky top-0 z-50 bg-blue">
       {({ open }) => (
@@ -102,22 +81,8 @@ export default function Header() {
                   variant="outline"
                   responsive
                 />
-
                 <Button text="Puzzles" href="/puzzles" responsive />
-
-                <button
-                  onClick={() =>
-                    isConnected
-                      ? send("DISCONNECT_WALLET")
-                      : send("CONNECT_WALLET")
-                  }
-                  className="flex p-2 justify-center items-center text-white hover:text-turquoise"
-                >
-                  <BeakerIcon className="block h-6 w-6" aria-hidden="true" />
-                  {isConnecting && "connecting... "}
-                  {isConnected && "connected "}
-                  {address && address.slice(0, 6) + "..."}
-                </button>
+                <WalletGlobal />
               </div>
 
               {/* hamburger icon, visible mobile only */}
