@@ -217,11 +217,10 @@ export async function getStaticProps({
   const nftTokenIds = nfts.map((nft) => nft.tokenId);
 
   const { puzzles } = await gql.PuzzleInfoBySuccess({ success: puzzleName });
-  const [{ puzzle_id: puzzleId, nft }] = puzzles;
+  const [{ nft }] = puzzles;
 
   return {
     props: {
-      puzzleId,
       nftTokenIds,
       cloudinary_id: nft?.nft_metadatum?.cloudinary_id || "",
     },
