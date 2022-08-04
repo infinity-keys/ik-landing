@@ -16,6 +16,7 @@ import {
 import { wallet } from "@lib/wallet";
 import { minterUtil } from "@lib/minter";
 import { gqlApiSdk } from "@lib/server";
+import LoadingIcon from "@components/loading-icon";
 
 interface ClaimsPageProps {
   puzzleId: string;
@@ -177,14 +178,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
         )}
 
         {/* @TODO: refactor this to be a shared loader component */}
-        {isLoading && (
-          <div className="loader mx-auto mt-10">
-            <div className="ball-clip-rotate-multiple">
-              <div></div>
-              <div></div>
-            </div>
-          </div>
-        )}
+        {isLoading && <LoadingIcon />}
 
         {claimed && (
           <a

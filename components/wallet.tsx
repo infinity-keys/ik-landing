@@ -2,6 +2,7 @@ import clsx from "clsx";
 import Button from "./button";
 
 import { useWalletConnect } from "@hooks/useWalletConnect";
+import LoadingIcon from "@components/loading-icon";
 
 interface WalletProps {
   onWalletSignature?: (address: string) => Promise<void>;
@@ -39,14 +40,7 @@ const Wallet = ({ onWalletSignature }: WalletProps) => {
         2. Sign message
       </p>
 
-      {isLoading && (
-        <div className="loader mx-auto h-8 mt-10 flex justify-center">
-          <div className="ball-clip-rotate-multiple">
-            <div></div>
-            <div></div>
-          </div>
-        </div>
-      )}
+      {isLoading && <LoadingIcon />}
 
       {!isLoading && !isSigned && (
         <Button
