@@ -6,12 +6,19 @@ interface CloudImageProps {
   height: number;
   width: number;
   alt?: string;
+  circle?: boolean;
 }
 
-const CloudImage = ({ id, height, width, alt = "" }: CloudImageProps) => {
+const CloudImage = ({
+  id,
+  height,
+  width,
+  alt = "",
+  circle = false,
+}: CloudImageProps) => {
   return (
     <Image
-      src={cloudinaryUrl(id, height, width)}
+      src={cloudinaryUrl(id, height, width, circle)}
       alt={alt}
       width={width}
       height={height}
