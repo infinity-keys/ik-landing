@@ -4,12 +4,14 @@ import clsx from "clsx";
 
 import { routeLandingUrl } from "@lib/utils";
 import MinimalKeyLogo from "@components/svg/minimal-key-logo-svg";
+import CloudImage from "./cloud-image";
 
 interface PuzzleThumbProps {
   landing_route: string;
   puzzle_id: string;
   simple_name: string;
   isGrid: boolean;
+  cloudinary_id: string;
 }
 
 const PuzzleThumbnail = (puzzle: PuzzleThumbProps) => {
@@ -32,15 +34,24 @@ const PuzzleThumbnail = (puzzle: PuzzleThumbProps) => {
           <div
             className={clsx(
               "flex-shrink-0",
-              puzzle.isGrid ? "w-32 h-32 mx-auto" : "mr-4"
+              puzzle.isGrid ? "w-32 h-32 mx-auto" : "w-14 h-14 mr-4"
             )}
           >
-            <Avatar
-              size={puzzle.isGrid ? 128 : 56}
-              name={puzzle.puzzle_id}
-              variant="marble"
-              colors={["#101D42", "#E400FF", "#3FCCBB", "#8500AC", "#303B5B"]}
-            />
+            {puzzle.cloudinary_id ? (
+              <CloudImage
+                height={128}
+                width={128}
+                id={puzzle.cloudinary_id}
+                circle
+              />
+            ) : (
+              <Avatar
+                size={puzzle.isGrid ? 128 : 56}
+                name={puzzle.puzzle_id}
+                variant="marble"
+                colors={["#101D42", "#E400FF", "#3FCCBB", "#8500AC", "#303B5B"]}
+              />
+            )}
           </div>
           <h3
             className={clsx("text-gray-200 text-sm font-medium", {

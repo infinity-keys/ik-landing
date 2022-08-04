@@ -30,6 +30,9 @@ query PuzzleInfoBySuccess($success: String!) {
     success_message
     nft {
       tokenId
+      nft_metadatum {
+        cloudinary_id
+      }
     }
   }
 }
@@ -141,7 +144,11 @@ query PublicPuzzles($limit: Int = 10, $offset: Int = 0) {
     puzzle_id
     landing_route
     simple_name
-    solution_char_count
+    nft {
+      nft_metadatum {
+        cloudinary_id
+      }
+    }
   }
   count: puzzles_aggregate(where: { list_pubicly: { _eq: true } }) {
     aggregate {
@@ -163,7 +170,7 @@ query GetAllNftClaims {
   }
 }
 
-query GetPuzzleInfoByNftId($nftId: numeric) {
+query GetPuzzleInfoByNftId($nftId: Int!) {
   puzzles(where: { nft: { tokenId: { _eq: $nftId } } }) {
     simple_name
     puzzle_id
@@ -185,6 +192,9 @@ query GetPuzzlesByPack($packName: String!) {
     puzzle_id
     nft {
       tokenId
+      nft_metadatum {
+        cloudinary_id
+      }
     }
   }
   pack: packs(where: { simple_name: { _eq: $packName } }) {

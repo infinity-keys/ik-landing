@@ -1,4 +1,5 @@
 lib/generated
+!lib/generated/.gitkeep
 graphql.schema.json
 cypress/videos/
 cypress/screenshots/
