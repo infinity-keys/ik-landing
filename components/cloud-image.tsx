@@ -19,7 +19,6 @@ const CloudImage = ({
   return (
     <Image
       src={cloudinaryUrl(id, height, width, circle)}
-      quality={100}
       alt={alt}
       width={width}
       height={height}
