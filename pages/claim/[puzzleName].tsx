@@ -4,8 +4,6 @@ import Head from "next/head";
 
 import Avatar from "boring-avatars";
 import Wrapper from "@components/wrapper";
-import Header from "@components/header";
-import Footer from "@components/footer";
 import Button from "@components/button";
 import {
   AVAX_CHAIN_ID,
@@ -22,6 +20,7 @@ import { gqlApiSdk } from "@lib/server";
 interface ClaimsPageProps {
   puzzleId: string;
   nftTokenIds: number[];
+  cloudinary_id: string;
 }
 
 interface ClaimsPageParams {
@@ -43,7 +42,11 @@ const buttonData = [
   },
 ];
 
-const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
+const ClaimFlow: NextPage<ClaimsPageProps> = ({
+  puzzleId,
+  nftTokenIds,
+  cloudinary_id,
+}) => {
   const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
   const [account, setAccount] = useState<string>();
   const [chain, setChain] = useState<number>();
@@ -220,12 +223,13 @@ export async function getStaticProps({
   const nftTokenIds = nfts.map((nft) => nft.tokenId);
 
   const { puzzles } = await gql.PuzzleInfoBySuccess({ success: puzzleName });
-  const [{ puzzle_id: puzzleId }] = puzzles;
+  const [{ puzzle_id: puzzleId, nft }] = puzzles;
 
   return {
     props: {
       puzzleId,
       nftTokenIds,
+      cloudinary_id: nft?.nft_metadatum?.cloudinary_id || "",
     },
   };
 }
