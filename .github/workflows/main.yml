@@ -24,6 +24,8 @@ jobs:
       - name: Install deps
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
+      - name: eslint
+        run: yarn lint
       - name: build
         run: yarn build
         env:
@@ -31,8 +33,6 @@ jobs:
           HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
           INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS: ${{secrets.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}}
           INFINITY_KEYS_SECRET: ${{secrets.INFINITY_KEYS_SECRET}}
-      - name: eslint
-        run: yarn lint
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests. bump
       - name: Cypress run
