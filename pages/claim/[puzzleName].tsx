@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
 
-import Avatar from "boring-avatars";
 import Wrapper from "@components/wrapper";
 import Button from "@components/button";
 import {
