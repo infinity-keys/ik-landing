@@ -1,7 +1,7 @@
 name: Cypress Tests
 on: [push]
 jobs:
-  ik-ci:
+  install-generate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -24,16 +24,28 @@ jobs:
       - name: Install deps
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
+      - name: GQL-TS generate
+        run: yarn generate:once
+        env:
+          GRAPHQL_ENDPOINT: ${{secrets.GRAPHQL_ENDPOINT}}
+          HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
+  lint:
+    runs-on: ubuntu-latest
+    needs: install-generate
+    steps:
+      - name: eslint
+        run: yarn lint
+  build-cypress:
+    runs-on: ubuntu-latest
+    needs: install-generate
+    steps:
       - name: build
-        run: yarn build
+        run: yarn next:build
         env:
           GRAPHQL_ENDPOINT: ${{secrets.GRAPHQL_ENDPOINT}}
           HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
           INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS: ${{secrets.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}}
           INFINITY_KEYS_SECRET: ${{secrets.INFINITY_KEYS_SECRET}}
-      # eslint must run after build since types are generated at build time
-      - name: eslint
-        run: yarn lint
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests. bump
       - name: Cypress run

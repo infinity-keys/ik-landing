@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "yarn generate:watch & next dev",
     "build": "yarn generate:once && next build",
+    "next:build": "next build",
     "start": "next start",
     "lint": "tsc && next lint",
     "generate:once": "yarn run typechain && graphql-codegen",
