@@ -39,8 +39,8 @@ const PuzzleThumbnail = (puzzle: PuzzleThumbProps) => {
           >
             {puzzle.cloudinary_id ? (
               <CloudImage
-                height={128}
-                width={128}
+                height={puzzle.isGrid ? 128 : 56}
+                width={puzzle.isGrid ? 128 : 56}
                 id={puzzle.cloudinary_id}
                 circle
               />
