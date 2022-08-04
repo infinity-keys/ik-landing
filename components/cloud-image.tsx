@@ -6,7 +6,7 @@ interface CloudImageProps {
   height: number;
   width: number;
   alt?: string;
-  circle: boolean;
+  circle?: boolean;
 }
 
 const CloudImage = ({
