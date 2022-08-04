@@ -14,6 +14,7 @@ import LockSvg from "@components/svg/material-lock-svg";
 import Markdown from "./markdown";
 import { puzzleMachine } from "./puzzle.xstate";
 import useCurrentWidth from "@hooks/useCurrentWidth";
+import LoadingIcon from "@components/loading-icon";
 
 interface PuzzleProps {
   count: number;
@@ -70,12 +71,7 @@ const Puzzle = ({
     <>
       {(matches("guessing") || matches("guessCorrect.go")) && (
         <div style={{ height }} className="flex justify-center items-center">
-          <div className="loader mx-auto w-8 h-8">
-            <div className="ball-clip-rotate-multiple translate-x-1/2">
-              <div></div>
-              <div></div>
-            </div>
-          </div>
+          <LoadingIcon />
         </div>
       )}
 

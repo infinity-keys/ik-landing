@@ -16,6 +16,7 @@ import { wallet } from "@lib/wallet";
 import { minterUtil } from "@lib/minter";
 import { gqlApiSdk } from "@lib/server";
 import CloudImage from "@components/cloud-image";
+import LoadingIcon from "@components/loading-icon";
 
 interface ClaimsPageProps {
   nftTokenIds: number[];
@@ -170,14 +171,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
         )}
 
         {/* @TODO: refactor this to be a shared loader component */}
-        {isLoading && (
-          <div className="loader mx-auto mt-10">
-            <div className="ball-clip-rotate-multiple">
-              <div></div>
-              <div></div>
-            </div>
-          </div>
-        )}
+        {isLoading && <LoadingIcon />}
 
         {claimed && (
           <a

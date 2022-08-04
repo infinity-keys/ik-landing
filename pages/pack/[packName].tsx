@@ -23,6 +23,7 @@ import {
 } from "@lib/constants";
 import { useState } from "react";
 import { minterUtil } from "@lib/minter";
+import LoadingIcon from "@components/loading-icon";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -170,11 +171,8 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
           )}
 
           {loading && (
-            <div className="loader mx-auto h-8 w-8 flex justify-center sm:mt-14">
-              <div className="ball-clip-rotate-multiple">
-                <div></div>
-                <div></div>
-              </div>
+            <div className="sm:mt-14">
+              <LoadingIcon />
             </div>
           )}
 
