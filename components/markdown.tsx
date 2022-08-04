@@ -34,6 +34,7 @@ const Markdown = ({ children }: Props) => (
                   : "embed video"
               }
               sandbox="allow-scripts"
+              gameAspect={true}
             />
           );
         }

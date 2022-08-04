@@ -1,23 +1,33 @@
-import { FC } from "react";
+import clsx from "clsx";
 
 interface IframeProps {
   src: string;
   title?: string;
   sandbox?: string;
+  gameAspect?: boolean;
 }
 
-const Iframe: FC<IframeProps> = ({ src, title, sandbox }) => (
-  <span className="container block max-w-xl videoAspect">
-    <iframe
-      height="100%"
-      width="100%"
-      src={src}
-      title={title}
-      sandbox={sandbox}
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
-      allowFullScreen
-    />
-  </span>
-);
+export default function Iframe({
+  src,
+  title,
+  sandbox,
+  gameAspect = false,
+}: IframeProps) {
+  const classes = clsx("container block max-w-xl aspect-video", {
+    "aspect-square": gameAspect,
+  });
 
-export default Iframe;
+  return (
+    <span className={classes}>
+      <iframe
+        height="100%"
+        width="100%"
+        src={src}
+        title={title}
+        sandbox={sandbox}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
+        allowFullScreen
+      />
+    </span>
+  );
+}
