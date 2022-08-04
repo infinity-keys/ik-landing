@@ -16,9 +16,9 @@ import {
 import { wallet } from "@lib/wallet";
 import { minterUtil } from "@lib/minter";
 import { gqlApiSdk } from "@lib/server";
+import CloudImage from "@components/cloud-image";
 
 interface ClaimsPageProps {
-  puzzleId: string;
   nftTokenIds: number[];
   cloudinary_id: string;
 }
@@ -43,7 +43,6 @@ const buttonData = [
 ];
 
 const ClaimFlow: NextPage<ClaimsPageProps> = ({
-  puzzleId,
   nftTokenIds,
   cloudinary_id,
 }) => {
@@ -112,12 +111,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
       </Head>
 
       <div className="flex flex-col items-center text-center">
-        <Avatar
-          size={128}
-          name={puzzleId}
-          variant="marble"
-          colors={["#101D42", "#E400FF", "#3FCCBB", "#8500AC", "#303B5B"]}
-        />
+        <CloudImage height={260} width={260} id={cloudinary_id} />
 
         <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
           {isLoading
