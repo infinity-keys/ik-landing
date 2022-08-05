@@ -64,11 +64,16 @@ const PuzzlesLayout: NextPage<PageProps> = ({
                 : "lg:grid-cols-3 xl:grid-cols-4"
             )}
           >
-            {puzzles.map(({ puzzle_id, landing_route, simple_name }) => (
+            {puzzles.map(({ puzzle_id, landing_route, simple_name, nft }) => (
               <li key={puzzle_id}>
                 <PuzzleThumbnail
                   isGrid={layout === PuzzleLayoutType.Grid}
-                  {...{ puzzle_id, landing_route, simple_name }}
+                  {...{
+                    puzzle_id,
+                    landing_route,
+                    simple_name,
+                    cloudinary_id: nft?.nft_metadatum?.cloudinary_id || "",
+                  }}
                 />
               </li>
             ))}
