@@ -13,7 +13,7 @@ import {
   contractETH,
   contractPolygon,
 } from "@lib/contractConstants";
-import { IKAchievementABI__factory } from "@contracts/factories/IKAchievementABI__factory";
+import type { IKAchievementABI__factory } from "@contracts/factories/IKAchievementABI__factory";
 
 export const minterUtil = async (tokenId: number, signature: string) => {
   let claimedStatus = false;
