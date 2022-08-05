@@ -11,9 +11,9 @@ import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
   POLYGON_CHAIN_ID,
-  openseaLink,
-  joePegsLink,
-  openseaPolygonLink,
+  ETH_MARKETPLACE_LINK,
+  AVAX_MARKETPLACE_LINK,
+  POLYGON_MARKETPLACE_LINK,
 } from "@lib/constants";
 import { wallet } from "@lib/wallet";
 import { minterUtil } from "@lib/minter";
@@ -189,11 +189,11 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({ puzzleId, nftTokenIds }) => {
             rel="noopener noreferrer"
             href={`${
               chain === ETH_CHAIN_ID
-                ? openseaLink
+                ? ETH_MARKETPLACE_LINK
                 : chain === AVAX_CHAIN_ID
-                ? joePegsLink
+                ? AVAX_MARKETPLACE_LINK
                 : chain === POLYGON_CHAIN_ID
-                ? openseaPolygonLink
+                ? POLYGON_MARKETPLACE_LINK
                 : undefined
             }${tokenId}`}
             className={buttonPrimaryClasses}

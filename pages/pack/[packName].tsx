@@ -17,9 +17,9 @@ import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
   POLYGON_CHAIN_ID,
-  openseaLink,
-  joePegsLink,
-  openseaPolygonLink,
+  ETH_MARKETPLACE_LINK,
+  AVAX_MARKETPLACE_LINK,
+  POLYGON_MARKETPLACE_LINK,
 } from "@lib/constants";
 import { useState } from "react";
 import { minterUtil } from "@lib/minter";
@@ -187,12 +187,12 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
                       rel="noopener noreferrer"
                       href={`${
                         chain === ETH_CHAIN_ID
-                          ? openseaLink
+                          ? ETH_MARKETPLACE_LINK
                           : chain === AVAX_CHAIN_ID
-                          ? joePegsLink
+                          ? AVAX_MARKETPLACE_LINK
                           : chain === POLYGON_CHAIN_ID
-                          ? openseaPolygonLink
-                          : openseaLink
+                          ? POLYGON_MARKETPLACE_LINK
+                          : ETH_MARKETPLACE_LINK
                       }${nftId}`}
                     >
                       View NFT On{" "}
