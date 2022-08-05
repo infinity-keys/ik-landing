@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { gqlApiSdk } from "@lib/server";
-import { IKAchievementABI__factory } from "@lib/generated/ethers-contract";
-import { CONTRACT_ADDRESS_POLYGON, POLYGON_RPC } from "@lib/constants";
+import { contractPolygon } from "@lib/contractConstants";
 import { ethers } from "ethers";
 
 export default async function handler(
@@ -14,10 +13,6 @@ export default async function handler(
 
   const nftId = parseInt(tokenid, 10);
 
-  const contractPolygon = IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_POLYGON,
-    new ethers.providers.JsonRpcProvider(POLYGON_RPC)
-  );
   const numTokens = (await contractPolygon.totalSupplyAll()).length;
   if (nftId >= numTokens) return res.status(500).end();
 

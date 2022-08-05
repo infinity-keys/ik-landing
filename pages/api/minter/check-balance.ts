@@ -1,20 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ethers } from "ethers";
 import castArray from "lodash/castArray";
 import {
-  ETH_RPC,
-  AVAX_RPC,
-  POLYGON_RPC,
-  CONTRACT_ADDRESS_AVAX,
-  CONTRACT_ADDRESS_ETH,
-  CONTRACT_ADDRESS_POLYGON,
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
   POLYGON_CHAIN_ID,
-} from "@lib/constants";
+  contractAVAX,
+  contractETH,
+  contractPolygon,
+} from "@lib/contractConstants";
 
-import { IKAchievementABI__factory } from "@lib/generated/ethers-contract/factories/IKAchievementABI__factory";
+import type { IKAchievementABI__factory } from "@lib/generated/ethers-contract/factories/IKAchievementABI__factory";
 
 export default async function handler(
   req: NextApiRequest,
@@ -33,23 +29,13 @@ export default async function handler(
   const contractLookup: {
     [key: number]: ReturnType<typeof IKAchievementABI__factory.connect>;
   } = {
-    [AVAX_CHAIN_ID]: IKAchievementABI__factory.connect(
-      CONTRACT_ADDRESS_AVAX,
-      new ethers.providers.JsonRpcProvider(AVAX_RPC)
-    ),
-    [ETH_CHAIN_ID]: IKAchievementABI__factory.connect(
-      CONTRACT_ADDRESS_ETH,
-      new ethers.providers.JsonRpcProvider(ETH_RPC)
-    ),
-    [POLYGON_CHAIN_ID]: IKAchievementABI__factory.connect(
-      CONTRACT_ADDRESS_POLYGON,
-      new ethers.providers.JsonRpcProvider(POLYGON_RPC)
-    ),
+    [AVAX_CHAIN_ID]: contractAVAX,
+    [ETH_CHAIN_ID]: contractETH,
+    [POLYGON_CHAIN_ID]: contractPolygon,
   };
 
   const contract = contractLookup[chainIdAsNumber];
   if (!contract) return res.status(500).end();
-  const contractAVAX = contractLookup[AVAX_CHAIN_ID];
 
   // faster call on avax than eth..
   const numTokens = (await contractAVAX.totalSupplyAll()).length;

@@ -1,16 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ethers } from "ethers";
 import {
-  ETH_RPC,
-  AVAX_RPC,
-  POLYGON_RPC,
-  CONTRACT_ADDRESS_AVAX,
-  CONTRACT_ADDRESS_ETH,
-  CONTRACT_ADDRESS_POLYGON,
-} from "@lib/constants";
-
-import { IKAchievementABI__factory } from "@lib/generated/ethers-contract/factories/IKAchievementABI__factory";
+  contractETH,
+  contractAVAX,
+  contractPolygon,
+} from "@lib/contractConstants";
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,21 +14,6 @@ export default async function handler(
 
   if (typeof tokenId !== "string" || typeof account !== "string")
     return res.status(500).end();
-
-  const contractAVAX = IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_AVAX,
-    new ethers.providers.JsonRpcProvider(AVAX_RPC)
-  );
-
-  const contractPolygon = IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_POLYGON,
-    new ethers.providers.JsonRpcProvider(POLYGON_RPC)
-  );
-
-  const contractETH = IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_ETH,
-    new ethers.providers.JsonRpcProvider(ETH_RPC)
-  );
 
   // faster call on avax than eth.. theoretically should be the same
   // ensure token were checking exists

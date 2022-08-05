@@ -11,7 +11,7 @@ import {
   POLYGON_CHAIN_ID,
   POLYGON_PARAMS,
   POLYGON_RPC,
-} from "@lib/constants";
+} from "@lib/contractConstants";
 import { toHex } from "./utils";
 // import Fortmatic from "fortmatic";
 
@@ -159,9 +159,6 @@ export const walletUtil = () => {
         });
         chain = newChainId;
       } catch (switchError: any) {
-        //I think this should add AVAX to MetaMask if you dont have it yet
-        //have not tested
-        // may need to call switch ethereum chain after adding- unsure if auto
         if (
           switchError.code === 4902 ||
           switchError?.data?.orginalError?.code === 4902

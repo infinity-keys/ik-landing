@@ -20,7 +20,7 @@ import {
   ETH_MARKETPLACE_LINK,
   AVAX_MARKETPLACE_LINK,
   POLYGON_MARKETPLACE_LINK,
-} from "@lib/constants";
+} from "@lib/contractConstants";
 import { useState } from "react";
 import { minterUtil } from "@lib/minter";
 

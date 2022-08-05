@@ -4,8 +4,6 @@ import Head from "next/head";
 
 import Avatar from "boring-avatars";
 import Wrapper from "@components/wrapper";
-import Header from "@components/header";
-import Footer from "@components/footer";
 import Button from "@components/button";
 import {
   AVAX_CHAIN_ID,
@@ -14,7 +12,7 @@ import {
   ETH_MARKETPLACE_LINK,
   AVAX_MARKETPLACE_LINK,
   POLYGON_MARKETPLACE_LINK,
-} from "@lib/constants";
+} from "@lib/contractConstants";
 import { wallet } from "@lib/wallet";
 import { minterUtil } from "@lib/minter";
 import { gqlApiSdk } from "@lib/server";

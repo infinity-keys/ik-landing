@@ -9,7 +9,10 @@ import {
   SNOWTRACE_TRACKER,
   ETHERSCAN_TRACKER,
   POLYGONSCAN_TRACKER,
-} from "@lib/constants";
+  contractAVAX,
+  contractETH,
+  contractPolygon,
+} from "@lib/contractConstants";
 import { IKAchievementABI__factory } from "@contracts/factories/IKAchievementABI__factory";
 
 export const minterUtil = async (tokenId: number, signature: string) => {
@@ -18,36 +21,44 @@ export const minterUtil = async (tokenId: number, signature: string) => {
 
   const { library, account, chain } = wallet.retrieve();
 
-  const contractAddress =
-    chain === AVAX_CHAIN_ID
-      ? CONTRACT_ADDRESS_AVAX
-      : chain === ETH_CHAIN_ID
-      ? CONTRACT_ADDRESS_ETH
-      : chain === POLYGON_CHAIN_ID
-      ? CONTRACT_ADDRESS_POLYGON
-      : undefined;
-  const blockTracker =
-    chain === AVAX_CHAIN_ID
-      ? SNOWTRACE_TRACKER
-      : chain === ETH_CHAIN_ID
-      ? ETHERSCAN_TRACKER
-      : chain === POLYGON_CHAIN_ID
-      ? POLYGONSCAN_TRACKER
-      : undefined;
+  interface MintFactory {
+    contractAddress: string;
+    blockTracker: string;
+    contract: ReturnType<typeof IKAchievementABI__factory.connect>;
+  }
 
-  if (!contractAddress || !blockTracker) throw new Error("Invalid chain.");
+  const chainLookup: {
+    [key: number]: MintFactory;
+  } = {
+    [AVAX_CHAIN_ID]: {
+      contractAddress: CONTRACT_ADDRESS_AVAX,
+      blockTracker: SNOWTRACE_TRACKER,
+      contract: contractAVAX,
+    },
+    [ETH_CHAIN_ID]: {
+      contractAddress: CONTRACT_ADDRESS_ETH,
+      blockTracker: ETHERSCAN_TRACKER,
+      contract: contractETH,
+    },
+    [POLYGON_CHAIN_ID]: {
+      contractAddress: CONTRACT_ADDRESS_POLYGON,
+      blockTracker: POLYGONSCAN_TRACKER,
+      contract: contractPolygon,
+    },
+  };
 
-  const contract = IKAchievementABI__factory.connect(contractAddress, library);
+  const minter = chainLookup[chain];
+  if (!minter) throw new Error("Invalid chain");
 
   const createTx = async (signature: string) => {
     try {
-      const data = contract.interface.encodeFunctionData("claim", [
+      const data = minter.contract.interface.encodeFunctionData("claim", [
         tokenId,
         signature,
       ]);
 
       const transaction = {
-        to: contractAddress,
+        to: minter.contractAddress,
         from: account,
         data,
       };
@@ -66,7 +77,7 @@ export const minterUtil = async (tokenId: number, signature: string) => {
 
       if (!tx) return;
 
-      txMessage = `${blockTracker}/tx/${tx.hash}`;
+      txMessage = `${minter.blockTracker}/tx/${tx.hash}`;
 
       const receipt = await tx.wait();
       claimedStatus = receipt.status === 1;
