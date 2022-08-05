@@ -4,18 +4,17 @@ interface IframeProps {
   src: string;
   title?: string;
   sandbox?: string;
-  gameAspect?: boolean;
+  aspect?: "square" | "video";
 }
 
-export default function Iframe({
-  src,
-  title,
-  sandbox,
-  gameAspect = false,
-}: IframeProps) {
-  const classes = clsx("container block max-w-xl aspect-video", {
-    "aspect-square": gameAspect,
-  });
+export default function Iframe({ src, title, sandbox, aspect }: IframeProps) {
+  const classes = clsx(
+    "container block max-w-xl aspect-video",
+    {
+      "aspect-square": aspect === "square",
+    },
+    { "aspect-video": aspect === "video" }
+  );
 
   return (
     <span className={classes}>
