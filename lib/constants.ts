@@ -26,6 +26,17 @@ const toHex = (num: number) => {
   return "0x" + val.toString(16);
 };
 
+type Chain = {
+  chainId: number;
+  contractAddress: string;
+  tracker: string;
+  rpc: string;
+};
+type Chains = {
+  [key: string]: Chain;
+};
+const chains: Chains = {};
+
 //AVAX
 export const AVAX_CHAIN_ID = 43114;
 export const CONTRACT_ADDRESS_AVAX =
@@ -41,6 +52,16 @@ export const AVAX_PARAMS = {
   nativeCurrency: { name: "AVAX", decimals: 18, symbol: "AVAX" },
   blockExplorerUrls: [SNOWTRACE_TRACKER],
 };
+
+// @TODO: for example
+chains.AVAX = {
+  chainId: AVAX_CHAIN_ID,
+  contractAddress: CONTRACT_ADDRESS_AVAX,
+  tracker: SNOWTRACE_TRACKER,
+  rpc: AVAX_RPC,
+};
+
+const allChains = Object.keys(chains);
 
 // ETH PARAMS
 export const ETH_CHAIN_ID = 1;
