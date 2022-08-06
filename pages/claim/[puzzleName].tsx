@@ -20,7 +20,7 @@ import LoadingIcon from "@components/loading-icon";
 
 interface ClaimsPageProps {
   nftTokenIds: number[];
-  cloudinary_id: string;
+  cloudinary_id?: string;
 }
 
 interface ClaimsPageParams {
@@ -111,7 +111,9 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
       </Head>
 
       <div className="flex flex-col items-center text-center">
-        <CloudImage height={260} width={260} id={cloudinary_id} />
+        {cloudinary_id && (
+          <CloudImage height={260} width={260} id={cloudinary_id} />
+        )}
 
         <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
           {isLoading
@@ -210,7 +212,8 @@ export async function getStaticProps({
   const nftTokenIds = nfts.map((nft) => nft.tokenId);
 
   const { puzzles } = await gql.PuzzleInfoBySuccess({ success: puzzleName });
-  const [{ nft }] = puzzles;
+
+  const nft = puzzles.length ? puzzles[0].nft : null;
 
   return {
     props: {
