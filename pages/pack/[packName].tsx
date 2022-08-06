@@ -23,6 +23,7 @@ import {
 } from "@lib/contractConstants";
 import { useState } from "react";
 import { minterUtil } from "@lib/minter";
+import LoadingIcon from "@components/loading-icon";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -148,11 +149,16 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
               message || loading ? "my-12 sm:mb-0" : "my-10"
             )}
           >
-            {puzzles.map(({ puzzle_id, landing_route, simple_name }) => (
+            {puzzles.map(({ puzzle_id, landing_route, simple_name, nft }) => (
               <li key={puzzle_id}>
                 <PuzzleThumbnail
                   isGrid={layout === PuzzleLayoutType.Grid}
-                  {...{ puzzle_id, landing_route, simple_name }}
+                  {...{
+                    puzzle_id,
+                    landing_route,
+                    simple_name,
+                    cloudinary_id: nft?.nft_metadatum?.cloudinary_id || "",
+                  }}
                 />
               </li>
             ))}
@@ -165,11 +171,8 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
           )}
 
           {loading && (
-            <div className="loader mx-auto h-8 w-8 flex justify-center sm:mt-14">
-              <div className="ball-clip-rotate-multiple">
-                <div></div>
-                <div></div>
-              </div>
+            <div className="sm:mt-14">
+              <LoadingIcon />
             </div>
           )}
 
