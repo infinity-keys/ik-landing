@@ -1,7 +1,7 @@
 name: Cypress Tests
 on: [push]
 jobs:
-  ik-ci:
+  install-generate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -15,7 +15,9 @@ jobs:
         with:
           path: |
             **/node_modules
-            ${{ github.workspace }}/.next/cache
+            .next/cache
+            lib/generated
+            ~/.cache/Cypress
           # Generate a new cache whenever packages or source files change.
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           # If source files changed but packages didn't, rebuild from a prior cache.
@@ -24,15 +26,54 @@ jobs:
       - name: Install deps
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
+      - name: GQL-TS generate
+        run: yarn generate:once
+        env:
+          GRAPHQL_ENDPOINT: ${{secrets.GRAPHQL_ENDPOINT}}
+          HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
+  lint:
+    runs-on: ubuntu-latest
+    needs: install-generate
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+      - uses: actions/cache@v3
+        with:
+          path: |
+            **/node_modules
+            .next/cache
+            lib/generated
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+      - name: eslint
+        run: yarn lint
+  build-cypress:
+    runs-on: ubuntu-latest
+    needs: install-generate
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+      - uses: actions/cache@v3
+        with:
+          path: |
+            **/node_modules
+            .next/cache
+            lib/generated
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
       - name: build
-        run: yarn build
+        run: yarn next:build
         env:
           GRAPHQL_ENDPOINT: ${{secrets.GRAPHQL_ENDPOINT}}
           HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
           INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS: ${{secrets.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}}
           INFINITY_KEYS_SECRET: ${{secrets.INFINITY_KEYS_SECRET}}
-      - name: eslint
-        run: yarn lint
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests. bump
       - name: Cypress run
