@@ -65,7 +65,7 @@ export const walletUtil = () => {
       console.log("accountsChanged", accounts);
     });
   web3Modal &&
-    web3Modal.on("chainsChanged", (chainId: number) => {
+    web3Modal.on("chainChanged", (chainId: number) => {
       console.log("chainChanged", chainId);
     });
   web3Modal &&
