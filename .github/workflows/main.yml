@@ -43,6 +43,8 @@ jobs:
         with:
           path: |
             **/node_modules
+            ${{ github.workspace }}/.next/cache
+            lib/generated
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
       - name: eslint
         run: yarn lint
