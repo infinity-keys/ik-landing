@@ -9,11 +9,15 @@ jobs:
         with:
           node-version: 16
           cache: yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: nextjs cache
         id: build-cache
         uses: actions/cache@v3
         with:
           path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
             **/node_modules
             .next/cache
             lib/generated
@@ -43,6 +47,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
             **/node_modules
             .next/cache
             lib/generated
@@ -62,6 +67,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
             **/node_modules
             .next/cache
             lib/generated
