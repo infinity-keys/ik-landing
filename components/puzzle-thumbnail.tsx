@@ -38,12 +38,16 @@ const PuzzleThumbnail = (puzzle: PuzzleThumbProps) => {
             )}
           >
             {puzzle.cloudinary_id ? (
-              <CloudImage
-                height={128}
-                width={128}
-                id={puzzle.cloudinary_id}
-                circle
-              />
+              <div className="overflow-hidden rounded-full">
+                <div className="next-image-block scale-105	">
+                  <CloudImage
+                    height={128}
+                    width={128}
+                    id={puzzle.cloudinary_id}
+                    circle
+                  />
+                </div>
+              </div>
             ) : (
               <Avatar
                 size={puzzle.isGrid ? 128 : 56}

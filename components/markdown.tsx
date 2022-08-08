@@ -1,5 +1,5 @@
 import ReactMarkdown from "react-markdown";
-import Video from "public/puzzles/avalanche/video";
+import Iframe from "@components/iframe";
 
 import { cleanGqlMarkdown } from "@lib/utils";
 
@@ -13,13 +13,28 @@ const Markdown = ({ children }: Props) => (
       a: (props) => {
         if (props.href?.startsWith("https://www.youtube.com/embed")) {
           return (
-            <Video
+            <Iframe
               src={props.href}
               title={
                 props.children.length > 0
                   ? props.children[0]?.toString()
                   : "embed video"
               }
+            />
+          );
+        } else if (
+          props.href?.startsWith("https://www.gstop-content.com/ipfs/")
+        ) {
+          return (
+            <Iframe
+              src={props.href}
+              title={
+                props.children.length > 0
+                  ? props.children[0]?.toString()
+                  : "embed video"
+              }
+              sandbox="allow-scripts"
+              aspect="square"
             />
           );
         }
