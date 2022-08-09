@@ -64,42 +64,38 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       {/* Bottom of puzzle */}
 
       {/* About */}
-      <main className="w-full">
-        <div className="pt-10 bg-blue-800 sm:pt-16 lg:pt-12 lg:pb-20 lg:overflow-hidden">
-          <div className="mx-auto max-w-7xl lg:px-8">
-            <div className="">
-              <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
-                <div className="lg:py-24">
-                  <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-left text-white sm:mt-5 sm:text-6xl lg:mt-20 xl:text-6xl">
-                    <span className="block">What is</span>
-                    <span className="block text-turquoise">Infinity Keys?</span>
-                  </h1>
-                  <p className="mt-6 pb-6 text-base text-left text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                    Infinity Keys is a no-code creator tools platform for brands
-                    and fans to build engaging metaverse treasure hunt
-                    experiences.
-                    <br />
-                    <br />
-                    The IK team and community are building a series of demo
-                    hunts and puzzles to show the power of engagement using
-                    scalable games with opt-in Web3 NFTs as an alternative to
-                    passive, impression-based marketing.
-                    <br />
-                    <br />
-                    If you&apos;re a player, find clues, decipher keys, and
-                    claim treasure. Join our online communities on Twitter and
-                    Discord to connect with other players and builders - and
-                    click on the Puzzles button up top to see the variety of
-                    hunts, clues, puzzles, and treasure live now.
-                  </p>
-                  {/* <p className="mt-5 text-base text-left  text-gray-300 sm:pb-6 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+      <main className="w-full bg-blue-800">
+        <Section>
+          <div className="mx-auto max-w-md sm:max-w-2xl text-white">
+            <h1 className="text-4xl tracking-tight font-extrabold sm:text-6xl xl:text-6xl">
+              <span className="block">What is</span>
+              <span className="block text-turquoise">Infinity Keys?</span>
+            </h1>
+            <div className="text-base sm:text-xl lg:text-lg xl:text-xl">
+              <p className="mt-7">
+                Infinity Keys is a no-code creator tools platform for brands and
+                fans to build engaging metaverse treasure hunt experiences.
+              </p>
+              <p className="mt-7">
+                The IK team and community are building a series of demo hunts
+                and puzzles to show the power of engagement using scalable games
+                with opt-in Web3 NFTs as an alternative to passive,
+                impression-based marketing.
+              </p>
+              <p className="mt-7">
+                If you&apos;re a player, find clues, decipher keys, and claim
+                treasure. Join our online communities on Twitter and Discord to
+                connect with other players and builders - and click on the
+                Puzzles button up top to see the variety of hunts, clues,
+                puzzles, and treasure live now.
+              </p>
+            </div>
+
+            {/* <p className="mt-5 text-base text-left  text-gray-300 sm:pb-6 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Find out how it works below.
                     </p> */}
-                </div>
-              </div>
-            </div>
           </div>
-        </div>
+        </Section>
       </main>
 
       {/* Collab */}
