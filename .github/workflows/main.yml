@@ -19,7 +19,7 @@ jobs:
           path: |
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
             **/node_modules
-            .next
+            ${{ github.workspace }}/.next/cache
             lib/generated
             ~/.cache/Cypress
           # Generate a new cache whenever packages or source files change.
@@ -52,7 +52,7 @@ jobs:
           path: |
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
             **/node_modules
-            .next
+            ${{ github.workspace }}/.next/cache
             lib/generated
             ~/.cache/Cypress
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
@@ -75,12 +75,12 @@ jobs:
           path: |
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
             **/node_modules
-            .next
+            ${{ github.workspace }}/.next/cache
             lib/generated
             ~/.cache/Cypress
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
       - name: List cache to debug
-        run: ls -lah && ls -R .next/cache
+        run: ls -lah &&ls -R .next/cache
       - name: build
         run: yarn next:build
         env:
