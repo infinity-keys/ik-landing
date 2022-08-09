@@ -67,7 +67,8 @@ jobs:
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v3
+      - name: dependencies cache
+        uses: actions/cache@v3
         with:
           path: |
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -79,7 +80,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: .next/cache
-          key: ${{ runner.os }}-nextjscache-${{ hashFiles('.next/cache/.tsbuildinfo') }}
+          key: ${{ runner.os }}-nextjscache-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
       - name: build
         run: yarn next:build
         env:
