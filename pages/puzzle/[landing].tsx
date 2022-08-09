@@ -122,3 +122,5 @@ export async function getStaticPaths() {
     fallback: false,
   };
 }
+
+// debug again
