@@ -31,37 +31,34 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
 
       {/* Top puzzle */}
       <div className="slice--top w-full radial-bg relative z-0">
-        <div className="px-4 sm:px-6 lg:px-8 py-16 md:py-28">
-          <div className="mx-auto">
-            <Puzzle
-              puzzleId={puzzleId}
-              count={count}
-              SuccessComponent={SuccessComponent}
-            />
-            <div className="max-w-md sm:max-w-2xl mx-auto text-white text-left sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-              <p className="text-[1.35rem] md:text-[2.5rem] leading-normal">
-                This is an Infinity Keys h
-                <span className="font-semibold text-turquoise">un</span>
-                t.
-              </p>
-              <p className="md:text-[1.50rem] leading-normal">
-                Find the c
-                <span className="font-semibold text-turquoise">l</span>
-                ues and enter the key.
-              </p>
-              <p className="md:text-[1.50rem] leading-normal">
-                Hunt f<span className="font-semibold text-turquoise">o</span>r{" "}
-                <span className="font-semibold text-turquoise">c</span>
-                lues and <span className="font-semibold text-turquoise">k</span>
-                eys anywhere.
-              </p>
-              <p className="md:text-[1.50rem] leading-normal">
-                (Try the colored letters!)
-              </p>
-            </div>
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-28">
+          <Puzzle
+            puzzleId={puzzleId}
+            count={count}
+            SuccessComponent={SuccessComponent}
+          />
+          <div className="max-w-md sm:max-w-2xl mx-auto text-white text-left sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+            <p className="text-[1.35rem] md:text-[2.5rem] leading-normal">
+              This is an Infinity Keys h
+              <span className="font-semibold text-turquoise">un</span>
+              t.
+            </p>
+            <p className="md:text-[1.50rem] leading-normal">
+              Find the c<span className="font-semibold text-turquoise">l</span>
+              ues and enter the key.
+            </p>
+            <p className="md:text-[1.50rem] leading-normal">
+              Hunt f<span className="font-semibold text-turquoise">o</span>r{" "}
+              <span className="font-semibold text-turquoise">c</span>
+              lues and <span className="font-semibold text-turquoise">k</span>
+              eys anywhere.
+            </p>
+            <p className="md:text-[1.50rem] leading-normal">
+              (Try the colored letters!)
+            </p>
           </div>
-          <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40"></div>
         </div>
+        <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40"></div>
       </div>
 
       {/* Bottom of puzzle */}
