@@ -57,6 +57,7 @@
   }
 }
 
-.videoAspect {
-  aspect-ratio: 16 / 9;
+.next-image-block span {
+  display: block !important;
 }
+
