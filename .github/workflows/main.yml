@@ -23,7 +23,7 @@ jobs:
             lib/generated
             ~/.cache/Cypress
           # Generate a new cache whenever packages or source files change.
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}-${{ hashFiles('.next/cache/.tsbuildinfo')}}
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
@@ -57,7 +57,7 @@ jobs:
             ${{ github.workspace }}/.next/cache
             lib/generated
             ~/.cache/Cypress
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}-${{ hashFiles('.next/cache/.tsbuildinfo')}}
       - name: eslint
         run: yarn lint
   build-cypress:
@@ -80,8 +80,8 @@ jobs:
             ${{ github.workspace }}/.next/cache
             lib/generated
             ~/.cache/Cypress
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
-      - name: List cache to debug
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}-${{ hashFiles('.next/cache/.tsbuildinfo')}}
+      - name: List cache to debug before
         run: ls -lah
       - name: build
         run: yarn next:build
@@ -90,7 +90,7 @@ jobs:
           HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
           INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS: ${{secrets.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}}
           INFINITY_KEYS_SECRET: ${{secrets.INFINITY_KEYS_SECRET}}
-      - name: List cache to debug
+      - name: List cache to debug after
         run: ls -lah
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests. bump
