@@ -16,6 +16,7 @@ export type PuzzleEvents =
 export const puzzleMachine = createMachine(
   {
     id: "puzzleMachine",
+    predictableActionArguments: true,
     tsTypes: {} as import("./puzzle.xstate.typegen").Typegen0,
     schema: {
       context: {} as PuzzleContext,

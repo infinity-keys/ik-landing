@@ -25,6 +25,7 @@ export const walletConnectMachine = createMachine<
 >(
   {
     initial: "unknown",
+    predictableActionArguments: true,
     context: {
       walletAddress: "",
       signature: "",
