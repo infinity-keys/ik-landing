@@ -12,7 +12,7 @@ jobs:
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: nextjs cache
+      - name: dependencies cache
         id: build-cache
         uses: actions/cache@v3
         with:
@@ -22,10 +22,10 @@ jobs:
             lib/generated
             ~/.cache/Cypress
           # Generate a new cache whenever packages or source files change.
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+          key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
+            ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock') }}-
       - name: Install deps
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
@@ -55,7 +55,7 @@ jobs:
             **/node_modules
             lib/generated
             ~/.cache/Cypress
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+          key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
       - name: eslint
         run: yarn lint
   build-cypress:
@@ -77,11 +77,12 @@ jobs:
             **/node_modules
             lib/generated
             ~/.cache/Cypress
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
-      - name: Download next build artifact
-        uses: actions/download-artifact@v3
+          key: ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock', '**.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+      - name: nextjs cache
+        uses: actions/cache@v3
         with:
-          name: nextjs-build-artifact
+          path: .next/cache
+          key: ${{ runner.os }}-nextjscache-${{ hashFiles('.next/.tsbuildinfo') }}
       - name: List cache to debug before
         run: ls -lah
       - name: build
@@ -91,11 +92,6 @@ jobs:
           HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
           INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS: ${{secrets.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}}
           INFINITY_KEYS_SECRET: ${{secrets.INFINITY_KEYS_SECRET}}
-      - name: Upload build artifact to use later
-        uses: actions/upload-artifact@v3
-        with:
-          name: nextjs-build-artifact
-          path: .next
       - name: List cache to debug after
         run: ls -lah
       # Install NPM dependencies, cache them correctly
