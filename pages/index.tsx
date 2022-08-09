@@ -10,6 +10,8 @@ import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
 import Alert from "@components/alert";
 import Section from "@components/section";
+import Text from "@components/text";
+import Heading from "@components/heading";
 
 interface PageProps {
   count: number;
@@ -68,33 +70,27 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       <main className="w-full bg-blue-800">
         <Section>
           <div className="mx-auto max-w-md sm:max-w-2xl text-white">
-            <h1 className="text-4xl tracking-tight font-extrabold sm:text-6xl xl:text-6xl">
+            <Heading as="h1">
               <span className="block">What is</span>
               <span className="block text-turquoise">Infinity Keys?</span>
-            </h1>
-            <div className="text-base sm:text-xl lg:text-lg xl:text-xl">
-              <p className="mt-7">
-                Infinity Keys is a no-code creator tools platform for brands and
-                fans to build engaging metaverse treasure hunt experiences.
-              </p>
-              <p className="mt-7">
-                The IK team and community are building a series of demo hunts
-                and puzzles to show the power of engagement using scalable games
-                with opt-in Web3 NFTs as an alternative to passive,
-                impression-based marketing.
-              </p>
-              <p className="mt-7">
-                If you&apos;re a player, find clues, decipher keys, and claim
-                treasure. Join our online communities on Twitter and Discord to
-                connect with other players and builders - and click on the
-                Puzzles button up top to see the variety of hunts, clues,
-                puzzles, and treasure live now.
-              </p>
-            </div>
-
-            {/* <p className="mt-5 text-base text-left  text-gray-300 sm:pb-6 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                      Find out how it works below.
-                    </p> */}
+            </Heading>
+            <Text>
+              Infinity Keys is a no-code creator tools platform for brands and
+              fans to build engaging metaverse treasure hunt experiences.
+            </Text>
+            <Text>
+              The IK team and community are building a series of demo hunts and
+              puzzles to show the power of engagement using scalable games with
+              opt-in Web3 NFTs as an alternative to passive, impression-based
+              marketing.
+            </Text>
+            <Text>
+              If you&apos;re a player, find clues, decipher keys, and claim
+              treasure. Join our online communities on Twitter and Discord to
+              connect with other players and builders - and click on the Puzzles
+              button up top to see the variety of hunts, clues, puzzles, and
+              treasure live now.
+            </Text>
           </div>
         </Section>
       </main>
@@ -106,24 +102,19 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
             <Map />
           </div>
           <div className="max-w-xl mx-auto">
-            <div className="text-lg">
-              <h2 className="text-3xl font-extrabold tracking-tight">
-                Build an Infinity Keys Hunt for your Project
-              </h2>
-              <p className="mt-7">Engagement &gt; Impressions.</p>
-              <p className="mt-7">
-                We work with projects to build new types of digital keys for
-                engaging hunts and puzzles.
-              </p>
-              <p className="mt-7">
-                If you would like to use IK to increase engagement with your
-                community, users, players, or fans, please reach out.
-              </p>
-            </div>
-            {/* <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                If you are a brand interested in integrating an Infinity Keys
-                puzzle please contact us here
-              </p> */}
+            <Heading small>
+              Build an Infinity Keys Hunt for your Project
+            </Heading>
+            <Text>Engagement &gt; Impressions.</Text>
+            <Text>
+              We work with projects to build new types of digital keys for
+              engaging hunts and puzzles.
+            </Text>
+            <Text>
+              If you would like to use IK to increase engagement with your
+              community, users, players, or fans, please reach out.
+            </Text>
+
             <div className="mt-10 sm:mt-12 flex justify-center">
               <PartnerForm />
             </div>
@@ -132,13 +123,12 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       </Section>
 
       {/* Newsletter*/}
-
       <div className="bg-blue-800 w-full">
         <Section>
           <div className="mx-auto max-w-md sm:max-w-2xl">
-            <h1 className="text-4xl tracking-tight font-extrabold text-center text-white sm:text-6xl xl:text-6xl">
-              <span className="text-turquoise">Sign Up for Email Updates!</span>
-            </h1>
+            <Heading center turquoise>
+              Sign Up for Email Updates!
+            </Heading>
             <div className="mt-10 sm:mt-12 flex justify-center">
               <NewsLetterForm />
             </div>
