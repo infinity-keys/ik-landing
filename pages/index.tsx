@@ -9,6 +9,7 @@ import Map from "@components/svg/map-svg";
 import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
 import Alert from "@components/alert";
+import Section from "@components/section";
 
 interface PageProps {
   count: number;
@@ -102,28 +103,25 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       </main>
 
       {/* Collab */}
-      <div id="collab" className="flex items-center relative w-full">
-        <div className="justify-items-center items-center md:mx-auto md:max-w-7xl md:px-8 md:grid md:grid-cols-2 md:grid-flow-col-dense md:gap-24 relative">
-          <div className="lg:w-90 lg:h-90 lg:col-start p-10">
+      <Section id="collab">
+        <div className="items-center md:grid md:grid-cols-2 md:grid-flow-col-dense md:gap-24">
+          <div className="mb-16 flex justify-center">
             <Map />
           </div>
-          <div className="px-4 max-w-xl mx-auto sm:px-6 lg:py-32 lg:max-w-none lg:mx-0 lg:px-0 lg:col-start-2">
-            <div>
-              <div className="mt-6 p-5">
-                <h2 className="text-3xl font-extrabold tracking-tight">
-                  Build an Infinity Keys Hunt for your Project
-                </h2>
-                <p className="mt-6 text-lg text-gray-100">
-                  Engagement &gt; Impressions.
-                  <br /> <br />
-                  We work with projects to build new types of digital keys for
-                  engaging hunts and puzzles.
-                  <br />
-                  <br />
-                  If you would like to use IK to increase engagement with your
-                  community, users, players, or fans, please reach out.
-                </p>
-              </div>
+          <div className="max-w-xl mx-auto">
+            <div className="text-lg">
+              <h2 className="text-3xl font-extrabold tracking-tight">
+                Build an Infinity Keys Hunt for your Project
+              </h2>
+              <p className="mt-7">Engagement &gt; Impressions.</p>
+              <p className="mt-7">
+                We work with projects to build new types of digital keys for
+                engaging hunts and puzzles.
+              </p>
+              <p className="mt-7">
+                If you would like to use IK to increase engagement with your
+                community, users, players, or fans, please reach out.
+              </p>
             </div>
             {/* <p className="mt-6 text-base text-center text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                 If you are a brand interested in integrating an Infinity Keys
@@ -134,11 +132,11 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
             </div>
           </div>
         </div>
-      </div>
+      </Section>
 
       {/* Newsletter*/}
 
-      <div className="w-full pt-10 bg-blue-800 sm:pt-16 lg:pt-12 lg:pb-20">
+      <div className="w-full py-10 bg-blue-800 sm:pt-16 lg:pt-12 lg:pb-20">
         <div className="mx-auto max-w-7xl lg:px-8">
           <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
             <div className="lg:py-24">
