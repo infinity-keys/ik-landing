@@ -13,7 +13,6 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: dependencies cache
-        id: build-cache
         uses: actions/cache@v3
         with:
           path: |
@@ -34,8 +33,6 @@ jobs:
         env:
           GRAPHQL_ENDPOINT: ${{secrets.GRAPHQL_ENDPOINT}}
           HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
-      - name: List cache to debug
-        run: ls -lah
   lint:
     runs-on: ubuntu-latest
     needs: install-generate
@@ -82,9 +79,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: .next/cache
-          key: ${{ runner.os }}-nextjscache-${{ hashFiles('.next/.tsbuildinfo') }}
-      - name: List cache to debug before
-        run: ls -lah
+          key: ${{ runner.os }}-nextjscache-${{ hashFiles('.next/cache/.tsbuildinfo') }}
       - name: build
         run: yarn next:build
         env:
@@ -92,8 +87,6 @@ jobs:
           HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
           INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS: ${{secrets.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}}
           INFINITY_KEYS_SECRET: ${{secrets.INFINITY_KEYS_SECRET}}
-      - name: List cache to debug after
-        run: ls -lah
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests. bump
       - name: Cypress run
