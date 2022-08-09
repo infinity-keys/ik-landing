@@ -69,7 +69,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       {/* About */}
       <main className="w-full bg-blue-800">
         <Section>
-          <div className="mx-auto max-w-md sm:max-w-2xl text-white">
+          <div className="mx-auto max-w-md sm:max-w-2xl">
             <Heading as="h1">
               <span className="block">What is</span>
               <span className="block text-turquoise">Infinity Keys?</span>
