@@ -136,21 +136,17 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
 
       {/* Newsletter*/}
 
-      <div className="w-full py-10 bg-blue-800 sm:pt-16 lg:pt-12 lg:pb-20">
-        <div className="mx-auto max-w-7xl lg:px-8">
-          <div className="mx-auto max-w-md px-4 sm:max-w-2xl sm:px-6 sm:text-center lg:px-0 lg:text-left lg:flex lg:items-center">
-            <div className="lg:py-24">
-              <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-center text-white sm:mt-5 sm:text-6xl lg:mt-20 xl:text-6xl">
-                <span className="block text-turquoise ">
-                  Sign Up for Email Updates!
-                </span>
-              </h1>
-              <div className="mt-10 sm:mt-12 flex justify-center">
-                <NewsLetterForm />
-              </div>
+      <div className="bg-blue-800 w-full">
+        <Section>
+          <div className="mx-auto max-w-md sm:max-w-2xl">
+            <h1 className="text-4xl tracking-tight font-extrabold text-center text-white sm:text-6xl xl:text-6xl">
+              <span className="text-turquoise">Sign Up for Email Updates!</span>
+            </h1>
+            <div className="mt-10 sm:mt-12 flex justify-center">
+              <NewsLetterForm />
             </div>
           </div>
-        </div>
+        </Section>
       </div>
     </Wrapper>
   );
