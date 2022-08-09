@@ -31,7 +31,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
 
       {/* Top puzzle */}
       <div className="slice--top w-full radial-bg relative z-0">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-28">
+        <Section largePadding={false}>
           <Puzzle
             puzzleId={puzzleId}
             count={count}
@@ -57,8 +57,9 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
               (Try the colored letters!)
             </p>
           </div>
-        </div>
-        <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40"></div>
+
+          <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40"></div>
+        </Section>
       </div>
 
       {/* Bottom of puzzle */}
