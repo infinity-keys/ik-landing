@@ -1,24 +1,33 @@
 import { wallet } from "@lib/wallet";
 import { createMachine, assign, StateFrom } from "xstate";
 
+import { chains } from "@lib/contractConstants";
+
+const allChains = Object.values(chains).map(({ name, chainId }) => ({
+  name,
+  chainId,
+}));
+
+const defaultChain = chains.ETH.chainId;
+
 export type WalletContext = {
   walletAddress: string;
   chain: number;
-  signature: string;
+  allChains: typeof allChains;
 };
 export type WalletEvents =
-  | { type: "CONNECT_WALLET" }
+  | { type: "WALLET_CONNECT" }
   | { type: "WALLET_CONNECTED" }
   | { type: "DISCONNECT_WALLET" }
-  | { type: "CHOOSE_CHAIN"; chain: string };
+  | { type: "REQUEST_CHAIN_CHANGE"; chain: number }
+  | { type: "VERIFY_CHAIN_CHANGE"; chain: number };
 export type WalletStates =
   | { value: "checking"; context: WalletContext }
   | { value: "disconnected"; context: WalletContext }
   | { value: "connecting"; context: WalletContext }
   | { value: "connected"; context: WalletContext }
   | { value: "signing"; context: WalletContext }
-  | { value: "signed"; context: WalletContext }
-  | { value: "choosingChain"; context: WalletContext };
+  | { value: "signed"; context: WalletContext };
 export type WalletServices = {
   connectWallet: {
     data: Awaited<ReturnType<typeof wallet.trigger>>;
@@ -43,8 +52,8 @@ export const walletMachine = createMachine(
     initial: "checking",
     context: {
       walletAddress: "",
-      chain: 0,
-      signature: "",
+      chain: defaultChain,
+      allChains,
     },
     states: {
       checking: {
@@ -77,8 +86,18 @@ export const walletMachine = createMachine(
         },
       },
       connected: {
+        invoke: {
+          id: "invokeChainChangeListener",
+          src: "chainChangedListener",
+        },
         on: {
           DISCONNECT_WALLET: "disconnected",
+          REQUEST_CHAIN_CHANGE: {
+            actions: ["requestChainChange"],
+          },
+          VERIFY_CHAIN_CHANGE: {
+            actions: ["verifyChainChange"],
+          },
         },
       },
       disconnected: {
@@ -90,12 +109,12 @@ export const walletMachine = createMachine(
           },
         },
         on: {
-          CONNECT_WALLET: "connecting",
+          WALLET_CONNECT: "connecting",
         },
       },
+      choosingChain: {},
       signing: {},
       signed: {},
-      choosingChain: {},
     },
   },
   {
@@ -103,13 +122,34 @@ export const walletMachine = createMachine(
       connectWallet: wallet.trigger,
       checkWalletCache: async () => wallet.isCached(),
       clearWalletCache: async () => wallet.clear(),
+      chainChangedListener: (ctx, e) => (sendBack) => {
+        const onChangeChain = (chainId: number) =>
+          sendBack({
+            type: "VERIFY_CHAIN_CHANGE",
+            chain: chainId,
+          });
+
+        wallet.setChangeChainCallback(onChangeChain);
+
+        return () => wallet.setChangeChainCallback(() => {});
+      },
     },
     actions: {
       setWalletInfo: assign({
         walletAddress: (_, { data }) => data.account,
         chain: (_, { data }) => data.chain,
       }),
-      clearWallet: assign({ walletAddress: "", chain: 0, signature: "" }),
+      clearWallet: assign({
+        walletAddress: "",
+        chain: defaultChain,
+        allChains,
+      }),
+      requestChainChange: async (context, event) => {
+        await wallet.switchChain(event.chain);
+      },
+      verifyChainChange: assign({
+        chain: (_, { chain }) => chain,
+      }),
     },
     guards: {
       isWalletCached: (_, { data }) => data,

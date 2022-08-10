@@ -1,5 +1,5 @@
 import Web3Modal from "web3modal";
-import { ethers } from "ethers";
+import { ethers, BigNumber } from "ethers";
 import { message } from "@lib/utils";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
@@ -13,7 +13,6 @@ import {
   POLYGON_RPC,
 } from "@lib/contractConstants";
 import { toHex } from "./utils";
-// import Fortmatic from "fortmatic";
 
 const providerOptions = {
   walletconnect: {
@@ -30,17 +29,6 @@ const providerOptions = {
       chainId: 1,
     },
   },
-  // fortmatic: {
-  //   package: Fortmatic, // required
-  //   options: {
-  //     key: "FORTMATIC_KEY", // required
-  // network: {
-  // // if we don't pass it, it will default to localhost:8454
-  //   rpcUrl: {ETH_RPC},
-  //   chainId: 4,
-  // },
-  //   }
-  // }
 };
 
 // In NextJS, during prerender in Node there is no "window" the library needs
@@ -54,28 +42,11 @@ const web3Modal: Web3Modal | undefined =
     : undefined;
 
 export const walletUtil = () => {
-  let provider: ethers.providers.ExternalProvider;
-  let library: ethers.providers.Web3Provider;
+  let provider: ethers.providers.Web3Provider;
   let account: string;
   let chain: number;
 
-  // @DEBUG
-  web3Modal &&
-    web3Modal.on("accountsChanged", (accounts: string[]) => {
-      console.log("accountsChanged", accounts);
-    });
-  web3Modal &&
-    web3Modal.on("chainChanged", (chainId: number) => {
-      console.log("chainChanged", chainId);
-    });
-  web3Modal &&
-    web3Modal.on("connect", (info: { chainId: number }) => {
-      console.log("connect", info);
-    });
-  web3Modal &&
-    web3Modal.on("disconnect", (error: { code: number; message: string }) => {
-      console.log("disconnect", error);
-    });
+  let changeChainCallback: (chain: number) => void;
 
   /**
    * Pop the modal and set vars we may need later
@@ -83,14 +54,19 @@ export const walletUtil = () => {
   const trigger = async () => {
     if (!web3Modal) throw new Error("No web3Modal");
 
-    provider = await web3Modal.connect();
-    library = new ethers.providers.Web3Provider(provider, "any");
+    const instance = await web3Modal.connect();
 
-    const accounts = await library.listAccounts();
+    instance.on("chainChanged", (chainId: string) =>
+      changeChainCallback(BigNumber.from(chainId).toNumber())
+    );
+
+    provider = new ethers.providers.Web3Provider(instance);
+
+    const accounts = await provider.listAccounts();
     if (!accounts.length) throw new Error("No accounts found");
     account = accounts[0];
 
-    chain = (await library.getNetwork()).chainId;
+    chain = (await provider.getNetwork()).chainId;
 
     return retrieve();
   };
@@ -99,20 +75,18 @@ export const walletUtil = () => {
    * Easy way to get vars needed elsewhere
    */
   const retrieve = () => ({
-    provider,
-    library,
     account,
     chain,
   });
 
   const sign = async () => {
-    if (!library?.provider?.request) throw new Error("Library is undefined");
+    if (!provider?.provider?.request) throw new Error("Library is undefined");
     if (!account) throw new Error("Account is undefined");
 
     const nonceReq = await fetch(`/api/users/${account}`);
     const { nonce } = await nonceReq.json();
 
-    const signature = await library.provider.request({
+    const signature = await provider.provider.request({
       method: "personal_sign",
       params: [message(nonce), account],
     });
@@ -151,9 +125,9 @@ export const walletUtil = () => {
 
     if (newChainId === chain) return retrieve(); // same as current chain
 
-    if (chain && library?.provider?.request) {
+    if (chain && provider?.provider?.request) {
       try {
-        await library.provider.request({
+        await provider.provider.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(newChainId) }],
         });
@@ -173,7 +147,7 @@ export const walletUtil = () => {
           if (!chainParams) throw new Error("Invalid Chain Id.");
 
           try {
-            await library.provider.request({
+            await provider.provider.request({
               method: "wallet_addEthereumChain",
               params: [chainParams],
             });
@@ -190,6 +164,10 @@ export const walletUtil = () => {
 
   const isCached = () => !!(web3Modal && !!web3Modal.cachedProvider);
 
+  const setChangeChainCallback = (callback: (chain: number) => void) => {
+    changeChainCallback = callback;
+  };
+
   return {
     trigger,
     retrieve,
@@ -197,6 +175,7 @@ export const walletUtil = () => {
     clear,
     switchChain,
     isCached,
+    setChangeChainCallback,
   };
 };
 

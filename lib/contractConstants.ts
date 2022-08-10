@@ -21,7 +21,7 @@ type Chains = {
   [key: string]: Chain;
 };
 
-const chains: Chains = {};
+export const chains: Chains = {};
 
 //AVAX
 export const AVAX_NAME = "Avalanche";
@@ -115,7 +115,7 @@ chains.POLYGON = {
   contract: contractPolygon,
 };
 
-export const allChains = Object.keys(chains);
+// export const allChains = Object.keys(chains);
 
 // RINKEBY PARAMS
 // export const ETH_CHAIN_ID = 4;

@@ -1,5 +1,6 @@
-import { useState, useContext, Fragment } from "react";
+import { useContext, Fragment } from "react";
 import { useSelector } from "@xstate/react";
+import clsx from "clsx";
 import { Listbox, Transition } from "@headlessui/react";
 
 import LoginIcon from "@heroicons/react/outline/LoginIcon";
@@ -19,15 +20,8 @@ const isConnectedSelector = createSelector((state) =>
 );
 // xstate:context
 const addressSelector = createSelector((state) => state.context.walletAddress);
-
-const people = [
-  { name: "Wade Cooper" },
-  { name: "Arlene Mccoy" },
-  { name: "Devon Webb" },
-  { name: "Tom Cook" },
-  { name: "Tanya Fox" },
-  { name: "Hellen Schmidt" },
-];
+const allChainsSelector = createSelector((state) => state.context.allChains);
+const chainSelector = createSelector((state) => state.context.chain);
 
 const WalletGlobal = () => {
   const globalWalletService = useContext(GlobalWalletContext);
@@ -36,17 +30,27 @@ const WalletGlobal = () => {
   const isConnecting = useSelector(globalWalletService, isConnectingSelector);
   const isConnected = useSelector(globalWalletService, isConnectedSelector);
   const address = useSelector(globalWalletService, addressSelector);
+  const allChains = useSelector(globalWalletService, allChainsSelector);
+  const selectedChain = useSelector(globalWalletService, chainSelector);
 
-  const [selected, setSelected] = useState(people[0]);
+  // const [selected, setSelected] = useState(chain);
 
   return (
     <div className="flex justify-center items-center">
       {isConnecting && <div>connecting...</div>}
 
-      <Listbox value={selected} onChange={setSelected}>
+      <Listbox
+        value={selectedChain}
+        onChange={(chainId) =>
+          send({ type: "REQUEST_CHAIN_CHANGE", chain: chainId })
+        }
+      >
         <div className="relative text-left w-40">
           <Listbox.Button className="relative w-full cursor-default rounded-md shadow-sm px-4 py-2 bg-white/10 border border-white/20 text-sm font-medium hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-turquoise">
-            <span className="block text-left">{selected.name}</span>
+            <span className="block text-left">
+              {allChains.find((chain) => chain.chainId === selectedChain)
+                ?.name || ""}
+            </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <SelectorIcon
                 className="h-5 w-5 text-gray-400"
@@ -61,27 +65,21 @@ const WalletGlobal = () => {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-hidden rounded-md shadow-lg bg-blue border border-white/20 ring-1 ring-black ring-opacity-5 focus:outline-none text-white">
-              {people.map((person, personIdx) => (
+              {allChains.map((chain) => (
                 <Listbox.Option
-                  key={personIdx}
+                  key={chain.chainId}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? "bg-amber-100 text-amber-900" : "text-gray-900"
+                      active ? "bg-indigo-500" : ""
                     }`
                   }
-                  value={person}
+                  value={chain.chainId}
                 >
                   {({ selected }) => (
                     <>
-                      <span
-                        className={`block ${
-                          selected ? "font-medium" : "font-normal"
-                        }`}
-                      >
-                        {person.name}
-                      </span>
+                      <span className={`block`}>{chain.name}</span>
                       {selected ? (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-turquoise">
                           <CheckIcon className="h-5 w-5" aria-hidden="true" />
                         </span>
                       ) : null}
@@ -96,7 +94,7 @@ const WalletGlobal = () => {
 
       <button
         onClick={() =>
-          isConnected ? send("DISCONNECT_WALLET") : send("CONNECT_WALLET")
+          isConnected ? send("DISCONNECT_WALLET") : send("WALLET_CONNECT")
         }
         className="flex p-2 justify-center items-center text-white hover:text-turquoise"
       >
