@@ -40,8 +40,6 @@ const WalletGlobal = () => {
 
   return (
     <div className="flex justify-center items-center">
-      {isConnecting && <div>connecting...</div>}
-
       <Listbox
         value={selectedChain}
         onChange={(chainId) =>
@@ -120,21 +118,19 @@ const WalletGlobal = () => {
         }
         className="flex p-2 justify-center items-center text-white ml-2 rounded-md shadow-sm px-3 py-2 bg-white/10 border border-white/20 text-sm font-medium hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-turquoise"
       >
-        <>
-          <span>
-            {isConnected && address
-              ? walletAddressTrunc(address)
-              : "Connect Wallet"}
-          </span>
+        <span>
+          {isConnected && address && walletAddressTrunc(address)}
+          {isConnecting && "Connecting..."}
+          {!isConnected && !isConnecting && !address && "Connect Wallet"}
+        </span>
 
-          <div
-            className={clsx("h-2 w-2 rounded-full ml-2", {
-              "bg-red-400": !isConnected,
-              "bg-yellow-400": isConnecting,
-              "bg-green-400": isConnected && address,
-            })}
-          ></div>
-        </>
+        <span
+          className={clsx("block h-2 w-2 rounded-full ml-2", {
+            "bg-red-400": !isConnected,
+            "bg-yellow-400": isConnecting,
+            "bg-green-400": isConnected && address,
+          })}
+        ></span>
       </button>
     </div>
   );
