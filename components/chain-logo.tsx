@@ -3,7 +3,7 @@ import EthereumLogo from "@components/svg/logo-ethereum";
 import PolygonLogo from "@components/svg/logo-polygon";
 
 interface ChainLogoProps {
-  name: "Ethereum" | "Avalanche" | "Polygon";
+  name: string;
   height?: number;
   width?: number;
 }
@@ -25,5 +25,7 @@ export default function ChainLogo({
       return <AvalancheLogo {...props} />;
     case "Polygon":
       return <PolygonLogo {...props} />;
+    default:
+      return;
   }
 }
