@@ -112,6 +112,7 @@ export const walletMachine = createMachine(
           WALLET_CONNECT: "connecting",
         },
       },
+      // @TODO
       choosingChain: {},
       signing: {},
       signed: {},

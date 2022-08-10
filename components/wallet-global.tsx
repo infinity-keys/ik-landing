@@ -33,8 +33,6 @@ const WalletGlobal = () => {
   const allChains = useSelector(globalWalletService, allChainsSelector);
   const selectedChain = useSelector(globalWalletService, chainSelector);
 
-  // const [selected, setSelected] = useState(chain);
-
   return (
     <div className="flex justify-center items-center">
       {isConnecting && <div>connecting...</div>}
@@ -49,7 +47,7 @@ const WalletGlobal = () => {
           <Listbox.Button className="relative w-full cursor-default rounded-md shadow-sm px-4 py-2 bg-white/10 border border-white/20 text-sm font-medium hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-turquoise">
             <span className="block text-left">
               {allChains.find((chain) => chain.chainId === selectedChain)
-                ?.name || ""}
+                ?.name || "Unsupported chain"}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <SelectorIcon
@@ -69,15 +67,16 @@ const WalletGlobal = () => {
                 <Listbox.Option
                   key={chain.chainId}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? "bg-indigo-500" : ""
-                    }`
+                    clsx(
+                      "relative cursor-default select-none py-2 pl-10 pr-4",
+                      active && "bg-indigo-500"
+                    )
                   }
                   value={chain.chainId}
                 >
                   {({ selected }) => (
                     <>
-                      <span className={`block`}>{chain.name}</span>
+                      <span className="block">{chain.name}</span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-turquoise">
                           <CheckIcon className="h-5 w-5" aria-hidden="true" />
