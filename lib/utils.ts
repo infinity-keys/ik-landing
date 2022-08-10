@@ -1,4 +1,4 @@
-import loMemo from "lodash/memoize";
+import memoize from "fast-memoize";
 import {
   PUZZLE_FAILED_BASE,
   PUZZLE_LANDING_BASE,
@@ -31,7 +31,7 @@ export const toHex = (num: number) => {
   return "0x" + val.toString(16);
 };
 
-export const walletAddressTrunc = loMemo(
+export const walletAddressTrunc = memoize(
   (address: string) =>
     address.slice(0, 6) +
     "..." +

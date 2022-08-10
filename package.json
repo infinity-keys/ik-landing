@@ -34,6 +34,7 @@
     "cloudinary-build-url": "^0.2.4",
     "clsx": "^1.1.1",
     "ethers": "^5.6.5",
+    "fast-memoize": "^2.5.2",
     "fortmatic": "^2.3.0",
     "graphql": "^16.4.0",
     "graphql-request": "^4.2.0",
