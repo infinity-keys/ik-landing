@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { Listbox, Transition } from "@headlessui/react";
 
 import ExclamationIcon from "@heroicons/react/outline/ExclamationIcon";
+import CreditCardIcon from "@heroicons/react/outline/CreditCardIcon";
 import CheckIcon from "@heroicons/react/outline/CheckIcon";
 import SelectorIcon from "@heroicons/react/outline/SelectorIcon";
 
@@ -116,13 +117,23 @@ const WalletGlobal = () => {
         onClick={() =>
           isConnected ? send("DISCONNECT_WALLET") : send("WALLET_CONNECT")
         }
-        className="flex p-2 justify-center items-center text-white ml-2 rounded-md shadow-sm px-3 py-2 bg-white/10 border border-white/20 text-sm font-medium hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-turquoise"
+        className="flex p-2 justify-center items-center text-white ml-2 sm:ml-4 rounded-md shadow-sm px-3 bg-white/10 border border-white/20 text-sm font-medium hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-turquoise"
       >
-        <span>
-          {isConnected && address && walletAddressTrunc(address)}
-          {isConnecting && "Connecting..."}
-          {!isConnected && !isConnecting && !address && "Connect Wallet"}
-        </span>
+        <CreditCardIcon className="sm:hidden w-4 h-4" />
+
+        {isConnected && address && (
+          <span className="hidden sm:inline">
+            {walletAddressTrunc(address)}
+          </span>
+        )}
+
+        {isConnecting && (
+          <span className="hidden sm:inline">Connecting...</span>
+        )}
+
+        {!isConnected && !isConnecting && !address && (
+          <span className="hidden sm:inline">Connect Wallet</span>
+        )}
 
         <span
           className={clsx("block h-2 w-2 rounded-full ml-2", {

@@ -59,7 +59,7 @@ export default function Header() {
                 </div>
               </div>
 
-              <div className="menu-items items-center justify-center sm:items-stretch sm:justify-start hidden lg:flex">
+              <div className="menu-items items-center justify-center sm:items-stretch sm:justify-start hidden xl:flex">
                 <nav className="flex space-x-4">
                   {navigation.map((item) => (
                     <Link href={item.href} key={item.name}>
@@ -73,7 +73,7 @@ export default function Header() {
 
               <div
                 data-cy="puzzle-link"
-                className="grid grid-flow-col gap-1 sm:gap-4"
+                className="grid grid-flow-col gap-2 sm:gap-4 items-center"
               >
                 <Button
                   text="Starter Pack"
@@ -87,7 +87,7 @@ export default function Header() {
               </div>
 
               {/* hamburger icon, visible mobile only */}
-              <div className="hamburger flex items-center lg:hidden">
+              <div className="hamburger flex items-center xl:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
@@ -101,7 +101,7 @@ export default function Header() {
             </div>
           </div>
 
-          <Disclosure.Panel className="lg:hidden">
+          <Disclosure.Panel className="xl:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => (
                 <Disclosure.Button
