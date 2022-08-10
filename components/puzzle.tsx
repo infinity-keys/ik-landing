@@ -24,8 +24,6 @@ interface PuzzleProps {
   SuccessComponent?: ComponentType<{}>;
 }
 
-const { NODE_ENV } = process.env;
-
 const Puzzle = ({
   // Used to show number of boxes/remaining characters. Usually pulled in via
   // GrqphQL query.
@@ -52,7 +50,7 @@ const Puzzle = ({
         router.push(event.data?.success_route || "/"),
       goToFailRoute: (context, event) => router.push(event.data.fail_route),
     },
-    devTools: NODE_ENV === "development",
+    devTools: process.env.NODE_ENV === "development",
   });
 
   const [height, setHeight] = useState(0);

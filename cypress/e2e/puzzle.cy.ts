@@ -75,3 +75,5 @@ describe("infinitykeys.io/puzzles", () => {
     cy.contains("Thats not it. Need help? Join our discord");
   });
 });
+
+export {};
