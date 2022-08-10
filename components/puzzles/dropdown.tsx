@@ -33,7 +33,7 @@ DropdownLink.displayName = "DropdownLink";
 
 const PuzzlesDropdown = ({ currentCount }: PuzzlesDropdownProps) => {
   return (
-    <Menu as="div" className="relative inline-block text-left ml-5">
+    <Menu as="div" className="relative inline-block text-left ml-5 z-10">
       <div>
         <Menu.Button className="inline-flex justify-center w-full rounded-md shadow-sm px-4 py-2 bg-white/10 border border-white/20 text-sm font-medium hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-turquoise">
           {currentCount}
