@@ -19,7 +19,7 @@ export const minterUtil = async (tokenId: number, signature: string) => {
   let claimedStatus = false;
   let txMessage: string;
 
-  const { library, account, chain } = wallet.retrieve();
+  const { provider, account, chain } = wallet.retrieve();
 
   interface MintFactory {
     contractAddress: string;
@@ -63,7 +63,7 @@ export const minterUtil = async (tokenId: number, signature: string) => {
         data,
       };
 
-      const tx = await library
+      const tx = await provider
         .getSigner()
         .sendTransaction(transaction)
         .catch((err) => {

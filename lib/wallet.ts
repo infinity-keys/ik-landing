@@ -75,6 +75,7 @@ export const walletUtil = () => {
    * Easy way to get vars needed elsewhere
    */
   const retrieve = () => ({
+    provider,
     account,
     chain,
   });
