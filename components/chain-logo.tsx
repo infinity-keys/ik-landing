@@ -26,6 +26,6 @@ export default function ChainLogo({
     case "Polygon":
       return <PolygonLogo {...props} />;
     default:
-      return;
+      return <span>Unrecognized Chain</span>;
   }
 }
