@@ -1,6 +1,9 @@
 import { NextPage } from "next";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Head from "next/head";
+import { useSelector } from "@xstate/react";
+
+import { GlobalWalletContext, createSelector } from "@ik-xstate/global-wallet";
 
 import Wrapper from "@components/wrapper";
 import Button from "@components/button";
@@ -42,6 +45,8 @@ const buttonData = [
   },
 ];
 
+const addressSelector = createSelector((state) => state.context.walletAddress);
+
 const ClaimFlow: NextPage<ClaimsPageProps> = ({
   nftTokenIds,
   cloudinary_id,
@@ -54,6 +59,9 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
   const [claimed, setClaimed] = useState(false);
   const [signature, setSignature] = useState("");
   const [txMessage, setTxMessage] = useState<string>();
+
+  const globalWalletService = useContext(GlobalWalletContext);
+  const address = useSelector(globalWalletService, addressSelector);
 
   const connectWallet = async () => {
     const { account, chain } = await wallet.trigger();
@@ -114,7 +122,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
         {cloudinary_id && (
           <CloudImage height={260} width={260} id={cloudinary_id} />
         )}
-
+        <div>address: {address}</div>
         <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
           {isLoading
             ? isLoadingWallet
@@ -124,7 +132,6 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
             ? "Your Trophy Has Been Claimed"
             : "Claim Your Trophy"}
         </h2>
-
         {!chain && (
           <Button
             text="Connect Wallet"
@@ -132,7 +139,6 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
             onClick={() => connectWallet()}
           />
         )}
-
         {!isLoading && chain && !claimed && (
           <>
             {buttonData.map(({ chain_id, name }) => (
@@ -157,7 +163,6 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
             ))}
           </>
         )}
-
         {txMessage && (
           <div>
             View Transaction&nbsp;
@@ -171,10 +176,8 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
             </a>
           </div>
         )}
-
         {/* @TODO: refactor this to be a shared loader component */}
         {isLoading && <LoadingIcon />}
-
         {claimed && (
           <a
             target="_blank"

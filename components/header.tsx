@@ -81,12 +81,13 @@ export default function Header() {
                   variant="outline"
                   responsive
                 />
-                <Button text="Puzzles" href="/puzzles" responsive />
+                {/* <Button text="Puzzles" href="/puzzles" responsive /> */}
+
+                <WalletGlobal />
               </div>
 
               {/* hamburger icon, visible mobile only */}
               <div className="hamburger flex items-center lg:hidden">
-                <WalletGlobal />
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>

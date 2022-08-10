@@ -18,7 +18,7 @@ interface DropdownLinkProps extends HTMLProps<HTMLAnchorElement> {
 // required for close on select with Next Link in Menu dropdown
 const DropdownLink = forwardRef<HTMLAnchorElement, DropdownLinkProps>(
   (props, ref) => {
-    let { href, children, ...rest } = props;
+    const { href, children, ...rest } = props;
     return (
       <Link href={href}>
         <a ref={ref} {...rest}>
