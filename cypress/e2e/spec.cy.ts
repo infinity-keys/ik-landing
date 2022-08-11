@@ -44,6 +44,7 @@ describe("infinitykeys.io", () => {
   it("fills out newsletter contact form and submits successfully", () => {
     cy.intercept("POST", "https://formspree.io/f/xnqrqdaq", {
       statusCode: 200,
+      body: { next: "/thanks?language=en", ok: true },
     });
     cy.get('[data-cy="email-newsletter"] input').type("test2@example.com");
     cy.get('[data-cy="email-newsletter"] button').click();
