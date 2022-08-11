@@ -22,7 +22,7 @@ export default function PartnerForm() {
           <input
             id="email"
             type="email"
-            name="name"
+            name="Partner"
             placeholder="Enter your email"
             className="block w-full px-4 py-3 rounded-md border-0 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
           />
