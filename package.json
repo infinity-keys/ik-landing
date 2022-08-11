@@ -2,7 +2,7 @@
   "name": "infinity-keys-landing",
   "private": true,
   "scripts": {
-    "dev": "yarn generate:watch & next dev",
+    "dev": "yarn generate:watch & sleep 5 && next dev",
     "build": "yarn generate:once && next build",
     "next:build": "next build",
     "start": "next start",
@@ -10,7 +10,7 @@
     "generate:once": "yarn run typechain && graphql-codegen",
     "generate:watch": "yarn run typechain && graphql-codegen --watch",
     "fmt": "eslint . --fix",
-    "cypress:open": "start-server-and-test dev http://localhost:3000 \"cypress open\"",
+    "cypress:open": "NEXT_PUBLIC_IS_CYPRESS=true start-server-and-test dev http://localhost:3000 \"cypress open\"",
     "cypress:run": "cypress run --headless --browser chrome",
     "cypress:ci": "yarn build && start-server-and-test start http://localhost:3000 cypress:run",
     "typechain": "typechain --target ethers-v5 \"nfts/contracts/**/*.json\" --out-dir lib/generated/ethers-contract",

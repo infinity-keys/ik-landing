@@ -99,3 +99,5 @@ describe("infinitykeys.io", () => {
     );
   });
 });
+
+export {};
