@@ -120,9 +120,24 @@ export const walletMachine = createMachine(
   },
   {
     services: {
+      /**
+       * Pop the modal, or connect to existing session
+       */
       connectWallet: wallet.trigger,
-      checkWalletCache: async () => wallet.isCached(),
+      /**
+       * Check if wallet is cached
+       * @TODO: uncecessary since we'll just listen to wallet connect
+       */
+      checkWalletCache: async () => {
+        return wallet.isCached();
+      },
+      /**
+       * Logout
+       */
       clearWalletCache: async () => wallet.clear(),
+      /**
+       * Allow the wallet chain change listener to fire an event for us
+       */
       chainChangedListener: (ctx, e) => (sendBack) => {
         const onChangeChain = (chainId: number) =>
           sendBack({

@@ -14,6 +14,8 @@ import {
 } from "@lib/contractConstants";
 import { toHex } from "./utils";
 
+const chainHexToInt = (hex: string) => BigNumber.from(hex).toNumber();
+
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider, // required
@@ -47,6 +49,15 @@ export const walletUtil = () => {
   let chain: number;
 
   let changeChainCallback: (chain: number) => void;
+  let disconnectWalletCallback: (accounts: string[]) => void;
+
+  console.log(web3Modal);
+
+  // Connect has to be listened to way before web3Modal.connect() is called
+  web3Modal &&
+    web3Modal.on("connect", (info: { chainId: number }) => {
+      console.log("connect from web3modal", info);
+    });
 
   /**
    * Pop the modal and set vars we may need later
@@ -55,18 +66,28 @@ export const walletUtil = () => {
     if (!web3Modal) throw new Error("No web3Modal");
 
     const instance = await web3Modal.connect();
+    // Prevents duplicating listeners when calling trigger multiple times
+    instance.removeAllListeners();
 
-    instance.on("chainChanged", (chainId: string) =>
-      changeChainCallback(BigNumber.from(chainId).toNumber())
-    );
+    const { selectedAddress, chainId } = instance;
+
+    account = selectedAddress;
+    chain = chainHexToInt(chainId);
+
+    instance.on("chainChanged", (chainId: string) => {
+      console.log("chainChanged from instance", chainId);
+      changeChainCallback(chainHexToInt(chainId));
+    });
+    // Use this to detect disconnect of wallet outside of our site
+    instance.on("accountsChanged", (accounts: string[]) => {
+      console.log("accountsChanged from instance", accounts);
+    });
 
     provider = new ethers.providers.Web3Provider(instance);
-
-    const accounts = await provider.listAccounts();
-    if (!accounts.length) throw new Error("No accounts found");
-    account = accounts[0];
-
-    chain = (await provider.getNetwork()).chainId;
+    // const accounts = await provider.listAccounts();
+    // if (!accounts.length) throw new Error("No accounts found");
+    // account = accounts[0];
+    // chain = (await provider.getNetwork()).chainId;
 
     return retrieve();
   };
@@ -165,8 +186,14 @@ export const walletUtil = () => {
 
   const isCached = () => !!(web3Modal && !!web3Modal.cachedProvider);
 
+  // Let outside code listen for these events
   const setChangeChainCallback = (callback: (chain: number) => void) => {
     changeChainCallback = callback;
+  };
+  const setDisconnectWalletCallback = (
+    callback: (accounts: string[]) => void
+  ) => {
+    disconnectWalletCallback = callback;
   };
 
   return {
@@ -177,6 +204,7 @@ export const walletUtil = () => {
     switchChain,
     isCached,
     setChangeChainCallback,
+    setDisconnectWalletCallback,
   };
 };
 
