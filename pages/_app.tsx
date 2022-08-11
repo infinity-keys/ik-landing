@@ -3,8 +3,6 @@ import Router from "next/router";
 import NProgress from "nprogress";
 import { inspect } from "@xstate/inspect";
 
-const { NODE_ENV } = process.env;
-
 // Re-enable here and below for auth via auth0
 // import { UserProvider } from "@auth0/nextjs-auth0";
 
@@ -12,7 +10,11 @@ import "loaders.css/loaders.min.css";
 import "../styles/globals.css";
 import "nprogress/nprogress.css";
 
-if (typeof window !== "undefined" && NODE_ENV === "development") {
+if (
+  typeof window !== "undefined" &&
+  process.env.NODE_ENV === "development" &&
+  process.env.NEXT_PUBLIC_IS_CYPRESS !== "true"
+) {
   inspect({
     iframe: false, // open in new window
   });
