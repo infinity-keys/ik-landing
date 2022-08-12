@@ -13,6 +13,13 @@ describe("infinitykeys.io/puzzles", () => {
     cy.url().should("include", "/puzzles");
   });
 
+  it("should go to first puzzle on puzzles page when thumbnail clicked", () => {
+    cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
+    cy.url().should("include", "/puzzles");
+    cy.get(".puzzle-thumb").first().click();
+    cy.url().should("include", "/puzzle/");
+  });
+
   it("should click on multiple thumbnails", () => {
     cy.get("a.header-nav--link").contains("Hunts").click();
     cy.get(".puzzle-thumb").first().click();
@@ -75,3 +82,5 @@ describe("infinitykeys.io/puzzles", () => {
     cy.contains("Thats not it. Need help? Join our discord");
   });
 });
+
+export {};

@@ -16,6 +16,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "types": ["cypress"],
     "paths": {
       "@lib/*": ["lib/*"],
       "@components/*": ["components/*"],
