@@ -23,18 +23,11 @@ describe("infinitykeys.io", () => {
     cy.get('.menu-items a[href="https://blog.infinitykeys.io"]').click();
   });
 
-  it("should go to first puzzle on puzzles page when thumbnail clicked", () => {
-    cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
-    cy.url().should("include", "/puzzles");
-    cy.get(".puzzle-thumb").first().click();
-    cy.url().should("include", "/puzzle/");
-  });
-
   it("fills out partner contact form and submits successfully", () => {
     cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
       statusCode: 200,
     });
-    cy.get('[data-cy="email-partner"] input').type("you@me.com");
+    cy.get('[data-cy="email-partner"] input').type("test1@example.com");
     cy.get('[data-cy="email-partner"] button').click();
     cy.get('[data-cy="email-partner-success"]').contains(
       "Thank you for signing up!"
@@ -42,10 +35,11 @@ describe("infinitykeys.io", () => {
   });
 
   it("fills out newsletter contact form and submits successfully", () => {
-    cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
+    cy.intercept("POST", "https://formspree.io/f/xnqrqdaq", {
       statusCode: 200,
+      body: { next: "/thanks?language=en", ok: true },
     });
-    cy.get('[data-cy="email-newsletter"] input').type("you@me.com");
+    cy.get('[data-cy="email-newsletter"] input').type("test2@example.com");
     cy.get('[data-cy="email-newsletter"] button').click();
     cy.get('[data-cy="email-newsletter-success"]').contains(
       "Thank you for signing up!"
@@ -99,3 +93,5 @@ describe("infinitykeys.io", () => {
     );
   });
 });
+
+export {};
