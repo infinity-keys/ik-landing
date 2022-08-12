@@ -34,7 +34,7 @@ describe("infinitykeys.io", () => {
     cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
       statusCode: 200,
     });
-    cy.get('[data-cy="email-partner"] input').type("you@me.com");
+    cy.get('[data-cy="email-partner"] input').type("test1@example.com");
     cy.get('[data-cy="email-partner"] button').click();
     cy.get('[data-cy="email-partner-success"]').contains(
       "Thank you for signing up!"
@@ -42,10 +42,11 @@ describe("infinitykeys.io", () => {
   });
 
   it("fills out newsletter contact form and submits successfully", () => {
-    cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
+    cy.intercept("POST", "https://formspree.io/f/xnqrqdaq", {
       statusCode: 200,
+      body: { next: "/thanks?language=en", ok: true },
     });
-    cy.get('[data-cy="email-newsletter"] input').type("you@me.com");
+    cy.get('[data-cy="email-newsletter"] input').type("test2@example.com");
     cy.get('[data-cy="email-newsletter"] button').click();
     cy.get('[data-cy="email-newsletter-success"]').contains(
       "Thank you for signing up!"
