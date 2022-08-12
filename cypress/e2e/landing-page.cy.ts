@@ -23,13 +23,6 @@ describe("infinitykeys.io", () => {
     cy.get('.menu-items a[href="https://blog.infinitykeys.io"]').click();
   });
 
-  it("should go to first puzzle on puzzles page when thumbnail clicked", () => {
-    cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
-    cy.url().should("include", "/puzzles");
-    cy.get(".puzzle-thumb").first().click();
-    cy.url().should("include", "/puzzle/");
-  });
-
   it("fills out partner contact form and submits successfully", () => {
     cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
       statusCode: 200,
