@@ -51,7 +51,7 @@
     "react-markdown": "^8.0.3",
     "uuid": "^8.3.2",
     "web3modal": "^1.9.8",
-    "xstate": "^4.32.1",
+    "xstate": "^4.33.0",
     "zod": "^3.17.10"
   },
   "devDependencies": {
