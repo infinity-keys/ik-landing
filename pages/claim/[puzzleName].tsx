@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 
 import Wrapper from "@components/wrapper";
@@ -17,6 +17,9 @@ import { minterUtil } from "@lib/minter";
 import { gqlApiSdk } from "@lib/server";
 import CloudImage from "@components/cloud-image";
 import LoadingIcon from "@components/loading-icon";
+import { useAccount, useNetwork } from "wagmi";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import MintButton from "@components/mintButton";
 
 interface ClaimsPageProps {
   nftTokenIds: number[];
@@ -27,75 +30,54 @@ interface ClaimsPageParams {
   params: { puzzleName: string };
 }
 
-const buttonData = [
-  {
-    chain_id: ETH_CHAIN_ID,
-    name: "Ethereum",
-  },
-  {
-    chain_id: AVAX_CHAIN_ID,
-    name: "Avalanche",
-  },
-  {
-    chain_id: POLYGON_CHAIN_ID,
-    name: "Polygon",
-  },
-];
-
 const ClaimFlow: NextPage<ClaimsPageProps> = ({
   nftTokenIds,
   cloudinary_id,
 }) => {
+  const { openConnectModal } = useConnectModal();
+  const { address, isConnected } = useAccount();
+  const chain = useNetwork().chain?.id;
+  const blockExplorer = useNetwork().chain?.blockExplorers?.default;
+
   const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
-  const [account, setAccount] = useState<string>();
-  const [chain, setChain] = useState<number>();
-  const [isLoadingWallet, setIsLoadingWallet] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [claimed, setClaimed] = useState(false);
-  const [signature, setSignature] = useState("");
+
   const [txMessage, setTxMessage] = useState<string>();
 
-  const connectWallet = async () => {
-    const { account, chain } = await wallet.trigger();
-    setChain(chain);
-    setAccount(account);
+  const [mounted, setMounted] = useState(false);
 
-    setIsLoadingWallet(true);
-    setIsLoading(true);
-    setClaimed(await checkIfClaimed(account));
-    setSignature(await verify(account, tokenId, chain));
-    setIsLoadingWallet(false);
-    setIsLoading(false);
-  };
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  const checkIfClaimed = async (account: string) => {
-    const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId.toString()}`;
+  useEffect(() => {
+    // Unsure why but it wanted me to throw this in here
+    const checkIfClaimed = async (account: string) => {
+      const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId.toString()}`;
 
-    const response = await fetch(url);
-    if (response.ok) return (await response.json()).claimed;
-    else throw await response.text();
-  };
+      const response = await fetch(url);
+      if (response.ok) return (await response.json()).claimed;
+      else throw await response.text();
+    };
 
-  const verify = async (account: string, tokenId: number, chain: number) => {
-    const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}`;
+    const onPageLoad = async () => {
+      if (isConnected && address) {
+        setClaimed(await checkIfClaimed(address));
+      }
+    };
 
-    const response = await fetch(url);
-    if (response.ok) {
-      const { signature } = await response.json();
-      return signature;
-    }
+    onPageLoad();
+  }, [isConnected, address, tokenId]);
 
-    throw await response.text();
-  };
-
-  const mint = async () => {
-    const minter = await minterUtil(tokenId, signature);
-    setIsLoading(true);
-    const { txMessage, claimedStatus } = await minter.mint();
-    setIsLoading(false);
-    setTxMessage(txMessage);
-    setClaimed(claimedStatus);
-  };
+  // const mint = async () => {
+  //   const minter = await minterUtil(tokenId, signature);
+  //   setIsLoading(true);
+  //   const { txMessage, claimedStatus } = await minter.mint();
+  //   setIsLoading(false);
+  //   setTxMessage(txMessage);
+  //   setClaimed(claimedStatus);
+  // };
 
   // @TODO: refactor into button component, use clx for classes at least
   const buttonClasses =
@@ -116,47 +98,19 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
         )}
 
         <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-          {isLoading
-            ? isLoadingWallet
-              ? "Connecting Wallet"
-              : "Claiming Trophy"
-            : claimed
-            ? "Your Trophy Has Been Claimed"
-            : "Claim Your Trophy"}
+          {/*TODO: Edit this so doesn't show up on loading */}
+          {claimed ? "Your Trophy Has Been Claimed" : "Claim Your Trophy"}
         </h2>
 
-        {!chain && (
+        {!isConnected && (
           <Button
             text="Connect Wallet"
             type="submit"
-            onClick={() => connectWallet()}
+            onClick={openConnectModal}
           />
         )}
 
-        {!isLoading && chain && !claimed && (
-          <>
-            {buttonData.map(({ chain_id, name }) => (
-              <button
-                key={chain_id}
-                className={
-                  chain === chain_id ? buttonPrimaryClasses : buttonClasses
-                }
-                onClick={async () => {
-                  if (chain === chain_id) {
-                    mint();
-                  } else {
-                    setChain((await wallet.switchChain(chain_id)).chain);
-                    if (!account) return;
-                    const signature = await verify(account, tokenId, chain_id);
-                    setSignature(signature);
-                  }
-                }}
-              >
-                {chain === chain_id ? `Claim on ${name}` : `Switch to ${name}`}
-              </button>
-            ))}
-          </>
-        )}
+        {isConnected && <MintButton tokenId={tokenId} />}
 
         {txMessage && (
           <div>
@@ -171,9 +125,6 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
             </a>
           </div>
         )}
-
-        {/* @TODO: refactor this to be a shared loader component */}
-        {isLoading && <LoadingIcon />}
 
         {claimed && (
           <a
