@@ -3,6 +3,11 @@ import Router from "next/router";
 import NProgress from "nprogress";
 import { inspect } from "@xstate/inspect";
 
+import "@rainbow-me/rainbowkit/styles.css";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { WagmiConfig } from "wagmi";
+import { chains, IKTheme, wagmiClient } from "@lib/walletConstants";
+
 const { NODE_ENV } = process.env;
 
 // Re-enable here and below for auth via auth0
@@ -24,7 +29,13 @@ Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
 function InfinityKeysApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <WagmiConfig client={wagmiClient}>
+      <RainbowKitProvider chains={chains} theme={IKTheme}>
+        <Component {...pageProps} />
+      </RainbowKitProvider>
+    </WagmiConfig>
+  );
 }
 
 export default InfinityKeysApp;

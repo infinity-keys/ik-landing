@@ -4,6 +4,7 @@ import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 import Button from "./button";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export const navigation = [
   { name: "Home", href: "/" },
@@ -82,7 +83,11 @@ export default function Header() {
                   responsive
                 />
 
-                <Button text="Puzzles" href="/puzzles" responsive />
+                <ConnectButton
+                  accountStatus="address"
+                  chainStatus="name"
+                  showBalance={false}
+                />
               </div>
 
               {/* hamburger icon, visible mobile only */}
