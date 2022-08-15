@@ -17,7 +17,11 @@ import "loaders.css/loaders.min.css";
 import "../styles/globals.css";
 import "nprogress/nprogress.css";
 
-if (typeof window !== "undefined" && NODE_ENV === "development") {
+if (
+  typeof window !== "undefined" &&
+  process.env.NODE_ENV === "development" &&
+  process.env.NEXT_PUBLIC_IS_CYPRESS !== "true"
+) {
   inspect({
     iframe: false, // open in new window
   });
