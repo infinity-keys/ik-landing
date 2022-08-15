@@ -62,7 +62,7 @@ export async function getStaticProps({
 
   return {
     props: {
-      name: simple_name,
+      name: success,
       puzzleId: puzzle_id,
       successMessage: success_message || "",
       nftId: nft?.tokenId.toString() || "",
