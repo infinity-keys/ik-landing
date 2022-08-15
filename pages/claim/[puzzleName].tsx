@@ -11,7 +11,7 @@ import {
   openseaLink,
   joePegsLink,
   openseaPolygonLink,
-} from "@lib/constants";
+} from "@lib/walletConstants";
 import { wallet } from "@lib/wallet";
 import { minterUtil } from "@lib/minter";
 import { gqlApiSdk } from "@lib/server";

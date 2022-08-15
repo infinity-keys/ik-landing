@@ -12,7 +12,7 @@ import {
   AVAX_CHAIN_ID,
   ETH_CHAIN_ID,
   POLYGON_CHAIN_ID,
-} from "@lib/constants";
+} from "@lib/walletConstants";
 
 import { IKAchievementABI__factory } from "@lib/generated/ethers-contract/factories/IKAchievementABI__factory";
 

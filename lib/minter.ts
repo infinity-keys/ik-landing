@@ -9,7 +9,8 @@ import {
   SNOWTRACE_TRACKER,
   ETHERSCAN_TRACKER,
   POLYGONSCAN_TRACKER,
-} from "@lib/constants";
+} from "@lib/walletConstants";
+
 import { IKAchievementABI__factory } from "@contracts/factories/IKAchievementABI__factory";
 
 export const minterUtil = async (tokenId: number, signature: string) => {

@@ -8,7 +8,7 @@ import {
   CONTRACT_ADDRESS_AVAX,
   CONTRACT_ADDRESS_ETH,
   CONTRACT_ADDRESS_POLYGON,
-} from "@lib/constants";
+} from "@lib/walletConstants";
 
 import { IKAchievementABI__factory } from "@lib/generated/ethers-contract/factories/IKAchievementABI__factory";
 

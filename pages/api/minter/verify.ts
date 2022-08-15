@@ -9,8 +9,8 @@ import {
   CONTRACT_ADDRESS_POLYGON,
   ETH_CHAIN_ID,
   POLYGON_CHAIN_ID,
-  IK_ID_COOKIE,
-} from "@lib/constants";
+} from "@lib/walletConstants";
+import { IK_ID_COOKIE } from "@lib/constants";
 import { gqlApiSdk } from "@lib/server";
 import { jwtHasClaim } from "@lib/jwt";
 

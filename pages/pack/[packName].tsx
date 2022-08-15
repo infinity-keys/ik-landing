@@ -20,7 +20,7 @@ import {
   openseaLink,
   joePegsLink,
   openseaPolygonLink,
-} from "@lib/constants";
+} from "@lib/walletConstants";
 import { useState } from "react";
 import { minterUtil } from "@lib/minter";
 import LoadingIcon from "@components/loading-icon";
