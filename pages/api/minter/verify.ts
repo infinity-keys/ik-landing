@@ -47,8 +47,8 @@ export default async function handler(
     const { puzzles } = await gql.GetPuzzleInfoByNftId({
       nftId: parseInt(tokenId, 10),
     });
-    const puzzleNames = puzzles.map(({ simple_name }) => simple_name);
-    const canAccess = await jwtHasClaim(jwt, puzzleNames);
+    const successRoutes = puzzles.map(({ success_route }) => success_route);
+    const canAccess = await jwtHasClaim(jwt, successRoutes);
     if (!canAccess) return res.status(403).end();
   } else {
     const baseUrl = req.headers.host || "infinitykeys.io";
