@@ -162,10 +162,15 @@ query GetNftIdByPuzzleName($puzzleName: String) {
     tokenId
   }
 }
+query GetNftIdByPuzzleSuccessRoute($successRoute: String) {
+  nfts(where: { puzzle: { success_route: { _eq: $successRoute } } }) {
+    tokenId
+  }
+}
 query GetAllNftClaims {
   nfts {
     puzzle {
-      simple_name
+      success_route
     }
   }
 }
@@ -174,6 +179,7 @@ query GetPuzzleInfoByNftId($nftId: Int!) {
   puzzles(where: { nft: { tokenId: { _eq: $nftId } } }) {
     simple_name
     puzzle_id
+    success_route
   }
 }
 
