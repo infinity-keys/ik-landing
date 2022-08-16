@@ -5,7 +5,7 @@ import {
   useAccount,
 } from "wagmi";
 import { IKAchievementABI__factory } from "@lib/generated/ethers-contract";
-import { contracts } from "@lib/walletConstants";
+import { chainIds, Contracts, contracts } from "@lib/walletConstants";
 import LoadingIcon from "./loading-icon";
 import { useEffect, useState } from "react";
 
@@ -13,16 +13,17 @@ interface MintButtonParams {
   tokenId: number;
 }
 
-export default function MintButton<MintButtonParams>({ tokenId }) {
-  const chain = useNetwork().chain?.id;
+export default function MintButton({ tokenId }: MintButtonParams) {
+  const chain = useNetwork().chain;
   const { address, isConnected } = useAccount();
   const [signature, setSignature] = useState("");
-
-  const [mounted, setMounted] = useState(false);
+  const [contractAddress, setContractAddress] = useState("");
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (!chain) throw new Error("Network Issue");
+    else if (!chainIds.includes(chain?.id)) throw new Error("Invalid chain.");
+    setContractAddress(contracts[chain.name as keyof Contracts]);
+  }, [chain]);
 
   const verify = async (account: string, tokenId: number, chain: number) => {
     const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}`;
@@ -39,13 +40,13 @@ export default function MintButton<MintButtonParams>({ tokenId }) {
   useEffect(() => {
     if (address && chain) {
       const setSig = async () => {
-        setSignature(await verify(address, tokenId, chain));
+        setSignature(await verify(address, tokenId, chain.id));
       };
     }
   }, [chain, address, tokenId]);
 
   const { config } = usePrepareContractWrite({
-    addressOrName: contracts[chain],
+    addressOrName: contractAddress,
     contractInterface: IKAchievementABI__factory.abi,
     functionName: "claim",
     args: [tokenId, signature],

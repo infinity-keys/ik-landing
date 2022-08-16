@@ -64,10 +64,16 @@ export const POLYGON_PARAMS = {
 //   "https://testnets.opensea.io/assets/ethereum/";
 // export const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/`;
 
-export const contracts = {
-  ETH_CHAIN_ID: CONTRACT_ADDRESS_ETH,
-  POLYGON_CHAIN_ID: CONTRACT_ADDRESS_POLYGON,
-  AVAX_CHAIN_ID: CONTRACT_ADDRESS_AVAX,
+export interface Contracts {
+  Ethereum: string;
+  Polygon: string;
+  Avalanche: string;
+}
+
+export const contracts: Contracts = {
+  Ethereum: CONTRACT_ADDRESS_ETH,
+  Polygon: CONTRACT_ADDRESS_POLYGON,
+  Avalanche: CONTRACT_ADDRESS_AVAX,
 };
 
 const avalancheChain: Chain = {
@@ -100,6 +106,11 @@ export const { chains, provider } = configureChains(
     jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) }),
   ]
 );
+
+export let chainIds: number[] = [];
+chains.map((chain) => {
+  chainIds.push(chain.id);
+});
 
 const { connectors } = getDefaultWallets({
   appName: "Infinity Keys",

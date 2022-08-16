@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { wallet } from "@lib/wallet";
 import {
   AVAX_CHAIN_ID,
@@ -12,6 +13,21 @@ import {
 } from "@lib/walletConstants";
 
 import { IKAchievementABI__factory } from "@contracts/factories/IKAchievementABI__factory";
+import { useAccount } from "wagmi";
+
+export const useIKMinter = () => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const { address, isConnected } = useAccount();
+
+  return {
+    address: mounted && address,
+    isConnected: mounted && isConnected,
+  };
+};
 
 export const minterUtil = async (tokenId: number, signature: string) => {
   let claimedStatus = false;
