@@ -42,6 +42,7 @@ export default function MintButton({ tokenId }: MintButtonParams) {
       const setSig = async () => {
         setSignature(await verify(address, tokenId, chain.id));
       };
+      setSig();
     }
   }, [chain, address, tokenId]);
 
@@ -56,7 +57,7 @@ export default function MintButton({ tokenId }: MintButtonParams) {
   console.log(data);
 
   return (
-    <div>
+    <>
       <button disabled={!write} onClick={() => write?.()}>
         Claim
       </button>
@@ -70,6 +71,6 @@ export default function MintButton({ tokenId }: MintButtonParams) {
       )}
       {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
       {error && <div>Error: {JSON.stringify(error)}</div>}
-    </div>
+    </>
   );
 }

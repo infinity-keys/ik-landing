@@ -36,9 +36,8 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
 }) => {
   const { openConnectModal } = useConnectModal();
   const { address, isConnected } = useIKMinter();
-  //const { address, isConnected } = useAccount();
-  // const chain = useNetwork().chain?.id;
-  // const blockExplorer = useNetwork().chain?.blockExplorers?.default;
+  const chain = useNetwork().chain?.id;
+  const blockExplorer = useNetwork().chain?.blockExplorers?.default;
 
   const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
   const [isLoading, setIsLoading] = useState(false);
@@ -46,40 +45,31 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
 
   const [txMessage, setTxMessage] = useState<string>();
 
-  // useEffect(() => {
-  //   // Unsure why but it wanted me to throw this in here
-  //   const checkIfClaimed = async (account: string) => {
-  //     const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId.toString()}`;
+  useEffect(() => {
+    // Unsure why but it wanted me to throw this in here
+    const checkIfClaimed = async (account: string) => {
+      const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId.toString()}`;
 
-  //     const response = await fetch(url);
-  //     if (response.ok) return (await response.json()).claimed;
-  //     else throw await response.text();
-  //   };
+      const response = await fetch(url);
+      if (response.ok) return (await response.json()).claimed;
+      else throw await response.text();
+    };
 
-  //   const onPageLoad = async () => {
-  //     if (isConnected && address) {
-  //       setClaimed(await checkIfClaimed(address));
-  //     }
-  //   };
+    const onPageLoad = async () => {
+      if (isConnected && address) {
+        setClaimed(await checkIfClaimed(address));
+      }
+    };
 
-  //   onPageLoad();
-  // }, [isConnected, address, tokenId]);
-
-  // const mint = async () => {
-  //   const minter = await minterUtil(tokenId, signature);
-  //   setIsLoading(true);
-  //   const { txMessage, claimedStatus } = await minter.mint();
-  //   setIsLoading(false);
-  //   setTxMessage(txMessage);
-  //   setClaimed(claimedStatus);
-  // };
+    onPageLoad();
+  }, [isConnected, address, tokenId]);
 
   // @TODO: refactor into button component, use clx for classes at least
   const buttonClasses =
-    "text-sm text-turquoise border-solid border-2 border-turquoise bg-transparent font-bold bg-turquoise hover:bg-turquoiseDark hover:text-blue rounded-md py-2 w-44 mt-6";
+    "text-sm text-turquoise border-solid border-2 border-turquoise bg-transparent font-bold bg-turquoise hover:bg-turquoiseDark hover:text-blue hover:cursor-pointer rounded-md py-2 w-44 mt-6";
 
   const buttonPrimaryClasses =
-    "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark rounded-md py-2 w-44 mt-6";
+    "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark hover:cursor-pointer rounded-md py-2 w-44 mt-6";
 
   return (
     <Wrapper>
@@ -105,7 +95,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
           />
         )}
 
-        {/* {isConnected && <MintButton tokenId={tokenId} />} */}
+        {isConnected && !claimed && <MintButton tokenId={tokenId} />}
 
         {txMessage && (
           <div>
@@ -121,7 +111,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
           </div>
         )}
 
-        {/* {claimed && (
+        {claimed && (
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -141,7 +131,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
               ? "OpenSea"
               : "JoePegs"}
           </a>
-        )} */}
+        )}
       </div>
     </Wrapper>
   );
