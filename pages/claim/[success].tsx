@@ -39,19 +39,18 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
   const { openChainModal } = useChainModal();
   const { address, isConnected } = useIKMinter();
   const chain = useNetwork().chain?.id;
-  const blockExplorer = useNetwork().chain?.blockExplorers?.default;
 
   const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
   const [isLoading, setIsLoading] = useState(false);
   const [claimed, setClaimed] = useState(false);
-  const [validChainId, setValidChainId] = useState(false);
+  const [chainIsValid, setChainIsValid] = useState(false);
 
   const [txMessage, setTxMessage] = useState<string>();
 
   useEffect(() => {
     // Unsure why but it wanted me to throw this in here
     const checkIfClaimed = async (account: string) => {
-      const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId.toString()}`;
+      const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId?.toString()}`;
 
       const response = await fetch(url);
       if (response.ok) return (await response.json()).claimed;
@@ -69,7 +68,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
   }, [isConnected, address, tokenId]);
 
   useEffect(() => {
-    setValidChainId(validChain(chain || 0));
+    setChainIsValid(validChain(chain || 0));
   }, [chain]);
 
   // @TODO: refactor into button component, use clx for classes at least
@@ -103,7 +102,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
           </div>
         )}
 
-        {!validChainId && isConnected && (
+        {!chainIsValid && isConnected && (
           <div>
             <h2 className="mt-10 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
               Switch Chain To Claim Trophy
@@ -116,7 +115,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
           </div>
         )}
 
-        {isLoading && (
+        {isLoading && chainIsValid && (
           <div>
             <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
               Connecting Wallet
@@ -125,7 +124,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
           </div>
         )}
 
-        {isConnected && !claimed && validChainId && !isLoading && (
+        {isConnected && !claimed && chainIsValid && !isLoading && (
           <MintButton tokenId={tokenId} />
         )}
 
@@ -143,7 +142,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
           </div>
         )}
 
-        {claimed && isConnected && !isLoading && (
+        {claimed && isConnected && !isLoading && chainIsValid && (
           <>
             <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
               Your Trophy Has Been Claimed
