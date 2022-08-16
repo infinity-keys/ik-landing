@@ -20,12 +20,15 @@ export default function MintButton({ tokenId }: MintButtonParams) {
   const [signature, setSignature] = useState("");
   const [contractAddress, setContractAddress] = useState("");
 
+  const [validChainId, setValidChainId] = useState(false);
+
   const buttonPrimaryClasses =
     "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark hover:cursor-pointer rounded-md py-2 w-44";
 
   useEffect(() => {
+    const valid = validChain(chain?.id || 0);
+    setValidChainId(valid);
     if (!chain) throw new Error("Network Issue");
-    else if (!validChain(chain.id)) throw new Error();
     setContractAddress(contracts[chain.name as keyof Contracts]);
   }, [chain]);
 
@@ -62,33 +65,39 @@ export default function MintButton({ tokenId }: MintButtonParams) {
 
   return (
     <>
-      {error && error.message !== "User rejected request" && (
-        <div className="mb-6">Error: {JSON.stringify(error.message)}</div>
-      )}
-      {!isLoading && (
+      {validChainId ? (
         <>
-          <h2 className="mt-20 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-            Claim Your Trophy On {chain?.name}
-          </h2>
+          {error && error.message !== "User rejected request" && (
+            <div className="mb-6">Error: {JSON.stringify(error.message)}</div>
+          )}
+          {!isLoading && (
+            <>
+              <h2 className="mt-20 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+                Claim Your Trophy On {chain?.name}
+              </h2>
 
-          <button
-            disabled={!write}
-            onClick={() => write?.()}
-            className={buttonPrimaryClasses}
-          >
-            Claim
-          </button>
+              <button
+                disabled={!write}
+                onClick={() => write?.()}
+                className={buttonPrimaryClasses}
+              >
+                Claim
+              </button>
+            </>
+          )}
+          {isLoading && (
+            <div>
+              <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+                Claiming Trophy
+              </h2>
+              <LoadingIcon />
+            </div>
+          )}
+          {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
         </>
+      ) : (
+        <></>
       )}
-      {isLoading && (
-        <div>
-          <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-            Claiming Trophy
-          </h2>
-          <LoadingIcon />
-        </div>
-      )}
-      {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
     </>
   );
 }

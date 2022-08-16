@@ -4,7 +4,7 @@ import NProgress from "nprogress";
 import { inspect } from "@xstate/inspect";
 
 import "@rainbow-me/rainbowkit/styles.css";
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import { WagmiConfig } from "wagmi";
 import { chains, IKTheme, wagmiClient } from "@lib/walletConstants";
 

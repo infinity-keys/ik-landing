@@ -98,14 +98,19 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
         )}
 
         {!isConnected && (
-          <Button
-            text="Connect Wallet"
-            type="submit"
-            onClick={openConnectModal}
-          />
+          <div>
+            <h2 className="mt-10 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+              Connect Wallet To Claim Trophy
+            </h2>
+            <Button
+              text="Connect Wallet"
+              type="submit"
+              onClick={openConnectModal}
+            />
+          </div>
         )}
 
-        {!validChainId && (
+        {!validChainId && isConnected && (
           <div>
             <h2 className="mt-10 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
               Switch Chain To Claim Trophy
