@@ -24,7 +24,7 @@ interface ClaimsPageProps {
 }
 
 interface ClaimsPageParams {
-  params: { puzzleName: string };
+  params: { success: string };
 }
 
 const buttonData = [
@@ -204,14 +204,16 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
 export default ClaimFlow;
 
 export async function getStaticProps({
-  params: { puzzleName },
+  params: { success },
 }: ClaimsPageParams): Promise<{ props: ClaimsPageProps }> {
   const gql = await gqlApiSdk();
 
-  const { nfts } = await gql.GetNftIdByPuzzleName({ puzzleName });
+  const { nfts } = await gql.GetNftIdByPuzzleSuccessRoute({
+    successRoute: success,
+  });
   const nftTokenIds = nfts.map((nft) => nft.tokenId);
 
-  const { puzzles } = await gql.PuzzleInfoBySuccess({ success: puzzleName });
+  const { puzzles } = await gql.PuzzleInfoBySuccess({ success });
 
   const nft = puzzles.length ? puzzles[0].nft : null;
 
@@ -230,7 +232,7 @@ export async function getStaticPaths() {
   // https://nextjs.org/docs/api-reference/data-fetching/get-static-paths
   const paths = nfts.map((nft) => ({
     params: {
-      puzzleName: nft.puzzle.simple_name,
+      success: nft.puzzle.success_route,
     },
   }));
 
