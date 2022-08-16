@@ -11,7 +11,7 @@ import {
   POLYGON_CHAIN_ID,
   POLYGON_PARAMS,
   POLYGON_RPC,
-} from "@lib/constants";
+} from "@lib/walletConstants";
 import { toHex } from "./utils";
 // import Fortmatic from "fortmatic";
 

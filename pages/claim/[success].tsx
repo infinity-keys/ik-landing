@@ -18,8 +18,9 @@ import { gqlApiSdk } from "@lib/server";
 import CloudImage from "@components/cloud-image";
 import LoadingIcon from "@components/loading-icon";
 import { useAccount, useNetwork } from "wagmi";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import MintButton from "@components/mintButton";
+import { validChain } from "@lib/utils";
 
 interface ClaimsPageProps {
   nftTokenIds: number[];
@@ -35,6 +36,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
   cloudinary_id,
 }) => {
   const { openConnectModal } = useConnectModal();
+  const { openChainModal } = useChainModal();
   const { address, isConnected } = useIKMinter();
   const chain = useNetwork().chain?.id;
   const blockExplorer = useNetwork().chain?.blockExplorers?.default;
@@ -42,6 +44,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
   const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
   const [isLoading, setIsLoading] = useState(false);
   const [claimed, setClaimed] = useState(false);
+  const [validChainId, setValidChainId] = useState(false);
 
   const [txMessage, setTxMessage] = useState<string>();
 
@@ -64,12 +67,16 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
     onPageLoad();
   }, [isConnected, address, tokenId]);
 
+  useEffect(() => {
+    setValidChainId(validChain(chain || 0));
+  }, [chain]);
+
   // @TODO: refactor into button component, use clx for classes at least
   const buttonClasses =
-    "text-sm text-turquoise border-solid border-2 border-turquoise bg-transparent font-bold bg-turquoise hover:bg-turquoiseDark hover:text-blue hover:cursor-pointer rounded-md py-2 w-44 mt-6";
+    "text-sm text-turquoise border-solid border-2 border-turquoise bg-transparent font-bold bg-turquoise hover:bg-turquoiseDark hover:text-blue hover:cursor-pointer rounded-md py-2 w-44 ";
 
   const buttonPrimaryClasses =
-    "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark hover:cursor-pointer rounded-md py-2 w-44 mt-6";
+    "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark hover:cursor-pointer rounded-md py-2 w-44";
 
   return (
     <Wrapper>
@@ -82,10 +89,13 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
           <CloudImage height={260} width={260} id={cloudinary_id} />
         )}
 
-        <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-          {/*TODO: Edit this so doesn't show up on loading */}
-          {claimed ? "Your Trophy Has Been Claimed" : "Claim Your Trophy"}
-        </h2>
+        {claimed ? (
+          <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+            Your Trophy Has Been Claimed
+          </h2>
+        ) : (
+          <></>
+        )}
 
         {!isConnected && (
           <Button
@@ -95,7 +105,22 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
           />
         )}
 
-        {isConnected && !claimed && <MintButton tokenId={tokenId} />}
+        {!validChainId && (
+          <div>
+            <h2 className="mt-10 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+              Switch Chain To Claim Trophy
+            </h2>
+            <Button
+              text="Switch Chain"
+              type="submit"
+              onClick={openChainModal}
+            />
+          </div>
+        )}
+
+        {isConnected && !claimed && validChainId && (
+          <MintButton tokenId={tokenId} />
+        )}
 
         {txMessage && (
           <div>

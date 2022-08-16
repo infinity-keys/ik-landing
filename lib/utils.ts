@@ -4,6 +4,7 @@ import {
   PUZZLE_SUCCESS_BASE,
   welcome,
 } from "./constants";
+import { chainIds } from "./walletConstants";
 
 export const epochMinus30s = () => Math.round(new Date().getTime() / 1000) - 30;
 
@@ -28,4 +29,8 @@ export const cleanGqlMarkdown = (markdown: string) =>
 export const toHex = (num: number) => {
   const val = Number(num);
   return "0x" + val.toString(16);
+};
+
+export const validChain = (chain: number) => {
+  return chainIds.includes(chain);
 };

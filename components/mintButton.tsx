@@ -5,9 +5,10 @@ import {
   useAccount,
 } from "wagmi";
 import { IKAchievementABI__factory } from "@lib/generated/ethers-contract";
-import { chainIds, Contracts, contracts } from "@lib/walletConstants";
+import { Contracts, contracts } from "@lib/walletConstants";
 import LoadingIcon from "./loading-icon";
 import { useEffect, useState } from "react";
+import { validChain } from "@lib/utils";
 
 interface MintButtonParams {
   tokenId: number;
@@ -19,9 +20,12 @@ export default function MintButton({ tokenId }: MintButtonParams) {
   const [signature, setSignature] = useState("");
   const [contractAddress, setContractAddress] = useState("");
 
+  const buttonPrimaryClasses =
+    "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark hover:cursor-pointer rounded-md py-2 w-44";
+
   useEffect(() => {
     if (!chain) throw new Error("Network Issue");
-    else if (!chainIds.includes(chain?.id)) throw new Error("Invalid chain.");
+    else if (!validChain(chain.id)) throw new Error();
     setContractAddress(contracts[chain.name as keyof Contracts]);
   }, [chain]);
 
@@ -58,9 +62,24 @@ export default function MintButton({ tokenId }: MintButtonParams) {
 
   return (
     <>
-      <button disabled={!write} onClick={() => write?.()}>
-        Claim
-      </button>
+      {error && error.message !== "User rejected request" && (
+        <div className="mb-6">Error: {JSON.stringify(error.message)}</div>
+      )}
+      {!isLoading && (
+        <>
+          <h2 className="mt-20 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+            Claim Your Trophy On {chain?.name}
+          </h2>
+
+          <button
+            disabled={!write}
+            onClick={() => write?.()}
+            className={buttonPrimaryClasses}
+          >
+            Claim
+          </button>
+        </>
+      )}
       {isLoading && (
         <div>
           <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
@@ -70,7 +89,6 @@ export default function MintButton({ tokenId }: MintButtonParams) {
         </div>
       )}
       {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
-      {error && <div>Error: {JSON.stringify(error)}</div>}
     </>
   );
 }
