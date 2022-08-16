@@ -125,7 +125,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
         )}
 
         {isConnected && !claimed && chainIsValid && !isLoading && (
-          <MintButton tokenId={tokenId} />
+          <MintButton tokenId={tokenId} gatedIds={[]} />
         )}
 
         {txMessage && (

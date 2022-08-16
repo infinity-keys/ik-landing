@@ -12,9 +12,10 @@ import { validChain } from "@lib/utils";
 
 interface MintButtonParams {
   tokenId: number;
+  gatedIds: number[];
 }
 
-export default function MintButton({ tokenId }: MintButtonParams) {
+export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
   const chain = useNetwork().chain;
   const { address, isConnected } = useAccount();
   const [signature, setSignature] = useState("");
@@ -32,26 +33,33 @@ export default function MintButton({ tokenId }: MintButtonParams) {
     setContractAddress(contracts[chain.name as keyof Contracts]);
   }, [chain]);
 
-  const verify = async (account: string, tokenId: number, chain: number) => {
-    const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}`;
-
-    const response = await fetch(url);
-    if (response.ok) {
-      const { signature } = await response.json();
-      return signature;
-    }
-
-    throw await response.text();
-  };
-
   useEffect(() => {
+    const verify = async (account: string, tokenId: number, chain: number) => {
+      const gatedIdsString = `&${gatedIds
+        .map((id) => `gatedIds=${id}`)
+        .join("&")}`;
+
+      //If pack (requires other NFTs) include gated, if single ignore
+      const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}${
+        gatedIds.length ? gatedIdsString : ""
+      }`;
+
+      const response = await fetch(url);
+      if (response.ok) {
+        const { signature } = await response.json();
+        return signature;
+      }
+
+      throw await response.text();
+    };
+
     if (address && chain) {
       const setSig = async () => {
         setSignature(await verify(address, tokenId, chain.id));
       };
       setSig();
     }
-  }, [chain, address, tokenId]);
+  }, [chain, address, tokenId, gatedIds]);
 
   const { config } = usePrepareContractWrite({
     addressOrName: contractAddress,
@@ -61,7 +69,6 @@ export default function MintButton({ tokenId }: MintButtonParams) {
   });
 
   const { data, isLoading, isSuccess, write, error } = useContractWrite(config);
-  console.log(data);
 
   return (
     <>
@@ -70,21 +77,41 @@ export default function MintButton({ tokenId }: MintButtonParams) {
           {error && error.message !== "User rejected request" && (
             <div className="mb-6">Error: {JSON.stringify(error.message)}</div>
           )}
-          {!isLoading && (
+          {!isLoading && isConnected && (
             <>
-              <h2 className="mt-20 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-                Claim Your Trophy On {chain?.name}
-              </h2>
+              {signature ? (
+                <>
+                  <h2 className="mt-20 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+                    Claim Your Trophy On {chain?.name}
+                  </h2>
 
-              <button
-                disabled={!write}
-                onClick={() => write?.()}
-                className={buttonPrimaryClasses}
-              >
-                Claim
-              </button>
+                  <button
+                    disabled={!write}
+                    onClick={() => write?.()}
+                    className={buttonPrimaryClasses}
+                  >
+                    Claim
+                  </button>
+                </>
+              ) : (
+                <>
+                  <h2 className="mt-20 text-m tracking-tight text-white sm:mt-5 lg:mt-8 mb-8 w-9/12 text-center mx-auto">
+                    You do not have the required NFTS on this chain. Please
+                    ensure you have completed the above puzzles and are on the
+                    correct chain.
+                  </h2>
+
+                  <button
+                    disabled={true}
+                    className="text-sm text-blue font-bold border-solid border-2 rounded-md py-2 w-44 mb-8 bg-gray-150 border-gray-150"
+                  >
+                    Claim
+                  </button>
+                </>
+              )}
             </>
           )}
+
           {isLoading && (
             <div>
               <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">

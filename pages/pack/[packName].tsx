@@ -27,6 +27,8 @@ import LoadingIcon from "@components/loading-icon";
 import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import { useNetwork } from "wagmi";
 import { validChain } from "@lib/utils";
+import Button from "@components/button";
+import MintButton from "@components/mintButton";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -60,8 +62,9 @@ const buttonData = [
 
 const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   const gatedIds = puzzlesNftIds;
-  const gatedIdsString = gatedIds.map((id) => `gatedIds=${id}`).join("&");
   const tokenId = pack.nftId;
+
+  if (!tokenId) throw new Error("Invalid token id.");
 
   const { openConnectModal } = useConnectModal();
   const { openChainModal } = useChainModal();
@@ -74,7 +77,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   const [claimed, setClaimed] = useState<boolean>(false);
   const [txMessage, setTxMessage] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
-  const [validChainId, setValidChainId] = useState(false);
+  const [chainIsValid, setChainIsValid] = useState(false);
 
   useEffect(() => {
     // Unsure why but it wanted me to throw this in here
@@ -97,11 +100,11 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   }, [isConnected, address, tokenId]);
 
   useEffect(() => {
-    setValidChainId(validChain(chain || 0));
+    setChainIsValid(validChain(chain || 0));
   }, [chain]);
 
   const buttonPrimaryClasses =
-    "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark hover:cursor-pointer rounded-md py-2 w-44";
+    "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark hover:cursor-pointer rounded-md py-2 w-44 px-4";
 
   return (
     <Wrapper>
@@ -109,7 +112,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
         <title>{pack.pack_name}</title>
       </Head>
 
-      <div className="max-w-3xl">
+      <div className="max-w-3xl items-center text-center">
         <p className="mt-10 sm:mt-14">
           To be eligible to claim the {pack.pack_name} Achievement you must
           successfully complete the following puzzles and claim the
@@ -146,40 +149,71 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
             </div>
           )}
 
-          {isLoading && (
-            <div className="sm:mt-14">
+          {!isConnected && (
+            <div>
+              <h2 className="mt-10 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+                Connect Wallet To Claim Trophy
+              </h2>
+              <Button
+                text="Connect Wallet"
+                type="submit"
+                onClick={openConnectModal}
+              />
+            </div>
+          )}
+
+          {!chainIsValid && isConnected && (
+            <div>
+              <h2 className="mt-10 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+                Switch Chain To Claim Trophy
+              </h2>
+              <Button
+                text="Switch Chain"
+                type="submit"
+                onClick={openChainModal}
+              />
+            </div>
+          )}
+
+          {isLoading && chainIsValid && (
+            <div>
+              <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+                Connecting Wallet
+              </h2>
               <LoadingIcon />
             </div>
           )}
 
-          <div className="text-center mb-12">
-            {claimed && isConnected && !isLoading && (
-              <>
-                <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-                  Your Trophy Has Been Claimed
-                </h2>
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={`${
-                    chain === ETH_CHAIN_ID
-                      ? openseaLink
-                      : chain === AVAX_CHAIN_ID
-                      ? joePegsLink
-                      : chain === POLYGON_CHAIN_ID
-                      ? openseaPolygonLink
-                      : undefined
-                  }${tokenId}`}
-                  className={buttonPrimaryClasses}
-                >
-                  View NFT On{" "}
-                  {chain === ETH_CHAIN_ID || chain === POLYGON_CHAIN_ID
-                    ? "OpenSea"
-                    : "JoePegs"}
-                </a>
-              </>
-            )}
-          </div>
+          {isConnected && !claimed && chainIsValid && !isLoading && (
+            <MintButton tokenId={tokenId} gatedIds={gatedIds} />
+          )}
+
+          {claimed && isConnected && !isLoading && (
+            <>
+              <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+                Your Trophy Has Been Claimed
+              </h2>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`${
+                  chain === ETH_CHAIN_ID
+                    ? openseaLink
+                    : chain === AVAX_CHAIN_ID
+                    ? joePegsLink
+                    : chain === POLYGON_CHAIN_ID
+                    ? openseaPolygonLink
+                    : undefined
+                }${tokenId}`}
+                className={buttonPrimaryClasses}
+              >
+                View NFT On{" "}
+                {chain === ETH_CHAIN_ID || chain === POLYGON_CHAIN_ID
+                  ? "OpenSea"
+                  : "JoePegs"}
+              </a>
+            </>
+          )}
         </div>
       </div>
     </Wrapper>
