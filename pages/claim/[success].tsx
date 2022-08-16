@@ -60,10 +60,11 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
 
     const onPageLoad = async () => {
       if (isConnected && address) {
+        setIsLoading(true);
         setClaimed(await checkIfClaimed(address));
+        setIsLoading(false);
       }
     };
-
     onPageLoad();
   }, [isConnected, address, tokenId]);
 
@@ -87,14 +88,6 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
       <div className="flex flex-col items-center text-center">
         {cloudinary_id && (
           <CloudImage height={260} width={260} id={cloudinary_id} />
-        )}
-
-        {claimed ? (
-          <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-            Your Trophy Has Been Claimed
-          </h2>
-        ) : (
-          <></>
         )}
 
         {!isConnected && (
@@ -123,7 +116,16 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
           </div>
         )}
 
-        {isConnected && !claimed && validChainId && (
+        {isLoading && (
+          <div>
+            <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+              Connecting Wallet
+            </h2>
+            <LoadingIcon />
+          </div>
+        )}
+
+        {isConnected && !claimed && validChainId && !isLoading && (
           <MintButton tokenId={tokenId} />
         )}
 
@@ -141,26 +143,31 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
           </div>
         )}
 
-        {claimed && (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={`${
-              chain === ETH_CHAIN_ID
-                ? openseaLink
-                : chain === AVAX_CHAIN_ID
-                ? joePegsLink
-                : chain === POLYGON_CHAIN_ID
-                ? openseaPolygonLink
-                : undefined
-            }${tokenId}`}
-            className={buttonPrimaryClasses}
-          >
-            View NFT On{" "}
-            {chain === ETH_CHAIN_ID || chain === POLYGON_CHAIN_ID
-              ? "OpenSea"
-              : "JoePegs"}
-          </a>
+        {claimed && isConnected && !isLoading && (
+          <>
+            <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+              Your Trophy Has Been Claimed
+            </h2>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`${
+                chain === ETH_CHAIN_ID
+                  ? openseaLink
+                  : chain === AVAX_CHAIN_ID
+                  ? joePegsLink
+                  : chain === POLYGON_CHAIN_ID
+                  ? openseaPolygonLink
+                  : undefined
+              }${tokenId}`}
+              className={buttonPrimaryClasses}
+            >
+              View NFT On{" "}
+              {chain === ETH_CHAIN_ID || chain === POLYGON_CHAIN_ID
+                ? "OpenSea"
+                : "JoePegs"}
+            </a>
+          </>
         )}
       </div>
     </Wrapper>
