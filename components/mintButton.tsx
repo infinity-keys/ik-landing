@@ -1,14 +1,10 @@
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useNetwork,
-  useAccount,
-} from "wagmi";
+import { useContractWrite, usePrepareContractWrite, useNetwork } from "wagmi";
 import { IKAchievementABI__factory } from "@lib/generated/ethers-contract";
 import { Contracts, contracts } from "@lib/walletConstants";
 import LoadingIcon from "./loading-icon";
 import { useEffect, useState } from "react";
 import { validChain } from "@lib/utils";
+import { useIKMinter } from "@lib/minter";
 
 interface MintButtonParams {
   tokenId: number;
@@ -17,9 +13,10 @@ interface MintButtonParams {
 
 export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
   const chain = useNetwork().chain;
-  const { address, isConnected } = useAccount();
+  const { address, isConnected } = useIKMinter();
   const [signature, setSignature] = useState("");
   const [contractAddress, setContractAddress] = useState("");
+  const [isVerifying, setIsVerifying] = useState(true);
 
   const [validChainId, setValidChainId] = useState(false);
 
@@ -55,7 +52,9 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
 
     if (address && chain) {
       const setSig = async () => {
+        setIsVerifying(true);
         setSignature(await verify(address, tokenId, chain.id));
+        setIsVerifying(false);
       };
       setSig();
     }
@@ -77,7 +76,7 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
           {error && error.message !== "User rejected request" && (
             <div className="mb-6">Error: {JSON.stringify(error.message)}</div>
           )}
-          {!isLoading && isConnected && (
+          {!isLoading && !isVerifying && isConnected && (
             <>
               {signature ? (
                 <>
@@ -100,7 +99,6 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
                     ensure you have completed the above puzzles and are on the
                     correct chain.
                   </h2>
-
                   <button
                     disabled={true}
                     className="text-sm text-blue font-bold border-solid border-2 rounded-md py-2 w-44 mb-8 bg-gray-150 border-gray-150"
@@ -112,14 +110,15 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
             </>
           )}
 
-          {isLoading && (
-            <div>
-              <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-                Claiming Trophy
-              </h2>
-              <LoadingIcon />
-            </div>
-          )}
+          {isLoading ||
+            (isVerifying && (
+              <div>
+                <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+                  {isVerifying ? "Checking For NFTs" : "Claiming Trophy"}
+                </h2>
+                <LoadingIcon />
+              </div>
+            ))}
           {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
         </>
       ) : (

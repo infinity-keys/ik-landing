@@ -55,6 +55,7 @@ export default async function handler(
     const { ownedStatus, message } = await checkIfOwned(
       account,
       gatedTokenIds,
+      chainId,
       baseUrl
     );
     if (typeof message !== "string") return res.status(500);
@@ -87,11 +88,12 @@ export default async function handler(
 const checkIfOwned = async (
   account: string,
   tokenIds: string[],
+  chainId: string,
   baseUrl: string
 ) => {
   const tokenIdsParams = tokenIds.map((id) => `tokenids=${id}`).join("&");
 
-  const url = `http://${baseUrl}/api/minter/check-balance?account=${account}&${tokenIdsParams}`;
+  const url = `http://${baseUrl}/api/minter/check-balance?account=${account}&${tokenIdsParams}&chainId=${chainId}`;
   const response = await fetch(url);
 
   let message = "";
@@ -99,7 +101,7 @@ const checkIfOwned = async (
     const data = await response.json();
     if (!data.claimed) {
       message =
-        "You do not have the required NFTs. Please ensure you have completed the above puzzles and have the NFTs on the same chain.";
+        "You do not have the required NFTS on this chain. Please ensure you have completed the above puzzles and are on the correct chain.";
     }
     return { ownedStatus: data.claimed, message };
   } else {
