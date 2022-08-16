@@ -179,6 +179,7 @@ query GetPuzzleInfoByNftId($nftId: Int!) {
   puzzles(where: { nft: { tokenId: { _eq: $nftId } } }) {
     simple_name
     puzzle_id
+    success_route
   }
 }
 
