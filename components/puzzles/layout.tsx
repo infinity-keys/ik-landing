@@ -72,7 +72,7 @@ const PuzzlesLayout: NextPage<PageProps> = ({
                 : "lg:grid-cols-3 xl:grid-cols-4"
             )}
           >
-            {puzzles.map((puzzle) => {
+            {puzzles.map((puzzle: any) => {
               const data = thumbnailData(puzzle, !!puzzle.pack_name);
               return (
                 <li key={data.id}>
