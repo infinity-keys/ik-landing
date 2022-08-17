@@ -151,7 +151,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
             )}
           >
             {puzzles.map((puzzle) => {
-              const data = thumbnailData(puzzle, false);
+              const data = thumbnailData(puzzle);
               return (
                 <li key={data.id}>
                   <PuzzleThumbnail
