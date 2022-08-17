@@ -11,14 +11,14 @@ import PuzzleThumbnail from "@components/puzzle-thumbnail";
 import PuzzlesPagination from "@components/puzzles/pagination";
 import LayoutButtons from "@components/puzzles/layout-buttons";
 import { PAGINATION_COUNTS } from "@lib/constants";
-
 import { PuzzleLayoutType } from "@lib/types";
-import { thumbnailData } from "@lib/utils";
+import { collectionBaseUrl, isTypePack, thumbnailData } from "@lib/utils";
+
 import { GetAllPacksQuery, PublicPuzzlesQuery } from "@lib/generated/graphql";
 
 export interface PageProps {
   // @TODO: this isn't typed right. also fix it in utils
-  puzzles: any;
+  puzzles: PublicPuzzlesQuery["puzzles"] | GetAllPacksQuery["packs"];
   isFirstPage: Boolean;
   isLastPage: Boolean;
 }
@@ -36,6 +36,7 @@ const PuzzlesLayout: NextPage<PageProps> = ({
   const [count, page] = query.puzzlesArgs || [smallestPuzzleCount, "1"];
   const puzzlesCount = toNumber(count);
   const pageNum = toNumber(page);
+  const isPack = isTypePack(puzzles[0]);
 
   useEffect(() => {
     const puzzlesLayout = window.localStorage.getItem("puzzlesLayout");
@@ -61,6 +62,7 @@ const PuzzlesLayout: NextPage<PageProps> = ({
             isGrid={layout === PuzzleLayoutType.Grid}
             puzzlesCount={puzzlesCount}
             setView={setView}
+            urlBase={collectionBaseUrl(isPack)}
           />
 
           <ul
@@ -72,8 +74,8 @@ const PuzzlesLayout: NextPage<PageProps> = ({
                 : "lg:grid-cols-3 xl:grid-cols-4"
             )}
           >
-            {puzzles.map((puzzle: any) => {
-              const data = thumbnailData(puzzle, !!puzzle.pack_name);
+            {puzzles.map((puzzle) => {
+              const data = thumbnailData(puzzle);
               return (
                 <li key={data.id}>
                   <PuzzleThumbnail
@@ -93,6 +95,7 @@ const PuzzlesLayout: NextPage<PageProps> = ({
             isLastPage={isLastPage}
             pageNum={pageNum}
             puzzlesCount={puzzlesCount}
+            urlBase={collectionBaseUrl(isPack)}
           />
         </div>
       )}

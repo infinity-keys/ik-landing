@@ -1,10 +1,13 @@
 import {
+  PACK_COLLECTION_BASE,
   PACK_LANDING_BASE,
+  PUZZLE_COLLECTION_BASE,
   PUZZLE_FAILED_BASE,
   PUZZLE_LANDING_BASE,
   PUZZLE_SUCCESS_BASE,
   welcome,
 } from "./constants";
+import { ThumbnailPack, ThumbnailPuzzle } from "./types";
 
 export const epochMinus30s = () => Math.round(new Date().getTime() / 1000) - 30;
 
@@ -33,14 +36,31 @@ export const toHex = (num: number) => {
   return "0x" + val.toString(16);
 };
 
+// Thumbnail grid
+export const isTypePack = (
+  data: ThumbnailPack | ThumbnailPuzzle
+): data is ThumbnailPack => {
+  return (data as ThumbnailPack).pack_name !== undefined;
+};
+
+export const collectionBaseUrl = (isPack: boolean) => {
+  return isPack ? `/${PACK_COLLECTION_BASE}` : `/${PUZZLE_COLLECTION_BASE}`;
+};
+
 // normalize pack and puzzle data for PuzzleThumbnail
-export const thumbnailData = (data: any, pack: boolean) => {
+export const thumbnailData = (data: ThumbnailPack | ThumbnailPuzzle) => {
+  const pack = isTypePack(data);
+  // TODO: remove this once packs get nft images
+  const cloudinary_id = pack
+    ? ""
+    : data.nft?.nft_metadatum?.cloudinary_id || "";
+
   return {
     id: pack ? data.pack_id : data.puzzle_id,
     name: pack ? data.pack_name : data.simple_name,
     url: pack
       ? packsLandingUrl(data.simple_name)
       : routeLandingUrl(data.landing_route),
-    cloudinary_id: data.nft?.nft_metadatum?.cloudinary_id || "",
+    cloudinary_id,
   };
 };
