@@ -68,6 +68,7 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
   });
 
   const { data, isLoading, isSuccess, write, error } = useContractWrite(config);
+  const link = `${chain?.blockExplorers}/tx/${data?.hash}`;
 
   return (
     <>
@@ -110,16 +111,19 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
             </>
           )}
 
-          {isLoading ||
-            (isVerifying && (
-              <div>
-                <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-                  {isVerifying ? "Checking For NFTs" : "Claiming Trophy"}
-                </h2>
-                <LoadingIcon />
-              </div>
-            ))}
-          {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
+          {(isLoading || isVerifying) && (
+            <div>
+              <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+                {isVerifying ? "Checking For NFTs" : "Claiming Trophy"}
+              </h2>
+              <LoadingIcon />
+            </div>
+          )}
+          {isSuccess && (
+            <div>
+              <a href={link}>View Your Transaction</a>
+            </div>
+          )}
         </>
       ) : (
         <></>

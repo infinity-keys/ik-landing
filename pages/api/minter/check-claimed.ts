@@ -1,16 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ethers } from "ethers";
-import {
-  ETH_RPC,
-  AVAX_RPC,
-  POLYGON_RPC,
-  CONTRACT_ADDRESS_AVAX,
-  CONTRACT_ADDRESS_ETH,
-  CONTRACT_ADDRESS_POLYGON,
-} from "@lib/walletConstants";
-
-import { IKAchievementABI__factory } from "@lib/generated/ethers-contract/factories/IKAchievementABI__factory";
+import { chainIds, contractLookup } from "@lib/contracts";
+import { AVAX_CHAIN_ID } from "@lib/walletConstants";
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,31 +12,20 @@ export default async function handler(
   if (typeof tokenId !== "string" || typeof account !== "string")
     return res.status(500).end();
 
-  const contractAVAX = IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_AVAX,
-    new ethers.providers.JsonRpcProvider(AVAX_RPC)
-  );
-
-  const contractPolygon = IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_POLYGON,
-    new ethers.providers.JsonRpcProvider(POLYGON_RPC)
-  );
-
-  const contractETH = IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_ETH,
-    new ethers.providers.JsonRpcProvider(ETH_RPC)
-  );
-
   // faster call on avax than eth.. theoretically should be the same
   // ensure token were checking exists
-  if (parseInt(tokenId, 10) >= (await contractAVAX.totalSupplyAll()).length)
+  //would be dope to move this to database
+  if (
+    parseInt(tokenId, 10) >=
+    (await contractLookup[AVAX_CHAIN_ID].totalSupplyAll()).length
+  )
     return res.status(500).end();
 
-  const avaxStatus = await contractAVAX.checkIfClaimed(tokenId, account);
-  const polygonStatus = await contractPolygon.checkIfClaimed(tokenId, account);
-  const ethStatus = await contractETH.checkIfClaimed(tokenId, account);
-
-  const claimed = ethStatus || avaxStatus || polygonStatus;
+  let claimed = false;
+  for (let i = 0; i < chainIds.length; i++) {
+    const contract = contractLookup[chainIds[i]];
+    if (await contract.checkIfClaimed(tokenId, account)) claimed = true;
+  }
 
   res.json({ claimed: claimed });
 }

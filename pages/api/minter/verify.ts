@@ -13,6 +13,7 @@ import {
 import { IK_ID_COOKIE } from "@lib/constants";
 import { gqlApiSdk } from "@lib/server";
 import { jwtHasClaim } from "@lib/jwt";
+import { contractAddressLookup } from "@lib/contracts";
 
 const privateKey = process.env.PRIVATE_KEY_VERIFY;
 const secret = process.env.MINT_SECRET_VERIFY;
@@ -64,15 +65,7 @@ export default async function handler(
 
   const chainIdAsNumber = parseInt(chainId, 10);
 
-  // @TODO: Move this to a lookup table
-  const contractAddress =
-    chainIdAsNumber === AVAX_CHAIN_ID
-      ? CONTRACT_ADDRESS_AVAX
-      : chainIdAsNumber === ETH_CHAIN_ID
-      ? CONTRACT_ADDRESS_ETH
-      : chainIdAsNumber === POLYGON_CHAIN_ID
-      ? CONTRACT_ADDRESS_POLYGON
-      : undefined;
+  const contractAddress = contractAddressLookup[chainIdAsNumber];
   if (!contractAddress) return res.status(500).end();
 
   const hash = ethers.utils.solidityKeccak256(

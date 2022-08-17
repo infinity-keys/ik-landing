@@ -65,16 +65,23 @@ export const POLYGON_PARAMS = {
 //   "https://testnets.opensea.io/assets/ethereum/";
 // export const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/`;
 
+export const OPTIMISM_CHAIN_ID = 10;
+export const OPTIMISM_RPC =
+  "https://optimism-mainnet.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d";
+export const CONTRACT_ADDRESS_OPTIMISM =
+  "0x54b743D6055e3BBBF13eb2C748A3783516156e5B";
 export interface Contracts {
   Ethereum: string;
   Polygon: string;
   Avalanche: string;
+  Optimism: string;
 }
 
 export const contracts: Contracts = {
   Ethereum: CONTRACT_ADDRESS_ETH,
   Polygon: CONTRACT_ADDRESS_POLYGON,
   Avalanche: CONTRACT_ADDRESS_AVAX,
+  Optimism: CONTRACT_ADDRESS_OPTIMISM,
 };
 
 export const contractAvax = {
@@ -89,6 +96,11 @@ export const contractEth = {
 
 export const contractPolygon = {
   addressOrName: "0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9",
+  contractInterface: IKAchievementABI__factory.abi,
+};
+
+export const contractOptimism = {
+  addressOrName: "0x54b743D6055e3BBBF13eb2C748A3783516156e5B",
   contractInterface: IKAchievementABI__factory.abi,
 };
 
@@ -115,7 +127,7 @@ const avalancheChain: Chain = {
 };
 
 export const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, avalancheChain],
+  [chain.mainnet, chain.polygon, avalancheChain, chain.optimism],
   [
     infuraProvider({ apiKey: process.env.INFURA_KEY }),
     publicProvider(),
