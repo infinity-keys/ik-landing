@@ -11,12 +11,14 @@ import { PAGINATION_COUNTS } from "@lib/constants";
 export interface LayoutButtonsProps {
   isGrid: boolean;
   puzzlesCount: number;
+  urlBase: string;
   setView: (gridLayout: PuzzleLayoutType) => void;
 }
 
 const LayoutButtons = ({
   isGrid,
   puzzlesCount,
+  urlBase,
   setView,
 }: LayoutButtonsProps) => {
   const [smallestPuzzleCount] = PAGINATION_COUNTS;
@@ -43,7 +45,10 @@ const LayoutButtons = ({
       >
         <ViewGridIcon className="h-5 w-5" aria-hidden="true" />
       </button>
-      <PuzzlesDropdown currentCount={puzzlesCount || smallestPuzzleCount} />
+      <PuzzlesDropdown
+        urlBase={urlBase}
+        currentCount={puzzlesCount || smallestPuzzleCount}
+      />
     </div>
   );
 };

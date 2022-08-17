@@ -9,6 +9,7 @@ import { PAGINATION_COUNTS } from "@lib/constants";
 
 interface PuzzlesDropdownProps {
   currentCount: number;
+  urlBase: string;
 }
 
 interface DropdownLinkProps extends HTMLProps<HTMLAnchorElement> {
@@ -31,7 +32,7 @@ const DropdownLink = forwardRef<HTMLAnchorElement, DropdownLinkProps>(
 
 DropdownLink.displayName = "DropdownLink";
 
-const PuzzlesDropdown = ({ currentCount }: PuzzlesDropdownProps) => {
+const PuzzlesDropdown = ({ currentCount, urlBase }: PuzzlesDropdownProps) => {
   return (
     <Menu as="div" className="relative inline-block text-left ml-5 z-10">
       <div>
@@ -62,8 +63,8 @@ const PuzzlesDropdown = ({ currentCount }: PuzzlesDropdownProps) => {
                     <DropdownLink
                       href={
                         count === smallestPuzzleCount
-                          ? "/puzzles"
-                          : `/puzzles/${count}/1`
+                          ? urlBase
+                          : `${urlBase}/${count}/1`
                       }
                       style={{
                         pointerEvents: selectedCount ? "none" : "auto",

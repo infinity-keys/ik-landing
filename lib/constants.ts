@@ -8,7 +8,9 @@ export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/;
 export const welcome = "Thanks for playing :)";
 
 // Route stuff, see utils.ts:Routes
+export const PACK_COLLECTION_BASE = "packs";
 export const PACK_LANDING_BASE = "pack";
+export const PUZZLE_COLLECTION_BASE = "puzzles";
 export const PUZZLE_LANDING_BASE = "puzzle";
 export const PUZZLE_SUCCESS_BASE = "solved";
 export const PUZZLE_FAILED_BASE = "puzzle"; // back to landing

@@ -10,6 +10,7 @@ export interface PuzzlesPaginationProps {
   isLastPage: Boolean;
   puzzlesCount: number;
   pageNum: number;
+  urlBase: string;
 }
 
 const PuzzlesPagination = ({
@@ -17,9 +18,11 @@ const PuzzlesPagination = ({
   isLastPage,
   puzzlesCount,
   pageNum,
+  urlBase,
 }: PuzzlesPaginationProps) => {
   const [smallestPuzzleCount] = PAGINATION_COUNTS;
   const toDefaultPage = puzzlesCount === smallestPuzzleCount && pageNum === 2;
+  console.log(`${urlBase}/${puzzlesCount}/${pageNum + 1}`);
 
   return (
     <div
@@ -32,8 +35,8 @@ const PuzzlesPagination = ({
         <Link
           href={
             toDefaultPage
-              ? "/puzzles"
-              : `/puzzles/${puzzlesCount}/${pageNum - 1}`
+              ? urlBase
+              : `${urlBase}/${puzzlesCount}/${pageNum - 1}`
           }
         >
           <a className="previous flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
@@ -44,7 +47,7 @@ const PuzzlesPagination = ({
       )}
 
       {!isLastPage && (
-        <Link href={`/puzzles/${puzzlesCount}/${pageNum + 1}`}>
+        <Link href={`${urlBase}/${puzzlesCount}/${pageNum + 1}`}>
           <a className="next flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
             Next
             <ArrowSmRightIcon className="h-4 w-4 ml-2" aria-hidden="true" />

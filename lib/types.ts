@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { JWTPayload } from "jose";
 import { IK_CLAIMS_NAMESPACE } from "./constants";
+import { GetAllPacksQuery, PublicPuzzlesQuery } from "./generated/graphql";
 
 export const PuzzleApiResponseSchema = z.object({
   fail_route: z.string(),
@@ -33,3 +34,6 @@ export enum PuzzleLayoutType {
   List = "list",
   Unknown = "unknown",
 }
+
+export type ThumbnailPuzzle = PublicPuzzlesQuery["puzzles"][0];
+export type ThumbnailPack = GetAllPacksQuery["packs"][0];
