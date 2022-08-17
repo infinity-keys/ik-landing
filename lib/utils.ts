@@ -34,7 +34,7 @@ export const toHex = (num: number) => {
 };
 
 // normalize pack and puzzle data for PuzzleThumbnail
-export const thumbnailData = (data, pack) => {
+export const thumbnailData = (data: any, pack: boolean) => {
   return {
     id: pack ? data.pack_id : data.puzzle_id,
     name: pack ? data.pack_name : data.simple_name,

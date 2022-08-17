@@ -18,7 +18,7 @@ import { GetAllPacksQuery, PublicPuzzlesQuery } from "@lib/generated/graphql";
 
 export interface PageProps {
   // @TODO: this isn't typed right. also fix it in utils
-  puzzles: PublicPuzzlesQuery["puzzles"] | GetAllPacksQuery["packs"];
+  puzzles: any;
   isFirstPage: Boolean;
   isLastPage: Boolean;
 }
