@@ -4,6 +4,7 @@ import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
 
 import { getDefaultWallets, Chain, Theme } from "@rainbow-me/rainbowkit";
+import { IKAchievementABI__factory } from "./generated/ethers-contract";
 
 // CHAIN PARAMS
 const toHex = (num: number) => {
@@ -74,6 +75,21 @@ export const contracts: Contracts = {
   Ethereum: CONTRACT_ADDRESS_ETH,
   Polygon: CONTRACT_ADDRESS_POLYGON,
   Avalanche: CONTRACT_ADDRESS_AVAX,
+};
+
+export const contractAvax = {
+  addressOrName: "0xB40fD6825a366081192d890d2760113C066761Ef",
+  contractInterface: IKAchievementABI__factory.abi,
+};
+
+export const contractEth = {
+  addressOrName: "0x54b743D6055e3BBBF13eb2C748A3783516156e5B",
+  contractInterface: IKAchievementABI__factory.abi,
+};
+
+export const contractPolygon = {
+  addressOrName: "0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9",
+  contractInterface: IKAchievementABI__factory.abi,
 };
 
 const avalancheChain: Chain = {
