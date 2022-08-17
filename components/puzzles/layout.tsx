@@ -17,6 +17,7 @@ import { thumbnailData } from "@lib/utils";
 import { GetAllPacksQuery, PublicPuzzlesQuery } from "@lib/generated/graphql";
 
 export interface PageProps {
+  // @TODO: this isn't typed right. also fix it in utils
   puzzles: PublicPuzzlesQuery["puzzles"] | GetAllPacksQuery["packs"];
   isFirstPage: Boolean;
   isLastPage: Boolean;
