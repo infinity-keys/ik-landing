@@ -13,7 +13,14 @@ import LayoutButtons from "@components/puzzles/layout-buttons";
 import { PAGINATION_COUNTS } from "@lib/constants";
 
 import { PuzzleLayoutType } from "@lib/types";
-import { PageProps } from "pages/puzzles/[[...puzzlesArgs]]";
+import { thumbnailData } from "@lib/utils";
+import { GetAllPacksQuery, PublicPuzzlesQuery } from "@lib/generated/graphql";
+
+export interface PageProps {
+  puzzles: PublicPuzzlesQuery["puzzles"] | GetAllPacksQuery["packs"];
+  isFirstPage: Boolean;
+  isLastPage: Boolean;
+}
 
 const PuzzlesLayout: NextPage<PageProps> = ({
   puzzles,
@@ -64,19 +71,20 @@ const PuzzlesLayout: NextPage<PageProps> = ({
                 : "lg:grid-cols-3 xl:grid-cols-4"
             )}
           >
-            {puzzles.map(({ puzzle_id, landing_route, simple_name, nft }) => (
-              <li key={puzzle_id}>
-                <PuzzleThumbnail
-                  isGrid={layout === PuzzleLayoutType.Grid}
-                  {...{
-                    puzzle_id,
-                    landing_route,
-                    simple_name,
-                    cloudinary_id: nft?.nft_metadatum?.cloudinary_id || "",
-                  }}
-                />
-              </li>
-            ))}
+            {puzzles.map((puzzle) => {
+              const data = thumbnailData(puzzle, !!puzzle.pack_name);
+              return (
+                <li key={data.id}>
+                  <PuzzleThumbnail
+                    isGrid={layout === PuzzleLayoutType.Grid}
+                    id={data.id}
+                    name={data.name}
+                    url={data.url}
+                    cloudinary_id={data.cloudinary_id}
+                  />
+                </li>
+              );
+            })}
           </ul>
 
           <PuzzlesPagination

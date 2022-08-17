@@ -24,6 +24,7 @@ import {
 import { useState } from "react";
 import { minterUtil } from "@lib/minter";
 import LoadingIcon from "@components/loading-icon";
+import { thumbnailData } from "@lib/utils";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -149,19 +150,20 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
               message || loading ? "my-12 sm:mb-0" : "my-10"
             )}
           >
-            {puzzles.map(({ puzzle_id, landing_route, simple_name, nft }) => (
-              <li key={puzzle_id}>
-                <PuzzleThumbnail
-                  isGrid={layout === PuzzleLayoutType.Grid}
-                  {...{
-                    puzzle_id,
-                    landing_route,
-                    simple_name,
-                    cloudinary_id: nft?.nft_metadatum?.cloudinary_id || "",
-                  }}
-                />
-              </li>
-            ))}
+            {puzzles.map((puzzle) => {
+              const data = thumbnailData(puzzle, false);
+              return (
+                <li key={data.id}>
+                  <PuzzleThumbnail
+                    isGrid={layout === PuzzleLayoutType.Grid}
+                    id={data.id}
+                    name={data.name}
+                    url={data.url}
+                    cloudinary_id={data.cloudinary_id}
+                  />
+                </li>
+              );
+            })}
           </ul>
 
           {message && (
