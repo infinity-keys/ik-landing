@@ -76,8 +76,8 @@ export default function Header() {
                 className="grid grid-cols-2 gap-1 sm:gap-4"
               >
                 <Button
-                  text="Starter Pack"
-                  href="/pack/starter-pack"
+                  text="Packs"
+                  href="/packs"
                   variant="outline"
                   responsive
                 />

@@ -22,7 +22,6 @@ const PuzzlesPagination = ({
 }: PuzzlesPaginationProps) => {
   const [smallestPuzzleCount] = PAGINATION_COUNTS;
   const toDefaultPage = puzzlesCount === smallestPuzzleCount && pageNum === 2;
-  console.log(`${urlBase}/${puzzlesCount}/${pageNum + 1}`);
 
   return (
     <div
