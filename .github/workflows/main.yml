@@ -28,7 +28,7 @@ jobs:
             ${{ runner.os }}-deps-${{ hashFiles('**/yarn.lock', '**.json') }}-
       - name: Install deps
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
+        run: yarn install
       - name: GQL-TS generate
         run: yarn generate:once
         env:

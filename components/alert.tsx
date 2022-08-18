@@ -1,5 +1,7 @@
 import { InformationCircleIcon } from "@heroicons/react/solid";
 
+import Markdown from "@components/markdown";
+
 export default function Alert({ text }: { text: string }) {
   return (
     <div className="rounded-md bg-blue p-4">
@@ -11,10 +13,9 @@ export default function Alert({ text }: { text: string }) {
           />
         </div>
         <div className="ml-3 flex-1 md:flex md:justify-between">
-          <p className="text-sm text-blue-700">
-            {text}
-          </p>
-
+          <div className="text-sm text-blue-700">
+            <Markdown>{text}</Markdown>
+          </div>
         </div>
       </div>
     </div>
