@@ -13,14 +13,14 @@ import useCurrentWidth from "@hooks/useCurrentWidth";
 
 import { AVAX_CHAIN_ID, OPTIMISM_CHAIN_ID } from "@lib/walletConstants";
 import { useEffect, useState } from "react";
-import { useIKMinter } from "@lib/minter";
+import { useIKMinter } from "@hooks/useIKMinter";
 import LoadingIcon from "@components/loading-icon";
 import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import { useNetwork } from "wagmi";
 import { validChain } from "@lib/utils";
 import Button from "@components/button";
 import MintButton from "@components/mintButton";
-import { marketplaceLookup } from "@lib/contracts";
+import { marketplaceLookup } from "@lib/walletConstants";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];

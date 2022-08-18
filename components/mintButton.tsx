@@ -1,10 +1,10 @@
 import { useContractWrite, usePrepareContractWrite, useNetwork } from "wagmi";
 import { IKAchievementABI__factory } from "@lib/generated/ethers-contract";
-import { Contracts, contracts } from "@lib/walletConstants";
+import { contractAddressLookup } from "@lib/walletConstants";
 import LoadingIcon from "./loading-icon";
 import { useEffect, useState } from "react";
 import { validChain } from "@lib/utils";
-import { useIKMinter } from "@lib/minter";
+import { useIKMinter } from "@hooks/useIKMinter";
 import Alert from "./alert";
 
 interface MintButtonParams {
@@ -28,7 +28,7 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
     const valid = validChain(chain?.id || 0);
     setValidChainId(valid);
     if (!chain) throw new Error("Network Issue");
-    setContractAddress(contracts[chain.name as keyof Contracts]);
+    setContractAddress(contractAddressLookup[chain.id]);
   }, [chain]);
 
   useEffect(() => {

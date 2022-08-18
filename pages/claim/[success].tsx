@@ -5,7 +5,7 @@ import Head from "next/head";
 import Wrapper from "@components/wrapper";
 import Button from "@components/button";
 import { AVAX_CHAIN_ID, OPTIMISM_CHAIN_ID } from "@lib/walletConstants";
-import { useIKMinter } from "@lib/minter";
+import { useIKMinter } from "@hooks/useIKMinter";
 import { gqlApiSdk } from "@lib/server";
 import CloudImage from "@components/cloud-image";
 import LoadingIcon from "@components/loading-icon";
@@ -13,7 +13,7 @@ import { useNetwork } from "wagmi";
 import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import MintButton from "@components/mintButton";
 import { validChain } from "@lib/utils";
-import { marketplaceLookup } from "@lib/contracts";
+import { marketplaceLookup } from "@lib/walletConstants";
 
 interface ClaimsPageProps {
   nftTokenIds: number[];

@@ -4,11 +4,12 @@ import NProgress from "nprogress";
 import { inspect } from "@xstate/inspect";
 
 import "@rainbow-me/rainbowkit/styles.css";
-import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiConfig } from "wagmi";
-import { chains, IKTheme, wagmiClient } from "@lib/walletConstants";
+import { chains, wagmiClient } from "@lib/walletConstants";
+import { IKTheme } from "@lib/constants";
 
-const { NODE_ENV } = process.env;
+const { NODE_ENV, NEXT_PUBLIC_IS_CYPRESS } = process.env;
 
 // Re-enable here and below for auth via auth0
 // import { UserProvider } from "@auth0/nextjs-auth0";
@@ -19,8 +20,8 @@ import "nprogress/nprogress.css";
 
 if (
   typeof window !== "undefined" &&
-  process.env.NODE_ENV === "development" &&
-  process.env.NEXT_PUBLIC_IS_CYPRESS !== "true"
+  NODE_ENV === "development" &&
+  NEXT_PUBLIC_IS_CYPRESS !== "true"
 ) {
   inspect({
     iframe: false, // open in new window

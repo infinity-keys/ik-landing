@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import castArray from "lodash/castArray";
 import { AVAX_CHAIN_ID } from "@lib/walletConstants";
-import { contractLookup } from "@lib/contracts";
+import { contractLookup } from "@lib/walletConstants";
 
 export default async function handler(
   req: NextApiRequest,
