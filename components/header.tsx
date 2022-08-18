@@ -74,7 +74,7 @@ export default function Header() {
 
               <div
                 data-cy="puzzle-link"
-                className="grid grid-cols-2 gap-1 sm:gap-4"
+                className="flex items-center gap-3 font-medium"
               >
                 <Button
                   text="Starter Pack"
@@ -84,8 +84,10 @@ export default function Header() {
                 />
 
                 <ConnectButton
-                  accountStatus="address"
-                  chainStatus="name"
+                  accountStatus={{
+                    largeScreen: "address",
+                    smallScreen: "avatar",
+                  }}
                   showBalance={false}
                 />
               </div>
