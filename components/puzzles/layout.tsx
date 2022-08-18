@@ -33,7 +33,7 @@ const PuzzlesLayout: NextPage<PageProps> = ({
   );
   const [smallestPuzzleCount] = PAGINATION_COUNTS;
   const { query } = useRouter();
-  const [count, page] = query.puzzlesArgs || [smallestPuzzleCount, "1"];
+  const [count, page] = query.packsArgs || [smallestPuzzleCount, "1"];
   const puzzlesCount = toNumber(count);
   const pageNum = toNumber(page);
   const isPack = isTypePack(puzzles[0]);
