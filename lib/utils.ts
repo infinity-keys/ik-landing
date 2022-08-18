@@ -19,6 +19,9 @@ export const packsLandingUrl = (slug: string) =>
 export const routeSuccessUrl = (slug: string) =>
   `/${PUZZLE_SUCCESS_BASE}/${slug}`;
 export const routeFailUrl = (slug: string) => `/${PUZZLE_FAILED_BASE}/${slug}`;
+export const collectionBaseUrl = (isPack: boolean) => {
+  return isPack ? `/${PACK_COLLECTION_BASE}` : `/${PUZZLE_COLLECTION_BASE}`;
+};
 
 // Wallet stuff
 export const message = (nonce: string) => `${welcome}\n\n${nonce}`;
@@ -41,10 +44,6 @@ export const isTypePack = (
   data: ThumbnailPack | ThumbnailPuzzle
 ): data is ThumbnailPack => {
   return (data as ThumbnailPack).pack_name !== undefined;
-};
-
-export const collectionBaseUrl = (isPack: boolean) => {
-  return isPack ? `/${PACK_COLLECTION_BASE}` : `/${PUZZLE_COLLECTION_BASE}`;
 };
 
 // normalize pack and puzzle data for PuzzleThumbnail

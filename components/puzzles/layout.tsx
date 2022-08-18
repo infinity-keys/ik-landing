@@ -17,7 +17,6 @@ import { collectionBaseUrl, isTypePack, thumbnailData } from "@lib/utils";
 import { GetAllPacksQuery, PublicPuzzlesQuery } from "@lib/generated/graphql";
 
 export interface PageProps {
-  // @TODO: this isn't typed right. also fix it in utils
   puzzles: PublicPuzzlesQuery["puzzles"] | GetAllPacksQuery["packs"];
   isFirstPage: Boolean;
   isLastPage: Boolean;
@@ -33,7 +32,8 @@ const PuzzlesLayout: NextPage<PageProps> = ({
   );
   const [smallestPuzzleCount] = PAGINATION_COUNTS;
   const { query } = useRouter();
-  const [count, page] = query.packsArgs || [smallestPuzzleCount, "1"];
+  const [count, page] = query.packsArgs ||
+    query.puzzlesArgs || [smallestPuzzleCount, "1"];
   const puzzlesCount = toNumber(count);
   const pageNum = toNumber(page);
   const isPack = isTypePack(puzzles[0]);
