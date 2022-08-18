@@ -5,6 +5,7 @@ import LoadingIcon from "./loading-icon";
 import { useEffect, useState } from "react";
 import { validChain } from "@lib/utils";
 import { useIKMinter } from "@lib/minter";
+import Alert from "./alert";
 
 interface MintButtonParams {
   tokenId: number;
@@ -67,7 +68,8 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
     args: [tokenId, signature],
   });
 
-  const { data, isLoading, isSuccess, write, error } = useContractWrite(config);
+  const { data, isLoading, isSuccess, write, error, status } =
+    useContractWrite(config);
   const link = `${chain?.blockExplorers}/tx/${data?.hash}`;
 
   return (
@@ -119,11 +121,17 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
               <LoadingIcon />
             </div>
           )}
+
           {isSuccess && (
+            //make this into an alert (somehow)
             <div>
-              <a href={link}>View Your Transaction</a>
+              <a href={link} target="_blank" rel="noopener noreferrer">
+                View Your Transaction
+              </a>
             </div>
           )}
+
+          {error && status === "error" && <Alert text={error.message} />}
         </>
       ) : (
         <></>

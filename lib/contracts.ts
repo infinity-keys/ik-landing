@@ -13,6 +13,10 @@ import {
   OPTIMISM_CHAIN_ID,
   POLYGON_CHAIN_ID,
   POLYGON_RPC,
+  AVAX_MARKETPLACE_LINK,
+  ETH_MARKETPLACE_LINK,
+  POLYGON_MARKETPLACE_LINK,
+  OPTIMISM_MARKETPLACE_LINK,
 } from "./walletConstants";
 
 export const chainIds = [
@@ -50,4 +54,13 @@ export const contractLookup: {
     CONTRACT_ADDRESS_OPTIMISM,
     new ethers.providers.JsonRpcProvider(OPTIMISM_RPC)
   ),
+};
+
+export const marketplaceLookup: {
+  [key: number]: string;
+} = {
+  [AVAX_CHAIN_ID]: AVAX_MARKETPLACE_LINK,
+  [ETH_CHAIN_ID]: ETH_MARKETPLACE_LINK,
+  [POLYGON_CHAIN_ID]: POLYGON_MARKETPLACE_LINK,
+  [OPTIMISM_CHAIN_ID]: OPTIMISM_MARKETPLACE_LINK,
 };

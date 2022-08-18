@@ -4,23 +4,16 @@ import Head from "next/head";
 
 import Wrapper from "@components/wrapper";
 import Button from "@components/button";
-import {
-  AVAX_CHAIN_ID,
-  ETH_CHAIN_ID,
-  POLYGON_CHAIN_ID,
-  openseaLink,
-  joePegsLink,
-  openseaPolygonLink,
-} from "@lib/walletConstants";
-import { wallet } from "@lib/wallet";
-import { minterUtil, useIKMinter } from "@lib/minter";
+import { AVAX_CHAIN_ID, OPTIMISM_CHAIN_ID } from "@lib/walletConstants";
+import { useIKMinter } from "@lib/minter";
 import { gqlApiSdk } from "@lib/server";
 import CloudImage from "@components/cloud-image";
 import LoadingIcon from "@components/loading-icon";
-import { useAccount, useNetwork } from "wagmi";
+import { useNetwork } from "wagmi";
 import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import MintButton from "@components/mintButton";
 import { validChain } from "@lib/utils";
+import { marketplaceLookup } from "@lib/contracts";
 
 interface ClaimsPageProps {
   nftTokenIds: number[];
@@ -38,17 +31,14 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
   const { openConnectModal } = useConnectModal();
   const { openChainModal } = useChainModal();
   const { address, isConnected } = useIKMinter();
-  const chain = useNetwork().chain?.id;
+  const chain = useNetwork().chain?.id || 0;
 
   const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
   const [isLoading, setIsLoading] = useState(false);
   const [claimed, setClaimed] = useState(false);
   const [chainIsValid, setChainIsValid] = useState(false);
 
-  const [txMessage, setTxMessage] = useState<string>();
-
   useEffect(() => {
-    // Unsure why but it wanted me to throw this in here
     const checkIfClaimed = async (account: string) => {
       const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId?.toString()}`;
 
@@ -68,7 +58,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
   }, [isConnected, address, tokenId]);
 
   useEffect(() => {
-    setChainIsValid(validChain(chain || 0));
+    setChainIsValid(validChain(chain));
   }, [chain]);
 
   // @TODO: refactor into button component, use clx for classes at least
@@ -89,7 +79,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
           <CloudImage height={260} width={260} id={cloudinary_id} />
         )}
 
-        {!isConnected && (
+        {!isConnected ? (
           <div>
             <h2 className="mt-10 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
               Connect Wallet To Claim Trophy
@@ -100,72 +90,56 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
               onClick={openConnectModal}
             />
           </div>
-        )}
-
-        {!chainIsValid && isConnected && (
-          <div>
-            <h2 className="mt-10 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-              Switch Chain To Claim Trophy
-            </h2>
-            <Button
-              text="Switch Chain"
-              type="submit"
-              onClick={openChainModal}
-            />
-          </div>
-        )}
-
-        {isLoading && chainIsValid && (
-          <div>
-            <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-              Connecting Wallet
-            </h2>
-            <LoadingIcon />
-          </div>
-        )}
-
-        {isConnected && !claimed && chainIsValid && !isLoading && (
-          <MintButton tokenId={tokenId} gatedIds={[]} />
-        )}
-
-        {txMessage && (
-          <div>
-            View Transaction&nbsp;
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={txMessage.toString()}
-              className="underline"
-            >
-              Here
-            </a>
-          </div>
-        )}
-
-        {claimed && isConnected && !isLoading && chainIsValid && (
+        ) : (
           <>
-            <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-              Your Trophy Has Been Claimed
-            </h2>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`${
-                chain === ETH_CHAIN_ID
-                  ? openseaLink
-                  : chain === AVAX_CHAIN_ID
-                  ? joePegsLink
-                  : chain === POLYGON_CHAIN_ID
-                  ? openseaPolygonLink
-                  : undefined
-              }${tokenId}`}
-              className={buttonPrimaryClasses}
-            >
-              View NFT On{" "}
-              {chain === ETH_CHAIN_ID || chain === POLYGON_CHAIN_ID
-                ? "OpenSea"
-                : "JoePegs"}
-            </a>
+            {!chainIsValid ? (
+              <div>
+                <h2 className="mt-10 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+                  Switch Chain To Claim Trophy
+                </h2>
+                <Button
+                  text="Switch Chain"
+                  type="submit"
+                  onClick={openChainModal}
+                />
+              </div>
+            ) : (
+              <>
+                {isLoading && (
+                  <div>
+                    <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+                      Checking NFTs
+                    </h2>
+                    <LoadingIcon />
+                  </div>
+                )}
+
+                {!claimed && !isLoading && (
+                  <MintButton tokenId={tokenId} gatedIds={[]} />
+                )}
+
+                {claimed && !isLoading && (
+                  <>
+                    <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+                      Your Trophy Has Been Claimed
+                    </h2>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`${marketplaceLookup[chain]}${tokenId}`}
+                      className={buttonPrimaryClasses}
+                    >
+                      View NFT On{" "}
+                      {chain === AVAX_CHAIN_ID
+                        ? "Joepegs"
+                        : chain === OPTIMISM_CHAIN_ID
+                        ? "Quixotic"
+                        : "OpenSea"}
+                    </a>
+                  </>
+                )}
+              </>
+            )}
           </>
         )}
       </div>
