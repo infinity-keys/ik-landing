@@ -138,7 +138,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
         <p className="mt-10 sm:mt-14">
           To be eligible to claim the {pack.pack_name} Achievement you must
           successfully complete the following puzzles and claim the
-          corresponding achievement NFT. All three NFTs should be claimed on the
+          corresponding achievement NFT. All the NFTs must be claimed on the
           same chain to qualify.
         </p>
 
