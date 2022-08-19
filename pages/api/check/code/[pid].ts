@@ -39,7 +39,7 @@ export default async function handler(
   const gql = await gqlApiSdk();
   const { fail, success } = await gql.Guess({
     puzzle_id: pid,
-    solution: code,
+    solution: code.replace(/[%_]/g, ""),
   });
 
   // What we actually return as json, build up
