@@ -15,7 +15,6 @@ import LoadingIcon from "./loading-icon";
 import { useEffect, useState } from "react";
 import { validChain } from "@lib/utils";
 import { useIKMinter } from "@hooks/useIKMinter";
-import Alert from "./alert";
 import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import { checkIfClaimed, verify } from "@lib/fetchers";
 import clsx from "clsx";
@@ -37,11 +36,6 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
   const [claimed, setClaimed] = useState(false);
 
   const [chainIsValid, setChainIsValid] = useState(false);
-
-  const buttonPrimaryClasses =
-    "bg-turquoise border-turquoise hover:bg-turquoiseDark hover:cursor-pointer";
-
-  const buttonPrimaryDisabled = "bg-gray-150 border-gray-150";
 
   useEffect(() => {
     const valid = validChain(chain?.id || 0);
