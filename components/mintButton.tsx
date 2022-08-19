@@ -15,9 +15,9 @@ import LoadingIcon from "./loading-icon";
 import { useEffect, useState } from "react";
 import { validChain } from "@lib/utils";
 import { useIKMinter } from "@hooks/useIKMinter";
-import Alert from "./alert";
 import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import { checkIfClaimed, verify } from "@lib/fetchers";
+import clsx from "clsx";
 
 interface MintButtonParams {
   tokenId: number;
@@ -36,12 +36,6 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
   const [claimed, setClaimed] = useState(false);
 
   const [chainIsValid, setChainIsValid] = useState(false);
-
-  const buttonPrimaryClasses =
-    "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark hover:cursor-pointer rounded-md py-2 w-44";
-
-  const buttonPrimaryDisabled =
-    "text-sm text-blue font-bold border-solid border-2 rounded-md py-2 w-44 mb-8 bg-gray-150 border-gray-150";
 
   useEffect(() => {
     const valid = validChain(chain?.id || 0);
@@ -113,11 +107,12 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
             : openChainModal
           : openConnectModal
       }
-      className={
+      className={clsx(
+        "text-sm text-blue font-bold rounded-md py-2 w-44 border-2 border-solid",
         !isConnected || !chainIsValid || signature || !writeError
-          ? buttonPrimaryClasses
-          : buttonPrimaryDisabled
-      }
+          ? "bg-turquoise border-turquoise hover:bg-turquoiseDark hover:cursor-pointer"
+          : "bg-gray-150 border-gray-150"
+      )}
     >
       {isConnected ? (
         chainIsValid ? (
