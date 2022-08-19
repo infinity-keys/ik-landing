@@ -45,13 +45,13 @@
     "nprogress": "^0.2.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-hook-form": "^7.34.0",
+    "react-hook-form": "^7.34.2",
     "react-individual-character-input-boxes": "^1.1.0",
     "react-markdown": "^8.0.3",
     "uuid": "^8.3.2",
     "web3modal": "^1.9.8",
     "xstate": "^4.32.1",
-    "zod": "^3.17.10"
+    "zod": "^3.18.0"
   },
   "devDependencies": {
     "@cld-apis/types": "^0.1.6",
