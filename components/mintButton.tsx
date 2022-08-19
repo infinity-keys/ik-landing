@@ -50,7 +50,7 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
   }, [chain]);
 
   useEffect(() => {
-    if (address && chain && isConnected) {
+    if (address && chain && isConnected && chainIsValid) {
       const setSig = async () => {
         setIsVerifying(true);
         setSignature(await verify(address, tokenId, chain.id, gatedIds));
@@ -59,7 +59,7 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
       };
       setSig();
     }
-  }, [isConnected, chain, address, tokenId, gatedIds]);
+  }, [isConnected, chain, address, tokenId, gatedIds, chainIsValid]);
 
   const { config } = usePrepareContractWrite({
     addressOrName: contractAddress,
@@ -114,7 +114,7 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
           : openConnectModal
       }
       className={
-        !isConnected || !chainIsValid || signature
+        !isConnected || !chainIsValid || signature || !writeError
           ? buttonPrimaryClasses
           : buttonPrimaryDisabled
       }
@@ -158,7 +158,7 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
         {text}
       </h2>
 
-      {isVerifying ? <LoadingIcon /> : buttonMint}
+      {isVerifying && chainIsValid ? <LoadingIcon /> : buttonMint}
     </>
   );
 }
