@@ -64,7 +64,7 @@ export default async function handler(
   //returns type ethers.BigNumber
   const balances = await contract?.balanceOfBatch(accountArray, tokenIds);
   //check every balance of every tokenId- if 0 for any of them return false
-  const claimed = !balances?.every((b) => b.toNumber() === 0);
+  const claimed = balances?.every((b) => b.toNumber() > 0);
 
   res.json({ claimed });
 }
