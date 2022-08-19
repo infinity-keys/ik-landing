@@ -35,7 +35,7 @@
     "clsx": "^1.1.1",
     "ethers": "^5.6.5",
     "fortmatic": "^2.3.0",
-    "graphql": "^16.4.0",
+    "graphql": "^16.6.0",
     "graphql-request": "^4.2.0",
     "jose": "^4",
     "loaders.css": "^0.1.2",
