@@ -17,6 +17,7 @@ import { validChain } from "@lib/utils";
 import { useIKMinter } from "@hooks/useIKMinter";
 import Alert from "./alert";
 import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
+import { checkIfClaimed, verify } from "@lib/fetchers";
 
 interface MintButtonParams {
   tokenId: number;
@@ -49,38 +50,11 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
   }, [chain]);
 
   useEffect(() => {
-    const verify = async (account: string, tokenId: number, chain: number) => {
-      const gatedIdsString = `&${gatedIds
-        .map((id) => `gatedIds=${id}`)
-        .join("&")}`;
-
-      //If pack (requires other NFTs) include gated, if single ignore
-      const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}${
-        gatedIds.length ? gatedIdsString : ""
-      }`;
-
-      const response = await fetch(url);
-      if (response.ok) {
-        const { signature } = await response.json();
-        return signature;
-      }
-
-      throw await response.text();
-    };
-
-    const checkIfClaimed = async (account: string) => {
-      const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId?.toString()}`;
-
-      const response = await fetch(url);
-      if (response.ok) return (await response.json()).claimed;
-      else throw await response.text();
-    };
-
     if (address && chain && isConnected) {
       const setSig = async () => {
         setIsVerifying(true);
-        setSignature(await verify(address, tokenId, chain.id));
-        setClaimed(await checkIfClaimed(address));
+        setSignature(await verify(address, tokenId, chain.id, gatedIds));
+        setClaimed(await checkIfClaimed(address, tokenId));
         setIsVerifying(false);
       };
       setSig();
@@ -94,13 +68,7 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
     args: [tokenId, signature],
   });
 
-  const {
-    data,
-    isSuccess,
-    write,
-    error: writeError,
-    status,
-  } = useContractWrite(config);
+  const { data, write, error: writeError } = useContractWrite(config);
 
   const { error: txError, isLoading } = useWaitForTransaction({
     hash: data?.hash,

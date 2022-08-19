@@ -26,3 +26,33 @@ export const formSubmit = async ({ data }: { data: unknown }) => {
 
   return res;
 };
+
+export const checkIfClaimed = async (account: string, tokenId: number) => {
+  const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId?.toString()}`;
+
+  const response = await fetch(url);
+  if (response.ok) return (await response.json()).claimed;
+  else throw await response.text();
+};
+
+export const verify = async (
+  account: string,
+  tokenId: number,
+  chain: number,
+  gatedIds: number[]
+) => {
+  const gatedIdsString = `&${gatedIds.map((id) => `gatedIds=${id}`).join("&")}`;
+
+  //If pack (requires other NFTs) include gated, if single ignore
+  const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}${
+    gatedIds.length ? gatedIdsString : ""
+  }`;
+
+  const response = await fetch(url);
+  if (response.ok) {
+    const { signature } = await response.json();
+    return signature;
+  }
+
+  throw await response.text();
+};
