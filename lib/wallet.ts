@@ -5,15 +5,16 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
 import {
   AVAX_CHAIN_ID,
-  AVAX_PARAMS,
   ETH_CHAIN_ID,
-  ETH_RPC_ID,
   POLYGON_CHAIN_ID,
-  POLYGON_PARAMS,
   POLYGON_RPC,
 } from "@lib/walletConstants";
 import { toHex } from "./utils";
 // import Fortmatic from "fortmatic";
+
+const ETH_RPC_ID = "";
+const AVAX_PARAMS = {};
+const POLYGON_PARAMS = {};
 
 const providerOptions = {
   walletconnect: {

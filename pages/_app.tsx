@@ -9,8 +9,6 @@ import { WagmiConfig } from "wagmi";
 import { chains, wagmiClient } from "@lib/walletConstants";
 import { IKTheme } from "@lib/constants";
 
-const { NODE_ENV, NEXT_PUBLIC_IS_CYPRESS } = process.env;
-
 // Re-enable here and below for auth via auth0
 // import { UserProvider } from "@auth0/nextjs-auth0";
 
@@ -20,8 +18,8 @@ import "nprogress/nprogress.css";
 
 if (
   typeof window !== "undefined" &&
-  NODE_ENV === "development" &&
-  NEXT_PUBLIC_IS_CYPRESS !== "true"
+  process.env.NODE_ENV === "development" &&
+  process.env.NEXT_PUBLIC_IS_CYPRESS !== "true"
 ) {
   inspect({
     iframe: false, // open in new window

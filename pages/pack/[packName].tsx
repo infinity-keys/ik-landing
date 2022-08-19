@@ -11,16 +11,7 @@ import { GetPuzzlesByPackQuery } from "@lib/generated/graphql";
 import { PuzzleLayoutType } from "@lib/types";
 import useCurrentWidth from "@hooks/useCurrentWidth";
 
-import { AVAX_CHAIN_ID, OPTIMISM_CHAIN_ID } from "@lib/walletConstants";
-import { useEffect, useState } from "react";
-import { useIKMinter } from "@hooks/useIKMinter";
-import LoadingIcon from "@components/loading-icon";
-import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
-import { useNetwork } from "wagmi";
-import { validChain } from "@lib/utils";
-import Button from "@components/button";
 import MintButton from "@components/mintButton";
-import { marketplaceLookup } from "@lib/walletConstants";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -43,43 +34,8 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
 
   if (!tokenId) throw new Error("Invalid token id.");
 
-  const { openConnectModal } = useConnectModal();
-  const { openChainModal } = useChainModal();
-  const { address, isConnected } = useIKMinter();
-  const chain = useNetwork().chain?.id || 0;
-
   const width = useCurrentWidth();
   const layout = width < 640 ? PuzzleLayoutType.List : PuzzleLayoutType.Grid;
-
-  const [claimed, setClaimed] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [chainIsValid, setChainIsValid] = useState(false);
-
-  useEffect(() => {
-    const checkIfClaimed = async (account: string) => {
-      const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId?.toString()}`;
-
-      const response = await fetch(url);
-      if (response.ok) return (await response.json()).claimed;
-      else throw await response.text();
-    };
-
-    const onPageLoad = async () => {
-      if (isConnected && address) {
-        setIsLoading(true);
-        setClaimed(await checkIfClaimed(address));
-        setIsLoading(false);
-      }
-    };
-    onPageLoad();
-  }, [isConnected, address, tokenId]);
-
-  useEffect(() => {
-    setChainIsValid(validChain(chain || 0));
-  }, [chain]);
-
-  const buttonPrimaryClasses =
-    "text-sm text-blue font-bold bg-turquoise border-solid border-2 border-turquoise hover:bg-turquoiseDark hover:cursor-pointer rounded-md py-2 w-44 px-4";
 
   return (
     <Wrapper>
@@ -99,8 +55,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
           <ul
             role="list"
             className={clsx(
-              "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 sm:mt-6",
-              isLoading ? "my-12 sm:mb-0" : "my-10"
+              "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 sm:mt-6 my-10"
             )}
           >
             {puzzles.map(({ puzzle_id, landing_route, simple_name, nft }) => (
@@ -118,69 +73,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
             ))}
           </ul>
 
-          {!isConnected ? (
-            <div>
-              <h2 className="mt-10 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-                Connect Wallet To Claim Trophy
-              </h2>
-              <Button
-                text="Connect Wallet"
-                type="submit"
-                onClick={openConnectModal}
-              />
-            </div>
-          ) : (
-            <>
-              {!chainIsValid ? (
-                <div>
-                  <h2 className="mt-10 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-                    Switch Chain To Claim Trophy
-                  </h2>
-                  <Button
-                    text="Switch Chain"
-                    type="submit"
-                    onClick={openChainModal}
-                  />
-                </div>
-              ) : (
-                <>
-                  {isLoading && (
-                    <div>
-                      <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-                        Checking NFTs
-                      </h2>
-                      <LoadingIcon />
-                    </div>
-                  )}
-
-                  {!claimed && !isLoading && (
-                    <MintButton tokenId={tokenId} gatedIds={gatedIds} />
-                  )}
-
-                  {claimed && !isLoading && (
-                    <>
-                      <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-                        Your Trophy Has Been Claimed
-                      </h2>
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={`${marketplaceLookup[chain]}${tokenId}`}
-                        className={buttonPrimaryClasses}
-                      >
-                        View NFT On{" "}
-                        {chain === AVAX_CHAIN_ID
-                          ? "Joepegs"
-                          : chain === OPTIMISM_CHAIN_ID
-                          ? "Quixotic"
-                          : "OpenSea"}
-                      </a>
-                    </>
-                  )}
-                </>
-              )}
-            </>
-          )}
+          <MintButton tokenId={tokenId} gatedIds={gatedIds} />
         </div>
       </div>
     </Wrapper>

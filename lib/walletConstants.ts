@@ -129,8 +129,6 @@ export const wagmiClient = createClient({
 // export const CONTRACT_ADDRESS_ETH =
 //   "0xBCEBf2f7F6D23287054008Aeb028F2092262d1a3";
 // export const ETHERSCAN_TRACKER = "https://rinkeby.etherscan.io";
-// export const ETH_RPC_ID = "c10d222a5bae4a8e97fad0915b06ff5d";
-// export const ETH_RPC = `https://rinkeby.infura.io/v3/${ETH_RPC_ID}`;
+// export const ETH_RPC = `https://rinkeby.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d`;
 // export const ETH_MARKETPLACE_LINK =
-//   "https://testnets.opensea.io/assets/ethereum/";
-// export const openseaLink = `${ETH_MARKETPLACE_LINK}${CONTRACT_ADDRESS_ETH}/`;
+//   `https://testnets.opensea.io/assets/ethereum/${CONTRACT_ADDRESS_ETH}/`;
