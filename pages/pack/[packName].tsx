@@ -11,7 +11,7 @@ import { GetPuzzlesByPackQuery } from "@lib/generated/graphql";
 import { PuzzleLayoutType } from "@lib/types";
 import useCurrentWidth from "@hooks/useCurrentWidth";
 
-import MintButton from "@components/mintButton";
+import Minter from "@components/minter";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -73,7 +73,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
             ))}
           </ul>
 
-          <MintButton tokenId={tokenId} gatedIds={gatedIds} />
+          <Minter tokenId={tokenId} gatedIds={gatedIds} />
         </div>
       </div>
     </Wrapper>

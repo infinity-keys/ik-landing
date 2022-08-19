@@ -19,12 +19,12 @@ import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import { checkIfClaimed, verify } from "@lib/fetchers";
 import clsx from "clsx";
 
-interface MintButtonParams {
+interface MinterParams {
   tokenId: number;
   gatedIds: number[];
 }
 
-export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
+export default function Minter({ tokenId, gatedIds }: MinterParams) {
   const chain = useNetwork().chain;
   const { address, isConnected } = useIKMinter();
   const { openConnectModal } = useConnectModal();

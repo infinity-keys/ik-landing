@@ -4,7 +4,7 @@ import Head from "next/head";
 import Wrapper from "@components/wrapper";
 import { gqlApiSdk } from "@lib/server";
 import CloudImage from "@components/cloud-image";
-import MintButton from "@components/mintButton";
+import Minter from "@components/minter";
 
 interface ClaimsPageProps {
   nftTokenIds: number[];
@@ -32,7 +32,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
           <CloudImage height={260} width={260} id={cloudinary_id} />
         )}
 
-        <MintButton tokenId={tokenId} gatedIds={[]} />
+        <Minter tokenId={tokenId} gatedIds={[]} />
       </div>
     </Wrapper>
   );
