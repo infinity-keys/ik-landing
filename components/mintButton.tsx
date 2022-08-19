@@ -94,12 +94,19 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
     args: [tokenId, signature],
   });
 
-  const { data, isSuccess, write, error, status } = useContractWrite(config);
+  const {
+    data,
+    isSuccess,
+    write,
+    error: writeError,
+    status,
+  } = useContractWrite(config);
 
-  const { isError, isLoading } = useWaitForTransaction({
+  const { error: txError, isLoading } = useWaitForTransaction({
     hash: data?.hash,
   });
-  const txLink = `${chain?.blockExplorers}/tx/${data?.hash}`;
+  const txLink = `${chain?.blockExplorers?.default}/tx/${data?.hash}`;
+  console.log(txLink);
 
   // isVerifying = Verify + CheckIfOwned API Calls
   // isLoading = Tx is processing
@@ -108,13 +115,13 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
       ? !isVerifying
         ? !claimed
           ? !isLoading
-            ? !isError
-              ? !error || error?.message === "User rejected request"
+            ? !txError
+              ? !writeError || writeError?.message === "User rejected request"
                 ? signature
                   ? `Claim Your Trophy On ${chain?.name}`
                   : "You do not have the required NFTS on this chain. Please ensure you have completed the above puzzles and are on the correct chain."
-                : error.message
-              : "Something went wrong during mint!"
+                : writeError.message
+              : txError.message
             : "Claiming Trophy!"
           : "Your Trophy Has Been Claimed"
         : "Checking NFTs"
@@ -125,7 +132,7 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
     <button
       disabled={
         isConnected && chainIsValid
-          ? signature || !error
+          ? signature || !writeError
             ? !write
             : true
           : false
