@@ -105,8 +105,7 @@ export default function MintButton({ tokenId, gatedIds }: MintButtonParams) {
   const { error: txError, isLoading } = useWaitForTransaction({
     hash: data?.hash,
   });
-  const txLink = `${chain?.blockExplorers?.default}/tx/${data?.hash}`;
-  console.log(txLink);
+  const txLink = `${chain?.blockExplorers?.default.url}/tx/${data?.hash}`;
 
   // isVerifying = Verify + CheckIfOwned API Calls
   // isLoading = Tx is processing
