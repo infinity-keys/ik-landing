@@ -1,8 +1,4 @@
-import { chain, configureChains, createClient } from "wagmi";
-import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
-import { publicProvider } from "wagmi/providers/public";
-import { infuraProvider } from "wagmi/providers/infura";
-import { getDefaultWallets, Chain } from "@rainbow-me/rainbowkit";
+import { Chain } from "@rainbow-me/rainbowkit";
 import { IKAchievementABI__factory } from "./generated/ethers-contract";
 import { ethers } from "ethers";
 
@@ -82,7 +78,7 @@ export const marketplaceLookup: {
 };
 
 // RAINBOW KIT PARAMS
-const avalancheChain: Chain = {
+export const avalancheChain: Chain = {
   id: AVAX_CHAIN_ID,
   name: "Avalanche",
   network: "avalanche",
@@ -103,26 +99,6 @@ const avalancheChain: Chain = {
   },
   testnet: false,
 };
-
-export const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, avalancheChain, chain.optimism],
-  [
-    infuraProvider({ apiKey: process.env.INFURA_KEY }),
-    publicProvider(),
-    jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) }),
-  ]
-);
-
-const { connectors } = getDefaultWallets({
-  appName: "Infinity Keys",
-  chains,
-});
-
-export const wagmiClient = createClient({
-  autoConnect: true,
-  connectors,
-  provider,
-});
 
 // RINKEBY PARAMS
 // export const ETH_CHAIN_ID = 4;
