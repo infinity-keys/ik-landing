@@ -9,7 +9,7 @@ import Alert from "@components/alert";
 
 import { gqlApiSdk } from "@lib/server";
 import { GetPuzzlesByPackQuery } from "@lib/generated/graphql";
-import { ThumbnailLayoutType } from "@lib/types";
+import { ThumbnailGridLayoutType } from "@lib/types";
 import { wallet } from "@lib/wallet";
 import useCurrentWidth from "@hooks/useCurrentWidth";
 
@@ -63,7 +63,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
 
   const width = useCurrentWidth();
   const layout =
-    width < 640 ? ThumbnailLayoutType.List : ThumbnailLayoutType.Grid;
+    width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
   const [chain, setChain] = useState<number | undefined>();
   const [claimed, setClaimed] = useState<boolean>(false);
   const [account, setAccount] = useState<string>("");
@@ -156,7 +156,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
               return (
                 <li key={data.id}>
                   <Thumbnail
-                    isGrid={layout === ThumbnailLayoutType.Grid}
+                    isGrid={layout === ThumbnailGridLayoutType.Grid}
                     id={data.id}
                     name={data.name}
                     url={data.url}

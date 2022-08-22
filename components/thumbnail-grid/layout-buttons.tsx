@@ -5,14 +5,14 @@ import ViewGridIcon from "@heroicons/react/solid/ViewGridIcon";
 
 import Dropdown from "@components/thumbnail-grid/dropdown";
 
-import { ThumbnailLayoutType } from "@lib/types";
+import { ThumbnailGridLayoutType } from "@lib/types";
 import { PAGINATION_COUNTS } from "@lib/constants";
 
 export interface LayoutButtonsProps {
   isGrid: boolean;
   thumbnailCount: number;
   urlBase: string;
-  setView: (gridLayout: ThumbnailLayoutType) => void;
+  setView: (gridLayout: ThumbnailGridLayoutType) => void;
 }
 
 const LayoutButtons = ({
@@ -26,7 +26,7 @@ const LayoutButtons = ({
   return (
     <div className="flex mt-8">
       <button
-        onClick={() => setView(ThumbnailLayoutType.List)}
+        onClick={() => setView(ThumbnailGridLayoutType.List)}
         aria-label="set list view"
         className={clsx(
           "border mr-2 bg-white/10 p-2 rounded-md transition-all duration-200",
@@ -36,7 +36,7 @@ const LayoutButtons = ({
         <ViewListIcon className="h-5 w-5" aria-hidden="true" />
       </button>
       <button
-        onClick={() => setView(ThumbnailLayoutType.Grid)}
+        onClick={() => setView(ThumbnailGridLayoutType.Grid)}
         aria-label="set grid view"
         className={clsx(
           "border bg-white/10 p-2 rounded-md transition-all duration-200 hover:bg-white/20",

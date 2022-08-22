@@ -9,7 +9,7 @@ import Thumbnail from "@components/thumbnail";
 import Pagination from "@components/thumbnail-grid/pagination";
 import LayoutButtons from "@components/thumbnail-grid/layout-buttons";
 import { PAGINATION_COUNTS } from "@lib/constants";
-import { ThumbnailLayoutType } from "@lib/types";
+import { ThumbnailGridLayoutType } from "@lib/types";
 import { collectionBaseUrl, isTypePack, thumbnailData } from "@lib/utils";
 
 import { GetAllPacksQuery, PublicPuzzlesQuery } from "@lib/generated/graphql";
@@ -25,8 +25,8 @@ const GridLayout: NextPage<PageProps> = ({
   isFirstPage,
   isLastPage,
 }) => {
-  const [layout, setLayout] = useState<ThumbnailLayoutType>(
-    ThumbnailLayoutType.Unknown
+  const [layout, setLayout] = useState<ThumbnailGridLayoutType>(
+    ThumbnailGridLayoutType.Unknown
   );
   const [smallestThumbnailCount] = PAGINATION_COUNTS;
   const { query } = useRouter();
@@ -37,23 +37,30 @@ const GridLayout: NextPage<PageProps> = ({
   const isPack = isTypePack(thumbnailList[0]);
 
   useEffect(() => {
-    const thumbnailLayout = window.localStorage.getItem("thumbnailLayout");
+    const thumbnailGridLayout = window.localStorage.getItem(
+      "thumbnailGridLayout"
+    );
     setLayout(
-      thumbnailLayout ? JSON.parse(thumbnailLayout) : ThumbnailLayoutType.List
+      thumbnailGridLayout
+        ? JSON.parse(thumbnailGridLayout)
+        : ThumbnailGridLayoutType.List
     );
   }, []);
 
-  const setView = (gridLayout: ThumbnailLayoutType) => {
+  const setView = (gridLayout: ThumbnailGridLayoutType) => {
     setLayout(gridLayout);
-    window.localStorage.setItem("thumbnailLayout", JSON.stringify(gridLayout));
+    window.localStorage.setItem(
+      "thumbnailGridLayout",
+      JSON.stringify(gridLayout)
+    );
   };
 
   return (
     <>
-      {layout !== ThumbnailLayoutType.Unknown && (
+      {layout !== ThumbnailGridLayoutType.Unknown && (
         <div className="w-full">
           <LayoutButtons
-            isGrid={layout === ThumbnailLayoutType.Grid}
+            isGrid={layout === ThumbnailGridLayoutType.Grid}
             thumbnailCount={thumbnailCount}
             setView={setView}
             urlBase={collectionBaseUrl(isPack)}
@@ -63,7 +70,7 @@ const GridLayout: NextPage<PageProps> = ({
             role="list"
             className={clsx(
               "grid grid-cols-1 gap-6 py-8 sm:grid-cols-2",
-              layout === ThumbnailLayoutType.Grid
+              layout === ThumbnailGridLayoutType.Grid
                 ? "md:grid-cols-3 lg:grid-cols-4"
                 : "lg:grid-cols-3 xl:grid-cols-4"
             )}
@@ -73,7 +80,7 @@ const GridLayout: NextPage<PageProps> = ({
               return (
                 <li key={data.id}>
                   <Thumbnail
-                    isGrid={layout === ThumbnailLayoutType.Grid}
+                    isGrid={layout === ThumbnailGridLayoutType.Grid}
                     id={data.id}
                     name={data.name}
                     url={data.url}
