@@ -550,10 +550,10 @@
   dependencies:
     snake-case "^3.0.4"
 
-"@coinbase/wallet-sdk@^3.4.2":
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.4.2.tgz#e4130511142556f8a09e75d1f52f43aba6bff092"
-  integrity sha512-AALPbVciVco9/7NgT2MKrmrMduN2Cd7t+QWmmO6WU72U/OUHXshIAZAJxMC0j7+7N3xA7x9SEbJ7+O5bHS33Ug==
+"@coinbase/wallet-sdk@^3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.5.0.tgz#a50cbe5779972f5471b20cbed200d3aae80b8d4c"
+  integrity sha512-xdYMpz98gNwhOnSCh7Rm+qziI/K7LnPJnqHI93sZIRiRGtRTtDihcxjVxV2s1rj9NsYjC5jcKiOEgm8VqIK8Tg==
   dependencies:
     "@metamask/safe-event-emitter" "2.0.0"
     "@solana/web3.js" "1.52.0"
