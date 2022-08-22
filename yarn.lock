@@ -1601,10 +1601,10 @@
   resolved "https://registry.yarnpkg.com/@n1ru4l/graphql-live-query/-/graphql-live-query-0.9.0.tgz#defaebdd31f625bee49e6745934f36312532b2bc"
   integrity sha512-BTpWy1e+FxN82RnLz4x1+JcEewVdfmUhV1C6/XYD5AjS7PQp9QFF7K8bCD6gzPTr2l+prvqOyVueQhFJxB1vfg==
 
-"@next/bundle-analyzer@^12.2.4":
-  version "12.2.4"
-  resolved "https://registry.yarnpkg.com/@next/bundle-analyzer/-/bundle-analyzer-12.2.4.tgz#2e9c709ad6baf9cecd4f89d63646ab182ba8f1b4"
-  integrity sha512-7kyv8UBSq85wODeqemHJrvc1eg7He+oyA04XTKL8gUvE50uKlIpCh5PXP4ko4yphhWADGq8LeFOZXLIfbc7Fdg==
+"@next/bundle-analyzer@^12.2.5":
+  version "12.2.5"
+  resolved "https://registry.yarnpkg.com/@next/bundle-analyzer/-/bundle-analyzer-12.2.5.tgz#6aca94359b1a1f933dfb0a89d5f4d0b1fb86e3e5"
+  integrity sha512-lj7ese4GnfbO8tCc9/g1O3/hzgb+pVkrsNgfF929CgZHCFQxplqxY++MIO4aCFwzt0vDx0KL78LOVxzjDDKjlA==
   dependencies:
     webpack-bundle-analyzer "4.3.0"
 
@@ -5994,9 +5994,9 @@ jose@^2.0.5:
     "@panva/asn1.js" "^1.0.0"
 
 jose@^4:
-  version "4.8.3"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-4.8.3.tgz#5a754fb4aa5f2806608d083f438e6916b11087da"
-  integrity sha512-7rySkpW78d8LBp4YU70Wb7+OTgE3OwAALNVZxhoIhp4Kscp+p/fBkdpxGAMKxvCAMV4QfXBU9m6l9nX/vGwd2g==
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-4.9.0.tgz#98ecaf81b13361d1931c0126e3f765549c782f92"
+  integrity sha512-RgaqEOZLkVO+ViN3KkN44XJt9g7+wMveUv59sVLaTxONcUPc8ZpfqOCeLphVBZyih2dgkvZ0Ap1CNcokvY7Uyw==
 
 js-sha3@0.8.0, js-sha3@^0.8.0:
   version "0.8.0"
