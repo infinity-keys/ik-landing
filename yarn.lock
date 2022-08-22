@@ -550,10 +550,10 @@
   dependencies:
     snake-case "^3.0.4"
 
-"@coinbase/wallet-sdk@^3.4.2":
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.4.2.tgz#e4130511142556f8a09e75d1f52f43aba6bff092"
-  integrity sha512-AALPbVciVco9/7NgT2MKrmrMduN2Cd7t+QWmmO6WU72U/OUHXshIAZAJxMC0j7+7N3xA7x9SEbJ7+O5bHS33Ug==
+"@coinbase/wallet-sdk@^3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.5.0.tgz#a50cbe5779972f5471b20cbed200d3aae80b8d4c"
+  integrity sha512-xdYMpz98gNwhOnSCh7Rm+qziI/K7LnPJnqHI93sZIRiRGtRTtDihcxjVxV2s1rj9NsYjC5jcKiOEgm8VqIK8Tg==
   dependencies:
     "@metamask/safe-event-emitter" "2.0.0"
     "@solana/web3.js" "1.52.0"
@@ -2069,10 +2069,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/semver@^7.3.10":
-  version "7.3.10"
-  resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.10.tgz#5f19ee40cbeff87d916eedc8c2bfe2305d957f73"
-  integrity sha512-zsv3fsC7S84NN6nPK06u79oWgrPVd0NvOyqgghV1haPaFcVxIrP4DLomRwGAXk0ui4HZA7mOcSFL98sMVW9viw==
+"@types/semver@^7.3.11":
+  version "7.3.12"
+  resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.12.tgz#920447fdd78d76b19de0438b7f60df3c4a80bf1c"
+  integrity sha512-WwA1MW0++RfXmCr12xeYOOC5baSC9mSb0ZqCquFzKhcoF4TvHu5MKOuXsncgZcpVFhB1pXd5hZmM0ryAoCp12A==
 
 "@types/sinonjs__fake-timers@8.1.1":
   version "8.1.1"
@@ -9890,15 +9890,15 @@ yargs@^17.0.0:
     y18n "^5.0.5"
     yargs-parser "^21.0.0"
 
-yarn-audit-fix@^9.3.3:
-  version "9.3.3"
-  resolved "https://registry.yarnpkg.com/yarn-audit-fix/-/yarn-audit-fix-9.3.3.tgz#05e1fab4fb6dd137db6c31006d569dc7144d41c3"
-  integrity sha512-EFKcjEi3GSQ3QL7dV835ovfcw8of6RbiRdyeA2n67r7dcJYctxOqqmFHQPBoEvQSDXuYH/Zwk/8J6QUT4R8E5A==
+yarn-audit-fix@^9.3.5:
+  version "9.3.5"
+  resolved "https://registry.yarnpkg.com/yarn-audit-fix/-/yarn-audit-fix-9.3.5.tgz#3a0e9356c5b741a6aa50039af4cebfa9308c71d9"
+  integrity sha512-2bnEkix8of4qrkWMsKlIWPdIqY6YGFdR5rsrBNycNbGlSZRMaWddKiJgoOSowyNuMpB5ElHOlA1hSlxF4/7waQ==
   dependencies:
     "@types/find-cache-dir" "^3.2.1"
     "@types/fs-extra" "^9.0.13"
     "@types/lodash-es" "^4.17.6"
-    "@types/semver" "^7.3.10"
+    "@types/semver" "^7.3.11"
     "@types/yarnpkg__lockfile" "^1.1.5"
     "@yarnpkg/lockfile" "^1.1.0"
     chalk "^5.0.1"
