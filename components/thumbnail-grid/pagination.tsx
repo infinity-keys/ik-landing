@@ -5,23 +5,24 @@ import ArrowSmLeftIcon from "@heroicons/react/solid/ArrowSmLeftIcon";
 import ArrowSmRightIcon from "@heroicons/react/solid/ArrowSmRightIcon";
 import { PAGINATION_COUNTS } from "@lib/constants";
 
-export interface PuzzlesPaginationProps {
+export interface PaginationProps {
   isFirstPage: Boolean;
   isLastPage: Boolean;
-  puzzlesCount: number;
+  thumbnailCount: number;
   pageNum: number;
   urlBase: string;
 }
 
-const PuzzlesPagination = ({
+const Pagination = ({
   isFirstPage,
   isLastPage,
-  puzzlesCount,
+  thumbnailCount,
   pageNum,
   urlBase,
-}: PuzzlesPaginationProps) => {
-  const [smallestPuzzleCount] = PAGINATION_COUNTS;
-  const toDefaultPage = puzzlesCount === smallestPuzzleCount && pageNum === 2;
+}: PaginationProps) => {
+  const [smallestThumbnailCount] = PAGINATION_COUNTS;
+  const toDefaultPage =
+    thumbnailCount === smallestThumbnailCount && pageNum === 2;
 
   return (
     <div
@@ -35,7 +36,7 @@ const PuzzlesPagination = ({
           href={
             toDefaultPage
               ? urlBase
-              : `${urlBase}/${puzzlesCount}/${pageNum - 1}`
+              : `${urlBase}/${thumbnailCount}/${pageNum - 1}`
           }
         >
           <a className="previous flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
@@ -46,7 +47,7 @@ const PuzzlesPagination = ({
       )}
 
       {!isLastPage && (
-        <Link href={`${urlBase}/${puzzlesCount}/${pageNum + 1}`}>
+        <Link href={`${urlBase}/${thumbnailCount}/${pageNum + 1}`}>
           <a className="next flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
             Next
             <ArrowSmRightIcon className="h-4 w-4 ml-2" aria-hidden="true" />
@@ -57,4 +58,4 @@ const PuzzlesPagination = ({
   );
 };
 
-export default PuzzlesPagination;
+export default Pagination;

@@ -3,7 +3,9 @@ import { NextPage } from "next";
 import { gqlApiSdk } from "@lib/server";
 import { PublicPuzzlesQuery } from "@lib/generated/graphql";
 import { PAGINATION_COUNTS } from "@lib/constants";
-import PuzzlesLayout from "@components/puzzles/layout";
+import GridLayout from "@components/thumbnail-grid/grid-layout";
+import Wrapper from "@components/wrapper";
+import Head from "next/head";
 
 export interface PageProps {
   puzzles: PublicPuzzlesQuery["puzzles"];
@@ -19,11 +21,17 @@ interface PageParams {
 
 const Puzzles: NextPage<PageProps> = ({ puzzles, isFirstPage, isLastPage }) => {
   return (
-    <PuzzlesLayout
-      puzzles={puzzles}
-      isFirstPage={isFirstPage}
-      isLastPage={isLastPage}
-    />
+    <Wrapper>
+      <Head>
+        <title>Infinity Keys Puzzles</title>
+      </Head>
+
+      <GridLayout
+        thumbnailList={puzzles}
+        isFirstPage={isFirstPage}
+        isLastPage={isLastPage}
+      />
+    </Wrapper>
   );
 };
 

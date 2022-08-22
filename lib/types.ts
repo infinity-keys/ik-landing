@@ -29,7 +29,7 @@ export interface PuzzleInput {
   puzzleId: string;
 }
 
-export enum PuzzleLayoutType {
+export enum ThumbnailLayoutType {
   Grid = "grid",
   List = "list",
   Unknown = "unknown",
