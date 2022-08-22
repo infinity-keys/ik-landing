@@ -5,8 +5,6 @@ import { infuraProvider } from "wagmi/providers/infura";
 import { getDefaultWallets, Chain } from "@rainbow-me/rainbowkit";
 import { IKAchievementABI__factory } from "./generated/ethers-contract";
 import { ethers } from "ethers";
-import { darkTheme, Theme } from "@rainbow-me/rainbowkit";
-import { merge } from "lodash";
 
 //AVAX PARAMS
 export const AVAX_CHAIN_ID = 43114;
@@ -125,25 +123,6 @@ export const wagmiClient = createClient({
   connectors,
   provider,
 });
-
-// Rainbow Kit Styling
-export const IKTheme = merge(darkTheme(), {
-  colors: {
-    accentColor: "#3FCCBB",
-    connectButtonBackground: "#354161",
-    modalBackground: "#101D42",
-    modalBorder: "rgba(255,255,255,.2)",
-    menuItemBackground: "#101D42",
-  },
-  fonts: {
-    body: "Poppins, sans-serif",
-  },
-  radii: {
-    connectButton: "4px",
-    modal: "8px",
-    modalMobile: "8px",
-  },
-} as Theme);
 
 // RINKEBY PARAMS
 // export const ETH_CHAIN_ID = 4;
