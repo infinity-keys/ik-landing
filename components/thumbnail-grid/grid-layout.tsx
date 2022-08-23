@@ -1,66 +1,67 @@
 import { useState, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import Head from "next/head";
 
 import toNumber from "lodash/toNumber";
 import clsx from "clsx";
 
-import Wrapper from "@components/wrapper";
-import PuzzleThumbnail from "@components/puzzle-thumbnail";
-import PuzzlesPagination from "@components/puzzles/pagination";
-import LayoutButtons from "@components/puzzles/layout-buttons";
+import Thumbnail from "@components/thumbnail";
+import Pagination from "@components/thumbnail-grid/pagination";
+import LayoutButtons from "@components/thumbnail-grid/layout-buttons";
 import { PAGINATION_COUNTS } from "@lib/constants";
-import { PuzzleLayoutType } from "@lib/types";
+import { ThumbnailGridLayoutType } from "@lib/types";
 import { collectionBaseUrl, isTypePack, thumbnailData } from "@lib/utils";
 
 import { GetAllPacksQuery, PublicPuzzlesQuery } from "@lib/generated/graphql";
 
 export interface PageProps {
-  puzzles: PublicPuzzlesQuery["puzzles"] | GetAllPacksQuery["packs"];
+  thumbnailList: PublicPuzzlesQuery["puzzles"] | GetAllPacksQuery["packs"];
   isFirstPage: Boolean;
   isLastPage: Boolean;
 }
 
-const PuzzlesLayout: NextPage<PageProps> = ({
-  puzzles,
+const GridLayout: NextPage<PageProps> = ({
+  thumbnailList,
   isFirstPage,
   isLastPage,
 }) => {
-  const [layout, setLayout] = useState<PuzzleLayoutType>(
-    PuzzleLayoutType.Unknown
+  const [layout, setLayout] = useState<ThumbnailGridLayoutType>(
+    ThumbnailGridLayoutType.Unknown
   );
-  const [smallestPuzzleCount] = PAGINATION_COUNTS;
+  const [smallestThumbnailCount] = PAGINATION_COUNTS;
   const { query } = useRouter();
   const [count, page] = query.packsArgs ||
-    query.puzzlesArgs || [smallestPuzzleCount, "1"];
-  const puzzlesCount = toNumber(count);
+    query.puzzlesArgs || [smallestThumbnailCount, "1"];
+  const thumbnailCount = toNumber(count);
   const pageNum = toNumber(page);
-  const isPack = isTypePack(puzzles[0]);
+  const isPack = isTypePack(thumbnailList[0]);
 
   useEffect(() => {
-    const puzzlesLayout = window.localStorage.getItem("puzzlesLayout");
+    const thumbnailGridLayout = window.localStorage.getItem(
+      "thumbnailGridLayout"
+    );
     setLayout(
-      puzzlesLayout ? JSON.parse(puzzlesLayout) : PuzzleLayoutType.List
+      thumbnailGridLayout
+        ? JSON.parse(thumbnailGridLayout)
+        : ThumbnailGridLayoutType.List
     );
   }, []);
 
-  const setView = (gridLayout: PuzzleLayoutType) => {
+  const setView = (gridLayout: ThumbnailGridLayoutType) => {
     setLayout(gridLayout);
-    window.localStorage.setItem("puzzlesLayout", JSON.stringify(gridLayout));
+    window.localStorage.setItem(
+      "thumbnailGridLayout",
+      JSON.stringify(gridLayout)
+    );
   };
 
   return (
-    <Wrapper>
-      <Head>
-        <title>Infinity Keys Puzzles</title>
-      </Head>
-
-      {layout !== PuzzleLayoutType.Unknown && (
+    <>
+      {layout !== ThumbnailGridLayoutType.Unknown && (
         <div className="w-full">
           <LayoutButtons
-            isGrid={layout === PuzzleLayoutType.Grid}
-            puzzlesCount={puzzlesCount}
+            isGrid={layout === ThumbnailGridLayoutType.Grid}
+            thumbnailCount={thumbnailCount}
             setView={setView}
             urlBase={collectionBaseUrl(isPack)}
           />
@@ -69,17 +70,17 @@ const PuzzlesLayout: NextPage<PageProps> = ({
             role="list"
             className={clsx(
               "grid grid-cols-1 gap-6 py-8 sm:grid-cols-2",
-              layout === PuzzleLayoutType.Grid
+              layout === ThumbnailGridLayoutType.Grid
                 ? "md:grid-cols-3 lg:grid-cols-4"
                 : "lg:grid-cols-3 xl:grid-cols-4"
             )}
           >
-            {puzzles.map((puzzle) => {
-              const data = thumbnailData(puzzle);
+            {thumbnailList.map((thumbnail) => {
+              const data = thumbnailData(thumbnail);
               return (
                 <li key={data.id}>
-                  <PuzzleThumbnail
-                    isGrid={layout === PuzzleLayoutType.Grid}
+                  <Thumbnail
+                    isGrid={layout === ThumbnailGridLayoutType.Grid}
                     id={data.id}
                     name={data.name}
                     url={data.url}
@@ -90,16 +91,16 @@ const PuzzlesLayout: NextPage<PageProps> = ({
             })}
           </ul>
 
-          <PuzzlesPagination
+          <Pagination
             isFirstPage={isFirstPage}
             isLastPage={isLastPage}
             pageNum={pageNum}
-            puzzlesCount={puzzlesCount}
+            thumbnailCount={thumbnailCount}
             urlBase={collectionBaseUrl(isPack)}
           />
         </div>
       )}
-    </Wrapper>
+    </>
   );
 };
-export default PuzzlesLayout;
+export default GridLayout;

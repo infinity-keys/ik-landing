@@ -3,7 +3,9 @@ import { NextPage } from "next";
 import { gqlApiSdk } from "@lib/server";
 import { GetAllPacksQuery } from "@lib/generated/graphql";
 import { PAGINATION_COUNTS } from "@lib/constants";
-import PuzzlesLayout from "@components/puzzles/layout";
+import GridLayout from "@components/thumbnail-grid/grid-layout";
+import Wrapper from "@components/wrapper";
+import Head from "next/head";
 
 export interface PageProps {
   packs: GetAllPacksQuery["packs"];
@@ -19,11 +21,17 @@ interface PageParams {
 
 const Packs: NextPage<PageProps> = ({ packs, isFirstPage, isLastPage }) => {
   return (
-    <PuzzlesLayout
-      puzzles={packs}
-      isFirstPage={isFirstPage}
-      isLastPage={isLastPage}
-    />
+    <Wrapper>
+      <Head>
+        <title>Infinity Keys Packs</title>
+      </Head>
+
+      <GridLayout
+        thumbnailList={packs}
+        isFirstPage={isFirstPage}
+        isLastPage={isLastPage}
+      />
+    </Wrapper>
   );
 };
 

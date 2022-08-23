@@ -3,30 +3,30 @@ import clsx from "clsx";
 import ViewListIcon from "@heroicons/react/solid/ViewListIcon";
 import ViewGridIcon from "@heroicons/react/solid/ViewGridIcon";
 
-import PuzzlesDropdown from "@components/puzzles/dropdown";
+import Dropdown from "@components/thumbnail-grid/dropdown";
 
-import { PuzzleLayoutType } from "@lib/types";
+import { ThumbnailGridLayoutType } from "@lib/types";
 import { PAGINATION_COUNTS } from "@lib/constants";
 
 export interface LayoutButtonsProps {
   isGrid: boolean;
-  puzzlesCount: number;
+  thumbnailCount: number;
   urlBase: string;
-  setView: (gridLayout: PuzzleLayoutType) => void;
+  setView: (gridLayout: ThumbnailGridLayoutType) => void;
 }
 
 const LayoutButtons = ({
   isGrid,
-  puzzlesCount,
+  thumbnailCount,
   urlBase,
   setView,
 }: LayoutButtonsProps) => {
-  const [smallestPuzzleCount] = PAGINATION_COUNTS;
+  const [smallestThumbnailCount] = PAGINATION_COUNTS;
 
   return (
     <div className="flex mt-8">
       <button
-        onClick={() => setView(PuzzleLayoutType.List)}
+        onClick={() => setView(ThumbnailGridLayoutType.List)}
         aria-label="set list view"
         className={clsx(
           "border mr-2 bg-white/10 p-2 rounded-md transition-all duration-200",
@@ -36,7 +36,7 @@ const LayoutButtons = ({
         <ViewListIcon className="h-5 w-5" aria-hidden="true" />
       </button>
       <button
-        onClick={() => setView(PuzzleLayoutType.Grid)}
+        onClick={() => setView(ThumbnailGridLayoutType.Grid)}
         aria-label="set grid view"
         className={clsx(
           "border bg-white/10 p-2 rounded-md transition-all duration-200 hover:bg-white/20",
@@ -45,9 +45,9 @@ const LayoutButtons = ({
       >
         <ViewGridIcon className="h-5 w-5" aria-hidden="true" />
       </button>
-      <PuzzlesDropdown
+      <Dropdown
         urlBase={urlBase}
-        currentCount={puzzlesCount || smallestPuzzleCount}
+        currentCount={thumbnailCount || smallestThumbnailCount}
       />
     </div>
   );

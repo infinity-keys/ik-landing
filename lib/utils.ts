@@ -46,7 +46,7 @@ export const isTypePack = (
   return (data as ThumbnailPack).pack_name !== undefined;
 };
 
-// normalize pack and puzzle data for PuzzleThumbnail
+// normalize pack and puzzle data for Thumbnail
 export const thumbnailData = (data: ThumbnailPack | ThumbnailPuzzle) => {
   const pack = isTypePack(data);
   // TODO: remove this once packs get nft images

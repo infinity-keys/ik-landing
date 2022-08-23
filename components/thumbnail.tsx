@@ -5,7 +5,7 @@ import clsx from "clsx";
 import MinimalKeyLogo from "@components/svg/minimal-key-logo-svg";
 import CloudImage from "./cloud-image";
 
-interface PuzzleThumbProps {
+interface ThumbnailProps {
   id: string;
   name: string;
   url: string;
@@ -13,13 +13,13 @@ interface PuzzleThumbProps {
   cloudinary_id: string;
 }
 
-const PuzzleThumbnail = ({
+const Thumbnail = ({
   name,
   id,
   isGrid,
   url,
   cloudinary_id,
-}: PuzzleThumbProps) => {
+}: ThumbnailProps) => {
   return (
     <div
       className={clsx(
@@ -92,4 +92,4 @@ const PuzzleThumbnail = ({
   );
 };
 
-export default PuzzleThumbnail;
+export default Thumbnail;
