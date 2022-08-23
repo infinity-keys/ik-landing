@@ -16,6 +16,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/packs/16/1",
+        destination: "/packs",
+        permanent: true,
+      },
+      {
         source: "/avalanche",
         destination: "/puzzle/avalanche",
         permanent: true,
