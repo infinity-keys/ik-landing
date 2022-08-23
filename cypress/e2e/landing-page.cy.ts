@@ -37,30 +37,19 @@ describe("infinitykeys.io", () => {
     });
   });
 
-  // 8/23/2022 current tests for email submissions are commented out until cy.intercept error is resolved K.R
-
-  // it("fills out partner contact form and submits successfully", () => {
-  //   cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
-  //     statusCode: 200,
-  //   });
-  //   cy.get('[data-cy="email-partner"] input').type("test1@example.com");
-  //   cy.get('[data-cy="email-partner"] button').click();
-  //   cy.get('[data-cy="email-partner-success"]').contains(
-  //     "Thank you for signing up!"
-  //   );
-  // });
-
-  // it("fills out newsletter contact form and submits successfully", () => {
-  //   cy.intercept("POST", "https://formspree.io/f/xnqrqdaq", {
-  //     statusCode: 200,
-  //     body: { next: "/thanks?language=en", ok: true },
-  //   });
-  //   cy.get('[data-cy="email-newsletter"] input').type("test2@example.com");
-  //   cy.get('[data-cy="email-newsletter"] button').click();
-  //   cy.get('[data-cy="email-newsletter-success"]').contains(
-  //     "Thank you for signing up!"
-  //   );
-  // });
+  it.only("fills out newsletter contact form and submits successfully", () => {
+    cy.intercept("POST", "https://formspree.io/f/xnqrqdaq", {
+      statusCode: 200,
+      body: { next: "/thanks?language=en", ok: true },
+    }).as("parSubmit");
+    cy.get('[data-cy="email-newsletter"] input').type("test2@example.com");
+    cy.get('[data-cy="email-newsletter"] button').click();
+    cy.wait("@parSubmit").then(() => {
+      cy.get('[data-cy="email-newsletter-success"]').contains(
+        "Thank you for signing up!"
+      );
+    });
+  });
 
   it("clicks on nav link and directs to the expected url", () => {
     cy.get(".header").contains("Home").click();
