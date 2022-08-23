@@ -23,6 +23,20 @@ describe("infinitykeys.io", () => {
     cy.get('.menu-items a[href="https://blog.infinitykeys.io"]').click();
   });
 
+  it.only("fills out business contact and submits scuccessfully", () => {
+    cy.intercept("POST", "https://formspree.io/f/mdobjayl", {
+      statusCode: 200,
+      body: { next: "/thanks?language=en", ok: true },
+    }).as("busSubmit");
+    cy.get('[data-cy="email-partner"] input').type("test1@example.com");
+    cy.get('[data-cy="email-partner"] button').click();
+    cy.wait("@busSubmit").then(() => {
+      cy.get('[data-cy="email-partner-success"]').contains(
+        "Thank you for signing up!"
+      );
+    });
+  });
+
   // 8/23/2022 current tests for email submissions are commented out until cy.intercept error is resolved K.R
 
   // it("fills out partner contact form and submits successfully", () => {
