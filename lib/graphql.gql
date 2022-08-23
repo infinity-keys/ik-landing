@@ -183,9 +183,16 @@ query GetPuzzleInfoByNftId($nftId: Int!) {
   }
 }
 
-query GetAllPacks {
-  packs {
+query GetAllPacks($limit: Int = 10, $offset: Int = 0) {
+  packs(limit: $limit, offset: $offset) {
+    pack_name
     simple_name
+    pack_id
+  }
+  count: packs_aggregate {
+    aggregate {
+      count
+    }
   }
 }
 

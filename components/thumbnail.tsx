@@ -2,56 +2,61 @@ import Link from "next/link";
 import Avatar from "boring-avatars";
 import clsx from "clsx";
 
-import { routeLandingUrl } from "@lib/utils";
 import MinimalKeyLogo from "@components/svg/minimal-key-logo-svg";
 import CloudImage from "./cloud-image";
 
-interface PuzzleThumbProps {
-  landing_route: string;
-  puzzle_id: string;
-  simple_name: string;
+interface ThumbnailProps {
+  id: string;
+  name: string;
+  url: string;
   isGrid: boolean;
-  cloudinary_id: string;
+  cloudinary_id?: string;
 }
 
-const PuzzleThumbnail = (puzzle: PuzzleThumbProps) => {
+const Thumbnail = ({
+  name,
+  id,
+  isGrid,
+  url,
+  cloudinary_id,
+}: ThumbnailProps) => {
   return (
     <div
       className={clsx(
         "puzzle-thumb bg-blue-800 rounded-lg shadow cursor-pointer",
         {
-          "flex flex-col text-center": puzzle.isGrid,
+          "flex flex-col text-center": isGrid,
         }
       )}
     >
-      <Link href={routeLandingUrl(puzzle.landing_route)}>
+      <Link href={url}>
         <div
           className={clsx(
             "flex-1 flex",
-            puzzle.isGrid ? "p-8 flex-col" : "items-center p-4 lg:px-6"
+            isGrid ? "p-8 flex-col" : "items-center p-4 lg:px-6"
           )}
         >
           <div
             className={clsx(
               "flex-shrink-0",
-              puzzle.isGrid ? "w-32 h-32 mx-auto" : "w-14 h-14 mr-4"
+              isGrid ? "w-32 h-32 mx-auto" : "w-14 h-14 mr-4"
             )}
           >
-            {puzzle.cloudinary_id ? (
+            {cloudinary_id ? (
               <div className="overflow-hidden rounded-full">
                 <div className="next-image-block scale-105	">
                   <CloudImage
                     height={128}
                     width={128}
-                    id={puzzle.cloudinary_id}
+                    id={cloudinary_id}
                     circle
                   />
                 </div>
               </div>
             ) : (
               <Avatar
-                size={puzzle.isGrid ? 128 : 56}
-                name={puzzle.puzzle_id}
+                size={isGrid ? 128 : 56}
+                name={id}
                 variant="marble"
                 colors={["#101D42", "#E400FF", "#3FCCBB", "#8500AC", "#303B5B"]}
               />
@@ -59,21 +64,21 @@ const PuzzleThumbnail = (puzzle: PuzzleThumbProps) => {
           </div>
           <h3
             className={clsx("text-gray-200 text-sm font-medium", {
-              "mt-6": puzzle.isGrid,
+              "mt-6": isGrid,
             })}
           >
-            {puzzle.simple_name}
+            {name}
           </h3>
           <dl
             className={clsx("flex-grow", {
-              " mt-1 flex flex-col justify-between": puzzle.isGrid,
+              " mt-1 flex flex-col justify-between": isGrid,
             })}
           >
             <dt className="sr-only">Logo</dt>
             <dd
               className={clsx(
                 "flex",
-                puzzle.isGrid ? "mt-4 justify-center" : "justify-end"
+                isGrid ? "mt-4 justify-center" : "justify-end"
               )}
             >
               <div className="w-8 h-8 text-turquoise">
@@ -87,4 +92,4 @@ const PuzzleThumbnail = (puzzle: PuzzleThumbProps) => {
   );
 };
 
-export default PuzzleThumbnail;
+export default Thumbnail;

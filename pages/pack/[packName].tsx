@@ -4,12 +4,12 @@ import clsx from "clsx";
 import isNumber from "lodash/isNumber";
 
 import Wrapper from "@components/wrapper";
-import PuzzleThumbnail from "@components/puzzle-thumbnail";
+import Thumbnail from "@components/thumbnail";
 import Alert from "@components/alert";
 
 import { gqlApiSdk } from "@lib/server";
 import { GetPuzzlesByPackQuery } from "@lib/generated/graphql";
-import { PuzzleLayoutType } from "@lib/types";
+import { ThumbnailGridLayoutType } from "@lib/types";
 import { wallet } from "@lib/wallet";
 import useCurrentWidth from "@hooks/useCurrentWidth";
 
@@ -24,6 +24,7 @@ import {
 import { useState } from "react";
 import { minterUtil } from "@lib/minter";
 import LoadingIcon from "@components/loading-icon";
+import { thumbnailData } from "@lib/utils";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -61,7 +62,8 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   const nftId = pack.nftId;
 
   const width = useCurrentWidth();
-  const layout = width < 640 ? PuzzleLayoutType.List : PuzzleLayoutType.Grid;
+  const layout =
+    width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
   const [chain, setChain] = useState<number | undefined>();
   const [claimed, setClaimed] = useState<boolean>(false);
   const [account, setAccount] = useState<string>("");
@@ -137,7 +139,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
         <p className="mt-10 sm:mt-14">
           To be eligible to claim the {pack.pack_name} Achievement you must
           successfully complete the following puzzles and claim the
-          corresponding achievement NFT. All three NFTs should be claimed on the
+          corresponding achievement NFT. All the NFTs must be claimed on the
           same chain to qualify.
         </p>
 
@@ -149,19 +151,20 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
               message || loading ? "my-12 sm:mb-0" : "my-10"
             )}
           >
-            {puzzles.map(({ puzzle_id, landing_route, simple_name, nft }) => (
-              <li key={puzzle_id}>
-                <PuzzleThumbnail
-                  isGrid={layout === PuzzleLayoutType.Grid}
-                  {...{
-                    puzzle_id,
-                    landing_route,
-                    simple_name,
-                    cloudinary_id: nft?.nft_metadatum?.cloudinary_id || "",
-                  }}
-                />
-              </li>
-            ))}
+            {puzzles.map((puzzle) => {
+              const data = thumbnailData(puzzle);
+              return (
+                <li key={data.id}>
+                  <Thumbnail
+                    isGrid={layout === ThumbnailGridLayoutType.Grid}
+                    id={data.id}
+                    name={data.name}
+                    url={data.url}
+                    cloudinary_id={data.cloudinary_id}
+                  />
+                </li>
+              );
+            })}
           </ul>
 
           {message && (
