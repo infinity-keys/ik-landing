@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.1",
-    "@coinbase/wallet-sdk": "^3.4.2",
+    "@coinbase/wallet-sdk": "^3.5.0",
     "@formspree/react": "^2.2.4",
     "@graphql-codegen/cli": "^2.11.6",
     "@graphql-codegen/introspection": "^2.2.1",
@@ -33,7 +33,7 @@
     "boring-avatars": "^1.7.0",
     "cloudinary-build-url": "^0.2.4",
     "clsx": "^1.1.1",
-    "ethers": "^5.6.5",
+    "ethers": "^5.7.0",
     "fortmatic": "^2.3.0",
     "graphql": "^16.6.0",
     "graphql-request": "^4.2.0",
@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@cld-apis/types": "^0.1.6",
-    "@next/bundle-analyzer": "^12.2.4",
+    "@next/bundle-analyzer": "^12.2.5",
     "@typechain/ethers-v5": "^10.1.0",
     "@types/lodash": "^4.14.184",
     "@types/node": "^18",
