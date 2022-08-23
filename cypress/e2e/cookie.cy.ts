@@ -1,4 +1,5 @@
 import { decodeJwt } from "jose";
+import { IkJwt } from "../../lib/types";
 
 beforeEach(() => {
   cy.visit("/");
@@ -13,8 +14,7 @@ describe("read cookies in cypress", () => {
         if (!cookie) {
           throw new Error("no cookie");
         }
-        const decoded = decodeJwt(String(cookie));
-        console.log(decoded);
+        console.log(decodeJwt(String(cookie)));
       });
 
     cy.get(".puzzle-thumb").contains("notright").click();
@@ -25,11 +25,11 @@ describe("read cookies in cypress", () => {
         if (!cookie) {
           throw new Error("no cookie");
         }
-        const decoded = decodeJwt(String(cookie));
-        cy.wrap(decoded.sub).as("userId");
+        const ikDecoded = decodeJwt(String(cookie)) as unknown as IkJwt;
+        cy.wrap(ikDecoded.sub).as("userId");
         cy.get("@userId").should("have.property", "sub");
-        cy.wrap(decoded.claims["https://infinitykeys.io"]).as("puzzleCount");
-        cy.get("@puzzleCount").should("have.property", "puzzles");
+        cy.wrap(ikDecoded.claims["https://infinitykeys.io"]).as("claims");
+        cy.get("@claims").should("have.property", "puzzles");
       });
 
     cy.get(".ik-code-input").first().wait(1000).type("wrong", { delay: 750 });
@@ -39,11 +39,11 @@ describe("read cookies in cypress", () => {
         if (!cookie) {
           throw new Error("no cookie");
         }
-        const decoded = decodeJwt(String(cookie));
-        cy.wrap(decoded.sub).as("userId");
-        cy.wrap(decoded.claims["https://infinitykeys.io"]).as("puzzleCount");
+        const ikDecoded = decodeJwt(String(cookie)) as unknown as IkJwt;
+        cy.wrap(ikDecoded.sub).as("userId");
         cy.get("@userId").should("have.property", "sub");
-        cy.get("@puzzleCount").should("have.property", "puzzles");
+        cy.wrap(ikDecoded.claims["https://infinitykeys.io"]).as("claims");
+        cy.get("@claims").should("have.property", "puzzles");
       });
   });
 });
