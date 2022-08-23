@@ -54,8 +54,8 @@ export const thumbnailData = (
   const pack = isTypePack(data);
   // TODO: remove this once packs get nft images
   const cloudinary_id = pack
-    ? ""
-    : data.nft?.nft_metadatum?.cloudinary_id || "";
+    ? undefined
+    : data.nft?.nft_metadatum?.cloudinary_id || undefined;
 
   return {
     id: pack ? data.pack_id : data.puzzle_id,

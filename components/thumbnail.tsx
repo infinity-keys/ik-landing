@@ -10,7 +10,7 @@ interface ThumbnailProps {
   name: string;
   url: string;
   isGrid: boolean;
-  cloudinary_id: string;
+  cloudinary_id?: string;
 }
 
 const Thumbnail = ({
