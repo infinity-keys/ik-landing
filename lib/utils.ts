@@ -8,7 +8,7 @@ import {
   PUZZLE_SUCCESS_BASE,
   welcome,
 } from "./constants";
-import { ThumbnailPack, ThumbnailPuzzle } from "./types";
+import { Thumbnail, ThumbnailPack, ThumbnailPuzzle } from "./types";
 
 export const epochMinus30s = () => Math.round(new Date().getTime() / 1000) - 30;
 
@@ -41,41 +41,16 @@ export const toHex = (num: number) => {
 };
 
 // Thumbnail grid
-
-const Thumbnail = z.object({
-  id: z.string(),
-  name: z.string(),
-  url: z.string(),
-  cloudinary_id: z.optional(z.string()),
-});
-
-const PackThumbnailSchema: z.ZodType<ThumbnailPack> = z.object({
-  // __typename: z.optional(z.union([z.literal("packs"), z.undefined()])),
-  // pack_name: z.string(),
-  // simple_name: z.string(),
-  pack_id: z.any().optional(),
-});
-
-type Thumbnail = z.infer<typeof Thumbnail>;
-
-const exampleThumbnail = Thumbnail.parse({
-  id: "asdk",
-  name: "ogn",
-  url: "ad",
-  cloudinary_id: "alskdj",
-});
-
-export const isTypePack = (data: unknown): data is ThumbnailPack => {
-  return (
-    !!data &&
-    typeof data === "object" &&
-    "pack_name" in data &&
-    data?.pack_name !== undefined
-  );
+export const isTypePack = (
+  data: ThumbnailPack | ThumbnailPuzzle
+): data is ThumbnailPack => {
+  return (data as ThumbnailPack).pack_name !== undefined;
 };
 
 // normalize pack and puzzle data for Thumbnail
-export const thumbnailData = (data: unknown): Thumbnail => {
+export const thumbnailData = (
+  data: ThumbnailPack | ThumbnailPuzzle
+): Thumbnail => {
   const pack = isTypePack(data);
   // TODO: remove this once packs get nft images
   const cloudinary_id = pack

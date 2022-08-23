@@ -29,6 +29,7 @@ export interface PuzzleInput {
   puzzleId: string;
 }
 
+// Thumbnail and Grid Layout
 export enum ThumbnailGridLayoutType {
   Grid = "grid",
   List = "list",
@@ -37,3 +38,12 @@ export enum ThumbnailGridLayoutType {
 
 export type ThumbnailPuzzle = PublicPuzzlesQuery["puzzles"][0];
 export type ThumbnailPack = GetAllPacksQuery["packs"][0];
+
+export const ThumbnailSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  url: z.string(),
+  cloudinary_id: z.optional(z.string()),
+});
+
+export type Thumbnail = z.infer<typeof ThumbnailSchema>;
