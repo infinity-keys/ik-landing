@@ -3,14 +3,14 @@
 export interface Typegen0 {
   "@@xstate/typegen": true;
   internalEvents: {
-    "xstate.init": { type: "xstate.init" };
+    "": { type: "" };
     "done.invoke.guess": {
       type: "done.invoke.guess";
       data: unknown;
       __tip: "See the XState TS docs to learn how to strongly type this.";
     };
-    "": { type: "" };
     "error.platform.guess": { type: "error.platform.guess"; data: unknown };
+    "xstate.init": { type: "xstate.init" };
   };
   invokeSrcNameMap: {
     sendGuess: "done.invoke.guess";
@@ -22,11 +22,11 @@ export interface Typegen0 {
     delays: never;
   };
   eventsCausingActions: {
-    setText: "INPUT";
-    setPuzzleInfo: "PUZZLE_INFO";
-    clearText: "xstate.init" | "PUZZLE_INFO" | "INPUT" | "done.invoke.guess";
+    clearText: "INPUT" | "PUZZLE_INFO" | "done.invoke.guess" | "xstate.init";
     goToFailRoute: "done.invoke.guess";
     goToSuccessRoute: "";
+    setPuzzleInfo: "PUZZLE_INFO";
+    setText: "INPUT";
   };
   eventsCausingServices: {
     sendGuess: "INPUT";
@@ -38,13 +38,13 @@ export interface Typegen0 {
   };
   eventsCausingDelays: {};
   matchesStates:
-    | "idle"
-    | "guessing"
-    | "guessIncorrect"
     | "guessCorrect"
     | "guessCorrect.deciding"
     | "guessCorrect.go"
     | "guessCorrect.stay"
+    | "guessIncorrect"
+    | "guessing"
+    | "idle"
     | { guessCorrect?: "deciding" | "go" | "stay" };
   tags: never;
 }

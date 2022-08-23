@@ -4,6 +4,7 @@ import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 import Button from "./button";
+import { PACK_COLLECTION_BASE } from "@lib/constants";
 
 export const navigation = [
   { name: "Home", href: "/" },
@@ -76,8 +77,8 @@ export default function Header() {
                 className="grid grid-cols-2 gap-1 sm:gap-4"
               >
                 <Button
-                  text="Starter Pack"
-                  href="/pack/starter-pack"
+                  text="Packs"
+                  href={`/${PACK_COLLECTION_BASE}`}
                   variant="outline"
                   responsive
                 />
