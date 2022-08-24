@@ -8,25 +8,11 @@ describe("infinitykeys.io/puzzles", () => {
     cy.url().should("include", "/puzzles");
   });
 
-  it("should click hunts link and navigate to puzzle dashboard", () => {
-    cy.contains("a.header-nav--link", "Hunts").click();
-    cy.url().should("include", "/puzzles");
-  });
-
   it("should go to first puzzle on puzzles page when thumbnail clicked", () => {
     cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
     cy.url().should("include", "/puzzles");
     cy.get(".puzzle-thumb").first().click();
     cy.url().should("include", "/puzzle/");
-  });
-
-  it("should click on multiple thumbnails", () => {
-    cy.get("a.header-nav--link").contains("Hunts").click();
-    cy.get(".puzzle-thumb").first().click();
-    cy.get(".magic-input");
-    cy.go("back");
-    cy.get(".puzzle-thumb").last().click();
-    cy.get(".magic-input");
   });
 
   it("go to landing page and verify input boxes", () => {
@@ -54,33 +40,7 @@ describe("infinitykeys.io/puzzles", () => {
   //   cy.get("a.previous").contains("Previous").click();
   // });
 
-  it("correct input using input boxes navigates to puzzle solved page", () => {
-    cy.contains("a.header-nav--link", "Hunts").click();
-    cy.get(".puzzle-thumb").contains("notright").click();
-    cy.get(".ik-code-input").first().wait(1000).type("wrong", { delay: 750 });
-    cy.url().should("include", "/solved/notright");
-  });
 
-  it("incorrect input using input boxes displays fail message", () => {
-    cy.contains("a.header-nav--link", "Hunts").click();
-    cy.get(".puzzle-thumb").contains("notright").click();
-    cy.get(".ik-code-input").first().wait(1000).type("asdfg", { delay: 750 });
-    cy.contains("Sorry, that answer was correct. Try wrong this time.");
-  });
-
-  it("correct input using input field navigates to puzzle solved page", () => {
-    cy.contains("a.header-nav--link", "Hunts").click();
-    cy.get(".puzzle-thumb").contains("communitycode").click();
-    cy.get("input").type("with kindness and respect");
-    cy.url().should("include", "/solved/communitycode");
-  });
-
-  it("incorrect input using input field displays fail message", () => {
-    cy.contains("a.header-nav--link", "Hunts").click();
-    cy.get(".puzzle-thumb").contains("communitycode").click();
-    cy.get("input").type("thiw ssendink dna tcepser");
-    cy.contains("Thats not it. Need help? Join our discord");
-  });
 });
 
 export {};

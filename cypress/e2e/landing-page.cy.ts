@@ -53,10 +53,6 @@ describe("infinitykeys.io", () => {
     cy.url().should("include", Cypress.config().baseUrl + "/");
 
     cy.visit("/");
-    cy.get(".header").contains("Hunts").click();
-    cy.url().should("include", Cypress.config().baseUrl + "/puzzles");
-
-    cy.visit("/");
     cy.get(".header").contains("Collab").click();
     cy.url().should("include", Cypress.config().baseUrl + "/#collab");
 
