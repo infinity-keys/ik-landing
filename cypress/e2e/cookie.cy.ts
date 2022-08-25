@@ -1,4 +1,3 @@
-import { IK_CLAIMS_NAMESPACE } from "@lib/constants";
 import { decodeJwt } from "jose";
 import { IkJwt } from "../../lib/types";
 
