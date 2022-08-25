@@ -14,7 +14,11 @@ describe("read cookies in cypress", () => {
         if (!cookie) {
           throw new Error("no cookie");
         }
-        console.log(decodeJwt(String(cookie)));
+        const ikDecoded = decodeJwt(String(cookie)) as unknown as IkJwt;
+        cy.wrap(ikDecoded.sub).as("userId");
+        cy.get("@userId").should("have.property", "sub");
+        cy.wrap(ikDecoded.claims["https://infinitykeys.io"]).as("claims");
+        cy.get("@claims").should("have.property", "puzzles");
       });
 
     cy.get(".puzzle-thumb").contains("notright").click();
