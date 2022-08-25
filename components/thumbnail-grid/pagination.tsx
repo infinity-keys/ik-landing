@@ -1,8 +1,8 @@
 import Link from "next/link";
 import clsx from "clsx";
+import ArrowLeftIcon from "@heroicons/react/20/solid/ArrowLeftIcon";
+import ArrowRightIcon from "@heroicons/react/20/solid/ArrowRightIcon";
 
-import ArrowSmLeftIcon from "@heroicons/react/solid/ArrowSmLeftIcon";
-import ArrowSmRightIcon from "@heroicons/react/solid/ArrowSmRightIcon";
 import { PAGINATION_COUNTS } from "@lib/constants";
 
 export interface PaginationProps {
@@ -40,7 +40,7 @@ const Pagination = ({
           }
         >
           <a className="previous flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
-            <ArrowSmLeftIcon className="h-4 w-4 mr-2" aria-hidden="true" />{" "}
+            <ArrowLeftIcon className="h-4 w-4 mr-2" aria-hidden="true" />{" "}
             Previous
           </a>
         </Link>
@@ -50,7 +50,7 @@ const Pagination = ({
         <Link href={`${urlBase}/${thumbnailCount}/${pageNum + 1}`}>
           <a className="next flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
             Next
-            <ArrowSmRightIcon className="h-4 w-4 ml-2" aria-hidden="true" />
+            <ArrowRightIcon className="h-4 w-4 ml-2" aria-hidden="true" />
           </a>
         </Link>
       )}

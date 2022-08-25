@@ -1,4 +1,4 @@
-import { InformationCircleIcon } from "@heroicons/react/solid";
+import InformationCircleIcon from "@heroicons/react/20/solid/InformationCircleIcon";
 
 import Markdown from "@components/markdown";
 
