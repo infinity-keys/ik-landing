@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
-import ViewListIcon from "@heroicons/react/solid/ViewListIcon";
-import ViewGridIcon from "@heroicons/react/solid/ViewGridIcon";
+import Bars4Icon from "@heroicons/react/20/solid/Bars4Icon";
+import Squares2X2Icon from "@heroicons/react/20/solid/Squares2X2Icon";
 
 import Dropdown from "@components/thumbnail-grid/dropdown";
 
@@ -33,7 +33,7 @@ const LayoutButtons = ({
           !isGrid ? "border-white/20" : "border-transparent text-gray-400"
         )}
       >
-        <ViewListIcon className="h-5 w-5" aria-hidden="true" />
+        <Bars4Icon className="h-5 w-5" aria-hidden="true" />
       </button>
       <button
         onClick={() => setView(ThumbnailGridLayoutType.Grid)}
@@ -43,7 +43,7 @@ const LayoutButtons = ({
           isGrid ? "border-white/20" : "border-transparent text-gray-400"
         )}
       >
-        <ViewGridIcon className="h-5 w-5" aria-hidden="true" />
+        <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
       </button>
       <Dropdown
         urlBase={urlBase}
