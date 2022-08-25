@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 
-import ChevronDownIcon from "@heroicons/react/solid/ChevronDownIcon";
+import ChevronDownIcon from "@heroicons/react/20/solid/ChevronDownIcon";
 
 import { PAGINATION_COUNTS } from "@lib/constants";
 
