@@ -5,7 +5,6 @@ import Button from "./button";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Hunts", href: "#" },
   { name: "Collab", href: "#collab" },
   { name: "Thesis", href: "#" },
 ];
