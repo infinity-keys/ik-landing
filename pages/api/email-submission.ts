@@ -12,7 +12,8 @@ export default async function handler(
 ) {
   if (req.method !== "POST") return res.status(405).end();
 
-  const email = req.body.event.data.new.form_data.email || undefined;
+  const email = req.body.event?.data?.new?.form_data?.email || undefined;
+  console.error("req.body: ", req.body);
 
   if (!email || email.trim().length <= 5 || !email.includes("@"))
     return res.status(400).json({ error: "Invalid email" });
