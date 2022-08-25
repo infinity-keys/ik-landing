@@ -8,10 +8,6 @@ import { PACK_COLLECTION_BASE } from "@lib/constants";
 
 export const navigation = [
   { name: "Home", href: "/" },
-  {
-    name: "Hunts",
-    href: "/puzzles",
-  },
   { name: "Collab", href: "/#collab" },
   {
     name: "Thesis",
