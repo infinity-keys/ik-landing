@@ -1,3 +1,9 @@
+// TO DO //
+
+// Add tests for puzzles and packs when
+// global wallet PR is merged:
+// https://github.com/infinity-keys/ik-landing/pull/262
+
 beforeEach(() => {
   cy.visit("/");
 });
