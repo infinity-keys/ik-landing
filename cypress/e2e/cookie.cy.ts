@@ -1,3 +1,4 @@
+import { IK_CLAIMS_NAMESPACE } from "@lib/constants";
 import { decodeJwt } from "jose";
 import { IkJwt } from "../../lib/types";
 
@@ -47,7 +48,11 @@ describe("read cookies in cypress", () => {
         cy.wrap(ikDecoded.sub).as("userId");
         cy.get("@userId").should("have.property", "sub");
         cy.wrap(ikDecoded.claims["https://infinitykeys.io"]).as("claims");
+        cy.wrap(ikDecoded.claims["https://infinitykeys.io"].puzzles[0]).as(
+          "arrValue"
+        );
         cy.get("@claims").should("have.property", "puzzles");
+        cy.get("@arrValue").should("equal", "notright");
       });
   });
 });
