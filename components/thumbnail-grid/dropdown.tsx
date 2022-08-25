@@ -7,8 +7,9 @@ import ChevronDownIcon from "@heroicons/react/solid/ChevronDownIcon";
 
 import { PAGINATION_COUNTS } from "@lib/constants";
 
-interface PuzzlesDropdownProps {
+interface DropdownProps {
   currentCount: number;
+  urlBase: string;
 }
 
 interface DropdownLinkProps extends HTMLProps<HTMLAnchorElement> {
@@ -31,7 +32,7 @@ const DropdownLink = forwardRef<HTMLAnchorElement, DropdownLinkProps>(
 
 DropdownLink.displayName = "DropdownLink";
 
-const PuzzlesDropdown = ({ currentCount }: PuzzlesDropdownProps) => {
+const Dropdown = ({ currentCount, urlBase }: DropdownProps) => {
   return (
     <Menu as="div" className="relative inline-block text-left ml-5 z-10">
       <div>
@@ -54,16 +55,16 @@ const PuzzlesDropdown = ({ currentCount }: PuzzlesDropdownProps) => {
           <div className="">
             {PAGINATION_COUNTS.map((count) => {
               const selectedCount = currentCount === count;
-              const [smallestPuzzleCount] = PAGINATION_COUNTS;
+              const [smallestThumbnailCount] = PAGINATION_COUNTS;
 
               return (
                 <Menu.Item key={count} disabled={selectedCount}>
                   {({ active }) => (
                     <DropdownLink
                       href={
-                        count === smallestPuzzleCount
-                          ? "/puzzles"
-                          : `/puzzles/${count}/1`
+                        count === smallestThumbnailCount
+                          ? urlBase
+                          : `${urlBase}/${count}/1`
                       }
                       style={{
                         pointerEvents: selectedCount ? "none" : "auto",
@@ -89,4 +90,4 @@ const PuzzlesDropdown = ({ currentCount }: PuzzlesDropdownProps) => {
   );
 };
 
-export default PuzzlesDropdown;
+export default Dropdown;

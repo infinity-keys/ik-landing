@@ -4,14 +4,15 @@ import clsx from "clsx";
 import isNumber from "lodash/isNumber";
 
 import Wrapper from "@components/wrapper";
-import PuzzleThumbnail from "@components/puzzle-thumbnail";
+import Thumbnail from "@components/thumbnail";
 
 import { gqlApiSdk } from "@lib/server";
 import { GetPuzzlesByPackQuery } from "@lib/generated/graphql";
-import { PuzzleLayoutType } from "@lib/types";
+import { ThumbnailGridLayoutType } from "@lib/types";
 import useCurrentWidth from "@hooks/useCurrentWidth";
 
 import Minter from "@components/minter";
+import { thumbnailData } from "@lib/utils";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -35,7 +36,8 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   if (!tokenId) throw new Error("Invalid token id.");
 
   const width = useCurrentWidth();
-  const layout = width < 640 ? PuzzleLayoutType.List : PuzzleLayoutType.Grid;
+  const layout =
+    width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
 
   return (
     <Wrapper>
@@ -47,7 +49,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
         <p className="mt-10 sm:mt-14">
           To be eligible to claim the {pack.pack_name} Achievement you must
           successfully complete the following puzzles and claim the
-          corresponding achievement NFT. All three NFTs should be claimed on the
+          corresponding achievement NFT. All the NFTs must be claimed on the
           same chain to qualify.
         </p>
 
@@ -58,19 +60,20 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
               "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 sm:mt-6 my-10"
             )}
           >
-            {puzzles.map(({ puzzle_id, landing_route, simple_name, nft }) => (
-              <li key={puzzle_id}>
-                <PuzzleThumbnail
-                  isGrid={layout === PuzzleLayoutType.Grid}
-                  {...{
-                    puzzle_id,
-                    landing_route,
-                    simple_name,
-                    cloudinary_id: nft?.nft_metadatum?.cloudinary_id || "",
-                  }}
-                />
-              </li>
-            ))}
+            {puzzles.map((puzzle) => {
+              const data = thumbnailData(puzzle);
+              return (
+                <li key={data.id}>
+                  <Thumbnail
+                    isGrid={layout === ThumbnailGridLayoutType.Grid}
+                    id={data.id}
+                    name={data.name}
+                    url={data.url}
+                    cloudinary_id={data.cloudinary_id}
+                  />
+                </li>
+              );
+            })}
           </ul>
 
           <Minter tokenId={tokenId} gatedIds={gatedIds} />
