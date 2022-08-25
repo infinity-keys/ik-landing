@@ -11,9 +11,8 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method !== "POST") return res.status(405).end();
-  console.log(req.body);
 
-  const email = req.body.data.new.form_data.email || undefined;
+  const email = req.body.event.data.new.form_data.email || undefined;
 
   if (!email || email.trim().length <= 5 || !email.includes("@"))
     return res.status(400).json({ error: "Invalid email" });
