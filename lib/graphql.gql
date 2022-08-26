@@ -175,6 +175,17 @@ query GetAllNftClaims {
   }
 }
 
+query GetPuzzleInfoById($puzzle_id: uuid!) {
+  puzzles(where: { puzzle_id: { _eq: $puzzle_id } }) {
+    simple_name
+    nft {
+      nft_metadatum {
+        cloudinary_id
+      }
+    }
+  }
+}
+
 query GetPuzzleInfoByNftId($nftId: Int!) {
   puzzles(where: { nft: { tokenId: { _eq: $nftId } } }) {
     simple_name
