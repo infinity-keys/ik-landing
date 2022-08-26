@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import sendgrid from "@sendgrid/mail";
 import { gqlApiSdk } from "@lib/server";
 import { cloudinaryUrl } from "@lib/images";
+import { SENDGRID_SENDER_ACCOUNT } from "@lib/constants";
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY || "");
 
 type Data = {
@@ -14,19 +15,31 @@ export default async function handler(
 ) {
   if (req.method !== "POST") return res.status(405).end();
 
-  const email = req.body.event?.data?.new?.form_data?.email || undefined;
-  const puzzle_id = req.body.event?.data?.new?.puzzle_id || undefined;
+  const submission = req.body.event.data.new;
+
+  if (!submission)
+    res.status(400).json({ error: "Error processing your request" });
+
+  const {
+    puzzle_id,
+    form_data: { email },
+  } = req.body.event.data.new;
+
+  if (!puzzle_id) res.status(400).json({ error: "Invalid Puzzle ID" });
+
+  if (!email || email.trim().length <= 5 || !email.includes("@"))
+    res.status(400).json({ error: "Invalid email" });
 
   const gql = await gqlApiSdk();
   const { puzzles } = await gql.GetPuzzleInfoById({ puzzle_id });
+  const nft = puzzles[0].nft;
 
-  if (!email || email.trim().length <= 5 || !email.includes("@"))
-    return res.status(400).json({ error: "Invalid email" });
+  if (!nft) res.status(400).json({ error: "No NFT available" });
 
   try {
     await sendgrid.send({
       to: email, // the recipient's email
-      from: "noreply@infinitykeys.io", // the SendGrid's sender email
+      from: SENDGRID_SENDER_ACCOUNT, // the SendGrid's sender email
       subject: "Your New NFT Treasure Unlocked",
       html: `
       <div style="max-width: 660px; font-family: sans-serif; font-size: 17px">
@@ -39,7 +52,7 @@ export default async function handler(
       <p style="text-align: center">
         <img
             src="${cloudinaryUrl(
-              puzzles[0].nft.nft_metadatum.cloudinary_id,
+              nft.nft_metadatum.cloudinary_id,
               300,
               300,
               false
