@@ -20,7 +20,7 @@ export default async function handler(
   try {
     await sendgrid.send({
       to: email, // the recipient's email
-      from: "social@infinitykeys.io", // the SendGrid's sender email
+      from: "noreply@infinitykeys.io", // the SendGrid's sender email
       subject: "It worked!",
       html: `<div>You've got mail</div>`,
     });
