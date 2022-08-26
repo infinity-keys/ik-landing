@@ -30,10 +30,3 @@ export default async function handler(
 
   return res.status(200).json({ error: "" });
 }
-
-/*
-
-@TODO
-figure out response shape from hasura
-push a draft and test hasura
-*/
