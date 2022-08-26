@@ -1,13 +1,16 @@
+import { use } from "chai";
 import { decodeJwt } from "jose";
 import { IkJwt } from "../../lib/types";
 
 beforeEach(() => {
-  cy.visit("/");
-  cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
+  cy.visit("/puzzle/notright");
 });
 
 describe("read cookies in cypress", () => {
-  it("test if cookie exist when no puzzle attempt/puzzle fail/puzzle solve", () => {
+  let userId: string | undefined;
+  let puzzlesClaims: string[];
+
+  it("claims start empty, puzzle solve adds claim. user stays consistent through session", () => {
     cy.getCookie("ik-id")
       .should("have.property", "value")
       .then((cookie) => {
@@ -15,13 +18,13 @@ describe("read cookies in cypress", () => {
           throw new Error("no cookie");
         }
         const ikDecoded = decodeJwt(String(cookie)) as unknown as IkJwt;
-        cy.wrap(ikDecoded.sub).as("userId");
-        cy.get("@userId").should("have.property", "sub");
-        cy.wrap(ikDecoded.claims["https://infinitykeys.io"]).as("claims");
-        cy.get("@claims").should("have.property", "puzzles");
+        userId = ikDecoded.sub;
+        puzzlesClaims = ikDecoded.claims["https://infinitykeys.io"].puzzles;
+
+        expect(userId).to.be.a("string");
+        expect(puzzlesClaims).to.be.empty;
       });
 
-    cy.get(".puzzle-thumb").contains("notright").click();
     cy.get(".ik-code-input").first().wait(1000).type("gnorw", { delay: 750 });
     cy.getCookie("ik-id")
       .should("have.property", "value")
@@ -30,10 +33,8 @@ describe("read cookies in cypress", () => {
           throw new Error("no cookie");
         }
         const ikDecoded = decodeJwt(String(cookie)) as unknown as IkJwt;
-        cy.wrap(ikDecoded.sub).as("userId");
-        cy.get("@userId").should("have.property", "sub");
-        cy.wrap(ikDecoded.claims["https://infinitykeys.io"]).as("claims");
-        cy.get("@claims").should("have.property", "puzzles");
+        expect(ikDecoded.sub).equals(userId);
+        expect(puzzlesClaims).to.be.empty;
       });
 
     cy.get(".ik-code-input").first().wait(1000).type("wrong", { delay: 750 });
@@ -44,14 +45,9 @@ describe("read cookies in cypress", () => {
           throw new Error("no cookie");
         }
         const ikDecoded = decodeJwt(String(cookie)) as unknown as IkJwt;
-        cy.wrap(ikDecoded.sub).as("userId");
-        cy.get("@userId").should("have.property", "sub");
-        cy.wrap(ikDecoded.claims["https://infinitykeys.io"]).as("claims");
-        cy.wrap(ikDecoded.claims["https://infinitykeys.io"].puzzles[0]).as(
-          "arrValue"
-        );
-        cy.get("@claims").should("have.property", "puzzles");
-        cy.get("@arrValue").should("equal", "notright");
+        puzzlesClaims = ikDecoded.claims["https://infinitykeys.io"].puzzles;
+        expect(ikDecoded.sub).equals(userId);
+        expect(puzzlesClaims).to.include("notright");
       });
   });
 });
