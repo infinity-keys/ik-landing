@@ -26,3 +26,15 @@ export const formSubmit = async ({ data }: { data: unknown }) => {
 
   return res;
 };
+
+export const deleteUser = async ({ uid }: { uid: string }) => {
+  const res = await fetch("/api/delete-user", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ uid }),
+  });
+
+  return res;
+};
