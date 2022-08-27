@@ -78,6 +78,13 @@ export default async function handler(
         <a href="https://discord.com/invite/infinitykeys">IK Discord</a>.
       </p>
 
+      <img
+        src="https://res.cloudinary.com/infinity-keys/image/upload/v1661555979/gifs/playingthegame_eavoxk.gif"
+        height="108"
+        width="260"
+        alt="you new nft"
+      />
+
       <p>See you on the next hunt!<br><em>- Infinity Keys</em></p>
     </div>
 
