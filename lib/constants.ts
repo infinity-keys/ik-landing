@@ -8,6 +8,10 @@ export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/;
 export const welcome = "Thanks for playing :)";
 
 // Route stuff, see utils.ts:Routes
+export const URL_ORIGIN =
+  typeof window !== "undefined"
+    ? window.location.origin
+    : "http://localhost:3000";
 export const PACK_COLLECTION_BASE = "packs";
 export const PACK_LANDING_BASE = "pack";
 export const PUZZLE_COLLECTION_BASE = "puzzles";

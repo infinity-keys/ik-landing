@@ -1,13 +1,15 @@
+import { URL_ORIGIN } from "./constants";
 import { PuzzleApiResponse, Guess } from "./types";
 
-export const ikApiUrlBase = new URL("/api", window.location.origin);
+export const ikApiUrlBase = new URL(`${URL_ORIGIN}/api/`);
 
 // Client
 export const puzzlePost = async ({
   puzzleId,
   code,
 }: Guess): Promise<PuzzleApiResponse> => {
-  const url = new URL(`/check/code/${puzzleId}`, ikApiUrlBase);
+  const url = new URL(`check/code/${puzzleId}`, ikApiUrlBase);
+
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -19,7 +21,7 @@ export const puzzlePost = async ({
 };
 
 export const formSubmit = async ({ data }: { data: unknown }) => {
-  const url = new URL("/submission", ikApiUrlBase);
+  const url = new URL("submission", ikApiUrlBase);
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -33,7 +35,7 @@ export const formSubmit = async ({ data }: { data: unknown }) => {
 
 export const checkIfClaimed = async (account: string, tokenId: number) => {
   // const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId?.toString()}`;
-  const url = new URL("/minter/check-claimed", ikApiUrlBase);
+  const url = new URL("minter/check-claimed", ikApiUrlBase);
   url.searchParams.set("account", account);
   url.searchParams.set("tokenId", tokenId.toString());
 
@@ -53,7 +55,7 @@ export const verify = async (
   // const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}${
   //   gatedIds.length ? gatedIdsString : ""
   // }`;
-  const url = new URL("/minter/verify", ikApiUrlBase);
+  const url = new URL("minter/verify", ikApiUrlBase);
   url.searchParams.set("account", account);
   url.searchParams.set("tokenId", tokenId.toString());
   url.searchParams.set("chainId", chain.toString());
