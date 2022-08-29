@@ -6,7 +6,7 @@ import Bars3Icon from "@heroicons/react/24/outline/Bars3Icon";
 import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-import { PACK_COLLECTION_BASE } from "@lib/constants";
+import { PACK_COLLECTION_BASE, PUZZLE_LANDING_BASE } from "@lib/constants";
 import Button from "./button";
 
 export const navigation = [
@@ -72,6 +72,12 @@ export default function Header() {
                 <Button
                   text="Packs"
                   href={`/${PACK_COLLECTION_BASE}`}
+                  variant="outline"
+                  responsive
+                />
+                <Button
+                  text="Puzzles"
+                  href="/puzzles"
                   variant="outline"
                   responsive
                 />
