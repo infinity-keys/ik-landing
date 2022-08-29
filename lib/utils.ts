@@ -68,6 +68,4 @@ export const thumbnailData = (
   };
 };
 
-export const validChain = (chain: number) => {
-  return chainIds.includes(chain);
-};
+export const validChain = (chain: number) => chainIds.includes(chain);

@@ -12,7 +12,7 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
 import { getDefaultWallets } from "@rainbow-me/rainbowkit";
-import { merge } from "lodash";
+import loMerge from "lodash/merge";
 
 import "loaders.css/loaders.min.css";
 import "../styles/globals.css";
@@ -22,7 +22,7 @@ import "nprogress/nprogress.css";
 // import { UserProvider } from "@auth0/nextjs-auth0";
 
 // Rainbow Kit Params
-export const IKTheme = merge(darkTheme(), {
+export const IKTheme = loMerge(darkTheme(), {
   colors: {
     accentColor: "#3FCCBB",
     connectButtonBackground: "#354161",
@@ -38,7 +38,7 @@ export const IKTheme = merge(darkTheme(), {
     modal: "8px",
     modalMobile: "8px",
   },
-} as Theme);
+});
 
 export const { chains, provider } = configureChains(
   [chain.mainnet, chain.polygon, avalancheChain, chain.optimism],

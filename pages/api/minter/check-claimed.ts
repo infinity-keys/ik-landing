@@ -15,17 +15,19 @@ export default async function handler(
   // faster call on avax than eth.. theoretically should be the same
   // ensure token were checking exists
   //would be dope to move this to database
-  if (
-    parseInt(tokenId, 10) >=
-    (await contractLookup[AVAX_CHAIN_ID].totalSupplyAll()).length
-  )
-    return res.status(500).end();
+  const totalSupply = await contractLookup[AVAX_CHAIN_ID].totalSupplyAll();
+  if (parseInt(tokenId, 10) >= totalSupply.length) return res.status(500).end();
 
-  let claimed = false;
-  for (let i = 0; i < chainIds.length; i++) {
-    const contract = contractLookup[chainIds[i]];
-    if (await contract.checkIfClaimed(tokenId, account)) claimed = true;
-  }
+  // let claimed = false;
+  // for (let i = 0; i < chainIds.length; i++) {
+  //   const contract = contractLookup[chainIds[i]];
+  //   if (await contract.checkIfClaimed(tokenId, account)) claimed = true;
+  // }
+  const contractPromises = chainIds.map((chainId) =>
+    contractLookup[chainId].checkIfClaimed(tokenId, account)
+  );
+  const contractClaims = await Promise.all(contractPromises);
+  const claimed = contractClaims.some(Boolean);
 
-  res.json({ claimed: claimed });
+  res.json({ claimed });
 }
