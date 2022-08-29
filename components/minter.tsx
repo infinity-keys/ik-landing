@@ -48,8 +48,10 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
     if (address && chain && isConnected && chainIsValid) {
       const setSig = async () => {
         setIsVerifying(true);
-        setSignature(await verify(address, tokenId, chain.id, gatedIds));
-        setClaimed(await checkIfClaimed(address, tokenId));
+        const tokenClaimed = await checkIfClaimed(address, tokenId);
+        setClaimed(tokenClaimed);
+        if (!tokenClaimed)
+          setSignature(await verify(address, tokenId, chain.id, gatedIds));
         setIsVerifying(false);
       };
       setSig();
@@ -65,13 +67,32 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
 
   const { data, write, error: writeError } = useContractWrite(config);
 
-  const { error: txError, isLoading } = useWaitForTransaction({
+  const {
+    error: txError,
+    isLoading,
+    isSuccess,
+  } = useWaitForTransaction({
     hash: data?.hash,
   });
   const txLink = `${chain?.blockExplorers?.default.url}/tx/${data?.hash}`;
 
+  useEffect(() => {
+    if (isSuccess) setClaimed(true);
+  }, [isSuccess]);
+
   // isVerifying = Verify + CheckIfOwned API Calls
   // isLoading = Tx is processing
+  // <>
+  //             Claiming Trophy! <br />
+  //             <a
+  //               href={txLink}
+  //               className="border-b-2"
+  //               target="_blank"
+  //               rel="noopener noreferrer"
+  //             >
+  //               View Your Transaction
+  //             </a>
+  //           </>
   // @TODO: move this to good ol' fashioned if else statements. Or xstate.
   const text = isConnected
     ? chainIsValid
@@ -79,13 +100,17 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
         ? !claimed
           ? !isLoading
             ? !txError
-              ? !writeError || writeError?.message === "User rejected request"
+              ? !writeError ||
+                writeError?.message === "User rejected request" ||
+                writeError?.message.includes("user rejected transaction") ||
+                writeError.message ===
+                  "MetaMask Tx Signature: User denied transaction signature."
                 ? signature
                   ? `Claim Your Trophy On ${chain?.name}`
                   : "You do not have the required NFTS on this chain. Please ensure you have completed the above puzzles and are on the correct chain."
                 : writeError.message
               : txError.message
-            : "Claiming Trophy!"
+            : "Claiming Trophy..."
           : "Your Trophy Has Been Claimed"
         : "Checking NFTs"
       : "Switch Chain To Claim Trophy"
@@ -120,13 +145,7 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
       {isConnected ? (
         chainIsValid ? (
           !claimed ? (
-            !isLoading ? (
-              "Claim"
-            ) : (
-              <a href={txLink} target="_blank" rel="noopener noreferrer">
-                View Your Transaction
-              </a>
-            )
+            "Claim"
           ) : (
             <a
               target="_blank"
@@ -156,7 +175,11 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
         {text}
       </h2>
 
-      {isVerifying && chainIsValid ? <LoadingIcon /> : buttonMint}
+      {(isVerifying || isLoading) && chainIsValid ? (
+        <LoadingIcon />
+      ) : (
+        buttonMint
+      )}
     </>
   );
 }
