@@ -131,8 +131,8 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
           <div className="mx-auto text-center max-w-md sm:max-w-xl">
             <Heading turquoise>Sign Up for Email Updates!</Heading>
             <Text>
-              Get weekly updates about new features and puzzles from the
-              Infinity Keys team.
+              Get updates about new features and puzzles from the Infinity Keys
+              team.
             </Text>
             <div className="mt-10 sm:mt-12 flex justify-center">
               <NewsLetterForm />
