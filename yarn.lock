@@ -1124,11 +1124,12 @@
     fetch-ponyfill "^6.1.0"
     promise-polyfill "^8.1.3"
 
-"@formspree/react@^2.2.4":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@formspree/react/-/react-2.3.0.tgz#c51312329ed58148bf4c20048409e689d8edb162"
-  integrity sha512-QBHb4mNP3uNPkBfGZ6m4ox0o/Y3ee6L6p/RMRV19C4slXxVxL+TM2vxUvKv/SuUf5ydiXLCCQtYqpVlcG1xHig==
+"@formspree/react@^2.3.3":
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/@formspree/react/-/react-2.3.3.tgz#695c1becdb201dd55f0b5e5748da9109aa70153c"
+  integrity sha512-3LfmFMLWE1Z3SVmfG2IMHN4sR0P5+IQDEAib85GzC5Rx3mmNnWEdXXD8xSyVpTZYNq4SaymP2A6nt+wOF0DqqQ==
   dependencies:
+    "@babel/runtime" "^7.18.9"
     "@formspree/core" "^2.7.0"
     "@stripe/react-stripe-js" "^1.7.1"
     "@stripe/stripe-js" "^1.27.0"
