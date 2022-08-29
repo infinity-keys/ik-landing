@@ -29,11 +29,8 @@ export default function Header() {
             aria-label="Top"
           >
             <div className="relative flex items-center justify-between h-20">
-              <div
-                data-cy="ik logo"
-                className="logo flex-shrink-0 flex items-center"
-              >
-                <div className="block sm:hidden h-12 w-auto">
+              <div data-cy="ik logo" className="logo">
+                <div className="block sm:hidden">
                   <Link href="/">
                     <a>
                       <Image
@@ -45,7 +42,7 @@ export default function Header() {
                     </a>
                   </Link>
                 </div>
-                <div className="hidden sm:block h-12 w-auto">
+                <div className="hidden sm:block">
                   <Link href={"/"}>
                     <a>
                       <Image
@@ -71,10 +68,7 @@ export default function Header() {
                 </nav>
               </div>
 
-              <div
-                data-cy="puzzle-link"
-                className="flex items-center gap-3 font-medium"
-              >
+              <div data-cy="puzzle-link" className="flex items-center gap-2">
                 <Button
                   text="Packs"
                   href={`/${PACK_COLLECTION_BASE}`}
