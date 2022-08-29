@@ -4,7 +4,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import ButtonSocialTwitter from "@components/button-social-twitter";
 import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
-import Wallet from "@components/wallet";
 import Alert from "@components/alert";
 import Button from "@components/button";
 
@@ -89,15 +88,11 @@ const WalletEmail = ({
           )}
 
           <div className="mb-10">
-            {nftId ? (
-              <Button
-                text="Claim NFT Treasure"
-                href={`/claim/${name}`}
-                fullWidth={true}
-              />
-            ) : (
-              <Wallet onWalletSignature={onWalletSignature} />
-            )}
+            <Button
+              text="Claim NFT Treasure"
+              href={`/claim/${name}`}
+              fullWidth={true}
+            />
           </div>
           <p className="text-center mb-8">- or -</p>
           <p className="text-sm font-normal mb-4">
