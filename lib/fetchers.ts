@@ -28,7 +28,10 @@ export const formSubmit = async ({ data }: { data: unknown }) => {
 };
 
 export const checkIfClaimed = async (account: string, tokenId: number) => {
-  const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId?.toString()}`;
+  // const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId?.toString()}`;
+  const url = new URL("/api/minter/check-claimed", window.location.origin);
+  url.searchParams.set("account", account);
+  url.searchParams.set("tokenId", tokenId.toString());
 
   const response = await fetch(url);
   if (response.ok) return (await response.json()).claimed;
@@ -41,12 +44,16 @@ export const verify = async (
   chain: number,
   gatedIds: number[]
 ) => {
-  const gatedIdsString = `&${gatedIds.map((id) => `gatedIds=${id}`).join("&")}`;
-
+  // const gatedIdsString = `&${gatedIds.map((id) => `gatedIds=${id}`).join("&")}`;
   //If pack (requires other NFTs) include gated, if single ignore
-  const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}${
-    gatedIds.length ? gatedIdsString : ""
-  }`;
+  // const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}${
+  //   gatedIds.length ? gatedIdsString : ""
+  // }`;
+  const url = new URL("/api/minter/verify", window.location.origin);
+  url.searchParams.set("account", account);
+  url.searchParams.set("tokenId", tokenId.toString());
+  url.searchParams.set("chainId", chain.toString());
+  gatedIds.forEach((id) => url.searchParams.append("gatedIds", id.toString()));
 
   const response = await fetch(url);
   if (response.ok) {
