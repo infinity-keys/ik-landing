@@ -18,23 +18,24 @@ export default async function handler(
   const submission = req.body.event.data.new;
 
   if (!submission)
-    res.status(400).json({ error: "Error processing your request" });
+    return res.status(400).json({ error: "Error processing your request" });
 
   const {
     puzzle_id,
     form_data: { email },
   } = req.body.event.data.new;
 
-  if (!puzzle_id) res.status(400).json({ error: "Invalid Puzzle ID" });
+  if (!puzzle_id) return res.status(400).json({ error: "Invalid Puzzle ID" });
 
   if (!email || email.trim().length <= 5 || !email.includes("@"))
-    res.status(400).json({ error: "Invalid email" });
+    return res.status(400).json({ error: "Invalid email" });
 
   const gql = await gqlApiSdk();
   const { puzzles } = await gql.GetPuzzleInfoById({ puzzle_id });
-  const nft = puzzles[0].nft;
+  const cloudinary_id = puzzles[0].nft?.nft_metadatum?.cloudinary_id;
 
-  if (!nft) res.status(400).json({ error: "No NFT available" });
+  if (!cloudinary_id)
+    return res.status(400).json({ error: "No NFT available" });
 
   try {
     await sendgrid.send({
@@ -51,12 +52,7 @@ export default async function handler(
 
       <p style="text-align: center">
         <img
-            src="${cloudinaryUrl(
-              nft.nft_metadatum.cloudinary_id,
-              300,
-              300,
-              false
-            )}"
+            src="${cloudinaryUrl(cloudinary_id, 300, 300, false)}"
             height="300"
             width="300"
             alt="you new nft"
