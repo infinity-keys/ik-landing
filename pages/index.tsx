@@ -102,19 +102,22 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
             <Map />
           </div>
           <div className="max-w-xl mx-auto">
+            <p className="text-turquoise text-lg mb-4">
+              Engagement &gt; Impressions.
+            </p>
+
             <Heading small>
               Build an Infinity Keys Hunt for your Project
             </Heading>
-            <Text>Engagement &gt; Impressions.</Text>
             <Text>
               We work with projects to build new types of digital keys for
               engaging hunts and puzzles.
             </Text>
             <Text>
               If you would like to use IK to increase engagement with your
-              community, users, players, or fans, please reach out.
+              community, users, players, or fans, please reach out, and we will
+              contact you directly.
             </Text>
-
             <div className="mt-10 sm:mt-12 flex justify-center">
               <PartnerForm />
             </div>
@@ -125,10 +128,12 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       {/* Newsletter*/}
       <div className="bg-blue-800 w-full">
         <Section>
-          <div className="mx-auto max-w-md sm:max-w-2xl">
-            <Heading center turquoise>
-              Sign Up for Email Updates!
-            </Heading>
+          <div className="mx-auto text-center max-w-md sm:max-w-xl">
+            <Heading turquoise>Sign Up for Email Updates!</Heading>
+            <Text>
+              Get updates about new features and puzzles from the Infinity Keys
+              team.
+            </Text>
             <div className="mt-10 sm:mt-12 flex justify-center">
               <NewsLetterForm />
             </div>
