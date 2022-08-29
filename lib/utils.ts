@@ -9,6 +9,7 @@ import {
   welcome,
 } from "./constants";
 import { Thumbnail, ThumbnailPack, ThumbnailPuzzle } from "./types";
+import { chainIds } from "./walletConstants";
 
 export const epochMinus30s = () => Math.round(new Date().getTime() / 1000) - 30;
 
@@ -66,3 +67,5 @@ export const thumbnailData = (
     cloudinary_id,
   };
 };
+
+export const validChain = (chain: number) => chainIds.includes(chain);
