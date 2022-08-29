@@ -1,9 +1,13 @@
+import { useEffect, useState } from "react";
 import {
   useContractWrite,
   usePrepareContractWrite,
   useNetwork,
   useWaitForTransaction,
 } from "wagmi";
+import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
+import clsx from "clsx";
+
 import { IKAchievementABI__factory } from "@lib/generated/ethers-contract";
 import {
   AVAX_CHAIN_ID,
@@ -11,13 +15,10 @@ import {
   marketplaceLookup,
   OPTIMISM_CHAIN_ID,
 } from "@lib/walletConstants";
-import LoadingIcon from "./loading-icon";
-import { useEffect, useState } from "react";
 import { validChain } from "@lib/utils";
-import { useIKMinter } from "@hooks/useIKMinter";
-import { useChainModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import { checkIfClaimed, verify } from "@lib/fetchers";
-import clsx from "clsx";
+import { useIKMinter } from "@hooks/useIKMinter";
+import LoadingIcon from "@components/loading-icon";
 
 interface MinterParams {
   tokenId: number;
@@ -71,6 +72,7 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
 
   // isVerifying = Verify + CheckIfOwned API Calls
   // isLoading = Tx is processing
+  // @TODO: move this to good ol' fashioned if else statements. Or xstate.
   const text = isConnected
     ? chainIsValid
       ? !isVerifying
@@ -90,6 +92,7 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
     : "Connect Wallet To Claim Trophy";
 
   const buttonMint = (
+    // @TOOD: utilize existing Button component for this
     <button
       disabled={
         isConnected && chainIsValid
