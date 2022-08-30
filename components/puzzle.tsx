@@ -15,6 +15,7 @@ import Markdown from "./markdown";
 import { puzzleMachine } from "./puzzle.xstate";
 import useCurrentWidth from "@hooks/useCurrentWidth";
 import LoadingIcon from "@components/loading-icon";
+import Button from "./button";
 
 interface PuzzleProps {
   count: number;
@@ -73,7 +74,9 @@ const Puzzle = ({
         </div>
       )}
 
-      {(matches("idle") || matches("guessIncorrect")) && (
+      {(matches("idle") ||
+        matches("guessIncorrect") ||
+        matches("readyToGuess")) && (
         <div className="flex justify-center z-10" ref={ref}>
           <div>
             <div className="flex py-5">
@@ -120,6 +123,13 @@ const Puzzle = ({
                   </div>
                 </div>
               )}
+            </div>
+            <div className="flex justify-center">
+              <Button
+                text="Submit"
+                onClick={() => send("GUESS")}
+                disabled={!matches("readyToGuess")}
+              />
             </div>
           </div>
         </div>
