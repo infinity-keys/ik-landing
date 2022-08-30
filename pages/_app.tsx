@@ -22,7 +22,7 @@ import "nprogress/nprogress.css";
 // import { UserProvider } from "@auth0/nextjs-auth0";
 
 // Rainbow Kit Params
-export const IKTheme = loMerge(darkTheme(), {
+const IKTheme = loMerge(darkTheme(), {
   colors: {
     accentColor: "#3FCCBB",
     connectButtonBackground: "#354161",
@@ -40,7 +40,7 @@ export const IKTheme = loMerge(darkTheme(), {
   },
 });
 
-export const { chains, provider } = configureChains(
+const { chains, provider } = configureChains(
   [chain.mainnet, chain.polygon, avalancheChain, chain.optimism],
   [
     infuraProvider({ apiKey: process.env.INFURA_KEY }),
@@ -54,7 +54,7 @@ const { connectors } = getDefaultWallets({
   chains,
 });
 
-export const wagmiClient = createClient({
+const wagmiClient = createClient({
   autoConnect: true,
   connectors,
   provider,

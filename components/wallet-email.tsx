@@ -31,8 +31,6 @@ const WalletEmail = ({
     formState: { errors, isValid, isSubmitSuccessful },
   } = useForm<FormProps>();
 
-  const [walletSigned, setWalletSigned] = useState(false);
-
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
     const res = await formSubmit({ data });
     // 409 === conflict === already submitted
@@ -47,34 +45,15 @@ const WalletEmail = ({
     return true;
   };
 
-  // @TODO: get this to just call onSubmit() above OR on wallet sign, pass address
-  // to a hidden field and submit form
-  const onWalletSignature = async (address: string) => {
-    const res = await formSubmit({
-      data: {
-        puzzleId,
-        address,
-      },
-    });
-    if (res.status === 409) {
-      setError("puzzleId", {
-        type: "custom",
-        message: "Already submiitted",
-      });
-      return;
-    }
-    setWalletSigned(true);
-  };
-
   return (
     <>
       <>
-        {(isSubmitSuccessful || walletSigned) && <Alert text="You win!" />}
+        {isSubmitSuccessful && <Alert text="You win!" />}
         {!isSubmitSuccessful && errors?.puzzleId && (
           <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
         )}
       </>
-      {!isSubmitSuccessful && !errors?.puzzleId && !walletSigned && (
+      {!isSubmitSuccessful && !errors?.puzzleId && (
         <div className="">
           <div className="mb-8">
             <Alert text={successMessage || "You did it!"} />

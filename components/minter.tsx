@@ -74,47 +74,33 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
   } = useWaitForTransaction({
     hash: data?.hash,
   });
-  const txLink = `${chain?.blockExplorers?.default.url}/tx/${data?.hash}`;
+  //const txLink = `${chain?.blockExplorers?.default.url}/tx/${data?.hash}`;
 
   useEffect(() => {
-    if (isSuccess) setClaimed(true);
-  }, [isSuccess]);
+    if (isSuccess || isLoading) setClaimed(true);
+  }, [isSuccess, isLoading]);
 
-  // isVerifying = Verify + CheckIfOwned API Calls
-  // isLoading = Tx is processing
-  // <>
-  //             Claiming Trophy! <br />
-  //             <a
-  //               href={txLink}
-  //               className="border-b-2"
-  //               target="_blank"
-  //               rel="noopener noreferrer"
-  //             >
-  //               View Your Transaction
-  //             </a>
-  //           </>
-  // @TODO: move this to good ol' fashioned if else statements. Or xstate.
-  const text = isConnected
-    ? chainIsValid
-      ? !isVerifying
-        ? !claimed
-          ? !isLoading
-            ? !txError
-              ? !writeError ||
-                writeError?.message === "User rejected request" ||
-                writeError?.message.includes("user rejected transaction") ||
-                writeError.message ===
-                  "MetaMask Tx Signature: User denied transaction signature."
-                ? signature
-                  ? `Claim Your Trophy On ${chain?.name}`
-                  : "You do not have the required NFTS on this chain. Please ensure you have completed the above puzzles and are on the correct chain."
-                : writeError.message
-              : txError.message
-            : "Claiming Trophy..."
-          : "Your Trophy Has Been Claimed"
-        : "Checking NFTs"
-      : "Switch Chain To Claim Trophy"
-    : "Connect Wallet To Claim Trophy";
+  const buttonText = () => {
+    if (!isConnected) return "Connect Wallet To Claim Trophy";
+    else if (!chainIsValid) return "Switch Chain To Claim Trophy";
+    else if (isVerifying) return "Checking NFTs";
+    else if (isLoading) return "Claiming Trophy...";
+    else if (claimed) return "Your Trophy Has Been Claimed";
+    else if (txError) return txError.message;
+    else if (
+      writeError &&
+      !(
+        writeError.message === "User rejected request" ||
+        writeError?.message.includes("user rejected transaction") ||
+        writeError.message ===
+          "MetaMask Tx Signature: User denied transaction signature."
+      )
+    )
+      return writeError.message;
+    else if (signature) return `Claim Your Trophy On ${chain?.name}`;
+    else
+      return "You do not have the required NFTS on this chain. Please ensure you have completed the above puzzles and are on the correct chain.";
+  };
 
   const buttonMint = (
     // @TOOD: utilize existing Button component for this
@@ -172,7 +158,7 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
   return (
     <>
       <h2 className="mt-20 text-xl tracking-tight font-bold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-        {text}
+        {buttonText()}
       </h2>
 
       {(isVerifying || isLoading) && chainIsValid ? (
