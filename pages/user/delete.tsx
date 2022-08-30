@@ -23,10 +23,6 @@ interface Data {
 }
 
 const DeleteUserPage: NextPage<PageParams> = ({ email, uid, jwt }) => {
-  useEffect(() => {
-    console.log(temp);
-  }, [temp]);
-
   return (
     <Wrapper>
       <Head>
