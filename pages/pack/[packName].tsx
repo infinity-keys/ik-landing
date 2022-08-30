@@ -15,6 +15,7 @@ import useCurrentWidth from "@hooks/useCurrentWidth";
 
 import Minter from "@components/minter";
 import { thumbnailData } from "@lib/utils";
+import Discord from "@components/svg/discord-svg";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -80,17 +81,32 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
 
           <Minter tokenId={tokenId} gatedIds={gatedIds} />
         </div>
-        <div className="flex justify-center p-4">
-          <div className="w-20">
-            <Link href="https://twitter.com/InfinityKeys">
-              <a
-                className="flex w-full"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <TwitterSvg />
-              </a>
-            </Link>
+        <div className="w-full p-6 flex flex-row items-center justify-center">
+          <div className="p-4">
+            <div className="w-20">
+              <Link href="https://twitter.com/InfinityKeys">
+                <a
+                  className="flex w-full"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <TwitterSvg />
+                </a>
+              </Link>
+            </div>
+          </div>
+          <div className="p-4">
+            <div className="w-20">
+              <Link href="https://discord.com/invite/infinitykeys">
+                <a
+                  className="flex w-full"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <Discord width={96} height={96} />
+                </a>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
