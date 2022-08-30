@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import Link from "next/link";
 import Head from "next/head";
 
 import Wrapper from "@components/wrapper";
@@ -170,7 +169,7 @@ const NotFoundPage: NextPage = () => {
           </li>
           <li>
             send you newsletters, promotional materials, and other notices
-            related to our Services or third parties' goods and services;
+            related to our Services or third parties goods and services;
           </li>
           <li>
             respond to your inquiries related to employment opportunities or
@@ -268,7 +267,7 @@ const NotFoundPage: NextPage = () => {
           with any third-party wallet provider are governed by the applicable
           terms of service and privacy policy of that third party.
         </p>
-        <p className="mt-6">Your Choices Regarding Information. </p>
+        <p className="mt-6">Your Choices Regarding Information.</p>
         <p className="mt-6">
           You have several choices regarding the use of information on our
           Services: Email Communications. We may periodically send you
@@ -326,7 +325,7 @@ const NotFoundPage: NextPage = () => {
           transfers related to your blockchain address and NFTs held at that
           address.
         </p>
-        <p className="mt-6">Data Retention. </p>
+        <p className="mt-6">Data Retention.</p>
         <p className="mt-6">
           We may retain your Personal Data as long as you continue to use the
           Service, have an account with us, or for as long as is necessary to
