@@ -4,7 +4,7 @@ import Head from "next/head";
 import Wrapper from "@components/wrapper";
 import Heading from "@components/heading";
 
-const NotFoundPage: NextPage = () => {
+const PrivacyPage: NextPage = () => {
   return (
     <Wrapper>
       <Head>
@@ -408,4 +408,4 @@ const NotFoundPage: NextPage = () => {
     </Wrapper>
   );
 };
-export default NotFoundPage;
+export default PrivacyPage;
