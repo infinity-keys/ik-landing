@@ -550,10 +550,10 @@
   dependencies:
     snake-case "^3.0.4"
 
-"@coinbase/wallet-sdk@^3.3.0", "@coinbase/wallet-sdk@^3.5.0":
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.5.0.tgz#a50cbe5779972f5471b20cbed200d3aae80b8d4c"
-  integrity sha512-xdYMpz98gNwhOnSCh7Rm+qziI/K7LnPJnqHI93sZIRiRGtRTtDihcxjVxV2s1rj9NsYjC5jcKiOEgm8VqIK8Tg==
+"@coinbase/wallet-sdk@^3.3.0", "@coinbase/wallet-sdk@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.5.1.tgz#409ea4ecb2823bdfb9f9c6bd395259e09bafdc29"
+  integrity sha512-s+noyqQfFfdxqot0gVM1nAS3JObrIuPFW4glRaMQP2n7Fxsk7ObGGkjTUy2cPgSE0ZW9ocswIjBCTcdo+31mug==
   dependencies:
     "@metamask/safe-event-emitter" "2.0.0"
     "@solana/web3.js" "1.52.0"
@@ -1780,10 +1780,10 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
 
-"@rainbow-me/rainbowkit@^0.4.6":
-  version "0.4.6"
-  resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-0.4.6.tgz#f7a84c5774d0f34da3b824e7d845f4de9c605421"
-  integrity sha512-tb7w38u/MLJQGAsLY2sh8neSbtkqZfsLvgLOyXsC2uL3/v1d5ZL1uHUwKBVbvroCn2D+DQRElPmPAlJB6vzKtg==
+"@rainbow-me/rainbowkit@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-0.5.0.tgz#6fcb2ec343e789ba1fa260d8bfa36abab2b79a48"
+  integrity sha512-QM6WNahwYGu6HHGshEReYULHxe//z3M9uD2aX+2cq0sN6tAkUa8zLRb5MGahldPnl0g/RLCD9AYkDkU2tD5nlA==
   dependencies:
     "@vanilla-extract/css" "1.7.0"
     "@vanilla-extract/dynamic" "2.0.2"
