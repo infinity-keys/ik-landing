@@ -2,6 +2,7 @@ import TwitterIcon from "./svg/twitter-icon-svg";
 import Discord from "./svg/discord-svg";
 import Link from "next/link";
 import Button from "./button";
+import { PACK_COLLECTION_BASE } from "@lib/constants";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -38,16 +39,13 @@ export default function Footer() {
               </div>
             </div>
             {/* right */}
-            <div className="mb-4 sm:mb-0 sm:ml-6">
+            <div className="mb-4 sm:mb-0 sm:ml-6 flex gap-4">
               <Button
-                text="Starter Pack"
-                href="/pack/starter-pack"
+                text="Packs"
+                href={`/${PACK_COLLECTION_BASE}`}
                 variant="outline"
               />
-            </div>
-
-            <div className="sm:ml-6">
-              <Button text="Puzzles" href="/puzzles" />
+              <Button text="Puzzles" href="/puzzles" variant="outline" />
             </div>
           </div>
         </nav>
