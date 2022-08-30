@@ -33,13 +33,21 @@ export const formSubmit = async ({ data }: { data: unknown }) => {
   return res;
 };
 
-export const deleteUser = async ({ uid }: { uid: string }) => {
-  const res = await fetch("/api/delete-user", {
+export const deleteUser = async ({
+  uid,
+  email,
+}: {
+  uid: string;
+  email: string;
+}) => {
+  const url = new URL("/api/delete-user", ikApiUrlBase);
+
+  const res = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ uid }),
+    body: JSON.stringify({ uid, email }),
   });
 
   return res;
