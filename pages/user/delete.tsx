@@ -15,7 +15,6 @@ import { useEffect } from "react";
 interface PageParams {
   email: string;
   uid: string;
-  temp: string;
   jwt: string;
 }
 
@@ -23,7 +22,7 @@ interface Data {
   query: PageParams;
 }
 
-const DeleteUserPage: NextPage<PageParams> = ({ email, uid, temp }) => {
+const DeleteUserPage: NextPage<PageParams> = ({ email, uid, jwt }) => {
   useEffect(() => {
     console.log(temp);
   }, [temp]);
@@ -48,7 +47,10 @@ const DeleteUserPage: NextPage<PageParams> = ({ email, uid, temp }) => {
           related your completed puzzles and NFTs will be lost.
         </Text>
         <div className="mt-7">
-          <Button onClick={() => deleteUser({ uid, email })} text="Delete Me" />
+          <Button
+            onClick={() => deleteUser({ uid, email, jwt })}
+            text="Delete Me"
+          />
         </div>
       </div>
     </Wrapper>
@@ -58,13 +60,11 @@ export default DeleteUserPage;
 
 export const getServerSideProps = async ({ query }: Data) => {
   const { email, uid, jwt } = query;
-
-  const deleteUserApiUrl = await generateUserDeleteUrl(uid, email);
   return {
     props: {
       email,
       uid,
-      temp: deleteUserApiUrl.toString(),
+      jwt,
     },
   };
 };
