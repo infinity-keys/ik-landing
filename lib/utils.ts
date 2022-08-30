@@ -1,15 +1,19 @@
 import { z } from "zod";
 import {
+  IK_CLAIMS_NAMESPACE,
   PACK_COLLECTION_BASE,
   PACK_LANDING_BASE,
   PUZZLE_COLLECTION_BASE,
   PUZZLE_FAILED_BASE,
   PUZZLE_LANDING_BASE,
   PUZZLE_SUCCESS_BASE,
+  URL_ORIGIN,
   welcome,
-} from "./constants";
-import { Thumbnail, ThumbnailPack, ThumbnailPuzzle } from "./types";
-import { chainIds } from "./walletConstants";
+} from "@lib/constants";
+import { ikApiUrlBase } from "@lib/fetchers";
+import { makeUserToken } from "@lib/jwt";
+import { Thumbnail, ThumbnailPack, ThumbnailPuzzle } from "@lib/types";
+import { chainIds } from "@lib/walletConstants";
 
 export const epochMinus30s = () => Math.round(new Date().getTime() / 1000) - 30;
 
@@ -69,3 +73,21 @@ export const thumbnailData = (
 };
 
 export const validChain = (chain: number) => chainIds.includes(chain);
+
+export const generateUserDeleteUrl = async (userId: string, email?: string) => {
+  const jwt = await makeUserToken(
+    {
+      claims: {
+        [IK_CLAIMS_NAMESPACE]: { puzzles: [] },
+      },
+    },
+    userId
+  );
+
+  const url = new URL("/users", ikApiUrlBase);
+  url.searchParams.set("userId", userId);
+  url.searchParams.set("jwt", jwt);
+  email && url.searchParams.set("email", email);
+
+  return url;
+};

@@ -36,18 +36,19 @@ export const formSubmit = async ({ data }: { data: unknown }) => {
 export const deleteUser = async ({
   uid,
   email,
+  jwt,
 }: {
   uid: string;
-  email: string;
+  email?: string;
+  jwt: string;
 }) => {
-  const url = new URL("/api/delete-user", ikApiUrlBase);
+  const url = new URL("user", ikApiUrlBase);
+  url.searchParams.set("uid", uid);
+  url.searchParams.set("jwt", jwt);
+  email && url.searchParams.set("email", email);
 
   const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ uid, email }),
+    method: "DELETE",
   });
 
   return res;

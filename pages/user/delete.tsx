@@ -9,17 +9,24 @@ import Wrapper from "@components/wrapper";
 import Button from "@components/button";
 import Text from "@components/text";
 import Heading from "@components/heading";
+import { generateUserDeleteUrl } from "@lib/utils";
+import { useEffect } from "react";
 
 interface PageParams {
   email: string;
   uid: string;
+  temp: string;
 }
 
 interface Data {
   query: PageParams;
 }
 
-const DeleteUserPage: NextPage<PageParams> = ({ email, uid }) => {
+const DeleteUserPage: NextPage<PageParams> = ({ email, uid, temp }) => {
+  useEffect(() => {
+    console.log(temp);
+  }, [temp]);
+
   return (
     <Wrapper>
       <Head>
@@ -50,10 +57,13 @@ export default DeleteUserPage;
 
 export const getServerSideProps = async ({ query }: Data) => {
   const { email, uid } = query;
+
+  const deleteUserApiUrl = await generateUserDeleteUrl(uid, email);
   return {
     props: {
       email,
       uid,
+      temp: deleteUserApiUrl.toString(),
     },
   };
 };
