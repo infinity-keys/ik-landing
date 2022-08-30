@@ -7,5 +7,6 @@ export default defineConfig({
     chromeWebSecurity: false,
     viewportHeight: 1080,
     viewportWidth: 1920,
+    defaultCommandTimeout: 6000,
   },
 });

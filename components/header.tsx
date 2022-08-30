@@ -1,16 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
+import Bars3Icon from "@heroicons/react/24/outline/Bars3Icon";
+import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+
+import { PACK_COLLECTION_BASE, PUZZLE_LANDING_BASE } from "@lib/constants";
 import Button from "./button";
 
 export const navigation = [
   { name: "Home", href: "/" },
-  {
-    name: "Hunts",
-    href: "/puzzles",
-  },
   { name: "Collab", href: "/#collab" },
   {
     name: "Thesis",
@@ -29,11 +29,8 @@ export default function Header() {
             aria-label="Top"
           >
             <div className="relative flex items-center justify-between h-20">
-              <div
-                data-cy="ik logo"
-                className="logo flex-shrink-0 flex items-center"
-              >
-                <div className="block sm:hidden h-12 w-auto">
+              <div data-cy="ik logo" className="logo">
+                <div className="block sm:hidden">
                   <Link href="/">
                     <a>
                       <Image
@@ -45,7 +42,7 @@ export default function Header() {
                     </a>
                   </Link>
                 </div>
-                <div className="hidden sm:block h-12 w-auto">
+                <div className="hidden sm:block">
                   <Link href={"/"}>
                     <a>
                       <Image
@@ -71,18 +68,27 @@ export default function Header() {
                 </nav>
               </div>
 
-              <div
-                data-cy="puzzle-link"
-                className="grid grid-cols-2 gap-1 sm:gap-4"
-              >
+              <div data-cy="puzzle-link" className="flex items-center gap-2">
                 <Button
-                  text="Starter Pack"
-                  href="/pack/starter-pack"
+                  text="Packs"
+                  href={`/${PACK_COLLECTION_BASE}`}
+                  variant="outline"
+                  responsive
+                />
+                <Button
+                  text="Puzzles"
+                  href="/puzzles"
                   variant="outline"
                   responsive
                 />
 
-                <Button text="Puzzles" href="/puzzles" responsive />
+                <ConnectButton
+                  accountStatus={{
+                    largeScreen: "address",
+                    smallScreen: "avatar",
+                  }}
+                  showBalance={false}
+                />
               </div>
 
               {/* hamburger icon, visible mobile only */}
@@ -91,9 +97,9 @@ export default function Header() {
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
-                    <XIcon className="block h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                   ) : (
-                    <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
                   )}
                 </Disclosure.Button>
               </div>

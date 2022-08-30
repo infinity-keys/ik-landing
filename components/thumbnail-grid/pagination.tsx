@@ -1,25 +1,28 @@
 import Link from "next/link";
 import clsx from "clsx";
+import ArrowLeftIcon from "@heroicons/react/20/solid/ArrowLeftIcon";
+import ArrowRightIcon from "@heroicons/react/20/solid/ArrowRightIcon";
 
-import ArrowSmLeftIcon from "@heroicons/react/solid/ArrowSmLeftIcon";
-import ArrowSmRightIcon from "@heroicons/react/solid/ArrowSmRightIcon";
 import { PAGINATION_COUNTS } from "@lib/constants";
 
-export interface PuzzlesPaginationProps {
+export interface PaginationProps {
   isFirstPage: Boolean;
   isLastPage: Boolean;
-  puzzlesCount: number;
+  thumbnailCount: number;
   pageNum: number;
+  urlBase: string;
 }
 
-const PuzzlesPagination = ({
+const Pagination = ({
   isFirstPage,
   isLastPage,
-  puzzlesCount,
+  thumbnailCount,
   pageNum,
-}: PuzzlesPaginationProps) => {
-  const [smallestPuzzleCount] = PAGINATION_COUNTS;
-  const toDefaultPage = puzzlesCount === smallestPuzzleCount && pageNum === 2;
+  urlBase,
+}: PaginationProps) => {
+  const [smallestThumbnailCount] = PAGINATION_COUNTS;
+  const toDefaultPage =
+    thumbnailCount === smallestThumbnailCount && pageNum === 2;
 
   return (
     <div
@@ -32,22 +35,22 @@ const PuzzlesPagination = ({
         <Link
           href={
             toDefaultPage
-              ? "/puzzles"
-              : `/puzzles/${puzzlesCount}/${pageNum - 1}`
+              ? urlBase
+              : `${urlBase}/${thumbnailCount}/${pageNum - 1}`
           }
         >
           <a className="previous flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
-            <ArrowSmLeftIcon className="h-4 w-4 mr-2" aria-hidden="true" />{" "}
+            <ArrowLeftIcon className="h-4 w-4 mr-2" aria-hidden="true" />{" "}
             Previous
           </a>
         </Link>
       )}
 
       {!isLastPage && (
-        <Link href={`/puzzles/${puzzlesCount}/${pageNum + 1}`}>
+        <Link href={`${urlBase}/${thumbnailCount}/${pageNum + 1}`}>
           <a className="next flex items-center bg-white/10 p-2 rounded-md px-4 py-2 hover:bg-white/20 transition">
             Next
-            <ArrowSmRightIcon className="h-4 w-4 ml-2" aria-hidden="true" />
+            <ArrowRightIcon className="h-4 w-4 ml-2" aria-hidden="true" />
           </a>
         </Link>
       )}
@@ -55,4 +58,4 @@ const PuzzlesPagination = ({
   );
 };
 
-export default PuzzlesPagination;
+export default Pagination;

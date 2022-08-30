@@ -34,7 +34,7 @@ export default function NewsLetterForm() {
             disabled={state.submitting}
             className="block w-full py-3 px-4 rounded-md shadow bg-indigo-500 text-white font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
           >
-            Submit
+            Subscribe
           </button>
         </div>
       </div>

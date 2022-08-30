@@ -23,36 +23,37 @@ describe("infinitykeys.io", () => {
     cy.get('.menu-items a[href="https://blog.infinitykeys.io"]').click();
   });
 
-  it("fills out partner contact form and submits successfully", () => {
-    cy.intercept("POST", "https://formspree.io/f/mdobjay1", {
+  it.only("fills out business contact and submits scuccessfully", () => {
+    cy.intercept("POST", "https://formspree.io/f/mdobjayl", {
       statusCode: 200,
-    });
+      body: { next: "/thanks?language=en", ok: true },
+    }).as("busSubmit");
     cy.get('[data-cy="email-partner"] input').type("test1@example.com");
     cy.get('[data-cy="email-partner"] button').click();
-    cy.get('[data-cy="email-partner-success"]').contains(
-      "Thank you for signing up!"
-    );
+    cy.wait("@busSubmit").then(() => {
+      cy.get('[data-cy="email-partner-success"]').contains(
+        "Thank you for signing up!"
+      );
+    });
   });
 
-  it("fills out newsletter contact form and submits successfully", () => {
+  it.only("fills out newsletter contact form and submits successfully", () => {
     cy.intercept("POST", "https://formspree.io/f/xnqrqdaq", {
       statusCode: 200,
       body: { next: "/thanks?language=en", ok: true },
-    });
+    }).as("parSubmit");
     cy.get('[data-cy="email-newsletter"] input').type("test2@example.com");
     cy.get('[data-cy="email-newsletter"] button').click();
-    cy.get('[data-cy="email-newsletter-success"]').contains(
-      "Thank you for signing up!"
-    );
+    cy.wait("@parSubmit").then(() => {
+      cy.get('[data-cy="email-newsletter-success"]').contains(
+        "Thank you for signing up!"
+      );
+    });
   });
 
   it("clicks on nav link and directs to the expected url", () => {
     cy.get(".header").contains("Home").click();
     cy.url().should("include", Cypress.config().baseUrl + "/");
-
-    cy.visit("/");
-    cy.get(".header").contains("Hunts").click();
-    cy.url().should("include", Cypress.config().baseUrl + "/puzzles");
 
     cy.visit("/");
     cy.get(".header").contains("Collab").click();

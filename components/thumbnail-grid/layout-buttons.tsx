@@ -1,49 +1,54 @@
 import clsx from "clsx";
 
-import ViewListIcon from "@heroicons/react/solid/ViewListIcon";
-import ViewGridIcon from "@heroicons/react/solid/ViewGridIcon";
+import Bars4Icon from "@heroicons/react/20/solid/Bars4Icon";
+import Squares2X2Icon from "@heroicons/react/20/solid/Squares2X2Icon";
 
-import PuzzlesDropdown from "@components/puzzles/dropdown";
+import Dropdown from "@components/thumbnail-grid/dropdown";
 
-import { PuzzleLayoutType } from "@lib/types";
+import { ThumbnailGridLayoutType } from "@lib/types";
 import { PAGINATION_COUNTS } from "@lib/constants";
 
 export interface LayoutButtonsProps {
   isGrid: boolean;
-  puzzlesCount: number;
-  setView: (gridLayout: PuzzleLayoutType) => void;
+  thumbnailCount: number;
+  urlBase: string;
+  setView: (gridLayout: ThumbnailGridLayoutType) => void;
 }
 
 const LayoutButtons = ({
   isGrid,
-  puzzlesCount,
+  thumbnailCount,
+  urlBase,
   setView,
 }: LayoutButtonsProps) => {
-  const [smallestPuzzleCount] = PAGINATION_COUNTS;
+  const [smallestThumbnailCount] = PAGINATION_COUNTS;
 
   return (
     <div className="flex mt-8">
       <button
-        onClick={() => setView(PuzzleLayoutType.List)}
+        onClick={() => setView(ThumbnailGridLayoutType.List)}
         aria-label="set list view"
         className={clsx(
           "border mr-2 bg-white/10 p-2 rounded-md transition-all duration-200",
           !isGrid ? "border-white/20" : "border-transparent text-gray-400"
         )}
       >
-        <ViewListIcon className="h-5 w-5" aria-hidden="true" />
+        <Bars4Icon className="h-5 w-5" aria-hidden="true" />
       </button>
       <button
-        onClick={() => setView(PuzzleLayoutType.Grid)}
+        onClick={() => setView(ThumbnailGridLayoutType.Grid)}
         aria-label="set grid view"
         className={clsx(
           "border bg-white/10 p-2 rounded-md transition-all duration-200 hover:bg-white/20",
           isGrid ? "border-white/20" : "border-transparent text-gray-400"
         )}
       >
-        <ViewGridIcon className="h-5 w-5" aria-hidden="true" />
+        <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
       </button>
-      <PuzzlesDropdown currentCount={puzzlesCount || smallestPuzzleCount} />
+      <Dropdown
+        urlBase={urlBase}
+        currentCount={thumbnailCount || smallestThumbnailCount}
+      />
     </div>
   );
 };
