@@ -1,9 +1,19 @@
+import { deleteUser } from "@lib/fetchers";
+import { generateUserDeleteUrl } from "@lib/utils";
 import { use } from "chai";
 import { decodeJwt } from "jose";
 import { IkJwt } from "../../lib/types";
 
 beforeEach(() => {
   cy.visit("/puzzle/notright");
+});
+
+afterEach(async () => {
+  cy.get("ourUserId");
+
+  const jwt = await generateUserDeleteUrl(cy.get("ourUserId").toString());
+
+  await deleteUser({ uid: cy.get("ourUserId").toString(), jwt });
 });
 
 describe("read cookies in cypress", () => {

@@ -16,6 +16,7 @@ interface PageParams {
   email: string;
   uid: string;
   temp: string;
+  jwt: string;
 }
 
 interface Data {
@@ -56,7 +57,7 @@ const DeleteUserPage: NextPage<PageParams> = ({ email, uid, temp }) => {
 export default DeleteUserPage;
 
 export const getServerSideProps = async ({ query }: Data) => {
-  const { email, uid } = query;
+  const { email, uid, jwt } = query;
 
   const deleteUserApiUrl = await generateUserDeleteUrl(uid, email);
   return {
