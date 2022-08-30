@@ -33,27 +33,23 @@ export const OPTIMISM_MARKETPLACE_LINK = `https://quixotic.io/asset/${CONTRACT_A
 
 export const chainIds = [
   ETH_CHAIN_ID,
-  AVAX_CHAIN_ID,
   POLYGON_CHAIN_ID,
+  AVAX_CHAIN_ID,
   OPTIMISM_CHAIN_ID,
 ];
 
 export const contractAddressLookup: {
   [key: number]: string;
 } = {
-  [AVAX_CHAIN_ID]: CONTRACT_ADDRESS_AVAX,
   [ETH_CHAIN_ID]: CONTRACT_ADDRESS_ETH,
   [POLYGON_CHAIN_ID]: CONTRACT_ADDRESS_POLYGON,
+  [AVAX_CHAIN_ID]: CONTRACT_ADDRESS_AVAX,
   [OPTIMISM_CHAIN_ID]: CONTRACT_ADDRESS_OPTIMISM,
 };
 
 export const contractLookup: {
   [key: number]: ReturnType<typeof IKAchievementABI__factory.connect>;
 } = {
-  [AVAX_CHAIN_ID]: IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_AVAX,
-    new ethers.providers.JsonRpcProvider(AVAX_RPC)
-  ),
   [ETH_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_ETH,
     new ethers.providers.JsonRpcProvider(ETH_RPC)
@@ -61,6 +57,10 @@ export const contractLookup: {
   [POLYGON_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_POLYGON,
     new ethers.providers.JsonRpcProvider(POLYGON_RPC)
+  ),
+  [AVAX_CHAIN_ID]: IKAchievementABI__factory.connect(
+    CONTRACT_ADDRESS_AVAX,
+    new ethers.providers.JsonRpcProvider(AVAX_RPC)
   ),
   [OPTIMISM_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_OPTIMISM,
@@ -71,9 +71,9 @@ export const contractLookup: {
 export const marketplaceLookup: {
   [key: number]: string;
 } = {
-  [AVAX_CHAIN_ID]: AVAX_MARKETPLACE_LINK,
   [ETH_CHAIN_ID]: ETH_MARKETPLACE_LINK,
   [POLYGON_CHAIN_ID]: POLYGON_MARKETPLACE_LINK,
+  [AVAX_CHAIN_ID]: AVAX_MARKETPLACE_LINK,
   [OPTIMISM_CHAIN_ID]: OPTIMISM_MARKETPLACE_LINK,
 };
 

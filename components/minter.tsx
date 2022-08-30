@@ -19,6 +19,7 @@ import { validChain } from "@lib/utils";
 import { checkIfClaimed, verify } from "@lib/fetchers";
 import { useIKMinter } from "@hooks/useIKMinter";
 import LoadingIcon from "@components/loading-icon";
+import { result } from "lodash";
 
 interface MinterParams {
   tokenId: number;
@@ -35,6 +36,7 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
   const [contractAddress, setContractAddress] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const [claimed, setClaimed] = useState(false);
+  const [chainClaimed, setChainClaimed] = useState(0);
 
   const [chainIsValid, setChainIsValid] = useState(false);
 
@@ -48,8 +50,12 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
     if (address && chain && isConnected && chainIsValid) {
       const setSig = async () => {
         setIsVerifying(true);
-        const tokenClaimed = await checkIfClaimed(address, tokenId);
+        const { claimed: tokenClaimed, chainClaimed: tokenChainClaimed } =
+          await checkIfClaimed(address, tokenId);
+
+        console.log(tokenClaimed, tokenChainClaimed);
         setClaimed(tokenClaimed);
+        setChainClaimed(tokenChainClaimed);
         if (!tokenClaimed)
           setSignature(await verify(address, tokenId, chain.id, gatedIds));
         setIsVerifying(false);
@@ -144,21 +150,21 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
     >
       {isConnected ? (
         chainIsValid ? (
-          !claimed ? (
-            "Claim"
-          ) : (
+          claimed ? (
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href={`${marketplaceLookup[chain?.id || 0]}${tokenId}`}
+              href={`${marketplaceLookup[chainClaimed]}${tokenId}`}
             >
               View NFT On{" "}
-              {chain?.id === AVAX_CHAIN_ID
+              {chainClaimed === AVAX_CHAIN_ID
                 ? "Joepegs"
-                : chain?.id === OPTIMISM_CHAIN_ID
+                : chainClaimed === OPTIMISM_CHAIN_ID
                 ? "Quixotic"
                 : "OpenSea"}
             </a>
+          ) : (
+            "Claim"
           )
         ) : (
           "Switch Chain"
