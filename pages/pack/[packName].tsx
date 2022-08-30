@@ -2,9 +2,11 @@ import { NextPage } from "next";
 import Head from "next/head";
 import clsx from "clsx";
 import isNumber from "lodash/isNumber";
+import Link from "next/link";
 
 import Wrapper from "@components/wrapper";
 import Thumbnail from "@components/thumbnail";
+import TwitterSvg from "@components/svg/twitter-svg";
 
 import { gqlApiSdk } from "@lib/server";
 import { GetPuzzlesByPackQuery } from "@lib/generated/graphql";
@@ -77,6 +79,19 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
           </ul>
 
           <Minter tokenId={tokenId} gatedIds={gatedIds} />
+        </div>
+        <div className="flex justify-center p-4">
+          <div className="w-20">
+            <Link href="https://twitter.com/InfinityKeys">
+              <a
+                className="flex w-full"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <TwitterSvg />
+              </a>
+            </Link>
+          </div>
         </div>
       </div>
     </Wrapper>
