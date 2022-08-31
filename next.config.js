@@ -27,6 +27,38 @@ const nextConfig = {
       },
     ];
   },
+  async headers() {
+    return [
+      // caches fonts for 1yr
+      {
+        source: "/fonts/poppins-400.woff2",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/fonts/poppins-500.woff2",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/fonts/poppins-700.woff2",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = withBundleAnalyzer(nextConfig);
