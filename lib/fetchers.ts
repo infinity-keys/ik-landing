@@ -34,16 +34,16 @@ export const formSubmit = async ({ data }: { data: unknown }) => {
 };
 
 export const deleteUser = async ({
-  uid,
+  userId,
   email,
   jwt,
 }: {
-  uid: string;
+  userId: string;
   email?: string;
   jwt: string;
 }) => {
-  const url = new URL("user", ikApiUrlBase);
-  url.searchParams.set("uid", uid);
+  const url = new URL("users", ikApiUrlBase);
+  url.searchParams.set("userId", userId);
   url.searchParams.set("jwt", jwt);
   email && url.searchParams.set("email", email);
 

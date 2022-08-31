@@ -10,11 +10,11 @@ import Button from "@components/button";
 import Text from "@components/text";
 import Heading from "@components/heading";
 import { generateUserDeleteUrl } from "@lib/utils";
-import { useEffect } from "react";
+import { useState } from "react";
 
 interface PageParams {
   email: string;
-  uid: string;
+  userId: string;
   jwt: string;
 }
 
@@ -22,7 +22,18 @@ interface Data {
   query: PageParams;
 }
 
-const DeleteUserPage: NextPage<PageParams> = ({ email, uid, jwt }) => {
+const DeleteUserPage: NextPage<PageParams> = ({ email, userId, jwt }) => {
+  const [message, setMessage] = useState("");
+
+  const handleClick = async ({ userId, email, jwt }) => {
+    try {
+      await deleteUser({ userId, email, jwt });
+      setMessage("Your info has been deleted. Thank you for playing!");
+    } catch (e) {
+      setMessage("Something went wrong with your request");
+    }
+  };
+
   return (
     <Wrapper>
       <Head>
@@ -36,15 +47,16 @@ const DeleteUserPage: NextPage<PageParams> = ({ email, uid, jwt }) => {
           </a>
         </Link>
         <div className="mt-7">
-          <Heading small>Delete my info</Heading>
+          <Heading small>Delete My Info</Heading>
         </div>
+        {message && <Text>{message}</Text>}
         <Text>
           This will remove you from the database completely. All progress
           related your completed puzzles and NFTs will be lost.
         </Text>
         <div className="mt-7">
           <Button
-            onClick={() => deleteUser({ uid, email, jwt })}
+            onClick={() => handleClick({ userId, email, jwt })}
             text="Delete Me"
           />
         </div>
@@ -55,11 +67,12 @@ const DeleteUserPage: NextPage<PageParams> = ({ email, uid, jwt }) => {
 export default DeleteUserPage;
 
 export const getServerSideProps = async ({ query }: Data) => {
-  const { email, uid, jwt } = query;
+  const { email, userId, jwt } = query;
+  const url = await generateUserDeleteUrl(userId, email);
   return {
     props: {
       email,
-      uid,
+      userId,
       jwt,
     },
   };
