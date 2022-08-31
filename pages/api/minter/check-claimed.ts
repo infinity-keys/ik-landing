@@ -24,8 +24,6 @@ export default async function handler(
   const contractClaims = await Promise.all(contractPromises);
   const claimed = contractClaims.some(Boolean);
 
-  console.log(contractClaims);
-
   const chainClaimed = claimed
     ? chainIds[contractClaims.flatMap((bool, index) => (bool ? index : []))[0]]
     : 0;

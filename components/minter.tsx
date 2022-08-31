@@ -53,7 +53,6 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
         const { claimed: tokenClaimed, chainClaimed: tokenChainClaimed } =
           await checkIfClaimed(address, tokenId);
 
-        console.log(tokenClaimed, tokenChainClaimed);
         setClaimed(tokenClaimed);
         setChainClaimed(tokenChainClaimed);
         if (!tokenClaimed)
