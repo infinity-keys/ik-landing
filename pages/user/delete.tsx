@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,8 +10,7 @@ import Wrapper from "@components/wrapper";
 import Button from "@components/button";
 import Text from "@components/text";
 import Heading from "@components/heading";
-import { generateUserDeleteUrl } from "@lib/utils";
-import { useState } from "react";
+import Alert from "@components/alert";
 
 interface PageParams {
   email: string;
@@ -23,21 +23,27 @@ interface Data {
 }
 
 const DeleteUserPage: NextPage<PageParams> = ({ email, userId, jwt }) => {
-  const [message, setMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isError, setIsError] = useState(false);
 
-  const handleClick = async ({ userId, email, jwt }) => {
+  const handleClick = async ({ userId, email, jwt }: PageParams) => {
     try {
-      await deleteUser({ userId, email, jwt });
-      setMessage("Your info has been deleted. Thank you for playing!");
+      const res = await deleteUser({ userId, email, jwt });
+      if (!res.ok) {
+        throw Error;
+      }
+      setIsError(false);
+      setSuccessMessage("Your info has been deleted. Thank you for playing!");
     } catch (e) {
-      setMessage("Something went wrong with your request");
+      setIsError(true);
+      setSuccessMessage("");
     }
   };
 
   return (
     <Wrapper>
       <Head>
-        <title>Remove Me</title>
+        <title>Remove My Data</title>
       </Head>
 
       <div className="text-center max-w-2xl">
@@ -46,20 +52,40 @@ const DeleteUserPage: NextPage<PageParams> = ({ email, userId, jwt }) => {
             <Image src="/logo.svg" width={100} height={55} alt="IK logo" />
           </a>
         </Link>
-        <div className="mt-7">
-          <Heading small>Delete My Info</Heading>
-        </div>
-        {message && <Text>{message}</Text>}
-        <Text>
-          This will remove you from the database completely. All progress
-          related your completed puzzles and NFTs will be lost.
-        </Text>
-        <div className="mt-7">
-          <Button
-            onClick={() => handleClick({ userId, email, jwt })}
-            text="Delete Me"
-          />
-        </div>
+
+        {successMessage && (
+          <>
+            <div className="mb-4">
+              <Text>{successMessage}</Text>
+            </div>
+            <Button href="/" text="Return Home" />
+          </>
+        )}
+
+        {!successMessage && (
+          <>
+            <div className="mt-7">
+              <Heading small>Remove My Data</Heading>
+            </div>
+            <Text>
+              This will remove you from the database completely. All progress
+              related your completed puzzles and NFTs will be lost.
+            </Text>
+            <div className="mt-7">
+              <Button
+                onClick={() => handleClick({ userId, email, jwt })}
+                text="Delete My Data"
+                variant="warn"
+              />
+            </div>
+          </>
+        )}
+
+        {isError && (
+          <div className="flex justify-center mt-4">
+            <Alert text="Something went wrong with your request. If this keeps happening, please contact us on our [Discord channel](https://discord.com/invite/infinitykeys)" />
+          </div>
+        )}
       </div>
     </Wrapper>
   );
@@ -68,7 +94,6 @@ export default DeleteUserPage;
 
 export const getServerSideProps = async ({ query }: Data) => {
   const { email, userId, jwt } = query;
-  const url = await generateUserDeleteUrl(userId, email);
   return {
     props: {
       email,

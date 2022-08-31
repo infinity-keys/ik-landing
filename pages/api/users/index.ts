@@ -27,11 +27,8 @@ export default async function handler(
   }
 
   const verified = await verifyToken(jwt);
-  console.log("verified: ", verified);
-
-  console.log(verified.payload.sub);
 
   // Now go run some fucken graphql and delete user
 
-  return res.json({ hello: "kittens" });
+  return res.status(200).end();
 }
