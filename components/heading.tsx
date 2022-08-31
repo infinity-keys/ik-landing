@@ -17,7 +17,7 @@ export default function Heading({
   ...rest
 }: HeadingProps) {
   const classes = clsx(
-    "text-4xl tracking-tight font-extrabold",
+    "text-4xl tracking-tight font-bold",
     turquoise ? "text-turquoise" : "text-white",
     {
       "text-center": center,
