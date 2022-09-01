@@ -82,7 +82,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
         </div>
         <div className="w-full p-6 flex flex-row items-center justify-center">
           <div className="p-4">
-            <div className="w-20">
+            <div className="w-20 twitterIcon hover: fill-twitterBlue">
               <a
                 href="https://twitter.com/InfinityKeys"
                 className="flex w-full"
