@@ -13,6 +13,7 @@ import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
 import { getDefaultWallets } from "@rainbow-me/rainbowkit";
 import loMerge from "lodash/merge";
+import CookieConsentBanner from "@components/cookie-consent";
 
 import "loaders.css/loaders.min.css";
 import "../styles/globals.css";
@@ -78,11 +79,14 @@ Router.events.on("routeChangeError", () => NProgress.done());
 
 function InfinityKeysApp({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} theme={IKTheme}>
-        <Component {...pageProps} />
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <>
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider chains={chains} theme={IKTheme}>
+          <Component {...pageProps} />
+        </RainbowKitProvider>
+      </WagmiConfig>
+      <CookieConsentBanner />
+    </>
   );
 }
 

@@ -5,21 +5,6 @@ class GlobalDoc extends Document {
     return (
       <Html lang="en">
         <Head>
-          <script
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}`}
-          />
-          <script
-            id="google-analytics"
-            dangerouslySetInnerHTML={{
-              __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${process.env.INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}');`,
-            }}
-          />
-
           {/* <title>Infinity Keys</title> */}
           <meta name="title" content="Infinity Keys" />
           <meta
