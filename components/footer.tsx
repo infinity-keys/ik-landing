@@ -50,7 +50,10 @@ export default function Footer() {
           </div>
         </nav>
         <p className="mt-8 text-center text-base text-gray-500">
-          &copy; 2022 Infinity Keys. All rights reserved.
+          &copy; 2022 Infinity Keys. All rights reserved. |{" "}
+          <Link href="/privacy-policy">
+            <a className="transition hover:text-turquoise">Privacy Policy</a>
+          </Link>
         </p>
       </div>
     </footer>
