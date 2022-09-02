@@ -43,6 +43,7 @@ const CookieConsentBanner: FC = () => {
           background: "rgba(7, 14, 31, .6)",
           backdropFilter: "blur(10px)",
           borderTop: "1px solid rgb(99 102 241)",
+          alignItems: "center",
         }}
         buttonStyle={{
           background: "#5ffae7",
