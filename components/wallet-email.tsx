@@ -101,7 +101,8 @@ const WalletEmail = ({
           </div>
           <p className="text-center mb-8">- or -</p>
           <p className="text-sm font-normal mb-4">
-            Drop your email if web3 is not your thing.
+            Submit your email to save this NFT to your profile and get it
+            delivered straight to your inbox.
           </p>
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
@@ -111,10 +112,9 @@ const WalletEmail = ({
               id="email"
               {...register("email")}
             />
-
             <input type="hidden" {...register("puzzleId")} value={puzzleId} />
             <Button
-              text="Join the mailing list"
+              text="Claim NFT with Email"
               fullWidth={true}
               type="submit"
               disabled={!isValid}
