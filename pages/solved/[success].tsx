@@ -6,6 +6,7 @@ import { gqlApiSdk } from "@lib/server";
 import Wrapper from "@components/wrapper";
 import WalletEmail from "@components/wallet-email";
 import Link from "next/link";
+import Markdown from "@components/markdown";
 
 interface SuccessPageProps {
   name: string;
@@ -37,6 +38,12 @@ const Dev: NextPage<SuccessPageProps> = ({
             </a>
           </Link>
         </div>
+
+        {/* {successMessage && (
+          <div className="pb-16 text-center text-lg text-gray-100 max-w-2xl mx-auto">
+            <Markdown>{successMessage}</Markdown>
+          </div>
+        )} */}
 
         <main className="flex flex-col grow-0 items-center justify-center w-full flex-1">
           <WalletEmail
