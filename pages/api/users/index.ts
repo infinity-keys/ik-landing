@@ -28,7 +28,18 @@ export default async function handler(
 
   const verified = await verifyToken(jwt);
 
-  // Now go run some fucken graphql and delete user
+  if (!verified) return res.status(401).end();
+
+  const gql = await gqlApiSdk();
+
+  if (email) {
+    // await gql.DeleteUserInfoByEmail({
+    //   form_email: JSON.stringify({ email }),
+    //   email,
+    // });
+  } else {
+    // await gql.DeleteUserByUserId({ userId });
+  }
 
   return res.status(200).end();
 }
