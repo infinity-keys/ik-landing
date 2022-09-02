@@ -9,11 +9,11 @@ type Props = {
 };
 
 const NavAvalanche = ({ showAvalanche = true }: Props) => (
-  <div className="nav-avalanche pt-28">
+  <div className="nav-avalanche pt-21">
     <div className="flex justify-center">
       <div className="w-full p-6 flex flex-row items-center justify-center">
         <div className="p-4">
-          <div className="w-20 twitterIcon hover: fill-twitterBlue">
+          <div className="twitterIcon w-20 hover: fill-twitterBlue">
             <a
               href="https://twitter.com/InfinityKeys"
               className="flex w-full"
