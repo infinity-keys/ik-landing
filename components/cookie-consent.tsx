@@ -1,16 +1,12 @@
 import { FC, useState } from "react";
-import CookieConsent, { getCookieConsentValue } from "react-cookie-consent";
 import Script from "next/script";
 import Link from "next/link";
+import CookieConsent, { getCookieConsentValue } from "react-cookie-consent";
 
 const CookieConsentBanner: FC = () => {
   const [cookies, setCookies] = useState(
     getCookieConsentValue("CookieConsent") === "true"
   );
-
-  const handleClick = () => {
-    setCookies(true);
-  };
 
   return (
     <>
@@ -56,9 +52,8 @@ const CookieConsentBanner: FC = () => {
           borderRadius: "4px",
           padding: "8px 20px",
         }}
-        onAccept={handleClick}
+        onAccept={() => setCookies(true)}
         expires={150}
-        // debug={true}
       >
         We use cookies to ensure that we give you the best experience on our
         website. Read our{" "}
