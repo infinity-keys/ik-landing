@@ -6,6 +6,7 @@ import Button from "./button";
 
 export default function WalletButton() {
   const width = useCurrentWidth();
+
   return (
     <ConnectButton.Custom>
       {({
@@ -62,19 +63,11 @@ export default function WalletButton() {
                   // <button onClick={openChainModal} type="button">
                   //   Wrong network
                   // </button>
-                  width < 450 ? (
-                    <Button
-                      text="Wrong Network"
-                      onClick={openChainModal}
-                      type="button"
-                    />
-                  ) : (
-                    <Button
-                      text="Wrong Network"
-                      onClick={openChainModal}
-                      type="button"
-                    />
-                  )
+                  <Button
+                    text="Wrong Network"
+                    onClick={openChainModal}
+                    type="button"
+                  />
                 );
               }
               return (
