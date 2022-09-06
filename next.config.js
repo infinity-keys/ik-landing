@@ -6,7 +6,12 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["images.unsplash.com", "tailwindui.com", "res.cloudinary.com"],
+    domains: [
+      "images.unsplash.com",
+      "tailwindui.com",
+      "res.cloudinary.com",
+      "imgs.search.brave.com",
+    ],
   },
   async redirects() {
     return [
