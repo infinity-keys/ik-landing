@@ -95,7 +95,7 @@ const Puzzle = ({
                 <RICIBs
                   amount={context.count}
                   handleOutputString={(text) => send({ type: "INPUT", text })}
-                  inputRegExp={/^.*$/}
+                  inputRegExp={/^\S*$/}
                   autoFocus={true}
                   inputProps={loRange(context.count).map(() => ({
                     className: "ik-code-input",
