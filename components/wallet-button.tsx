@@ -43,19 +43,11 @@ export default function WalletButton() {
                   // <button onClick={openConnectModal} type="button">
                   //   Connect Wallet
                   // </button>
-                  width < 450 ? (
-                    <Button
-                      text="Connect"
-                      onClick={openConnectModal}
-                      type="button"
-                    />
-                  ) : (
-                    <Button
-                      text="Connect Wallet"
-                      onClick={openConnectModal}
-                      type="button"
-                    />
-                  )
+                  <Button
+                    text={width < 450 ? "Connect" : "Connect Wallet"}
+                    onClick={openConnectModal}
+                    type="button"
+                  />
                 );
               }
               if (chain.unsupported) {
@@ -74,15 +66,15 @@ export default function WalletButton() {
                 <div style={{ display: "flex", gap: 12 }}>
                   <button
                     onClick={openChainModal}
-                    style={{ display: "flex", alignItems: "center" }}
+                    className="flex items-center bg-white/20 p-2 font-medium rounded-md text-lg border border-white/0 hover:border-turquoise"
                     type="button"
                   >
                     {chain.hasIcon && (
                       <div
                         style={{
                           background: chain.iconBackground,
-                          width: 12,
-                          height: 12,
+                          width: 24,
+                          height: 24,
                           borderRadius: 999,
                           overflow: "hidden",
                           marginRight: 4,
@@ -90,22 +82,19 @@ export default function WalletButton() {
                       >
                         {chain.iconUrl && (
                           <Image
-                            width={12}
-                            height={12}
+                            width={24}
+                            height={24}
                             alt={chain.name ?? "Chain icon"}
                             src={chain.iconUrl}
-                            style={{ width: 12, height: 12 }}
+                            objectFit="cover"
                           />
                         )}
                       </div>
                     )}
-                    {chain.name}
+                    <span className="hidden md:inline">{chain.name}</span>
                   </button>
                   <button onClick={openAccountModal} type="button">
                     {account.displayName}
-                    {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ""}
                   </button>
                 </div>
               );
