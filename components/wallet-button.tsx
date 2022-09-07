@@ -50,7 +50,7 @@ export default function WalletButton() {
               if (chain.unsupported) {
                 return width < 400 ? (
                   <button
-                    className="flex items-center bg-white/20 p-2 font-medium rounded-md text-lg border border-white/0 hover:border-turquoise"
+                    className="flex items-center bg-white/20 font-medium rounded-md text-lg border border-white/0 hover:border-turquoise"
                     onClick={openChainModal}
                     type="button"
                   >
