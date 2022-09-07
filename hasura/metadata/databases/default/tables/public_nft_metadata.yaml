@@ -1,0 +1,33 @@
+table:
+  schema: public
+  name: nft_metadata
+array_relationships:
+  - name: nfts
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: nfts
+        insertion_order: null
+        column_mapping:
+          contract_name: contract_name
+          token_id: tokenId
+  - name: series_nfts
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: series_nfts
+        insertion_order: null
+        column_mapping:
+          contract_name: nft_contract_name
+          token_id: nft_token_id
+select_permissions:
+  - role: api
+    permission:
+      columns:
+        - cloudinary_id
+        - contract_name
+        - data
+        - token_id
+      filter: {}

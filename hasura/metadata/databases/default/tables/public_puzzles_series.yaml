@@ -1,0 +1,10 @@
+table:
+  schema: public
+  name: puzzles_series
+object_relationships:
+  - name: puzzle
+    using:
+      foreign_key_constraint_on: puzzle_id
+  - name: series
+    using:
+      foreign_key_constraint_on: series_id
