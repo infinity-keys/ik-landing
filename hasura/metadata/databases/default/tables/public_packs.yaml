@@ -1,0 +1,13 @@
+table:
+  schema: public
+  name: packs
+select_permissions:
+  - role: api
+    permission:
+      columns:
+        - nftId
+        - pack_id
+        - pack_name
+        - simple_name
+      filter: {}
+      allow_aggregations: true

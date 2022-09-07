@@ -1,0 +1,57 @@
+table:
+  schema: public
+  name: users
+array_relationships:
+  - name: submissions
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: public
+          name: submissions
+insert_permissions:
+  - role: api
+    permission:
+      check: {}
+      columns:
+        - auth_id
+        - date_created
+        - date_updated
+        - email
+        - name
+        - nonce
+        - public_address
+        - user_id
+      backend_only: false
+select_permissions:
+  - role: api
+    permission:
+      columns:
+        - auth_id
+        - date_created
+        - date_updated
+        - email
+        - name
+        - nonce
+        - public_address
+        - user_id
+      filter: {}
+      allow_aggregations: true
+update_permissions:
+  - role: api
+    permission:
+      columns:
+        - auth_id
+        - date_created
+        - date_updated
+        - email
+        - name
+        - nonce
+        - public_address
+        - user_id
+      filter: {}
+      check: {}
+delete_permissions:
+  - role: api
+    permission:
+      filter: {}

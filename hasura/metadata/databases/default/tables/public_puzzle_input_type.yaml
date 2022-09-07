@@ -1,0 +1,18 @@
+table:
+  schema: public
+  name: puzzle_input_type
+is_enum: true
+array_relationships:
+  - name: puzzles
+    using:
+      foreign_key_constraint_on:
+        column: input_type
+        table:
+          schema: public
+          name: puzzles
+select_permissions:
+  - role: api
+    permission:
+      columns:
+        - type
+      filter: {}
