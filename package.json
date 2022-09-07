@@ -15,7 +15,7 @@
     "cypress:ci": "yarn build && start-server-and-test start http://localhost:3000 cypress:run",
     "typechain": "typechain --target ethers-v5 \"nfts/contracts/**/*.json\" --out-dir lib/generated/ethers-contract",
     "analyze": "ANALYZE=true yarn build",
-    "hasura:console": "cd hasura && hasura console --envfile ../.env.local"
+    "hasura:console": "cd hasura && hasura console --envfile ../.env.local --no-browser"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.1",
