@@ -3,10 +3,11 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 
 import Button from "./button";
+import WalletIcon from "./svg/wallet-icon-svg";
+import { BeakerIcon } from "@heroicons/react/24/outline";
 
 export default function WalletButton() {
   const width = useCurrentWidth();
-
   return (
     <ConnectButton.Custom>
       {({
@@ -55,11 +56,22 @@ export default function WalletButton() {
                   // <button onClick={openChainModal} type="button">
                   //   Wrong network
                   // </button>
-                  <Button
-                    text="Wrong Network"
-                    onClick={openChainModal}
-                    type="button"
-                  />
+                  width < 400 ? (
+                    <button
+                      className="flex items-center bg-white/20 p-2 font-medium rounded-md text-lg border border-white/0 hover:border-turquoise"
+                      onClick={openChainModal}
+                      type="button"
+                    >
+                      <WalletIcon />
+                    </button>
+                  ) : (
+                    <Button
+                      text={"Wrong Network"}
+                      onClick={openChainModal}
+                      type="button"
+                      responsive={true}
+                    />
+                  )
                 );
               }
               return (
@@ -91,9 +103,13 @@ export default function WalletButton() {
                         )}
                       </div>
                     )}
-                    <span className="hidden md:inline">{chain.name}</span>
+                    <span className="hidden sm:inline">{chain.name}</span>
                   </button>
-                  <button onClick={openAccountModal} type="button">
+                  <button
+                    onClick={openAccountModal}
+                    className="flex items-center bg-white/20 p-2 font-medium rounded-md text-lg border border-white/0 hover:border-turquoise"
+                    type="button"
+                  >
                     {account.displayName}
                   </button>
                 </div>
