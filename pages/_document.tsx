@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 class GlobalDoc extends Document {
   render() {
@@ -78,6 +79,23 @@ class GlobalDoc extends Document {
             type="font/woff2"
             crossOrigin="anonymous"
           />
+
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}`}
+            strategy="beforeInteractive"
+          />
+          <Script id="google-analytics" strategy="beforeInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', {
+                'ad_storage': 'denied',
+                'analytics_storage': 'denied'
+              });
+              gtag('js', new Date());
+              gtag('config', '${process.env.NEXT_PUBLIC_INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}');
+            `}
+          </Script>
         </Head>
         <body>
           <Main />
