@@ -1,0 +1,21 @@
+table:
+  name: packs
+  schema: public
+array_relationships:
+  - name: pack_puzzles
+    using:
+      foreign_key_constraint_on:
+        column: pack_id
+        table:
+          name: pack_puzzles
+          schema: public
+select_permissions:
+  - role: api
+    permission:
+      columns:
+        - nftId
+        - pack_id
+        - pack_name
+        - simple_name
+      filter: {}
+      allow_aggregations: true

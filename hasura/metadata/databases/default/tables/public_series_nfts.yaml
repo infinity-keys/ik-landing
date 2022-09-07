@@ -1,0 +1,17 @@
+table:
+  name: series_nfts
+  schema: public
+object_relationships:
+  - name: nft_metadatum
+    using:
+      manual_configuration:
+        column_mapping:
+          nft_contract_name: contract_name
+          nft_token_id: token_id
+        insertion_order: null
+        remote_table:
+          name: nft_metadata
+          schema: public
+  - name: series
+    using:
+      foreign_key_constraint_on: series_id
