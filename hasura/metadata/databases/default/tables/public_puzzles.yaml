@@ -1,0 +1,67 @@
+table:
+  name: puzzles
+  schema: public
+object_relationships:
+  - name: nft
+    using:
+      foreign_key_constraint_on:
+        column: puzzleId
+        table:
+          name: nfts
+          schema: public
+  - name: puzzle_input_type
+    using:
+      foreign_key_constraint_on: input_type
+array_relationships:
+  - name: pack_puzzles
+    using:
+      foreign_key_constraint_on:
+        column: puzzle_id
+        table:
+          name: pack_puzzles
+          schema: public
+  - name: puzzles_series
+    using:
+      foreign_key_constraint_on:
+        column: puzzle_id
+        table:
+          name: puzzles_series
+          schema: public
+  - name: submissions
+    using:
+      foreign_key_constraint_on:
+        column: puzzle_id
+        table:
+          name: submissions
+          schema: public
+computed_fields:
+  - name: solution_char_count
+    definition:
+      function:
+        name: solution_char_count
+        schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns: []
+      filter: {}
+  - role: api
+    permission:
+      columns:
+        - fail_message
+        - fail_route
+        - final_step
+        - input_type
+        - landing_message
+        - landing_route
+        - list_pubicly
+        - puzzle_id
+        - simple_name
+        - solution
+        - sort_weight
+        - success_message
+        - success_route
+      computed_fields:
+        - solution_char_count
+      filter: {}
+      allow_aggregations: true
