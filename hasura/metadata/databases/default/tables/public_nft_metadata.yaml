@@ -1,27 +1,27 @@
 table:
-  schema: public
   name: nft_metadata
+  schema: public
 array_relationships:
   - name: nfts
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: nfts
-        insertion_order: null
         column_mapping:
           contract_name: contract_name
           token_id: tokenId
+        insertion_order: null
+        remote_table:
+          name: nfts
+          schema: public
   - name: series_nfts
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: series_nfts
-        insertion_order: null
         column_mapping:
           contract_name: nft_contract_name
           token_id: nft_token_id
+        insertion_order: null
+        remote_table:
+          name: series_nfts
+          schema: public
 select_permissions:
   - role: api
     permission:

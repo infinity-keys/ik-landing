@@ -1,6 +1,6 @@
 table:
-  schema: public
   name: puzzles_series
+  schema: public
 object_relationships:
   - name: puzzle
     using:
