@@ -4,7 +4,6 @@ import Image from "next/image";
 
 import Button from "./button";
 import WalletIcon from "./svg/wallet-icon-svg";
-import { BeakerIcon } from "@heroicons/react/24/outline";
 
 export default function WalletButton() {
   const width = useCurrentWidth();
@@ -41,9 +40,6 @@ export default function WalletButton() {
             {(() => {
               if (!connected) {
                 return (
-                  // <button onClick={openConnectModal} type="button">
-                  //   Connect Wallet
-                  // </button>
                   <Button
                     text={width < 450 ? "Connect" : "Connect Wallet"}
                     onClick={openConnectModal}
@@ -52,26 +48,21 @@ export default function WalletButton() {
                 );
               }
               if (chain.unsupported) {
-                return (
-                  // <button onClick={openChainModal} type="button">
-                  //   Wrong network
-                  // </button>
-                  width < 400 ? (
-                    <button
-                      className="flex items-center bg-white/20 p-2 font-medium rounded-md text-lg border border-white/0 hover:border-turquoise"
-                      onClick={openChainModal}
-                      type="button"
-                    >
-                      <WalletIcon />
-                    </button>
-                  ) : (
-                    <Button
-                      text={"Wrong Network"}
-                      onClick={openChainModal}
-                      type="button"
-                      responsive={true}
-                    />
-                  )
+                return width < 400 ? (
+                  <button
+                    className="flex items-center bg-white/20 p-2 font-medium rounded-md text-lg border border-white/0 hover:border-turquoise"
+                    onClick={openChainModal}
+                    type="button"
+                  >
+                    <WalletIcon />
+                  </button>
+                ) : (
+                  <Button
+                    text={"Wrong Network"}
+                    onClick={openChainModal}
+                    type="button"
+                    responsive={true}
+                  />
                 );
               }
               return (
