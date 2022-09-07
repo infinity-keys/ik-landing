@@ -1,17 +1,17 @@
 table:
-  schema: public
   name: nfts
+  schema: public
 object_relationships:
   - name: nft_metadatum
     using:
       manual_configuration:
-        remote_table:
-          schema: public
-          name: nft_metadata
-        insertion_order: null
         column_mapping:
-          tokenId: token_id
           contract_name: contract_name
+          tokenId: token_id
+        insertion_order: null
+        remote_table:
+          name: nft_metadata
+          schema: public
   - name: puzzle
     using:
       foreign_key_constraint_on: puzzleId

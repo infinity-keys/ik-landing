@@ -1,6 +1,6 @@
 table:
-  schema: public
   name: pack_puzzles
+  schema: public
 object_relationships:
   - name: pack
     using:
