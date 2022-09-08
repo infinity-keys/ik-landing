@@ -28,7 +28,7 @@ interface PuzzlePageParams {
 }
 // TODO: remove this before merge
 const extext =
-  "# Big Boy \n ## This is the heading \n \n **this is bold text** \n \n 1. first in ordered list. \n 2. second in ordered list. \n \n - first in ul \n - second in ul \n \n ### Little heading for babies \n \n lorem ipsum *pass the dip sum* plz [this is a link](https://yo.com) \n \n Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta nostrum at ab in. Consequatur, porro ad? Lorem ipsum dolor sit amet consectetur adipisicing elit. \n \n  #### who even uses h4s";
+  "# Big Boy \n ## This is the heading \n \n **this is bold text** \n \n 1. first in ordered list. \n 2. second in ordered list. \n \n - first in ul \n - second in ul \n \n ### Little heading for babies \n \n lorem ipsum *pass the dip sum* plz [this is a link](https://yo.com) \n \n ![](https://images.unsplash.com/photo-1473163928189-364b2c4e1135?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=700&q=80) \n \n Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta nostrum at ab in. Consequatur, porro ad? Lorem ipsum dolor sit amet consectetur adipisicing elit. \n \n  #### who even uses h4s \n \n [title](https://www.youtube.com/embed/yx-KVU79Y2o)";
 
 const Dev: NextPage<PuzzlePageProps> = ({
   name,

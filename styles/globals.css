@@ -63,12 +63,12 @@
     h4,
     h5,
     h6 {
-      @apply font-bold mt-3;
+      @apply font-bold mt-4;
     }
 
     h1,
     h2 {
-      @apply mb-5;
+      @apply my-5;
     }
 
     h1 {
@@ -85,8 +85,10 @@
 
     p,
     ul,
-    ol {
-      @apply mt-3;
+    ol,
+    img,
+    iframe {
+      @apply mt-4;
     }
 
     ol,
