@@ -26,6 +26,9 @@ interface PuzzlePageParams {
     landing: string;
   };
 }
+// TODO: remove this before merge
+const extext =
+  "# Big Boy \n ## This is the heading \n \n **this is bold text** \n \n 1. first in ordered list. \n 2. second in ordered list. \n \n - first in ul \n - second in ul \n \n ### Little heading for babies \n \n lorem ipsum *pass the dip sum* plz [this is a link](https://yo.com) \n \n Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta nostrum at ab in. Consequatur, porro ad? Lorem ipsum dolor sit amet consectetur adipisicing elit. \n \n  #### who even uses h4s";
 
 const Dev: NextPage<PuzzlePageProps> = ({
   name,
@@ -57,8 +60,8 @@ const Dev: NextPage<PuzzlePageProps> = ({
         </div>
 
         {landingMessage && (
-          <div className="pb-16 text-center text-lg text-gray-100 max-w-2xl mx-auto">
-            <Markdown>{landingMessage}</Markdown>
+          <div className="pb-16 text-left text-lg text-gray-100 max-w-2xl mx-auto markdown">
+            <Markdown>{extext}</Markdown>
           </div>
         )}
 
