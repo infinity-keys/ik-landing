@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import sendgrid from "@sendgrid/mail";
+import { z } from "zod";
 import { gqlApiSdk } from "@lib/server";
 import { cloudinaryUrl } from "@lib/images";
 import { SENDGRID_SENDER_ACCOUNT } from "@lib/constants";
@@ -27,8 +28,12 @@ export default async function handler(
 
   if (!puzzle_id) return res.status(400).json({ error: "Invalid Puzzle ID" });
 
-  if (!email || email.trim().length <= 5 || !email.includes("@"))
+  try {
+    const emailSchema = z.string().min(5).email();
+    emailSchema.parse(email);
+  } catch (e) {
     return res.status(400).json({ error: "Invalid email" });
+  }
 
   const gql = await gqlApiSdk();
   const { puzzles_by_pk: puzzle } = await gql.GetPuzzleInfoById({ puzzle_id });
