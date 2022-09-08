@@ -176,7 +176,7 @@ query GetAllNftClaims {
 }
 
 query GetPuzzleInfoById($puzzle_id: uuid!) {
-  puzzles(where: { puzzle_id: { _eq: $puzzle_id } }) {
+  puzzles_by_pk(puzzle_id: $puzzle_id) {
     simple_name
     nft {
       nft_metadatum {

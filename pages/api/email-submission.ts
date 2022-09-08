@@ -31,8 +31,8 @@ export default async function handler(
     return res.status(400).json({ error: "Invalid email" });
 
   const gql = await gqlApiSdk();
-  const { puzzles } = await gql.GetPuzzleInfoById({ puzzle_id });
-  const cloudinary_id = puzzles[0].nft?.nft_metadatum?.cloudinary_id;
+  const { puzzles_by_pk: puzzle } = await gql.GetPuzzleInfoById({ puzzle_id });
+  const cloudinary_id = puzzle?.nft?.nft_metadatum?.cloudinary_id;
 
   if (!cloudinary_id)
     return res.status(400).json({ error: "No NFT available" });
@@ -46,7 +46,7 @@ export default async function handler(
       <div style="max-width: 660px; font-family: sans-serif; font-size: 17px">
       <p>
         You're smart and wonderful! Take a look at this Infinity Keys Trophy you
-        discovered from solving the ${puzzles[0].simple_name} challenge. Nice
+        discovered from solving the ${puzzle.simple_name} challenge. Nice
         one!
       </p>
 
