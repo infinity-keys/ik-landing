@@ -16,6 +16,7 @@ import loMerge from "lodash/merge";
 
 import "loaders.css/loaders.min.css";
 import "../styles/globals.css";
+import "../styles/fonts.css";
 import "nprogress/nprogress.css";
 
 // Re-enable here and below for auth via auth0

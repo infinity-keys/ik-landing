@@ -7,6 +7,7 @@ import { PuzzleInput } from "@lib/types";
 import Wallet from "@components/wallet";
 import Alert from "@components/alert";
 import Button from "@components/button";
+import Markdown from "./markdown";
 
 interface FormProps extends PuzzleInput {
   email: string;
@@ -78,7 +79,12 @@ const WalletEmail = ({
       {!isSubmitSuccessful && !errors?.puzzleId && !walletSigned && (
         <div className="">
           <div className="mb-8">
-            <Alert text={successMessage || "You did it!"} />
+            {successMessage && (
+              <div className="pb-16 text-center text-lg text-gray-100 max-w-2xl mx-auto">
+                <Markdown>{successMessage}</Markdown>
+              </div>
+            )}
+            {!successMessage && <Alert text="You did it!" />}
           </div>
 
           {!nftId && (
