@@ -18,7 +18,7 @@ const NotFoundPage: NextPage = () => {
             <Image src="/logo.svg" width={100} height={55} alt="IK logo" />
           </a>
         </Link>
-        <h2 className="mt-4 text-xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl">
+        <h2 className="mt-4 text-xl tracking-tight font-bold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl">
           heck tackle crab (check back later)
         </h2>
       </div>

@@ -1,0 +1,7 @@
+version: 3
+# endpoint: see root .env.local
+# admin_secret: see root .env.local
+metadata_directory: metadata
+actions:
+  kind: synchronous
+  handler_webhook_baseurl: http://localhost:3000

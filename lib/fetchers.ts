@@ -40,7 +40,7 @@ export const checkIfClaimed = async (account: string, tokenId: number) => {
   url.searchParams.set("tokenId", tokenId.toString());
 
   const response = await fetch(url);
-  if (response.ok) return (await response.json()).claimed;
+  if (response.ok) return await response.json();
   else throw await response.text();
 };
 
