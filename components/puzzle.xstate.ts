@@ -11,7 +11,8 @@ export type PuzzleContext = {
 
 export type PuzzleEvents =
   | { type: "INPUT"; text: string }
-  | { type: "PUZZLE_INFO"; puzzleInfo: { puzzleId: string; count: number } };
+  | { type: "PUZZLE_INFO"; puzzleInfo: { puzzleId: string; count: number } }
+  | { type: "GUESS"; text: string };
 
 export const puzzleMachine = createMachine(
   {
@@ -35,11 +36,12 @@ export const puzzleMachine = createMachine(
     },
     states: {
       idle: {
-        entry: ["clearText"],
+        // entry: ["clearText"],
         on: {
           INPUT: [
             {
-              target: "guessing",
+              actions: ["setText"],
+              target: "readyToGuess",
               cond: "charCountMatches",
             },
             {
@@ -49,6 +51,15 @@ export const puzzleMachine = createMachine(
           PUZZLE_INFO: {
             target: "idle",
             actions: ["setPuzzleInfo"],
+          },
+        },
+      },
+      readyToGuess: {
+        on: {
+          GUESS: "guessing",
+          INPUT: {
+            actions: ["setText"],
+            target: "idle",
           },
         },
       },
@@ -103,8 +114,7 @@ export const puzzleMachine = createMachine(
   },
   {
     services: {
-      sendGuess: ({ puzzleId }, { text }) =>
-        puzzlePost({ puzzleId, code: text }),
+      sendGuess: ({ puzzleId, text }) => puzzlePost({ puzzleId, code: text }),
     },
     actions: {
       setText: assign({
