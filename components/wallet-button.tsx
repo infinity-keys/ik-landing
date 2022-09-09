@@ -1,13 +1,26 @@
-import useCurrentWidth from "@hooks/useCurrentWidth";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import ShieldExclamationIcon from "@heroicons/react/24/outline/ShieldExclamationIcon";
+import WalletIcon from "@heroicons/react/24/outline/WalletIcon";
 
-import Button from "./button";
-import { ShieldExclamationIcon } from "@heroicons/react/24/outline";
-import { WalletIcon } from "@heroicons/react/24/outline";
+import useCurrentWidth from "@hooks/useCurrentWidth";
+import Button from "@components/button";
+
+const MAGIC_WIDTH = 400;
 
 export default function WalletButton() {
+  const [isSmall, setIsSmall] = useState<boolean>(false);
   const width = useCurrentWidth();
+
+  useEffect(() => {
+    if (width < MAGIC_WIDTH) {
+      setIsSmall(true);
+    } else {
+      setIsSmall(false);
+    }
+  }, [width, setIsSmall]);
+
   return (
     <ConnectButton.Custom>
       {({
@@ -31,6 +44,7 @@ export default function WalletButton() {
           <div
             {...(!ready && {
               "aria-hidden": true,
+              // @TODO: tailwind classes
               style: {
                 opacity: 0,
                 pointerEvents: "none",
@@ -42,45 +56,39 @@ export default function WalletButton() {
               if (!connected) {
                 return (
                   <Button
-                    text={width < 450 ? "Connect" : "Connect Wallet"}
+                    text={isSmall ? "Connect" : "Connect Wallet"}
                     onClick={openConnectModal}
                     type="button"
                   />
                 );
               }
               if (chain.unsupported) {
-                return width < 400 ? (
-                  <button
-                    className="flex items-center bg-white/20 font-medium rounded-md text-lg border border-white/0 hover:border-turquoise"
-                    onClick={openChainModal}
-                    type="button"
-                  >
-                    <ShieldExclamationIcon className="h-8 w-8 fill-transparent stroke-red-600" />
-                  </button>
-                ) : (
+                return (
                   <Button
-                    text={"Wrong Network"}
+                    text={isSmall ? "" : "Wrong Network"}
                     onClick={openChainModal}
                     type="button"
-                    responsive={true}
-                  />
+                    variant={isSmall ? "faded" : "solid"}
+                  >
+                    {isSmall && (
+                      <ShieldExclamationIcon className="h-8 w-8 fill-transparent stroke-red-600" />
+                    )}
+                  </Button>
                 );
               }
               return (
+                // @TOOD: tailwind classes
                 <div style={{ display: "flex", gap: 12 }}>
-                  <button
+                  <Button
                     onClick={openChainModal}
-                    className="flex items-center bg-white/20 p-2 font-medium rounded-md text-lg border border-white/0 hover:border-turquoise"
                     type="button"
+                    variant="faded"
+                    text={chain.name || "Unknown"}
                   >
                     {chain.hasIcon && (
+                      // @TODO: Tailwind
                       <div
                         style={{
-                          background: chain.iconBackground,
-                          width: 24,
-                          height: 24,
-                          borderRadius: 999,
-                          overflow: "hidden",
                           marginRight: 4,
                         }}
                       >
@@ -88,26 +96,24 @@ export default function WalletButton() {
                           <Image
                             width={24}
                             height={24}
-                            alt={chain.name ?? "Chain icon"}
+                            alt={`${chain.name} icon` ?? "Chain icon"}
                             src={chain.iconUrl}
                             objectFit="cover"
                           />
                         )}
                       </div>
                     )}
-                    <span className="hidden sm:inline">{chain.name}</span>
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    text={isSmall ? "" : account.displayName}
                     onClick={openAccountModal}
-                    className="flex items-center bg-white/20 p-2 font-medium rounded-md text-lg border border-white/0 hover:border-turquoise"
                     type="button"
+                    variant="faded"
                   >
-                    {width < 400 ? (
+                    {isSmall && (
                       <WalletIcon className="h-8 w-8 fill-transparent" />
-                    ) : (
-                      account.displayName
                     )}
-                  </button>
+                  </Button>
                 </div>
               );
             })()}
