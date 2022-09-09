@@ -3,8 +3,8 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 
 import Button from "./button";
-import WalletIcon from "./svg/wallet-icon-svg";
 import { ShieldExclamationIcon } from "@heroicons/react/24/outline";
+import { WalletIcon } from "@heroicons/react/24/outline";
 
 export default function WalletButton() {
   const width = useCurrentWidth();
@@ -102,7 +102,11 @@ export default function WalletButton() {
                     className="flex items-center bg-white/20 p-2 font-medium rounded-md text-lg border border-white/0 hover:border-turquoise"
                     type="button"
                   >
-                    {width < 400 ? <WalletIcon /> : account.displayName}
+                    {width < 400 ? (
+                      <WalletIcon className="h-8 w-8 fill-transparent" />
+                    ) : (
+                      account.displayName
+                    )}
                   </button>
                 </div>
               );
