@@ -25,7 +25,7 @@ describe("read cookies in cypress", () => {
       });
 
     cy.get(".ik-code-input").first().wait(1000).type("gnorw", { delay: 750 });
-    cy.get('[data-cy="submit"]').contains("Submit").click();
+    cy.get('[data-cy="submit"]').contains("Submit").click().wait(1000);
     cy.getCookie("ik-id")
       .should("have.property", "value")
       .then((cookie) => {
@@ -38,7 +38,7 @@ describe("read cookies in cypress", () => {
       });
 
     cy.get(".ik-code-input").first().wait(1000).type("wrong", { delay: 750 });
-    cy.get('[data-cy="submit"]').contains("Submit").click();
+    cy.get('[data-cy="submit"]').contains("Submit").click().wait(1000);
     cy.getCookie("ik-id")
       .should("have.property", "value")
       .then((cookie) => {

@@ -40,6 +40,10 @@ describe("infinitykeys.io/puzzles", () => {
   // updating default puzzle view to 16 eliminates the Next and Previous buttons
   // not enough puzzles to generate these buttons
 
+  //Update 2022-09-09: added test for next and previous buttons
+  //per this PR https://github.com/infinity-keys/ik-landing/pull/328
+  //the updated default puzzle view has enough puzzles to test next and previous button functionality
+
   it("should click on next and previous buttons", () => {
     cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
     cy.get("a.next").contains("Next").click();
