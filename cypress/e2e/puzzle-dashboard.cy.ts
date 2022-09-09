@@ -40,13 +40,11 @@ describe("infinitykeys.io/puzzles", () => {
   // updating default puzzle view to 16 eliminates the Next and Previous buttons
   // not enough puzzles to generate these buttons
 
-  // it("should click on next and previous buttons", () => {
-  //   cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
-  //   cy.get("a.next").contains("Next").click();
-  //   cy.get("a.previous").contains("Previous").click();
-  // });
-
-
+  it("should click on next and previous buttons", () => {
+    cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
+    cy.get("a.next").contains("Next").click();
+    cy.get("a.previous").contains("Previous").click();
+  });
 });
 
 export {};

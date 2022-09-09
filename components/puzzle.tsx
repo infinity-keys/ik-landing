@@ -124,7 +124,7 @@ const Puzzle = ({
                 </div>
               )}
             </div>
-            <div className="flex justify-center">
+            <div data-cy="submit" className="flex justify-center">
               <Button
                 text="Submit"
                 onClick={() => send("GUESS")}
