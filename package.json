@@ -38,7 +38,7 @@
     "ethers": "^5.7.0",
     "fortmatic": "^2.3.0",
     "graphql": "^16.6.0",
-    "graphql-request": "^4.2.0",
+    "graphql-request": "^5.0.0",
     "jose": "^4",
     "loaders.css": "^0.1.2",
     "lodash": "^4.17.21",
