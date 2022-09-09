@@ -22,14 +22,14 @@ export interface Typegen0 {
     delays: never;
   };
   eventsCausingActions: {
-    clearText: "INPUT" | "PUZZLE_INFO" | "done.invoke.guess" | "xstate.init";
+    clearText: "done.invoke.guess";
     goToFailRoute: "done.invoke.guess";
     goToSuccessRoute: "";
     setPuzzleInfo: "PUZZLE_INFO";
     setText: "INPUT";
   };
   eventsCausingServices: {
-    sendGuess: "INPUT";
+    sendGuess: "GUESS";
   };
   eventsCausingGuards: {
     charCountMatches: "INPUT";
@@ -45,6 +45,7 @@ export interface Typegen0 {
     | "guessIncorrect"
     | "guessing"
     | "idle"
+    | "readyToGuess"
     | { guessCorrect?: "deciding" | "go" | "stay" };
   tags: never;
 }
