@@ -108,6 +108,13 @@
       @apply transition text-turquoise hover:text-turquoiseDark;
     }
   }
+
+  /* TODO: Remove when we switch to left-aligned puzzle markdown */
+  .landing-md {
+    p > img {
+      @apply mx-auto;
+    }
+  }
 }
 
 .next-image-block span {
