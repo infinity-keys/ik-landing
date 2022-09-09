@@ -6,6 +6,7 @@ import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
 import Alert from "@components/alert";
 import Button from "@components/button";
+import Wallet from "./wallet";
 
 interface FormProps extends PuzzleInput {
   email: string;
@@ -31,6 +32,8 @@ const WalletEmail = ({
     formState: { errors, isValid, isSubmitSuccessful },
   } = useForm<FormProps>();
 
+  const [walletSigned, setWalletSigned] = useState(false);
+
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
     const res = await formSubmit({ data });
     // 409 === conflict === already submitted
@@ -45,15 +48,32 @@ const WalletEmail = ({
     return true;
   };
 
+  const onWalletSignature = async (address: string) => {
+    const res = await formSubmit({
+      data: {
+        puzzleId,
+        address,
+      },
+    });
+    if (res.status === 409) {
+      setError("puzzleId", {
+        type: "custom",
+        message: "Already submiitted",
+      });
+      return;
+    }
+    setWalletSigned(true);
+  };
+
   return (
     <>
       <>
-        {isSubmitSuccessful && <Alert text="You win!" />}
+        {(isSubmitSuccessful || walletSigned) && <Alert text="You win!" />}
         {!isSubmitSuccessful && errors?.puzzleId && (
           <Alert text="Looks like you've already submitted for this puzzle! Thanks for playing." />
         )}
       </>
-      {!isSubmitSuccessful && !errors?.puzzleId && (
+      {!isSubmitSuccessful && !errors?.puzzleId && !walletSigned && (
         <div className="">
           <div className="mb-8">
             <Alert text={successMessage || "You did it!"} />
@@ -66,12 +86,16 @@ const WalletEmail = ({
             </p>
           )}
 
-          <div className="mb-10">
-            <Button
-              text="Claim NFT Treasure"
-              href={`/claim/${name}`}
-              fullWidth={true}
-            />
+          <div className="mb-10 text-center">
+            {!nftId ? (
+              <Button
+                text="Claim NFT Treasure"
+                href={`/claim/${name}`}
+                fullWidth={true}
+              />
+            ) : (
+              <Wallet onWalletSignature={onWalletSignature} />
+            )}
           </div>
           <p className="text-center mb-8">- or -</p>
           <p className="text-sm font-normal mb-4">

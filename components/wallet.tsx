@@ -1,27 +1,48 @@
+import { useIKMinter } from "@hooks/useIKMinter";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import clsx from "clsx";
+import { useState, useRef, useEffect } from "react";
 import Button from "./button";
+import LoadingIcon from "./loading-icon";
 
-import { useWalletConnect } from "@hooks/useWalletConnect";
-import LoadingIcon from "@components/loading-icon";
+import { useSignMessage } from "wagmi";
+import { verifyMessage } from "ethers/lib/utils";
 
 interface WalletProps {
   onWalletSignature?: (address: string) => Promise<void>;
 }
 
 const Wallet = ({ onWalletSignature }: WalletProps) => {
-  const { current, send, isSigned, isLoading, isNotConnected } =
-    useWalletConnect();
+  const { address, isConnected } = useIKMinter();
+  const { openConnectModal } = useConnectModal();
+  const [isSigned, setIsSigned] = useState(false);
 
-  isSigned &&
-    onWalletSignature &&
-    onWalletSignature(current.context.walletAddress);
+  const recoveredAddress = useRef<string>();
+  const { data, error, isLoading, signMessage, isSuccess } = useSignMessage({
+    onSuccess(data, variables) {
+      // Verify signature when sign message succeeds
+      const address = verifyMessage(variables.message, data);
+      recoveredAddress.current = address;
+    },
+  });
+
+  useEffect(() => {
+    if (data && !error) setIsSigned(true);
+  }, [data, error]);
+
+  const sign = async () => {
+    const nonceReq = await fetch(`/api/users/${address}`);
+    const { nonce } = await nonceReq.json();
+    const message = nonce;
+    signMessage({ message });
+  };
 
   return (
     <>
       <p
         className={clsx(
           "text-md mb-3",
-          isNotConnected || current.matches("connecting")
+          !isConnected
             ? "font-bold text-neutral-50"
             : "line-through font-normal text-neutral-500"
         )}
@@ -30,35 +51,23 @@ const Wallet = ({ onWalletSignature }: WalletProps) => {
       </p>
       <p
         className={clsx("text-md mb-8", {
-          "font-normal text-neutral-500": isNotConnected,
-          "font-bold text-neutral-50":
-            current.matches("connected") || current.matches("signing"),
-          "font-normal text-neutral-500 line-through":
-            current.matches("signed"),
+          "font-normal text-neutral-500": !isConnected,
+          "font-bold text-neutral-50": !isSigned,
+          "font-normal text-neutral-500 line-through": isSigned,
         })}
       >
         2. Sign message
       </p>
 
-      {isLoading && <LoadingIcon />}
-
-      {!isLoading && !isSigned && (
-        <Button
-          onClick={() => send("next")}
-          text={
-            current.matches("connected") ? "Sign Message" : "Connect Wallet"
-          }
-        />
-      )}
-
-      <button
-        className={clsx("underline mx-auto block mt-5 text-turquoise", {
-          invisible: isLoading || isNotConnected,
-        })}
-        onClick={() => send("disconnect")}
-      >
-        Disconnect
-      </button>
+      {!isSigned &&
+        (isLoading ? (
+          <LoadingIcon />
+        ) : (
+          <Button
+            onClick={isConnected ? sign : openConnectModal}
+            text={isConnected ? "Sign Message" : "Connect Wallet"}
+          />
+        ))}
     </>
   );
 };
