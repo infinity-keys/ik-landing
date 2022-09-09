@@ -54,7 +54,7 @@
     "wagmi": "^0.6.4",
     "web3modal": "^1.9.9",
     "xstate": "^4.32.1",
-    "zod": "^3.18.0"
+    "zod": "^3.19.0"
   },
   "devDependencies": {
     "@cld-apis/types": "^0.1.6",
