@@ -1,9 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import sendgrid from "@sendgrid/mail";
-import { z } from "zod";
+
 import { gqlApiSdk } from "@lib/server";
 import { cloudinaryUrl } from "@lib/images";
 import { SENDGRID_SENDER_ACCOUNT } from "@lib/constants";
+import { emailSchema } from "@lib/types";
+
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY || "");
 
 type Data = {
@@ -29,7 +31,6 @@ export default async function handler(
   if (!puzzle_id) return res.status(400).json({ error: "Invalid Puzzle ID" });
 
   try {
-    const emailSchema = z.string().min(5).email();
     emailSchema.parse(email);
   } catch (e) {
     return res.status(400).json({ error: "Invalid email" });
