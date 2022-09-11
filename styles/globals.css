@@ -55,6 +55,12 @@
   .twitterIcon:hover {
     color: #1da1f2;
   }
+
+  .landing-md {
+    p > img {
+      @apply mx-auto;
+    }
+  }
 }
 
 .next-image-block span {
