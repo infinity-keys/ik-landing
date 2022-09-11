@@ -9,15 +9,15 @@ describe("infinitykeys.io", () => {
     cy.contains("Infinity Keys?");
   });
 
-  it("garbag input shows fail message on landing page", () => {
-    cy.get(".ik-code-input").eq(0).type("g", { delay: 250 });
-    cy.get(".ik-code-input").eq(1).type("a", { delay: 250 });
-    cy.get(".ik-code-input").eq(2).type("r", { delay: 250 });
-    cy.get(".ik-code-input").eq(3).type("b", { delay: 250 });
-    cy.get(".ik-code-input").eq(4).type("a", { delay: 250 });
-    cy.get(".ik-code-input").eq(5).type("g", { delay: 250 });
-    cy.contains("Thats not it. Need help?");
-  });
+  // it("garbag input shows fail message on landing page", () => {
+  //   cy.get(".ik-code-input").eq(0).type("g", { delay: 250 });
+  //   cy.get(".ik-code-input").eq(1).type("a", { delay: 250 });
+  //   cy.get(".ik-code-input").eq(2).type("r", { delay: 250 });
+  //   cy.get(".ik-code-input").eq(3).type("b", { delay: 250 });
+  //   cy.get(".ik-code-input").eq(4).type("a", { delay: 250 });
+  //   cy.get(".ik-code-input").eq(5).type("g", { delay: 250 });
+  //   cy.contains("Thats not it. Need help?");
+  // });
 
   it("should navigate to blog from home page", () => {
     cy.get('.menu-items a[href="https://blog.infinitykeys.io"]').click();
