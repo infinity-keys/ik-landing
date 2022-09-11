@@ -7,6 +7,9 @@ export const IK_CLAIMS_NAMESPACE = "https://infinitykeys.io";
 export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/;
 export const welcome = "Thanks for playing :)";
 
+// Email stuff
+export const SENDGRID_SENDER_ACCOUNT = "noreply@infinitykeys.io";
+
 // Route stuff, see utils.ts:Routes
 export const URL_ORIGIN =
   typeof window !== "undefined"
