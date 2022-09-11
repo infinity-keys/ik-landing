@@ -56,6 +56,60 @@
     color: #1da1f2;
   }
 
+  .markdown {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply font-bold mt-4;
+    }
+
+    h1,
+    h2 {
+      @apply my-5;
+    }
+
+    h1 {
+      @apply text-4xl;
+    }
+
+    h2 {
+      @apply text-3xl;
+    }
+
+    h3 {
+      @apply text-2xl;
+    }
+
+    p,
+    ul,
+    ol,
+    img,
+    iframe {
+      @apply mt-4;
+    }
+
+    ol,
+    ul {
+      @apply pl-8;
+    }
+
+    ol {
+      @apply list-decimal;
+    }
+
+    ul {
+      @apply list-disc;
+    }
+
+    a {
+      @apply transition text-turquoise hover:text-turquoiseDark;
+    }
+  }
+
+  /* TODO: Remove when we switch to left-aligned puzzle markdown */
   .landing-md {
     p > img {
       @apply mx-auto;
@@ -66,4 +120,3 @@
 .next-image-block span {
   display: block !important;
 }
-
