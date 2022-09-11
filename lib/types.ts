@@ -47,3 +47,5 @@ export const ThumbnailSchema = z.object({
 });
 
 export type Thumbnail = z.infer<typeof ThumbnailSchema>;
+
+export const emailSchema = z.string().min(5).email();
