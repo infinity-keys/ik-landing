@@ -1,3 +1,4 @@
+
 SET check_function_bodies = false;
 CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
@@ -174,3 +175,8 @@ ALTER TABLE ONLY public.submissions
     ADD CONSTRAINT submissions_puzzle_id_fkey FOREIGN KEY (puzzle_id) REFERENCES public.puzzles(puzzle_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE ONLY public.submissions
     ADD CONSTRAINT submissions_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+alter table "public"."series" add column "example" text
+ null;
+
+alter table "public"."series" drop column "example" cascade;
