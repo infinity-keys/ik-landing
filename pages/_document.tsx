@@ -1,6 +1,13 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import Script from "next/script";
 
+const gtagURL = new URL("https://www.googletagmanager.com/gtag/js");
+
+gtagURL.searchParams.set(
+  "id",
+  process.env.NEXT_PUBLIC_INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS || ""
+);
+
 class GlobalDoc extends Document {
   render() {
     return (
@@ -80,10 +87,7 @@ class GlobalDoc extends Document {
             crossOrigin="anonymous"
           />
 
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_INFINITY_KEYS_PUBLIC_GOOGLE_ANALYTICS}`}
-            strategy="beforeInteractive"
-          />
+          <Script src={gtagURL.toString()} strategy="beforeInteractive" />
           <Script id="google-analytics" strategy="beforeInteractive">
             {`
               window.dataLayer = window.dataLayer || [];
