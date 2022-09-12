@@ -21,15 +21,16 @@ const Markdown = ({ children }: Props) => (
           "https://www.gstop-content.com/ipfs/"
         );
         const internalLink = href.startsWith(IK_CLAIMS_NAMESPACE);
+        const embed = href.includes("embed");
 
-        if (youtubeEmbed || gstopEmbed) {
+        if (youtubeEmbed || gstopEmbed || embed) {
           return (
             <Iframe
               src={href}
               title={
                 children.length > 0 ? children[0]?.toString() : "embed video"
               }
-              aspect={gstopEmbed ? "square" : "video"}
+              aspect={gstopEmbed || embed ? "square" : "video"}
               sandbox={gstopEmbed ? "allow-scripts" : undefined}
             />
           );
