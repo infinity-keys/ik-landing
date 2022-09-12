@@ -84,7 +84,7 @@ export const generateUserDeleteUrl = async (userId: string, email?: string) => {
     userId
   );
 
-  const url = new URL("/users", ikApiUrlBase);
+  const url = new URL("users", ikApiUrlBase);
   url.searchParams.set("userId", userId);
   url.searchParams.set("jwt", jwt);
   email && url.searchParams.set("email", email);
