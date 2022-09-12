@@ -130,7 +130,7 @@ const WalletEmail = ({
             />
             <input type="hidden" {...register("puzzleId")} value={puzzleId} />
             <Button
-              text="Claim NFT with Email"
+              text={nftId ? "Claim NFT with Email" : "Submit Email"}
               fullWidth={true}
               type="submit"
               disabled={!isValid}
