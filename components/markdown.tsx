@@ -21,16 +21,18 @@ const Markdown = ({ children }: Props) => (
           "https://www.gstop-content.com/ipfs/"
         );
         const internalLink = href.startsWith(IK_CLAIMS_NAMESPACE);
-        const embed = href.includes("embed");
+        const crosswordEmbed = href.startsWith(
+          "https://puzzel.org/en/wordseeker/embed"
+        );
 
-        if (youtubeEmbed || gstopEmbed || embed) {
+        if (youtubeEmbed || gstopEmbed || crosswordEmbed) {
           return (
             <Iframe
               src={href}
               title={
                 children.length > 0 ? children[0]?.toString() : "embed video"
               }
-              aspect={gstopEmbed || embed ? "square" : "video"}
+              aspect={gstopEmbed || crosswordEmbed ? "square" : "video"}
               sandbox={gstopEmbed ? "allow-scripts" : undefined}
             />
           );
