@@ -40,11 +40,11 @@ export default function WalletButton() {
           account &&
           chain &&
           (!authenticationStatus || authenticationStatus === "authenticated");
+        // @TODO: tailwind classes
         return (
           <div
             {...(!ready && {
               "aria-hidden": true,
-              // @TODO: tailwind classes
               style: {
                 opacity: 0,
                 pointerEvents: "none",
@@ -77,8 +77,7 @@ export default function WalletButton() {
                 );
               }
               return (
-                // @TOOD: tailwind classes
-                <div style={{ display: "flex", gap: 12 }}>
+                <div className="flex gap-3">
                   <Button
                     onClick={openChainModal}
                     type="button"
@@ -86,12 +85,7 @@ export default function WalletButton() {
                     text={chain.name || "Unknown"}
                   >
                     {chain.hasIcon && (
-                      // @TODO: Tailwind
-                      <div
-                        style={{
-                          marginRight: 4,
-                        }}
-                      >
+                      <div className="mr-4">
                         {chain.iconUrl && (
                           <Image
                             width={24}
