@@ -10,13 +10,8 @@ describe("infinitykeys.io", () => {
   });
 
   it("garbag input shows fail message on landing page", () => {
-    cy.get(".ik-code-input").eq(0).type("g", { delay: 250 });
-    cy.get(".ik-code-input").eq(1).type("a", { delay: 250 });
-    cy.get(".ik-code-input").eq(2).type("r", { delay: 250 });
-    cy.get(".ik-code-input").eq(3).type("b", { delay: 250 });
-    cy.get(".ik-code-input").eq(4).type("a", { delay: 250 });
-    cy.get(".ik-code-input").eq(5).type("g", { delay: 250 });
-    cy.get('[data-cy="submit"]').contains("Submit").click();
+    cy.get(".ik-code-input").first().wait(1000).type("garbag", { delay: 250 });
+    cy.get('[data-cy="submit"]').contains("Submit").click().wait(1000);
     cy.contains("Thats not it. Need help?");
   });
 
