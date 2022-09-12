@@ -1,8 +1,8 @@
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import CookieConsent, { getCookieConsentValue } from "react-cookie-consent";
 
-const CookieConsentBanner: FC = () => {
+const CookieConsentBanner = () => {
   const [cookies, setCookies] = useState(
     getCookieConsentValue("CookieConsent") === "true"
   );
@@ -22,28 +22,11 @@ const CookieConsentBanner: FC = () => {
       buttonText="Accept"
       enableDeclineButton
       declineButtonText="Decline"
-      declineButtonStyle={{
-        background: "rgba(255,255,255,.4)",
-        color: "white",
-        fontSize: "14px",
-        fontWeight: "bold",
-        borderRadius: "4px",
-        padding: "8px 20px",
-      }}
-      style={{
-        background: "rgba(7, 14, 31, .6)",
-        backdropFilter: "blur(10px)",
-        borderTop: "1px solid rgb(99 102 241)",
-        alignItems: "center",
-      }}
-      buttonStyle={{
-        background: "#5ffae7",
-        color: "#101D42",
-        fontSize: "14px",
-        fontWeight: "bold",
-        borderRadius: "4px",
-        padding: "8px 20px",
-      }}
+      disableStyles
+      containerClasses="backdrop-blur-md	border-t border-indigo-500 fixed bottom-0 w-full text-gray-100 p-4 bg-blue/60 md:flex justify-between items-center"
+      buttonWrapperClasses="shrink-0"
+      buttonClasses="text-sm font-bold px-4 py-2 rounded bg-turquoise text-blue mt-6 md:mt-0"
+      declineButtonClasses="text-sm font-bold px-4 py-2 rounded bg-gray-200 mr-6 md:ml-6"
       onAccept={() => setCookies(true)}
       expires={150}
     >
