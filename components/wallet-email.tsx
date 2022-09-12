@@ -87,25 +87,28 @@ const WalletEmail = ({
             {!successMessage && <Alert text="You did it!" />}
           </div>
 
-          {!nftId && (
+          {/*!nftId && (
             <p className="text-sm font-normal mb-8">
               Connect your web3 wallet and sign the message to be part of an
               early player leaderboard.
             </p>
-          )}
+          )*/}
 
-          <div className="mb-10">
-            {nftId ? (
-              <Button
-                text="Claim NFT Treasure"
-                href={`/claim/${name}`}
-                fullWidth={true}
-              />
-            ) : (
-              <Wallet onWalletSignature={onWalletSignature} />
-            )}
-          </div>
-          <p className="text-center mb-8">- or -</p>
+          {nftId ? (
+            <>
+              <div className="mb-10">
+                <Button
+                  text="Claim NFT Treasure"
+                  href={`/claim/${name}`}
+                  fullWidth={true}
+                />
+              </div>
+              <p className="text-center mb-8">- or -</p>
+            </>
+          ) : (
+            <p className="-mt-10"></p>
+          )}
+          {/**<p className="text-center mb-8">- or -</p> */}
           <p className="text-sm font-normal mb-4">
             Submit your email to save this NFT to your profile and get it
             delivered straight to your inbox.
