@@ -28,7 +28,7 @@
     "@graphql-codegen/typescript-operations": "^2.5.3",
     "@headlessui/react": "^1.7.1",
     "@heroicons/react": "^2.0.11",
-    "@rainbow-me/rainbowkit": "^0.5.1",
+    "@rainbow-me/rainbowkit": "^0.5.2",
     "@sendgrid/mail": "^7.7.0",
     "@tailwindcss/forms": "^0.5",
     "@walletconnect/web3-provider": "^1.8.0",
