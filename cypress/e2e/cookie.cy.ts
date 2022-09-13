@@ -1,4 +1,5 @@
-import { generateUserDeleteUrl } from "@lib/utils";
+import { deleteUser } from "@lib/fetchers";
+import { generateUserDeleteJWT } from "@lib/utils";
 import { decodeJwt } from "jose";
 import { IkJwt } from "../../lib/types";
 
@@ -9,9 +10,9 @@ describe("read cookies in cypress", () => {
 
   afterEach(() => {
     cy.get("@userId").then(async (userId) => {
-      // const deleteUrl = await generateUserDeleteUrl(userId.toString());
+      // const jwt = await generateUserDeleteJWT(userId.toString());
       // try {
-      //   await fetch(deleteUrl);
+      //   await deleteUser(jwt);
       //   cy.log(`user not delete ${userId}`);
       // } catch (error) {
       //   cy.log(`user not delete ${userId}`);

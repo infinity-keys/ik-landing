@@ -33,22 +33,15 @@ export const formSubmit = async ({ data }: { data: unknown }) => {
   return res;
 };
 
-export const deleteUser = async ({
-  userId,
-  email,
-  jwt,
-}: {
-  userId: string;
-  email?: string;
-  jwt: string;
-}) => {
+export const deleteUser = async (jwt: string) => {
   const url = new URL("users", ikApiUrlBase);
-  url.searchParams.set("userId", userId);
-  url.searchParams.set("jwt", jwt);
-  email && url.searchParams.set("email", email);
 
   const res = await fetch(url, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ jwt }),
   });
 
   return res;

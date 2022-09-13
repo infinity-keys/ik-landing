@@ -20,6 +20,7 @@ export interface IkJwt extends JWTPayload {
     [IK_CLAIMS_NAMESPACE]: {
       walletConnected?: boolean;
       puzzles: string[];
+      email?: string;
     };
   };
 }

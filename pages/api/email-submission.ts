@@ -5,6 +5,7 @@ import { gqlApiSdk } from "@lib/server";
 import { cloudinaryUrl } from "@lib/images";
 import { SENDGRID_SENDER_ACCOUNT } from "@lib/constants";
 import { emailSchema } from "@lib/types";
+import { generateUserDeleteUrl } from "@lib/utils";
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY || "");
 
@@ -25,8 +26,9 @@ export default async function handler(
 
   const {
     puzzle_id,
+    user_id,
     form_data: { email },
-  } = req.body.event.data.new;
+  } = submission;
 
   if (!puzzle_id) return res.status(400).json({ error: "Invalid Puzzle ID" });
 
@@ -42,6 +44,8 @@ export default async function handler(
 
   if (!cloudinary_id)
     return res.status(400).json({ error: "No NFT available" });
+
+  const deleteMeLink = await generateUserDeleteUrl(user_id, email);
 
   try {
     await sendgrid.send({
@@ -88,6 +92,12 @@ export default async function handler(
       />
 
       <p>See you on the next hunt!<br><em>- Infinity Keys</em></p>
+
+      <hr/>
+
+      <small style="padding-top: 16px">
+      <a href="https://www.infinitykeys.io" style="margin: 0 12px 12px 0">Infinity Keys</a> | <a href="https://twitter.com/InfinityKeys" style="margin: 0 12px 12px">Twitter</a> | <a href="${deleteMeLink.toString()}" style="margin: 0 0 12px 12px">Delete My Info</a>
+      </small>
     </div>
 
   `,

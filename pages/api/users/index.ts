@@ -2,6 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { gqlApiSdk } from "@lib/server";
 import { verifyToken } from "@lib/jwt";
+import { IkJwt } from "@lib/types";
+import { IK_CLAIMS_NAMESPACE } from "@lib/constants";
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,34 +13,32 @@ export default async function handler(
     return res.status(405).end();
   }
 
-  const { userId, email, jwt } = req.query;
+  const { jwt } = req.body;
 
-  if (
-    !userId ||
-    typeof userId !== "string" ||
-    !jwt ||
-    typeof jwt !== "string"
-  ) {
-    return res.status(400).end();
-  }
-
-  if (email && typeof email !== "string") {
+  if (!jwt || typeof jwt !== "string") {
     return res.status(400).end();
   }
 
   const verified = await verifyToken(jwt);
-
   if (!verified) return res.status(401).end();
 
-  const gql = await gqlApiSdk();
+  const payload = verified.payload as unknown as IkJwt;
 
-  if (email) {
-    // await gql.DeleteUserInfoByEmail({
-    //   form_email: JSON.stringify({ email }),
-    //   email,
-    // });
-  } else {
-    // await gql.DeleteUserByUserId({ userId });
+  const { sub: userId } = payload;
+  const { email } = payload.claims[IK_CLAIMS_NAMESPACE];
+
+  const gql = await gqlApiSdk();
+  try {
+    await gql.DeleteUserInfoByUserId({ userId });
+
+    if (email) {
+      await gql.DeleteUserInfoByEmail({
+        form_email: { email },
+        email,
+      });
+    }
+  } catch (e) {
+    return res.status(500).end();
   }
 
   return res.status(200).end();

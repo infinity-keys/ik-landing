@@ -112,20 +112,25 @@ mutation AddWalletToUser(
 
 # Delete multiple users and submissions by email
 mutation DeleteUserInfoByEmail($form_email: jsonb = "", $email: String) {
+  delete_submissions(where: { form_data: { _contains: $form_email } }) {
+    returning {
+      puzzle_id
+    }
+  }
   delete_users(where: { email: { _eq: $email } }) {
     returning {
       email
     }
   }
-  delete_submissions(where: { form_data: { _eq: $form_email } }) {
-    returning {
-      user_id
-    }
-  }
 }
 
 # Delete user by Id
-mutation DeleteUserByUserId($userId: uuid = "") {
+mutation DeleteUserInfoByUserId($userId: uuid = "") {
+  delete_submissions(where: { user_id: { _eq: $userId } }) {
+    returning {
+      puzzle_id
+    }
+  }
   delete_users(where: { user_id: { _eq: $userId } }) {
     returning {
       user_id

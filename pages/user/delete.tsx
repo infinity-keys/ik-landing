@@ -13,8 +13,6 @@ import Heading from "@components/heading";
 import Alert from "@components/alert";
 
 interface PageParams {
-  email: string;
-  userId: string;
   jwt: string;
 }
 
@@ -22,13 +20,13 @@ interface Data {
   query: PageParams;
 }
 
-const DeleteUserPage: NextPage<PageParams> = ({ email, userId, jwt }) => {
+const DeleteUserPage: NextPage<PageParams> = ({ jwt }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
-  const handleClick = async ({ userId, email, jwt }: PageParams) => {
+  const handleClick = async (jwt: string) => {
     try {
-      const res = await deleteUser({ userId, email, jwt });
+      const res = await deleteUser(jwt);
       if (!res.ok) {
         throw Error;
       }
@@ -73,7 +71,7 @@ const DeleteUserPage: NextPage<PageParams> = ({ email, userId, jwt }) => {
             </Text>
             <div className="mt-7">
               <Button
-                onClick={() => handleClick({ userId, email, jwt })}
+                onClick={() => handleClick(jwt)}
                 text="Delete My Data"
                 variant="warn"
               />
@@ -93,12 +91,8 @@ const DeleteUserPage: NextPage<PageParams> = ({ email, userId, jwt }) => {
 export default DeleteUserPage;
 
 export const getServerSideProps = async ({ query }: Data) => {
-  const { email, userId, jwt } = query;
+  const { jwt } = query;
   return {
-    props: {
-      email,
-      userId,
-      jwt,
-    },
+    props: { jwt },
   };
 };

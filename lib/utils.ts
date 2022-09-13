@@ -74,20 +74,22 @@ export const thumbnailData = (
 
 export const validChain = (chain: number) => chainIds.includes(chain);
 
-export const generateUserDeleteUrl = async (userId: string, email?: string) => {
-  const jwt = await makeUserToken(
+export const generateUserDeleteJWT = async (userId: string, email?: string) => {
+  return await makeUserToken(
     {
       claims: {
-        [IK_CLAIMS_NAMESPACE]: { puzzles: [] },
+        [IK_CLAIMS_NAMESPACE]: { puzzles: [], email },
       },
     },
     userId
   );
+};
 
-  const url = new URL("users", ikApiUrlBase);
-  url.searchParams.set("userId", userId);
+export const generateUserDeleteUrl = async (userId: string, email?: string) => {
+  const jwt = await generateUserDeleteJWT(userId, email);
+
+  const url = new URL("/user/delete", IK_CLAIMS_NAMESPACE);
   url.searchParams.set("jwt", jwt);
-  email && url.searchParams.set("email", email);
 
   return url;
 };
