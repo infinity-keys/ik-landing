@@ -40,16 +40,12 @@ export default function WalletButton() {
           account &&
           chain &&
           (!authenticationStatus || authenticationStatus === "authenticated");
-        // @TODO: tailwind classes
+
         return (
           <div
             {...(!ready && {
               "aria-hidden": true,
-              style: {
-                opacity: 0,
-                pointerEvents: "none",
-                userSelect: "none",
-              },
+              className: "opacity-0 pointer-events-none select-none",
             })}
           >
             {(() => {
