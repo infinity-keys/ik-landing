@@ -12,6 +12,7 @@ import Markdown from "@components/markdown";
 
 import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
+import Heading from "@components/heading";
 
 export interface PuzzlePageProps {
   name: string;
@@ -56,11 +57,21 @@ const Dev: NextPage<PuzzlePageProps> = ({
           </Link>
         </div>
 
-        {landingMessage && (
-          <div className="pb-16 text-center text-lg text-gray-100 max-w-2xl mx-auto markdown landing-md">
-            <Markdown>{landingMessage}</Markdown>
-          </div>
-        )}
+        <div className="flex">
+          {landingMessage && (
+            <div className="pb-8 text-left text-lg text-gray-100 max-w-2xl mx-auto markdown landing-md mr-12">
+              <Heading as="h2">Instructions</Heading>
+              <Markdown>{landingMessage}</Markdown>
+            </div>
+          )}
+
+          {landingMessage && (
+            <div className="pb-16 text-left text-lg text-gray-100 max-w-2xl mx-auto markdown landing-md">
+              <Heading as="h2">Challenge</Heading>
+              <Markdown>{landingMessage}</Markdown>
+            </div>
+          )}
+        </div>
 
         <Puzzle
           count={count}
