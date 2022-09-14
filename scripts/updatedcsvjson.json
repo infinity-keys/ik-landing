@@ -1,0 +1,236 @@
+[
+  {
+    "simple_name": "notright",
+    "Instructions (old landing_message)": "Solve the riddle to find the passcode.\\nEnter the passcode to pass the challenge.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters)",
+    "Challenge": "The passcode to this puzzle is wrong.",
+    "Input (Passcode)": "wrong",
+    "Swap to boxes?": "FALSE",
+    "Fail message": "no change",
+    "Success Message": "no change"
+  },
+  {
+    "simple_name": "communitycode",
+    "Instructions (old landing_message)": "Seek the passcode in the Infinity Keys Discord.\\nSubmit the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "Treat people with kindness and _______.",
+    "Input (Passcode)": "respect",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "Do you follow the Infinity Keys [Community Code](https://discord.gg/infinitykeys)?",
+    "Success Message": "Welcome to the IK community - Say 7 13 in Discord!"
+  },
+  {
+    "simple_name": "thesis",
+    "Instructions (old landing_message)": "Complete the word search to unlock the passcode.\\nLook for special words in the [Infinity Keys Thesis](https://blog.infinitykeys.io/what-is-infinity-keys).\\nSubmit the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "[thesis puzzle](https://puzzel.org/en/wordseeker/embed?p=-NBNOH2Hi4p5rVun0ojK)",
+    "Input (Passcode)": "access",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "Solve the word search to get the passcode.",
+    "Success Message": "You're an IK expert!"
+  },
+  {
+    "simple_name": "gram",
+    "Instructions (old landing_message)": "Find the rest of the clue at a hidden Infinity Keys location.\\nSort the puzzle pieces to find the original.\\nThe title holds the passcode.\\nSubmit the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "![](https://res.cloudinary.com/infinity-keys/image/upload/v1661885039/gram%20photos/Slice_14_usnm6u.png)",
+    "Input (Passcode)": "adele",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "Follow the account to get regular updates and more clues.",
+    "Success Message": "Brilliant as The Lady in Gold! Keep an eye out for more Instagram puzzles in the future."
+  },
+  {
+    "simple_name": "Magicaldeathspit",
+    "Instructions (old landing_message)": "Search the web for this fandom.\\nFind the passcode in the story.\\nSubmit the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "Saved by venom, making Glory the queen.",
+    "Input (Passcode)": "kinkajou",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "Thsi is on Rainwing who is definitely not lazy.",
+    "Success Message": ""
+  },
+  {
+    "simple_name": "PowerofDarkstalkersScroll",
+    "Instructions (old landing_message)": "The answer is already in the clue.\\nSearch the web for this fandom.\\nFind the passcode in the story.\\nSubmit the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "Remix Mount Ariel and see what transformed into Ruby.",
+    "Input (Passcode)": "tourmaline",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "A remixed term can also be called an anagram.",
+    "Success Message": ""
+  },
+  {
+    "simple_name": "TrueNames",
+    "Instructions (old landing_message)": "Find the scavenger's true name.\\nWatch the video to find the passcode.\\nSubmit the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "[True Names Video](https://www.youtube.com/watch?v=22Xhf7-gpM4&feature=emb_title)",
+    "Input (Passcode)": "",
+    "Swap to boxes?": "FALSE",
+    "Fail message": "Listen closely to Tui T. Sutherland!",
+    "Success Message": "Nice work dragonette!"
+  },
+  {
+    "simple_name": "metafest2",
+    "Instructions (old landing_message)": "Watch the video to find a clue.\\nUse the clue to explore the NFT project.\\nFind the passcode within the NFTs.\\nSubmit the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "[metafest2 video](https://www.youtube.com/watch?v=HBYE1Aysc6I&feature=emb_title)",
+    "Input (Passcode)": "",
+    "Swap to boxes?": "FALSE",
+    "Fail message": "Explore the Heroes of Evermore NFT collections on marketplaces like OpenSea or LooksRare.",
+    "Success Message": "That was a tough one! Play Heroes of Evermore and be reaady for more upcoming IK in-game challenges."
+  },
+  {
+    "simple_name": "SAN Sounds",
+    "Instructions (old landing_message)": "Find the passcode in the [SANSounds whitepaper](https://medium.com/@sansound/new-san-sound-whitepaper-ee6102ce151f).\\nSolve the emoji puzzle to be sure the passcode is correct.\\nSubmit the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "",
+    "Input (Passcode)": "",
+    "Swap to boxes?": "FALSE",
+    "Fail message": "",
+    "Success Message": ""
+  },
+  {
+    "simple_name": "SAN Heist",
+    "Instructions (old landing_message)": "Find the passcode in the SANSounds project details.\\nFill in the blank with the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "Xin escaped with the files and found that Cromagnus and _______ are bringing the SAN Sounds artistic vision to life.\\nFind the passcode in the SAN Sounds project details.",
+    "Input (Passcode)": "imcmplx",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "You have one artist, go find the other in the SAN Sounds history files.",
+    "Success Message": "ACCES GRANTED."
+  },
+  {
+    "simple_name": 10000,
+    "Instructions (old landing_message)": "Answer the trivia question to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "This OG helped inspire PizzaDAO to spread the good news of Pizza like in the early days of Bitcoin.",
+    "Input (Passcode)": "laszlo",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "Let's be casual and go by first names.",
+    "Success Message": ""
+  },
+  {
+    "simple_name": "happyholidays",
+    "Instructions (old landing_message)": "Answer the trivia question to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "Practically like Christmas for PizzaDAO.",
+    "Input (Passcode)": "(zero)522",
+    "Swap to boxes?": "FALSE",
+    "Fail message": "Try using the American style for this passcode.",
+    "Success Message": "You know the date, now schedule some pizza with [PizzaDAO](https://www.rarepizzas.com/) next May!"
+  },
+  {
+    "simple_name": "annot",
+    "Instructions (old landing_message)": "Solve the riddle to find the passcode.\\nEnter the passcode to pass the challenge.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "You can't see the passcode to this puzzle.",
+    "Input (Passcode)": "kan",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "Stumped? Get help in the [Infinity Keys discord server](https://discord.gg/infinitykeys).",
+    "Success Message": "Kongratulations!"
+  },
+  {
+    "simple_name": "backwards",
+    "Instructions (old landing_message)": "Solve the riddle to find the passcode.\\nEnter the passcode to pass the challenge.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "The passcode to this puzzle is backwards.",
+    "Input (Passcode)": "sdrawkcab",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "",
+    "Success Message": ""
+  },
+  {
+    "simple_name": "CallMyName",
+    "Instructions (old landing_message)": "Find the answer in the linked metaverse room.\\nAnswer the trivia question to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "[Call my Name!](https://www.voxels.com/spaces/10e922c7-f3e9-40d5-9f03-648dc3c1a326/play)",
+    "Input (Passcode)": "moonchild",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "Try turning subtitles on.",
+    "Success Message": "You did it Sebastian! Look for other hunts featuring the Neverending Story film or book."
+  },
+  {
+    "simple_name": "firstletter",
+    "Instructions (old landing_message)": "Solve the riddle to find the letters.\\nPut the letters in the right order to find the passcode.\\nEnter the passcode to pass the challenge.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "Ordering the first letters of the words in this clue won't work.\\nClue: Eternal kittens assure great affirmations.",
+    "Input (Passcode)": "first",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "Second place is just first loser.",
+    "Success Message": "First is the worst, second is the best, third is the one in the coconut dress."
+  },
+  {
+    "simple_name": "Placeholder",
+    "Instructions (old landing_message)": "Solve the riddle to advance.\\nEnter the passcode to pass the challenge.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "The passcode to this puzzle hasn't been decided yet.",
+    "Input (Passcode)": "loremipsum",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "Search for what text to use as a placeholder.",
+    "Success Message": "the internet itself is a pain"
+  },
+  {
+    "simple_name": "RehashGuests",
+    "Instructions (old landing_message)": "Enter this episode season and number to advance.\\nThe cipher is hidden in the clue.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "Rehash season two [features guests](https://opensea.io/collection/rehashweb3) that are pushing Web3 forward, like in this episode with @fkulvwlqd.ohqv.",
+    "Input (Passcode)": "",
+    "Swap to boxes?": "FALSE",
+    "Fail message": "Something else got pushed 3 forward.",
+    "Success Message": ""
+  },
+  {
+    "simple_name": "TheLastOfUs",
+    "Instructions (old landing_message)": "Watch the video to find the passcode.\\nSubmit the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "[Rehash Video](https://www.youtube.com/watch?v=R4CmT6Gsh2g)\\nDoes Katherine Wu really think this kind of invasion could bring crypto down?",
+    "Input (Passcode)": "zombie",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "Scan the timestamps.",
+    "Success Message": ""
+  },
+  {
+    "simple_name": "ThisOrThat",
+    "Instructions (old landing_message)": "Listen to the episode to find the passcode.\\nSubmit the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "[Rehash: A Web3 Podcast](https://opensea.io/assets/ethereum/0xb74c9f1eccddefbef7c017b97bd3a2f24a0081f8/37)\\nOne chooses this, the other chooses that.",
+    "Input (Passcode)": "bearbull",
+    "Swap to boxes?": "FALSE",
+    "Fail message": "This or that?\" is a game played with guests at the end of each Rehash Podcast episode.",
+    "Success Message": "Nice job journeying through the Rehash Season 2 Challenge. If you like what you hear, subscribe to Rehash on your favorite podcast app or [join the DAO](https://rehash.mirror.xyz/iYpfI1mE_bhrk7aRPyKXFnAM3g5h8mzJpqNy3fjfRyM)."
+  },
+  {
+    "simple_name": "ThePowerofStories",
+    "Instructions (old landing_message)": "Answer the trivia question to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "What they would all become once the Nothing took them.",
+    "Input (Passcode)": "lies",
+    "Swap to boxes?": "FALSE",
+    "Fail message": "You may have to search for The Nothing.",
+    "Success Message": "It's the emptiness that's left. It's like a despair, destroying this world. And I have been trying to help it. -G'mork"
+  },
+  {
+    "simple_name": "TheySoLil",
+    "Instructions (old landing_message)": "Use the emoji riddle to explore the NFT Collection .\\nFind the right NFTs to get the passcode.\\nSubmit the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "[🟢 🌧️ 🍄 ⬛ 🔴 👕 🪀 📖 🟥](https://lilnouns.wtf/)",
+    "Input (Passcode)": "",
+    "Swap to boxes?": "FALSE",
+    "Fail message": "[Try the trait finder.](https://www.lil-nouns.center/)",
+    "Success Message": ""
+  },
+  {
+    "simple_name": "WhyNotBoth",
+    "Instructions (old landing_message)": "Use the emoji riddle to explore the NFT Collection.\\nFind the right NFTs to get the passcode.\\nSubmit the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "[🌮🌮](https://opensea.io/collection/lil-nouns?search[sortAscending]=false&search[sortBy]=CREATED_DATE)",
+    "Input (Passcode)": "",
+    "Swap to boxes?": "FALSE",
+    "Fail message": "",
+    "Success Message": "[Learn more](https://www.lil-nouns.center/) about lil nouns and nouns and how they work together to fund nounish public goods!"
+  },
+  {
+    "simple_name": "TwitterSearch",
+    "Instructions (old landing_message)": "Find the rest of the clue at a hidden Infinity Keys location.\\nThe pin holds the passcode.\\nSubmit the passcode to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "infinitykeys_",
+    "Input (Passcode)": "",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "Did you search the bird app?",
+    "Success Message": "Nice hunt! What other clues might be out across the metaverse? What could we build together?"
+  },
+  {
+    "simple_name": "unlockagain",
+    "Instructions (old landing_message)": "Solve the riddle to advance.\\nEnter the passcode to pass the challenge.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "Start with H and add a z to find the ABCs in the header. Pair them with the right key and the homepage letters unlock more than one challenge.",
+    "Input (Passcode)": "",
+    "Swap to boxes?": "FALSE",
+    "Fail message": "",
+    "Success Message": ""
+  },
+  {
+    "simple_name": "MsBugLawyer",
+    "Instructions (old landing_message)": "Answer the trivia question to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "Look in the pages to see which weavers of the web caught this lucky one.",
+    "Input (Passcode)": "",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "You may have to visit your local library.",
+    "Success Message": "Sticky victory Atreyu!"
+  }
+]

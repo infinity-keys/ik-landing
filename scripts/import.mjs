@@ -14,6 +14,17 @@ const gql = `query MyQuery($siteName: String) {
     fail_message
   }
 }`;
+// how to create a mutation example
+
+// const gqlModify = `mutation MyMutation ($siteName: String){
+//   update_puzzles(where: {simple_name: {_eq: "$siteName"},
+//   solution: {_eq: "$Input (Passcode)"},
+//   fail_message: {_eq: "$Fail Message"},
+//   input_type: {_eq: boxes},
+//   landing_message: {_eq: "Instructions (old landing message)"}}) {
+
+//   }
+// }`;
 
 const doIt = async () => {
   // Example: Make GraphQL calls
@@ -34,10 +45,10 @@ const doIt = async () => {
 
   // Example: read json
   fs.readFile(
-    new URL("./csvjson.json", import.meta.url).pathname,
-    (err, data) => {
+    new URL("./updatedcsvjson.json", import.meta.url).pathname,
+    (_err, data) => {
       const changes = JSON.parse(data);
-      const puzzles = changes.map((change) => String(change.Title));
+      const puzzles = changes.map((change) => String(change.simple_name));
       console.log(puzzles);
     }
   );
