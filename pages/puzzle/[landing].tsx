@@ -28,6 +28,13 @@ interface PuzzlePageParams {
   };
 }
 
+// TODO: remove this when columns are updated
+const testIns =
+  "* Solve the riddle to find the passcode.\n* Enter the passcode to pass the challenge.\n* Passcodes are letters, numbers, or a combination (no spaces or special characters)";
+
+const testCha =
+  "Clue: The clue is in the talk, the key is in the game.  \n[Designing NFT Treasure Hunts: Infinity Keys GameFi Presents at Metafest 2](https://www.youtube.com/embed/HBYE1Aysc6I)";
+
 const Dev: NextPage<PuzzlePageProps> = ({
   name,
   count,
@@ -43,7 +50,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
       </Head>
 
       <main className="text-center pt-5">
-        <div className="pb-16">
+        <div className="my-16">
           <Link href={"/"}>
             <a>
               <Image
@@ -57,18 +64,18 @@ const Dev: NextPage<PuzzlePageProps> = ({
           </Link>
         </div>
 
-        <div className="flex">
+        <div className="mb-16">
           {landingMessage && (
-            <div className="pb-8 text-left text-lg text-gray-100 max-w-2xl mx-auto markdown landing-md mr-12">
+            <div className="mb-12 w-full max-w-2xl mx-auto markdown landing-md">
               <Heading as="h2">Instructions</Heading>
-              <Markdown>{landingMessage}</Markdown>
+              <Markdown>{testIns}</Markdown>
             </div>
           )}
 
           {landingMessage && (
-            <div className="pb-16 text-left text-lg text-gray-100 max-w-2xl mx-auto markdown landing-md">
+            <div className=" w-full max-w-2xl mx-auto markdown landing-md">
               <Heading as="h2">Challenge</Heading>
-              <Markdown>{landingMessage}</Markdown>
+              <Markdown>{testCha}</Markdown>
             </div>
           )}
         </div>
