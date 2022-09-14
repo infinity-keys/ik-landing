@@ -13,6 +13,7 @@ select_permissions:
   - role: api
     permission:
       columns:
+        - list_publicly
         - nftId
         - pack_id
         - pack_name
