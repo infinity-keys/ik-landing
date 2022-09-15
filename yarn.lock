@@ -1779,10 +1779,10 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
 
-"@rainbow-me/rainbowkit@^0.5.2":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-0.5.2.tgz#00d63a372c027591fe158178e81221ff1b6ce616"
-  integrity sha512-pQOMbwcO9drXcweWXSrq0o/QFJ2UtD7VMD4pSbbZt0l1n8LH4Qm781opmafjHcnU6lJi7H+YChLTeQA6uKttBw==
+"@rainbow-me/rainbowkit@^0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-0.5.3.tgz#8cb82fb76669728f8037091921070df0feb11fa3"
+  integrity sha512-y5mJowaecrooUQRi39BiQ5B9s1gdiJjvtDWCgBsE6p9Ab8QKdB4UD7piPLYB3loy+nEF9Y1KPMBYq6NqJ3rTNQ==
   dependencies:
     "@vanilla-extract/css" "1.7.0"
     "@vanilla-extract/dynamic" "2.0.2"
@@ -6247,9 +6247,9 @@ jose@^2.0.5:
     "@panva/asn1.js" "^1.0.0"
 
 jose@^4:
-  version "4.9.2"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-4.9.2.tgz#268994df4443b9c191de0b001c2e3796ac6cf368"
-  integrity sha512-EqKvu2PqJCD3Jrg3PvcYZVS7D21qMVLSYMDAFcOdGUEOpJSLNtJO7NjLANvu3SYHVl6pdP2ff7ve6EZW2nX7Nw==
+  version "4.9.3"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-4.9.3.tgz#890abd3f26725fe0f2aa720bc2f7835702b624db"
+  integrity sha512-f8E/z+T3Q0kA9txzH2DKvH/ds2uggcw0m3vVPSB9HrSkrQ7mojjifvS7aR8cw+lQl2Fcmx9npwaHpM/M3GD8UQ==
 
 js-sdsl@^4.1.4:
   version "4.1.4"
