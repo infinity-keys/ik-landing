@@ -11,32 +11,6 @@ type Props = {
 const NavAvalanche = ({ showAvalanche = true }: Props) => (
   <div className="nav-avalanche pt-21">
     <div className="flex justify-center">
-      <div className="w-full p-6 flex flex-row items-center justify-center">
-        <div className="p-4">
-          <div className="twitterIcon w-20 hover: fill-twitterBlue">
-            <a
-              href="https://twitter.com/InfinityKeys"
-              className="flex w-full"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <TwitterSvg />
-            </a>
-          </div>
-        </div>
-        <div className="p-4">
-          <div className="discordIcon w-20 hover: fill-discordPurple">
-            <a
-              href="https://discord.com/invite/infinitykeys"
-              className="flex w-full"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <Discord width={96} height={96} />
-            </a>
-          </div>
-        </div>
-      </div>
 
       {showAvalanche && (
         <div className="flex justify-center px-9 w-96 fill-white">
