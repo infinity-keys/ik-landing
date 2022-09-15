@@ -3,7 +3,7 @@
  *
  * The embedded puzzle form used to attmpt solution.
  */
-import { ComponentType, useEffect, useRef, useState } from "react";
+import { ComponentType, FormEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
@@ -66,6 +66,11 @@ const Puzzle = ({
     if (ref.current) setHeight(ref.current.clientHeight);
   }, [width]);
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (context.count === context.text.length) send("GUESS");
+  };
+
   return (
     <>
       {(matches("guessing") || matches("guessCorrect.go")) && (
@@ -93,44 +98,46 @@ const Puzzle = ({
                 </Markdown>
               </div>
             </div>
-            <div className="magic-input  text-turquoise font-bold">
-              {boxes && (
-                <RICIBs
-                  amount={context.count}
-                  handleOutputString={(text) => send({ type: "INPUT", text })}
-                  inputRegExp={/^\S*$/}
-                  autoFocus={true}
-                  inputProps={loRange(context.count).map(() => ({
-                    className: "ik-code-input",
-                  }))}
-                />
-              )}
-              {!boxes && (
-                <div className="flex items-center sm:w-full">
-                  <input
-                    onChange={(e) =>
-                      send({ type: "INPUT", text: e.target.value })
-                    }
-                    type="text"
-                    className="text-blue-800 w-full"
-                    size={context.count}
+            <form onSubmit={handleSubmit}>
+              <div className="magic-input  text-turquoise font-bold">
+                {boxes && (
+                  <RICIBs
+                    amount={context.count}
+                    handleOutputString={(text) => send({ type: "INPUT", text })}
+                    inputRegExp={/^\S*$/}
                     autoFocus={true}
-                    tabIndex={0}
-                    onPaste={(e) => e.preventDefault()}
+                    inputProps={loRange(context.count).map(() => ({
+                      className: "ik-code-input",
+                    }))}
                   />
-                  <div className="counter text-lg p-4 text-white w-11">
-                    {context.count - context.text.length}
+                )}
+                {!boxes && (
+                  <div className="flex items-center sm:w-full">
+                    <input
+                      onChange={(e) =>
+                        send({ type: "INPUT", text: e.target.value })
+                      }
+                      type="text"
+                      className="text-blue-800 w-full"
+                      size={context.count}
+                      autoFocus={true}
+                      tabIndex={0}
+                      onPaste={(e) => e.preventDefault()}
+                    />
+                    <div className="counter text-lg p-4 text-white w-11">
+                      {context.count - context.text.length}
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-            <div className="flex justify-center">
-              <Button
-                text="Submit"
-                onClick={() => send("GUESS")}
-                disabled={!matches("readyToGuess")}
-              />
-            </div>
+                )}
+              </div>
+              <div className="flex justify-center">
+                <Button
+                  text="Submit"
+                  type="submit"
+                  disabled={!matches("readyToGuess")}
+                />
+              </div>
+            </form>
           </div>
         </div>
       )}
