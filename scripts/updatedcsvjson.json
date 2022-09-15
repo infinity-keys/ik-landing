@@ -232,5 +232,14 @@
     "Swap to boxes?": "TRUE",
     "Fail message": "You may have to visit your local library.",
     "Success Message": "Sticky victory Atreyu!"
+  },
+  {
+    "simple_name": "testMutation",
+    "Instructions (old landing_message)": "Answer the trivia question to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
+    "Challenge": "Look in the pages to see which weavers of the web caught this lucky one.",
+    "Input (Passcode)": "itworks",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "",
+    "Success Message": "Sticky victory Atreyu!"
   }
 ]
