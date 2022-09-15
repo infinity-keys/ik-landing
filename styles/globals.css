@@ -13,7 +13,7 @@
     @apply flex flex-wrap justify-center;
   }
   .ik-code-input {
-    @apply bg-gray-500 border-gray-200 m-0 mx-1 mb-5 font-bold shadow-md text-2xl !important;
+    @apply bg-gray-500 border-gray-200 m-0 mx-1 mb-2 font-bold shadow-md text-2xl !important;
     text-shadow: -2px 0px 7px #3fccbb;
     width: 45px !important;
     height: 45px !important;
