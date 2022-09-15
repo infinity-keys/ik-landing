@@ -49,7 +49,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.35.0",
-    "react-individual-character-input-boxes": "^1.1.0",
+    "react-individual-character-input-boxes": "^1.1.6",
     "react-markdown": "^8.0.3",
     "uuid": "^9.0.0",
     "wagmi": "^0.6.6",
