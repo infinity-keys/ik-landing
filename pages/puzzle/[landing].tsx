@@ -5,7 +5,7 @@ import Link from "next/link";
 // import { useMachine } from "@xstate/react";
 
 import Wrapper from "@components/wrapper";
-import NavAvalanche from "@components/nav-avalanche";
+import KeysLink from "@components/keys-link";
 import Puzzle from "@components/puzzle";
 import Markdown from "@components/markdown";
 // import { puzzleMachine } from "@components/puzzle.xstate";
@@ -70,7 +70,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
         />
       </main>
 
-      <NavAvalanche showAvalanche={false} />
+      <KeysLink />
     </Wrapper>
   );
 };
