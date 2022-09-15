@@ -19,7 +19,8 @@ export interface PuzzlePageProps {
   count: number;
   puzzleId: string;
   inputType?: Puzzle_Input_Type_Enum;
-  landingMessage?: string;
+  challenge?: string;
+  instructions?: string;
   failMessage?: string;
 }
 interface PuzzlePageParams {
@@ -40,7 +41,8 @@ const Dev: NextPage<PuzzlePageProps> = ({
   count,
   puzzleId,
   inputType,
-  landingMessage,
+  challenge,
+  instructions,
   failMessage,
 }) => {
   return (
@@ -65,14 +67,14 @@ const Dev: NextPage<PuzzlePageProps> = ({
         </div>
 
         <div className="mb-16">
-          {landingMessage && (
+          {instructions && (
             <div className="mb-12 w-full max-w-2xl mx-auto markdown landing-md">
               <Heading as="h2">Instructions</Heading>
               <Markdown>{testIns}</Markdown>
             </div>
           )}
 
-          {landingMessage && (
+          {challenge && (
             <div className=" w-full max-w-2xl mx-auto markdown landing-md">
               <Heading as="h2">Challenge</Heading>
               <Markdown>{testCha}</Markdown>
@@ -107,7 +109,8 @@ export async function getStaticProps({
       solution_char_count,
       puzzle_id,
       input_type,
-      landing_message,
+      challenge,
+      instructions,
       fail_message,
     },
   ] = puzzles;
@@ -118,7 +121,8 @@ export async function getStaticProps({
       count: solution_char_count || 0,
       puzzleId: puzzle_id,
       inputType: input_type || Puzzle_Input_Type_Enum.Boxes,
-      landingMessage: landing_message || "",
+      challenge: challenge || "",
+      instructions: instructions || "",
       failMessage: fail_message || "",
     },
   };

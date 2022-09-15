@@ -19,7 +19,8 @@ query PuzzleInfoByLanding($landing: String!) {
     puzzle_id
     input_type
     fail_message
-    landing_message
+    challenge
+    instructions
   }
 }
 
