@@ -90,14 +90,7 @@ const Puzzle = ({
               </div>
               <h1 className="text-base font-bold pt-2 pl-4">Solve Puzzle</h1>
             </div>
-            <div className={clsx({ invisible: !matches("guessIncorrect") })}>
-              <div className="opacity-50">
-                <Markdown>
-                  {failMessage ||
-                    "Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)"}
-                </Markdown>
-              </div>
-            </div>
+
             <form onSubmit={handleSubmit}>
               <div className="magic-input  text-turquoise font-bold">
                 {boxes && (
@@ -129,6 +122,18 @@ const Puzzle = ({
                     </div>
                   </div>
                 )}
+              </div>
+              <div
+                className={clsx("mb-2", {
+                  invisible: !matches("guessIncorrect"),
+                })}
+              >
+                <div className="opacity-50">
+                  <Markdown>
+                    {failMessage ||
+                      "Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)"}
+                  </Markdown>
+                </div>
               </div>
               <div className="flex justify-center">
                 <Button
