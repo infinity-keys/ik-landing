@@ -32,7 +32,9 @@ const Markdown = ({ children }: Props) => (
               title={
                 children.length > 0 ? children[0]?.toString() : "embed video"
               }
-              aspect={gstopEmbed || crosswordEmbed ? "square" : "video"}
+              aspect={
+                gstopEmbed ? "square" : crosswordEmbed ? "crossword" : "video"
+              }
               sandbox={gstopEmbed ? "allow-scripts" : undefined}
             />
           );
