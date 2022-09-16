@@ -25,6 +25,8 @@ const Markdown = ({ children }: Props) => (
           "https://puzzel.org/en/wordseeker/embed"
         );
 
+        // const embed = href.includes("/embed");
+
         if (youtubeEmbed || gstopEmbed || crosswordEmbed) {
           return (
             <Iframe
