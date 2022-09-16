@@ -235,11 +235,20 @@
   },
   {
     "simple_name": "testMutation",
-    "Instructions (old landing_message)": "Answer the trivia question to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
-    "Challenge": "Look in the pages to see which weavers of the web caught this lucky one.",
-    "Input (Passcode)": "itworks",
+    "Instructions (old landing_message)": "updated",
+    "Challenge": "updated",
+    "Input (Passcode)": "updated",
     "Swap to boxes?": "TRUE",
-    "Fail message": "",
-    "Success Message": "Sticky victory Atreyu!"
+    "Fail message": "updated",
+    "Success Message": "updated"
+  },
+  {
+    "simple_name": "test2",
+    "Instructions (old landing_message)": "updated",
+    "Challenge": "updated",
+    "Input (Passcode)": "updated",
+    "Swap to boxes?": "TRUE",
+    "Fail message": "updated",
+    "Success Message": "updated"
   }
 ]
