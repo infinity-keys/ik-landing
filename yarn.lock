@@ -1498,10 +1498,10 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@headlessui/react@^1.7.1":
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.7.1.tgz#39c1b14b2e92d2edb32dd07722a8783a12d0d0be"
-  integrity sha512-vnRlB71kvEr3y26Lm1WpCiMML8n5JcJ7jK5+vaF0hGTZFArW206j61meVemXkTOuGLhmyWe6yj3OETzsxHoryQ==
+"@headlessui/react@^1.7.2":
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.7.2.tgz#e6a6a8d38342064a53182f1eb2bf6d9c1e53ba6a"
+  integrity sha512-snLv2lxwsf2HNTOBNgHYdvoYZ3ChJE8QszPi1d/hl9js8KrFrUulTaQBfSyPbJP5BybVreWh9DxCgz9S0Z6hKQ==
 
 "@heroicons/react@^2.0.11":
   version "2.0.11"
@@ -1767,10 +1767,10 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
 
-"@rainbow-me/rainbowkit@^0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-0.5.3.tgz#8cb82fb76669728f8037091921070df0feb11fa3"
-  integrity sha512-y5mJowaecrooUQRi39BiQ5B9s1gdiJjvtDWCgBsE6p9Ab8QKdB4UD7piPLYB3loy+nEF9Y1KPMBYq6NqJ3rTNQ==
+"@rainbow-me/rainbowkit@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-0.6.0.tgz#3d07d9663d6c229375025f1370b670edd2faeb68"
+  integrity sha512-eeyn0dvb/p7CI7/GFR9KNcFeCqzSb0WsZKGHWIrzumGvNx7yyVwHsUNXVjnB3VmyXYkwJzm82856VlzulRDlGw==
   dependencies:
     "@vanilla-extract/css" "1.7.0"
     "@vanilla-extract/dynamic" "2.0.2"
