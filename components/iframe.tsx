@@ -4,7 +4,7 @@ interface IframeProps {
   src: string;
   title?: string;
   sandbox?: string;
-  aspect?: "square" | "video";
+  aspect?: "square" | "video" | "crossword";
 }
 
 export default function Iframe({ src, title, sandbox, aspect }: IframeProps) {
@@ -13,7 +13,8 @@ export default function Iframe({ src, title, sandbox, aspect }: IframeProps) {
     {
       "aspect-square": aspect === "square",
     },
-    { "aspect-video": aspect === "video" }
+    { "aspect-video": aspect === "video" },
+    { "aspect-[4/3] sm:aspect-[1.4]": aspect === "crossword" }
   );
 
   return (
