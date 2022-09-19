@@ -1767,10 +1767,10 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
 
-"@rainbow-me/rainbowkit@^0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-0.5.3.tgz#8cb82fb76669728f8037091921070df0feb11fa3"
-  integrity sha512-y5mJowaecrooUQRi39BiQ5B9s1gdiJjvtDWCgBsE6p9Ab8QKdB4UD7piPLYB3loy+nEF9Y1KPMBYq6NqJ3rTNQ==
+"@rainbow-me/rainbowkit@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-0.6.0.tgz#3d07d9663d6c229375025f1370b670edd2faeb68"
+  integrity sha512-eeyn0dvb/p7CI7/GFR9KNcFeCqzSb0WsZKGHWIrzumGvNx7yyVwHsUNXVjnB3VmyXYkwJzm82856VlzulRDlGw==
   dependencies:
     "@vanilla-extract/css" "1.7.0"
     "@vanilla-extract/dynamic" "2.0.2"
@@ -8259,10 +8259,10 @@ react-hook-form@^7.35.0:
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.35.0.tgz#b133de48fc84b1e62f9277ba79dfbacd9bb13dd3"
   integrity sha512-9CYdOed+Itbiu5VMVxW0PK9mBR3f0gDGJcZEyUSm0eJbDymQ913TRs2gHcQZZmfTC+rtxyDFRuelMxx/+xwMcw==
 
-react-individual-character-input-boxes@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/react-individual-character-input-boxes/-/react-individual-character-input-boxes-1.1.6.tgz#36f3bfaa5b378544fe3ba97d9cc483e06a13a521"
-  integrity sha512-wzCqNqekUWGlDIHyN7zPSpxNUwDYQ3wpXjUkJW2FLaaIba14bld8NO9JPCwWdqYOdE4WozZhl6174kykJQwdeQ==
+react-individual-character-input-boxes@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-individual-character-input-boxes/-/react-individual-character-input-boxes-1.2.1.tgz#54155abd7488bdddf47507f8f9ddd666b6459650"
+  integrity sha512-UuoQpjIOKYpYj1iOBg84RL/qMDFkND2OqQ1viBtgiYLZBUD6qxQyz7arjxb31heYGZe2myteWkntetHjRxSjdg==
   dependencies:
     prop-types ">=15.7.2"
     styled-components ">=4.4.0"
