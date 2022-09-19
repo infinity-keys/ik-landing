@@ -83,7 +83,8 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
 
   useEffect(() => {
     if (isSuccess) setClaimed(true);
-  }, [isSuccess]);
+    setChainClaimed(chain?.id || 1);
+  }, [isSuccess, chain]);
 
   // isVerifying = Verify + CheckIfOwned API Calls
   // isLoading = Tx is processing
@@ -150,18 +151,22 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
       {isConnected ? (
         chainIsValid ? (
           claimed ? (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`${marketplaceLookup[chainClaimed]}${tokenId}`}
-            >
-              View NFT On{" "}
-              {chainClaimed === AVAX_CHAIN_ID
-                ? "Joepegs"
-                : chainClaimed === OPTIMISM_CHAIN_ID
-                ? "Quixotic"
-                : "OpenSea"}
-            </a>
+            chainClaimed === 0 ? (
+              <a>NFT Claimed- Refresh Page!</a>
+            ) : (
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`${marketplaceLookup[chainClaimed]}${tokenId}`}
+              >
+                View NFT On{" "}
+                {chainClaimed === AVAX_CHAIN_ID
+                  ? "Joepegs"
+                  : chainClaimed === OPTIMISM_CHAIN_ID
+                  ? "Quixotic"
+                  : "OpenSea"}
+              </a>
+            )
           ) : (
             "Claim"
           )
@@ -180,7 +185,8 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
         {text}
       </h2>
 
-      {(isVerifying || isLoading) && chainIsValid ? (
+      {((isVerifying || isLoading) && chainIsValid) ||
+      (claimed && chainClaimed === 0) ? (
         <LoadingIcon />
       ) : (
         buttonMint
