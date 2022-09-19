@@ -203,6 +203,7 @@ query GetAllPublicPacks($limit: Int = 10, $offset: Int = 0) {
     pack_name
     simple_name
     pack_id
+    cloudinary_id
   }
   count: packs_aggregate {
     aggregate {

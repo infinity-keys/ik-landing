@@ -53,10 +53,10 @@ export const thumbnailData = (
   data: ThumbnailPack | ThumbnailPuzzle
 ): Thumbnail => {
   const pack = isTypePack(data);
-  // TODO: remove this once packs get nft images
+
   const cloudinary_id = pack
-    ? undefined
-    : data.nft?.nft_metadatum?.cloudinary_id || undefined;
+    ? data.cloudinary_id
+    : data.nft?.nft_metadatum?.cloudinary_id;
 
   return {
     id: pack ? data.pack_id : data.puzzle_id,
@@ -64,7 +64,7 @@ export const thumbnailData = (
     url: pack
       ? packsLandingUrl(data.simple_name)
       : routeLandingUrl(data.landing_route),
-    cloudinary_id,
+    cloudinary_id: cloudinary_id || undefined,
   };
 };
 
