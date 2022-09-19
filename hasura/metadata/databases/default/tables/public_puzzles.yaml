@@ -48,6 +48,7 @@ select_permissions:
   - role: api
     permission:
       columns:
+        - challenge
         - fail_message
         - fail_route
         - final_step
