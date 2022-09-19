@@ -8259,10 +8259,10 @@ react-hook-form@^7.35.0:
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.35.0.tgz#b133de48fc84b1e62f9277ba79dfbacd9bb13dd3"
   integrity sha512-9CYdOed+Itbiu5VMVxW0PK9mBR3f0gDGJcZEyUSm0eJbDymQ913TRs2gHcQZZmfTC+rtxyDFRuelMxx/+xwMcw==
 
-react-individual-character-input-boxes@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/react-individual-character-input-boxes/-/react-individual-character-input-boxes-1.1.6.tgz#36f3bfaa5b378544fe3ba97d9cc483e06a13a521"
-  integrity sha512-wzCqNqekUWGlDIHyN7zPSpxNUwDYQ3wpXjUkJW2FLaaIba14bld8NO9JPCwWdqYOdE4WozZhl6174kykJQwdeQ==
+react-individual-character-input-boxes@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-individual-character-input-boxes/-/react-individual-character-input-boxes-1.2.0.tgz#baa11b8c04eba0de99597eea687aa17472c6eb8a"
+  integrity sha512-ZuaI9+WzaqgugovxMk8QR9M/f9D+YXirK+X3esilHlbI6gaJBerfVPtxsuNtMZK7bYwXiWiHZoltyQHLkWS+gg==
   dependencies:
     prop-types ">=15.7.2"
     styled-components ">=4.4.0"
