@@ -49,6 +49,13 @@ query AllSuccessRoutes {
   }
 }
 
+# Used to prebuild all packs routes
+query AllPacksRoutes {
+  packs {
+    simple_name
+  }
+}
+
 # A user submits against a puzzle id, but we need to check that the user's jwt
 # claims include the success route for the puzzle id
 query UserPuzzlesInSubmitted($puzzleId: uuid, $puzzleRoutes: [String!]) {
@@ -191,12 +198,6 @@ query GetPuzzleInfoByNftId($nftId: Int!) {
     simple_name
     puzzle_id
     success_route
-  }
-}
-
-query GetAllPacks {
-  packs {
-    simple_name
   }
 }
 
