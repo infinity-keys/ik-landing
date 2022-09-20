@@ -42,7 +42,7 @@ export const IKTheme = loMerge(darkTheme(), {
 });
 
 export const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, avalancheChain, chain.optimism],
+  [chain.mainnet, chain.polygon, avalancheChain, chain.optimism, chain.rinkeby],
   [
     infuraProvider({ apiKey: process.env.INFURA_KEY }),
     publicProvider(),

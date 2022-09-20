@@ -222,11 +222,16 @@ query GetPuzzleInfoByNftId($nftId: Int!) {
   }
 }
 
-query GetAllPacks($limit: Int = 10, $offset: Int = 0) {
-  packs(limit: $limit, offset: $offset) {
+query GetAllPublicPacks($limit: Int = 10, $offset: Int = 0) {
+  packs(
+    where: { list_publicly: { _eq: true } }
+    limit: $limit
+    offset: $offset
+  ) {
     pack_name
     simple_name
     pack_id
+    cloudinary_id
   }
   count: packs_aggregate {
     aggregate {
