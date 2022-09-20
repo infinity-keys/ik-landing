@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 
@@ -8,10 +9,11 @@ interface ButtonProps {
   fullWidth?: boolean;
   type?: "button" | "submit" | "reset";
   size?: "small" | "medium";
-  variant?: "solid" | "outline";
+  variant?: "solid" | "outline" | "faded";
   onClick?: any;
   disabled?: boolean;
   responsive?: boolean;
+  children?: ReactNode;
 }
 
 export default function Button({
@@ -25,6 +27,7 @@ export default function Button({
   onClick,
   disabled = false,
   responsive = false,
+  children,
 }: ButtonProps) {
   const classes = clsx(
     "inline-block border border-turquoise hover:border-white rounded-md font-medium text-center",
@@ -42,6 +45,7 @@ export default function Button({
         "bg-turquoise/50": disabled,
       },
       variant === "outline" && "text-white hover:bg-turquoise",
+      variant === "faded" && "bg-white/20",
     ],
     // Sizes and responsive sizes
     [
@@ -56,7 +60,12 @@ export default function Button({
   if (href) {
     return (
       <Link href={href}>
-        <a className={classes}>{text}</a>
+        <a className={classes}>
+          <span className="flex">
+            {children}
+            {text}
+          </span>
+        </a>
       </Link>
     );
   }
@@ -68,7 +77,10 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
     >
-      {text}
+      <span className="flex">
+        {children}
+        {text}
+      </span>
     </button>
   );
 }
