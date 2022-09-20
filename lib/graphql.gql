@@ -194,6 +194,12 @@ query GetPuzzleInfoByNftId($nftId: Int!) {
   }
 }
 
+query GetAllPacks {
+  packs {
+    simple_name
+  }
+}
+
 query GetAllPublicPacks($limit: Int = 10, $offset: Int = 0) {
   packs(
     where: { list_publicly: { _eq: true } }
