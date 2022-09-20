@@ -65,7 +65,7 @@ export default async function handler(
             src="${cloudinaryUrl(cloudinary_id, 300, 300, false)}"
             height="300"
             width="300"
-            alt="you new nft"
+            alt="your new nft"
           />
       </p>
       <p>
@@ -88,7 +88,7 @@ export default async function handler(
         src="https://res.cloudinary.com/infinity-keys/image/upload/v1661555979/gifs/playingthegame_eavoxk.gif"
         height="108"
         width="260"
-        alt="you new nft"
+        alt="thanks for playing"
       />
 
       <p>See you on the next hunt!<br><em>- Infinity Keys</em></p>
