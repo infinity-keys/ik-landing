@@ -55,7 +55,7 @@ select_permissions:
         - input_type
         - landing_message
         - landing_route
-        - list_pubicly
+        - list_publicly
         - puzzle_id
         - simple_name
         - solution
