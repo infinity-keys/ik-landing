@@ -115,7 +115,7 @@ export default PacksPage;
 
 export async function getStaticPaths() {
   const gql = await gqlApiSdk();
-  const { packs } = await gql.GetAllPublicPacks();
+  const { packs } = await gql.AllPacksRoutes();
 
   const paths = packs.map(({ simple_name }) => ({
     params: { packName: simple_name },
