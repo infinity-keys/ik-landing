@@ -48,13 +48,14 @@ select_permissions:
   - role: api
     permission:
       columns:
+        - challenge
         - fail_message
         - fail_route
         - final_step
         - input_type
         - landing_message
         - landing_route
-        - list_pubicly
+        - list_publicly
         - puzzle_id
         - simple_name
         - solution
