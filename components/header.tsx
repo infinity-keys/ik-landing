@@ -84,15 +84,6 @@ export default function Header() {
                 />
 
                 <WalletButton />
-
-                {/* <ConnectButton
-                  label="Connect"
-                  accountStatus={{
-                    largeScreen: "address",
-                    smallScreen: "avatar",
-                  }}
-                  showBalance={false}
-                /> */}
               </div>
 
               {/* hamburger icon, visible mobile only */}
