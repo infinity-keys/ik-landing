@@ -5,8 +5,14 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // chain icons
   images: {
-    domains: ["images.unsplash.com", "tailwindui.com", "res.cloudinary.com"],
+    domains: [
+      "images.unsplash.com",
+      "tailwindui.com",
+      "res.cloudinary.com",
+      "imgs.search.brave.com",
+    ],
   },
   async redirects() {
     return [
