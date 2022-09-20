@@ -24,7 +24,7 @@
     "@graphql-codegen/cli": "^2.12.1",
     "@graphql-codegen/introspection": "^2.2.1",
     "@graphql-codegen/typescript": "^2.5.1",
-    "@graphql-codegen/typescript-graphql-request": "^4.5.4",
+    "@graphql-codegen/typescript-graphql-request": "^4.5.5",
     "@graphql-codegen/typescript-operations": "^2.5.3",
     "@headlessui/react": "^1.7.2",
     "@heroicons/react": "^2.0.11",
