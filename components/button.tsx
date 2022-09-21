@@ -9,7 +9,7 @@ interface ButtonProps {
   fullWidth?: boolean;
   type?: "button" | "submit" | "reset";
   size?: "small" | "medium";
-  variant?: "solid" | "outline" | "faded";
+  variant?: "solid" | "outline" | "faded" | "purple";
   onClick?: any;
   disabled?: boolean;
   responsive?: boolean;
@@ -30,7 +30,7 @@ export default function Button({
   children,
 }: ButtonProps) {
   const classes = clsx(
-    "inline-block border border-turquoise hover:border-white rounded-md font-medium text-center",
+    "inline-block border border-turquoise hover:border-white rounded-md font-medium text-center transition",
     // Sizing
     { "block w-full": fullWidth },
     // Text color
@@ -45,7 +45,9 @@ export default function Button({
         "bg-turquoise/50": disabled,
       },
       variant === "outline" && "text-white hover:bg-turquoise",
-      variant === "faded" && "bg-white/20",
+      variant === "faded" && "bg-white/20 hover:text-turquoise",
+      variant === "purple" &&
+        "bg-indigo-500 border-indigo-500 hover:text-white hover:bg-indigo-600 ",
     ],
     // Sizes and responsive sizes
     [
@@ -61,7 +63,7 @@ export default function Button({
     return (
       <Link href={href}>
         <a className={classes}>
-          <span className="flex">
+          <span className="flex justify-center items-center">
             {children}
             {text}
           </span>
@@ -77,7 +79,7 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
     >
-      <span className="flex">
+      <span className="flex justify-center items-center">
         {children}
         {text}
       </span>

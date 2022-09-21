@@ -11,7 +11,7 @@ gtagURL.searchParams.set(
 class GlobalDoc extends Document {
   render() {
     return (
-      <Html lang="en">
+      <Html lang="en" className="bg-blue">
         <Head>
           {/* <title>Infinity Keys</title> */}
           <meta name="title" content="Infinity Keys" />

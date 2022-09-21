@@ -39,7 +39,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
             count={count}
             SuccessComponent={SuccessComponent}
           />
-          <div className="max-w-md sm:max-w-2xl mx-auto text-white text-left sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+          <div className="max-w-md sm:max-w-2xl mx-auto text-white text-left mt-5 sm:text-xl lg:text-lg xl:text-xl">
             <p className="text-[1.35rem] md:text-[2.5rem] leading-normal">
               This is an Infinity Keys h
               <span className="font-bold text-turquoise">un</span>
