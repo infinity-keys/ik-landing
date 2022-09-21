@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import clsx from "clsx";
 import ShieldExclamationIcon from "@heroicons/react/24/outline/ShieldExclamationIcon";
 import WalletIcon from "@heroicons/react/24/outline/WalletIcon";
 
 import useCurrentWidth from "@hooks/useCurrentWidth";
 import Button from "@components/button";
 
-const MAGIC_WIDTH = 400;
+const MAGIC_WIDTH = 768;
 
 export default function WalletButton() {
   const [isSmall, setIsSmall] = useState<boolean>(false);
@@ -55,6 +56,7 @@ export default function WalletButton() {
                     text={isSmall ? "Connect" : "Connect Wallet"}
                     onClick={openConnectModal}
                     type="button"
+                    responsive
                   />
                 );
               }
@@ -73,15 +75,18 @@ export default function WalletButton() {
                 );
               }
               return (
-                <div className="flex gap-3">
+                <div className="flex gap-2">
                   <Button
                     onClick={openChainModal}
                     type="button"
                     variant="faded"
-                    text={chain.name || "Unknown"}
+                    text={isSmall ? "" : chain.name || "Unknown"}
+                    responsive
                   >
                     {chain.hasIcon && (
-                      <div className="mr-4">
+                      <div
+                        className={clsx("flex shrink-0", { "mr-4": !isSmall })}
+                      >
                         {chain.iconUrl && (
                           <Image
                             width={24}
@@ -99,9 +104,10 @@ export default function WalletButton() {
                     onClick={openAccountModal}
                     type="button"
                     variant="faded"
+                    responsive
                   >
                     {isSmall && (
-                      <WalletIcon className="h-8 w-8 fill-transparent" />
+                      <WalletIcon className="h-7 w-7 fill-transparent" />
                     )}
                   </Button>
                 </div>
