@@ -45,7 +45,7 @@ export default function Button({
         "bg-turquoise/50": disabled,
       },
       variant === "outline" && "text-white hover:bg-turquoise",
-      variant === "faded" && "bg-white/20",
+      variant === "faded" && "bg-white/20 hover:text-turquoise",
     ],
     // Sizes and responsive sizes
     [
