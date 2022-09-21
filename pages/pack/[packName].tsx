@@ -78,7 +78,11 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
             })}
           </ul>
 
-          <Minter tokenId={tokenId} gatedIds={gatedIds} />
+          <Minter
+            tokenId={tokenId}
+            gatedIds={gatedIds}
+            nftWalletAgeCheck={false}
+          />
         </div>
         <div className="w-full p-6 flex flex-row items-center justify-center">
           <div className="p-4">
