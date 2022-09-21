@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "@formspree/react";
+import Button from "@components/button";
 
 export default function PartnerForm() {
   const [state, handleSubmit] = useForm("mdobjayl");
@@ -27,13 +28,12 @@ export default function PartnerForm() {
           />
         </div>
         <div className="sm: mb-4 sm:ml-3">
-          <button
+          <Button
             type="submit"
             disabled={state.submitting}
-            className="block w-full py-3 px-4 rounded-md shadow bg-indigo-500 text-white font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
-          >
-            Get in Touch
-          </button>
+            text="Get in Touch"
+            variant="purple"
+          />
         </div>
       </div>
     </form>
