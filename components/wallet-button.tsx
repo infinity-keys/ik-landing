@@ -56,6 +56,7 @@ export default function WalletButton() {
                     text={isSmall ? "Connect" : "Connect Wallet"}
                     onClick={openConnectModal}
                     type="button"
+                    responsive
                   />
                 );
               }
