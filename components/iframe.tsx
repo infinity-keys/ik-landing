@@ -9,8 +9,7 @@ interface IframeProps {
 
 export default function Iframe({ src, title, sandbox, aspect }: IframeProps) {
   const classes = clsx(
-    "container block w-full max-w-2xl",
-    `aspect-${aspect}`
+    "container block w-full max-w-2xl"
     // {
     //   "aspect-square": aspect === "square",
     // },
@@ -19,7 +18,7 @@ export default function Iframe({ src, title, sandbox, aspect }: IframeProps) {
   );
 
   return (
-    <span className={classes}>
+    <span className={classes} style={{ aspectRatio: aspect }}>
       <iframe
         height="100%"
         width="100%"

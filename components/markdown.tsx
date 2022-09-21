@@ -29,15 +29,11 @@ const Markdown = ({ children }: Props) => (
             typeof children[0] === "string" ? children[0]?.split("|") : [];
           const title = options.length > 0 ? options[0].trim() : "embed video";
           const aspectRatio = options[1].trim();
-          const formattedAspectRatio =
-            aspectRatio === "square" || aspectRatio === "video"
-              ? aspectRatio
-              : `[${aspectRatio}]`;
           return (
             <Iframe
               src={href}
               title={title}
-              aspect={formattedAspectRatio}
+              aspect={aspectRatio}
               sandbox={gstopEmbed ? "allow-scripts" : undefined}
             />
           );
