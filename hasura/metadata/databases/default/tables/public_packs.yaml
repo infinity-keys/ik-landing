@@ -13,6 +13,7 @@ select_permissions:
   - role: api
     permission:
       columns:
+        - cloudinary_id
         - list_publicly
         - nftId
         - pack_id
