@@ -29,12 +29,13 @@ export default function NewsLetterForm() {
             className="block w-full px-4 py-3 rounded-md border-0 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
           />
         </div>
-        <div className="m-4 sm:mt-0 sm:ml-3">
+        <div className="mt-4 sm:mt-0 sm:ml-3">
           <Button
             type="submit"
             variant="purple"
             disabled={state.submitting}
             text="Subscribe"
+            fullWidth
           />
         </div>
       </div>
