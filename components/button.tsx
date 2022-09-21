@@ -61,7 +61,7 @@ export default function Button({
     return (
       <Link href={href}>
         <a className={classes}>
-          <span className="flex">
+          <span className="flex justify-center items-center">
             {children}
             {text}
           </span>
@@ -77,7 +77,7 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
     >
-      <span className="flex">
+      <span className="flex justify-center items-center">
         {children}
         {text}
       </span>
