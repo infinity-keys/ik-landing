@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "@formspree/react";
+import Button from "@components/button";
 
 export default function NewsLetterForm() {
   const [state, handleSubmit] = useForm("xnqrqdaq");
@@ -28,14 +29,14 @@ export default function NewsLetterForm() {
             className="block w-full px-4 py-3 rounded-md border-0 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
           />
         </div>
-        <div className="m-4 sm:mt-0 sm:ml-3">
-          <button
+        <div className="mt-4 sm:mt-0 sm:ml-3">
+          <Button
             type="submit"
+            variant="purple"
             disabled={state.submitting}
-            className="block w-full py-3 px-4 rounded-md shadow bg-indigo-500 text-white font-medium hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300 focus:ring-offset-gray-900"
-          >
-            Subscribe
-          </button>
+            text="Subscribe"
+            fullWidth
+          />
         </div>
       </div>
     </form>
