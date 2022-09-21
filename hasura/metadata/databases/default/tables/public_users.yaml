@@ -2,6 +2,13 @@ table:
   name: users
   schema: public
 array_relationships:
+  - name: solves
+    using:
+      foreign_key_constraint_on:
+        column: solved_user_id
+        table:
+          name: solves
+          schema: public
   - name: submissions
     using:
       foreign_key_constraint_on:

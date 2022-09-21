@@ -16,7 +16,7 @@ import {
   OPTIMISM_CHAIN_ID,
 } from "@lib/walletConstants";
 import { validChain } from "@lib/utils";
-import { checkIfClaimed, verify } from "@lib/fetchers";
+import { checkIfClaimed, verify, walletAgeChecker } from "@lib/fetchers";
 import { useIKMinter } from "@hooks/useIKMinter";
 import LoadingIcon from "@components/loading-icon";
 import { result } from "lodash";
@@ -24,9 +24,14 @@ import { result } from "lodash";
 interface MinterParams {
   tokenId: number;
   gatedIds: number[];
+  nftWalletAgeCheck: boolean;
 }
 
-export default function Minter({ tokenId, gatedIds }: MinterParams) {
+export default function Minter({
+  tokenId,
+  gatedIds,
+  nftWalletAgeCheck,
+}: MinterParams) {
   const chain = useNetwork().chain;
   const { address, isConnected } = useIKMinter();
   const { openConnectModal } = useConnectModal();
@@ -37,6 +42,7 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
   const [isVerifying, setIsVerifying] = useState(false);
   const [claimed, setClaimed] = useState(false);
   const [chainClaimed, setChainClaimed] = useState(0);
+  const [approved, setApproved] = useState(true);
 
   const [chainIsValid, setChainIsValid] = useState(false);
 
@@ -50,8 +56,12 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
     if (address && chain && isConnected && chainIsValid) {
       const setSig = async () => {
         setIsVerifying(true);
+
         const { claimed: tokenClaimed, chainClaimed: tokenChainClaimed } =
           await checkIfClaimed(address, tokenId);
+
+        if (nftWalletAgeCheck)
+          setApproved(await walletAgeChecker(address, chain.id));
 
         setClaimed(tokenClaimed);
         setChainClaimed(tokenChainClaimed);
@@ -61,7 +71,15 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
       };
       setSig();
     }
-  }, [isConnected, chain, address, tokenId, gatedIds, chainIsValid]);
+  }, [
+    isConnected,
+    chain,
+    address,
+    tokenId,
+    gatedIds,
+    chainIsValid,
+    nftWalletAgeCheck,
+  ]);
 
   const { config } = usePrepareContractWrite({
     addressOrName: contractAddress,
@@ -111,7 +129,7 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
                 writeError?.message.includes("user rejected transaction") ||
                 writeError.message ===
                   "MetaMask Tx Signature: User denied transaction signature."
-                ? signature
+                ? signature && approved
                   ? `Claim Your Trophy On ${chain?.name}`
                   : "You do not have the required NFTS on this chain. Please ensure you have completed the above puzzles and are on the correct chain."
                 : writeError.message

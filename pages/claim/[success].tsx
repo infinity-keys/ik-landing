@@ -9,6 +9,7 @@ import Minter from "@components/minter";
 interface ClaimsPageProps {
   nftTokenIds: number[];
   cloudinary_id?: string;
+  nftWalletAgeCheck: boolean;
 }
 
 interface ClaimsPageParams {
@@ -18,6 +19,7 @@ interface ClaimsPageParams {
 const ClaimFlow: NextPage<ClaimsPageProps> = ({
   nftTokenIds,
   cloudinary_id,
+  nftWalletAgeCheck,
 }) => {
   const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
 
@@ -32,7 +34,11 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
           <CloudImage height={260} width={260} id={cloudinary_id} />
         )}
 
-        <Minter tokenId={tokenId} gatedIds={[]} />
+        <Minter
+          tokenId={tokenId}
+          gatedIds={[]}
+          nftWalletAgeCheck={nftWalletAgeCheck}
+        />
       </div>
     </Wrapper>
   );
@@ -58,6 +64,7 @@ export async function getStaticProps({
     props: {
       nftTokenIds,
       cloudinary_id: nft?.nft_metadatum?.cloudinary_id || "",
+      nftWalletAgeCheck: nft?.wallet_age_check || false,
     },
   };
 }

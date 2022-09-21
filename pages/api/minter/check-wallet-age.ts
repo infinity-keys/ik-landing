@@ -18,15 +18,14 @@ export default async function handler(
 
   const provider = new ethers.providers.JsonRpcProvider(rpcURL);
   const walletTxCount = await provider.getTransactionCount(account);
-  if (walletTxCount === 0) res.json({ approved: false });
+  if (walletTxCount === 0) return res.json({ approved: false });
 
-  if (chainIdInt === 43114) res.json({ approved: true });
+  if (chainIdInt === 43114) return res.json({ approved: true });
 
   const etherscanProvider = new ethers.providers.EtherscanProvider(
-    "homestead",
+    undefined,
     process.env.ETHERSCAN_API_KEY
   );
-
   const oldestTransaction = (await etherscanProvider.getHistory(account))[0]
     .blockNumber;
   const currentBlock = await provider.getBlockNumber();

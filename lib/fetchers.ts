@@ -69,3 +69,14 @@ export const verify = async (
 
   throw await response.text();
 };
+
+export const walletAgeChecker = async (account: string, chainId: number) => {
+  // const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId?.toString()}`;
+  const url = new URL("minter/check-wallet-age", ikApiUrlBase);
+  url.searchParams.set("account", account);
+  url.searchParams.set("chainId", chainId.toString());
+
+  const response = await fetch(url);
+  if (response.ok) return await response.json();
+  else throw await response.text();
+};
