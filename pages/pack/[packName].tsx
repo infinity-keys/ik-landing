@@ -21,9 +21,9 @@ interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
   puzzlesNftIds: number[];
   pack: {
-    pack_name: string;
+    name: string;
     nftId?: number;
-    cloudinary_id?: string;
+    cloudinaryId?: string;
   };
 }
 
@@ -46,16 +46,15 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   return (
     <Wrapper>
       <Seo
-        title={pack.pack_name}
+        title={pack.name}
         imageUrl={
-          pack.cloudinary_id &&
-          cloudinaryUrl(pack.cloudinary_id, 500, 500, false)
+          pack.cloudinaryId && cloudinaryUrl(pack.cloudinaryId, 500, 500, false)
         }
       />
 
       <div className="max-w-3xl items-center text-center">
         <p className="mt-10 sm:mt-14">
-          To be eligible to claim the {pack.pack_name} Achievement you must
+          To be eligible to claim the {pack.name} Achievement you must
           successfully complete the following puzzles and claim the
           corresponding achievement NFT. All the NFTs must be claimed on the
           same chain to qualify.
@@ -139,7 +138,6 @@ export async function getStaticProps({
   const { packName } = params;
   const gql = await gqlApiSdk();
   const { puzzles, pack } = await gql.GetPuzzlesByPack({ packName });
-  console.log("pack: ", pack);
   const puzzlesNftIds = puzzles.map(({ nft }) => nft?.tokenId);
 
   if (!puzzlesNftIds.every(isNumber)) {
@@ -149,7 +147,11 @@ export async function getStaticProps({
     props: {
       puzzles,
       puzzlesNftIds,
-      pack: pack[0],
+      pack: {
+        name: pack[0].pack_name,
+        nftId: pack[0].nftId,
+        cloudinaryId: pack[0]?.cloudinary_id || "",
+      },
     },
   };
 }
