@@ -22,7 +22,7 @@ interface PageParams {
 const Packs: NextPage<PageProps> = ({ packs, isFirstPage, isLastPage }) => {
   return (
     <Wrapper>
-      <Seo title="Infinity Keys Packs" />
+      <Seo title="Infinity Keys Packs" url="packs" />
 
       <GridLayout
         thumbnailList={packs}

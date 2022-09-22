@@ -14,6 +14,7 @@ import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
 import Seo from "@components/seo";
 import { cloudinaryUrl } from "@lib/images";
+import { useRouter } from "next/router";
 
 export interface PuzzlePageProps {
   name: string;
@@ -39,12 +40,15 @@ const Dev: NextPage<PuzzlePageProps> = ({
   failMessage,
   cloudinaryId,
 }) => {
+  const { asPath } = useRouter();
+
   return (
     <Wrapper>
       <Seo
         title={`${name} | IK Puzzle`}
         description={`Can you unlock the ${name} puzzle?`}
         imageUrl={cloudinaryId && cloudinaryUrl(cloudinaryId, 500, 500, false)}
+        url={asPath}
       />
 
       <main className="text-center pt-5">

@@ -16,6 +16,7 @@ import Minter from "@components/minter";
 import { thumbnailData } from "@lib/utils";
 import Seo from "@components/seo";
 import { cloudinaryUrl } from "@lib/images";
+import { useRouter } from "next/router";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -34,6 +35,8 @@ interface PageParams {
 }
 
 const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
+  const { asPath } = useRouter();
+
   const gatedIds = puzzlesNftIds;
   const tokenId = pack.nftId;
 
@@ -50,6 +53,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
         imageUrl={
           pack.cloudinaryId && cloudinaryUrl(pack.cloudinaryId, 500, 500, false)
         }
+        url={asPath}
       />
 
       <div className="max-w-3xl items-center text-center">
