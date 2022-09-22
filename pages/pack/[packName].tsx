@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import Head from "next/head";
 import clsx from "clsx";
 import isNumber from "lodash/isNumber";
 
@@ -15,6 +14,8 @@ import useCurrentWidth from "@hooks/useCurrentWidth";
 
 import Minter from "@components/minter";
 import { thumbnailData } from "@lib/utils";
+import Seo from "@components/seo";
+import { cloudinaryUrl } from "@lib/images";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -22,6 +23,7 @@ interface PageProps {
   pack: {
     pack_name: string;
     nftId?: number;
+    cloudinary_id?: string;
   };
 }
 
@@ -43,9 +45,13 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
 
   return (
     <Wrapper>
-      <Head>
-        <title>{pack.pack_name}</title>
-      </Head>
+      <Seo
+        title={pack.pack_name}
+        imageUrl={
+          pack.cloudinary_id &&
+          cloudinaryUrl(pack.cloudinary_id, 500, 500, false)
+        }
+      />
 
       <div className="max-w-3xl items-center text-center">
         <p className="mt-10 sm:mt-14">
@@ -133,6 +139,7 @@ export async function getStaticProps({
   const { packName } = params;
   const gql = await gqlApiSdk();
   const { puzzles, pack } = await gql.GetPuzzlesByPack({ packName });
+  console.log("pack: ", pack);
   const puzzlesNftIds = puzzles.map(({ nft }) => nft?.tokenId);
 
   if (!puzzlesNftIds.every(isNumber)) {

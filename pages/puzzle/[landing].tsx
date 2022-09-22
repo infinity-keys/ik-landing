@@ -12,6 +12,8 @@ import Markdown from "@components/markdown";
 
 import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
+import Seo from "@components/seo";
+import { cloudinaryUrl } from "@lib/images";
 
 export interface PuzzlePageProps {
   name: string;
@@ -20,6 +22,7 @@ export interface PuzzlePageProps {
   inputType?: Puzzle_Input_Type_Enum;
   landingMessage?: string;
   failMessage?: string;
+  cloudinaryId?: string;
 }
 interface PuzzlePageParams {
   params: {
@@ -34,12 +37,15 @@ const Dev: NextPage<PuzzlePageProps> = ({
   inputType,
   landingMessage,
   failMessage,
+  cloudinaryId,
 }) => {
   return (
     <Wrapper>
-      <Head>
-        <title>Infinity Keys</title>
-      </Head>
+      <Seo
+        title={name}
+        description={`Can you unlock the ${name} puzzle?`}
+        imageUrl={cloudinaryId && cloudinaryUrl(cloudinaryId, 500, 500, false)}
+      />
 
       <main className="text-center pt-5">
         <div className="pb-16">
@@ -91,6 +97,7 @@ export async function getStaticProps({
       input_type,
       landing_message,
       fail_message,
+      nft,
     },
   ] = puzzles;
 
@@ -102,6 +109,7 @@ export async function getStaticProps({
       inputType: input_type || Puzzle_Input_Type_Enum.Boxes,
       landingMessage: landing_message || "",
       failMessage: fail_message || "",
+      cloudinaryId: nft?.nft_metadatum?.cloudinary_id || "",
     },
   };
 }

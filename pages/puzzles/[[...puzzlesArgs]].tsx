@@ -5,7 +5,7 @@ import { PublicPuzzlesQuery } from "@lib/generated/graphql";
 import { PAGINATION_COUNTS } from "@lib/constants";
 import GridLayout from "@components/thumbnail-grid/grid-layout";
 import Wrapper from "@components/wrapper";
-import Head from "next/head";
+import Seo from "@components/seo";
 
 export interface PageProps {
   puzzles: PublicPuzzlesQuery["puzzles"];
@@ -22,9 +22,7 @@ interface PageParams {
 const Puzzles: NextPage<PageProps> = ({ puzzles, isFirstPage, isLastPage }) => {
   return (
     <Wrapper>
-      <Head>
-        <title>Infinity Keys Puzzles</title>
-      </Head>
+      <Seo title="Infinity Keys Puzzles" />
 
       <GridLayout
         thumbnailList={puzzles}

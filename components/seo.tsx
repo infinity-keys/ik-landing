@@ -12,12 +12,11 @@ const Seo = ({
   title = "Infinity Keys",
   description = "There's treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own.",
   url = "",
-  imageUrl = "treasure.jpeg",
+  imageUrl,
 }: Props) => {
   const formattedUrl = new URL(url, IK_CLAIMS_NAMESPACE);
-  console.log("pageLink: ", formattedUrl.toString());
-  const formattedImageUrl = new URL(imageUrl, IK_CLAIMS_NAMESPACE);
-  console.log("imageLink: ", formattedImageUrl.toString());
+  const formattedImageUrl =
+    imageUrl || new URL("treasure.jpeg", IK_CLAIMS_NAMESPACE);
 
   return (
     <Head>
