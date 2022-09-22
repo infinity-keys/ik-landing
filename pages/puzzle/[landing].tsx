@@ -42,7 +42,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
   return (
     <Wrapper>
       <Seo
-        title={name}
+        title={`${name} | IK Puzzle`}
         description={`Can you unlock the ${name} puzzle?`}
         imageUrl={cloudinaryId && cloudinaryUrl(cloudinaryId, 500, 500, false)}
       />

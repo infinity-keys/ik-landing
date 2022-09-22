@@ -46,7 +46,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   return (
     <Wrapper>
       <Seo
-        title={pack.name}
+        title={`${pack.name} | IK Pack`}
         imageUrl={
           pack.cloudinaryId && cloudinaryUrl(pack.cloudinaryId, 500, 500, false)
         }
