@@ -16,17 +16,28 @@ import {
   OPTIMISM_CHAIN_ID,
 } from "@lib/walletConstants";
 import { validChain } from "@lib/utils";
+import { PACK_LANDING_BASE } from "@lib/constants";
 import { checkIfClaimed, verify } from "@lib/fetchers";
 import { useIKMinter } from "@hooks/useIKMinter";
 import LoadingIcon from "@components/loading-icon";
+import Button from "@components/button";
 import { result } from "lodash";
 
 interface MinterParams {
   tokenId: number;
   gatedIds: number[];
+  parentPackName?: string;
+  buttonText?: string;
+  packRoute?: string;
 }
 
-export default function Minter({ tokenId, gatedIds }: MinterParams) {
+export default function Minter({
+  tokenId,
+  gatedIds,
+  parentPackName,
+  buttonText,
+  packRoute,
+}: MinterParams) {
   const chain = useNetwork().chain;
   const { address, isConnected } = useIKMinter();
   const { openConnectModal } = useConnectModal();
@@ -142,7 +153,7 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
           : openConnectModal
       }
       className={clsx(
-        "text-sm text-blue font-bold rounded-md py-2 w-44 border-2 border-solid",
+        " text-blue font-bold rounded-md py-2 px-4 min-w-[11rem] text-lg border border-solid",
         !isConnected || !chainIsValid || signature || !writeError
           ? "bg-turquoise border-turquoise hover:bg-turquoiseDark hover:cursor-pointer"
           : "bg-gray-150 border-gray-150"
@@ -190,6 +201,16 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
         <LoadingIcon />
       ) : (
         buttonMint
+      )}
+
+      {parentPackName && (
+        <div className="mt-4">
+          <Button
+            href={`/${PACK_LANDING_BASE}/${packRoute}`}
+            text={buttonText ? buttonText : `Go to ${parentPackName}`}
+            variant="outline"
+          />
+        </div>
       )}
     </>
   );

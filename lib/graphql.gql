@@ -28,6 +28,13 @@ query PuzzleInfoBySuccess($success: String!) {
     simple_name
     puzzle_id
     success_message
+    pack_puzzles {
+      pack {
+        pack_name
+        button_text
+        simple_name
+      }
+    }
     nft {
       tokenId
       nft_metadatum {
