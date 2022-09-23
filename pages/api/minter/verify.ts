@@ -15,6 +15,7 @@ const wallet = new ethers.Wallet(privateKey || "");
 type Signature = {
   signature: string;
   message: string;
+  claimedTokens?: boolean[];
 };
 
 export default async function handler(
@@ -30,6 +31,7 @@ export default async function handler(
   )
     return res.status(500).end();
   const gatedTokenIds = gatedIds && castArray(gatedIds);
+  let tokensClaimed;
 
   // If not gated- its a single puzzle and we need to check cookie
   // If gated- its a pack, check the balance of the gatedIds
@@ -45,16 +47,20 @@ export default async function handler(
     if (!canAccess) return res.status(403).end();
   } else {
     const baseUrl = req.headers.host || "infinitykeys.io";
-    const { ownedStatus, message } = await checkIfOwned(
+    const { ownedStatus, message, claimedTokens } = await checkIfOwned(
       account,
       gatedTokenIds,
       chainId,
       baseUrl
     );
-    if (typeof message !== "string") return res.status(500);
-    if (!ownedStatus) return res.json({ signature: "", message: message });
-  }
 
+    tokensClaimed = claimedTokens;
+
+    // if (typeof message !== "string") return res.status(500);
+    if (!ownedStatus) {
+      return res.json({ signature: "", message, claimedTokens });
+    }
+  }
   const chainIdAsNumber = parseInt(chainId, 10);
 
   const contractAddress = contractAddressLookup[chainIdAsNumber];
@@ -67,7 +73,7 @@ export default async function handler(
 
   const signature = await wallet.signMessage(ethers.utils.arrayify(hash));
 
-  res.json({ signature, message: "" });
+  res.json({ signature, message: "", claimedTokens: tokensClaimed });
 }
 
 const checkIfOwned = async (
@@ -88,7 +94,11 @@ const checkIfOwned = async (
       message =
         "You do not have the required NFTS on this chain. Please ensure you have completed the above puzzles and are on the correct chain.";
     }
-    return { ownedStatus: data.claimed, message };
+    return {
+      ownedStatus: data.claimed,
+      message,
+      claimedTokens: data.claimedTokens,
+    };
   } else {
     const message = "Something went wrong. Please try again.";
     return { ownedStatus: false, message };

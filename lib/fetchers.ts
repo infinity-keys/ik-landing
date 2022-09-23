@@ -62,9 +62,10 @@ export const verify = async (
   gatedIds.forEach((id) => url.searchParams.append("gatedIds", id.toString()));
 
   const response = await fetch(url);
+
   if (response.ok) {
-    const { signature } = await response.json();
-    return signature;
+    const { signature, claimedTokens } = await response.json();
+    return { signature, claimedTokens };
   }
 
   throw await response.text();

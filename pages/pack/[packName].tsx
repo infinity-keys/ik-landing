@@ -10,11 +10,12 @@ import Discord from "@components/svg/discord-svg";
 
 import { gqlApiSdk } from "@lib/server";
 import { GetPuzzlesByPackQuery } from "@lib/generated/graphql";
-import { ThumbnailGridLayoutType } from "@lib/types";
+import { ThumbnailGridLayoutType, ThumbnailProgress } from "@lib/types";
 import useCurrentWidth from "@hooks/useCurrentWidth";
 
 import Minter from "@components/minter";
 import { thumbnailData } from "@lib/utils";
+import { useState } from "react";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -34,6 +35,8 @@ interface PageParams {
 const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   const gatedIds = puzzlesNftIds;
   const tokenId = pack.nftId;
+  const [completed, setCompleted] = useState([] as boolean[]);
+  const [packClaimed, setPackClaimed] = useState(false);
 
   if (!tokenId) throw new Error("Invalid token id.");
 
@@ -62,7 +65,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
               "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 sm:mt-6 my-10"
             )}
           >
-            {puzzles.map((puzzle) => {
+            {puzzles.map((puzzle, index) => {
               const data = thumbnailData(puzzle);
               return (
                 <li key={data.id}>
@@ -72,13 +75,22 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
                     name={data.name}
                     url={data.url}
                     cloudinary_id={data.cloudinary_id}
+                    progress={
+                      completed[index]
+                        ? ThumbnailProgress.Completed
+                        : ThumbnailProgress.NotCompleted
+                    }
                   />
                 </li>
               );
             })}
           </ul>
 
-          <Minter tokenId={tokenId} gatedIds={gatedIds} />
+          <Minter
+            tokenId={tokenId}
+            gatedIds={gatedIds}
+            setCompleted={setCompleted}
+          />
         </div>
         <div className="w-full p-6 flex flex-row items-center justify-center">
           <div className="p-4">

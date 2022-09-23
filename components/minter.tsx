@@ -24,9 +24,14 @@ import { result } from "lodash";
 interface MinterParams {
   tokenId: number;
   gatedIds: number[];
+  setCompleted?: (b: boolean[]) => void;
 }
 
-export default function Minter({ tokenId, gatedIds }: MinterParams) {
+export default function Minter({
+  tokenId,
+  gatedIds,
+  setCompleted,
+}: MinterParams) {
   const chain = useNetwork().chain;
   const { address, isConnected } = useIKMinter();
   const { openConnectModal } = useConnectModal();
@@ -55,13 +60,29 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
 
         setClaimed(tokenClaimed);
         setChainClaimed(tokenChainClaimed);
-        if (!tokenClaimed)
-          setSignature(await verify(address, tokenId, chain.id, gatedIds));
+        if (!tokenClaimed) {
+          const res = await verify(address, tokenId, chain.id, gatedIds);
+          setCompleted && setCompleted(res.claimedTokens || []);
+          setSignature(res.signature);
+        }
+
+        if (tokenClaimed && setCompleted) {
+          setCompleted(gatedIds.map(() => true));
+        }
+
         setIsVerifying(false);
       };
       setSig();
     }
-  }, [isConnected, chain, address, tokenId, gatedIds, chainIsValid]);
+  }, [
+    isConnected,
+    chain,
+    address,
+    tokenId,
+    gatedIds,
+    chainIsValid,
+    setCompleted,
+  ]);
 
   const { config } = usePrepareContractWrite({
     addressOrName: contractAddress,
