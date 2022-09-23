@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  IK_CLAIMS_NAMESPACE,
   PACK_COLLECTION_BASE,
   PACK_LANDING_BASE,
   PUZZLE_COLLECTION_BASE,
@@ -23,6 +24,11 @@ export const routeSuccessUrl = (slug: string) =>
 export const routeFailUrl = (slug: string) => `/${PUZZLE_FAILED_BASE}/${slug}`;
 export const collectionBaseUrl = (isPack: boolean) => {
   return isPack ? `/${PACK_COLLECTION_BASE}` : `/${PUZZLE_COLLECTION_BASE}`;
+};
+
+export const buildUrlString = (path: string) => {
+  const url = new URL(path, IK_CLAIMS_NAMESPACE);
+  return url.toString();
 };
 
 // Wallet stuff
