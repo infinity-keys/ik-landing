@@ -27,6 +27,13 @@ array_relationships:
         table:
           name: puzzles_series
           schema: public
+  - name: solves
+    using:
+      foreign_key_constraint_on:
+        column: solved_puzzle_id
+        table:
+          name: solves
+          schema: public
   - name: submissions
     using:
       foreign_key_constraint_on:
@@ -55,7 +62,7 @@ select_permissions:
         - input_type
         - landing_message
         - landing_route
-        - list_pubicly
+        - list_publicly
         - puzzle_id
         - simple_name
         - solution
