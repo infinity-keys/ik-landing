@@ -65,7 +65,7 @@ export async function getStaticProps({
   const { puzzles } = await gql.PuzzleInfoBySuccess({ success });
 
   const nft = puzzles.length ? puzzles[0].nft : null;
-  const parentPack = puzzles.length ? puzzles[0].pack_puzzles[0].pack : null;
+  const parentPack = puzzles.length ? puzzles[0].pack_puzzles[0]?.pack : null;
 
   return {
     props: {
