@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { chainRPCLookup } from "@lib/walletConstants";
+import { avalancheChain, chainRPCLookup } from "@lib/walletConstants";
 import { ethers } from "ethers";
 
 export default async function handler(
@@ -18,20 +18,25 @@ export default async function handler(
 
   const provider = new ethers.providers.JsonRpcProvider(rpcURL);
   const walletTxCount = await provider.getTransactionCount(account);
-  if (walletTxCount === 0) return res.json({ approved: false });
+  if (walletTxCount === 0) return res.json({ approved: false }); // ETH will blow up if 0
 
-  if (chainIdInt === 43114) return res.json({ approved: true });
+  let approved;
+  // Trying to work this, but currently only eth has this etherscan provider
+  // that can be called to get history, and check the oldest block of account
+  if (chainIdInt === 1) {
+    const etherscanProvider = new ethers.providers.EtherscanProvider(
+      undefined,
+      process.env.ETHERSCAN_API_KEY
+    );
+    const oldestTransaction = (await etherscanProvider.getHistory(account))[0]
+      .blockNumber;
+    const currentBlock = await provider.getBlockNumber();
+    const age = oldestTransaction ? currentBlock - oldestTransaction : 0;
 
-  const etherscanProvider = new ethers.providers.EtherscanProvider(
-    undefined,
-    process.env.ETHERSCAN_API_KEY
-  );
-  const oldestTransaction = (await etherscanProvider.getHistory(account))[0]
-    .blockNumber;
-  const currentBlock = await provider.getBlockNumber();
-  const age = oldestTransaction ? currentBlock - oldestTransaction : 0;
-
-  const approved = age > 5760 ? true : false;
+    approved = age > 5760 ? true : false;
+  } else {
+    approved = walletTxCount > 1;
+  }
 
   res.json({ approved });
 }
