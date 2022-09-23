@@ -22,4 +22,5 @@ select_permissions:
         - contract_name
         - puzzleId
         - tokenId
+        - wallet_age_check
       filter: {}
