@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { NextPage } from "next";
-import Head from "next/head";
 import clsx from "clsx";
 import isNumber from "lodash/isNumber";
 import { useRouter } from "next/router";
@@ -10,12 +9,14 @@ import Thumbnail from "@components/thumbnail";
 import TwitterSvg from "@components/svg/twitter-svg";
 import Discord from "@components/svg/discord-svg";
 import Minter from "@components/minter";
+import Seo from "@components/seo";
 import TwitterShare from "@components/twitter-share";
 
 import { gqlApiSdk } from "@lib/server";
 import { GetPuzzlesByPackQuery } from "@lib/generated/graphql";
 import { ThumbnailGridLayoutType, ThumbnailProgress } from "@lib/types";
 import { buildUrlString, thumbnailData } from "@lib/utils";
+import { cloudinaryUrl } from "@lib/images";
 
 import useCurrentWidth from "@hooks/useCurrentWidth";
 
@@ -23,8 +24,9 @@ interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
   puzzlesNftIds: number[];
   pack: {
-    pack_name: string;
+    name: string;
     nftId?: number;
+    cloudinaryId?: string;
   };
 }
 
@@ -35,27 +37,31 @@ interface PageParams {
 }
 
 const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
+  const { asPath } = useRouter();
+
   const gatedIds = puzzlesNftIds;
   const tokenId = pack.nftId;
   const [completed, setCompleted] = useState([] as boolean[]);
   const [packClaimed, setPackClaimed] = useState(false);
 
   if (!tokenId) throw new Error("Invalid token id.");
-
-  const { asPath } = useRouter();
   const width = useCurrentWidth();
   const layout =
     width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
 
   return (
     <Wrapper>
-      <Head>
-        <title>{pack.pack_name}</title>
-      </Head>
+      <Seo
+        title={`${pack.name} | IK Pack`}
+        imageUrl={
+          pack.cloudinaryId && cloudinaryUrl(pack.cloudinaryId, 500, 500, false)
+        }
+        url={asPath}
+      />
 
       <div className="max-w-3xl items-center text-center">
         <p className="mt-10 sm:mt-14">
-          To be eligible to claim the {pack.pack_name} Achievement you must
+          To be eligible to claim the {pack.name} Achievement you must
           successfully complete the following puzzles and claim the
           corresponding achievement NFT. All the NFTs must be claimed on the
           same chain to qualify.
@@ -98,7 +104,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
         <div className="mt-9">
           <TwitterShare
             tweetBody={`Collect the ${
-              pack.pack_name
+              pack.name
             }. @InfinityKeys\n\n${buildUrlString(asPath)}`}
           />
         </div>
@@ -164,7 +170,11 @@ export async function getStaticProps({
     props: {
       puzzles,
       puzzlesNftIds,
-      pack: pack[0],
+      pack: {
+        name: pack[0].pack_name,
+        nftId: pack[0].nftId,
+        cloudinaryId: pack[0]?.cloudinary_id || "",
+      },
     },
   };
 }

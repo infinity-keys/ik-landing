@@ -1,15 +1,13 @@
 import { NextPage } from "next";
-import Head from "next/head";
 
 import Wrapper from "@components/wrapper";
 import Heading from "@components/heading";
+import Seo from "@components/seo";
 
 const PrivacyPage: NextPage = () => {
   return (
     <Wrapper>
-      <Head>
-        <title>Privacy Policy</title>
-      </Head>
+      <Seo title="Privacy Policy" />
 
       <div className="max-w-2xl my-20">
         <Heading as="h1" small>

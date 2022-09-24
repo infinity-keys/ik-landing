@@ -5,7 +5,7 @@ import { GetAllPublicPacksQuery } from "@lib/generated/graphql";
 import { PAGINATION_COUNTS } from "@lib/constants";
 import GridLayout from "@components/thumbnail-grid/grid-layout";
 import Wrapper from "@components/wrapper";
-import Head from "next/head";
+import Seo from "@components/seo";
 
 export interface PageProps {
   packs: GetAllPublicPacksQuery["packs"];
@@ -22,9 +22,7 @@ interface PageParams {
 const Packs: NextPage<PageProps> = ({ packs, isFirstPage, isLastPage }) => {
   return (
     <Wrapper>
-      <Head>
-        <title>Infinity Keys Packs</title>
-      </Head>
+      <Seo title="Infinity Keys Packs" url="packs" />
 
       <GridLayout
         thumbnailList={packs}
