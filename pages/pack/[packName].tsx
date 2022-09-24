@@ -42,8 +42,6 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   const tokenId = pack.nftId;
 
   if (!tokenId) throw new Error("Invalid token id.");
-
-  const { asPath } = useRouter();
   const width = useCurrentWidth();
   const layout =
     width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
@@ -94,7 +92,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
         <div className="mt-9">
           <TwitterShare
             tweetBody={`Collect the ${
-              pack.pack_name
+              pack.name
             }. @InfinityKeys\n\n${buildUrlString(asPath)}`}
           />
         </div>
