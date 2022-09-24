@@ -30,12 +30,50 @@ export default async function handler(
     typeof chainId !== "string"
   )
     return res.status(500).end();
-  const gatedTokenIds = gatedIds && castArray(gatedIds);
-  let tokensClaimed;
+
+  const getSignature = async () => {
+    const chainIdAsNumber = parseInt(chainId, 10);
+
+    const contractAddress = contractAddressLookup[chainIdAsNumber];
+
+    if (!contractAddress) throw new Error("No contract address!");
+
+    const hash = ethers.utils.solidityKeccak256(
+      ["address", "address", "string", "string"],
+      [contractAddress, account, tokenId, secret]
+    );
+
+    return await wallet.signMessage(ethers.utils.arrayify(hash));
+  };
 
   // If not gated- its a single puzzle and we need to check cookie
   // If gated- its a pack, check the balance of the gatedIds
-  if (!gatedTokenIds) {
+  if (gatedIds) {
+    const gatedTokenIds = castArray(gatedIds);
+
+    const baseUrl = req.headers.host || "infinitykeys.io";
+    const { ownedStatus, message, claimedTokens } = await checkIfOwned(
+      account,
+      gatedTokenIds,
+      chainId,
+      baseUrl
+    );
+
+    if (!ownedStatus) {
+      return res.json({ signature: "", message, claimedTokens });
+    }
+
+    // We do own!! Get siggy.
+    try {
+      const signature = await getSignature();
+
+      return res.json({ signature, message: "", claimedTokens });
+    } catch (e) {
+      return res.status(500).end();
+    }
+  }
+
+  if (!gatedIds) {
     const jwt = req.cookies[IK_ID_COOKIE];
     if (!jwt) return res.status(401).end();
     const gql = await gqlApiSdk();
@@ -45,35 +83,16 @@ export default async function handler(
     const successRoutes = puzzles.map(({ success_route }) => success_route);
     const canAccess = await jwtHasClaim(jwt, successRoutes);
     if (!canAccess) return res.status(403).end();
-  } else {
-    const baseUrl = req.headers.host || "infinitykeys.io";
-    const { ownedStatus, message, claimedTokens } = await checkIfOwned(
-      account,
-      gatedTokenIds,
-      chainId,
-      baseUrl
-    );
 
-    tokensClaimed = claimedTokens;
+    // We can access!! Get siggy.
+    try {
+      const signature = await getSignature();
 
-    // if (typeof message !== "string") return res.status(500);
-    if (!ownedStatus) {
-      return res.json({ signature: "", message, claimedTokens });
+      return res.json({ signature, message: "" });
+    } catch (e) {
+      return res.status(500).end();
     }
   }
-  const chainIdAsNumber = parseInt(chainId, 10);
-
-  const contractAddress = contractAddressLookup[chainIdAsNumber];
-  if (!contractAddress) return res.status(500).end();
-
-  const hash = ethers.utils.solidityKeccak256(
-    ["address", "address", "string", "string"],
-    [contractAddress, account, tokenId, secret]
-  );
-
-  const signature = await wallet.signMessage(ethers.utils.arrayify(hash));
-
-  res.json({ signature, message: "", claimedTokens: tokensClaimed });
 }
 
 const checkIfOwned = async (
