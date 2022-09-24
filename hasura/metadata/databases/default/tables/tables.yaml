@@ -9,5 +9,6 @@
 - "!include public_puzzles_series.yaml"
 - "!include public_series.yaml"
 - "!include public_series_nfts.yaml"
+- "!include public_solves.yaml"
 - "!include public_submissions.yaml"
 - "!include public_users.yaml"

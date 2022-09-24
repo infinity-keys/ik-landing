@@ -1,22 +1,23 @@
 import { NextPage } from "next";
 import clsx from "clsx";
 import isNumber from "lodash/isNumber";
+import { useRouter } from "next/router";
 
 import Wrapper from "@components/wrapper";
 import Thumbnail from "@components/thumbnail";
 import TwitterSvg from "@components/svg/twitter-svg";
 import Discord from "@components/svg/discord-svg";
+import Minter from "@components/minter";
+import Seo from "@components/seo";
+import TwitterShare from "@components/twitter-share";
 
 import { gqlApiSdk } from "@lib/server";
 import { GetPuzzlesByPackQuery } from "@lib/generated/graphql";
 import { ThumbnailGridLayoutType } from "@lib/types";
-import useCurrentWidth from "@hooks/useCurrentWidth";
-
-import Minter from "@components/minter";
-import { thumbnailData } from "@lib/utils";
-import Seo from "@components/seo";
+import { buildUrlString, thumbnailData } from "@lib/utils";
 import { cloudinaryUrl } from "@lib/images";
-import { useRouter } from "next/router";
+
+import useCurrentWidth from "@hooks/useCurrentWidth";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -42,6 +43,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
 
   if (!tokenId) throw new Error("Invalid token id.");
 
+  const { asPath } = useRouter();
   const width = useCurrentWidth();
   const layout =
     width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
@@ -88,6 +90,13 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
           </ul>
 
           <Minter tokenId={tokenId} gatedIds={gatedIds} />
+        </div>
+        <div className="mt-9">
+          <TwitterShare
+            tweetBody={`Collect the ${
+              pack.pack_name
+            }. @InfinityKeys\n\n${buildUrlString(asPath)}`}
+          />
         </div>
         <div className="w-full p-6 flex flex-row items-center justify-center">
           <div className="p-4">
