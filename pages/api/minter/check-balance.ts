@@ -36,6 +36,7 @@ export default async function handler(
 
   //check every balance of every tokenId- if 0 for any of them return false
   const claimedTokens = balances?.map((b) => b.toNumber() > 0);
+  // checks if all nft are claimed, returns true if eligible to claim pack nft
   const claimed = claimedTokens?.every((b) => b);
 
   res.json({ claimed, claimedTokens });
