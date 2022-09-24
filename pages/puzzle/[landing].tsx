@@ -2,17 +2,20 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 // import { useMachine } from "@xstate/react";
 
 import Wrapper from "@components/wrapper";
 import KeysLink from "@components/keys-link";
 import Puzzle from "@components/puzzle";
 import Markdown from "@components/markdown";
+import TwitterShare from "@components/twitter-share";
+import Heading from "@components/heading";
 // import { puzzleMachine } from "@components/puzzle.xstate";
 
 import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
-import Heading from "@components/heading";
+import { buildUrlString } from "@lib/utils";
 
 export interface PuzzlePageProps {
   name: string;
@@ -38,6 +41,8 @@ const Dev: NextPage<PuzzlePageProps> = ({
   instructions,
   failMessage,
 }) => {
+  const { asPath } = useRouter();
+
   return (
     <Wrapper>
       <Head>
@@ -84,6 +89,13 @@ const Dev: NextPage<PuzzlePageProps> = ({
       </main>
 
       <KeysLink />
+      <div className="mb-9">
+        <TwitterShare
+          tweetBody={`Can you unlock the ${name} puzzle? @InfinityKeys\n\n${buildUrlString(
+            asPath
+          )}`}
+        />
+      </div>
     </Wrapper>
   );
 };

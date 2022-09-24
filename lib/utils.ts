@@ -29,6 +29,11 @@ export const collectionBaseUrl = (isPack: boolean) => {
   return isPack ? `/${PACK_COLLECTION_BASE}` : `/${PUZZLE_COLLECTION_BASE}`;
 };
 
+export const buildUrlString = (path: string) => {
+  const url = new URL(path, IK_CLAIMS_NAMESPACE);
+  return url.toString();
+};
+
 // Wallet stuff
 export const message = (nonce: string) => `${welcome}\n\n${nonce}`;
 
