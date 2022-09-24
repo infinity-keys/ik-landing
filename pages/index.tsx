@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import Head from "next/head";
 
 import { gqlApiSdk } from "@lib/server";
 
@@ -12,6 +11,7 @@ import Alert from "@components/alert";
 import Section from "@components/section";
 import Text from "@components/text";
 import Heading from "@components/heading";
+import Seo from "@components/seo";
 
 interface PageProps {
   count: number;
@@ -27,9 +27,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
 
   return (
     <Wrapper full radialBg={false}>
-      <Head>
-        <title>Infinity Keys</title>
-      </Head>
+      <Seo />
 
       {/* Top puzzle */}
       <div className="slice--top w-full radial-bg relative z-0">

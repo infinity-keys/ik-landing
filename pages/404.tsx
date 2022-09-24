@@ -1,16 +1,14 @@
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Head from "next/head";
 
 import Wrapper from "@components/wrapper";
+import Seo from "@components/seo";
 
 const NotFoundPage: NextPage = () => {
   return (
     <Wrapper>
-      <Head>
-        <title>404 - Page Not Found</title>
-      </Head>
+      <Seo title="404 - Page Not Found" />
 
       <div className="text-center">
         <Link href="/">

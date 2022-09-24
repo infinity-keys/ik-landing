@@ -1,10 +1,10 @@
 import { NextPage } from "next";
-import Head from "next/head";
 
 import Wrapper from "@components/wrapper";
 import { gqlApiSdk } from "@lib/server";
 import CloudImage from "@components/cloud-image";
 import Minter from "@components/minter";
+import Seo from "@components/seo";
 
 interface ClaimsPageProps {
   nftTokenIds: number[];
@@ -29,9 +29,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
 
   return (
     <Wrapper>
-      <Head>
-        <title>Infinity Keys</title>
-      </Head>
+      <Seo title="Claim Your NFT Treasure!" />
 
       <div className="flex flex-col items-center text-center">
         {cloudinary_id && (
