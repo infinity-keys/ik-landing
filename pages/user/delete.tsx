@@ -63,7 +63,7 @@ const DeleteUserPage: NextPage<PageParams> = ({ jwt }) => {
         {!successMessage && (
           <>
             <div className="mt-7">
-              <Heading small>Remove My Data</Heading>
+              <Heading>Remove My Data</Heading>
             </div>
             <Text>
               This will remove you from the database completely. All progress

@@ -12,9 +12,7 @@ const PrivacyPage: NextPage = () => {
       </Head>
 
       <div className="max-w-2xl my-20">
-        <Heading as="h1" small>
-          Privacy Policy
-        </Heading>
+        <Heading as="h1">Privacy Policy</Heading>
         <p className="mb-12 mt-4 font-bold">Last Updated: 8/30/2022</p>
         <p className="mt-6">
           Infinity Keys, Inc. (“Infinity Keys”, “we”, “us”, or “our”) is

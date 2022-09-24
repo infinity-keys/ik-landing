@@ -70,7 +70,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       <main className="w-full bg-blue-800">
         <Section>
           <div className="mx-auto max-w-md sm:max-w-2xl">
-            <Heading as="h1">
+            <Heading as="h1" visual="l">
               <span className="block">What is</span>
               <span className="block text-turquoise">Infinity Keys?</span>
             </Heading>
@@ -106,9 +106,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
               Engagement &gt; Impressions.
             </p>
 
-            <Heading small>
-              Build an Infinity Keys Hunt for your Project
-            </Heading>
+            <Heading>Build an Infinity Keys Hunt for your Project</Heading>
             <Text>
               We work with projects to build new types of digital keys for
               engaging hunts and puzzles.
@@ -129,7 +127,9 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       <div className="bg-blue-800 w-full">
         <Section>
           <div className="mx-auto text-center max-w-md sm:max-w-xl">
-            <Heading turquoise>Sign Up for Email Updates!</Heading>
+            <Heading visual="l" turquoise>
+              Sign Up for Email Updates!
+            </Heading>
             <Text>
               Get updates about new features and puzzles from the Infinity Keys
               team.
