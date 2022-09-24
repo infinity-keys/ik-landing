@@ -118,6 +118,34 @@ mutation AddWalletToUser(
   }
 }
 
+# Delete multiple users and submissions by email
+mutation DeleteUserInfoByEmail($form_email: jsonb = "", $email: String) {
+  delete_submissions(where: { form_data: { _contains: $form_email } }) {
+    returning {
+      puzzle_id
+    }
+  }
+  delete_users(where: { email: { _eq: $email } }) {
+    returning {
+      email
+    }
+  }
+}
+
+# Delete user by Id
+mutation DeleteUserInfoByUserId($userId: uuid = "") {
+  delete_submissions(where: { user_id: { _eq: $userId } }) {
+    returning {
+      puzzle_id
+    }
+  }
+  delete_users(where: { user_id: { _eq: $userId } }) {
+    returning {
+      user_id
+    }
+  }
+}
+
 query UserByPublicAddress($publicAddress: String!) {
   submissions(where: { user: { public_address: { _eq: $publicAddress } } }) {
     puzzle {
@@ -205,6 +233,7 @@ query GetPuzzleInfoByNftId($nftId: Int!) {
 query GetAllPublicPacks($limit: Int = 10, $offset: Int = 0) {
   packs(
     where: { list_publicly: { _eq: true } }
+    order_by: { sort_weight: asc, simple_name: asc }
     limit: $limit
     offset: $offset
   ) {
