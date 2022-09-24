@@ -12,11 +12,9 @@ const Seo = ({
   title = "Infinity Keys",
   description = "There's treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own.",
   url = "",
-  imageUrl,
+  imageUrl = new URL("treasure.jpeg", IK_CLAIMS_NAMESPACE).toString(),
 }: Props) => {
   const formattedUrl = new URL(url, IK_CLAIMS_NAMESPACE);
-  const formattedImageUrl =
-    imageUrl || new URL("treasure.jpeg", IK_CLAIMS_NAMESPACE);
 
   return (
     <Head>
@@ -29,14 +27,14 @@ const Seo = ({
       <meta property="og:url" content={formattedUrl.toString()} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={formattedImageUrl.toString()} />
+      <meta property="og:image" content={imageUrl} />
 
       {/* twitter cards */}
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content={formattedUrl.toString()} />
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content={formattedImageUrl.toString()} />
+      <meta property="twitter:image" content={imageUrl} />
     </Head>
   );
 };
