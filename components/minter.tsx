@@ -207,7 +207,7 @@ export default function Minter({
         <div className="mt-4">
           <Button
             href={`/${PACK_LANDING_BASE}/${packRoute}`}
-            text={buttonText ? buttonText : `Go to ${parentPackName}`}
+            text={buttonText || `Go to ${parentPackName}`}
             variant="outline"
           />
         </div>
