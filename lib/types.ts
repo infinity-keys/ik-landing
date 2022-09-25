@@ -40,6 +40,12 @@ export enum ThumbnailGridLayoutType {
   Unknown = "unknown",
 }
 
+export enum ThumbnailProgress {
+  Completed = "completed",
+  NotCompleted = "notCompleted",
+  Unknown = "unknown",
+}
+
 export type ThumbnailPuzzle = PublicPuzzlesQuery["puzzles"][0];
 export type ThumbnailPack = GetAllPublicPacksQuery["packs"][0];
 

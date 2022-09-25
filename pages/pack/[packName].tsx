@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NextPage } from "next";
 import clsx from "clsx";
 import isNumber from "lodash/isNumber";
@@ -13,7 +14,7 @@ import TwitterShare from "@components/twitter-share";
 
 import { gqlApiSdk } from "@lib/server";
 import { GetPuzzlesByPackQuery } from "@lib/generated/graphql";
-import { ThumbnailGridLayoutType } from "@lib/types";
+import { ThumbnailGridLayoutType, ThumbnailProgress } from "@lib/types";
 import { buildUrlString, thumbnailData } from "@lib/utils";
 import { cloudinaryUrl } from "@lib/images";
 
@@ -40,6 +41,8 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
 
   const gatedIds = puzzlesNftIds;
   const tokenId = pack.nftId;
+  const [completed, setCompleted] = useState([] as boolean[]);
+  const [packClaimed, setPackClaimed] = useState(false);
 
   if (!tokenId) throw new Error("Invalid token id.");
   const width = useCurrentWidth();
@@ -71,7 +74,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
               "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 sm:mt-6 my-10"
             )}
           >
-            {puzzles.map((puzzle) => {
+            {puzzles.map((puzzle, index) => {
               const data = thumbnailData(puzzle);
               return (
                 <li key={data.id}>
@@ -81,13 +84,22 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
                     name={data.name}
                     url={data.url}
                     cloudinary_id={data.cloudinary_id}
+                    progress={
+                      completed[index]
+                        ? ThumbnailProgress.Completed
+                        : ThumbnailProgress.NotCompleted
+                    }
                   />
                 </li>
               );
             })}
           </ul>
 
-          <Minter tokenId={tokenId} gatedIds={gatedIds} />
+          <Minter
+            tokenId={tokenId}
+            gatedIds={gatedIds}
+            setCompleted={setCompleted}
+          />
         </div>
         <div className="mt-9">
           <TwitterShare

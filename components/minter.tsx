@@ -21,7 +21,6 @@ import { checkIfClaimed, verify } from "@lib/fetchers";
 import { useIKMinter } from "@hooks/useIKMinter";
 import LoadingIcon from "@components/loading-icon";
 import Button from "@components/button";
-import { result } from "lodash";
 import Heading from "@components/heading";
 
 interface MinterParams {
@@ -30,6 +29,7 @@ interface MinterParams {
   parentPackName?: string;
   buttonText?: string;
   packRoute?: string;
+  setCompleted?: (b: boolean[]) => void;
 }
 
 export default function Minter({
@@ -38,6 +38,7 @@ export default function Minter({
   parentPackName,
   buttonText,
   packRoute,
+  setCompleted,
 }: MinterParams) {
   const chain = useNetwork().chain;
   const { address, isConnected } = useIKMinter();
@@ -67,13 +68,29 @@ export default function Minter({
 
         setClaimed(tokenClaimed);
         setChainClaimed(tokenChainClaimed);
-        if (!tokenClaimed)
-          setSignature(await verify(address, tokenId, chain.id, gatedIds));
+        if (!tokenClaimed) {
+          const res = await verify(address, tokenId, chain.id, gatedIds);
+          setCompleted && setCompleted(res.claimedTokens || []);
+          setSignature(res.signature);
+        }
+
+        if (tokenClaimed && setCompleted) {
+          setCompleted(gatedIds.map(() => true));
+        }
+
         setIsVerifying(false);
       };
       setSig();
     }
-  }, [isConnected, chain, address, tokenId, gatedIds, chainIsValid]);
+  }, [
+    isConnected,
+    chain,
+    address,
+    tokenId,
+    gatedIds,
+    chainIsValid,
+    setCompleted,
+  ]);
 
   const { config } = usePrepareContractWrite({
     addressOrName: contractAddress,
@@ -193,7 +210,6 @@ export default function Minter({
 
   return (
     <div className="mt-20 text-center flex flex-col items-center">
-      {/* <h2 className="mt-20 text-xl tracking-tight font-bold text-white sm:mt-5 sm:text-2xl lg:mt-8 max-w-prose"></h2> */}
       <Heading as="h2" visual="s">
         {text}
       </Heading>
