@@ -13,11 +13,13 @@ select_permissions:
   - role: api
     permission:
       columns:
+        - button_text
         - cloudinary_id
         - list_publicly
         - nftId
         - pack_id
         - pack_name
         - simple_name
+        - sort_weight
       filter: {}
       allow_aggregations: true
