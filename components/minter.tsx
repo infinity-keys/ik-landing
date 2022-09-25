@@ -16,20 +16,29 @@ import {
   OPTIMISM_CHAIN_ID,
 } from "@lib/walletConstants";
 import { validChain } from "@lib/utils";
+import { PACK_LANDING_BASE } from "@lib/constants";
 import { checkIfClaimed, verify } from "@lib/fetchers";
 import { useIKMinter } from "@hooks/useIKMinter";
 import LoadingIcon from "@components/loading-icon";
+import Button from "@components/button";
 import { result } from "lodash";
+import Heading from "@components/heading";
 
 interface MinterParams {
   tokenId: number;
   gatedIds: number[];
+  parentPackName?: string;
+  buttonText?: string;
+  packRoute?: string;
   setCompleted?: (b: boolean[]) => void;
 }
 
 export default function Minter({
   tokenId,
   gatedIds,
+  parentPackName,
+  buttonText,
+  packRoute,
   setCompleted,
 }: MinterParams) {
   const chain = useNetwork().chain;
@@ -163,7 +172,7 @@ export default function Minter({
           : openConnectModal
       }
       className={clsx(
-        "text-sm text-blue font-bold rounded-md py-2 w-44 border-2 border-solid",
+        " text-blue font-bold rounded-md py-2 px-4 block min-w-full text-lg border border-solid",
         !isConnected || !chainIsValid || signature || !writeError
           ? "bg-turquoise border-turquoise hover:bg-turquoiseDark hover:cursor-pointer"
           : "bg-gray-150 border-gray-150"
@@ -201,17 +210,31 @@ export default function Minter({
   );
 
   return (
-    <>
-      <h2 className="mt-20 text-xl tracking-tight font-bold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
+    <div className="mt-20 text-center flex flex-col items-center">
+      {/* <h2 className="mt-20 text-xl tracking-tight font-bold text-white sm:mt-5 sm:text-2xl lg:mt-8 max-w-prose"></h2> */}
+      <Heading as="h2" visual="s">
         {text}
-      </h2>
+      </Heading>
 
-      {((isVerifying || isLoading) && chainIsValid) ||
-      (claimed && chainClaimed === 0) ? (
-        <LoadingIcon />
-      ) : (
-        buttonMint
-      )}
-    </>
+      <div className="w-full max-w-xs py-9">
+        {((isVerifying || isLoading) && chainIsValid) ||
+        (claimed && chainClaimed === 0) ? (
+          <LoadingIcon />
+        ) : (
+          buttonMint
+        )}
+
+        {parentPackName && (
+          <div className="pt-4">
+            <Button
+              href={`/${PACK_LANDING_BASE}/${packRoute}`}
+              text={buttonText || `Go to ${parentPackName}`}
+              variant="outline"
+              fullWidth
+            />
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
