@@ -6,7 +6,6 @@ import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
 import Alert from "@components/alert";
 import Button from "@components/button";
-import Wallet from "../deprecated/wallet";
 import Markdown from "./markdown";
 
 interface FormProps extends PuzzleInput {
