@@ -9,6 +9,7 @@ import Wrapper from "@components/wrapper";
 import KeysLink from "@components/keys-link";
 import Puzzle from "@components/puzzle";
 import Markdown from "@components/markdown";
+import Seo from "@components/seo";
 import TwitterShare from "@components/twitter-share";
 import Heading from "@components/heading";
 // import { puzzleMachine } from "@components/puzzle.xstate";
@@ -16,6 +17,7 @@ import Heading from "@components/heading";
 import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
 import { buildUrlString } from "@lib/utils";
+import { cloudinaryUrl } from "@lib/images";
 
 export interface PuzzlePageProps {
   name: string;
@@ -25,6 +27,7 @@ export interface PuzzlePageProps {
   challenge?: string;
   instructions?: string;
   failMessage?: string;
+  cloudinaryId?: string;
 }
 interface PuzzlePageParams {
   params: {
@@ -40,14 +43,18 @@ const Dev: NextPage<PuzzlePageProps> = ({
   challenge,
   instructions,
   failMessage,
+  cloudinaryId,
 }) => {
   const { asPath } = useRouter();
 
   return (
     <Wrapper>
-      <Head>
-        <title>Infinity Keys</title>
-      </Head>
+      <Seo
+        title={`${name} | IK Puzzle`}
+        description={`Can you unlock the ${name} puzzle?`}
+        imageUrl={cloudinaryId && cloudinaryUrl(cloudinaryId, 500, 500, false)}
+        url={asPath}
+      />
 
       <main className="text-center pt-5">
         <div className="py-16">
@@ -117,6 +124,7 @@ export async function getStaticProps({
       challenge,
       instructions,
       fail_message,
+      nft,
     },
   ] = puzzles;
 
@@ -129,6 +137,7 @@ export async function getStaticProps({
       challenge: challenge || "",
       instructions: instructions || "",
       failMessage: fail_message || "",
+      cloudinaryId: nft?.nft_metadatum?.cloudinary_id || "",
     },
   };
 }
