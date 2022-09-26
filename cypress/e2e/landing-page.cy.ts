@@ -9,7 +9,7 @@ describe("infinitykeys.io", () => {
     cy.contains("Infinity Keys?");
   });
 
-  it.only("garbag input shows fail message on landing page", () => {
+  it("garbag input shows fail message on landing page", () => {
     cy.get(".ik-code-input").first().wait(1000).type("garbag", { delay: 250 });
     cy.get('[data-cy="submit"]').contains("Submit").click();
     cy.get('[data-cy="message_check"]').contains("Thats not it. Need help?");

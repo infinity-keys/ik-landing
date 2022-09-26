@@ -48,7 +48,7 @@ describe("infinitykeys.io/puzzles", () => {
     cy.visit("/puzzles");
     cy.get(".puzzle-thumb").first().wait(1000).contains("notright");
     cy.get("a.next").contains("Next").click();
-    cy.get(".puzzle-thumb").last().wait(1000).contains("unlockagain");
+    //cy.get(".puzzle-thumb").last().wait(1000).contains("unlockagain");
     cy.get("a.previous").contains("Previous").click();
   });
 });
