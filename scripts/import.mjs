@@ -55,7 +55,7 @@ const doIt = async () => {
     //   body: JSON.stringify({
     //     operationName: "changePuzzle",
     //     query: gqlModify,
-    //     newPuzzInfo,
+    //     variables: newPuzzInfo,
     //   }),
     // });
     // const testResults = await testRes.json();
