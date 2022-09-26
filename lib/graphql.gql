@@ -20,6 +20,11 @@ query PuzzleInfoByLanding($landing: String!) {
     input_type
     fail_message
     landing_message
+    nft {
+      nft_metadatum {
+        cloudinary_id
+      }
+    }
   }
 }
 
@@ -28,6 +33,13 @@ query PuzzleInfoBySuccess($success: String!) {
     simple_name
     puzzle_id
     success_message
+    pack_puzzles {
+      pack {
+        pack_name
+        button_text
+        simple_name
+      }
+    }
     nft {
       tokenId
       nft_metadatum {
@@ -114,6 +126,34 @@ mutation AddWalletToUser(
     _set: { public_address: $publicAddress, nonce: $nonce }
   ) {
     nonce
+  }
+}
+
+# Delete multiple users and submissions by email
+mutation DeleteUserInfoByEmail($form_email: jsonb = "", $email: String) {
+  delete_submissions(where: { form_data: { _contains: $form_email } }) {
+    returning {
+      puzzle_id
+    }
+  }
+  delete_users(where: { email: { _eq: $email } }) {
+    returning {
+      email
+    }
+  }
+}
+
+# Delete user by Id
+mutation DeleteUserInfoByUserId($userId: uuid = "") {
+  delete_submissions(where: { user_id: { _eq: $userId } }) {
+    returning {
+      puzzle_id
+    }
+  }
+  delete_users(where: { user_id: { _eq: $userId } }) {
+    returning {
+      user_id
+    }
   }
 }
 
@@ -204,6 +244,7 @@ query GetPuzzleInfoByNftId($nftId: Int!) {
 query GetAllPublicPacks($limit: Int = 10, $offset: Int = 0) {
   packs(
     where: { list_publicly: { _eq: true } }
+    order_by: { sort_weight: asc, simple_name: asc }
     limit: $limit
     offset: $offset
   ) {
@@ -236,6 +277,7 @@ query GetPuzzlesByPack($packName: String!) {
   pack: packs(where: { simple_name: { _eq: $packName } }) {
     pack_name
     nftId
+    cloudinary_id
   }
 }
 

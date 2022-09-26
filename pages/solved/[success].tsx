@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
 import Image from "next/image";
-import Head from "next/head";
 
 import { gqlApiSdk } from "@lib/server";
 import Wrapper from "@components/wrapper";
 import WalletEmail from "@components/wallet-email";
 import Link from "next/link";
 import Markdown from "@components/markdown";
+import Seo from "@components/seo";
 
 interface SuccessPageProps {
   name: string;
@@ -26,9 +26,7 @@ const Dev: NextPage<SuccessPageProps> = ({
 }) => {
   return (
     <Wrapper>
-      <Head>
-        <title>Congrats</title>
-      </Head>
+      <Seo title="Congrats!" />
 
       <div className="max-w-sm">
         <div className="pt-4 md:pt-14 pb-4 block w-full">

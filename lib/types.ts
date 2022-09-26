@@ -23,6 +23,7 @@ export interface IkJwt extends JWTPayload {
     [IK_CLAIMS_NAMESPACE]: {
       walletConnected?: boolean;
       puzzles: string[];
+      email?: string;
     };
   };
 }
@@ -36,6 +37,12 @@ export interface PuzzleInput {
 export enum ThumbnailGridLayoutType {
   Grid = "grid",
   List = "list",
+  Unknown = "unknown",
+}
+
+export enum ThumbnailProgress {
+  Completed = "completed",
+  NotCompleted = "notCompleted",
   Unknown = "unknown",
 }
 
