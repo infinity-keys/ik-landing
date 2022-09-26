@@ -1,12 +1,25 @@
-import { use } from "chai";
+import { deleteUser } from "@lib/fetchers";
+import { generateUserDeleteJWT } from "@lib/utils";
 import { decodeJwt } from "jose";
 import { IkJwt } from "../../lib/types";
 
-beforeEach(() => {
-  cy.visit("/puzzle/notright");
-});
-
 describe("read cookies in cypress", () => {
+  beforeEach(() => {
+    cy.visit("/puzzle/notright");
+  });
+
+  afterEach(() => {
+    cy.get("@userId").then(async (userId) => {
+      // const jwt = await generateUserDeleteJWT(userId.toString());
+      // try {
+      //   await deleteUser(jwt);
+      //   cy.log(`user not delete ${userId}`);
+      // } catch (error) {
+      //   cy.log(`user not delete ${userId}`);
+      // }
+    });
+  });
+
   let userId: string | undefined;
   let puzzlesClaims: string[];
 
@@ -19,6 +32,7 @@ describe("read cookies in cypress", () => {
         }
         const ikDecoded = decodeJwt(String(cookie)) as unknown as IkJwt;
         userId = ikDecoded.sub;
+        cy.wrap(userId).as("userId");
         puzzlesClaims = ikDecoded.claims["https://infinitykeys.io"].puzzles;
 
         expect(userId).to.be.a("string");

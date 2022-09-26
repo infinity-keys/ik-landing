@@ -13,38 +13,6 @@ class GlobalDoc extends Document {
     return (
       <Html lang="en" className="bg-blue">
         <Head>
-          {/* <title>Infinity Keys</title> */}
-          <meta name="title" content="Infinity Keys" />
-          <meta
-            name="description"
-            content="There's treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own.treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own."
-          />
-
-          <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://infinitykeys.io/" />
-          <meta property="og:title" content="Infinity Keys" />
-          <meta
-            property="og:description"
-            content="There's treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own."
-          />
-          <meta
-            property="og:image"
-            content="https://infinitykeys.io/treasure.jpeg"
-          />
-
-          <meta property="twitter:card" content="summary_large_image" />
-          <meta property="twitter:url" content="https://infinitykeys.io/" />
-          <meta property="twitter:title" content="Infinity Keys" />
-          <meta
-            property="twitter:description"
-            content="There's treasure everywhere. Discover clues, solve puzzles, and collect digital items to discover real treasure — or create a quest of your own."
-          />
-          <meta
-            property="twitter:image"
-            content="https://infinitykeys.io/treasure.jpeg"
-          />
-          <meta name="description" content="There's treasure everywhere." />
-
           <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
           <link
             rel="apple-touch-icon"

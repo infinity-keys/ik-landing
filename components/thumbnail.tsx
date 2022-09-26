@@ -1,9 +1,11 @@
 import Link from "next/link";
 import Avatar from "boring-avatars";
 import clsx from "clsx";
+import CheckIcon from "@heroicons/react/24/solid/CheckIcon";
 
 import MinimalKeyLogo from "@components/svg/minimal-key-logo-svg";
 import CloudImage from "./cloud-image";
+import { ThumbnailProgress } from "@lib/types";
 
 interface ThumbnailProps {
   id: string;
@@ -11,6 +13,7 @@ interface ThumbnailProps {
   url: string;
   isGrid: boolean;
   cloudinary_id?: string;
+  progress?: ThumbnailProgress;
 }
 
 const Thumbnail = ({
@@ -19,16 +22,22 @@ const Thumbnail = ({
   isGrid,
   url,
   cloudinary_id,
+  progress = ThumbnailProgress.Unknown,
 }: ThumbnailProps) => {
   return (
     <div
       className={clsx(
-        "puzzle-thumb bg-blue-800 rounded-lg shadow cursor-pointer",
+        "puzzle-thumb bg-blue-800 rounded-lg shadow cursor-pointer relative",
         {
           "flex flex-col text-center": isGrid,
         }
       )}
     >
+      {progress === ThumbnailProgress.Completed && (
+        <div className="bg-turquoise/40 h-6 w-6 flex items-center justify-center rounded-full absolute top-0 right-0 translate-x-1/3 -translate-y-1/3  sm:top-2 sm:right-2 sm:translate-x-0 sm:translate-y-0">
+          <CheckIcon className="h-4 w-4 text-turquoise" />
+        </div>
+      )}
       <Link href={url}>
         <div
           className={clsx(
