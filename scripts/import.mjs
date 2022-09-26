@@ -62,22 +62,6 @@ const doIt = async () => {
     // return testResults;
   };
 
-  // Test: mutation to update input boxes
-  //   const testRes = await fetch("https://hasura-2v34.onrender.com/v1/graphql", {
-  //     method: "POST",
-  //     headers: {
-  //       "content-type": "application/json",
-  //       "x-hasura-admin-secret": process.env.HASURA_GRAPHQL_ADMIN_SECRET,
-  //     },
-  //     body: JSON.stringify({
-  //       operationName: "changePuzzle",
-  //       query: gqlModify,
-  //       newPuzzInfo: { simple_name: "communitycode", input_type: "boxes" },
-  //     }),
-  //   });
-  //   const testResults = await testRes.json();
-  //   console.log("test results", testResults.data.update_puzzles.returning);
-
   const getGoodData = (newData, oldData) => newData || oldData;
 
   fs.readFile(

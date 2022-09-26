@@ -232,23 +232,5 @@
     "Swap to boxes?": "TRUE",
     "Fail message": "You may have to visit your local library.",
     "Success Message": "Sticky victory Atreyu!"
-  },
-  {
-    "simple_name": "testMutation",
-    "Instructions (old landing_message)": "updated",
-    "Challenge": "updated",
-    "Input (Passcode)": "updated",
-    "Swap to boxes?": "TRUE",
-    "Fail message": "updated",
-    "Success Message": "updated"
-  },
-  {
-    "simple_name": "test2",
-    "Instructions (old landing_message)": "updated",
-    "Challenge": "updated",
-    "Input (Passcode)": "updated",
-    "Swap to boxes?": "TRUE",
-    "Fail message": "updated",
-    "Success Message": "updated"
   }
 ]
