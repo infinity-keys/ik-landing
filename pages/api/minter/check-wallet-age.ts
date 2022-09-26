@@ -20,7 +20,6 @@ export default async function handler(
   const walletTxCount = await provider.getTransactionCount(account);
   if (walletTxCount === 0) return res.json({ approved: false }); // ETH will blow up if 0
 
-  let approved;
   // Trying to work this, but currently only eth has this etherscan provider
   // that can be called to get history, and check the oldest block of account
   if (chainIdInt === 1) {
@@ -33,10 +32,8 @@ export default async function handler(
     const currentBlock = await provider.getBlockNumber();
     const age = oldestTransaction ? currentBlock - oldestTransaction : 0;
 
-    approved = age > 5760 ? true : false;
-  } else {
-    approved = walletTxCount > 1;
+    return res.json({ approved: age > 5760 });
   }
 
-  res.json({ approved });
+  return res.json({ approved: walletTxCount > 1 });
 }
