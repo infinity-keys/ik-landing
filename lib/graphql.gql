@@ -20,6 +20,11 @@ query PuzzleInfoByLanding($landing: String!) {
     input_type
     fail_message
     landing_message
+    nft {
+      nft_metadatum {
+        cloudinary_id
+      }
+    }
   }
 }
 
@@ -28,6 +33,13 @@ query PuzzleInfoBySuccess($success: String!) {
     simple_name
     puzzle_id
     success_message
+    pack_puzzles {
+      pack {
+        pack_name
+        button_text
+        simple_name
+      }
+    }
     nft {
       tokenId
       wallet_age_check
@@ -266,6 +278,7 @@ query GetPuzzlesByPack($packName: String!) {
   pack: packs(where: { simple_name: { _eq: $packName } }) {
     pack_name
     nftId
+    cloudinary_id
   }
 }
 
