@@ -21,14 +21,18 @@ const Markdown = ({ children }: Props) => (
         );
         const internalLink = href.startsWith(IK_CLAIMS_NAMESPACE);
 
-        const isEmbed =
-          typeof children[0] === "string" && children[0]?.includes("|");
+        const [words] = children;
+
+        const isEmbed = typeof words === "string" && words?.includes("|");
 
         if (isEmbed) {
-          const options =
-            typeof children[0] === "string" ? children[0]?.split("|") : [];
+          const options = words?.split("|");
           const title = options.length > 0 ? options[0].trim() : "embed video";
           const aspectRatio = options[1].trim();
+          if (!aspectRatio)
+            throw new Error(
+              "Aspect ratio required. Please input on right side of |."
+            );
           return (
             <Iframe
               src={href}
