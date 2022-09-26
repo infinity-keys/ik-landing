@@ -44,9 +44,11 @@ describe("infinitykeys.io/puzzles", () => {
   //per this PR https://github.com/infinity-keys/ik-landing/pull/328
   //the updated default puzzle view has enough puzzles to test next and previous button functionality
 
-  it("should click on next and previous buttons", () => {
-    cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
+  it.only("should click on next and previous buttons", () => {
+    cy.visit("/puzzles");
+    cy.get(".puzzle-thumb").first().wait(1000).contains("notright");
     cy.get("a.next").contains("Next").click();
+    //cy.get(".puzzle-thumb").first().wait(1000).not("notright");
     cy.get("a.previous").contains("Previous").click();
   });
 });
