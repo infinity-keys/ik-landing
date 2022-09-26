@@ -18,7 +18,7 @@ const gqlModify = `mutation changePuzzle($simple_name: String, $input_type: puzz
 
 `;
 
-// query to retreive current puzzle information
+// query to retrieve current puzzle information
 const gqlOriginalPuzzles = `query getPuzzInfo {
   puzzles {
     simple_name
@@ -29,7 +29,7 @@ const gqlOriginalPuzzles = `query getPuzzInfo {
 }`;
 
 const doIt = async () => {
-  // query to retrieve current puzzle data
+  // function to retrieve current puzzle data
   const ogPuzzles = await fetch("https://hasura-2v34.onrender.com/v1/graphql", {
     method: "POST",
     headers: {
