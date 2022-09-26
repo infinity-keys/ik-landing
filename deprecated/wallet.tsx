@@ -2,8 +2,8 @@ import { useIKMinter } from "@hooks/useIKMinter";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import clsx from "clsx";
 import { useState, useRef, useEffect } from "react";
-import Button from "./button";
-import LoadingIcon from "./loading-icon";
+import Button from "../components/button";
+import LoadingIcon from "../components/loading-icon";
 
 import { useSignMessage } from "wagmi";
 import { verifyMessage } from "ethers/lib/utils";
