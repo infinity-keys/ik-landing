@@ -4,24 +4,26 @@ import clsx from "clsx";
 interface HeadingProps extends HTMLProps<HTMLHeadingElement> {
   as?: "h1" | "h2" | "h3";
   center?: boolean;
-  small?: boolean;
+  visual?: "s" | "m" | "l";
   turquoise?: boolean;
 }
 
 export default function Heading({
   as = "h2",
   center,
-  small,
+  visual = "m",
   turquoise,
   children,
   ...rest
 }: HeadingProps) {
   const classes = clsx(
-    "text-4xl tracking-tight font-extrabold",
+    "tracking-tight font-bold",
     turquoise ? "text-turquoise" : "text-white",
     {
+      "text-xl sm:text-2xl": visual === "s",
+      "text-2xl sm:text-4xl": visual === "m",
+      "text-4xl sm:text-6xl": visual === "l",
       "text-center": center,
-      "sm:text-6xl": !small,
       "text-turquoise": turquoise,
     }
   );

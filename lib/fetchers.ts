@@ -33,6 +33,20 @@ export const formSubmit = async ({ data }: { data: unknown }) => {
   return res;
 };
 
+export const deleteUser = async (jwt: string) => {
+  const url = new URL("users", ikApiUrlBase);
+
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ jwt }),
+  });
+
+  return res;
+};
+
 export const checkIfClaimed = async (account: string, tokenId: number) => {
   // const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId?.toString()}`;
   const url = new URL("minter/check-claimed", ikApiUrlBase);
@@ -40,7 +54,7 @@ export const checkIfClaimed = async (account: string, tokenId: number) => {
   url.searchParams.set("tokenId", tokenId.toString());
 
   const response = await fetch(url);
-  if (response.ok) return (await response.json()).claimed;
+  if (response.ok) return await response.json();
   else throw await response.text();
 };
 
@@ -62,9 +76,10 @@ export const verify = async (
   gatedIds.forEach((id) => url.searchParams.append("gatedIds", id.toString()));
 
   const response = await fetch(url);
+
   if (response.ok) {
-    const { signature } = await response.json();
-    return signature;
+    const { signature, claimedTokens } = await response.json();
+    return { signature, claimedTokens };
   }
 
   throw await response.text();

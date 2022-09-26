@@ -4,16 +4,17 @@ interface IframeProps {
   src: string;
   title?: string;
   sandbox?: string;
-  aspect?: "square" | "video";
+  aspect?: "square" | "video" | "crossword";
 }
 
 export default function Iframe({ src, title, sandbox, aspect }: IframeProps) {
   const classes = clsx(
-    "container block max-w-xl aspect-video",
+    "container block max-w-2xl aspect-video",
     {
       "aspect-square": aspect === "square",
     },
-    { "aspect-video": aspect === "video" }
+    { "aspect-video": aspect === "video" },
+    { "aspect-[4/3] sm:aspect-[1.4]": aspect === "crossword" }
   );
 
   return (

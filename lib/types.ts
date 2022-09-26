@@ -1,7 +1,10 @@
 import { z } from "zod";
 import { JWTPayload } from "jose";
 import { IK_CLAIMS_NAMESPACE } from "./constants";
-import { GetAllPacksQuery, PublicPuzzlesQuery } from "./generated/graphql";
+import {
+  GetAllPublicPacksQuery,
+  PublicPuzzlesQuery,
+} from "./generated/graphql";
 
 export const PuzzleApiResponseSchema = z.object({
   fail_route: z.string(),
@@ -20,6 +23,7 @@ export interface IkJwt extends JWTPayload {
     [IK_CLAIMS_NAMESPACE]: {
       walletConnected?: boolean;
       puzzles: string[];
+      email?: string;
     };
   };
 }
@@ -36,8 +40,14 @@ export enum ThumbnailGridLayoutType {
   Unknown = "unknown",
 }
 
+export enum ThumbnailProgress {
+  Completed = "completed",
+  NotCompleted = "notCompleted",
+  Unknown = "unknown",
+}
+
 export type ThumbnailPuzzle = PublicPuzzlesQuery["puzzles"][0];
-export type ThumbnailPack = GetAllPacksQuery["packs"][0];
+export type ThumbnailPack = GetAllPublicPacksQuery["packs"][0];
 
 export const ThumbnailSchema = z.object({
   id: z.string(),
@@ -47,3 +57,5 @@ export const ThumbnailSchema = z.object({
 });
 
 export type Thumbnail = z.infer<typeof ThumbnailSchema>;
+
+export const emailSchema = z.string().min(5).email();

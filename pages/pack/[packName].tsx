@@ -1,25 +1,32 @@
+import { useState } from "react";
 import { NextPage } from "next";
-import Head from "next/head";
 import clsx from "clsx";
 import isNumber from "lodash/isNumber";
+import { useRouter } from "next/router";
 
 import Wrapper from "@components/wrapper";
 import Thumbnail from "@components/thumbnail";
+import TwitterSvg from "@components/svg/twitter-svg";
+import Discord from "@components/svg/discord-svg";
+import Minter from "@components/minter";
+import Seo from "@components/seo";
+import TwitterShare from "@components/twitter-share";
 
 import { gqlApiSdk } from "@lib/server";
 import { GetPuzzlesByPackQuery } from "@lib/generated/graphql";
-import { ThumbnailGridLayoutType } from "@lib/types";
-import useCurrentWidth from "@hooks/useCurrentWidth";
+import { ThumbnailGridLayoutType, ThumbnailProgress } from "@lib/types";
+import { buildUrlString, thumbnailData } from "@lib/utils";
+import { cloudinaryUrl } from "@lib/images";
 
-import Minter from "@components/minter";
-import { thumbnailData } from "@lib/utils";
+import useCurrentWidth from "@hooks/useCurrentWidth";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
   puzzlesNftIds: number[];
   pack: {
-    pack_name: string;
+    name: string;
     nftId?: number;
+    cloudinaryId?: string;
   };
 }
 
@@ -30,24 +37,31 @@ interface PageParams {
 }
 
 const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
+  const { asPath } = useRouter();
+
   const gatedIds = puzzlesNftIds;
   const tokenId = pack.nftId;
+  const [completed, setCompleted] = useState([] as boolean[]);
+  const [packClaimed, setPackClaimed] = useState(false);
 
   if (!tokenId) throw new Error("Invalid token id.");
-
   const width = useCurrentWidth();
   const layout =
     width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
 
   return (
     <Wrapper>
-      <Head>
-        <title>{pack.pack_name}</title>
-      </Head>
+      <Seo
+        title={`${pack.name} | IK Pack`}
+        imageUrl={
+          pack.cloudinaryId && cloudinaryUrl(pack.cloudinaryId, 500, 500, false)
+        }
+        url={asPath}
+      />
 
       <div className="max-w-3xl items-center text-center">
         <p className="mt-10 sm:mt-14">
-          To be eligible to claim the {pack.pack_name} Achievement you must
+          To be eligible to claim the {pack.name} Achievement you must
           successfully complete the following puzzles and claim the
           corresponding achievement NFT. All the NFTs must be claimed on the
           same chain to qualify.
@@ -60,7 +74,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
               "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 sm:mt-6 my-10"
             )}
           >
-            {puzzles.map((puzzle) => {
+            {puzzles.map((puzzle, index) => {
               const data = thumbnailData(puzzle);
               return (
                 <li key={data.id}>
@@ -70,13 +84,55 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
                     name={data.name}
                     url={data.url}
                     cloudinary_id={data.cloudinary_id}
+                    progress={
+                      completed[index]
+                        ? ThumbnailProgress.Completed
+                        : ThumbnailProgress.NotCompleted
+                    }
                   />
                 </li>
               );
             })}
           </ul>
 
-          <Minter tokenId={tokenId} gatedIds={gatedIds} />
+          <Minter
+            tokenId={tokenId}
+            gatedIds={gatedIds}
+            setCompleted={setCompleted}
+          />
+        </div>
+        <div className="mt-9">
+          <TwitterShare
+            tweetBody={`Collect the ${
+              pack.name
+            }. @InfinityKeys\n\n${buildUrlString(asPath)}`}
+          />
+        </div>
+        <div className="w-full p-6 flex flex-row items-center justify-center">
+          <div className="p-4">
+            <div className="w-20 twitterIcon hover: fill-twitterBlue">
+              <a
+                href="https://twitter.com/InfinityKeys"
+                className="flex w-full"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <TwitterSvg />
+              </a>
+            </div>
+          </div>
+          <div className="p-4">
+            <div className="discordIcon w-20 hover: fill-discordPurple">
+              <a
+                href="https://discord.com/invite/infinitykeys"
+                className="flex w-full"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <Discord width={96} height={96} />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </Wrapper>
@@ -87,7 +143,7 @@ export default PacksPage;
 
 export async function getStaticPaths() {
   const gql = await gqlApiSdk();
-  const { packs } = await gql.GetAllPacks();
+  const { packs } = await gql.AllPacksRoutes();
 
   const paths = packs.map(({ simple_name }) => ({
     params: { packName: simple_name },
@@ -114,7 +170,11 @@ export async function getStaticProps({
     props: {
       puzzles,
       puzzlesNftIds,
-      pack: pack[0],
+      pack: {
+        name: pack[0].pack_name,
+        nftId: pack[0].nftId,
+        cloudinaryId: pack[0]?.cloudinary_id || "",
+      },
     },
   };
 }

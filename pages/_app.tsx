@@ -13,9 +13,11 @@ import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
 import { getDefaultWallets } from "@rainbow-me/rainbowkit";
 import loMerge from "lodash/merge";
+import CookieConsentBanner from "@components/cookie-consent";
 
 import "loaders.css/loaders.min.css";
 import "../styles/globals.css";
+import "../styles/fonts.css";
 import "nprogress/nprogress.css";
 
 // Re-enable here and below for auth via auth0
@@ -40,8 +42,8 @@ const IKTheme = loMerge(darkTheme(), {
   },
 });
 
-const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, avalancheChain, chain.optimism],
+export const { chains, provider } = configureChains(
+  [chain.mainnet, chain.polygon, avalancheChain, chain.optimism, chain.rinkeby],
   [
     infuraProvider({ apiKey: process.env.INFURA_KEY }),
     publicProvider(),
@@ -77,11 +79,14 @@ Router.events.on("routeChangeError", () => NProgress.done());
 
 function InfinityKeysApp({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} theme={IKTheme}>
-        <Component {...pageProps} />
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <>
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider chains={chains} theme={IKTheme}>
+          <Component {...pageProps} />
+        </RainbowKitProvider>
+      </WagmiConfig>
+      <CookieConsentBanner />
+    </>
   );
 }
 

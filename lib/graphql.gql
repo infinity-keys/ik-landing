@@ -20,6 +20,11 @@ query PuzzleInfoByLanding($landing: String!) {
     input_type
     fail_message
     landing_message
+    nft {
+      nft_metadatum {
+        cloudinary_id
+      }
+    }
   }
 }
 
@@ -28,6 +33,13 @@ query PuzzleInfoBySuccess($success: String!) {
     simple_name
     puzzle_id
     success_message
+    pack_puzzles {
+      pack {
+        pack_name
+        button_text
+        simple_name
+      }
+    }
     nft {
       tokenId
       nft_metadatum {
@@ -46,6 +58,13 @@ query AllLandingRoutes {
 query AllSuccessRoutes {
   puzzles {
     success_route
+  }
+}
+
+# Used to prebuild all packs routes
+query AllPacksRoutes {
+  packs {
+    simple_name
   }
 }
 
@@ -110,6 +129,34 @@ mutation AddWalletToUser(
   }
 }
 
+# Delete multiple users and submissions by email
+mutation DeleteUserInfoByEmail($form_email: jsonb = "", $email: String) {
+  delete_submissions(where: { form_data: { _contains: $form_email } }) {
+    returning {
+      puzzle_id
+    }
+  }
+  delete_users(where: { email: { _eq: $email } }) {
+    returning {
+      email
+    }
+  }
+}
+
+# Delete user by Id
+mutation DeleteUserInfoByUserId($userId: uuid = "") {
+  delete_submissions(where: { user_id: { _eq: $userId } }) {
+    returning {
+      puzzle_id
+    }
+  }
+  delete_users(where: { user_id: { _eq: $userId } }) {
+    returning {
+      user_id
+    }
+  }
+}
+
 query UserByPublicAddress($publicAddress: String!) {
   submissions(where: { user: { public_address: { _eq: $publicAddress } } }) {
     puzzle {
@@ -138,7 +185,7 @@ query PublicPuzzles($limit: Int = 10, $offset: Int = 0) {
   puzzles(
     limit: $limit
     offset: $offset
-    where: { list_pubicly: { _eq: true } }
+    where: { list_publicly: { _eq: true } }
     order_by: { sort_weight: asc, simple_name: asc }
   ) {
     puzzle_id
@@ -150,7 +197,7 @@ query PublicPuzzles($limit: Int = 10, $offset: Int = 0) {
       }
     }
   }
-  count: puzzles_aggregate(where: { list_pubicly: { _eq: true } }) {
+  count: puzzles_aggregate(where: { list_publicly: { _eq: true } }) {
     aggregate {
       count
     }
@@ -175,6 +222,17 @@ query GetAllNftClaims {
   }
 }
 
+query GetPuzzleInfoById($puzzle_id: uuid!) {
+  puzzles_by_pk(puzzle_id: $puzzle_id) {
+    simple_name
+    nft {
+      nft_metadatum {
+        cloudinary_id
+      }
+    }
+  }
+}
+
 query GetPuzzleInfoByNftId($nftId: Int!) {
   puzzles(where: { nft: { tokenId: { _eq: $nftId } } }) {
     simple_name
@@ -183,11 +241,17 @@ query GetPuzzleInfoByNftId($nftId: Int!) {
   }
 }
 
-query GetAllPacks($limit: Int = 10, $offset: Int = 0) {
-  packs(limit: $limit, offset: $offset) {
+query GetAllPublicPacks($limit: Int = 10, $offset: Int = 0) {
+  packs(
+    where: { list_publicly: { _eq: true } }
+    order_by: { sort_weight: asc, simple_name: asc }
+    limit: $limit
+    offset: $offset
+  ) {
     pack_name
     simple_name
     pack_id
+    cloudinary_id
   }
   count: packs_aggregate {
     aggregate {
@@ -213,6 +277,7 @@ query GetPuzzlesByPack($packName: String!) {
   pack: packs(where: { simple_name: { _eq: $packName } }) {
     pack_name
     nftId
+    cloudinary_id
   }
 }
 

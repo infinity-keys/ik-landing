@@ -1,7 +1,10 @@
 import ReactMarkdown from "react-markdown";
+import Link from "next/link";
+
 import Iframe from "@components/iframe";
 
 import { cleanGqlMarkdown } from "@lib/utils";
+import { IK_CLAIMS_NAMESPACE } from "@lib/constants";
 
 type Props = {
   children: string;
@@ -10,37 +13,50 @@ type Props = {
 const Markdown = ({ children }: Props) => (
   <ReactMarkdown
     components={{
-      a: (props) => {
-        if (props.href?.startsWith("https://www.youtube.com/embed")) {
+      a: ({ href, children }) => {
+        if (!href) return null;
+
+        const youtubeEmbed = href.startsWith("https://www.youtube.com/embed");
+        const gstopEmbed = href.startsWith(
+          "https://www.gstop-content.com/ipfs/"
+        );
+        const internalLink = href.startsWith(IK_CLAIMS_NAMESPACE);
+        const crosswordEmbed = href.startsWith(
+          "https://puzzel.org/en/wordseeker/embed"
+        );
+
+        if (youtubeEmbed || gstopEmbed || crosswordEmbed) {
           return (
             <Iframe
-              src={props.href}
+              src={href}
               title={
-                props.children.length > 0
-                  ? props.children[0]?.toString()
-                  : "embed video"
+                children.length > 0 ? children[0]?.toString() : "embed video"
               }
-            />
-          );
-        } else if (
-          props.href?.startsWith("https://www.gstop-content.com/ipfs/")
-        ) {
-          return (
-            <Iframe
-              src={props.href}
-              title={
-                props.children.length > 0
-                  ? props.children[0]?.toString()
-                  : "embed video"
+              aspect={
+                gstopEmbed ? "square" : crosswordEmbed ? "crossword" : "video"
               }
-              sandbox="allow-scripts"
-              aspect="square"
+              sandbox={gstopEmbed ? "allow-scripts" : undefined}
             />
           );
         }
+
+        if (internalLink) {
+          const path = href.split(IK_CLAIMS_NAMESPACE)[1] || "/";
+          return (
+            <Link href={path}>
+              <a className="underline">{children}</a>
+            </Link>
+          );
+        }
+
         return (
-          <a className="underline" href={props.href}>
-            {props.children}
+          <a
+            className="underline"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={href}
+          >
+            {children}
           </a>
         );
       },

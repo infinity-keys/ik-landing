@@ -12,10 +12,15 @@ import { PAGINATION_COUNTS } from "@lib/constants";
 import { ThumbnailGridLayoutType } from "@lib/types";
 import { collectionBaseUrl, isTypePack, thumbnailData } from "@lib/utils";
 
-import { GetAllPacksQuery, PublicPuzzlesQuery } from "@lib/generated/graphql";
+import {
+  GetAllPublicPacksQuery,
+  PublicPuzzlesQuery,
+} from "@lib/generated/graphql";
 
 export interface PageProps {
-  thumbnailList: PublicPuzzlesQuery["puzzles"] | GetAllPacksQuery["packs"];
+  thumbnailList:
+    | PublicPuzzlesQuery["puzzles"]
+    | GetAllPublicPacksQuery["packs"];
   isFirstPage: Boolean;
   isLastPage: Boolean;
 }

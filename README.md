@@ -58,6 +58,13 @@ sequenceDiagram
 7. If there are no conflicts in your pull request, your code will start to build at Vercel. Click the "Show environments" dropdown then the "View deployment" link to see the frontend of the site as it exists entirely at the state of your branch.
 8. Merge `main` into your work often.
 
+# Database
+
+All interactions with the database must run through the local hasura console
+
+1. Ensure you've [installed the Hasura CLI](https://hasura.io/docs/latest/hasura-cli/install-hasura-cli/).
+1. Run `npm run hasura:console` to start up a local UI against the database that will track changes made as code
+
 # NextJs
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).

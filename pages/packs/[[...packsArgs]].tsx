@@ -1,14 +1,14 @@
 import { NextPage } from "next";
 
 import { gqlApiSdk } from "@lib/server";
-import { GetAllPacksQuery } from "@lib/generated/graphql";
+import { GetAllPublicPacksQuery } from "@lib/generated/graphql";
 import { PAGINATION_COUNTS } from "@lib/constants";
 import GridLayout from "@components/thumbnail-grid/grid-layout";
 import Wrapper from "@components/wrapper";
-import Head from "next/head";
+import Seo from "@components/seo";
 
 export interface PageProps {
-  packs: GetAllPacksQuery["packs"];
+  packs: GetAllPublicPacksQuery["packs"];
   isFirstPage: Boolean;
   isLastPage: Boolean;
 }
@@ -22,9 +22,7 @@ interface PageParams {
 const Packs: NextPage<PageProps> = ({ packs, isFirstPage, isLastPage }) => {
   return (
     <Wrapper>
-      <Head>
-        <title>Infinity Keys Packs</title>
-      </Head>
+      <Seo title="Infinity Keys Packs" url="packs" />
 
       <GridLayout
         thumbnailList={packs}
@@ -39,7 +37,7 @@ export default Packs;
 
 export async function getStaticPaths() {
   const gql = await gqlApiSdk();
-  const { count } = await gql.GetAllPacks();
+  const { count } = await gql.GetAllPublicPacks();
   const numberOfPacks = count.aggregate?.count || 0;
 
   const paths = PAGINATION_COUNTS.map((packsPerPage) => {
@@ -77,7 +75,7 @@ export async function getStaticProps({
   const offset = limit * (pageNum - 1);
 
   const gql = await gqlApiSdk();
-  const { packs, count } = await gql.GetAllPacks({
+  const { packs, count } = await gql.GetAllPublicPacks({
     limit,
     offset,
   });

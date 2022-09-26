@@ -3,7 +3,7 @@
  *
  * The embedded puzzle form used to attmpt solution.
  */
-import { ComponentType, useEffect, useRef, useState } from "react";
+import { ComponentType, FormEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import RICIBs from "react-individual-character-input-boxes";
 import loRange from "lodash/range";
@@ -15,6 +15,7 @@ import Markdown from "./markdown";
 import { puzzleMachine } from "./puzzle.xstate";
 import useCurrentWidth from "@hooks/useCurrentWidth";
 import LoadingIcon from "@components/loading-icon";
+import Button from "./button";
 
 interface PuzzleProps {
   count: number;
@@ -65,6 +66,11 @@ const Puzzle = ({
     if (ref.current) setHeight(ref.current.clientHeight);
   }, [width]);
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (context.count === context.text.length) send("GUESS");
+  };
+
   return (
     <>
       {(matches("guessing") || matches("guessCorrect.go")) && (
@@ -73,7 +79,9 @@ const Puzzle = ({
         </div>
       )}
 
-      {(matches("idle") || matches("guessIncorrect")) && (
+      {(matches("idle") ||
+        matches("guessIncorrect") ||
+        matches("readyToGuess")) && (
         <div className="flex justify-center z-10" ref={ref}>
           <div>
             <div className="flex py-5">
@@ -82,45 +90,59 @@ const Puzzle = ({
               </div>
               <h1 className="text-base font-bold pt-2 pl-4">Solve Puzzle</h1>
             </div>
-            <div className={clsx({ invisible: !matches("guessIncorrect") })}>
-              <div className="opacity-50">
-                <Markdown>
-                  {failMessage ||
-                    "Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)"}
-                </Markdown>
-              </div>
-            </div>
-            <div className="magic-input  text-turquoise font-bold">
-              {boxes && (
-                <RICIBs
-                  amount={context.count}
-                  handleOutputString={(text) => send({ type: "INPUT", text })}
-                  inputRegExp={/^.*$/}
-                  autoFocus={true}
-                  inputProps={loRange(context.count).map(() => ({
-                    className: "ik-code-input",
-                  }))}
-                />
-              )}
-              {!boxes && (
-                <div className="flex items-center sm:w-full">
-                  <input
-                    onChange={(e) =>
-                      send({ type: "INPUT", text: e.target.value })
-                    }
-                    type="text"
-                    className="text-blue-800 w-full"
-                    size={context.count}
+
+            <form onSubmit={handleSubmit}>
+              <div className="magic-input  text-turquoise font-bold">
+                {boxes && (
+                  <RICIBs
+                    amount={context.count}
+                    handleOutputString={(text) => send({ type: "INPUT", text })}
+                    inputRegExp={/^\S*$/}
                     autoFocus={true}
-                    tabIndex={0}
-                    onPaste={(e) => e.preventDefault()}
+                    inputProps={loRange(context.count).map(() => ({
+                      className: "ik-code-input",
+                    }))}
                   />
-                  <div className="counter text-lg p-4 text-white w-11">
-                    {context.count - context.text.length}
+                )}
+                {!boxes && (
+                  <div className="flex items-center sm:w-full">
+                    <input
+                      onChange={(e) =>
+                        send({ type: "INPUT", text: e.target.value })
+                      }
+                      type="text"
+                      className="text-blue-800 w-full"
+                      size={context.count}
+                      autoFocus={true}
+                      tabIndex={0}
+                      onPaste={(e) => e.preventDefault()}
+                    />
+                    <div className="counter text-lg p-4 text-white w-11">
+                      {context.count - context.text.length}
+                    </div>
                   </div>
+                )}
+              </div>
+              <div
+                className={clsx("mb-2", {
+                  invisible: !matches("guessIncorrect"),
+                })}
+              >
+                <div className="opacity-50">
+                  <Markdown>
+                    {failMessage ||
+                      "Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)"}
+                  </Markdown>
                 </div>
-              )}
-            </div>
+              </div>
+              <div className="flex justify-center">
+                <Button
+                  text="Submit"
+                  type="submit"
+                  disabled={!matches("readyToGuess")}
+                />
+              </div>
+            </form>
           </div>
         </div>
       )}

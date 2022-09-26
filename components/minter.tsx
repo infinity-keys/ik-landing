@@ -16,16 +16,30 @@ import {
   OPTIMISM_CHAIN_ID,
 } from "@lib/walletConstants";
 import { validChain } from "@lib/utils";
+import { PACK_LANDING_BASE } from "@lib/constants";
 import { checkIfClaimed, verify } from "@lib/fetchers";
 import { useIKMinter } from "@hooks/useIKMinter";
 import LoadingIcon from "@components/loading-icon";
+import Button from "@components/button";
+import Heading from "@components/heading";
 
 interface MinterParams {
   tokenId: number;
   gatedIds: number[];
+  parentPackName?: string;
+  buttonText?: string;
+  packRoute?: string;
+  setCompleted?: (b: boolean[]) => void;
 }
 
-export default function Minter({ tokenId, gatedIds }: MinterParams) {
+export default function Minter({
+  tokenId,
+  gatedIds,
+  parentPackName,
+  buttonText,
+  packRoute,
+  setCompleted,
+}: MinterParams) {
   const chain = useNetwork().chain;
   const { address, isConnected } = useIKMinter();
   const { openConnectModal } = useConnectModal();
@@ -35,6 +49,7 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
   const [contractAddress, setContractAddress] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const [claimed, setClaimed] = useState(false);
+  const [chainClaimed, setChainClaimed] = useState(0);
 
   const [chainIsValid, setChainIsValid] = useState(false);
 
@@ -48,15 +63,34 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
     if (address && chain && isConnected && chainIsValid) {
       const setSig = async () => {
         setIsVerifying(true);
-        const tokenClaimed = await checkIfClaimed(address, tokenId);
+        const { claimed: tokenClaimed, chainClaimed: tokenChainClaimed } =
+          await checkIfClaimed(address, tokenId);
+
         setClaimed(tokenClaimed);
-        if (!tokenClaimed)
-          setSignature(await verify(address, tokenId, chain.id, gatedIds));
+        setChainClaimed(tokenChainClaimed);
+        if (!tokenClaimed) {
+          const res = await verify(address, tokenId, chain.id, gatedIds);
+          setCompleted && setCompleted(res.claimedTokens || []);
+          setSignature(res.signature);
+        }
+
+        if (tokenClaimed && setCompleted) {
+          setCompleted(gatedIds.map(() => true));
+        }
+
         setIsVerifying(false);
       };
       setSig();
     }
-  }, [isConnected, chain, address, tokenId, gatedIds, chainIsValid]);
+  }, [
+    isConnected,
+    chain,
+    address,
+    tokenId,
+    gatedIds,
+    chainIsValid,
+    setCompleted,
+  ]);
 
   const { config } = usePrepareContractWrite({
     addressOrName: contractAddress,
@@ -77,10 +111,11 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
   //const txLink = `${chain?.blockExplorers?.default.url}/tx/${data?.hash}`;
 
   useEffect(() => {
-    if (isSuccess || isLoading) setClaimed(true);
-  }, [isSuccess, isLoading]);
+    if (isSuccess) setClaimed(true);
+    setChainClaimed(chain?.id || 1);
+  }, [isSuccess, chain]);
 
-  const buttonText = () => {
+  const mintButtonText = () => {
     if (!isConnected) return "Connect Wallet To Claim Trophy";
     else if (!chainIsValid) return "Switch Chain To Claim Trophy";
     else if (isVerifying) return "Checking NFTs";
@@ -122,7 +157,7 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
           : openConnectModal
       }
       className={clsx(
-        "text-sm text-blue font-bold rounded-md py-2 w-44 border-2 border-solid",
+        " text-blue font-bold rounded-md py-2 px-4 block min-w-full text-lg border border-solid",
         !isConnected || !chainIsValid || signature || !writeError
           ? "bg-turquoise border-turquoise hover:bg-turquoiseDark hover:cursor-pointer"
           : "bg-gray-150 border-gray-150"
@@ -130,21 +165,25 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
     >
       {isConnected ? (
         chainIsValid ? (
-          !claimed ? (
-            "Claim"
+          claimed ? (
+            chainClaimed === 0 ? (
+              <a>NFT Claimed- Refresh Page!</a>
+            ) : (
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`${marketplaceLookup[chainClaimed]}${tokenId}`}
+              >
+                View NFT On{" "}
+                {chainClaimed === AVAX_CHAIN_ID
+                  ? "Joepegs"
+                  : chainClaimed === OPTIMISM_CHAIN_ID
+                  ? "Quixotic"
+                  : "OpenSea"}
+              </a>
+            )
           ) : (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`${marketplaceLookup[chain?.id || 0]}${tokenId}`}
-            >
-              View NFT On{" "}
-              {chain?.id === AVAX_CHAIN_ID
-                ? "Joepegs"
-                : chain?.id === OPTIMISM_CHAIN_ID
-                ? "Quixotic"
-                : "OpenSea"}
-            </a>
+            "Claim"
           )
         ) : (
           "Switch Chain"
@@ -156,16 +195,30 @@ export default function Minter({ tokenId, gatedIds }: MinterParams) {
   );
 
   return (
-    <>
-      <h2 className="mt-20 text-xl tracking-tight font-bold text-white sm:mt-5 sm:text-2xl lg:mt-8 xl:text-2xl mb-8">
-        {buttonText()}
-      </h2>
+    <div className="mt-20 text-center flex flex-col items-center">
+      <Heading as="h2" visual="s">
+        {mintButtonText()}
+      </Heading>
 
-      {(isVerifying || isLoading) && chainIsValid ? (
-        <LoadingIcon />
-      ) : (
-        buttonMint
-      )}
-    </>
+      <div className="w-full max-w-xs py-9">
+        {((isVerifying || isLoading) && chainIsValid) ||
+        (claimed && chainClaimed === 0) ? (
+          <LoadingIcon />
+        ) : (
+          buttonMint
+        )}
+
+        {parentPackName && (
+          <div className="pt-4">
+            <Button
+              href={`/${PACK_LANDING_BASE}/${packRoute}`}
+              text={buttonText || `Go to ${parentPackName}`}
+              variant="outline"
+              fullWidth
+            />
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
