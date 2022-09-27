@@ -91,17 +91,23 @@
       @apply mt-4;
     }
 
+    p,
+    li,
+    a {
+      @apply text-lg;
+    }
+
     ol,
     ul {
-      @apply pl-8;
+      /* @apply pl-5; */
     }
 
     ol {
-      @apply list-decimal;
+      /* @apply list-decimal; */
     }
 
     ul {
-      @apply list-disc;
+      /* @apply list-disc; */
     }
 
     a {

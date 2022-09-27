@@ -16,25 +16,28 @@ const Markdown = ({ children }: Props) => (
       a: ({ href, children }) => {
         if (!href) return null;
 
-        const youtubeEmbed = href.startsWith("https://www.youtube.com/embed");
         const gstopEmbed = href.startsWith(
           "https://www.gstop-content.com/ipfs/"
         );
         const internalLink = href.startsWith(IK_CLAIMS_NAMESPACE);
-        const crosswordEmbed = href.startsWith(
-          "https://puzzel.org/en/wordseeker/embed"
-        );
 
-        if (youtubeEmbed || gstopEmbed || crosswordEmbed) {
+        const [words] = children;
+
+        const isEmbed = typeof words === "string" && words?.includes("|");
+
+        if (isEmbed) {
+          const options = words?.split("|");
+          const title = options.length > 0 ? options[0].trim() : "embed video";
+          const aspectRatio = options[1].trim();
+          if (!aspectRatio)
+            throw new Error(
+              "Aspect ratio required. Please input on right side of |."
+            );
           return (
             <Iframe
               src={href}
-              title={
-                children.length > 0 ? children[0]?.toString() : "embed video"
-              }
-              aspect={
-                gstopEmbed ? "square" : crosswordEmbed ? "crossword" : "video"
-              }
+              title={title}
+              aspect={aspectRatio}
               sandbox={gstopEmbed ? "allow-scripts" : undefined}
             />
           );

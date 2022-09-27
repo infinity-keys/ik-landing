@@ -60,7 +60,7 @@ select_permissions:
         - fail_route
         - final_step
         - input_type
-        - landing_message
+        - instructions
         - landing_route
         - list_publicly
         - puzzle_id

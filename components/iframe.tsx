@@ -1,24 +1,18 @@
 import clsx from "clsx";
 
+// anything with an aspect ratio will be parsed as an iframe
 interface IframeProps {
   src: string;
   title?: string;
   sandbox?: string;
-  aspect?: "square" | "video" | "crossword";
+  aspect: string;
 }
 
 export default function Iframe({ src, title, sandbox, aspect }: IframeProps) {
-  const classes = clsx(
-    "container block max-w-2xl aspect-video",
-    {
-      "aspect-square": aspect === "square",
-    },
-    { "aspect-video": aspect === "video" },
-    { "aspect-[4/3] sm:aspect-[1.4]": aspect === "crossword" }
-  );
+  const classes = clsx("container block w-full max-w-2xl");
 
   return (
-    <span className={classes}>
+    <span className={classes} style={{ aspectRatio: aspect }}>
       <iframe
         height="100%"
         width="100%"
