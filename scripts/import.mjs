@@ -46,23 +46,24 @@ const doIt = async () => {
   // function to update by simple name
   const updatePuzzles = async (newPuzzInfo) => {
     console.log(newPuzzInfo);
-    // const testRes = await fetch("https://hasura-2v34.onrender.com/v1/graphql", {
-    //   method: "POST",
-    //   headers: {
-    //     "content-type": "application/json",
-    //     "x-hasura-admin-secret": process.env.HASURA_GRAPHQL_ADMIN_SECRET,
-    //   },
-    //   body: JSON.stringify({
-    //     operationName: "changePuzzle",
-    //     query: gqlModify,
-    //     variables: newPuzzInfo,
-    //   }),
-    // });
-    // const testResults = await testRes.json();
-    // return testResults;
+    const testRes = await fetch("https://hasura-2v34.onrender.com/v1/graphql", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-hasura-admin-secret": process.env.HASURA_GRAPHQL_ADMIN_SECRET,
+      },
+      body: JSON.stringify({
+        operationName: "changePuzzle",
+        query: gqlModify,
+        variables: newPuzzInfo,
+      }),
+    });
+    const testResults = await testRes.json();
+    return testResults;
   };
 
-  const getGoodData = (newData, oldData) => newData || oldData;
+  // we need to stringify because the Google docs passes numbers as numbers
+  const getGoodData = (newData, oldData) => String(newData) || String(oldData);
 
   fs.readFile(
     new URL("./updatedcsvjson.json", import.meta.url).pathname,
@@ -70,11 +71,11 @@ const doIt = async () => {
       const changes = JSON.parse(data);
       changes.forEach((change) => {
         const oldPuzzle = ogResults.data.puzzles.find(
-          (puzzle) => puzzle.simple_name === change.simple_name
+          (puzzle) => puzzle.simple_name === String(change.simple_name)
         );
 
         updatePuzzles({
-          simple_name: change.simple_name,
+          simple_name: String(change.simple_name),
           challenge: change.Challenge,
           input_type: "boxes",
           landing_message: change["Instructions (old landing_message)"],

@@ -90,7 +90,7 @@
     "Success Message": "ACCES GRANTED."
   },
   {
-    "simple_name": 10000,
+    "simple_name": "10000",
     "Instructions (old landing_message)": "Answer the trivia question to advance.\\nPasscodes are letters, numbers, or a combination (no spaces or special characters).",
     "Challenge": "This OG helped inspire PizzaDAO to spread the good news of Pizza like in the early days of Bitcoin.",
     "Input (Passcode)": "laszlo",
