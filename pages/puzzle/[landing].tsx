@@ -11,6 +11,7 @@ import Puzzle from "@components/puzzle";
 import Markdown from "@components/markdown";
 import Seo from "@components/seo";
 import TwitterShare from "@components/twitter-share";
+import Heading from "@components/heading";
 // import { puzzleMachine } from "@components/puzzle.xstate";
 
 import { gqlApiSdk } from "@lib/server";
@@ -23,7 +24,8 @@ export interface PuzzlePageProps {
   count: number;
   puzzleId: string;
   inputType?: Puzzle_Input_Type_Enum;
-  landingMessage?: string;
+  challenge?: string;
+  instructions?: string;
   failMessage?: string;
   cloudinaryId?: string;
 }
@@ -38,7 +40,8 @@ const Dev: NextPage<PuzzlePageProps> = ({
   count,
   puzzleId,
   inputType,
-  landingMessage,
+  challenge,
+  instructions,
   failMessage,
   cloudinaryId,
 }) => {
@@ -54,7 +57,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
       />
 
       <main className="text-center pt-5">
-        <div className="pb-16">
+        <div className="py-16">
           <Link href={"/"}>
             <a>
               <Image
@@ -68,11 +71,21 @@ const Dev: NextPage<PuzzlePageProps> = ({
           </Link>
         </div>
 
-        {landingMessage && (
-          <div className="pb-16 text-center text-lg text-gray-100 max-w-2xl mx-auto markdown landing-md">
-            <Markdown>{landingMessage}</Markdown>
-          </div>
-        )}
+        <div className="mb-16">
+          {instructions && (
+            <div className="mb-12 w-full max-w-2xl mx-auto markdown landing-md">
+              <Heading as="h2">Instructions</Heading>
+              <Markdown>{instructions}</Markdown>
+            </div>
+          )}
+
+          {challenge && (
+            <div className=" w-full max-w-2xl mx-auto markdown landing-md">
+              <Heading as="h2">Challenge</Heading>
+              <Markdown>{challenge}</Markdown>
+            </div>
+          )}
+        </div>
 
         <Puzzle
           count={count}
@@ -108,7 +121,8 @@ export async function getStaticProps({
       solution_char_count,
       puzzle_id,
       input_type,
-      landing_message,
+      challenge,
+      instructions,
       fail_message,
       nft,
     },
@@ -120,7 +134,8 @@ export async function getStaticProps({
       count: solution_char_count || 0,
       puzzleId: puzzle_id,
       inputType: input_type || Puzzle_Input_Type_Enum.Boxes,
-      landingMessage: landing_message || "",
+      challenge: challenge || "",
+      instructions: instructions || "",
       failMessage: fail_message || "",
       cloudinaryId: nft?.nft_metadatum?.cloudinary_id || "",
     },
