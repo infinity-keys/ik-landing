@@ -128,14 +128,14 @@ const Puzzle = ({
                   invisible: !matches("guessIncorrect"),
                 })}
               >
-                <div className="opacity-50">
+                <div data-cy="message_check" className="opacity-50">
                   <Markdown>
                     {failMessage ||
                       "Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)"}
                   </Markdown>
                 </div>
               </div>
-              <div className="flex justify-center">
+              <div data-cy="submit" className="flex justify-center">
                 <Button
                   text="Submit"
                   type="submit"
