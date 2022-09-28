@@ -49,7 +49,7 @@ event_triggers:
       interval_sec: 10
       num_retries: 0
       timeout_sec: 60
-    webhook: https://www.infinitykeys.io/change-this-when-its-ready-to-go
+    webhook: https://infinitykeys.io/api/email-submission
     request_transform:
       method: POST
       query_params: {}

@@ -9,21 +9,17 @@ describe("infinitykeys.io", () => {
     cy.contains("Infinity Keys?");
   });
 
-  // it("garbag input shows fail message on landing page", () => {
-  //   cy.get(".ik-code-input").eq(0).type("g", { delay: 250 });
-  //   cy.get(".ik-code-input").eq(1).type("a", { delay: 250 });
-  //   cy.get(".ik-code-input").eq(2).type("r", { delay: 250 });
-  //   cy.get(".ik-code-input").eq(3).type("b", { delay: 250 });
-  //   cy.get(".ik-code-input").eq(4).type("a", { delay: 250 });
-  //   cy.get(".ik-code-input").eq(5).type("g", { delay: 250 });
-  //   cy.contains("Thats not it. Need help?");
-  // });
+  it("garbag input shows fail message on landing page", () => {
+    cy.get(".ik-code-input").first().wait(1000).type("garbag", { delay: 250 });
+    cy.get('[data-cy="submit"]').contains("Submit").click();
+    cy.get('[data-cy="message_check"]').contains("Thats not it. Need help?");
+  });
 
   it("should navigate to blog from home page", () => {
     cy.get('.menu-items a[href="https://blog.infinitykeys.io"]').click();
   });
 
-  it.only("fills out business contact and submits scuccessfully", () => {
+  it("fills out business contact and submits scuccessfully", () => {
     cy.intercept("POST", "https://formspree.io/f/mdobjayl", {
       statusCode: 200,
       body: { next: "/thanks?language=en", ok: true },
@@ -37,7 +33,7 @@ describe("infinitykeys.io", () => {
     });
   });
 
-  it.only("fills out newsletter contact form and submits successfully", () => {
+  it("fills out newsletter contact form and submits successfully", () => {
     cy.intercept("POST", "https://formspree.io/f/xnqrqdaq", {
       statusCode: 200,
       body: { next: "/thanks?language=en", ok: true },
