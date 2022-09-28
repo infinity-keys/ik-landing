@@ -23,15 +23,14 @@ describe("read cookies in cypress", () => {
   afterEach(() => {
     cy.get("@userId").then(async (userId) => {
       console.log(userId);
-      //   const jwt = await generateUserDeleteJWT(userId.toString());
-      //   try {
-      //     await deleteUser(jwt);
-      //     cy.log(`user deleted ${userId}`);
-      //   } catch (error) {
-      //     cy.log(`user deleted ${userId}`);
-      //   }
-      //   return;
-      // });
+      // const jwt = await generateUserDeleteJWT(userId.toString());
+      // try {
+      //   await deleteUser(jwt);
+      //   cy.log(`user deleted ${userId}`);
+      // } catch (error) {
+      //   cy.log(`user deleted ${userId}`);
+      // }
+      // return;
     });
   });
 
@@ -52,8 +51,6 @@ describe("read cookies in cypress", () => {
 
         expect(userId).to.be.a("string");
         expect(puzzlesClaims).to.be.empty;
-
-        console.log(userId);
       });
 
     cy.get(".ik-code-input").first().wait(1000).type("gnorw", { delay: 750 });
