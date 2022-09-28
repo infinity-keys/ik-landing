@@ -1,5 +1,19 @@
 import { decodeJwt } from "jose";
 import { IkJwt } from "../../lib/types";
+import { deleteUser } from "../../lib/fetchers";
+import { makeUserToken } from "@lib/jwt";
+import { IK_CLAIMS_NAMESPACE } from "@lib/constants";
+
+// export const generateUserDeleteJWT = async (userId: string, email?: string) => {
+//   return await makeUserToken(
+//     {
+//       claims: {
+//         [IK_CLAIMS_NAMESPACE]: { puzzles: [], email },
+//       },
+//     },
+//     userId
+//   );
+// };
 
 describe("read cookies in cypress", () => {
   beforeEach(() => {
@@ -9,13 +23,15 @@ describe("read cookies in cypress", () => {
   afterEach(() => {
     cy.get("@userId").then(async (userId) => {
       console.log(userId);
-      // const jwt = await generateUserDeleteJWT(userId.toString());
-      // try {
-      //   await deleteUser(jwt);
-      //   cy.log(`user deleted ${userId}`);
-      // } catch (error) {
-      //   cy.log(`user deleted ${userId}`);
-      // }
+      //   const jwt = await generateUserDeleteJWT(userId.toString());
+      //   try {
+      //     await deleteUser(jwt);
+      //     cy.log(`user deleted ${userId}`);
+      //   } catch (error) {
+      //     cy.log(`user deleted ${userId}`);
+      //   }
+      //   return;
+      // });
     });
   });
 
@@ -36,6 +52,8 @@ describe("read cookies in cypress", () => {
 
         expect(userId).to.be.a("string");
         expect(puzzlesClaims).to.be.empty;
+
+        console.log(userId);
       });
 
     cy.get(".ik-code-input").first().wait(1000).type("gnorw", { delay: 750 });
@@ -66,5 +84,3 @@ describe("read cookies in cypress", () => {
       });
   });
 });
-
-export {};
