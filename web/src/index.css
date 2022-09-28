@@ -11,3 +11,128 @@
 /**
  * END --- SETUP TAILWINDCSS EDIT
  */
+
+@layer base {
+  svg {
+    @apply fill-current;
+  }
+}
+
+@layer components {
+  .magic-input > div > div {
+    @apply flex flex-wrap justify-center;
+  }
+  .ik-code-input {
+    @apply m-0 mx-1 mb-2 border-gray-200 bg-gray-500 text-2xl font-bold shadow-md !important;
+    text-shadow: -2px 0px 7px #3fccbb;
+    width: 45px !important;
+    height: 45px !important;
+    padding: 0;
+
+    /* 640+ */
+    @screen sm {
+      @apply text-4xl !important;
+      width: 90px !important;
+      height: 90px !important;
+    }
+    /* 768+ */
+    @screen md {
+      width: 90px !important;
+      height: 90px !important;
+    }
+    /* 1024+ */
+    @screen lg {
+      @apply mx-4 !important;
+      width: 125px !important;
+      height: 125px !important;
+    }
+    /* 1280+ */
+    @screen xl {
+    }
+    /* 1536+ */
+    @screen 2xl {
+    }
+  }
+
+  .radial-bg {
+    background: radial-gradient(ellipse at left top, #3fccbb50, transparent 40%),
+      radial-gradient(ellipse at right bottom, #d2508e70, transparent 40%);
+  }
+  .discordIcon:hover {
+    color: #5865f2;
+  }
+
+  .twitterIcon:hover {
+    color: #1da1f2;
+  }
+
+  .markdown {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply mt-4 font-bold;
+    }
+
+    h1,
+    h2 {
+      @apply my-5;
+    }
+
+    h1 {
+      @apply text-4xl;
+    }
+
+    h2 {
+      @apply text-3xl;
+    }
+
+    h3 {
+      @apply text-2xl;
+    }
+
+    p,
+    ul,
+    ol,
+    img,
+    iframe {
+      @apply mt-4;
+    }
+
+    p,
+    li,
+    a {
+      @apply text-lg;
+    }
+
+    ol,
+    ul {
+      /* @apply pl-5; */
+    }
+
+    ol {
+      /* @apply list-decimal; */
+    }
+
+    ul {
+      /* @apply list-disc; */
+    }
+
+    a {
+      @apply text-turquoise transition hover:text-turquoiseDark;
+    }
+  }
+
+  /* TODO: Remove when we switch to left-aligned puzzle markdown */
+  .landing-md {
+    p > img {
+      @apply mx-auto;
+    }
+  }
+}
+
+.next-image-block span {
+  display: block !important;
+}
