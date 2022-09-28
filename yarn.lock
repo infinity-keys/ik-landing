@@ -2935,6 +2935,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@headlessui/react@npm:^1.7.2":
+  version: 1.7.2
+  resolution: "@headlessui/react@npm:1.7.2"
+  peerDependencies:
+    react: ^16 || ^17 || ^18
+    react-dom: ^16 || ^17 || ^18
+  checksum: 39fd1f3f56c50c6dde20ce60b76bc2f385fc1347f399482248ce7d247fe48d5188959c4f7d602d47c8eeef5d8cf128cb7b00356ab43cc2adf59cbcb81b5ce6d0
+  languageName: node
+  linkType: hard
+
 "@heroicons/react@npm:^2.0.11":
   version: 2.0.11
   resolution: "@heroicons/react@npm:2.0.11"
@@ -24390,6 +24400,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
+    "@headlessui/react": ^1.7.2
     "@heroicons/react": ^2.0.11
     "@redwoodjs/forms": 3.0.2
     "@redwoodjs/router": 3.0.2
