@@ -39,9 +39,9 @@ describe("infinitykeys.io/puzzles", () => {
 
   it.only("should click on next and previous buttons", () => {
     cy.visit("/puzzles");
-    cy.get(".puzzle-thumb").first().wait(1000).contains("notright");
     cy.get("a.next").contains("Next").click();
     cy.get("a.previous").contains("Previous").click();
+    cy.url().should("include", Cypress.config().baseUrl + "/puzzles");
   });
 });
 

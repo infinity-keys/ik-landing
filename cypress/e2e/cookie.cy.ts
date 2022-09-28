@@ -8,12 +8,13 @@ describe("read cookies in cypress", () => {
 
   afterEach(() => {
     cy.get("@userId").then(async (userId) => {
+      console.log(userId);
       // const jwt = await generateUserDeleteJWT(userId.toString());
       // try {
       //   await deleteUser(jwt);
-      //   cy.log(`user not delete ${userId}`);
+      //   cy.log(`user deleted ${userId}`);
       // } catch (error) {
-      //   cy.log(`user not delete ${userId}`);
+      //   cy.log(`user deleted ${userId}`);
       // }
     });
   });
