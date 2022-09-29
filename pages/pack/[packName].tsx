@@ -98,6 +98,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
           <Minter
             tokenId={tokenId}
             gatedIds={gatedIds}
+            nftWalletAgeCheck={false}
             setCompleted={setCompleted}
           />
         </div>

@@ -43,6 +43,7 @@ query PuzzleInfoBySuccess($success: String!) {
     }
     nft {
       tokenId
+      wallet_age_check
       nft_metadatum {
         cloudinary_id
       }

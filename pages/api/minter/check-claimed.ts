@@ -21,6 +21,7 @@ export default async function handler(
   const contractPromises = chainIds.map((chainId) =>
     contractLookup[chainId].checkIfClaimed(tokenId, account)
   );
+
   const contractClaims = await Promise.all(contractPromises);
   const claimed = contractClaims.some(Boolean);
 

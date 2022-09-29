@@ -16,8 +16,8 @@ import {
   OPTIMISM_CHAIN_ID,
 } from "@lib/walletConstants";
 import { validChain } from "@lib/utils";
+import { checkIfClaimed, verify, walletAgeChecker } from "@lib/fetchers";
 import { PACK_LANDING_BASE } from "@lib/constants";
-import { checkIfClaimed, verify } from "@lib/fetchers";
 import { useIKMinter } from "@hooks/useIKMinter";
 import LoadingIcon from "@components/loading-icon";
 import Button from "@components/button";
@@ -26,6 +26,7 @@ import Heading from "@components/heading";
 interface MinterParams {
   tokenId: number;
   gatedIds: number[];
+  nftWalletAgeCheck: boolean;
   parentPackName?: string;
   buttonText?: string;
   packRoute?: string;
@@ -35,6 +36,7 @@ interface MinterParams {
 export default function Minter({
   tokenId,
   gatedIds,
+  nftWalletAgeCheck,
   parentPackName,
   buttonText,
   packRoute,
@@ -50,6 +52,7 @@ export default function Minter({
   const [isVerifying, setIsVerifying] = useState(false);
   const [claimed, setClaimed] = useState(false);
   const [chainClaimed, setChainClaimed] = useState(0);
+  const [approved, setApproved] = useState(true);
 
   const [chainIsValid, setChainIsValid] = useState(false);
 
@@ -63,8 +66,12 @@ export default function Minter({
     if (address && chain && isConnected && chainIsValid) {
       const setSig = async () => {
         setIsVerifying(true);
+
         const { claimed: tokenClaimed, chainClaimed: tokenChainClaimed } =
           await checkIfClaimed(address, tokenId);
+
+        if (nftWalletAgeCheck)
+          setApproved(await walletAgeChecker(address, chain.id));
 
         setClaimed(tokenClaimed);
         setChainClaimed(tokenChainClaimed);
@@ -89,6 +96,7 @@ export default function Minter({
     tokenId,
     gatedIds,
     chainIsValid,
+    nftWalletAgeCheck,
     setCompleted,
   ]);
 
@@ -157,10 +165,10 @@ export default function Minter({
           : openConnectModal
       }
       className={clsx(
-        " text-blue font-bold rounded-md py-2 px-4 block min-w-full text-lg border border-solid",
+        " block min-w-full rounded-md border border-solid py-2 px-4 text-lg font-bold text-blue",
         !isConnected || !chainIsValid || signature || !writeError
-          ? "bg-turquoise border-turquoise hover:bg-turquoiseDark hover:cursor-pointer"
-          : "bg-gray-150 border-gray-150"
+          ? "border-turquoise bg-turquoise hover:cursor-pointer hover:bg-turquoiseDark"
+          : "border-gray-150 bg-gray-150"
       )}
     >
       {isConnected ? (
@@ -195,7 +203,7 @@ export default function Minter({
   );
 
   return (
-    <div className="mt-20 text-center flex flex-col items-center">
+    <div className="mt-20 flex flex-col items-center text-center">
       <Heading as="h2" visual="s">
         {mintButtonText()}
       </Heading>
