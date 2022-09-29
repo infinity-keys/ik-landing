@@ -19,11 +19,13 @@
     "@redwoodjs/router": "3.0.2",
     "@redwoodjs/web": "3.0.2",
     "@tailwindcss/forms": "^0.5.3",
+    "cloudinary-build-url": "^0.2.4",
     "clsx": "^1.2.1",
     "prop-types": "15.8.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-markdown": "^8.0.3"
+    "react-markdown": "^8.0.3",
+    "use-device-pixel-ratio": "^1.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.12",

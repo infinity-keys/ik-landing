@@ -1923,6 +1923,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cld-apis/utils@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@cld-apis/utils@npm:0.2.0"
+  dependencies:
+    snake-case: ^3.0.4
+  checksum: f4f9834c86bcb4a62d3349ff075b8ce483895138577a47e325f2d1eca2bd3d2da817733575b61bbb3e65698ee284fc5e8dcbcbb1fa54516f72eaca16d6c6940d
+  languageName: node
+  linkType: hard
+
 "@cnakazawa/watch@npm:^1.0.3":
   version: 1.0.4
   resolution: "@cnakazawa/watch@npm:1.0.4"
@@ -9602,6 +9611,15 @@ __metadata:
   version: 1.0.4
   resolution: "clone@npm:1.0.4"
   checksum: 2176952b3649293473999a95d7bebfc9dc96410f6cbd3d2595cf12fd401f63a4bf41a7adbfd3ab2ff09ed60cb9870c58c6acdd18b87767366fabfc163700f13b
+  languageName: node
+  linkType: hard
+
+"cloudinary-build-url@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "cloudinary-build-url@npm:0.2.4"
+  dependencies:
+    "@cld-apis/utils": ^0.2.0
+  checksum: 579f58dae9e9ca2a9a47dd07b6b36e9793ac675ddd77ac82e359c41da59d70147df9d2e3c1c7079b2e0a5ff7a509b97699e89db2dc912d7a61721fec2efd9adb
   languageName: node
   linkType: hard
 
@@ -24575,6 +24593,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"use-device-pixel-ratio@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "use-device-pixel-ratio@npm:1.1.0"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 6efaa8f33e3e2a56db46bb022663100416176a32cd0cc91e6b60f1b150ddb305bdc1f815e16081cfe42a1ad100c11bc016ae30f5eca2a5d837a163d0f949b9b3
+  languageName: node
+  linkType: hard
+
 "use@npm:^3.1.0":
   version: 3.1.1
   resolution: "use@npm:3.1.1"
@@ -24970,6 +24997,7 @@ __metadata:
     "@redwoodjs/web": 3.0.2
     "@tailwindcss/forms": ^0.5.3
     autoprefixer: ^10.4.12
+    cloudinary-build-url: ^0.2.4
     clsx: ^1.2.1
     postcss: ^8.4.16
     postcss-loader: ^7.0.1
@@ -24979,6 +25007,7 @@ __metadata:
     react-dom: 17.0.2
     react-markdown: ^8.0.3
     tailwindcss: ^3.1.8
+    use-device-pixel-ratio: ^1.1.0
   languageName: unknown
   linkType: soft
 
