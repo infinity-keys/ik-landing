@@ -1,6 +1,5 @@
 import { buildUrl } from 'cloudinary-build-url'
-
-import { CLOUDINARY_CLOUD_NAME } from './constants'
+import { CLOUDINARY_CLOUD_NAME } from 'lib/constants'
 
 export const cloudinaryUrl = (
   id: string,
