@@ -6,7 +6,7 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
-    "baseUrl": "./",
+    "baseUrl": ".",
     "rootDirs": [
       "./src",
       "../.redwood/types/mirror/web/src",
@@ -21,7 +21,6 @@
         "../.redwood/types/mirror/api/src/*"
       ],
       "$api/*": ["../api/*"],
-      "lib/*": ["../lib/*"],
       "types/*": ["./types/*", "../types/*"],
       "@redwoodjs/testing": ["../node_modules/@redwoodjs/testing/web"]
     },
@@ -33,7 +32,6 @@
     "src",
     "../.redwood/types/includes/all-*",
     "../.redwood/types/includes/web-*",
-    "../lib",
     "../types",
     "./types"
   ]
