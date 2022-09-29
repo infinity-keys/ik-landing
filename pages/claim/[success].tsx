@@ -9,6 +9,7 @@ import Seo from "@components/seo";
 interface ClaimsPageProps {
   nftTokenIds: number[];
   cloudinary_id?: string;
+  nftWalletAgeCheck: boolean;
   pack: {
     packRoute?: string;
     parentPackName?: string;
@@ -23,6 +24,7 @@ interface ClaimsPageParams {
 const ClaimFlow: NextPage<ClaimsPageProps> = ({
   nftTokenIds,
   cloudinary_id,
+  nftWalletAgeCheck,
   pack,
 }) => {
   const tokenId = nftTokenIds[0]; // @TODO: for now, take the first, but handle multiple soon
@@ -39,6 +41,7 @@ const ClaimFlow: NextPage<ClaimsPageProps> = ({
         <Minter
           tokenId={tokenId}
           gatedIds={[]}
+          nftWalletAgeCheck={nftWalletAgeCheck}
           parentPackName={pack.parentPackName}
           buttonText={pack.buttonText}
           packRoute={pack.packRoute}
@@ -69,6 +72,7 @@ export async function getStaticProps({
     props: {
       nftTokenIds,
       cloudinary_id: nft?.nft_metadatum?.cloudinary_id || "",
+      nftWalletAgeCheck: nft?.wallet_age_check || false,
       pack: {
         packRoute: parentPack?.simple_name || "",
         parentPackName: parentPack?.pack_name || "",
