@@ -1,5 +1,20 @@
 import { decodeJwt } from "jose";
 import { IkJwt } from "../../lib/types";
+import { deleteUser } from "../../lib/fetchers";
+import { gqlApiSdk } from "@lib/server";
+import { makeUserToken } from "@lib/jwt";
+import { IK_CLAIMS_NAMESPACE } from "@lib/constants";
+
+// export const generateUserDeleteJWT = async (userId: string, email?: string) => {
+//   return await makeUserToken(
+//     {
+//       claims: {
+//         [IK_CLAIMS_NAMESPACE]: { puzzles: [], email },
+//       },
+//     },
+//     userId
+//   );
+// };
 
 describe("read cookies in cypress", () => {
   beforeEach(() => {
@@ -7,14 +22,29 @@ describe("read cookies in cypress", () => {
   });
 
   afterEach(() => {
-    cy.get("@userId").then(async (userId) => {
+    cy.get("@userJwt").then(async (userJwt) => {
+      console.log(userJwt);
+      try {
+        const ikDecoded = decodeJwt(String(userJwt)) as unknown as IkJwt;
+        const userId = ikDecoded.sub;
+        const gql = await gqlApiSdk();
+        const user = await gql.UserExist({ userId });
+        user.users_by_pk?.user_id;
+        if (user.users_by_pk?.user_id) {
+          await deleteUser(userJwt.toString());
+          cy.log(`user deleted ${userJwt}`);
+        }
+      } catch (error) {
+        cy.log(`user not deleted ${userJwt}, ${error}`);
+      }
       // const jwt = await generateUserDeleteJWT(userId.toString());
       // try {
       //   await deleteUser(jwt);
-      //   cy.log(`user not delete ${userId}`);
+      //   cy.log(`user deleted ${userId}`);
       // } catch (error) {
-      //   cy.log(`user not delete ${userId}`);
+      //   cy.log(`user deleted ${userId}`);
       // }
+      // return;
     });
   });
 
@@ -30,7 +60,10 @@ describe("read cookies in cypress", () => {
         }
         const ikDecoded = decodeJwt(String(cookie)) as unknown as IkJwt;
         userId = ikDecoded.sub;
+
         cy.wrap(userId).as("userId");
+        cy.wrap(String(cookie)).as("userJwt");
+
         puzzlesClaims = ikDecoded.claims["https://infinitykeys.io"].puzzles;
 
         expect(userId).to.be.a("string");
@@ -65,5 +98,3 @@ describe("read cookies in cypress", () => {
       });
   });
 });
-
-export {};

@@ -290,3 +290,9 @@ query NftMetadata($nftId: Int!, $contractName: String!) {
     token_id
   }
 }
+
+query UserExist($userId: uuid!) {
+  users_by_pk(user_id: $userId) {
+    user_id
+  }
+}

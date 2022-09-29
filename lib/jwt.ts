@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 import isEmpty from "lodash/isEmpty";
 
 import { IK_CLAIMS_NAMESPACE, JWT_SECRET_KEY } from "@lib/constants";
-import { epochMinus30s } from "./utils";
 import { IkJwt } from "./types";
+export const epochMinus30s = () => Math.round(new Date().getTime() / 1000) - 30;
 
 export type HasuraRoles = "anonymous" | "user" | "manager" | "api" | "admin";
 
