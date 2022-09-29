@@ -5,6 +5,5 @@ module.exports = {
     require('tailwindcss/nesting'),
     require('tailwindcss')(path.resolve(__dirname, 'tailwind.config.js')),
     require('autoprefixer'),
-    require('postcss-preset-env'),
   ],
 }
