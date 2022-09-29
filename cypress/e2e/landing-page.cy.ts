@@ -9,14 +9,20 @@ describe("infinitykeys.io", () => {
     cy.contains("Infinity Keys?");
   });
 
-  it("garbag input shows fail message on landing page", () => {
+  it("wrong input shows fail message on landing page", () => {
     cy.get(".ik-code-input").first().wait(1000).type("garbag", { delay: 250 });
     cy.get('[data-cy="submit"]').contains("Submit").click();
-    cy.get('[data-cy="message_check"]').contains("Thats not it. Need help?");
+    cy.get('[data-cy="fail_message_check"]').contains(
+      "Thats not it. Need help?"
+    );
   });
 
-  it("should navigate to blog from home page", () => {
-    cy.get('.menu-items a[href="https://blog.infinitykeys.io"]').click();
+  it("correct input shows success message on landing page", () => {
+    cy.get(".ik-code-input").first().wait(1000).type("unlock", { delay: 250 });
+    cy.get('[data-cy="submit"]').contains("Submit").click();
+    cy.get('[data-cy="success_message_check"]').contains(
+      "Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels"
+    );
   });
 
   it("fills out business contact and submits scuccessfully", () => {
@@ -65,6 +71,10 @@ describe("infinitykeys.io", () => {
     cy.visit("/");
     cy.get(".header").contains("Blog").click();
     cy.url().should("include", "https://blog.infinitykeys.io");
+
+    cy.visit("/");
+    cy.get(".header").contains("Packs").click();
+    cy.url().should("include", Cypress.config().baseUrl + "/packs");
 
     cy.visit("/");
     cy.get(".header").contains("Puzzles").click();

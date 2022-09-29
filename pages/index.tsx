@@ -20,7 +20,10 @@ interface PageProps {
 
 const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
   const SuccessComponent = () => (
-    <div className="container my-9 flex justify-center max-w-sm">
+    <div
+      data-cy="success_message_check"
+      className="container my-9 flex justify-center max-w-sm"
+    >
       <Alert text="Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels." />
     </div>
   );
