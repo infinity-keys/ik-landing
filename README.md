@@ -119,3 +119,28 @@ The best way to learn Redwood is by going through the comprehensive [tutorial](h
 
 - Stay updated: read [Forum announcements](https://community.redwoodjs.com/c/announcements/5), follow us on [Twitter](https://twitter.com/redwoodjs), and subscribe to the [newsletter](https://redwoodjs.com/newsletter)
 - [Learn how to contribute](https://redwoodjs.com/docs/contributing)
+
+# IK Team Notes
+
+## DB
+
+[Install postgres](https://redwoodjs.com/docs/local-postgres-setup).
+
+```bash
+sudo --login --user=postgres psql
+```
+
+Once on the postgres command line:
+
+```base
+create database ikdb_dev;
+create database ikdb_test;
+ALTER USER postgres PASSWORD 'postgres'; ALTER ROLE
+```
+
+Now add to `.env`:
+
+```
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/ikdb_dev?connection_limit=1"
+TEST_DATABASE_URL="postgresql://postgres:postgres@localhost:5432/ikdb_test?connection_limit=1"
+```
