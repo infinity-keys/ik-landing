@@ -58,6 +58,24 @@ export const contractAddressLookup: {
   [RINKEBY_CHAIN_ID]: CONTRACT_ADDRESS_RINKEBY,
 };
 
+export const chainRPCLookup: {
+  [key: number]: string;
+} = {
+  [ETH_CHAIN_ID]: ETH_RPC,
+  [POLYGON_CHAIN_ID]: POLYGON_RPC,
+  [AVAX_CHAIN_ID]: AVAX_RPC,
+  [OPTIMISM_CHAIN_ID]: OPTIMISM_RPC,
+};
+
+export const chainRPCNameLookup: {
+  [key: number]: string;
+} = {
+  [ETH_CHAIN_ID]: "homestead",
+  [POLYGON_CHAIN_ID]: "matic",
+  [AVAX_CHAIN_ID]: "avax",
+  [OPTIMISM_CHAIN_ID]: "optimism",
+};
+
 export const contractLookup: {
   [key: number]: ReturnType<typeof IKAchievementABI__factory.connect>;
 } = {

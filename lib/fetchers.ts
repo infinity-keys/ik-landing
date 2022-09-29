@@ -48,7 +48,6 @@ export const deleteUser = async (jwt: string) => {
 };
 
 export const checkIfClaimed = async (account: string, tokenId: number) => {
-  // const url = `/api/minter/check-claimed?account=${account}&tokenId=${tokenId?.toString()}`;
   const url = new URL("minter/check-claimed", ikApiUrlBase);
   url.searchParams.set("account", account);
   url.searchParams.set("tokenId", tokenId.toString());
@@ -66,9 +65,6 @@ export const verify = async (
 ) => {
   // const gatedIdsString = `&${gatedIds.map((id) => `gatedIds=${id}`).join("&")}`;
   //If pack (requires other NFTs) include gated, if single ignore
-  // const url = `/api/minter/verify?account=${account}&tokenId=${tokenId.toString()}&chainId=${chain.toString()}${
-  //   gatedIds.length ? gatedIdsString : ""
-  // }`;
   const url = new URL("minter/verify", ikApiUrlBase);
   url.searchParams.set("account", account);
   url.searchParams.set("tokenId", tokenId.toString());
@@ -83,4 +79,14 @@ export const verify = async (
   }
 
   throw await response.text();
+};
+
+export const walletAgeChecker = async (account: string, chainId: number) => {
+  const url = new URL("minter/check-wallet-age", ikApiUrlBase);
+  url.searchParams.set("account", account);
+  url.searchParams.set("chainId", chainId.toString());
+
+  const response = await fetch(url);
+  if (response.ok) return await response.json();
+  throw response.text();
 };
