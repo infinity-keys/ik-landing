@@ -1,12 +1,10 @@
+import { IK_CLAIMS_NAMESPACE } from 'lib/constants'
+import { cleanGqlMarkdown } from 'lib/utils'
 import ReactMarkdown from 'react-markdown'
 
 import { Link } from '@redwoodjs/router'
 
 import Iframe from 'src/components/Iframe/Iframe'
-
-// @TODO: better way to do these paths?
-import { IK_CLAIMS_NAMESPACE } from '../../../../lib/constants'
-import { cleanGqlMarkdown } from '../../../../lib/utils'
 
 type Props = {
   children: string
