@@ -16,8 +16,11 @@ const Routes = () => {
     <Router>
       <Set wrap={SiteLayout}>
         <Route path="/" page={HomePage} prerender name="home" />
-        <Route notfound page={NotFoundPage} prerender />
+        <Route path="/privacy-policy" page={PrivacyPolicyPage} prerender name="privacyPolicy" />
       </Set>
+
+      {/* NotFoundPage can't be in a set */}
+      <Route notfound page={NotFoundPage} prerender />
     </Router>
   )
 }

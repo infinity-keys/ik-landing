@@ -1,4 +1,4 @@
-import { Link } from '@redwoodjs/router'
+import { Link, routes } from '@redwoodjs/router'
 
 import Button from 'src/components/Button/Button'
 import DiscordIcon from 'src/svgs/DiscordIcon'
@@ -47,7 +47,7 @@ const Footer = () => {
         <p className="mt-8 text-center text-base text-white/50">
           &copy; 2022 Infinity Keys. All rights reserved. |{' '}
           <Link
-            to="/privacy-policy"
+            to={routes.privacyPolicy()}
             className="transition hover:text-turquoise"
           >
             Privacy Policy
