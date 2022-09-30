@@ -2768,6 +2768,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@heroicons/react@npm:^2.0.11":
+  version: 2.0.11
+  resolution: "@heroicons/react@npm:2.0.11"
+  peerDependencies:
+    react: ">= 16"
+  checksum: 08de055980fbcdcb9c2509ab751064eec11ec02a40e535d368c4bae0fa28b502d6b0c0eb1237652b213fbe543f5ccca461707a4756c34131ff2232ceb6bb5fe7
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.10.4":
   version: 0.10.5
   resolution: "@humanwhocodes/config-array@npm:0.10.5"
@@ -9402,6 +9411,13 @@ __metadata:
   version: 1.0.4
   resolution: "clone@npm:1.0.4"
   checksum: 2176952b3649293473999a95d7bebfc9dc96410f6cbd3d2595cf12fd401f63a4bf41a7adbfd3ab2ff09ed60cb9870c58c6acdd18b87767366fabfc163700f13b
+  languageName: node
+  linkType: hard
+
+"clsx@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "clsx@npm:1.2.1"
+  checksum: 34dead8bee24f5e96f6e7937d711978380647e936a22e76380290e35486afd8634966ce300fc4b74a32f3762c7d4c0303f442c3e259f4ce02374eb0c82834f27
   languageName: node
   linkType: hard
 
@@ -23811,11 +23827,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
+    "@heroicons/react": ^2.0.11
     "@redwoodjs/forms": ^3.0.3
     "@redwoodjs/router": ^3.0.3
     "@redwoodjs/web": ^3.0.3
     "@tailwindcss/forms": ^0.5.3
     autoprefixer: ^10.4.12
+    clsx: ^1.2.1
     postcss: ^8.4.16
     postcss-loader: ^7.0.1
     prop-types: 15.8.1
