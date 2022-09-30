@@ -8655,6 +8655,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"boring-avatars@npm:^1.7.0":
+  version: 1.7.0
+  resolution: "boring-avatars@npm:1.7.0"
+  checksum: 249fca38f0ff06b8e96040e5acff2edc09eb94768a11717b155632eacdf916e833fc27e8463704ef9ec3502ad5a52a5de46f94b5b9fad86d367e88ae545c109a
+  languageName: node
+  linkType: hard
+
 "boxen@npm:5.1.2, boxen@npm:^5.1.2":
   version: 5.1.2
   resolution: "boxen@npm:5.1.2"
@@ -25028,6 +25035,7 @@ __metadata:
     "@redwoodjs/web": 3.0.2
     "@tailwindcss/forms": ^0.5.3
     autoprefixer: ^10.4.12
+    boring-avatars: ^1.7.0
     cloudinary-build-url: ^0.2.4
     clsx: ^1.2.1
     postcss: ^8.4.16

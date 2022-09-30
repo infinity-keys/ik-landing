@@ -1,0 +1,54 @@
+import Bars4Icon from '@heroicons/react/20/solid/Bars4Icon'
+import Squares2X2Icon from '@heroicons/react/20/solid/Squares2X2Icon'
+import clsx from 'clsx'
+
+import Dropdown from 'src/components/GridDropdown/GridDropdown'
+import { PAGINATION_COUNTS } from 'src/lib/constants'
+import { ThumbnailGridLayoutType } from 'src/lib/types'
+
+export interface GridLayoutButtonsProps {
+  isGrid: boolean
+  thumbnailCount: number
+  urlBase: string
+  setView: (gridLayout: ThumbnailGridLayoutType) => void
+}
+
+const GridLayoutButtons = ({
+  isGrid,
+  thumbnailCount,
+  urlBase,
+  setView,
+}: GridLayoutButtonsProps) => {
+  const [smallestThumbnailCount] = PAGINATION_COUNTS
+
+  return (
+    <div className="mt-8 flex">
+      <button
+        onClick={() => setView(ThumbnailGridLayoutType.List)}
+        aria-label="set list view"
+        className={clsx(
+          'mr-2 rounded-md border bg-white/10 p-2 transition-all duration-200',
+          !isGrid ? 'border-white/20' : 'border-transparent text-gray-400'
+        )}
+      >
+        <Bars4Icon className="h-5 w-5" aria-hidden="true" />
+      </button>
+      <button
+        onClick={() => setView(ThumbnailGridLayoutType.Grid)}
+        aria-label="set grid view"
+        className={clsx(
+          'rounded-md border bg-white/10 p-2 transition-all duration-200 hover:bg-white/20',
+          isGrid ? 'border-white/20' : 'border-transparent text-gray-400'
+        )}
+      >
+        <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
+      </button>
+      <Dropdown
+        urlBase={urlBase}
+        currentCount={thumbnailCount || smallestThumbnailCount}
+      />
+    </div>
+  )
+}
+
+export default GridLayoutButtons
