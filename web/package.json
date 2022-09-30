@@ -16,6 +16,7 @@
     "@formspree/react": "^2.4.0",
     "@headlessui/react": "^1.7.2",
     "@heroicons/react": "^2.0.11",
+    "@rainbow-me/rainbowkit": "^0.7.0",
     "@redwoodjs/forms": "3.0.2",
     "@redwoodjs/router": "3.0.2",
     "@redwoodjs/web": "3.0.2",
@@ -23,11 +24,14 @@
     "boring-avatars": "^1.7.0",
     "cloudinary-build-url": "^0.2.4",
     "clsx": "^1.2.1",
+    "ethers": "^5.7.1",
+    "lodash": "^4.17.21",
     "prop-types": "15.8.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-markdown": "^8.0.3",
-    "use-device-pixel-ratio": "^1.1.0"
+    "use-device-pixel-ratio": "^1.1.0",
+    "wagmi": "^0.6.7"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.12",
