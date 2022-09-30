@@ -16,17 +16,22 @@ model Pack {
   packId String @id @default(cuid())
   name String
   path String
-  nftId Int
+  /// NFT reward lookup
+  rewardNftId String
   listPublicly Boolean @default(true)
-  sortWeight Int
+  /// When this is shown in a list, how should it sort (is Packs grid page)
+  listSortWeight Int @default(0)
   puzzles Puzzle[]
 }
 model Puzzle {
   puzzleId String @id @default(cuid())
   path String
   successMessage String?
+  /// NFT reward lookup
+  rewardNftId String?
   listPublicly Boolean @default(true)
-  sortWeight Int
+  /// When this is shown in a list, how should it sort (ie Puzzles grid page)
+  listSortWeight Int
   steps Step[]
   packs Pack[]
 }
@@ -37,7 +42,16 @@ model Step {
   successMessage String?
   instructions String?
   challenge String?
-  order Int
+  /// When this is shown in a list, how should it sort (ie Steps in a Puzzle)
+  listSortWeight Int @default(0)
   puzzle Puzzle @relation(fields: [puzzleId], references: [puzzleId])
   puzzleId String
+}
+
+model Nft {
+  nftId String @id @default(cuid())
+  tokenId Int
+  contractName String
+  data Json
+  cloudinaryId String
 }
