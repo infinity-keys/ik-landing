@@ -8,25 +8,28 @@ describe("read cookies in cypress", () => {
     cy.visit("/puzzle/notright");
   });
 
-  afterEach(() => {
-    cy.get("@userJwt").then(async (userJwt) => {
-      console.log(userJwt);
-      try {
-        const ikDecoded = decodeJwt(String(userJwt)) as unknown as IkJwt;
-        const userId = ikDecoded.sub;
-        console.log(userId);
-        const gql = await gqlApiSdk();
-        const user = await gql.UserExist({ userId });
-        //user.users_by_pk?.user_id;
-        if (user.users_by_pk?.user_id) {
-          await deleteUser(userJwt.toString());
-          cy.log(`user deleted ${userJwt}`);
-        }
-      } catch (error) {
-        cy.log(`user not deleted ${userJwt}, ${error}`);
-      }
-    });
-  });
+  // Update 9/30/2022: code stub to delete test users, ran into HMAC error,
+  // will work on cleaning up tests users at a later time
+
+  // afterEach(() => {
+  //   cy.get("@userJwt").then(async (userJwt) => {
+  //     console.log(userJwt);
+  //     try {
+  //       const gql = await gqlApiSdk();
+  //       const ikDecoded = decodeJwt(String(userJwt)) as unknown as IkJwt;
+  //       const userId = ikDecoded.sub;
+  //       console.log(userId);
+  //       const user = await gql.UserExist({ userId });
+  //       console.log(user);
+  //       if (user.users_by_pk?.user_id) {
+  //         await deleteUser(userJwt.toString());
+  //         cy.log(`user deleted ${userJwt}`);
+  //       }
+  //     } catch (error) {
+  //       cy.log(`user not deleted ${userJwt}, ${error}`);
+  //     }
+  //   });
+  // });
 
   let userId: string | undefined;
   let puzzlesClaims: string[];
@@ -48,9 +51,6 @@ describe("read cookies in cypress", () => {
 
         expect(userId).to.be.a("string");
         expect(puzzlesClaims).to.be.empty;
-
-        console.log(userId);
-        console.log(puzzlesClaims);
       });
 
     cy.get(".ik-code-input").first().wait(1000).type("gnorw", { delay: 750 });
@@ -64,9 +64,6 @@ describe("read cookies in cypress", () => {
         const ikDecoded = decodeJwt(String(cookie)) as unknown as IkJwt;
         expect(ikDecoded.sub).equals(userId);
         expect(puzzlesClaims).to.be.empty;
-
-        console.log(userId);
-        console.log(puzzlesClaims);
       });
 
     cy.get(".ik-code-input").first().wait(1000).type("wrong", { delay: 750 });
@@ -81,9 +78,6 @@ describe("read cookies in cypress", () => {
         puzzlesClaims = ikDecoded.claims["https://infinitykeys.io"].puzzles;
         expect(ikDecoded.sub).equals(userId);
         expect(puzzlesClaims).to.include("notright");
-
-        console.log(userId);
-        console.log(puzzlesClaims);
       });
   });
 });
