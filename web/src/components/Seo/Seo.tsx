@@ -1,7 +1,7 @@
-import { IK_CLAIMS_NAMESPACE } from 'lib/constants'
-
 import { Head } from '@redwoodjs/web'
 import { MetaTags } from '@redwoodjs/web'
+
+import { IK_CLAIMS_NAMESPACE } from 'src/lib/constants'
 
 interface Props {
   title?: string
@@ -19,30 +19,11 @@ const Seo = ({
   const formattedUrl = new URL(url, 'https://infinitykeys.io')
 
   return (
-    // <Head>
-    //   <title>{title}</title>
-    //   <meta name="description" content={description} />
-    //   <meta name="theme-color" content="#3FCCBB" />
-
-    //   {/* open graph */}
-    //   <meta property="og:type" content="website" />
-    //   <meta property="og:url" content={formattedUrl.toString()} />
-    //   <meta property="og:title" content={title} />
-    //   <meta property="og:description" content={description} />
-    //   <meta property="og:image" content={imageUrl} />
-
-    //   {/* twitter cards */}
-    //   <meta property="twitter:card" content="summary_large_image" />
-    //   <meta property="twitter:url" content={formattedUrl.toString()} />
-    //   <meta property="twitter:title" content={title} />
-    //   <meta property="twitter:description" content={description} />
-    //   <meta property="twitter:image" content={imageUrl} />
-    // </Head>
     <>
       <MetaTags
         title={title}
         description={description}
-        ogUrl=""
+        ogUrl={formattedUrl.toString() as `https://${string}`}
         ogContentUrl={imageUrl}
       />
       <Head>

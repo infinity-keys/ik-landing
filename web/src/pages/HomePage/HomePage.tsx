@@ -9,7 +9,6 @@ import MapIcon from 'src/svgs/MapIcon'
 /*
 @TODO:
   Puzzle
-  Seo/Metatags
   Newsletter Form
   Partner Form
 */
