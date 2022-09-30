@@ -16,7 +16,6 @@ model Pack {
   packId String @id @default(cuid())
   name String
   path String
-  /// NFT reward lookup
   rewardNftId String
   listPublicly Boolean @default(true)
   /// When this is shown in a list, how should it sort (is Packs grid page)
@@ -27,8 +26,7 @@ model Puzzle {
   puzzleId String @id @default(cuid())
   path String
   successMessage String?
-  /// NFT reward lookup
-  rewardNftId String?
+  rewardNft String
   listPublicly Boolean @default(true)
   /// When this is shown in a list, how should it sort (ie Puzzles grid page)
   listSortWeight Int
@@ -44,8 +42,8 @@ model Step {
   challenge String?
   /// When this is shown in a list, how should it sort (ie Steps in a Puzzle)
   listSortWeight Int @default(0)
-  puzzle Puzzle @relation(fields: [puzzleId], references: [puzzleId])
   puzzleId String
+  puzzle Puzzle @relation(fields: [puzzleId], references: [puzzleId])
 }
 
 model Nft {
