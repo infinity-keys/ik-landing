@@ -28,10 +28,10 @@
 //   };
 // }
 
-// // All submission pages need a puzzle id
-// export interface PuzzleInput {
-//   puzzleId: string;
-// }
+// All submission pages need a puzzle id
+export interface PuzzleInput {
+  puzzleId: string
+}
 
 // Thumbnail and Grid Layout
 export enum ThumbnailGridLayoutType {
