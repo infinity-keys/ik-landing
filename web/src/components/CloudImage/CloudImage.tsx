@@ -1,4 +1,4 @@
-import { cloudinaryUrl } from 'lib/images'
+import { cloudinaryUrl } from 'src/lib/images'
 
 interface CloudImageProps {
   id: string
