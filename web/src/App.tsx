@@ -10,6 +10,7 @@ import { publicProvider } from 'wagmi/providers/public'
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
+import CookieConsentBanner from 'src/components/CookieConsentBanner/CookieConsentBanner'
 import { avalancheChain } from 'src/lib/walletConstants'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
@@ -62,6 +63,7 @@ const App = () => (
         <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
           <RedwoodApolloProvider>
             <Routes />
+            <CookieConsentBanner />
           </RedwoodApolloProvider>
         </RedwoodProvider>
       </FatalErrorBoundary>
