@@ -1,3 +1,4 @@
+import Alert from 'src/components/Alert/Alert'
 import Heading from 'src/components/Heading/Heading'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
@@ -7,7 +8,6 @@ import MapIcon from 'src/svgs/MapIcon'
 
 /*
 @TODO:
-  Alert component
   Puzzle
   Seo/Metatags
   Newsletter Form
@@ -15,12 +15,11 @@ import MapIcon from 'src/svgs/MapIcon'
 */
 
 const HomePage = () => {
-  // return (
-  // const SuccessComponent = () => (
-  //   <div className="container my-9 flex justify-center max-w-sm">
-  //     <Alert text="Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels." />
-  //   </div>
-  // );
+  const SuccessComponent = () => (
+    <div className="container my-9 flex max-w-sm justify-center">
+      <Alert text="Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels." />
+    </div>
+  )
 
   return (
     <Wrapper full radialBg={false}>

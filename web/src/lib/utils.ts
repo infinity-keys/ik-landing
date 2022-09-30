@@ -8,7 +8,7 @@ import {
   PUZZLE_LANDING_BASE,
   PUZZLE_SUCCESS_BASE,
   welcome,
-} from './constants'
+} from 'src/lib/constants'
 // import { ikApiUrlBase } from "@lib/fetchers";
 // import { makeUserToken } from "@lib/jwt";
 // import { Thumbnail, ThumbnailPack, ThumbnailPuzzle } from "@lib/types";
