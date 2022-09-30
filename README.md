@@ -126,7 +126,15 @@ The best way to learn Redwood is by going through the comprehensive [tutorial](h
 
 [Install postgres](https://redwoodjs.com/docs/local-postgres-setup).
 
+## On Mac
 ```bash
+
+```
+## On Linux
+```bash
+sudo apt update && sudo apt upgrade && sudo apt install postgresql
+sudo service postgresql start
+createdb $(whoami)
 sudo --login --user=postgres psql
 ```
 
