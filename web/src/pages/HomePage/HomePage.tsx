@@ -1,6 +1,7 @@
 // import Alert from 'src/components/Alert/Alert'
 import Heading from 'src/components/Heading/Heading'
 import Section from 'src/components/Section/Section'
+import Seo from 'src/components/Seo/Seo'
 import Text from 'src/components/Text/Text'
 import Wrapper from 'src/components/Wrapper/Wrapper'
 import MapIcon from 'src/svgs/MapIcon'
@@ -22,7 +23,7 @@ const HomePage = () => {
 
   return (
     <Wrapper full radialBg={false}>
-      {/* <Seo /> */}
+      <Seo />
 
       {/* Top puzzle */}
       <div className="slice--top radial-bg relative z-0 w-full">
