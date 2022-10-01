@@ -24,7 +24,7 @@ import "nprogress/nprogress.css";
 // import { UserProvider } from "@auth0/nextjs-auth0";
 
 // Rainbow Kit Params
-export const IKTheme = loMerge(darkTheme(), {
+const IKTheme = loMerge(darkTheme(), {
   colors: {
     accentColor: "#3FCCBB",
     connectButtonBackground: "#354161",
@@ -56,7 +56,7 @@ const { connectors } = getDefaultWallets({
   chains,
 });
 
-export const wagmiClient = createClient({
+const wagmiClient = createClient({
   autoConnect: true,
   connectors,
   provider,
