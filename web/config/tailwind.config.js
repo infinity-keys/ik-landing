@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-const tailwindforms = require("@tailwindcss/forms");
+const tailwindforms = require('@tailwindcss/forms')
 
 module.exports = {
   content: ['src/**/*.{js,jsx,ts,tsx}'],
