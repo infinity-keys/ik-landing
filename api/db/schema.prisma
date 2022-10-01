@@ -11,8 +11,45 @@ generator client {
 // Define your own datamodels here and run `yarn redwood prisma migrate dev`
 // to create migrations for them and apply to your dev DB.
 // TODO: Please remove the following example:
-model UserExample {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+
+model Pack {
+  packId String @id @default(cuid())
+  name String
+  path String
+  rewardNftId String
+  listPublicly Boolean @default(true)
+  /// When this is shown in a list, how should it sort (is Packs grid page)
+  listSortWeight Int @default(0)
+  puzzles Puzzle[]
+}
+model Puzzle {
+  puzzleId String @id @default(cuid())
+  path String
+  successMessage String?
+  rewardNft String
+  listPublicly Boolean @default(true)
+  /// When this is shown in a list, how should it sort (ie Puzzles grid page)
+  listSortWeight Int
+  steps Step[]
+  packs Pack[]
+}
+model Step {
+  stepId String @id @default(cuid())
+  solution String
+  failMessage String?
+  successMessage String?
+  instructions String?
+  challenge String?
+  /// When this is shown in a list, how should it sort (ie Steps in a Puzzle)
+  listSortWeight Int @default(0)
+  puzzleId String
+  puzzle Puzzle @relation(fields: [puzzleId], references: [puzzleId])
+}
+
+model Nft {
+  nftId String @id @default(cuid())
+  tokenId Int
+  contractName String
+  data Json
+  cloudinaryId String
 }
