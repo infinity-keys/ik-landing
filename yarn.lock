@@ -2354,6 +2354,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@formspree/react@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "@formspree/react@npm:2.4.0"
+  dependencies:
+    "@stripe/react-stripe-js": ^1.7.1
+    "@stripe/stripe-js": ^1.35.0
+  checksum: fac702785c91cb9cae67dc282afd276e94573fe03c652feebbe868fba103d7fb02f399388a5f2a462e6cd5460701b08a3dc59ec203c6c47914ba666872dd2cbf
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.0.1, @gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -5651,6 +5661,26 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: b16099cc4e9e74d5519f75f2b86da68a380d136c2c570dcd0c9eec8a161276d0e49f9223bebd0dd39308626a97815a383e1c8a63c31ac1e3f4cd119dfefe5f9c
+  languageName: node
+  linkType: hard
+
+"@stripe/react-stripe-js@npm:^1.7.1":
+  version: 1.12.0
+  resolution: "@stripe/react-stripe-js@npm:1.12.0"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    "@stripe/stripe-js": ^1.38.1
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 351a60f14c98ec067168333b5918a2724c934ec6479cb2a8915c0655744378fea6481086f79340dde2c139149b3bf22d45855c93c508994a2197785d43b2121e
+  languageName: node
+  linkType: hard
+
+"@stripe/stripe-js@npm:^1.35.0":
+  version: 1.38.1
+  resolution: "@stripe/stripe-js@npm:1.38.1"
+  checksum: 78624ce14b956e0137cc8c8391c750fbd7527a802a7fc8bb3b731e5a0fcee193fac634ac2edf7d4ba64938e3f1caecde8eb2923aa1325be589c92f04c452b08c
   languageName: node
   linkType: hard
 
@@ -24990,6 +25020,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
+    "@formspree/react": ^2.4.0
     "@headlessui/react": ^1.7.2
     "@heroicons/react": ^2.0.11
     "@redwoodjs/forms": ^3.0.3

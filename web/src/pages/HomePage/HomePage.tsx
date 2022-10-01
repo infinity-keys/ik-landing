@@ -1,4 +1,6 @@
-// import Alert from 'src/components/Alert/Alert'
+import Alert from 'src/components/Alert/Alert'
+import EmailNewsletter from 'src/components/EmailNewsletter/EmailNewsletter'
+import EmailPartner from 'src/components/EmailPartner/EmailPartner'
 import Heading from 'src/components/Heading/Heading'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
@@ -9,17 +11,14 @@ import MapIcon from 'src/svgs/MapIcon'
 /*
 @TODO:
   Puzzle
-  Seo/Metatags
-  Newsletter Form
-  Partner Form
 */
 
 const HomePage = () => {
-  // const SuccessComponent = () => (
-  //   <div className="container my-9 flex max-w-sm justify-center">
-  //     <Alert text="Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels." />
-  //   </div>
-  // )
+  const SuccessComponent = () => (
+    <div className="container my-9 flex max-w-sm justify-center">
+      <Alert text="Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels." />
+    </div>
+  )
 
   return (
     <Wrapper full radialBg={false}>
@@ -111,7 +110,7 @@ const HomePage = () => {
               contact you directly.
             </Text>
             <div className="mt-10 flex justify-center sm:mt-12">
-              {/* <PartnerForm /> */}
+              <EmailPartner />
             </div>
           </div>
         </div>
@@ -129,7 +128,7 @@ const HomePage = () => {
               team.
             </Text>
             <div className="mt-10 flex justify-center sm:mt-12">
-              {/* <NewsLetterForm /> */}
+              <EmailNewsletter />
             </div>
           </div>
         </Section>
