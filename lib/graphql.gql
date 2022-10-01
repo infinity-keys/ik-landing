@@ -43,6 +43,7 @@ query PuzzleInfoBySuccess($success: String!) {
     }
     nft {
       tokenId
+      wallet_age_check
       nft_metadatum {
         cloudinary_id
       }
@@ -287,5 +288,11 @@ query NftMetadata($nftId: Int!, $contractName: String!) {
     contract_name
     data
     token_id
+  }
+}
+
+query UserExist($userId: uuid!) {
+  users_by_pk(user_id: $userId) {
+    user_id
   }
 }
