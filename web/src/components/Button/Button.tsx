@@ -4,7 +4,7 @@ import clsx from 'clsx'
 
 import { Link } from '@redwoodjs/router'
 
-interface ButtonProps {
+type ButtonProps = {
   text: string
   to?: string
   textColor?: 'dark' | 'light'
@@ -12,7 +12,7 @@ interface ButtonProps {
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium'
   variant?: 'solid' | 'outline' | 'faded' | 'purple' | 'warn'
-  onClick?: any
+  onClick?: () => void
   disabled?: boolean
   responsive?: boolean
   children?: ReactNode

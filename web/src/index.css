@@ -38,6 +38,10 @@
     src: local(''), url('./fonts/poppins-700.woff2') format('woff2');
   }
 
+  html {
+    @apply bg-blue;
+  }
+
   svg {
     @apply fill-current;
   }
