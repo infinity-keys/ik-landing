@@ -1,6 +1,9 @@
 import { useState } from 'react'
 
-import { useForm, SubmitHandler } from '@redwoodjs/forms'
+import {
+  useForm,
+  // SubmitHandler
+} from '@redwoodjs/forms'
 
 import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
@@ -31,11 +34,14 @@ const WalletEmail = ({
   const {
     register,
     handleSubmit,
-    setError,
+    // setError,
     formState: { errors, isValid, isSubmitSuccessful },
   } = useForm<FormProps>()
 
-  const [walletSigned, setWalletSigned] = useState(false)
+  const [
+    walletSigned,
+    // setWalletSigned
+  ] = useState(false)
 
   // @TODO: use real onSubmit
   const onSubmit = (data) => {
