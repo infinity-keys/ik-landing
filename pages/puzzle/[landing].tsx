@@ -56,21 +56,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
         url={asPath}
       />
 
-      <main className="text-center pt-5">
-        <div className="py-16">
-          <Link href={"/"}>
-            <a>
-              <Image
-                priority={true}
-                src="/logo.svg"
-                alt="Infinity Keys logo"
-                width={100}
-                height={62.72}
-              />
-            </a>
-          </Link>
-        </div>
-
+      <main className="text-center pt-10 md:pt-20">
         <div className="mb-16">
           {instructions && (
             <div className="mb-12 w-full max-w-2xl mx-auto markdown landing-md">
