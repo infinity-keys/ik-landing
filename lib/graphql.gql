@@ -265,6 +265,7 @@ query GetAllPublicPacks($limit: Int = 10, $offset: Int = 0) {
 query GetPuzzlesByPack($packName: String!) {
   puzzles(
     where: { pack_puzzles: { pack: { simple_name: { _eq: $packName } } } }
+    order_by: { sort_weight: asc, simple_name: asc }
   ) {
     simple_name
     landing_route
