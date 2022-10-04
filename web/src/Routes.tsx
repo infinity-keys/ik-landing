@@ -16,6 +16,7 @@ const Routes = () => {
     <Router>
       <Set wrap={SiteLayout}>
         <Route path="/" page={HomePage} prerender name="home" />
+        <Route path="/user" page={UserPage} name="user" />
         <Route path="/privacy-policy" page={PrivacyPolicyPage} prerender name="privacyPolicy" />
       </Set>
 
