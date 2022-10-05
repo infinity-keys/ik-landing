@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 // import { useMachine } from "@xstate/react";
 import { Disclosure } from "@headlessui/react";
+import ChevronUpIcon from "@heroicons/react/20/solid/ChevronUpIcon";
 
 import Wrapper from "@components/wrapper";
 import KeysLink from "@components/keys-link";
@@ -63,16 +64,26 @@ const Dev: NextPage<PuzzlePageProps> = ({
           {instructions && (
             <div className="flex-1 bg-white/5 rounded overflow-hidden">
               <Disclosure>
-                <Disclosure.Button className="p-2 w-full transition hover:bg-turquoise/50">
-                  <Heading visual="s" as="h2">
-                    View Instructions
-                  </Heading>
-                </Disclosure.Button>
-                <Disclosure.Panel className="border-t border-t-white/10 px-2">
-                  <div className="markdown text-left px-4 pb-4 text-white/80">
-                    <Markdown>{instructions}</Markdown>
-                  </div>
-                </Disclosure.Panel>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className="p-2 w-full transition relative hover:bg-turquoise/50 flex items-center justify-center">
+                      <Heading visual="s" as="h2">
+                        Instructions
+                      </Heading>
+
+                      <ChevronUpIcon
+                        className={clsx("transition h-8 w-8 absolute right-2", {
+                          "rotate-180 transform": open,
+                        })}
+                      />
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="border-t border-t-white/10 px-2">
+                      <div className="markdown text-left px-4 pb-4 text-white/80">
+                        <Markdown>{instructions}</Markdown>
+                      </div>
+                    </Disclosure.Panel>
+                  </>
+                )}
               </Disclosure>
             </div>
           )}
@@ -83,17 +94,26 @@ const Dev: NextPage<PuzzlePageProps> = ({
               })}
             >
               <Disclosure>
-                <Disclosure.Button className="p-2 w-full  transition hover:bg-turquoise/50">
-                  <Heading as="h2" visual="s">
-                    View Challenge
-                  </Heading>
-                </Disclosure.Button>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className="p-2 w-full transition relative hover:bg-turquoise/50 flex items-center justify-center">
+                      <Heading visual="s" as="h2">
+                        Challenge
+                      </Heading>
 
-                <Disclosure.Panel className="border-t border-t-white/10 px-2">
-                  <div className="markdown text-left px-4 pb-4 text-white/80">
-                    <Markdown>{challenge}</Markdown>
-                  </div>
-                </Disclosure.Panel>
+                      <ChevronUpIcon
+                        className={clsx("transition h-8 w-8 absolute right-2", {
+                          "rotate-180 transform": open,
+                        })}
+                      />
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="border-t border-t-white/10 px-2">
+                      <div className="markdown text-left px-4 pb-4 text-white/80">
+                        <Markdown>{challenge}</Markdown>
+                      </div>
+                    </Disclosure.Panel>
+                  </>
+                )}
               </Disclosure>
             </div>
           )}
