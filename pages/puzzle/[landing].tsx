@@ -19,6 +19,7 @@ import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
 import { buildUrlString } from "@lib/utils";
 import { cloudinaryUrl } from "@lib/images";
+import clsx from "clsx";
 
 export interface PuzzlePageProps {
   name: string;
@@ -76,7 +77,11 @@ const Dev: NextPage<PuzzlePageProps> = ({
             </div>
           )}
           {challenge && (
-            <div className="flex-1 bg-white/5 mt-4 rounded overflow-hidden">
+            <div
+              className={clsx("flex-1 bg-white/5 rounded overflow-hidden", {
+                "mt-4": instructions,
+              })}
+            >
               <Disclosure>
                 <Disclosure.Button className="p-2 w-full  transition hover:bg-turquoise/50">
                   <Heading as="h2" visual="s">
