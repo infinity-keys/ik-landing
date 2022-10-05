@@ -1,6 +1,6 @@
 import Image from "next/image";
-import sagalogo from "../../svg/partner-logos/sagalogo.png";
+import saga_logo from "../../svg/partner-logos/saga_logo.png";
 const SagaLogo = () => {
-  return <Image src={sagalogo} alt="Saga Logo" width="700px" height="700px" />;
+  return <Image src={saga_logo} alt="Saga Logo" width="700px" height="700px" />;
 };
 export default SagaLogo;

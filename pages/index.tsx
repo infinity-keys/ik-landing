@@ -16,6 +16,8 @@ import LensLogo from "@components/svg/partner-logos/lens_logo-svg";
 import SagaLogo from "@components/svg/partner-logos/saga_logo-png";
 import SanLogo from "@components/svg/partner-logos/san_logo-png";
 import PnLogo from "@components/svg/partner-logos/pn_logo-png";
+import IslandersLogo from "@components/svg/partner-logos/islanders_logo-png";
+import RehashLogo from "@components/svg/partner-logos/rehash_logo-jpeg";
 
 interface PageProps {
   count: number;
@@ -109,6 +111,8 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
             <SagaLogo />
             <SanLogo />
             <PnLogo />
+            <IslandersLogo />
+            <RehashLogo />
           </div>
           <div className="max-w-xl mx-auto">
             <p className="text-turquoise text-lg mb-4">
