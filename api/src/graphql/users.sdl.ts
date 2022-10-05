@@ -2,9 +2,9 @@ export const schema = gql`
   type User {
     id: String!
     createdAt: DateTime!
-    username: String!
-    publicAddress: String!
-    nonce: String
+    username: String
+    publicAddress: String
+    nonce: String!
     email: String
     twitterProfile: String
     discordProfile: String
@@ -17,9 +17,9 @@ export const schema = gql`
   }
 
   input CreateUserInput {
-    username: String!
-    publicAddress: String!
-    nonce: String
+    username: String
+    publicAddress: String
+    nonce: String!
     email: String
     twitterProfile: String
     discordProfile: String
