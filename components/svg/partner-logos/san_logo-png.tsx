@@ -1,6 +1,6 @@
 import Image from "next/image";
 import san_logo from "../../svg/partner-logos/san-logo.png";
 const SanLogo = () => {
-  return <Image src={san_logo} alt="Saga Logo" width="500px" height="500px" />;
+  return <Image src={san_logo} alt="Saga Logo" width="700px" height="700px" />;
 };
 export default SanLogo;

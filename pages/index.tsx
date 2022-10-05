@@ -15,6 +15,7 @@ import Seo from "@components/seo";
 import LensLogo from "@components/svg/partner-logos/lens_logo-svg";
 import SagaLogo from "@components/svg/partner-logos/saga_logo-png";
 import SanLogo from "@components/svg/partner-logos/san_logo-png";
+import PnLogo from "@components/svg/partner-logos/pn_logo-png";
 
 interface PageProps {
   count: number;
@@ -107,6 +108,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
             <LensLogo />
             <SagaLogo />
             <SanLogo />
+            <PnLogo />
           </div>
           <div className="max-w-xl mx-auto">
             <p className="text-turquoise text-lg mb-4">
