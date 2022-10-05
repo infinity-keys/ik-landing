@@ -99,15 +99,15 @@
 
     ol,
     ul {
-      /* @apply pl-5; */
+      @apply pl-5;
     }
 
     ol {
-      /* @apply list-decimal; */
+      @apply list-decimal;
     }
 
     ul {
-      /* @apply list-disc; */
+      @apply list-disc;
     }
 
     a {

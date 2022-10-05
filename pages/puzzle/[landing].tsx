@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 // import { useMachine } from "@xstate/react";
+import { Disclosure } from "@headlessui/react";
 
 import Wrapper from "@components/wrapper";
 import KeysLink from "@components/keys-link";
@@ -56,19 +57,39 @@ const Dev: NextPage<PuzzlePageProps> = ({
         url={asPath}
       />
 
-      <main className="text-center pt-10 md:pt-20">
-        <div className="mb-16">
+      <main className="text-center pt-10 md:pt-20 w-full">
+        <div className="max-w-prose mx-auto bg-black/10 p-4 mb-12 rounded-md">
           {instructions && (
-            <div className="mb-12 w-full max-w-2xl mx-auto markdown landing-md">
-              <Heading as="h2">Instructions</Heading>
-              <Markdown>{instructions}</Markdown>
+            <div className="flex-1 bg-white/5 rounded overflow-hidden">
+              <Disclosure>
+                <Disclosure.Button className="p-2 w-full transition hover:bg-turquoise/50">
+                  <Heading visual="s" as="h2">
+                    View Instructions
+                  </Heading>
+                </Disclosure.Button>
+                <Disclosure.Panel className="border-t border-t-white/10 px-2">
+                  <div className="markdown landing-md text-left px-4 pb-4 text-white/80">
+                    <Markdown>{instructions}</Markdown>
+                  </div>
+                </Disclosure.Panel>
+              </Disclosure>
             </div>
           )}
-
           {challenge && (
-            <div className=" w-full max-w-2xl mx-auto markdown landing-md">
-              <Heading as="h2">Challenge</Heading>
-              <Markdown>{challenge}</Markdown>
+            <div className="flex-1 bg-white/5 mt-4 rounded overflow-hidden">
+              <Disclosure>
+                <Disclosure.Button className="p-2 w-full  transition hover:bg-turquoise/50">
+                  <Heading as="h2" visual="s">
+                    View Challenge
+                  </Heading>
+                </Disclosure.Button>
+
+                <Disclosure.Panel className="border-t border-t-white/10 px-2">
+                  <div className="markdown landing-md text-left px-4 pb-4 text-white/80">
+                    <Markdown>{challenge}</Markdown>
+                  </div>
+                </Disclosure.Panel>
+              </Disclosure>
             </div>
           )}
         </div>
