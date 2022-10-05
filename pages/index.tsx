@@ -12,6 +12,7 @@ import Section from "@components/section";
 import Text from "@components/text";
 import Heading from "@components/heading";
 import Seo from "@components/seo";
+import LensLogo from "@components/svg/partner-logos/lens_logo-svg";
 
 interface PageProps {
   count: number;
@@ -100,7 +101,8 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       <Section id="collab">
         <div className="items-center md:grid md:grid-cols-2 md:grid-flow-col-dense md:gap-24">
           <div className="mb-16 flex justify-center">
-            <Map />
+            {/* <Map /> */}
+            <LensLogo />
           </div>
           <div className="max-w-xl mx-auto">
             <p className="text-turquoise text-lg mb-4">
