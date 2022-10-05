@@ -61,6 +61,20 @@ const Dev: NextPage<PuzzlePageProps> = ({
 
       <main className="text-center pt-10 md:pt-20 w-full">
         <div className="max-w-prose mx-auto bg-black/10 p-4 mb-12 rounded-md">
+          {challenge && (
+            <div
+              className={clsx("flex-1 rounded overflow-hidden", {
+                "mb-4": instructions,
+              })}
+            >
+              <div className="px-2">
+                <div className="markdown text-left px-4 pb-4 text-white/80">
+                  <Markdown>{challenge}</Markdown>
+                </div>
+              </div>
+            </div>
+          )}
+
           {instructions && (
             <div className="flex-1 bg-white/5 rounded overflow-hidden">
               <Disclosure>
@@ -87,7 +101,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
               </Disclosure>
             </div>
           )}
-          {challenge && (
+          {/* {challenge && (
             <div
               className={clsx("flex-1 bg-white/5 rounded overflow-hidden", {
                 "mt-4": instructions,
@@ -116,7 +130,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
                 )}
               </Disclosure>
             </div>
-          )}
+          )} */}
         </div>
 
         <Puzzle
