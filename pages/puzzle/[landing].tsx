@@ -68,7 +68,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
                   </Heading>
                 </Disclosure.Button>
                 <Disclosure.Panel className="border-t border-t-white/10 px-2">
-                  <div className="markdown landing-md text-left px-4 pb-4 text-white/80">
+                  <div className="markdown text-left px-4 pb-4 text-white/80">
                     <Markdown>{instructions}</Markdown>
                   </div>
                 </Disclosure.Panel>
@@ -85,7 +85,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
                 </Disclosure.Button>
 
                 <Disclosure.Panel className="border-t border-t-white/10 px-2">
-                  <div className="markdown landing-md text-left px-4 pb-4 text-white/80">
+                  <div className="markdown text-left px-4 pb-4 text-white/80">
                     <Markdown>{challenge}</Markdown>
                   </div>
                 </Disclosure.Panel>

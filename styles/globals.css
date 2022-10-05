@@ -94,7 +94,7 @@
     p,
     li,
     a {
-      @apply text-lg;
+      @apply text-base md:text-lg;
     }
 
     ol,
@@ -112,13 +112,6 @@
 
     a {
       @apply transition text-turquoise hover:text-turquoiseDark;
-    }
-  }
-
-  /* TODO: Remove when we switch to left-aligned puzzle markdown */
-  .landing-md {
-    p > img {
-      @apply mx-auto;
     }
   }
 }
