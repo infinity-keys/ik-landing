@@ -6,7 +6,7 @@ const LensLogo = () => (
     xmlnsXlink="http://www.w3.org/1999/xlink"
     x="0px"
     y="0px"
-    viewBox="0 0 1000 1000"
+    viewBox="0 0 381.55 486.4"
     xmlSpace="preserve"
   >
     <g
