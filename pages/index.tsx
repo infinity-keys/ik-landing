@@ -106,13 +106,14 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       <Section id="collab">
         <div className="items-center md:grid md:grid-cols-2 md:grid-flow-col-dense md:gap-24">
           <div className="mb-16 flex justify-center">
-            <h1>Partners</h1>
-            <LensLogo />
-            <SagaLogo />
-            <SanLogo />
-            <PnLogo />
-            <IslandersLogo />
-            <RehashLogo />
+            <div className="items-center grid grid-cols-3 gap-6 max-w-sm">
+              <LensLogo />
+              <SagaLogo />
+              <SanLogo />
+              <PnLogo />
+              <IslandersLogo />
+              <RehashLogo />
+            </div>
           </div>
           <div className="max-w-xl mx-auto">
             <p className="text-turquoise text-lg mb-4">
