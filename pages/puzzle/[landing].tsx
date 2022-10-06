@@ -48,7 +48,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
   const { asPath } = useRouter();
 
   return (
-    <Wrapper>
+    <Wrapper full>
       <Seo
         title={`${name} | IK Puzzle`}
         description={`Can you unlock the ${name} puzzle?`}
@@ -56,7 +56,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
         url={asPath}
       />
 
-      <main className="text-center pt-10 md:pt-20">
+      <main className="text-center pt-10 md:pt-20 px-4">
         <div className="mb-16">
           {instructions && (
             <div className="mb-12 w-full max-w-2xl mx-auto markdown landing-md">
@@ -82,7 +82,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
       </main>
 
       <KeysLink />
-      <div className="mb-9">
+      <div className="mb-9 px-4">
         <TwitterShare
           tweetBody={`Can you unlock the ${name} puzzle? @InfinityKeys\n\n${buildUrlString(
             asPath
