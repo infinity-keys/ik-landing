@@ -31,13 +31,14 @@ export const CONTRACT_ADDRESS_OPTIMISM =
   "0x54b743D6055e3BBBF13eb2C748A3783516156e5B";
 export const OPTIMISM_MARKETPLACE_LINK = `https://quixotic.io/asset/${CONTRACT_ADDRESS_OPTIMISM}/`;
 
-// RINKEBY PARAMS
-export const RINKEBY_CHAIN_ID = 4;
-export const CONTRACT_ADDRESS_RINKEBY =
-  "0x831684656038388D9361FfAacec6763003033eC4";
-export const RINKEBYSCAN_TRACKER = "https://rinkeby.etherscan.io";
-export const RINKEBY_RPC = `https://rinkeby.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d`;
-export const RINKEBY_MARKETPLACE_LINK = `https://testnets.opensea.io/assets/rinkeby/${CONTRACT_ADDRESS_RINKEBY}/`;
+// REPLACE WITH GOERLI PARAMS
+// // RINKEBY PARAMS
+// export const RINKEBY_CHAIN_ID = 4;
+// export const CONTRACT_ADDRESS_RINKEBY =
+//   "0x831684656038388D9361FfAacec6763003033eC4";
+// export const RINKEBYSCAN_TRACKER = "https://rinkeby.etherscan.io";
+// export const RINKEBY_RPC = `https://rinkeby.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d`;
+// export const RINKEBY_MARKETPLACE_LINK = `https://testnets.opensea.io/assets/rinkeby/${CONTRACT_ADDRESS_RINKEBY}/`;
 
 //COMMENT RINKEBY HERE FOR PROD
 export const chainIds = [
@@ -45,7 +46,6 @@ export const chainIds = [
   POLYGON_CHAIN_ID,
   AVAX_CHAIN_ID,
   OPTIMISM_CHAIN_ID,
-  RINKEBY_CHAIN_ID,
 ];
 
 export const contractAddressLookup: {
@@ -55,7 +55,6 @@ export const contractAddressLookup: {
   [POLYGON_CHAIN_ID]: CONTRACT_ADDRESS_POLYGON,
   [AVAX_CHAIN_ID]: CONTRACT_ADDRESS_AVAX,
   [OPTIMISM_CHAIN_ID]: CONTRACT_ADDRESS_OPTIMISM,
-  [RINKEBY_CHAIN_ID]: CONTRACT_ADDRESS_RINKEBY,
 };
 
 export const chainRPCLookup: {
@@ -95,10 +94,6 @@ export const contractLookup: {
     CONTRACT_ADDRESS_OPTIMISM,
     new ethers.providers.JsonRpcProvider(OPTIMISM_RPC)
   ),
-  [RINKEBY_CHAIN_ID]: IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_RINKEBY,
-    new ethers.providers.JsonRpcProvider(RINKEBY_RPC)
-  ),
 };
 
 export const marketplaceLookup: {
@@ -108,7 +103,6 @@ export const marketplaceLookup: {
   [POLYGON_CHAIN_ID]: POLYGON_MARKETPLACE_LINK,
   [AVAX_CHAIN_ID]: AVAX_MARKETPLACE_LINK,
   [OPTIMISM_CHAIN_ID]: OPTIMISM_MARKETPLACE_LINK,
-  [RINKEBY_CHAIN_ID]: RINKEBY_MARKETPLACE_LINK,
 };
 
 // RAINBOW KIT PARAMS
