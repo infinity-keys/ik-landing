@@ -126,12 +126,22 @@
 
   .animate-flicker {
     opacity: 0;
-    animation: flicker 2s forwards;
+    animation: flicker 2s forwards, pulse 1s alternate-reverse infinite;
   }
 
   .animate-fade {
     opacity: 0;
-    animation: fade 1.5s forwards;
+    animation: fade 1.5s forwards, pulse 1s alternate-reverse infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      text-shadow: 0 0 0px #3fccbb;
+    }
+
+    100% {
+      text-shadow: 0 0 10px #3fccbb;
+    }
   }
 
   @keyframes flicker {

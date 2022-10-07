@@ -45,8 +45,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
         <Section largePadding={false}>
           <div className="text-center mb-8 md:mb-12">
             <Heading as="h1" visual="l">
-              This is an Infinity Keys h
-              <span className="font-bold text-turquoise">un</span>
+              This is an Infinity Keys h<Flicker once>un</Flicker>
               t.
             </Heading>
           </div>
@@ -57,11 +56,6 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
             SuccessComponent={SuccessComponent}
           />
           <div className="max-w-md sm:max-w-2xl mx-auto text-white text-center mt-10 sm:text-xl lg:text-lg xl:text-xl flicker-container">
-            <p className="text-[1.35rem] md:text-[2.5rem] leading-normal">
-              This is an Infinity Keys h
-              <span className="font-bold text-turquoise">un</span>
-              t.
-            </p>
             <p className="md:text-[1.50rem] leading-normal">
               Find the c<Flicker delay=".8s">l</Flicker>
               ues and enter the key.
