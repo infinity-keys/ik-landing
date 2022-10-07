@@ -4,14 +4,15 @@ import { gqlApiSdk } from "@lib/server";
 
 import Wrapper from "@components/wrapper";
 import Puzzle from "@components/puzzle";
-import Map from "@components/svg/map-svg";
 import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
-import Alert from "@components/alert";
 import Section from "@components/section";
 import Text from "@components/text";
 import Heading from "@components/heading";
 import Seo from "@components/seo";
+import Button from "@components/button";
+
+import { PACK_COLLECTION_BASE } from "@lib/constants";
 import LensLogo from "@components/svg/partner-logos/lens_logo-svg";
 import SagaLogo from "@components/svg/partner-logos/saga_logo-png";
 import SanLogo from "@components/svg/partner-logos/san_logo-png";
@@ -28,9 +29,9 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
   const SuccessComponent = () => (
     <div
       data-cy="success_message_check"
-      className="container my-9 flex justify-center max-w-sm"
+      className="container my-16 flex justify-center max-w-[12rem]"
     >
-      <Alert text="Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels." />
+      <Button text="Play More" fullWidth href={`/${PACK_COLLECTION_BASE}`} />
     </div>
   );
 
@@ -39,19 +40,22 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       <Seo />
 
       {/* Top puzzle */}
-      <div className="slice--top w-full radial-bg relative z-0">
+      <div className="slice--top w-full radial-bg relative z-0 min-h-[calc(100vh-80px)] flex items-center">
         <Section largePadding={false}>
+          <div className="text-center mb-8 md:mb-12">
+            <Heading as="h1" visual="l">
+              This is an Infinity Keys h
+              <span className="font-bold text-turquoise">un</span>
+              t.
+            </Heading>
+          </div>
+
           <Puzzle
             puzzleId={puzzleId}
             count={count}
             SuccessComponent={SuccessComponent}
           />
-          <div className="max-w-md sm:max-w-2xl mx-auto text-white text-left mt-5 sm:text-xl lg:text-lg xl:text-xl">
-            <p className="text-[1.35rem] md:text-[2.5rem] leading-normal">
-              This is an Infinity Keys h
-              <span className="font-bold text-turquoise">un</span>
-              t.
-            </p>
+          <div className="max-w-md sm:max-w-2xl mx-auto text-white text-center mt-10 sm:text-xl lg:text-lg xl:text-xl">
             <p className="md:text-[1.50rem] leading-normal">
               Find the c<span className="font-bold text-turquoise">l</span>
               ues and enter the key.
