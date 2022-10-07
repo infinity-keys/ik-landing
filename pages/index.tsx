@@ -12,6 +12,12 @@ import Section from "@components/section";
 import Text from "@components/text";
 import Heading from "@components/heading";
 import Seo from "@components/seo";
+import LensLogo from "@components/svg/partner-logos/lens_logo-svg";
+import SagaLogo from "@components/svg/partner-logos/saga_logo-png";
+import SanLogo from "@components/svg/partner-logos/san_logo-png";
+import PnLogo from "@components/svg/partner-logos/pn_logo-png";
+import IslandersLogo from "@components/svg/partner-logos/islanders_logo-png";
+import RehashLogo from "@components/svg/partner-logos/rehash_logo-jpeg";
 
 interface PageProps {
   count: number;
@@ -99,15 +105,23 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       {/* Collab */}
       <Section id="collab">
         <div className="items-center md:grid md:grid-cols-2 md:grid-flow-col-dense md:gap-24">
-          <div className="mb-16 flex justify-center">
-            <Map />
+          <div className="max-w-sm mx-auto">
+            <Heading visual="m">Partners</Heading>
+            <div className="pt-4 items-center grid grid-cols-3 gap-6 ">
+              <LensLogo />
+              <SagaLogo />
+              <SanLogo />
+              <PnLogo />
+              <IslandersLogo />
+              <RehashLogo />
+            </div>
           </div>
           <div className="max-w-xl mx-auto">
             <p className="text-turquoise text-lg mb-4">
               Engagement &gt; Impressions.
             </p>
 
-            <Heading>Build an Infinity Keys Hunt for your Project</Heading>
+            <Heading>Create Infinity Keys Challenges for your Project</Heading>
             <Text>
               We work with projects to build new types of digital keys for
               engaging hunts and puzzles.
