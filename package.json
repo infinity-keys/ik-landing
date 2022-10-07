@@ -27,7 +27,7 @@
     "@graphql-codegen/typescript-graphql-request": "^4.5.5",
     "@graphql-codegen/typescript-operations": "^2.5.3",
     "@headlessui/react": "^1.7.3",
-    "@heroicons/react": "^2.0.11",
+    "@heroicons/react": "^2.0.12",
     "@rainbow-me/rainbowkit": "^0.6.2",
     "@sendgrid/mail": "^7.7.0",
     "@tailwindcss/forms": "^0.5",
