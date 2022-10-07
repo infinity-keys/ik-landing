@@ -123,66 +123,6 @@
       @apply mx-auto;
     }
   }
-
-  .animate-flicker {
-    opacity: 0;
-    animation: flicker 2s forwards, pulse 1.2s alternate-reverse infinite;
-  }
-
-  .animate-fade {
-    opacity: 0;
-    animation: fade 1.5s forwards, pulse 1.2s alternate-reverse infinite;
-  }
-
-  @keyframes pulse {
-    0% {
-      text-shadow: 0 0 0px #3fccbb;
-    }
-
-    100% {
-      text-shadow: 0 0 10px #3fccbb;
-    }
-  }
-
-  @keyframes flicker {
-    0%,
-    20% {
-      opacity: 0;
-      /* text-shadow: 0 0 0px #3fccbb; */
-    }
-
-    10% {
-      opacity: 0.8;
-      /* text-shadow: 0 0 2px #3fccbb; */
-    }
-
-    35% {
-      opacity: 1;
-      /* text-shadow: 0 0 2px #3fccbb; */
-    }
-
-    100% {
-      opacity: 1;
-      /* text-shadow: 0 0 6px #3fccbb; */
-    }
-  }
-
-  @keyframes fade {
-    0% {
-      opacity: 0;
-      /* text-shadow: 0 0 0px #3fccbb; */
-    }
-
-    40% {
-      opacity: 1;
-      /* text-shadow: 0 0 2px #3fccbb; */
-    }
-
-    100% {
-      opacity: 1;
-      /* text-shadow: 0 0 6px #3fccbb; */
-    }
-  }
 }
 
 .next-image-block span {
