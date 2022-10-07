@@ -105,7 +105,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       {/* Collab */}
       <Section id="collab">
         <div className="items-center md:grid md:grid-cols-2 md:grid-flow-col-dense md:gap-24">
-          <div className="mb-16 max-w-sm mx-auto">
+          <div className="max-w-sm mx-auto">
             <Heading visual="m">Partners</Heading>
             <div className="pt-4 items-center grid grid-cols-3 gap-6 ">
               <LensLogo />
@@ -121,7 +121,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
               Engagement &gt; Impressions.
             </p>
 
-            <Heading>Build an Infinity Keys Hunt for your Project</Heading>
+            <Heading>Create Infinity Keys Challenges for your Project</Heading>
             <Text>
               We work with projects to build new types of digital keys for
               engaging hunts and puzzles.
