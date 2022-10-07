@@ -106,14 +106,26 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       <Section id="collab">
         <div className="items-center md:grid md:grid-cols-2 md:grid-flow-col-dense md:gap-24">
           <div className="max-w-sm mx-auto">
-            <Heading visual="m">Partners</Heading>
+            <Heading visual="m">Collabs</Heading>
             <div className="pt-4 items-center grid grid-cols-3 gap-6 ">
-              <LensLogo />
-              <SagaLogo />
-              <SanLogo />
-              <PnLogo />
-              <IslandersLogo />
-              <RehashLogo />
+              <a href="https://www.infinitykeys.io/pack/lens-bogota-pack">
+                <LensLogo />
+              </a>
+              <a href="https://www.infinitykeys.io/pack/saga-wormhole-pack">
+                <SagaLogo />
+              </a>
+              <a href="https://www.infinitykeys.io/pack/san-creator-pack">
+                <SanLogo />
+              </a>
+              <a href="https://www.infinitykeys.io/pack/p0-pack">
+                <PnLogo />
+              </a>
+              <a href="https://www.infinitykeys.io/puzzle/finkel-islanders">
+                <IslandersLogo />
+              </a>
+              <a href="https://www.infinitykeys.io/puzzle/second-season-rehash">
+                <RehashLogo />
+              </a>
             </div>
           </div>
           <div className="max-w-xl mx-auto">
