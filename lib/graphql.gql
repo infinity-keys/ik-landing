@@ -34,6 +34,7 @@ query PuzzleInfoBySuccess($success: String!) {
     simple_name
     puzzle_id
     success_message
+    landing_route
     pack_puzzles {
       pack {
         pack_name
