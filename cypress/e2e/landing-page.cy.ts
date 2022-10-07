@@ -20,9 +20,7 @@ describe("infinitykeys.io", () => {
   it("correct input shows success message on landing page", () => {
     cy.get(".ik-code-input").first().wait(1000).type("unlock", { delay: 250 });
     cy.get('[data-cy="submit"]').contains("Submit").click();
-    cy.get('[data-cy="success_message_check"]').contains(
-      "Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels"
-    );
+    cy.get('[data-cy="success_message_check"]').contains("Play More");
   });
 
   it("fills out business contact and submits scuccessfully", () => {
