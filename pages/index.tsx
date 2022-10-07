@@ -12,6 +12,7 @@ import Section from "@components/section";
 import Text from "@components/text";
 import Heading from "@components/heading";
 import Seo from "@components/seo";
+import Flicker from "@components/flicker";
 
 interface PageProps {
   count: number;
@@ -40,20 +41,22 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
             count={count}
             SuccessComponent={SuccessComponent}
           />
-          <div className="max-w-md sm:max-w-2xl mx-auto text-white text-left mt-5 sm:text-xl lg:text-lg xl:text-xl">
+          <div className="max-w-md sm:max-w-2xl mx-auto text-white text-left mt-5 sm:text-xl lg:text-lg xl:text-xl flicker-container">
             <p className="text-[1.35rem] md:text-[2.5rem] leading-normal">
               This is an Infinity Keys h
-              <span className="font-bold text-turquoise">un</span>
+              <Flicker delay=".4s" once>
+                un
+              </Flicker>
               t.
             </p>
             <p className="md:text-[1.50rem] leading-normal">
-              Find the c<span className="font-bold text-turquoise">l</span>
+              Find the c<Flicker delay=".8s">l</Flicker>
               ues and enter the key.
             </p>
             <p className="md:text-[1.50rem] leading-normal">
-              Hunt f<span className="font-bold text-turquoise">o</span>r{" "}
-              <span className="font-bold text-turquoise">c</span>
-              lues and <span className="font-bold text-turquoise">k</span>
+              Hunt f<Flicker delay="1s">o</Flicker>r{" "}
+              <Flicker delay="1.2s">c</Flicker>
+              lues and <Flicker delay="1.4s">k</Flicker>
               eys anywhere.
             </p>
             <p className="md:text-[1.50rem] leading-normal">
