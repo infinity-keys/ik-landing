@@ -4,14 +4,21 @@ import { gqlApiSdk } from "@lib/server";
 
 import Wrapper from "@components/wrapper";
 import Puzzle from "@components/puzzle";
-import Map from "@components/svg/map-svg";
 import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
-import Alert from "@components/alert";
 import Section from "@components/section";
 import Text from "@components/text";
 import Heading from "@components/heading";
 import Seo from "@components/seo";
+import Button from "@components/button";
+
+import { PACK_COLLECTION_BASE } from "@lib/constants";
+import LensLogo from "@components/svg/partner-logos/lens_logo-svg";
+import SagaLogo from "@components/svg/partner-logos/saga_logo-png";
+import SanLogo from "@components/svg/partner-logos/san_logo-png";
+import PnLogo from "@components/svg/partner-logos/pn_logo-png";
+import IslandersLogo from "@components/svg/partner-logos/islanders_logo-png";
+import RehashLogo from "@components/svg/partner-logos/rehash_logo-jpeg";
 import Flicker from "@components/flicker";
 
 interface PageProps {
@@ -23,9 +30,9 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
   const SuccessComponent = () => (
     <div
       data-cy="success_message_check"
-      className="container my-9 flex justify-center max-w-sm"
+      className="container my-16 flex justify-center max-w-[12rem]"
     >
-      <Alert text="Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels." />
+      <Button text="Play More" fullWidth href={`/${PACK_COLLECTION_BASE}`} />
     </div>
   );
 
@@ -34,19 +41,25 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       <Seo />
 
       {/* Top puzzle */}
-      <div className="slice--top w-full radial-bg relative z-0">
+      <div className="slice--top w-full radial-bg relative z-0 min-h-[calc(100vh-80px)] flex items-center">
         <Section largePadding={false}>
+          <div className="text-center mb-8 md:mb-12">
+            <Heading as="h1" visual="l">
+              This is an Infinity Keys h
+              <span className="font-bold text-turquoise">un</span>
+              t.
+            </Heading>
+          </div>
+
           <Puzzle
             puzzleId={puzzleId}
             count={count}
             SuccessComponent={SuccessComponent}
           />
-          <div className="max-w-md sm:max-w-2xl mx-auto text-white text-left mt-5 sm:text-xl lg:text-lg xl:text-xl flicker-container">
+          <div className="max-w-md sm:max-w-2xl mx-auto text-white text-center mt-10 sm:text-xl lg:text-lg xl:text-xl flicker-container">
             <p className="text-[1.35rem] md:text-[2.5rem] leading-normal">
               This is an Infinity Keys h
-              <Flicker delay=".4s" once>
-                un
-              </Flicker>
+              <span className="font-bold text-turquoise">un</span>
               t.
             </p>
             <p className="md:text-[1.50rem] leading-normal">
@@ -102,15 +115,23 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       {/* Collab */}
       <Section id="collab">
         <div className="items-center md:grid md:grid-cols-2 md:grid-flow-col-dense md:gap-24">
-          <div className="mb-16 flex justify-center">
-            <Map />
+          <div className="max-w-sm mx-auto">
+            <Heading visual="m">Partners</Heading>
+            <div className="pt-4 items-center grid grid-cols-3 gap-6 ">
+              <LensLogo />
+              <SagaLogo />
+              <SanLogo />
+              <PnLogo />
+              <IslandersLogo />
+              <RehashLogo />
+            </div>
           </div>
           <div className="max-w-xl mx-auto">
             <p className="text-turquoise text-lg mb-4">
               Engagement &gt; Impressions.
             </p>
 
-            <Heading>Build an Infinity Keys Hunt for your Project</Heading>
+            <Heading>Create Infinity Keys Challenges for your Project</Heading>
             <Text>
               We work with projects to build new types of digital keys for
               engaging hunts and puzzles.
