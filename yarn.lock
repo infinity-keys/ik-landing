@@ -40,10 +40,10 @@
   dependencies:
     node-fetch "^2.6.1"
 
-"@auth0/nextjs-auth0@^1.9.1":
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/@auth0/nextjs-auth0/-/nextjs-auth0-1.9.1.tgz#e7a0e8688b26cee490ed7599fba3b2550b7b698b"
-  integrity sha512-GvX1Ke9YzZRogIvSZhRRuZFwvw5DNuQv233VBUHrUwNi+z/XFE6ZRC0y22NgLsz4xsVdG9WicEwqoFT4rNL/Bw==
+"@auth0/nextjs-auth0@^1.9.2":
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/@auth0/nextjs-auth0/-/nextjs-auth0-1.9.2.tgz#e308f136fd270b16a73007815b79e755734fe639"
+  integrity sha512-QsO6jtDBms0mAb2B1GSqQVEeoj5EIIvUtbWs02O8Tp6FtMXDIvfuJv/EFbPkP/d86e9T/399uiiaUbpgo1g0jg==
   dependencies:
     base64url "^3.0.1"
     cookie "^0.5.0"
@@ -1522,10 +1522,10 @@
   resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.7.3.tgz#853c598ff47b37cdd192c5cbee890d9b610c3ec0"
   integrity sha512-LGp06SrGv7BMaIQlTs8s2G06moqkI0cb0b8stgq7KZ3xcHdH3qMP+cRyV7qe5x4XEW/IGY48BW4fLesD6NQLng==
 
-"@heroicons/react@^2.0.11":
-  version "2.0.11"
-  resolved "https://registry.yarnpkg.com/@heroicons/react/-/react-2.0.11.tgz#2c6cf4c66d81142ec87c102502407d8c353558bb"
-  integrity sha512-bASjOgSSaYj8HqXWsOqaBiB6ZLalE/g90WYGgZ5lPm4KCCG7wPXntY4kzHf5NrLh6UBAcnPwvbiw1Ne9GYfJtw==
+"@heroicons/react@^2.0.12":
+  version "2.0.12"
+  resolved "https://registry.yarnpkg.com/@heroicons/react/-/react-2.0.12.tgz#7e5a16c82512f89a30266dd36f8b8465b3e3e216"
+  integrity sha512-FZxKh3i9aKIDxyALTgIpSF2t6V6/eZfF5mRu41QlwkX3Oxzecdm1u6dpft6PQGxIBwO7TKYWaMAYYL8mp/EaOg==
 
 "@humanwhocodes/config-array@^0.10.5":
   version "0.10.5"
