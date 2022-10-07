@@ -7,11 +7,13 @@ import Puzzle from "@components/puzzle";
 import Map from "@components/svg/map-svg";
 import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
-import Alert from "@components/alert";
 import Section from "@components/section";
 import Text from "@components/text";
 import Heading from "@components/heading";
 import Seo from "@components/seo";
+import Button from "@components/button";
+
+import { PACK_COLLECTION_BASE } from "@lib/constants";
 
 interface PageProps {
   count: number;
@@ -22,9 +24,9 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
   const SuccessComponent = () => (
     <div
       data-cy="success_message_check"
-      className="container my-9 flex justify-center max-w-sm"
+      className="container mt-9 mb-16 flex justify-center max-w-xs"
     >
-      <Alert text="Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels." />
+      <Button text="Play More" fullWidth href={`/${PACK_COLLECTION_BASE}`} />
     </div>
   );
 
