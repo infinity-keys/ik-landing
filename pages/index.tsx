@@ -12,6 +12,7 @@ import Section from "@components/section";
 import Text from "@components/text";
 import Heading from "@components/heading";
 import Seo from "@components/seo";
+import Markdown from "@components/markdown";
 
 interface PageProps {
   count: number;
@@ -24,7 +25,12 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       data-cy="success_message_check"
       className="container my-9 flex justify-center max-w-sm"
     >
-      <Alert text="Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels." />
+      <Markdown>
+        Now you`&apos;`re playing Infinity Keys! Solve more
+        [Puzzles](https://www.infinitykeys.io/puzzles) and collect
+        [Packs](https://www.infinitykeys.io/packs). Find more clues on IK social
+        channels.
+      </Markdown>
     </div>
   );
 
