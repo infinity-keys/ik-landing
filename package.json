@@ -18,7 +18,7 @@
     "hasura:console": "cd hasura && hasura console --envfile ../.env.local --no-browser"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^1.9.1",
+    "@auth0/nextjs-auth0": "^1.9.2",
     "@coinbase/wallet-sdk": "^3.5.3",
     "@formspree/react": "^2.4.0",
     "@graphql-codegen/cli": "^2.13.5",
