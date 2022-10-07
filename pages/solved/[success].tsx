@@ -7,12 +7,20 @@ import WalletEmail from "@components/wallet-email";
 import Link from "next/link";
 import Markdown from "@components/markdown";
 import Seo from "@components/seo";
+import ButtonSocialTwitter from "@components/button-social-twitter";
+import Button from "@components/button";
+import { PACK_LANDING_BASE, PUZZLE_COLLECTION_BASE } from "@lib/constants";
 
 interface SuccessPageProps {
   name: string;
   puzzleId: string;
   successMessage?: string;
   nftId?: string;
+  pack: {
+    packRoute?: string;
+    parentPackName?: string;
+    buttonText?: string;
+  };
 }
 interface SuccessPageParams {
   params: { success: string };
@@ -23,7 +31,9 @@ const Dev: NextPage<SuccessPageProps> = ({
   name,
   successMessage,
   nftId,
+  pack,
 }) => {
+  const { packRoute, parentPackName, buttonText } = pack;
   return (
     <Wrapper>
       <Seo title="Congrats!" />
@@ -50,6 +60,29 @@ const Dev: NextPage<SuccessPageProps> = ({
             nftId={nftId}
             name={name}
           />
+
+          <div className="pt-12 w-full">
+            <Button
+              href={
+                parentPackName
+                  ? `/${PACK_LANDING_BASE}/${packRoute}`
+                  : `/${PUZZLE_COLLECTION_BASE}`
+              }
+              text={
+                parentPackName
+                  ? buttonText || `Go to ${parentPackName}`
+                  : "Solve More Puzzles"
+              }
+              variant="outline"
+              fullWidth
+            />
+          </div>
+
+          <div className="py-6 flex">
+            <div className="w-full flex items-center justify-center">
+              <ButtonSocialTwitter />
+            </div>
+          </div>
         </main>
       </div>
     </Wrapper>
@@ -63,7 +96,10 @@ export async function getStaticProps({
 }: SuccessPageParams): Promise<{ props: SuccessPageProps }> {
   const gql = await gqlApiSdk();
   const { puzzles } = await gql.PuzzleInfoBySuccess({ success });
-  const [{ puzzle_id, simple_name, success_message, nft }] = puzzles;
+  const [{ puzzle_id, simple_name, success_message, nft, pack_puzzles }] =
+    puzzles;
+
+  const parentPack = pack_puzzles[0]?.pack || null;
 
   return {
     props: {
@@ -71,6 +107,11 @@ export async function getStaticProps({
       puzzleId: puzzle_id,
       successMessage: success_message || "",
       nftId: nft?.tokenId.toString() || "",
+      pack: {
+        packRoute: parentPack?.simple_name || "",
+        parentPackName: parentPack?.pack_name || "",
+        buttonText: parentPack?.button_text || "",
+      },
     },
   };
 }

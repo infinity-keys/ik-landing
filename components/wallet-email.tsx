@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import ButtonSocialTwitter from "@components/button-social-twitter";
 import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
 import Alert from "@components/alert";
@@ -135,11 +134,6 @@ const WalletEmail = ({
               disabled={!isValid}
             />
           </form>
-          <div className="mt-6 flex">
-            <div className="w-full flex items-center justify-center">
-              <ButtonSocialTwitter />
-            </div>
-          </div>
         </div>
       )}
     </>
