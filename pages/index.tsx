@@ -7,7 +7,6 @@ import Puzzle from "@components/puzzle";
 import Map from "@components/svg/map-svg";
 import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
-import Alert from "@components/alert";
 import Section from "@components/section";
 import Text from "@components/text";
 import Heading from "@components/heading";
