@@ -1131,10 +1131,10 @@
     "@stripe/react-stripe-js" "^1.7.1"
     "@stripe/stripe-js" "^1.35.0"
 
-"@graphql-codegen/cli@^2.13.1":
-  version "2.13.1"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-2.13.1.tgz#d68bdf42db528091ef8af2092696a04bd51bccc3"
-  integrity sha512-3+IcmqQu4olcO3ZPc+pfEPPMP+qxtjVU7w1SSLlbMU38oMY0IffApk8MNAivuVKrXoU1a8XOwt+g6m8jz9oLHA==
+"@graphql-codegen/cli@^2.13.5":
+  version "2.13.5"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-2.13.5.tgz#6f18e7e524826d4202787a05f495cc54dc5bbfaa"
+  integrity sha512-qqkQxd+9jBdZDjUSCsH3rTHKmFY9KNQwvwXXEMpRSz+oByYTxGZ0ZE5Lxt0hRXFkGOe8BaVkfPiwa2qSUfA5vw==
   dependencies:
     "@babel/generator" "^7.18.13"
     "@babel/template" "^7.18.10"
@@ -1156,10 +1156,10 @@
     chalk "^4.1.0"
     chokidar "^3.5.2"
     cosmiconfig "^7.0.0"
-    cosmiconfig-typescript-loader "4.0.0"
+    cosmiconfig-typescript-loader "4.1.1"
     debounce "^1.2.0"
     detect-indent "^6.0.0"
-    graphql-config "^4.3.5"
+    graphql-config "4.3.6"
     inquirer "^8.0.0"
     is-glob "^4.0.1"
     json-to-pretty-yaml "^1.2.2"
@@ -2016,10 +2016,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/gtag.js@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@types/gtag.js/-/gtag.js-0.0.11.tgz#0c384ea32e4e40043a2dca82db79b5e48d681ad5"
-  integrity sha512-rUuSDedDjcuUpoc2zf6eX6zRrxqALNgwrmMBfVFopkLH7YGM52C7tt6j9GsYIvaxn+ioVRpOKoHnN1DXzHEqIg==
+"@types/gtag.js@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@types/gtag.js/-/gtag.js-0.0.12.tgz#095122edca896689bdfcdd73b057e23064d23572"
+  integrity sha512-YQV9bUsemkzG81Ea295/nF/5GijnD2Af7QhEofh7xu+kvCN6RdodgNwwGWXB5GMI3NoyvQo0odNctoH/qLMIpg==
 
 "@types/hast@^2.0.0":
   version "2.3.4"
@@ -2097,9 +2097,9 @@
   integrity sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==
 
 "@types/node@*", "@types/node@^18":
-  version "18.8.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.8.2.tgz#17d42c6322d917764dd3d2d3a10d7884925de067"
-  integrity sha512-cRMwIgdDN43GO4xMWAfJAecYn8wV4JbsOGHNfNUIDiuYkUYAR5ec4Rj7IO2SAhFPEfpPtLtUTbbny/TCT7aDwA==
+  version "18.8.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.8.3.tgz#ce750ab4017effa51aed6a7230651778d54e327c"
+  integrity sha512-0os9vz6BpGwxGe9LOhgP/ncvYN5Tx1fNcd2TM3rD/aCGBkysb+ZWpXEocG24h6ZzOi13+VB8HndAQFezsSOw1w==
 
 "@types/node@^12.12.54":
   version "12.20.55"
@@ -2305,10 +2305,10 @@
   resolved "https://registry.yarnpkg.com/@vanilla-extract/sprinkles/-/sprinkles-1.5.0.tgz#c921183ae518bb484299c2dc81f2acefd91c3dbe"
   integrity sha512-W58f2Rzz5lLmk0jbhgStVlZl5wEiPB1Ur3fRvUaBM+MrifZ3qskmFq/CiH//fEYeG5Dh9vF1qRviMMH46cX9Nw==
 
-"@wagmi/core@^0.5.7":
-  version "0.5.7"
-  resolved "https://registry.yarnpkg.com/@wagmi/core/-/core-0.5.7.tgz#59ad5691275762e3b87c43230e56a4ee599ec2bd"
-  integrity sha512-q2RL3gHJ15lozjJUcUmdOlmz2b9DCiLfF1ksxNwi1Fy/CJ7FsHbnufJrrvn26nxkJdKWbqTvr7xv46yr6Sp0Ug==
+"@wagmi/core@^0.5.8":
+  version "0.5.8"
+  resolved "https://registry.yarnpkg.com/@wagmi/core/-/core-0.5.8.tgz#9e375c0dd31c3b22973d000694e1c2b06c05dbbc"
+  integrity sha512-1mABf1bXyn3AOHyQkios4FTGqoARa8y1tf7GMH6t1c7q0nAMSbpXoTDdjEidUHy8qhWoG0y3Ez4PjCi8WQnmMg==
   dependencies:
     eventemitter3 "^4.0.7"
     zustand "^4.0.0"
@@ -3833,10 +3833,10 @@ cosmiconfig-toml-loader@1.0.0:
   dependencies:
     "@iarna/toml" "^2.2.5"
 
-cosmiconfig-typescript-loader@4.0.0, cosmiconfig-typescript-loader@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-4.0.0.tgz#4a6d856c1281135197346a6f64dfa73a9cd9fefa"
-  integrity sha512-cVpucSc2Tf+VPwCCR7SZzmQTQkPbkk4O01yXsYqXBIbjE1bhwqSyAgYQkRK1un4i0OPziTleqFhdkmOc4RQ/9g==
+cosmiconfig-typescript-loader@4.1.1, cosmiconfig-typescript-loader@^4.0.0:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-4.1.1.tgz#38dd3578344038dae40fdf09792bc2e9df529f78"
+  integrity sha512-9DHpa379Gp0o0Zefii35fcmuuin6q92FnLDffzdZ0l9tVd3nEobG3O+MZ06+kuBvFTSVScvNb/oHA13Nd4iipg==
 
 cosmiconfig@7.0.1, cosmiconfig@^7.0.0:
   version "7.0.1"
@@ -5544,10 +5544,10 @@ grapheme-splitter@^1.0.4:
   resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
-graphql-config@^4.3.5:
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/graphql-config/-/graphql-config-4.3.5.tgz#bd197ec9c1e86d2696c61332be35b920ba7be700"
-  integrity sha512-B4jXhHL7j3llCem+ACeo48wvVYhtJxRyt5SfSnvywbRlVYyUzt5ibZV6WJU2Yii2/rcVRIGi7BHDgcAPWdWdJg==
+graphql-config@4.3.6:
+  version "4.3.6"
+  resolved "https://registry.yarnpkg.com/graphql-config/-/graphql-config-4.3.6.tgz#908ef03d6670c3068e51fe2e84e10e3e0af220b6"
+  integrity sha512-i7mAPwc0LAZPnYu2bI8B6yXU5820Wy/ArvmOseDLZIu0OU1UTULEuexHo6ZcHXeT9NvGGaUPQZm8NV3z79YydA==
   dependencies:
     "@graphql-tools/graphql-file-loader" "^7.3.7"
     "@graphql-tools/json-file-loader" "^7.3.7"
@@ -9802,16 +9802,16 @@ vfile@^5.0.0:
     unist-util-stringify-position "^3.0.0"
     vfile-message "^3.0.0"
 
-wagmi@^0.6.7:
-  version "0.6.7"
-  resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-0.6.7.tgz#1069c4678105105ba8d91f07b7ef3a5be0cb5831"
-  integrity sha512-cKGZxLctMnODXLycCCcH0Q6yc3ed580odxH6CB/V9b7UUotwHqImPfg0outzE7TJpQ6YDD83RJNPf2Ez7U4o7w==
+wagmi@^0.6.8:
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-0.6.8.tgz#bfc65686ec08cf1c508b1dbf5fbefbbe828653cd"
+  integrity sha512-pIOn7I56KPfdPQ1WRIWzWnpC8eJZm1V25Rcn5fbgOJ2eV3kjGNchnIub/ERY1VMKywxkCAfgXfn2D/tqwCJsWw==
   dependencies:
     "@coinbase/wallet-sdk" "^3.3.0"
     "@tanstack/query-sync-storage-persister" "^4.0.10"
     "@tanstack/react-query" "^4.0.10"
     "@tanstack/react-query-persist-client" "^4.0.10"
-    "@wagmi/core" "^0.5.7"
+    "@wagmi/core" "^0.5.8"
     "@walletconnect/ethereum-provider" "^1.7.8"
     use-sync-external-store "^1.2.0"
 
