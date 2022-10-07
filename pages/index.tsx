@@ -19,6 +19,7 @@ import SanLogo from "@components/svg/partner-logos/san_logo-png";
 import PnLogo from "@components/svg/partner-logos/pn_logo-png";
 import IslandersLogo from "@components/svg/partner-logos/islanders_logo-png";
 import RehashLogo from "@components/svg/partner-logos/rehash_logo-jpeg";
+import Flicker from "@components/flicker";
 
 interface PageProps {
   count: number;
@@ -45,7 +46,9 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
           <div className="text-center mb-8 md:mb-12">
             <Heading as="h1" visual="l">
               This is an Infinity Keys h
-              <span className="font-bold text-turquoise">un</span>
+              <Flicker once bold delay=".3s">
+                un
+              </Flicker>
               t.
             </Heading>
           </div>
@@ -55,20 +58,18 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
             count={count}
             SuccessComponent={SuccessComponent}
           />
-          <div className="max-w-md sm:max-w-2xl mx-auto text-white text-center mt-10 sm:text-xl lg:text-lg xl:text-xl">
-            <p className="md:text-[1.50rem] leading-normal">
-              Find the c<span className="font-bold text-turquoise">l</span>
+          <div className="text-white text-center mt-10 sm:text-xl md:text-2xl flicker-container">
+            <p className="leading-normal">
+              Find the c<Flicker delay=".6s">l</Flicker>
               ues and enter the key.
             </p>
-            <p className="md:text-[1.50rem] leading-normal">
-              Hunt f<span className="font-bold text-turquoise">o</span>r{" "}
-              <span className="font-bold text-turquoise">c</span>
-              lues and <span className="font-bold text-turquoise">k</span>
+            <p className="leading-normal">
+              Hunt f<Flicker delay=".8s">o</Flicker>r{" "}
+              <Flicker delay="1s">c</Flicker>
+              lues and <Flicker delay="1.2s">k</Flicker>
               eys anywhere.
             </p>
-            <p className="md:text-[1.50rem] leading-normal">
-              (Try the colored letters!)
-            </p>
+            <p className="leading-normal">(Try the colored letters!)</p>
           </div>
 
           <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40"></div>
