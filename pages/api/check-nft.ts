@@ -49,7 +49,7 @@ export default async function handler(
 
       const nftPass = balance > 0;
 
-      return res.json({ nftPass });
+      return res.json(nftPass);
     } catch (error) {
       console.log(error);
       return res.status(500).end();

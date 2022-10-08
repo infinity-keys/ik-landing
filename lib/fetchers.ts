@@ -105,5 +105,5 @@ export const nftChecker = async (
 
   const response = await fetch(url);
   if (response.ok) return await response.json();
-  throw response.text();
+  return false;
 };

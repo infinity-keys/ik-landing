@@ -17,6 +17,7 @@ import useCurrentWidth from "@hooks/useCurrentWidth";
 import LoadingIcon from "@components/loading-icon";
 import Button from "./button";
 import { useIKMinter } from "@hooks/useIKMinter";
+import { nftChecker } from "@lib/fetchers";
 
 interface PuzzleProps {
   count: number;
@@ -72,10 +73,27 @@ const Puzzle = ({
     if (context.count === context.text.length) send("GUESS");
   };
 
+  const [nftApproval, setNftApproval] = useState(false);
   const { address, isConnected } = useIKMinter();
-  const contractAddress = "0x7e8e97a66a935061b2f5a8576226175c4fde0ff9";
-  const chainId = 137;
-  const tokenId = 0;
+  const nftChainId = 137;
+  const nftContractAddress = "0x7e8e97a66a935061b2f5a8576226175c4fde0ff9";
+  const nftTokenId = 0;
+
+  //call fetcher, useEffect
+  useEffect(() => {
+    const checkNFT = async () => {
+      if (address) {
+        setNftApproval(
+          await nftChecker(address, nftChainId, nftContractAddress, nftTokenId)
+        );
+        console.log(
+          await nftChecker(address, nftChainId, nftContractAddress, nftTokenId)
+        );
+      }
+    };
+
+    checkNFT();
+  }, [address, isConnected]);
 
   return (
     <>
