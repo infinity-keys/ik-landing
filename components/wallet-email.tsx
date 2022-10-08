@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import ButtonSocialTwitter from "@components/button-social-twitter";
 import { formSubmit } from "@lib/fetchers";
 import { PuzzleInput } from "@lib/types";
-import Wallet from "@components/wallet";
 import Alert from "@components/alert";
 import Button from "@components/button";
 import Markdown from "./markdown";
@@ -49,8 +47,6 @@ const WalletEmail = ({
     return true;
   };
 
-  // @TODO: get this to just call onSubmit() above OR on wallet sign, pass address
-  // to a hidden field and submit form
   const onWalletSignature = async (address: string) => {
     const res = await formSubmit({
       data: {
@@ -138,11 +134,6 @@ const WalletEmail = ({
               disabled={!isValid}
             />
           </form>
-          <div className="mt-6 flex">
-            <div className="w-full flex items-center justify-center">
-              <ButtonSocialTwitter />
-            </div>
-          </div>
         </div>
       )}
     </>

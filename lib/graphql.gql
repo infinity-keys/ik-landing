@@ -34,6 +34,7 @@ query PuzzleInfoBySuccess($success: String!) {
     simple_name
     puzzle_id
     success_message
+    landing_route
     pack_puzzles {
       pack {
         pack_name
@@ -43,6 +44,7 @@ query PuzzleInfoBySuccess($success: String!) {
     }
     nft {
       tokenId
+      wallet_age_check
       nft_metadatum {
         cloudinary_id
       }
@@ -264,6 +266,7 @@ query GetAllPublicPacks($limit: Int = 10, $offset: Int = 0) {
 query GetPuzzlesByPack($packName: String!) {
   puzzles(
     where: { pack_puzzles: { pack: { simple_name: { _eq: $packName } } } }
+    order_by: { sort_weight: asc, simple_name: asc }
   ) {
     simple_name
     landing_route
@@ -287,5 +290,11 @@ query NftMetadata($nftId: Int!, $contractName: String!) {
     contract_name
     data
     token_id
+  }
+}
+
+query UserExist($userId: uuid!) {
+  users_by_pk(user_id: $userId) {
+    user_id
   }
 }
