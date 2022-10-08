@@ -75,18 +75,15 @@ const Puzzle = ({
 
   const [nftApproval, setNftApproval] = useState(false);
   const { address, isConnected } = useIKMinter();
+  //MOVE THESE 3 TO DATABASE CALL
   const nftChainId = 137;
   const nftContractAddress = "0x7e8e97a66a935061b2f5a8576226175c4fde0ff9";
   const nftTokenId = 0;
 
-  //call fetcher, useEffect
   useEffect(() => {
     const checkNFT = async () => {
       if (address) {
         setNftApproval(
-          await nftChecker(address, nftChainId, nftContractAddress, nftTokenId)
-        );
-        console.log(
           await nftChecker(address, nftChainId, nftContractAddress, nftTokenId)
         );
       }
@@ -159,11 +156,19 @@ const Puzzle = ({
                   </Markdown>
                 </div>
               </div>
+
+              <div className="opacity-50 -mt-8 mb-2">
+                {nftApproval && (
+                  <Markdown>
+                    Your NFT gives you a free pass on this puzzle!
+                  </Markdown>
+                )}
+              </div>
               <div data-cy="submit" className="flex justify-center">
                 <Button
                   text="Submit"
                   type="submit"
-                  disabled={!matches("readyToGuess")}
+                  disabled={!matches("readyToGuess") && !nftApproval}
                 />
               </div>
             </form>
