@@ -82,7 +82,6 @@ export const RPCLookup: {
   [POLYGON_CHAIN_ID]: POLYGON_RPC,
   [AVAX_CHAIN_ID]: AVAX_RPC,
   [OPTIMISM_CHAIN_ID]: OPTIMISM_RPC,
-  [RINKEBY_CHAIN_ID]: RINKEBY_RPC,
 };
 
 export const contractLookup: {
