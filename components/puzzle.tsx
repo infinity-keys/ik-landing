@@ -25,6 +25,8 @@ interface PuzzleProps {
   boxes?: boolean;
   failMessage?: string;
   SuccessComponent?: ComponentType<{}>;
+  nftCheckParameters?: any;
+  successRoute: string;
 }
 
 const Puzzle = ({
@@ -40,6 +42,8 @@ const Puzzle = ({
   // If success component exists, then Puzzle **will not route to success page**.
   // Use this for entirely inline/embedded Puzzles.
   SuccessComponent,
+  nftCheckParameters,
+  successRoute,
 }: PuzzleProps) => {
   const router = useRouter();
   const [{ context, matches }, send] = useMachine(puzzleMachine, {
@@ -75,22 +79,36 @@ const Puzzle = ({
 
   const [nftApproval, setNftApproval] = useState(false);
   const { address, isConnected } = useIKMinter();
-  //MOVE THESE 3 TO DATABASE CALL
-  const nftChainId = 137;
-  const nftContractAddress = "0x7e8e97a66a935061b2f5a8576226175c4fde0ff9";
-  const nftTokenId = 0;
+
+  const { nftChainId, nftTokenId, nftContractAddress } =
+    nftCheckParameters || {};
 
   useEffect(() => {
     const checkNFT = async () => {
       if (address) {
-        setNftApproval(
-          await nftChecker(address, nftChainId, nftContractAddress, nftTokenId)
+        const checker = await nftChecker(
+          address,
+          nftChainId,
+          nftContractAddress,
+          nftTokenId
         );
+        setNftApproval(checker);
+
+        // const text = ".".repeat(context.count);
+        // if (checker) send({ type: "INPUT", text });
       }
     };
 
     checkNFT();
-  }, [address, isConnected]);
+  }, [
+    address,
+    isConnected,
+    nftChainId,
+    nftTokenId,
+    nftContractAddress,
+    send,
+    context.count,
+  ]);
 
   return (
     <>

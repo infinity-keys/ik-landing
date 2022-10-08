@@ -63,6 +63,7 @@ select_permissions:
         - instructions
         - landing_route
         - list_publicly
+        - nft_check_parameters
         - puzzle_id
         - simple_name
         - solution

@@ -26,6 +26,8 @@ query PuzzleInfoByLanding($landing: String!) {
         cloudinary_id
       }
     }
+    nft_check_parameters
+    success_route
   }
 }
 
