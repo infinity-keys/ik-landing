@@ -27,6 +27,7 @@ export interface PuzzlePageProps {
   cloudinaryId?: string;
   nftCheckParameters?: any;
   successRoute: string;
+  finalStep: boolean;
 }
 interface PuzzlePageParams {
   params: {
@@ -45,6 +46,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
   cloudinaryId,
   nftCheckParameters,
   successRoute,
+  finalStep,
 }) => {
   const { asPath } = useRouter();
 
@@ -81,6 +83,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
           failMessage={failMessage}
           nftCheckParameters={nftCheckParameters}
           successRoute={successRoute}
+          finalStep={finalStep}
         />
       </main>
 
@@ -116,6 +119,7 @@ export async function getStaticProps({
       nft,
       nft_check_parameters,
       success_route,
+      final_step,
     },
   ] = puzzles;
 
@@ -129,8 +133,9 @@ export async function getStaticProps({
       instructions: instructions || "",
       failMessage: fail_message || "",
       cloudinaryId: nft?.nft_metadatum?.cloudinary_id || "",
-      nftCheckParameters: nft_check_parameters || undefined,
+      nftCheckParameters: nft_check_parameters || null,
       successRoute: success_route || "",
+      finalStep: final_step || false,
     },
   };
 }

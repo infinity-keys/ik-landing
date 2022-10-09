@@ -18,6 +18,7 @@ import LoadingIcon from "@components/loading-icon";
 import Button from "./button";
 import { useIKMinter } from "@hooks/useIKMinter";
 import { nftChecker } from "@lib/fetchers";
+import Link from "next/link";
 
 interface PuzzleProps {
   count: number;
@@ -26,7 +27,8 @@ interface PuzzleProps {
   failMessage?: string;
   SuccessComponent?: ComponentType<{}>;
   nftCheckParameters?: any;
-  successRoute: string;
+  successRoute?: string;
+  finalStep?: boolean;
 }
 
 const Puzzle = ({
@@ -44,6 +46,7 @@ const Puzzle = ({
   SuccessComponent,
   nftCheckParameters,
   successRoute,
+  finalStep,
 }: PuzzleProps) => {
   const router = useRouter();
   const [{ context, matches }, send] = useMachine(puzzleMachine, {
@@ -85,16 +88,19 @@ const Puzzle = ({
 
   useEffect(() => {
     const checkNFT = async () => {
-      if (address) {
+      if (address && nftCheckParameters) {
         const checker = await nftChecker(
           address,
           nftChainId,
           nftContractAddress,
-          nftTokenId
+          nftTokenId,
+          successRoute || "/",
+          finalStep || true //true for default ?
         );
         setNftApproval(checker);
 
-        // const text = ".".repeat(context.count);
+        // Trying to set the boxes values to fill if they can pass it
+        // const text = "*".repeat(context.count);
         // if (checker) send({ type: "INPUT", text });
       }
     };
@@ -108,6 +114,9 @@ const Puzzle = ({
     nftContractAddress,
     send,
     context.count,
+    nftCheckParameters,
+    successRoute,
+    finalStep,
   ]);
 
   return (
@@ -182,13 +191,21 @@ const Puzzle = ({
                   </Markdown>
                 )}
               </div>
-              <div data-cy="submit" className="flex justify-center">
-                <Button
-                  text="Submit"
-                  type="submit"
-                  disabled={!matches("readyToGuess") && !nftApproval}
-                />
-              </div>
+              {!nftApproval ? (
+                <div data-cy="submit" className="flex justify-center">
+                  <Button
+                    text="Submit"
+                    type="submit"
+                    disabled={!matches("readyToGuess") && !nftApproval}
+                  />
+                </div>
+              ) : (
+                <div className="flex justify-center">
+                  <Button text="" type="submit">
+                    <Link href={"/solved/mj-prompt-6"}>Submit</Link>
+                  </Button>
+                </div>
+              )}
             </form>
           </div>
         </div>
