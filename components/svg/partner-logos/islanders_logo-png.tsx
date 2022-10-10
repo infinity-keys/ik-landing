@@ -1,8 +1,13 @@
-import Image from "next/image";
-import islanders_logo from "../../svg/partner-logos/finkel_logo.png";
+import CloudImage from "@components/cloud-image";
+
 const IslandersLogo = () => {
   return (
-    <Image src={islanders_logo} alt="Saga Logo" width="700px" height="700px" />
+    <CloudImage
+      id="website-assets/finkel_logo_nriuwc"
+      alt="Saga Logo"
+      width={150}
+      height={150}
+    />
   );
 };
 export default IslandersLogo;
