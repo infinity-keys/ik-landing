@@ -1,26 +1,19 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 // import { useMachine } from "@xstate/react";
-import { Disclosure } from "@headlessui/react";
-import ChevronUpIcon from "@heroicons/react/20/solid/ChevronUpIcon";
 
 import Wrapper from "@components/wrapper";
 import KeysLink from "@components/keys-link";
 import Puzzle from "@components/puzzle";
-import Markdown from "@components/markdown";
+import PuzzleLandingInfo from "@components/puzzle-landing-info";
 import Seo from "@components/seo";
 import TwitterShare from "@components/twitter-share";
-import Heading from "@components/heading";
 // import { puzzleMachine } from "@components/puzzle.xstate";
 
 import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
 import { buildUrlString } from "@lib/utils";
 import { cloudinaryUrl } from "@lib/images";
-import clsx from "clsx";
 
 export interface PuzzlePageProps {
   name: string;
@@ -59,65 +52,19 @@ const Dev: NextPage<PuzzlePageProps> = ({
         url={asPath}
       />
 
-      <main className="text-center pt-10 md:pt-20 w-full">
+      <main className="text-center pt-10 md:pt-20 w-full px-4">
         <div className="max-w-prose mx-auto bg-black/10 p-4 mb-12 rounded-md">
-          {/* <main className="text-center pt-10 md:pt-20 px-4">
-        <div className="mb-16"> */}
           {instructions && (
-            <div className="flex-1 bg-white/5 rounded overflow-hidden">
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="p-2 w-full transition relative hover:bg-turquoise/50 flex items-center justify-center">
-                      <Heading visual="s" as="h2">
-                        Instructions
-                      </Heading>
-
-                      <ChevronUpIcon
-                        className={clsx("transition h-8 w-8 absolute right-2", {
-                          "rotate-180 transform": open,
-                        })}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="border-t border-t-white/10 px-2">
-                      <div className="markdown text-left px-4 pb-4 text-white/80">
-                        <Markdown>{instructions}</Markdown>
-                      </div>
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-            </div>
+            <PuzzleLandingInfo title="Instructions" content={instructions} />
           )}
-          {challenge && (
-            <div
-              className={clsx("flex-1 bg-white/5 rounded overflow-hidden", {
-                "mt-4": instructions,
-              })}
-            >
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="p-2 w-full transition relative hover:bg-turquoise/50 flex items-center justify-center">
-                      <Heading visual="s" as="h2">
-                        Challenge
-                      </Heading>
 
-                      <ChevronUpIcon
-                        className={clsx("transition h-8 w-8 absolute right-2", {
-                          "rotate-180 transform": open,
-                        })}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="border-t border-t-white/10 px-2">
-                      <div className="markdown text-left px-4 pb-4 text-white/80">
-                        <Markdown>{challenge}</Markdown>
-                      </div>
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-            </div>
+          {challenge && (
+            <PuzzleLandingInfo
+              title="Challenge"
+              content={challenge}
+              marginTop={!!instructions}
+              defaultOpen
+            />
           )}
         </div>
 
