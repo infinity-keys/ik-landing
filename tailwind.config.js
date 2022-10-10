@@ -31,7 +31,7 @@ module.exports = {
       },
       animation: {
         flickerGlow:
-          "flicker 2s forwards, glow 1.2s alternate-reverse infinite",
+          "flicker 1.5s forwards, glow 1.2s alternate-reverse infinite",
         fadeGlow: "fade .8s forwards, glow 1.2s alternate-reverse infinite",
       },
       keyframes: {
@@ -40,8 +40,8 @@ module.exports = {
           "100%": { opacity: 1 },
         },
         flicker: {
-          "0%, 30%": { opacity: 0 },
-          "60%": { opacity: 0.8 },
+          "0%, 60%": { opacity: 0 },
+          "30%": { opacity: 0.8 },
           "100%": { opacity: 1 },
         },
         glow: {
