@@ -1,8 +1,13 @@
-import Image from "next/image";
-import pn_symbol_clean from "../../svg/partner-logos/pn_symbol_clean.png";
+import CloudImage from "@components/cloud-image";
+
 const PnLogo = () => {
   return (
-    <Image src={pn_symbol_clean} alt="Saga Logo" width="700px" height="700px" />
+    <CloudImage
+      id="website-assets/pn_symbol_clean_lcvuu6"
+      alt="Saga Logo"
+      width={200}
+      height={200}
+    />
   );
 };
 export default PnLogo;

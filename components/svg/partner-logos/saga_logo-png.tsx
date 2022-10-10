@@ -1,10 +1,13 @@
-import Image from "next/image";
-import saga_logo from "../../svg/partner-logos/saga_logo.png";
+import CloudImage from "@components/cloud-image";
+
 const SagaLogo = () => {
   return (
-    <div className="bg-white/75 p-4">
-      <Image src={saga_logo} alt="Saga Logo" width="700px" height="700px" />
-    </div>
+    <CloudImage
+      id="website-assets/saga_logo_ifk2az"
+      alt="Saga Logo"
+      width={150}
+      height={150}
+    />
   );
 };
 export default SagaLogo;

@@ -1,8 +1,13 @@
-import Image from "next/image";
-import rehash_logo from "../../svg/partner-logos/rehash_logo.jpeg";
+import CloudImage from "@components/cloud-image";
+
 const RehashLogo = () => {
   return (
-    <Image src={rehash_logo} alt="Saga Logo" width="700px" height="700px" />
+    <CloudImage
+      id="website-assets/rehash_logo_zwqhhw"
+      alt="Saga Logo"
+      width={150}
+      height={150}
+    />
   );
 };
 export default RehashLogo;
