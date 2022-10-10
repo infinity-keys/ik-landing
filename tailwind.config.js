@@ -29,6 +29,26 @@ module.exports = {
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
       },
+      animation: {
+        flickerGlow:
+          "flicker 2s forwards, glow 1.2s alternate-reverse infinite",
+        fadeGlow: "fade .8s forwards, glow 1.2s alternate-reverse infinite",
+      },
+      keyframes: {
+        fade: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+        flicker: {
+          "0%, 60%": { opacity: 0 },
+          "30%": { opacity: 0.8 },
+          "100%": { opacity: 1 },
+        },
+        glow: {
+          "0%": { textShadow: "0 0 0px #3fccbb" },
+          "100%": { textShadow: "0 0 8px #3fccbb" },
+        },
+      },
     },
   },
   plugins: [tailwindforms],

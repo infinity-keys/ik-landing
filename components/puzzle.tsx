@@ -23,6 +23,7 @@ interface PuzzleProps {
   boxes?: boolean;
   failMessage?: string;
   SuccessComponent?: ComponentType<{}>;
+  forwardOnFail?: boolean;
 }
 
 const Puzzle = ({
@@ -38,6 +39,8 @@ const Puzzle = ({
   // If success component exists, then Puzzle **will not route to success page**.
   // Use this for entirely inline/embedded Puzzles.
   SuccessComponent,
+  // Enable/disable forwarding to fail_route
+  forwardOnFail = true,
 }: PuzzleProps) => {
   const router = useRouter();
   const [{ context, matches }, send] = useMachine(puzzleMachine, {
@@ -49,7 +52,8 @@ const Puzzle = ({
       goToSuccessRoute: (context, event) =>
         // @ts-ignore
         router.push(event.data?.success_route || "/"),
-      goToFailRoute: (context, event) => router.push(event.data.fail_route),
+      goToFailRoute: (context, event) =>
+        forwardOnFail && router.push(event.data.fail_route),
     },
     devTools: process.env.NODE_ENV === "development",
   });

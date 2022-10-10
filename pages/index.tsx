@@ -4,14 +4,22 @@ import { gqlApiSdk } from "@lib/server";
 
 import Wrapper from "@components/wrapper";
 import Puzzle from "@components/puzzle";
-import Map from "@components/svg/map-svg";
 import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
-import Alert from "@components/alert";
 import Section from "@components/section";
 import Text from "@components/text";
 import Heading from "@components/heading";
 import Seo from "@components/seo";
+import Button from "@components/button";
+
+import { PACK_COLLECTION_BASE } from "@lib/constants";
+import LensLogo from "@components/svg/partner-logos/lens_logo-svg";
+import SagaLogo from "@components/svg/partner-logos/saga_logo-png";
+import SanLogo from "@components/svg/partner-logos/san_logo-png";
+import PnLogo from "@components/svg/partner-logos/pn_logo-png";
+import IslandersLogo from "@components/svg/partner-logos/islanders_logo-png";
+import RehashLogo from "@components/svg/partner-logos/rehash_logo-jpeg";
+import Flicker from "@components/flicker";
 
 interface PageProps {
   count: number;
@@ -22,9 +30,9 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
   const SuccessComponent = () => (
     <div
       data-cy="success_message_check"
-      className="container my-9 flex justify-center max-w-sm"
+      className="container my-16 flex justify-center max-w-[12rem]"
     >
-      <Alert text="Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels." />
+      <Button text="Play More" fullWidth href={`/${PACK_COLLECTION_BASE}`} />
     </div>
   );
 
@@ -33,32 +41,36 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       <Seo />
 
       {/* Top puzzle */}
-      <div className="slice--top w-full radial-bg relative z-0">
+      <div className="slice--top w-full radial-bg relative z-0 min-h-[calc(100vh-80px)] flex items-center">
         <Section largePadding={false}>
+          <div className="text-center mb-8 md:mb-12">
+            <Heading as="h1" visual="l">
+              This is an Infinity Keys h
+              <Flicker once bold delay=".3s">
+                un
+              </Flicker>
+              t.
+            </Heading>
+          </div>
+
           <Puzzle
             puzzleId={puzzleId}
             count={count}
             SuccessComponent={SuccessComponent}
+            forwardOnFail={false}
           />
-          <div className="max-w-md sm:max-w-2xl mx-auto text-white text-left mt-5 sm:text-xl lg:text-lg xl:text-xl">
-            <p className="text-[1.35rem] md:text-[2.5rem] leading-normal">
-              This is an Infinity Keys h
-              <span className="font-bold text-turquoise">un</span>
-              t.
-            </p>
-            <p className="md:text-[1.50rem] leading-normal">
-              Find the c<span className="font-bold text-turquoise">l</span>
+          <div className="text-white text-center mt-10 sm:text-xl md:text-2xl flicker-container">
+            <p className="leading-normal">
+              Find the c<Flicker delay=".6s">l</Flicker>
               ues and enter the key.
             </p>
-            <p className="md:text-[1.50rem] leading-normal">
-              Hunt f<span className="font-bold text-turquoise">o</span>r{" "}
-              <span className="font-bold text-turquoise">c</span>
-              lues and <span className="font-bold text-turquoise">k</span>
+            <p className="leading-normal">
+              Hunt f<Flicker delay=".8s">o</Flicker>r{" "}
+              <Flicker delay="1s">c</Flicker>
+              lues and <Flicker delay="1.2s">k</Flicker>
               eys anywhere.
             </p>
-            <p className="md:text-[1.50rem] leading-normal">
-              (Try the colored letters!)
-            </p>
+            <p className="leading-normal">(Try the colored letters!)</p>
           </div>
 
           <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40"></div>
@@ -99,15 +111,35 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       {/* Collab */}
       <Section id="collab">
         <div className="items-center md:grid md:grid-cols-2 md:grid-flow-col-dense md:gap-24">
-          <div className="mb-16 flex justify-center">
-            <Map />
+          <div className="max-w-sm mx-auto">
+            <Heading visual="m">Collabs</Heading>
+            <div className="pt-4 items-center grid grid-cols-3 gap-6 ">
+              <a href="https://www.infinitykeys.io/pack/lens-bogota-pack">
+                <LensLogo />
+              </a>
+              <a href="https://www.infinitykeys.io/pack/saga-wormhole-pack">
+                <SagaLogo />
+              </a>
+              <a href="https://www.infinitykeys.io/pack/san-creator-pack">
+                <SanLogo />
+              </a>
+              <a href="https://www.infinitykeys.io/pack/p0-pack">
+                <PnLogo />
+              </a>
+              <a href="https://www.infinitykeys.io/puzzle/finkel-islanders">
+                <IslandersLogo />
+              </a>
+              <a href="https://www.infinitykeys.io/puzzle/second-season-rehash">
+                <RehashLogo />
+              </a>
+            </div>
           </div>
           <div className="max-w-xl mx-auto">
             <p className="text-turquoise text-lg mb-4">
               Engagement &gt; Impressions.
             </p>
 
-            <Heading>Build an Infinity Keys Hunt for your Project</Heading>
+            <Heading>Create Infinity Keys Challenges for your Project</Heading>
             <Text>
               We work with projects to build new types of digital keys for
               engaging hunts and puzzles.
