@@ -57,6 +57,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
             puzzleId={puzzleId}
             count={count}
             SuccessComponent={SuccessComponent}
+            forwardOnFail={false}
           />
           <div className="text-white text-center mt-10 sm:text-xl md:text-2xl flicker-container">
             <p className="leading-normal">

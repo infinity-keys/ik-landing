@@ -29,6 +29,7 @@ interface PuzzleProps {
   nftCheckParameters?: any;
   successRoute?: string;
   finalStep?: boolean;
+  forwardOnFail?: boolean;
 }
 
 const Puzzle = ({
@@ -47,6 +48,8 @@ const Puzzle = ({
   nftCheckParameters,
   successRoute,
   finalStep,
+  // Enable/disable forwarding to fail_route
+  forwardOnFail = true,
 }: PuzzleProps) => {
   const router = useRouter();
   const [{ context, matches }, send] = useMachine(puzzleMachine, {
@@ -58,7 +61,8 @@ const Puzzle = ({
       goToSuccessRoute: (context, event) =>
         // @ts-ignore
         router.push(event.data?.success_route || "/"),
-      goToFailRoute: (context, event) => router.push(event.data.fail_route),
+      goToFailRoute: (context, event) =>
+        forwardOnFail && router.push(event.data.fail_route),
     },
     devTools: process.env.NODE_ENV === "development",
   });

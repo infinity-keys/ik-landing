@@ -5,10 +5,9 @@ import { useRouter } from "next/router";
 import Wrapper from "@components/wrapper";
 import KeysLink from "@components/keys-link";
 import Puzzle from "@components/puzzle";
-import Markdown from "@components/markdown";
+import PuzzleLandingInfo from "@components/puzzle-landing-info";
 import Seo from "@components/seo";
 import TwitterShare from "@components/twitter-share";
-import Heading from "@components/heading";
 // import { puzzleMachine } from "@components/puzzle.xstate";
 
 import { gqlApiSdk } from "@lib/server";
@@ -59,20 +58,19 @@ const Dev: NextPage<PuzzlePageProps> = ({
         url={asPath}
       />
 
-      <main className="text-center pt-10 md:pt-20 px-4">
-        <div className="mb-16">
+      <main className="text-center pt-10 md:pt-20 w-full px-4">
+        <div className="max-w-prose mx-auto bg-black/10 p-4 mb-12 rounded-md">
           {instructions && (
-            <div className="mb-12 w-full max-w-2xl mx-auto markdown landing-md">
-              <Heading as="h2">Instructions</Heading>
-              <Markdown>{instructions}</Markdown>
-            </div>
+            <PuzzleLandingInfo title="Instructions" content={instructions} />
           )}
 
           {challenge && (
-            <div className=" w-full max-w-2xl mx-auto markdown landing-md">
-              <Heading as="h2">Challenge</Heading>
-              <Markdown>{challenge}</Markdown>
-            </div>
+            <PuzzleLandingInfo
+              title="Challenge"
+              content={challenge}
+              marginTop={!!instructions}
+              defaultOpen
+            />
           )}
         </div>
 

@@ -40,8 +40,8 @@ module.exports = {
           "100%": { opacity: 1 },
         },
         flicker: {
-          "0%, 30%": { opacity: 0 },
-          "60%": { opacity: 0.8 },
+          "0%, 60%": { opacity: 0 },
+          "30%": { opacity: 0.8 },
           "100%": { opacity: 1 },
         },
         glow: {
