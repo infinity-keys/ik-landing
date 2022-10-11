@@ -31,6 +31,8 @@ interface MinterParams {
   buttonText?: string;
   packRoute?: string;
   setCompleted?: (b: boolean[]) => void;
+  hasChecked?: boolean;
+  setHasChecked?: (b: boolean) => void;
 }
 
 export default function Minter({
@@ -41,6 +43,8 @@ export default function Minter({
   buttonText,
   packRoute,
   setCompleted,
+  hasChecked,
+  setHasChecked,
 }: MinterParams) {
   const chain = useNetwork().chain;
   const { address, isConnected } = useIKMinter();
@@ -124,9 +128,10 @@ export default function Minter({
   }, [isSuccess, chain]);
 
   const mintButtonText = () => {
-    if (!isConnected) return "Connect Wallet To Claim Trophy";
+    if (setHasChecked && !hasChecked) "Check My NFTs";
+    else if (!isConnected) return "Connect Wallet To Claim Trophy";
     else if (!chainIsValid) return "Switch Chain To Claim Trophy";
-    else if (isVerifying) return "Checking NFTs";
+    else if (isVerifying) return "Checking the Blockchain";
     else if (isLoading) return "Claiming Trophy...";
     else if (claimed) return "Your Trophy Has Been Claimed";
     else if (txError) return txError.message;
@@ -209,13 +214,14 @@ export default function Minter({
       </Heading>
 
       <div className="w-full max-w-xs py-9">
-        {((isVerifying || isLoading) && chainIsValid) ||
-        (claimed && chainClaimed === 0) ? (
+        {setHasChecked && !hasChecked ? (
+          <Button onClick={() => setHasChecked(true)} text="Check My NFTs" />
+        ) : ((isVerifying || isLoading) && chainIsValid) ||
+          (claimed && chainClaimed === 0) ? (
           <LoadingIcon />
         ) : (
           buttonMint
         )}
-
         {parentPackName && (
           <div className="pt-4">
             <Button
