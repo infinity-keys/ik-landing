@@ -128,8 +128,7 @@ export default function Minter({
   }, [isSuccess, chain]);
 
   const mintButtonText = () => {
-    if (setHasChecked && !hasChecked) "Check My NFTs";
-    else if (!isConnected) return "Connect Wallet To Claim Trophy";
+    if (!isConnected) return "Connect Wallet To Claim Trophy";
     else if (!chainIsValid) return "Switch Chain To Claim Trophy";
     else if (isVerifying) return "Checking the Blockchain";
     else if (isLoading) return "Claiming Trophy...";
@@ -210,12 +209,19 @@ export default function Minter({
   return (
     <div className="mt-20 flex flex-col items-center text-center">
       <Heading as="h2" visual="s">
-        {mintButtonText()}
+        {setHasChecked && !hasChecked
+          ? "See if you are eligible to claim"
+          : mintButtonText()}
       </Heading>
 
       <div className="w-full max-w-xs py-9">
         {setHasChecked && !hasChecked ? (
-          <Button onClick={() => setHasChecked(true)} text="Check My NFTs" />
+          <button
+            onClick={() => setHasChecked(true)}
+            className="block min-w-full rounded-md border border-solid py-2 px-4 text-lg font-bold text-blue border-turquoise bg-turquoise hover:cursor-pointer hover:bg-turquoiseDark"
+          >
+            Check My NFTs
+          </button>
         ) : ((isVerifying || isLoading) && chainIsValid) ||
           (claimed && chainClaimed === 0) ? (
           <LoadingIcon />
