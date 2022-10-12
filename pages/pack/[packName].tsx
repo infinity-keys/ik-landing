@@ -104,38 +104,12 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
             setHasChecked={setHasChecked}
           />
         </div>
-        <div className="mt-9">
+        <div className="pt-2 pb-8">
           <TwitterShare
             tweetBody={`Collect the ${
               pack.name
             }. @InfinityKeys\n\n${buildUrlString(asPath)}`}
           />
-        </div>
-        <div className="w-full p-6 flex flex-row items-center justify-center">
-          <div className="p-4">
-            <div className="w-20 twitterIcon hover: fill-twitterBlue">
-              <a
-                href="https://twitter.com/InfinityKeys"
-                className="flex w-full"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <TwitterSvg />
-              </a>
-            </div>
-          </div>
-          <div className="p-4">
-            <div className="discordIcon w-20 hover: fill-discordPurple">
-              <a
-                href="https://discord.com/invite/infinitykeys"
-                className="flex w-full"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <Discord width={96} height={96} />
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </Wrapper>
