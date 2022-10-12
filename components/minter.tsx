@@ -207,12 +207,12 @@ export default function Minter({
   );
 
   return (
-    <div className="mt-20 flex flex-col items-center text-center">
-      <Heading as="h2" visual="s">
-        {setHasChecked && !hasChecked
-          ? "See if you are eligible to claim"
-          : mintButtonText()}
-      </Heading>
+    <div className="mt-12 flex flex-col items-center text-center">
+      {setHasChecked && !hasChecked ? null : (
+        <Heading as="h2" visual="s">
+          {mintButtonText()}
+        </Heading>
+      )}
 
       <div className="w-full max-w-xs py-9">
         {setHasChecked && !hasChecked ? (
