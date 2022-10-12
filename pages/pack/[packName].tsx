@@ -42,7 +42,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   const gatedIds = puzzlesNftIds;
   const tokenId = pack.nftId;
   const [completed, setCompleted] = useState([] as boolean[]);
-  const [packClaimed, setPackClaimed] = useState(false);
+  const [hasChecked, setHasChecked] = useState(false);
 
   if (!tokenId) throw new Error("Invalid token id.");
   const width = useCurrentWidth();
@@ -85,7 +85,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
                     url={data.url}
                     cloudinary_id={data.cloudinary_id}
                     progress={
-                      completed[index]
+                      hasChecked && completed[index]
                         ? ThumbnailProgress.Completed
                         : ThumbnailProgress.NotCompleted
                     }
@@ -100,6 +100,8 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
             gatedIds={gatedIds}
             nftWalletAgeCheck={false}
             setCompleted={setCompleted}
+            hasChecked={hasChecked}
+            setHasChecked={setHasChecked}
           />
         </div>
         <div className="mt-9">
