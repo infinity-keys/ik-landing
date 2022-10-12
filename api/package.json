@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "@redwoodjs/api": "^3.0.3",
-    "@redwoodjs/graphql-server": "^3.0.3"
+    "@redwoodjs/graphql-server": "^3.0.3",
+    "@sendgrid/mail": "^7.7.0",
+    "cloudinary-build-url": "^0.2.4",
+    "zod": "^3.19.1"
   }
 }

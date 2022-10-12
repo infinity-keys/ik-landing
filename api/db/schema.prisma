@@ -32,6 +32,7 @@ model Puzzle {
   listSortWeight Int
   steps Step[]
   packs Pack[]
+  submissions Submission[]
 }
 model Step {
   stepId String @id @default(cuid())
@@ -52,4 +53,14 @@ model Nft {
   contractName String
   data Json
   cloudinaryId String
+}
+
+model Submission {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  puzzleId String
+  puzzle Puzzle @relation(fields: [puzzleId], references: [puzzleId])
+  userId String
+  email String?
+  address String?
 }
