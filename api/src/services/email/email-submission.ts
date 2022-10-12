@@ -1,62 +1,43 @@
 import sendgrid from '@sendgrid/mail'
-import { buildUrl } from 'cloudinary-build-url'
 import { MutationResolvers } from 'types/graphql'
-import { z } from 'zod'
 
-import { db } from 'src/lib/db'
+// import { db } from 'src/lib/db'
+import { SENDGRID_SENDER_ACCOUNT } from 'src/lib/constants'
+import { cloudinaryUrl } from 'src/lib/images'
+import { emailSchema } from 'src/lib/types'
 
 /*
 
-authentication
-submission model
-shared packages and api/lib
+@TODO:
+remove these comments
+JWT?
+- copy over generateUserDeleteUrl
+- create a new link
+grab puzzle and nft from db
 
 https://redwoodjs.com/docs/how-to/sending-emails#button-to-send-email
 https://redwoodjs.com/docs/how-to/sending-emails#using-one-service-from-another-service
 https://redwoodjs.com/docs/how-to/using-a-third-party-api
 
+example db query
+db.puzzle.findUnique({
+  where: { puzzleId },
+})
+
 */
 
-export const CLOUDINARY_CLOUD_NAME = 'infinity-keys'
-
-export const cloudinaryUrl = (
-  id: string,
-  height: number,
-  width: number,
-  circle: boolean,
-  dpr: number
-) => {
-  return buildUrl(id, {
-    cloud: {
-      cloudName: CLOUDINARY_CLOUD_NAME,
-    },
-    transformations: {
-      quality: '100',
-      radius: circle ? 'max' : 0,
-      format: 'png',
-      dpr,
-      resize: {
-        type: 'scale',
-        width,
-        height,
-      },
-    },
-  })
-}
-
-const SENDGRID_SENDER_ACCOUNT = 'noreply@infinitykeys.io'
-
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY || '')
-
-export const emailSchema = z.string().min(5).email()
 
 export const sendEmail: MutationResolvers['sendEmail'] = async ({
   email,
   puzzleId,
 }) => {
-  db.puzzle.findUnique({
-    where: { puzzleId },
-  })
+  // @TODO: delete these after db functionality
+  const puzzleName = 'Testing'
+  const cloudinaryId = 'ik-alpha-trophies/Map-03_lch59u'
+
+  // @TODO: replace with real link
+  const deleteMeLink = 'http://localhost:8910/'
 
   try {
     emailSchema.parse(email)
@@ -66,9 +47,6 @@ export const sendEmail: MutationResolvers['sendEmail'] = async ({
       message: 'Email not valid',
     }
   }
-
-  // const deleteMeLink = await generateUserDeleteUrl(user_id, email);
-  const deleteMeLink = 'loca'
 
   try {
     await sendgrid.send({

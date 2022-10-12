@@ -57,9 +57,6 @@ const HomePage = () => {
           <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black opacity-40"></div>
         </Section>
       </div>
-
-      <EmailSubmission />
-
       {/* Bottom of puzzle */}
 
       {/* About */}

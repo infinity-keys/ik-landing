@@ -1,5 +1,7 @@
 import type { QueryResolvers, MutationResolvers } from 'types/graphql'
 
+import { validate } from '@redwoodjs/api'
+
 import { db } from 'src/lib/db'
 
 import { sendEmail } from '../email/email-submission'
@@ -17,6 +19,9 @@ export const submission: QueryResolvers['submission'] = ({ id }) => {
 export const createSubmission: MutationResolvers['createSubmission'] = async ({
   input,
 }) => {
+  // throws error if not formatted like an email
+  if (input.email) validate(input.email, 'email', { email: true })
+
   const results = await db.submission.create({
     data: input,
   })
