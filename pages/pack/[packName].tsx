@@ -71,7 +71,10 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
           <ul
             role="list"
             className={clsx(
-              "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 sm:mt-6 my-10"
+              "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:mt-6 my-10",
+              puzzles.length === 2
+                ? "sm:max-w-xl sm:grid-cols-2"
+                : "sm:max-w-none sm:grid-cols-3"
             )}
           >
             {puzzles.map((puzzle, index) => {
