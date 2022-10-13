@@ -103,7 +103,7 @@ export const nftChecker = async (
   url.searchParams.set("account", account);
   url.searchParams.set("chainId", chainId.toString());
   url.searchParams.set("contractAddress", contractAddress);
-  url.searchParams.set("tokenId", tokenId.toString());
+  if (tokenId) url.searchParams.set("tokenId", tokenId.toString());
   url.searchParams.set("successRoute", successRoute);
   url.searchParams.set("finalStep", finalStep.toString());
 
