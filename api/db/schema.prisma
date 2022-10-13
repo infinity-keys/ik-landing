@@ -33,6 +33,7 @@ model Puzzle {
   steps Step[]
   packs Pack[]
   submissions Submission[]
+  nft Nft?
 }
 model Step {
   stepId String @id @default(cuid())
@@ -53,19 +54,22 @@ model Nft {
   contractName String
   data Json
   cloudinaryId String
+  puzzleId String @unique
+  puzzle Puzzle @relation(fields: [puzzleId], references: [puzzleId])
 }
 
 model Submission {
-  id String @id @default(cuid())
+  submissionId String @id @default(cuid())
   createdAt DateTime @default(now())
   puzzleId String
   puzzle Puzzle @relation(fields: [puzzleId], references: [puzzleId])
+  user User @relation(fields: [userId], references: [userId])
   userId String
   email String?
   address String?
 }
 model User {
-  id String @id @default(cuid())
+  userId String @id @default(cuid())
   createdAt  DateTime   @default(now())
   username String?
   publicAddress String?
@@ -74,4 +78,5 @@ model User {
   twitterProfile String?
   discordProfile String?
   lensProfile String?
+  submissions Submission[]
 }
