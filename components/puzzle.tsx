@@ -16,9 +16,6 @@ import { puzzleMachine } from "./puzzle.xstate";
 import useCurrentWidth from "@hooks/useCurrentWidth";
 import LoadingIcon from "@components/loading-icon";
 import Button from "./button";
-import { useIKMinter } from "@hooks/useIKMinter";
-import { nftChecker } from "@lib/fetchers";
-import Link from "next/link";
 
 interface PuzzleProps {
   count: number;
@@ -26,9 +23,6 @@ interface PuzzleProps {
   boxes?: boolean;
   failMessage?: string;
   SuccessComponent?: ComponentType<{}>;
-  nftCheckParameters?: any;
-  successRoute?: string;
-  finalStep?: boolean;
   forwardOnFail?: boolean;
 }
 
@@ -45,9 +39,6 @@ const Puzzle = ({
   // If success component exists, then Puzzle **will not route to success page**.
   // Use this for entirely inline/embedded Puzzles.
   SuccessComponent,
-  nftCheckParameters,
-  successRoute,
-  finalStep,
   // Enable/disable forwarding to fail_route
   forwardOnFail = true,
 }: PuzzleProps) => {
@@ -84,45 +75,6 @@ const Puzzle = ({
     if (context.count === context.text.length) send("GUESS");
   };
 
-  const [nftApproval, setNftApproval] = useState(false);
-  const { address, isConnected } = useIKMinter();
-
-  const { nftChainId, nftTokenId, nftContractAddress } =
-    nftCheckParameters || {};
-
-  useEffect(() => {
-    const checkNFT = async () => {
-      if (address && nftCheckParameters) {
-        const checker = await nftChecker(
-          address,
-          nftChainId,
-          nftContractAddress,
-          nftTokenId,
-          successRoute || "/",
-          finalStep || true //true for default ?
-        );
-        setNftApproval(checker);
-
-        // Trying to set the boxes values to fill if they can pass it
-        // const text = "*".repeat(context.count);
-        // if (checker) send({ type: "INPUT", text });
-      }
-    };
-
-    checkNFT();
-  }, [
-    address,
-    isConnected,
-    nftChainId,
-    nftTokenId,
-    nftContractAddress,
-    send,
-    context.count,
-    nftCheckParameters,
-    successRoute,
-    finalStep,
-  ]);
-
   return (
     <>
       {(matches("guessing") || matches("guessCorrect.go")) && (
@@ -156,24 +108,6 @@ const Puzzle = ({
                     }))}
                   />
                 )}
-                {!boxes && (
-                  <div className="flex items-center sm:w-full">
-                    <input
-                      onChange={(e) =>
-                        send({ type: "INPUT", text: e.target.value })
-                      }
-                      type="text"
-                      className="text-blue-800 w-full"
-                      size={context.count}
-                      autoFocus={true}
-                      tabIndex={0}
-                      onPaste={(e) => e.preventDefault()}
-                    />
-                    <div className="counter text-lg p-4 text-white w-11">
-                      {context.count - context.text.length}
-                    </div>
-                  </div>
-                )}
               </div>
               <div
                 className={clsx("mb-2", {
@@ -188,28 +122,13 @@ const Puzzle = ({
                 </div>
               </div>
 
-              <div className="opacity-50 -mt-8 mb-2">
-                {nftApproval && (
-                  <Markdown>
-                    Your NFT gives you a free pass on this puzzle!
-                  </Markdown>
-                )}
+              <div data-cy="submit" className="flex justify-center">
+                <Button
+                  text="Submit"
+                  type="submit"
+                  disabled={!matches("readyToGuess")}
+                />
               </div>
-              {!nftApproval ? (
-                <div data-cy="submit" className="flex justify-center">
-                  <Button
-                    text="Submit"
-                    type="submit"
-                    disabled={!matches("readyToGuess") && !nftApproval}
-                  />
-                </div>
-              ) : (
-                <div className="flex justify-center">
-                  <Button text="" type="submit">
-                    <Link href={"/solved/mj-prompt-6"}>Submit</Link>
-                  </Button>
-                </div>
-              )}
             </form>
           </div>
         </div>

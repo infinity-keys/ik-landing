@@ -14,6 +14,7 @@ import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
 import { buildUrlString } from "@lib/utils";
 import { cloudinaryUrl } from "@lib/images";
+import NftCheck from "@components/nft-check";
 
 export interface PuzzlePageProps {
   name: string;
@@ -74,15 +75,20 @@ const Dev: NextPage<PuzzlePageProps> = ({
           )}
         </div>
 
-        <Puzzle
-          count={count}
-          puzzleId={puzzleId}
-          boxes={inputType === "boxes"}
-          failMessage={failMessage}
-          nftCheckParameters={nftCheckParameters}
-          successRoute={successRoute}
-          finalStep={finalStep}
-        />
+        {nftCheckParameters ? (
+          <NftCheck
+            nftCheckParameters={nftCheckParameters}
+            successRoute={successRoute}
+            finalStep={finalStep}
+          />
+        ) : (
+          <Puzzle
+            count={count}
+            puzzleId={puzzleId}
+            boxes={inputType === "boxes"}
+            failMessage={failMessage}
+          />
+        )}
       </main>
 
       <KeysLink />
