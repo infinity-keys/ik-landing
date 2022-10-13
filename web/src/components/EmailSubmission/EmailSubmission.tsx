@@ -29,7 +29,7 @@ const CREATE_SUBMISSION_MUTATION = gql`
     createSubmission(input: $input) {
       email
       address
-      id
+      puzzleId
     }
   }
 `

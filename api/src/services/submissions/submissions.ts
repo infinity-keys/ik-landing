@@ -10,9 +10,9 @@ export const submissions: QueryResolvers['submissions'] = () => {
   return db.submission.findMany()
 }
 
-export const submission: QueryResolvers['submission'] = ({ id }) => {
+export const submission: QueryResolvers['submission'] = ({ submissionId }) => {
   return db.submission.findUnique({
-    where: { id },
+    where: { submissionId },
   })
 }
 
@@ -37,19 +37,19 @@ export const createSubmission: MutationResolvers['createSubmission'] = async ({
 }
 
 export const updateSubmission: MutationResolvers['updateSubmission'] = ({
-  id,
+  submissionId,
   input,
 }) => {
   return db.submission.update({
     data: input,
-    where: { id },
+    where: { submissionId },
   })
 }
 
 export const deleteSubmission: MutationResolvers['deleteSubmission'] = ({
-  id,
+  submissionId,
 }) => {
   return db.submission.delete({
-    where: { id },
+    where: { submissionId },
   })
 }

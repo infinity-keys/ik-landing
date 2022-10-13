@@ -1,8 +1,8 @@
 import sendgrid from '@sendgrid/mail'
 import { MutationResolvers } from 'types/graphql'
 
-// import { db } from 'src/lib/db'
 import { SENDGRID_SENDER_ACCOUNT } from 'src/lib/constants'
+import { db } from 'src/lib/db'
 import { cloudinaryUrl } from 'src/lib/images'
 import { emailSchema } from 'src/lib/types'
 
@@ -13,16 +13,6 @@ remove these comments
 JWT?
 - copy over generateUserDeleteUrl
 - create a new link
-grab puzzle and nft from db
-
-https://redwoodjs.com/docs/how-to/sending-emails#button-to-send-email
-https://redwoodjs.com/docs/how-to/sending-emails#using-one-service-from-another-service
-https://redwoodjs.com/docs/how-to/using-a-third-party-api
-
-example db query
-db.puzzle.findUnique({
-  where: { puzzleId },
-})
 
 */
 
@@ -34,10 +24,13 @@ export const sendEmail: MutationResolvers['sendEmail'] = async ({
 }) => {
   // @TODO: delete these after db functionality
   const puzzleName = 'Testing'
-  const cloudinaryId = 'ik-alpha-trophies/Map-03_lch59u'
 
   // @TODO: replace with real link
   const deleteMeLink = 'http://localhost:8910/'
+
+  const { cloudinaryId } = await db.puzzle
+    .findUnique({ where: { puzzleId } })
+    .nft()
 
   try {
     emailSchema.parse(email)

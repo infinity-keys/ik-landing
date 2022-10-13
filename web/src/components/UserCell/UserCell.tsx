@@ -3,9 +3,9 @@ import type { FindUserQuery, FindUserQueryVariables } from 'types/graphql'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 export const QUERY = gql`
-  query FindUserQuery($id: String!) {
-    user: user(id: $id) {
-      id
+  query FindUserQuery($userId: String!) {
+    user: user(userId: $userId) {
+      userId
       username
       publicAddress
     }

@@ -63,6 +63,7 @@ model Submission {
   createdAt DateTime @default(now())
   puzzleId String
   puzzle Puzzle @relation(fields: [puzzleId], references: [puzzleId])
+  // can we submit email without creating User?
   user User @relation(fields: [userId], references: [userId])
   userId String
   email String?
