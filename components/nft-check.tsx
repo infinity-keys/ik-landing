@@ -33,8 +33,8 @@ const NftCheck = ({
     nftCheckParameters || {};
 
   useEffect(() => {
-    setIsOnCorrectChain(chain?.id === nftCheckParameters.nftChainId);
-  }, [chain, nftCheckParameters]);
+    setIsOnCorrectChain(chain?.id === nftChainId);
+  }, [chain, nftChainId]);
 
   useEffect(() => {
     const checkNFT = async () => {
