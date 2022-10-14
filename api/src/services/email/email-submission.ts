@@ -9,7 +9,6 @@ import { emailSchema } from 'src/lib/types'
 /*
 
 @TODO:
-remove these comments
 JWT?
 - copy over generateUserDeleteUrl
 - create a new link
@@ -28,6 +27,7 @@ export const sendEmail: MutationResolvers['sendEmail'] = async ({
   // @TODO: replace with real link
   const deleteMeLink = 'http://localhost:8910/'
 
+  // @TODO: can we import this from the puzzle service file?
   const { cloudinaryId } = await db.puzzle
     .findUnique({ where: { puzzleId } })
     .nft()
