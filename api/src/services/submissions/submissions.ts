@@ -53,3 +53,11 @@ export const deleteSubmission: MutationResolvers['deleteSubmission'] = ({
     where: { submissionId },
   })
 }
+
+export const deleteSubmissionsByEmail: MutationResolvers['deleteSubmissionsByEmail'] =
+  ({ jwt }) => {
+    console.log('jwt: ', jwt)
+    // console.log('email: ', email)
+    // throw new Error('yo')
+    return { success: true, message: 'yay' }
+  }

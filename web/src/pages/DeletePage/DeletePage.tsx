@@ -1,32 +1,45 @@
 import { useState } from 'react'
 
+import {
+  DeleteSubmissionsByEmailMutation,
+  DeleteSubmissionsByEmailMutationVariables,
+} from 'types/graphql'
+
 import { Link, routes } from '@redwoodjs/router'
+import { useMutation } from '@redwoodjs/web'
 
 import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
 import Heading from 'src/components/Heading/Heading'
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Seo from 'src/components/Seo/Seo'
 import Text from 'src/components/Text/Text'
 import Wrapper from 'src/components/Wrapper/Wrapper'
 import Logo from 'src/svgs/Logo'
 
+const DELETE_SUBMISSIONS_BY_EMAIL_MUTATION = gql`
+  mutation DeleteSubmissionsByEmailMutation($jwt: String!) {
+    deleteSubmissionsByEmail(jwt: $jwt) {
+      success
+      message
+    }
+  }
+`
+
 const DeletePage = ({ jwt }) => {
   const [successMessage, setSuccessMessage] = useState('')
-  const [isError, setIsError] = useState(false)
+
+  const [create, { loading, error }] = useMutation<
+    DeleteSubmissionsByEmailMutation,
+    DeleteSubmissionsByEmailMutationVariables
+  >(DELETE_SUBMISSIONS_BY_EMAIL_MUTATION, {
+    onCompleted: () => {
+      setSuccessMessage('Your info has been deleted. Thank you for playing!')
+    },
+  })
 
   const handleClick = async (jwt: string) => {
-    console.log('jwt: ', jwt)
-    // try {
-    //   const res = await deleteUser(jwt)
-    //   if (!res.ok) {
-    //     throw Error
-    //   }
-    //   setIsError(false)
-    //   setSuccessMessage('Your info has been deleted. Thank you for playing!')
-    // } catch (e) {
-    //   setIsError(true)
-    //   setSuccessMessage('')
-    // }
+    create({ variables: { jwt } })
   }
 
   return (
@@ -47,7 +60,9 @@ const DeletePage = ({ jwt }) => {
           </>
         )}
 
-        {!successMessage && (
+        {loading && <LoadingIcon />}
+
+        {!successMessage && !loading && (
           <>
             <div className="mt-7">
               <Heading>Delete My Data</Heading>
@@ -66,7 +81,7 @@ const DeletePage = ({ jwt }) => {
           </>
         )}
 
-        {isError && (
+        {error && (
           <div className="mt-4 flex justify-center">
             <Alert text="Something went wrong with your request. If this keeps happening, please contact us on our [Discord channel](https://discord.com/invite/infinitykeys)" />
           </div>

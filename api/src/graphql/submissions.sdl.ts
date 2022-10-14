@@ -7,6 +7,11 @@ export const schema = gql`
     address: String
   }
 
+  type DeleteSubmissionsByEmailResponse {
+    success: Boolean!
+    message: String
+  }
+
   type Query {
     submissions: [Submission!]! @requireAuth
     submission(submissionId: String!): Submission @requireAuth
@@ -33,5 +38,7 @@ export const schema = gql`
       input: UpdateSubmissionInput!
     ): Submission! @requireAuth
     deleteSubmission(submissionId: String!): Submission! @requireAuth
+    deleteSubmissionsByEmail(jwt: String!): DeleteSubmissionsByEmailResponse!
+      @skipAuth
   }
 `
