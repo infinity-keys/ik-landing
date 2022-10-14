@@ -8645,6 +8645,9 @@ __metadata:
     "@redwoodjs/graphql-server": ^3.0.3
     "@sendgrid/mail": ^7.7.0
     cloudinary-build-url: ^0.2.4
+    jose: ^4.10.0
+    nanoid: ^3.0.0
+    uuid: ^9.0.0
     zod: ^3.19.1
   languageName: unknown
   linkType: soft
@@ -17696,6 +17699,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jose@npm:^4.10.0":
+  version: 4.10.0
+  resolution: "jose@npm:4.10.0"
+  checksum: aeea02a28b817c46ad6ca21a5234ceab82c1a5c3e3b375f6be57bc9ebd993dbeb162d6fb6e0abef982281ee55fe5548aecaf74170cbe1fcba6be1c6f1a175a07
+  languageName: node
+  linkType: hard
+
 "js-cookie@npm:^2.2.1":
   version: 2.2.1
   resolution: "js-cookie@npm:2.2.1"
@@ -19816,7 +19826,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.3.1, nanoid@npm:^3.3.4":
+"nanoid@npm:^3.0.0, nanoid@npm:^3.3.1, nanoid@npm:^3.3.4":
   version: 3.3.4
   resolution: "nanoid@npm:3.3.4"
   bin:
@@ -26750,7 +26760,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:9.0.0":
+"uuid@npm:9.0.0, uuid@npm:^9.0.0":
   version: 9.0.0
   resolution: "uuid@npm:9.0.0"
   bin:

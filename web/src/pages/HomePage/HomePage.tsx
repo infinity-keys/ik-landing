@@ -59,6 +59,10 @@ const HomePage = () => {
       </div>
       {/* Bottom of puzzle */}
 
+      <EmailSubmission
+        puzzleId="cl97chku10036zkl6v1811wya"
+        userId="cl97com230415zkl6azatt0rw"
+      />
       {/* About */}
       <main className="w-full bg-blue-800">
         <Section>

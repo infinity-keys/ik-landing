@@ -2,7 +2,10 @@ import type { QueryResolvers, MutationResolvers } from 'types/graphql'
 
 import { validate } from '@redwoodjs/api'
 
+import { IK_CLAIMS_NAMESPACE } from 'src/lib/constants'
 import { db } from 'src/lib/db'
+import { verifyToken } from 'src/lib/jwt'
+import { IkJwt } from 'src/lib/types'
 
 import { sendEmail } from '../email/email-submission'
 
@@ -30,6 +33,7 @@ export const createSubmission: MutationResolvers['createSubmission'] = async ({
     sendEmail({
       email: input.email,
       puzzleId: input.puzzleId,
+      userId: input.userId,
     })
   }
 
@@ -54,10 +58,23 @@ export const deleteSubmission: MutationResolvers['deleteSubmission'] = ({
   })
 }
 
+// @TODO: this should probably be in its own file since it's deleting
+// submissions and users
 export const deleteSubmissionsByEmail: MutationResolvers['deleteSubmissionsByEmail'] =
-  ({ jwt }) => {
-    console.log('jwt: ', jwt)
-    // console.log('email: ', email)
-    // throw new Error('yo')
-    return { success: true, message: 'yay' }
+  async ({ jwt }) => {
+    const verified = await verifyToken(jwt)
+    const payload = verified.payload as unknown as IkJwt
+
+    const { sub: userId } = payload
+    const { email } = payload.claims[IK_CLAIMS_NAMESPACE]
+
+    await db.submission.deleteMany({
+      where: { OR: [{ email }, { userId }] },
+    })
+
+    await db.user.delete({
+      where: { userId },
+    })
+
+    return { success: true }
   }

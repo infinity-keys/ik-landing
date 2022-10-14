@@ -7,6 +7,9 @@
     "@redwoodjs/graphql-server": "^3.0.3",
     "@sendgrid/mail": "^7.7.0",
     "cloudinary-build-url": "^0.2.4",
+    "jose": "^4.10.0",
+    "nanoid": "^3.0.0",
+    "uuid": "^9.0.0",
     "zod": "^3.19.1"
   }
 }

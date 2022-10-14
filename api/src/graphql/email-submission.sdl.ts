@@ -5,7 +5,10 @@ export const schema = gql`
   }
 
   type Mutation {
-    sendEmail(email: String!, puzzleId: String!): EmailSubmissionResponse!
-      @skipAuth
+    sendEmail(
+      email: String!
+      puzzleId: String!
+      userId: String!
+    ): EmailSubmissionResponse! @skipAuth
   }
 `
