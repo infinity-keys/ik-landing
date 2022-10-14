@@ -24,6 +24,7 @@ model Pack {
 }
 model Puzzle {
   puzzleId String @id @default(cuid())
+  puzzleName String
   path String
   successMessage String?
   rewardNft String

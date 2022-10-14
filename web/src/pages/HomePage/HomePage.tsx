@@ -1,7 +1,6 @@
 // import Alert from 'src/components/Alert/Alert'
 import EmailNewsletter from 'src/components/EmailNewsletter/EmailNewsletter'
 import EmailPartner from 'src/components/EmailPartner/EmailPartner'
-import EmailSubmission from 'src/components/EmailSubmission/EmailSubmission'
 import Heading from 'src/components/Heading/Heading'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'

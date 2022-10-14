@@ -7,15 +7,6 @@ import { cloudinaryUrl } from 'src/lib/images'
 import { emailSchema } from 'src/lib/types'
 import { generateUserDeleteUrl } from 'src/lib/utils'
 
-/*
-
-@TODO:
-JWT?
-- copy over generateUserDeleteUrl
-- create a new link
-
-*/
-
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY || '')
 
 export const sendEmail: MutationResolvers['sendEmail'] = async ({
@@ -23,16 +14,12 @@ export const sendEmail: MutationResolvers['sendEmail'] = async ({
   puzzleId,
   userId,
 }) => {
-  // @TODO: delete these after db functionality
-  const puzzleName = 'Testing'
-
-  // @TODO: replace with real link
   const deleteMeLink = await generateUserDeleteUrl(userId, email)
 
   // @TODO: can we import this from the puzzle service file?
-  const { cloudinaryId } = await db.puzzle
-    .findUnique({ where: { puzzleId } })
-    .nft()
+  const puzzle = db.puzzle.findUnique({ where: { puzzleId } })
+  const { puzzleName } = await puzzle
+  const { cloudinaryId } = await puzzle.nft()
 
   try {
     emailSchema.parse(email)
