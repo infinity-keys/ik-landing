@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
-import { useNetwork } from "wagmi";
+//1155: {"nftChainId": , "nftTokenId":, "nftContractAddress":""}
+//721: {"nftChainId": , "nftContractAddress":""}
 
+import { useEffect, useState } from "react";
 import { useIKMinter } from "@hooks/useIKMinter";
 
 import { PUZZLE_SUCCESS_BASE } from "@lib/constants";
@@ -24,21 +25,15 @@ const NftCheck = ({
 }: NftCheckProps) => {
   const [nftApproval, setNftApproval] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isOnCorrectChain, setIsOnCorrectChain] = useState(false);
 
   const { address, isConnected, mounted } = useIKMinter();
-  const chain = useNetwork().chain;
 
   const { nftChainId, nftTokenId, nftContractAddress } =
     nftCheckParameters || {};
 
   useEffect(() => {
-    setIsOnCorrectChain(chain?.id === nftChainId);
-  }, [chain, nftChainId]);
-
-  useEffect(() => {
     const checkNFT = async () => {
-      if (address && isOnCorrectChain) {
+      if (address) {
         setLoading(true);
         const checker = await nftChecker(
           address,
@@ -56,7 +51,6 @@ const NftCheck = ({
     checkNFT();
   }, [
     address,
-    isOnCorrectChain,
     isConnected,
     nftChainId,
     nftTokenId,
@@ -93,12 +87,6 @@ const NftCheck = ({
             <LoadingIcon />
           </div>
         </>
-      )}
-
-      {address && !isOnCorrectChain && !loading && (
-        <div className="pb-8 max-w-lg mx-auto flex justify-center">
-          <Alert text="You are not on the correct chain. Please switch." />
-        </div>
       )}
 
       <div className="flex justify-center">
