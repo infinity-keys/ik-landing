@@ -53,7 +53,14 @@ const Dev: NextPage<PuzzlePageProps> = ({
       />
 
       <main className="text-center pt-10 md:pt-20 w-full px-4">
-        <div className="max-w-prose mx-auto bg-black/10 p-4 mb-12 rounded-md">
+        <Puzzle
+          count={count}
+          puzzleId={puzzleId}
+          boxes={inputType === "boxes"}
+          failMessage={failMessage}
+        />
+
+        <div className="max-w-prose mx-auto bg-black/10 p-4 mt-12 md:mt-16 mb-12 rounded-md">
           {instructions && (
             <PuzzleLandingInfo title="Instructions" content={instructions} />
           )}
@@ -67,13 +74,6 @@ const Dev: NextPage<PuzzlePageProps> = ({
             />
           )}
         </div>
-
-        <Puzzle
-          count={count}
-          puzzleId={puzzleId}
-          boxes={inputType === "boxes"}
-          failMessage={failMessage}
-        />
       </main>
 
       <KeysLink />
