@@ -9,7 +9,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log("it works");
   if (req.method !== "DELETE") {
     return res.status(405).end();
   }
