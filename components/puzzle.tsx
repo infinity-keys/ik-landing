@@ -108,24 +108,6 @@ const Puzzle = ({
                     }))}
                   />
                 )}
-                {!boxes && (
-                  <div className="flex items-center sm:w-full">
-                    <input
-                      onChange={(e) =>
-                        send({ type: "INPUT", text: e.target.value })
-                      }
-                      type="text"
-                      className="text-blue-800 w-full"
-                      size={context.count}
-                      autoFocus={true}
-                      tabIndex={0}
-                      onPaste={(e) => e.preventDefault()}
-                    />
-                    <div className="counter text-lg p-4 text-white w-11">
-                      {context.count - context.text.length}
-                    </div>
-                  </div>
-                )}
               </div>
               <div
                 className={clsx("mb-2", {
@@ -139,6 +121,7 @@ const Puzzle = ({
                   </Markdown>
                 </div>
               </div>
+
               <div data-cy="submit" className="flex justify-center">
                 <Button
                   text="Submit"
