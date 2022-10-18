@@ -1,9 +1,9 @@
-import { MutationResolvers } from 'types/graphql'
+import { QueryResolvers } from 'types/graphql'
 
 import { chainIds, contractLookup } from 'src/lib/walletConstants'
 import { AVAX_CHAIN_ID } from 'src/lib/walletConstants'
 
-export const checkClaimed: MutationResolvers['checkClaimed'] = async ({
+export const checkClaimed: QueryResolvers['checkClaimed'] = async ({
   account,
   tokenId,
 }) => {
