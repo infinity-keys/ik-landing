@@ -33,6 +33,6 @@ export const checkWalletAge: QueryResolvers['checkWalletAge'] = async ({
 
     return { success: true, approved: age > 5760 }
   }
-  // @TODO:
+  // @TODO: >= 1?
   return { success: true, approved: walletTxCount > 1 }
 }
