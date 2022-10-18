@@ -6,12 +6,7 @@ export const schema = gql`
     message: String
   }
 
-  type CheckClaimedInput {
-    account: String!
-    tokenId: String!
-  }
-
-  type Mutation {
+  type Query {
     checkClaimed(account: String!, tokenId: String!): CheckClaimedResponse!
       @skipAuth
   }
