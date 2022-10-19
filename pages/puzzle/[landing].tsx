@@ -60,21 +60,6 @@ const Dev: NextPage<PuzzlePageProps> = ({
       />
 
       <main className="text-center pt-10 md:pt-20 w-full px-4">
-        <div className="max-w-prose mx-auto bg-black/10 p-4 mb-12 rounded-md">
-          {instructions && (
-            <PuzzleLandingInfo title="Instructions" content={instructions} />
-          )}
-
-          {challenge && (
-            <PuzzleLandingInfo
-              title="Challenge"
-              content={challenge}
-              marginTop={!!instructions}
-              defaultOpen
-            />
-          )}
-        </div>
-
         {nftCheckParameters ? (
           <NftCheck
             nftCheckParameters={nftCheckParameters}
@@ -89,6 +74,21 @@ const Dev: NextPage<PuzzlePageProps> = ({
             failMessage={failMessage}
           />
         )}
+
+        <div className="max-w-prose mx-auto bg-black/10 p-4 mt-12 md:mt-16 mb-12 rounded-md">
+          {instructions && (
+            <PuzzleLandingInfo title="Instructions" content={instructions} />
+          )}
+
+          {challenge && (
+            <PuzzleLandingInfo
+              title="Challenge"
+              content={challenge}
+              marginTop={!!instructions}
+              defaultOpen
+            />
+          )}
+        </div>
       </main>
 
       <KeysLink />
