@@ -14,6 +14,7 @@ import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
 import { buildUrlString } from "@lib/utils";
 import { cloudinaryUrl } from "@lib/images";
+import NftCheck from "@components/nft-check";
 
 export interface PuzzlePageProps {
   name: string;
@@ -24,6 +25,9 @@ export interface PuzzlePageProps {
   instructions?: string;
   failMessage?: string;
   cloudinaryId?: string;
+  nftCheckParameters?: any;
+  successRoute: string;
+  finalStep: boolean;
 }
 interface PuzzlePageParams {
   params: {
@@ -40,6 +44,9 @@ const Dev: NextPage<PuzzlePageProps> = ({
   instructions,
   failMessage,
   cloudinaryId,
+  nftCheckParameters,
+  successRoute,
+  finalStep,
 }) => {
   const { asPath } = useRouter();
 
@@ -53,12 +60,20 @@ const Dev: NextPage<PuzzlePageProps> = ({
       />
 
       <main className="text-center pt-10 md:pt-20 w-full px-4">
-        <Puzzle
-          count={count}
-          puzzleId={puzzleId}
-          boxes={inputType === "boxes"}
-          failMessage={failMessage}
-        />
+        {nftCheckParameters ? (
+          <NftCheck
+            nftCheckParameters={nftCheckParameters}
+            successRoute={successRoute}
+            finalStep={finalStep}
+          />
+        ) : (
+          <Puzzle
+            count={count}
+            puzzleId={puzzleId}
+            boxes={inputType === "boxes"}
+            failMessage={failMessage}
+          />
+        )}
 
         <div className="max-w-prose mx-auto bg-black/10 p-4 mt-12 md:mt-16 mb-12 rounded-md">
           {instructions && (
@@ -106,6 +121,9 @@ export async function getStaticProps({
       instructions,
       fail_message,
       nft,
+      nft_check_parameters,
+      success_route,
+      final_step,
     },
   ] = puzzles;
 
@@ -119,6 +137,9 @@ export async function getStaticProps({
       instructions: instructions || "",
       failMessage: fail_message || "",
       cloudinaryId: nft?.nft_metadatum?.cloudinary_id || "",
+      nftCheckParameters: nft_check_parameters || null,
+      successRoute: success_route || "",
+      finalStep: final_step || false,
     },
   };
 }

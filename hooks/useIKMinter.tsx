@@ -12,5 +12,6 @@ export const useIKMinter = () => {
   return {
     address: mounted && address,
     isConnected: mounted && isConnected,
+    mounted: mounted,
   };
 };
