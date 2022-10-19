@@ -152,3 +152,54 @@ Now add to `.env`:
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/ikdb_dev?connection_limit=1"
 TEST_DATABASE_URL="postgresql://postgres:postgres@localhost:5432/ikdb_test?connection_limit=1"
 ```
+
+# IK Instructions
+
+## Local db
+
+### Setting up db for the first time
+
+1. Install Docker for Mac/Windows
+2. Run:
+  ```bash
+  docker-compose up -d
+  ```
+3. Ensure root `.env` contains the line:
+  ```env
+  DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres?connection_limit=1"
+  ```
+4. Install [Beekeeper Studio Community Edition](https://github.com/beekeeper-studio/beekeeper-studio/releases)
+5. Within Beekeeper Studio, connect to this database with the following settings:
+  ```
+  Connection type: Postgres
+  Connection mode: Host and Port
+  Host: localhost
+  Port: 5432
+  Enable SSL: disabled
+  User: postgres
+  Password: postgres
+  Default Database: postgres
+  SSH Tunnel: disabled
+  ```
+6. Click "Connect" and note there are no tables yet.
+
+### Daily db interaction
+
+Turn off the db by running:
+
+```bash
+docker-compose down
+```
+
+Turn on the db by running:
+
+```bash
+docker-compose up -d
+```
+
+Migrate all database tables and columns (but NOT actual data):
+
+```bash
+
+yarn rw prisma migrate dev
+```
