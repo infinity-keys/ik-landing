@@ -16,6 +16,7 @@ import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 
 import './index.css'
+import 'loaders.css/loaders.min.css'
 import '@rainbow-me/rainbowkit/styles.css'
 
 export const IKTheme = loMerge(darkTheme(), {
