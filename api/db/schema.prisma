@@ -80,3 +80,15 @@ model User {
   lensProfile String?
   submissions Submission[]
 }
+
+model User {
+  id String @id @default(cuid())
+  createdAt  DateTime   @default(now())
+  username String?
+  publicAddress String?
+  nonce String
+  email String?
+  twitterProfile String?
+  discordProfile String?
+  lensProfile String?
+}
