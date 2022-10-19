@@ -9,7 +9,7 @@ const UserPage = () => {
       <MetaTags title="User" description="User page" />
 
       <Wrapper>
-        <ProfileCell id="cl8ubidnr00257zl6j7quqzbx" />
+        <ProfileCell userId="cl9fx1rkj0017w9l6cakq27kf" />
       </Wrapper>
     </>
   )

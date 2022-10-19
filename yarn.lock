@@ -18412,6 +18412,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"loaders.css@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "loaders.css@npm:0.1.2"
+  checksum: 962b49327a906fa3d9dd4551ef46c6ba8e0f56fb700b1ab20843169a0dc90b1992a08fa55ddaf42feb5700833ecf8b389cb6f1b8c20dd2594037b1d74a5e9e50
+  languageName: node
+  linkType: hard
+
 "locate-path@npm:^3.0.0":
   version: 3.0.0
   resolution: "locate-path@npm:3.0.0"
@@ -27094,6 +27101,7 @@ __metadata:
     cloudinary-build-url: ^0.2.4
     clsx: ^1.2.1
     ethers: ^5.7.1
+    loaders.css: ^0.1.2
     lodash: ^4.17.21
     postcss: ^8.4.16
     postcss-loader: ^7.0.1
