@@ -20,15 +20,15 @@ export const createSubmission: MutationResolvers['createSubmission'] = async ({
   input,
 }) => {
   // throws error if not formatted like an email
-  if (input.email) validate(input.email, 'email', { email: true })
+  if (input.data?.email) validate(input.data.email, 'email', { email: true })
 
   const results = await db.submission.create({
     data: input,
   })
 
-  if (input.email) {
+  if (input.data?.email) {
     sendEmail({
-      email: input.email,
+      email: input.data.email as string,
       puzzleId: input.puzzleId,
     })
   }

@@ -3,8 +3,7 @@ export const schema = gql`
     submissionId: String!
     puzzleId: String!
     userId: String!
-    email: String
-    address: String
+    data: JSONObject
   }
 
   type Query {
@@ -15,15 +14,13 @@ export const schema = gql`
   input CreateSubmissionInput {
     puzzleId: String!
     userId: String!
-    email: String
-    address: String
+    data: JSONObject
   }
 
   input UpdateSubmissionInput {
     puzzleId: String
     userId: String
-    email: String
-    address: String
+    data: JSONObject
   }
 
   type Mutation {

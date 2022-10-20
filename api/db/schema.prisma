@@ -65,8 +65,7 @@ model Submission {
   puzzle Puzzle @relation(fields: [puzzleId], references: [puzzleId])
   user User @relation(fields: [userId], references: [userId])
   userId String
-  email String?
-  address String?
+  data Json?
 }
 model User {
   userId String @id @default(cuid())
