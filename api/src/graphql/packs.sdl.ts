@@ -1,6 +1,6 @@
 export const schema = gql`
   type Pack {
-    packId: String!
+    id: String!
     name: String!
     path: String!
     rewardNftId: String!
@@ -15,7 +15,6 @@ export const schema = gql`
   }
 
   input CreatePackInput {
-    packId: String!
     name: String!
     path: String!
     rewardNftId: String!
@@ -24,7 +23,6 @@ export const schema = gql`
   }
 
   input UpdatePackInput {
-    packId: String
     name: String
     path: String
     rewardNftId: String

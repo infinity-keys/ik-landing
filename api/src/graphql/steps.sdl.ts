@@ -1,6 +1,6 @@
 export const schema = gql`
   type Step {
-    stepId: String!
+    id: String!
     solution: String!
     failMessage: String
     successMessage: String
@@ -13,11 +13,10 @@ export const schema = gql`
 
   type Query {
     steps: [Step!]! @requireAuth
-    step(stepId: String!): Step @requireAuth
+    step(id: String!): Step @requireAuth
   }
 
   input CreateStepInput {
-    stepId: String!
     solution: String!
     failMessage: String
     successMessage: String
@@ -28,7 +27,6 @@ export const schema = gql`
   }
 
   input UpdateStepInput {
-    stepId: String
     solution: String
     failMessage: String
     successMessage: String
@@ -40,7 +38,7 @@ export const schema = gql`
 
   type Mutation {
     createStep(input: CreateStepInput!): Step! @requireAuth
-    updateStep(stepId: String!, input: UpdateStepInput!): Step! @requireAuth
-    deleteStep(stepId: String!): Step! @requireAuth
+    updateStep(id: String!, input: UpdateStepInput!): Step! @requireAuth
+    deleteStep(id: String!): Step! @requireAuth
   }
 `

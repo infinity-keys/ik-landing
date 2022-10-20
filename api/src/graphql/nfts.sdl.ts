@@ -1,6 +1,6 @@
 export const schema = gql`
   type Nft {
-    nftId: String!
+    id: String!
     tokenId: Int!
     contractName: String!
     data: JSON!
@@ -11,11 +11,10 @@ export const schema = gql`
 
   type Query {
     nfts: [Nft!]! @requireAuth
-    nft(nftId: String!): Nft @requireAuth
+    nft(id: String!): Nft @requireAuth
   }
 
   input CreateNftInput {
-    nftId: String!
     tokenId: Int!
     contractName: String!
     data: JSON!
@@ -24,7 +23,6 @@ export const schema = gql`
   }
 
   input UpdateNftInput {
-    nftId: String
     tokenId: Int
     contractName: String
     data: JSON
@@ -34,7 +32,7 @@ export const schema = gql`
 
   type Mutation {
     createNft(input: CreateNftInput!): Nft! @requireAuth
-    updateNft(nftId: String!, input: UpdateNftInput!): Nft! @requireAuth
-    deleteNft(nftId: String!): Nft! @requireAuth
+    updateNft(id: String!, input: UpdateNftInput!): Nft! @requireAuth
+    deleteNft(id: String!): Nft! @requireAuth
   }
 `

@@ -10,9 +10,9 @@ export const nfts: QueryResolvers['nfts'] = () => {
   return db.nft.findMany()
 }
 
-export const nft: QueryResolvers['nft'] = ({ nftId }) => {
+export const nft: QueryResolvers['nft'] = ({ id }) => {
   return db.nft.findUnique({
-    where: { nftId },
+    where: { id },
   })
 }
 
@@ -22,21 +22,21 @@ export const createNft: MutationResolvers['createNft'] = ({ input }) => {
   })
 }
 
-export const updateNft: MutationResolvers['updateNft'] = ({ nftId, input }) => {
+export const updateNft: MutationResolvers['updateNft'] = ({ id, input }) => {
   return db.nft.update({
     data: input,
-    where: { nftId },
+    where: { id },
   })
 }
 
-export const deleteNft: MutationResolvers['deleteNft'] = ({ nftId }) => {
+export const deleteNft: MutationResolvers['deleteNft'] = ({ id }) => {
   return db.nft.delete({
-    where: { nftId },
+    where: { id },
   })
 }
 
 export const Nft: NftRelationResolvers = {
   puzzle: (_obj, { root }) => {
-    return db.nft.findUnique({ where: { nftId: root?.nftId } }).puzzle()
+    return db.nft.findUnique({ where: { id: root?.id } }).puzzle()
   },
 }

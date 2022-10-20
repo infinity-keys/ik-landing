@@ -17,7 +17,7 @@ export const sendEmail: MutationResolvers['sendEmail'] = async ({
   const deleteMeLink = await generateUserDeleteUrl(userId, email)
 
   // @TODO: can we import this from the puzzle service file?
-  const puzzle = db.puzzle.findUnique({ where: { puzzleId } })
+  const puzzle = db.puzzle.findUnique({ where: { id: puzzleId } })
   const { puzzleName } = await puzzle
   const { cloudinaryId } = await puzzle.nft()
 

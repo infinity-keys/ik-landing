@@ -31,13 +31,16 @@ describe('submissions', () => {
     }
   )
 
-  scenario('creates a submission', async () => {
+  scenario('creates a submission', async (scenario: StandardScenario) => {
     const result = await createSubmission({
-      input: { puzzleId: 'String', userId: 'String' },
+      input: {
+        puzzleId: scenario.submission.two.puzzleId,
+        userId: scenario.submission.two.userId,
+      },
     })
 
-    expect(result.puzzleId).toEqual('String')
-    expect(result.userId).toEqual('String')
+    expect(result.puzzleId).toEqual(scenario.submission.two.puzzleId)
+    expect(result.userId).toEqual(scenario.submission.two.userId)
   })
 
   scenario('updates a submission', async (scenario: StandardScenario) => {
@@ -46,10 +49,10 @@ describe('submissions', () => {
     })) as Submission
     const result = await updateSubmission({
       id: original.id,
-      input: { puzzleId: 'String2' },
+      input: { puzzleId: scenario.submission.two.puzzleId },
     })
 
-    expect(result.puzzleId).toEqual('String2')
+    expect(result.puzzleId).toEqual(scenario.submission.two.puzzleId)
   })
 
   scenario('deletes a submission', async (scenario: StandardScenario) => {

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
 import {
-  DeleteSubmissionsByEmailMutation,
-  DeleteSubmissionsByEmailMutationVariables,
+  DeleteAllUserInfoMutation,
+  DeleteAllUserInfoMutationVariables,
 } from 'types/graphql'
 
 import { Link, routes } from '@redwoodjs/router'
@@ -17,9 +17,9 @@ import Text from 'src/components/Text/Text'
 import Wrapper from 'src/components/Wrapper/Wrapper'
 import Logo from 'src/svgs/Logo'
 
-const DELETE_SUBMISSIONS_BY_EMAIL_MUTATION = gql`
-  mutation DeleteSubmissionsByEmailMutation($jwt: String!) {
-    deleteSubmissionsByEmail(jwt: $jwt) {
+const DELETE_ALL_USER_INFO_MUTATION = gql`
+  mutation DeleteAllUserInfoMutation($jwt: String!) {
+    deleteAllUserInfo(jwt: $jwt) {
       success
       message
     }
@@ -30,9 +30,9 @@ const DeletePage = ({ jwt }) => {
   const [successMessage, setSuccessMessage] = useState('')
 
   const [create, { loading, error }] = useMutation<
-    DeleteSubmissionsByEmailMutation,
-    DeleteSubmissionsByEmailMutationVariables
-  >(DELETE_SUBMISSIONS_BY_EMAIL_MUTATION, {
+    DeleteAllUserInfoMutation,
+    DeleteAllUserInfoMutationVariables
+  >(DELETE_ALL_USER_INFO_MUTATION, {
     onCompleted: () => {
       setSuccessMessage('Your info has been deleted. Thank you for playing!')
     },

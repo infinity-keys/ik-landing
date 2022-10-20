@@ -10,9 +10,9 @@ export const steps: QueryResolvers['steps'] = () => {
   return db.step.findMany()
 }
 
-export const step: QueryResolvers['step'] = ({ stepId }) => {
+export const step: QueryResolvers['step'] = ({ id }) => {
   return db.step.findUnique({
-    where: { stepId },
+    where: { id },
   })
 }
 
@@ -22,24 +22,21 @@ export const createStep: MutationResolvers['createStep'] = ({ input }) => {
   })
 }
 
-export const updateStep: MutationResolvers['updateStep'] = ({
-  stepId,
-  input,
-}) => {
+export const updateStep: MutationResolvers['updateStep'] = ({ id, input }) => {
   return db.step.update({
     data: input,
-    where: { stepId },
+    where: { id },
   })
 }
 
-export const deleteStep: MutationResolvers['deleteStep'] = ({ stepId }) => {
+export const deleteStep: MutationResolvers['deleteStep'] = ({ id }) => {
   return db.step.delete({
-    where: { stepId },
+    where: { id },
   })
 }
 
 export const Step: StepRelationResolvers = {
   puzzle: (_obj, { root }) => {
-    return db.step.findUnique({ where: { stepId: root?.stepId } }).puzzle()
+    return db.step.findUnique({ where: { id: root?.id } }).puzzle()
   },
 }
