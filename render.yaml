@@ -38,6 +38,4 @@ services:
 databases:
   - name: redwoodjs-db
     region: oregon
-  - name: redwoodjs-db-postgres15
-    region: oregon
     postgresMajorVersion: 15
