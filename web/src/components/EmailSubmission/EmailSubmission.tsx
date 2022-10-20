@@ -27,8 +27,7 @@ interface FormValues {
 const CREATE_SUBMISSION_MUTATION = gql`
   mutation CreateSubmissionMutation($input: CreateSubmissionInput!) {
     createSubmission(input: $input) {
-      email
-      address
+      data
       puzzleId
     }
   }
@@ -49,7 +48,7 @@ const EmailSubmission = ({ puzzleId, userId }: EmailSubmissionProps) => {
     create({
       variables: {
         input: {
-          email,
+          data: { email },
           puzzleId,
           userId,
         },
