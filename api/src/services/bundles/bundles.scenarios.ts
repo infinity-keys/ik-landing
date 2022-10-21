@@ -3,8 +3,8 @@ import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard = defineScenario<Prisma.BundleCreateArgs>({
   bundle: {
-    one: { data: { name: 'String', path: 'String', rewardNftId: 'String' } },
-    two: { data: { name: 'String', path: 'String', rewardNftId: 'String' } },
+    one: { data: { name: 'String', path: 'String' } },
+    two: { data: { name: 'String', path: 'String' } },
   },
 })
 

@@ -4,7 +4,6 @@ export const schema = gql`
     createdAt: DateTime!
     name: String!
     path: String!
-    rewardNftId: String!
     listPublicly: Boolean!
     nfts: [Nft]!
     bundles: [PacksOnBundles]!
@@ -19,14 +18,12 @@ export const schema = gql`
   input CreatePackInput {
     name: String!
     path: String!
-    rewardNftId: String!
     listPublicly: Boolean!
   }
 
   input UpdatePackInput {
     name: String
     path: String
-    rewardNftId: String
     listPublicly: Boolean
   }
 

@@ -5,7 +5,6 @@ export const schema = gql`
     puzzleName: String!
     path: String!
     successMessage: String
-    rewardNft: String!
     listPublicly: Boolean!
     nfts: [Nft]!
     submissions: [Submission]!
@@ -22,7 +21,6 @@ export const schema = gql`
     puzzleName: String!
     path: String!
     successMessage: String
-    rewardNft: String!
     listPublicly: Boolean!
   }
 
@@ -30,7 +28,6 @@ export const schema = gql`
     puzzleName: String
     path: String
     successMessage: String
-    rewardNft: String
     listPublicly: Boolean
   }
 

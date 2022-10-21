@@ -30,12 +30,11 @@ describe('bundles', () => {
 
   scenario('creates a bundle', async () => {
     const result = await createBundle({
-      input: { name: 'String', path: 'String', rewardNftId: 'String' },
+      input: { name: 'String', path: 'String' },
     })
 
     expect(result.name).toEqual('String')
     expect(result.path).toEqual('String')
-    expect(result.rewardNftId).toEqual('String')
   })
 
   scenario('updates a bundle', async (scenario: StandardScenario) => {

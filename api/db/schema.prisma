@@ -34,7 +34,6 @@ model Puzzle {
   puzzleName String
   path String
   successMessage String?
-  rewardNft String
   listPublicly Boolean @default(true)
 
   nfts Nft[]
@@ -68,7 +67,6 @@ model Pack {
   createdAt DateTime @default(now())
   name String
   path String
-  rewardNftId String
   listPublicly Boolean @default(true)
 
   nfts Nft[]
@@ -97,7 +95,6 @@ model Bundle {
   createdAt  DateTime @default(now())
   name String
   path String
-  rewardNftId String
   listPublicly Boolean @default(true)
 
   nfts Nft[]
