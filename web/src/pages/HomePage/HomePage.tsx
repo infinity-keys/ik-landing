@@ -140,7 +140,7 @@ const HomePage = () => {
             </div>
           </div>
           <div className="mx-auto max-w-xl">
-            <p className="mb-4 text-lg text-turquoise">
+            <p className="mt-4 mb-4 text-lg text-turquoise">
               Engagement &gt; Impressions.
             </p>
 
