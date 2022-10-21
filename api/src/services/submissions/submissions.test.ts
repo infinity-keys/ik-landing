@@ -36,11 +36,13 @@ describe('submissions', () => {
       input: {
         puzzleId: scenario.submission.two.puzzleId,
         userId: scenario.submission.two.userId,
+        data: { foo: 'bar' },
       },
     })
 
     expect(result.puzzleId).toEqual(scenario.submission.two.puzzleId)
     expect(result.userId).toEqual(scenario.submission.two.userId)
+    expect(result.data).toEqual({ foo: 'bar' })
   })
 
   scenario('updates a submission', async (scenario: StandardScenario) => {
@@ -49,10 +51,10 @@ describe('submissions', () => {
     })) as Submission
     const result = await updateSubmission({
       id: original.id,
-      input: { puzzleId: scenario.submission.two.puzzleId },
+      input: { data: { foo: 'baz' } },
     })
 
-    expect(result.puzzleId).toEqual(scenario.submission.two.puzzleId)
+    expect(result.data).toEqual({ foo: 'baz' })
   })
 
   scenario('deletes a submission', async (scenario: StandardScenario) => {

@@ -5,28 +5,20 @@ export const standard = defineScenario<Prisma.SubmissionCreateArgs>({
   submission: {
     one: {
       data: {
+        data: { foo: 'bar' },
         puzzle: {
-          create: {
-            puzzleName: 'String',
-            path: 'String',
-            rewardNft: 'String',
-            listSortWeight: 6156291,
-          },
+          create: { puzzleName: 'String', path: 'String', rewardNft: 'String' },
         },
-        user: { create: { nonce: 'String' } },
+        user: { create: {} },
       },
     },
     two: {
       data: {
+        data: { foo: 'bar' },
         puzzle: {
-          create: {
-            puzzleName: 'String',
-            path: 'String',
-            rewardNft: 'String',
-            listSortWeight: 4351147,
-          },
+          create: { puzzleName: 'String', path: 'String', rewardNft: 'String' },
         },
-        user: { create: { nonce: 'String' } },
+        user: { create: {} },
       },
     },
   },
