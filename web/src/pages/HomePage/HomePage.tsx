@@ -1,13 +1,13 @@
 // import Alert from 'src/components/Alert/Alert'
+import CloudImage from 'src/components/CloudImage/CloudImage'
 import EmailNewsletter from 'src/components/EmailNewsletter/EmailNewsletter'
 import EmailPartner from 'src/components/EmailPartner/EmailPartner'
-import EmailSubmission from 'src/components/EmailSubmission/EmailSubmission'
 import Heading from 'src/components/Heading/Heading'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import Text from 'src/components/Text/Text'
 import Wrapper from 'src/components/Wrapper/Wrapper'
-import MapIcon from 'src/svgs/MapIcon'
+import LensLogo from 'src/svgs/LensLogo'
 
 /*
 @TODO:
@@ -91,8 +91,53 @@ const HomePage = () => {
       {/* Collab */}
       <Section id="collab">
         <div className="items-center md:grid md:grid-flow-col-dense md:grid-cols-2 md:gap-24">
-          <div className="mb-16 flex justify-center">
-            <MapIcon />
+          <div className="mx-auto max-w-sm">
+            <Heading visual="m">Collabs</Heading>
+            <div className="grid grid-cols-3 items-center gap-6 pt-4 ">
+              <a href="https://www.infinitykeys.io/pack/lens-bogota-pack">
+                <LensLogo />
+              </a>
+              <a href="https://www.infinitykeys.io/pack/saga-wormhole-pack">
+                <CloudImage
+                  id="website-assets/saga_logo_ifk2az"
+                  alt="Saga Logo"
+                  width={150}
+                  height={150}
+                />
+              </a>
+              <a href="https://www.infinitykeys.io/pack/san-creator-pack">
+                <CloudImage
+                  id="website-assets/san_logo_dijhbm"
+                  alt="San Logo"
+                  width={150}
+                  height={150}
+                />
+              </a>
+              <a href="https://www.infinitykeys.io/pack/p0-pack">
+                <CloudImage
+                  id="website-assets/pn_symbol_clean_lcvuu6"
+                  alt="PN Logo"
+                  width={200}
+                  height={200}
+                />
+              </a>
+              <a href="https://www.infinitykeys.io/puzzle/finkel-islanders">
+                <CloudImage
+                  id="website-assets/finkel_logo_nriuwc"
+                  alt="Finkel Logo"
+                  width={150}
+                  height={150}
+                />
+              </a>
+              <a href="https://www.infinitykeys.io/puzzle/second-season-rehash">
+                <CloudImage
+                  id="website-assets/rehash_logo_zwqhhw"
+                  alt="Rehash Logo"
+                  width={150}
+                  height={150}
+                />
+              </a>
+            </div>
           </div>
           <div className="mx-auto max-w-xl">
             <p className="mb-4 text-lg text-turquoise">
