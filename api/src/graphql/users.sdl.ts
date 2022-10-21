@@ -10,6 +10,7 @@ export const schema = gql`
     discordProfile: String
     lensProfile: String
     submissions: [Submission]!
+    attemps: [Attempt]!
   }
 
   type Query {

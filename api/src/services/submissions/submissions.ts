@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client'
 import type {
   QueryResolvers,
   MutationResolvers,

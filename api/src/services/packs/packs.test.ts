@@ -24,12 +24,11 @@ describe('packs', () => {
 
   scenario('creates a pack', async () => {
     const result = await createPack({
-      input: { name: 'String', path: 'String', rewardNftId: 'String' },
+      input: { name: 'String', path: 'String' },
     })
 
     expect(result.name).toEqual('String')
     expect(result.path).toEqual('String')
-    expect(result.rewardNftId).toEqual('String')
   })
 
   scenario('updates a pack', async (scenario: StandardScenario) => {
