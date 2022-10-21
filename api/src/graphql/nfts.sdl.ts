@@ -1,12 +1,14 @@
 export const schema = gql`
   type Nft {
     id: String!
+    createdAt: DateTime!
     tokenId: Int!
     contractName: String!
     data: JSON!
     cloudinaryId: String!
-    puzzleId: String!
-    puzzle: Puzzle!
+    puzzles: [Puzzle]!
+    packs: [Pack]!
+    bundles: [Bundle]!
   }
 
   type Query {
@@ -19,7 +21,6 @@ export const schema = gql`
     contractName: String!
     data: JSON!
     cloudinaryId: String!
-    puzzleId: String!
   }
 
   input UpdateNftInput {
@@ -27,7 +28,6 @@ export const schema = gql`
     contractName: String
     data: JSON
     cloudinaryId: String
-    puzzleId: String
   }
 
   type Mutation {

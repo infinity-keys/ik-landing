@@ -22,13 +22,12 @@ describe('steps', () => {
     expect(result).toEqual(scenario.step.one)
   })
 
-  scenario('creates a step', async (scenario: StandardScenario) => {
+  scenario('creates a step', async () => {
     const result = await createStep({
-      input: { solution: 'String', puzzleId: scenario.step.two.puzzleId },
+      input: { solution: 'String' },
     })
 
     expect(result.solution).toEqual('String')
-    expect(result.puzzleId).toEqual(scenario.step.two.puzzleId)
   })
 
   scenario('updates a step', async (scenario: StandardScenario) => {
