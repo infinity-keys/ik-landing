@@ -10,9 +10,9 @@ export const puzzles: QueryResolvers['puzzles'] = () => {
   return db.puzzle.findMany()
 }
 
-export const puzzle: QueryResolvers['puzzle'] = ({ puzzleId }) => {
+export const puzzle: QueryResolvers['puzzle'] = ({ id }) => {
   return db.puzzle.findUnique({
-    where: { puzzleId },
+    where: { id },
   })
 }
 
@@ -23,36 +23,32 @@ export const createPuzzle: MutationResolvers['createPuzzle'] = ({ input }) => {
 }
 
 export const updatePuzzle: MutationResolvers['updatePuzzle'] = ({
-  puzzleId,
+  id,
   input,
 }) => {
   return db.puzzle.update({
     data: input,
-    where: { puzzleId },
+    where: { id },
   })
 }
 
-export const deletePuzzle: MutationResolvers['deletePuzzle'] = ({
-  puzzleId,
-}) => {
+export const deletePuzzle: MutationResolvers['deletePuzzle'] = ({ id }) => {
   return db.puzzle.delete({
-    where: { puzzleId },
+    where: { id },
   })
 }
 
 export const Puzzle: PuzzleRelationResolvers = {
   steps: (_obj, { root }) => {
-    return db.puzzle.findUnique({ where: { puzzleId: root?.puzzleId } }).steps()
+    return db.puzzle.findUnique({ where: { id: root?.id } }).steps()
   },
   packs: (_obj, { root }) => {
-    return db.puzzle.findUnique({ where: { puzzleId: root?.puzzleId } }).packs()
+    return db.puzzle.findUnique({ where: { id: root?.id } }).packs()
   },
   submissions: (_obj, { root }) => {
-    return db.puzzle
-      .findUnique({ where: { puzzleId: root?.puzzleId } })
-      .submissions()
+    return db.puzzle.findUnique({ where: { id: root?.id } }).submissions()
   },
   nft: (_obj, { root }) => {
-    return db.puzzle.findUnique({ where: { puzzleId: root?.puzzleId } }).nft()
+    return db.puzzle.findUnique({ where: { id: root?.id } }).nft()
   },
 }

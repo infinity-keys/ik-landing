@@ -1,4 +1,9 @@
-import type { QueryResolvers, MutationResolvers } from 'types/graphql'
+import { Prisma } from '@prisma/client'
+import type {
+  QueryResolvers,
+  MutationResolvers,
+  SubmissionRelationResolvers,
+} from 'types/graphql'
 
 import { validate } from '@redwoodjs/api'
 
@@ -10,9 +15,9 @@ export const submissions: QueryResolvers['submissions'] = () => {
   return db.submission.findMany()
 }
 
-export const submission: QueryResolvers['submission'] = ({ submissionId }) => {
+export const submission: QueryResolvers['submission'] = ({ id }) => {
   return db.submission.findUnique({
-    where: { submissionId },
+    where: { id },
   })
 }
 
@@ -20,16 +25,27 @@ export const createSubmission: MutationResolvers['createSubmission'] = async ({
   input,
 }) => {
   // throws error if not formatted like an email
-  if (input.data?.email) validate(input.data.email, 'email', { email: true })
+  if (
+    typeof input.data === 'object' &&
+    'email' in input.data &&
+    typeof input.data.email === 'string'
+  ) {
+    validate(input.data.email, 'email', { email: true })
+  }
 
   const results = await db.submission.create({
     data: input,
   })
 
-  if (input.data?.email) {
+  if (
+    typeof input.data === 'object' &&
+    'email' in input.data &&
+    typeof input.data.email === 'string'
+  ) {
     sendEmail({
-      email: input.data.email as string,
+      email: String(input.data.email),
       puzzleId: input.puzzleId,
+      userId: input.userId,
     })
   }
 
@@ -37,19 +53,28 @@ export const createSubmission: MutationResolvers['createSubmission'] = async ({
 }
 
 export const updateSubmission: MutationResolvers['updateSubmission'] = ({
-  submissionId,
+  id,
   input,
 }) => {
   return db.submission.update({
     data: input,
-    where: { submissionId },
+    where: { id },
   })
 }
 
 export const deleteSubmission: MutationResolvers['deleteSubmission'] = ({
-  submissionId,
+  id,
 }) => {
   return db.submission.delete({
-    where: { submissionId },
+    where: { id },
   })
+}
+
+export const Submission: SubmissionRelationResolvers = {
+  puzzle: (_obj, { root }) => {
+    return db.submission.findUnique({ where: { id: root?.id } }).puzzle()
+  },
+  user: (_obj, { root }) => {
+    return db.submission.findUnique({ where: { id: root?.id } }).user()
+  },
 }

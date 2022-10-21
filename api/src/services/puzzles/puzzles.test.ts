@@ -30,22 +30,28 @@ describe('puzzles', () => {
 
   scenario('creates a puzzle', async () => {
     const result = await createPuzzle({
-      input: { path: 'String', rewardNft: 'String', listSortWeight: 5934263 },
+      input: {
+        puzzleName: 'String',
+        path: 'String',
+        rewardNft: 'String',
+        listSortWeight: 2380891,
+      },
     })
 
+    expect(result.puzzleName).toEqual('String')
     expect(result.path).toEqual('String')
     expect(result.rewardNft).toEqual('String')
-    expect(result.listSortWeight).toEqual(5934263)
+    expect(result.listSortWeight).toEqual(2380891)
   })
 
   scenario('updates a puzzle', async (scenario: StandardScenario) => {
     const original = (await puzzle({ id: scenario.puzzle.one.id })) as Puzzle
     const result = await updatePuzzle({
       id: original.id,
-      input: { path: 'String2' },
+      input: { puzzleName: 'String2' },
     })
 
-    expect(result.path).toEqual('String2')
+    expect(result.puzzleName).toEqual('String2')
   })
 
   scenario('deletes a puzzle', async (scenario: StandardScenario) => {

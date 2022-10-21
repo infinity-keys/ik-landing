@@ -8,9 +8,10 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
         solution: 'String',
         puzzle: {
           create: {
+            puzzleName: 'String',
             path: 'String',
             rewardNft: 'String',
-            listSortWeight: 3176647,
+            listSortWeight: 5602892,
           },
         },
       },
@@ -20,9 +21,10 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
         solution: 'String',
         puzzle: {
           create: {
+            puzzleName: 'String',
             path: 'String',
             rewardNft: 'String',
-            listSortWeight: 1593212,
+            listSortWeight: 2527371,
           },
         },
       },

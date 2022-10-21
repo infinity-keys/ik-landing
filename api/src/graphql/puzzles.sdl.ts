@@ -1,6 +1,7 @@
 export const schema = gql`
   type Puzzle {
-    puzzleId: String!
+    id: String!
+    puzzleName: String!
     path: String!
     successMessage: String
     rewardNft: String!
@@ -14,11 +15,11 @@ export const schema = gql`
 
   type Query {
     puzzles: [Puzzle!]! @requireAuth
-    puzzle(puzzleId: String!): Puzzle @requireAuth
+    puzzle(id: String!): Puzzle @requireAuth
   }
 
   input CreatePuzzleInput {
-    puzzleId: String!
+    puzzleName: String!
     path: String!
     successMessage: String
     rewardNft: String!
@@ -27,7 +28,7 @@ export const schema = gql`
   }
 
   input UpdatePuzzleInput {
-    puzzleId: String
+    puzzleName: String
     path: String
     successMessage: String
     rewardNft: String
@@ -37,8 +38,7 @@ export const schema = gql`
 
   type Mutation {
     createPuzzle(input: CreatePuzzleInput!): Puzzle! @requireAuth
-    updatePuzzle(puzzleId: String!, input: UpdatePuzzleInput!): Puzzle!
-      @requireAuth
-    deletePuzzle(puzzleId: String!): Puzzle! @requireAuth
+    updatePuzzle(id: String!, input: UpdatePuzzleInput!): Puzzle! @requireAuth
+    deletePuzzle(id: String!): Puzzle! @requireAuth
   }
 `

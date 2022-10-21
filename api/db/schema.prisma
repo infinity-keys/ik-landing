@@ -13,7 +13,7 @@ generator client {
 // TODO: Please remove the following example:
 
 model Pack {
-  packId String @id @default(cuid())
+  id String @id @default(cuid())
   name String
   path String
   rewardNftId String
@@ -23,7 +23,8 @@ model Pack {
   puzzles Puzzle[]
 }
 model Puzzle {
-  puzzleId String @id @default(cuid())
+  id String @id @default(cuid())
+  puzzleName String
   path String
   successMessage String?
   rewardNft String
@@ -36,7 +37,7 @@ model Puzzle {
   nft Nft?
 }
 model Step {
-  stepId String @id @default(cuid())
+  id String @id @default(cuid())
   solution String
   failMessage String?
   successMessage String?
@@ -45,30 +46,31 @@ model Step {
   /// When this is shown in a list, how should it sort (ie Steps in a Puzzle)
   listSortWeight Int @default(0)
   puzzleId String
-  puzzle Puzzle @relation(fields: [puzzleId], references: [puzzleId])
+  puzzle Puzzle @relation(fields: [puzzleId], references: [id])
 }
 
 model Nft {
-  nftId String @id @default(cuid())
+  id String @id @default(cuid())
   tokenId Int
   contractName String
   data Json
   cloudinaryId String
   puzzleId String @unique
-  puzzle Puzzle @relation(fields: [puzzleId], references: [puzzleId])
+  puzzle Puzzle @relation(fields: [puzzleId], references: [id])
 }
 
 model Submission {
-  submissionId String @id @default(cuid())
+  id String @id @default(cuid())
   createdAt DateTime @default(now())
   puzzleId String
-  puzzle Puzzle @relation(fields: [puzzleId], references: [puzzleId])
-  user User @relation(fields: [userId], references: [userId])
+  puzzle Puzzle @relation(fields: [puzzleId], references: [id])
   userId String
-  data Json?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  @@unique([puzzleId, userId])
+  data Json
 }
 model User {
-  userId String @id @default(cuid())
+  id String @id @default(cuid())
   createdAt  DateTime   @default(now())
   username String?
   publicAddress String?

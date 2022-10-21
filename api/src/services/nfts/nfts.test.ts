@@ -25,7 +25,7 @@ describe('nfts', () => {
   scenario('creates a nft', async (scenario: StandardScenario) => {
     const result = await createNft({
       input: {
-        tokenId: 6585345,
+        tokenId: 7025980,
         contractName: 'String',
         data: { foo: 'bar' },
         cloudinaryId: 'String',
@@ -33,7 +33,7 @@ describe('nfts', () => {
       },
     })
 
-    expect(result.tokenId).toEqual(6585345)
+    expect(result.tokenId).toEqual(7025980)
     expect(result.contractName).toEqual('String')
     expect(result.data).toEqual({ foo: 'bar' })
     expect(result.cloudinaryId).toEqual('String')
@@ -44,10 +44,10 @@ describe('nfts', () => {
     const original = (await nft({ id: scenario.nft.one.id })) as Nft
     const result = await updateNft({
       id: original.id,
-      input: { tokenId: 8744882 },
+      input: { tokenId: 4155784 },
     })
 
-    expect(result.tokenId).toEqual(8744882)
+    expect(result.tokenId).toEqual(4155784)
   })
 
   scenario('deletes a nft', async (scenario: StandardScenario) => {

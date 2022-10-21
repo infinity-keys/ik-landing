@@ -1,34 +1,35 @@
 export const schema = gql`
   type Submission {
-    submissionId: String!
+    id: String!
+    createdAt: DateTime!
     puzzleId: String!
+    puzzle: Puzzle!
+    user: User!
     userId: String!
-    data: JSONObject
+    data: JSON
   }
 
   type Query {
     submissions: [Submission!]! @requireAuth
-    submission(submissionId: String!): Submission @requireAuth
+    submission(id: String!): Submission @requireAuth
   }
 
   input CreateSubmissionInput {
     puzzleId: String!
     userId: String!
-    data: JSONObject
+    data: JSON
   }
 
   input UpdateSubmissionInput {
     puzzleId: String
     userId: String
-    data: JSONObject
+    data: JSON
   }
 
   type Mutation {
     createSubmission(input: CreateSubmissionInput!): Submission! @requireAuth
-    updateSubmission(
-      submissionId: String!
-      input: UpdateSubmissionInput!
-    ): Submission! @requireAuth
-    deleteSubmission(submissionId: String!): Submission! @requireAuth
+    updateSubmission(id: String!, input: UpdateSubmissionInput!): Submission!
+      @requireAuth
+    deleteSubmission(id: String!): Submission! @requireAuth
   }
 `

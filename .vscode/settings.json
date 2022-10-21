@@ -10,5 +10,8 @@
   },
   "cSpell.words": [
     "cloudinary"
+  ],
+  "editor.rulers": [
+  80
   ]
 }

@@ -15,13 +15,14 @@ const Routes = () => {
   return (
     <Router>
       <Set wrap={SiteLayout}>
-        <Route path="/" page={HomePage} prerender name="home" />
+        <Route path="/" page={HomePage} name="home" />
+        <Route path="/user/delete" page={DeletePage} name="delete" />
         <Route path="/user" page={UserPage} name="user" />
-        <Route path="/privacy-policy" page={PrivacyPolicyPage} prerender name="privacyPolicy" />
+        <Route path="/privacy-policy" page={PrivacyPolicyPage} name="privacyPolicy" />
       </Set>
 
       {/* NotFoundPage can't be in a set */}
-      <Route notfound page={NotFoundPage} prerender />
+      <Route notfound page={NotFoundPage} />
     </Router>
   )
 }

@@ -5,30 +5,32 @@ export const standard = defineScenario<Prisma.NftCreateArgs>({
   nft: {
     one: {
       data: {
-        tokenId: 3313544,
+        tokenId: 4181927,
         contractName: 'String',
         data: { foo: 'bar' },
         cloudinaryId: 'String',
         puzzle: {
           create: {
+            puzzleName: 'String',
             path: 'String',
             rewardNft: 'String',
-            listSortWeight: 7635713,
+            listSortWeight: 1077103,
           },
         },
       },
     },
     two: {
       data: {
-        tokenId: 7742702,
+        tokenId: 6570972,
         contractName: 'String',
         data: { foo: 'bar' },
         cloudinaryId: 'String',
         puzzle: {
           create: {
+            puzzleName: 'String',
             path: 'String',
             rewardNft: 'String',
-            listSortWeight: 4015215,
+            listSortWeight: 4757182,
           },
         },
       },
