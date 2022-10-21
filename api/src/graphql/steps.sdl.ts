@@ -1,14 +1,14 @@
 export const schema = gql`
   type Step {
     id: String!
+    createdAt: DateTime!
     solution: String!
     failMessage: String
     successMessage: String
     instructions: String
     challenge: String
-    listSortWeight: Int!
-    puzzleId: String!
-    puzzle: Puzzle!
+    puzzles: [StepsOnPuzzles]!
+    attempts: [Attempt]!
   }
 
   type Query {
@@ -22,8 +22,6 @@ export const schema = gql`
     successMessage: String
     instructions: String
     challenge: String
-    listSortWeight: Int!
-    puzzleId: String!
   }
 
   input UpdateStepInput {
@@ -32,8 +30,6 @@ export const schema = gql`
     successMessage: String
     instructions: String
     challenge: String
-    listSortWeight: Int
-    puzzleId: String
   }
 
   type Mutation {

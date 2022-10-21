@@ -1,5 +1,5 @@
 export const schema = gql`
-  type Pack {
+  type Bundle {
     id: String!
     createdAt: DateTime!
     name: String!
@@ -7,23 +7,22 @@ export const schema = gql`
     rewardNftId: String!
     listPublicly: Boolean!
     nfts: [Nft]!
-    bundles: [PacksOnBundles]!
-    puzzles: [PuzzlesOnPacks]!
+    packs: [PacksOnBundles]!
   }
 
   type Query {
-    packs: [Pack!]! @requireAuth
-    pack(id: String!): Pack @requireAuth
+    bundles: [Bundle!]! @requireAuth
+    bundle(id: String!): Bundle @requireAuth
   }
 
-  input CreatePackInput {
+  input CreateBundleInput {
     name: String!
     path: String!
     rewardNftId: String!
     listPublicly: Boolean!
   }
 
-  input UpdatePackInput {
+  input UpdateBundleInput {
     name: String
     path: String
     rewardNftId: String
@@ -31,8 +30,8 @@ export const schema = gql`
   }
 
   type Mutation {
-    createPack(input: CreatePackInput!): Pack! @requireAuth
-    updatePack(id: String!, input: UpdatePackInput!): Pack! @requireAuth
-    deletePack(id: String!): Pack! @requireAuth
+    createBundle(input: CreateBundleInput!): Bundle! @requireAuth
+    updateBundle(id: String!, input: UpdateBundleInput!): Bundle! @requireAuth
+    deleteBundle(id: String!): Bundle! @requireAuth
   }
 `

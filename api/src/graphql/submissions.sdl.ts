@@ -1,12 +1,12 @@
 export const schema = gql`
   type Submission {
     id: String!
-    createdAt: DateTime!
     puzzleId: String!
     puzzle: Puzzle!
-    user: User!
     userId: String!
-    data: JSON
+    user: User!
+    createdAt: DateTime!
+    data: JSON!
   }
 
   type Query {
@@ -17,7 +17,7 @@ export const schema = gql`
   input CreateSubmissionInput {
     puzzleId: String!
     userId: String!
-    data: JSON
+    data: JSON!
   }
 
   input UpdateSubmissionInput {

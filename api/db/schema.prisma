@@ -48,6 +48,8 @@ model Puzzle {
 /// only one Puzzle, but this join table provides flexibility to store additional
 // information e.g. sort order of Steps
 model StepsOnPuzzles {
+  id String @id @default(cuid()) // Required for many-to-many
+
   stepId String
   step Step @relation(fields: [stepId], references: [id])
   puzzleId String
@@ -57,7 +59,7 @@ model StepsOnPuzzles {
   stepSortWeight Int
   assignedAt DateTime @default(now())
 
-  @@id([stepId, puzzleId])
+  @@unique([stepId, puzzleId])
 }
 
 /// A collection of Puzzles makes up a Pack.
@@ -76,6 +78,8 @@ model Pack {
 }
 
 model PuzzlesOnPacks {
+  id String @id @default(cuid()) // Required for many-to-many
+
   puzzleId String
   puzzle Puzzle @relation(fields: [puzzleId], references: [id])
   packId String
@@ -84,7 +88,7 @@ model PuzzlesOnPacks {
   puzzleSortWeight Int
   assignedAt DateTime @default(now())
 
-  @@id([puzzleId, packId])
+  @@unique([puzzleId, packId])
 }
 
 /// A collection of Packs makes up a Bundle
@@ -102,6 +106,7 @@ model Bundle {
 }
 
 model PacksOnBundles {
+  id String @id @default(cuid()) // Required for many-to-many
   packId String
   pack Pack @relation(fields: [packId], references: [id])
   bundleId String
@@ -110,7 +115,7 @@ model PacksOnBundles {
   packSortWeight Int
   assignedAt DateTime @default(now())
 
-  @@id([packId, bundleId])
+  @@unique([packId, bundleId])
 }
 
 
@@ -129,6 +134,8 @@ model Nft {
 
 /// User form submissions from post-Puzzle forms asking for email address etc
 model Submission {
+  id String @id @default(cuid())
+
   puzzleId String
   puzzle Puzzle @relation(fields: [puzzleId], references: [id])
   userId String
@@ -137,18 +144,18 @@ model Submission {
   createdAt DateTime @default(now())
   data Json
 
-  @@id([puzzleId, userId])
+  @@unique([puzzleId, userId])
 }
 
 /// Identifiable player
 model User {
   id String @id @default(cuid())
   createdAt  DateTime @default(now())
+  nonce String @default(cuid())
   username String?
   /// Wallet address
   publicAddress String?
   /// Unique string used to cryptographically identify this person. NEVER MAKE PUBLIC
-  nonce String @default(cuid())
   email String?
   twitterProfile String?
   discordProfile String?
@@ -160,6 +167,8 @@ model User {
 
 // Users guesses at Steps
 model Attempt {
+  id String @id @default(cuid())
+
   stepId String
   step Step @relation(fields: [stepId], references: [id])
   userId String
@@ -169,5 +178,5 @@ model Attempt {
   // What did they guess?
   guess String
 
-  @@id([stepId, userId, attemptedAt])
+  @@unique([stepId, userId, attemptedAt])
 }
