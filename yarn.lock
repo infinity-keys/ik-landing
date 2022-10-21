@@ -6256,9 +6256,9 @@ jose@^2.0.5:
     "@panva/asn1.js" "^1.0.0"
 
 jose@^4:
-  version "4.10.2"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-4.10.2.tgz#436a4ddbf57a7c14986a81146ec4b63c1ea804df"
-  integrity sha512-jSzgKck7Iq7XeIzYfk0Z+VrmGzvmjkhRJlTDjz1hsH42pOiPQl8yRZsmw9te1bsXN4d3EKSlECL+0cPE1X5UoQ==
+  version "4.10.3"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-4.10.3.tgz#36ffeae395f14624a99961db6ada957476eccb19"
+  integrity sha512-3S4wQnaoJKSAx9uHSoyf8B/lxjs1qCntHWL6wNFszJazo+FtWe+qD0zVfY0BlqJ5HHK4jcnM98k3BQzVLbzE4g==
 
 js-cookie@^2.2.1:
   version "2.2.1"
