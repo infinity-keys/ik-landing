@@ -1,23 +1,20 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 // import { useMachine } from "@xstate/react";
 
 import Wrapper from "@components/wrapper";
 import KeysLink from "@components/keys-link";
 import Puzzle from "@components/puzzle";
-import Markdown from "@components/markdown";
+import PuzzleLandingInfo from "@components/puzzle-landing-info";
 import Seo from "@components/seo";
 import TwitterShare from "@components/twitter-share";
-import Heading from "@components/heading";
 // import { puzzleMachine } from "@components/puzzle.xstate";
 
 import { gqlApiSdk } from "@lib/server";
 import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
 import { buildUrlString } from "@lib/utils";
 import { cloudinaryUrl } from "@lib/images";
+import NftCheck from "@components/nft-check";
 
 export interface PuzzlePageProps {
   name: string;
@@ -28,6 +25,9 @@ export interface PuzzlePageProps {
   instructions?: string;
   failMessage?: string;
   cloudinaryId?: string;
+  nftCheckParameters?: any;
+  successRoute: string;
+  finalStep: boolean;
 }
 interface PuzzlePageParams {
   params: {
@@ -44,11 +44,14 @@ const Dev: NextPage<PuzzlePageProps> = ({
   instructions,
   failMessage,
   cloudinaryId,
+  nftCheckParameters,
+  successRoute,
+  finalStep,
 }) => {
   const { asPath } = useRouter();
 
   return (
-    <Wrapper>
+    <Wrapper full>
       <Seo
         title={`${name} | IK Puzzle`}
         description={`Can you unlock the ${name} puzzle?`}
@@ -56,47 +59,40 @@ const Dev: NextPage<PuzzlePageProps> = ({
         url={asPath}
       />
 
-      <main className="text-center pt-5">
-        <div className="py-16">
-          <Link href={"/"}>
-            <a>
-              <Image
-                priority={true}
-                src="/logo.svg"
-                alt="Infinity Keys logo"
-                width={100}
-                height={62.72}
-              />
-            </a>
-          </Link>
-        </div>
+      <main className="text-center pt-10 md:pt-20 w-full px-4">
+        {nftCheckParameters ? (
+          <NftCheck
+            nftCheckParameters={nftCheckParameters}
+            successRoute={successRoute}
+            finalStep={finalStep}
+          />
+        ) : (
+          <Puzzle
+            count={count}
+            puzzleId={puzzleId}
+            boxes={inputType === "boxes"}
+            failMessage={failMessage}
+          />
+        )}
 
-        <div className="mb-16">
+        <div className="max-w-prose mx-auto bg-black/10 p-4 mt-12 md:mt-16 mb-12 rounded-md">
           {instructions && (
-            <div className="mb-12 w-full max-w-2xl mx-auto markdown landing-md">
-              <Heading as="h2">Instructions</Heading>
-              <Markdown>{instructions}</Markdown>
-            </div>
+            <PuzzleLandingInfo title="Instructions" content={instructions} />
           )}
 
           {challenge && (
-            <div className=" w-full max-w-2xl mx-auto markdown landing-md">
-              <Heading as="h2">Challenge</Heading>
-              <Markdown>{challenge}</Markdown>
-            </div>
+            <PuzzleLandingInfo
+              title="Challenge"
+              content={challenge}
+              marginTop={!!instructions}
+              defaultOpen
+            />
           )}
         </div>
-
-        <Puzzle
-          count={count}
-          puzzleId={puzzleId}
-          boxes={inputType === "boxes"}
-          failMessage={failMessage}
-        />
       </main>
 
       <KeysLink />
-      <div className="mb-9">
+      <div className="mb-9 px-4">
         <TwitterShare
           tweetBody={`Can you unlock the ${name} puzzle? @InfinityKeys\n\n${buildUrlString(
             asPath
@@ -125,6 +121,9 @@ export async function getStaticProps({
       instructions,
       fail_message,
       nft,
+      nft_check_parameters,
+      success_route,
+      final_step,
     },
   ] = puzzles;
 
@@ -138,6 +137,9 @@ export async function getStaticProps({
       instructions: instructions || "",
       failMessage: fail_message || "",
       cloudinaryId: nft?.nft_metadatum?.cloudinary_id || "",
+      nftCheckParameters: nft_check_parameters || null,
+      successRoute: success_route || "",
+      finalStep: final_step || false,
     },
   };
 }

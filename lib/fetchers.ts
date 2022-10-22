@@ -90,3 +90,24 @@ export const walletAgeChecker = async (account: string, chainId: number) => {
   if (response.ok) return await response.json();
   throw response.text();
 };
+
+export const nftChecker = async (
+  account: string,
+  chainId: number,
+  contractAddress: string,
+  tokenId: number,
+  successRoute: string,
+  finalStep: boolean
+) => {
+  const url = new URL("check-nft", ikApiUrlBase);
+  url.searchParams.set("account", account);
+  url.searchParams.set("chainId", chainId.toString());
+  url.searchParams.set("contractAddress", contractAddress);
+  if (tokenId) url.searchParams.set("tokenId", tokenId.toString());
+  url.searchParams.set("successRoute", successRoute);
+  url.searchParams.set("finalStep", finalStep.toString());
+
+  const response = await fetch(url);
+  if (response.ok) return await response.json();
+  return false;
+};

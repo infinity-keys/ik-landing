@@ -42,7 +42,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   const gatedIds = puzzlesNftIds;
   const tokenId = pack.nftId;
   const [completed, setCompleted] = useState([] as boolean[]);
-  const [packClaimed, setPackClaimed] = useState(false);
+  const [hasChecked, setHasChecked] = useState(false);
 
   if (!tokenId) throw new Error("Invalid token id.");
   const width = useCurrentWidth();
@@ -71,7 +71,10 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
           <ul
             role="list"
             className={clsx(
-              "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:max-w-none sm:grid-cols-3 sm:mt-6 my-10"
+              "grid grid-cols-1 gap-6 py-8 max-w-sm mx-auto sm:mt-6 my-10",
+              puzzles.length === 2
+                ? "sm:max-w-xl sm:grid-cols-2"
+                : "sm:max-w-none sm:grid-cols-3"
             )}
           >
             {puzzles.map((puzzle, index) => {
@@ -85,7 +88,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
                     url={data.url}
                     cloudinary_id={data.cloudinary_id}
                     progress={
-                      completed[index]
+                      hasChecked && completed[index]
                         ? ThumbnailProgress.Completed
                         : ThumbnailProgress.NotCompleted
                     }
@@ -100,40 +103,16 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
             gatedIds={gatedIds}
             nftWalletAgeCheck={false}
             setCompleted={setCompleted}
+            hasChecked={hasChecked}
+            setHasChecked={setHasChecked}
           />
         </div>
-        <div className="mt-9">
+        <div className="pt-2 pb-8">
           <TwitterShare
             tweetBody={`Collect the ${
               pack.name
             }. @InfinityKeys\n\n${buildUrlString(asPath)}`}
           />
-        </div>
-        <div className="w-full p-6 flex flex-row items-center justify-center">
-          <div className="p-4">
-            <div className="w-20 twitterIcon hover: fill-twitterBlue">
-              <a
-                href="https://twitter.com/InfinityKeys"
-                className="flex w-full"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <TwitterSvg />
-              </a>
-            </div>
-          </div>
-          <div className="p-4">
-            <div className="discordIcon w-20 hover: fill-discordPurple">
-              <a
-                href="https://discord.com/invite/infinitykeys"
-                className="flex w-full"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <Discord width={96} height={96} />
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </Wrapper>

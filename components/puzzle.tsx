@@ -23,6 +23,7 @@ interface PuzzleProps {
   boxes?: boolean;
   failMessage?: string;
   SuccessComponent?: ComponentType<{}>;
+  forwardOnFail?: boolean;
 }
 
 const Puzzle = ({
@@ -38,6 +39,8 @@ const Puzzle = ({
   // If success component exists, then Puzzle **will not route to success page**.
   // Use this for entirely inline/embedded Puzzles.
   SuccessComponent,
+  // Enable/disable forwarding to fail_route
+  forwardOnFail = true,
 }: PuzzleProps) => {
   const router = useRouter();
   const [{ context, matches }, send] = useMachine(puzzleMachine, {
@@ -49,7 +52,8 @@ const Puzzle = ({
       goToSuccessRoute: (context, event) =>
         // @ts-ignore
         router.push(event.data?.success_route || "/"),
-      goToFailRoute: (context, event) => router.push(event.data.fail_route),
+      goToFailRoute: (context, event) =>
+        forwardOnFail && router.push(event.data.fail_route),
     },
     devTools: process.env.NODE_ENV === "development",
   });
@@ -104,24 +108,6 @@ const Puzzle = ({
                     }))}
                   />
                 )}
-                {!boxes && (
-                  <div className="flex items-center sm:w-full">
-                    <input
-                      onChange={(e) =>
-                        send({ type: "INPUT", text: e.target.value })
-                      }
-                      type="text"
-                      className="text-blue-800 w-full"
-                      size={context.count}
-                      autoFocus={true}
-                      tabIndex={0}
-                      onPaste={(e) => e.preventDefault()}
-                    />
-                    <div className="counter text-lg p-4 text-white w-11">
-                      {context.count - context.text.length}
-                    </div>
-                  </div>
-                )}
               </div>
               <div
                 className={clsx("mb-2", {
@@ -135,6 +121,7 @@ const Puzzle = ({
                   </Markdown>
                 </div>
               </div>
+
               <div data-cy="submit" className="flex justify-center">
                 <Button
                   text="Submit"
