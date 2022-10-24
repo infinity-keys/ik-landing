@@ -5,19 +5,31 @@ export const standard = defineScenario<Prisma.StepsOnPuzzlesCreateArgs>({
   stepsOnPuzzles: {
     one: {
       data: {
-        stepSortWeight: 5194978,
-        step: { create: { solution: 'String' } },
+        updatedAt: '2022-10-24T17:00:06Z',
+        step: {
+          create: { updatedAt: '2022-10-24T17:00:06Z', solution: 'String' },
+        },
         puzzle: {
-          create: { puzzleName: 'String', path: 'String', rewardNft: 'String' },
+          create: {
+            updatedAt: '2022-10-24T17:00:06Z',
+            puzzleName: 'String',
+            path: 'String',
+          },
         },
       },
     },
     two: {
       data: {
-        stepSortWeight: 7614403,
-        step: { create: { solution: 'String' } },
+        updatedAt: '2022-10-24T17:00:06Z',
+        step: {
+          create: { updatedAt: '2022-10-24T17:00:06Z', solution: 'String' },
+        },
         puzzle: {
-          create: { puzzleName: 'String', path: 'String', rewardNft: 'String' },
+          create: {
+            updatedAt: '2022-10-24T17:00:06Z',
+            puzzleName: 'String',
+            path: 'String',
+          },
         },
       },
     },

@@ -7,6 +7,7 @@ export const schema = gql`
     bundle: Bundle!
     packSortWeight: Int!
     assignedAt: DateTime!
+    updatedAt: DateTime!
   }
 
   type Query {

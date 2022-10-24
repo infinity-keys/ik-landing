@@ -30,9 +30,14 @@ describe('bundles', () => {
 
   scenario('creates a bundle', async () => {
     const result = await createBundle({
-      input: { name: 'String', path: 'String' },
+      input: {
+        updatedAt: '2022-10-24T16:59:00Z',
+        name: 'String',
+        path: 'String',
+      },
     })
 
+    expect(result.updatedAt).toEqual('2022-10-24T16:59:00Z')
     expect(result.name).toEqual('String')
     expect(result.path).toEqual('String')
   })
@@ -41,10 +46,10 @@ describe('bundles', () => {
     const original = (await bundle({ id: scenario.bundle.one.id })) as Bundle
     const result = await updateBundle({
       id: original.id,
-      input: { name: 'String2' },
+      input: { updatedAt: '2022-10-25T16:59:00Z' },
     })
 
-    expect(result.name).toEqual('String2')
+    expect(result.updatedAt).toEqual('2022-10-25T16:59:00Z')
   })
 
   scenario('deletes a bundle', async (scenario: StandardScenario) => {

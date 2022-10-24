@@ -2,6 +2,7 @@ export const schema = gql`
   type Nft {
     id: String!
     createdAt: DateTime!
+    updatedAt: DateTime!
     tokenId: Int!
     contractName: String!
     data: JSON!

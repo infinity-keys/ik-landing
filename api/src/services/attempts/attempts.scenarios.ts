@@ -6,15 +6,19 @@ export const standard = defineScenario<Prisma.AttemptCreateArgs>({
     one: {
       data: {
         guess: 'String',
-        step: { create: { solution: 'String' } },
-        user: { create: {} },
+        step: {
+          create: { updatedAt: '2022-10-24T16:55:47Z', solution: 'String' },
+        },
+        user: { create: { updatedAt: '2022-10-24T16:55:47Z' } },
       },
     },
     two: {
       data: {
         guess: 'String',
-        step: { create: { solution: 'String' } },
-        user: { create: {} },
+        step: {
+          create: { updatedAt: '2022-10-24T16:55:47Z', solution: 'String' },
+        },
+        user: { create: { updatedAt: '2022-10-24T16:55:47Z' } },
       },
     },
   },

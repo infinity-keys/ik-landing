@@ -3,8 +3,8 @@ import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard = defineScenario<Prisma.StepCreateArgs>({
   step: {
-    one: { data: { solution: 'String' } },
-    two: { data: { solution: 'String' } },
+    one: { data: { updatedAt: '2022-10-24T17:00:55Z', solution: 'String' } },
+    two: { data: { updatedAt: '2022-10-24T17:00:55Z', solution: 'String' } },
   },
 })
 

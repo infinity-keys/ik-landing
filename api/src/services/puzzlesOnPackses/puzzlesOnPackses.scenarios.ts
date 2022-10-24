@@ -5,23 +5,41 @@ export const standard = defineScenario<Prisma.PuzzlesOnPacksCreateArgs>({
   puzzlesOnPacks: {
     one: {
       data: {
-        puzzleSortWeight: 7754681,
+        puzzleSortWeight: 4549951,
+        updatedAt: '2022-10-24T16:59:25Z',
         puzzle: {
-          create: { puzzleName: 'String', path: 'String', rewardNft: 'String' },
+          create: {
+            updatedAt: '2022-10-24T16:59:25Z',
+            puzzleName: 'String',
+            path: 'String',
+          },
         },
         pack: {
-          create: { name: 'String', path: 'String', rewardNftId: 'String' },
+          create: {
+            updatedAt: '2022-10-24T16:59:25Z',
+            name: 'String',
+            path: 'String',
+          },
         },
       },
     },
     two: {
       data: {
-        puzzleSortWeight: 9004888,
+        puzzleSortWeight: 6443333,
+        updatedAt: '2022-10-24T16:59:25Z',
         puzzle: {
-          create: { puzzleName: 'String', path: 'String', rewardNft: 'String' },
+          create: {
+            updatedAt: '2022-10-24T16:59:25Z',
+            puzzleName: 'String',
+            path: 'String',
+          },
         },
         pack: {
-          create: { name: 'String', path: 'String', rewardNftId: 'String' },
+          create: {
+            updatedAt: '2022-10-24T16:59:25Z',
+            name: 'String',
+            path: 'String',
+          },
         },
       },
     },

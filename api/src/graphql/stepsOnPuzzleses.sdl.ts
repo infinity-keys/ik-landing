@@ -7,6 +7,7 @@ export const schema = gql`
     puzzle: Puzzle!
     stepSortWeight: Int!
     assignedAt: DateTime!
+    updatedAt: DateTime!
   }
 
   type Query {
