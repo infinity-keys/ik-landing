@@ -132,7 +132,12 @@ const HomePage = () => {
             <Heading visual="m">Collabs</Heading>
             <div className="grid grid-cols-3 items-center gap-6 pt-4 ">
               {logoinfo.map((item) => (
-                <a href={item.href} key={item.name}>
+                <a
+                  href={item.href}
+                  key={item.name}
+                  target="_blank"
+                  rel="noopener nonreferrer noreferrer"
+                >
                   <CloudImage
                     id={item.id}
                     alt={item.alt}
