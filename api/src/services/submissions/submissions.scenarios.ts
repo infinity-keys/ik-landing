@@ -7,18 +7,26 @@ export const standard = defineScenario<Prisma.SubmissionCreateArgs>({
       data: {
         data: { foo: 'bar' },
         puzzle: {
-          create: { puzzleName: 'String', path: 'String', rewardNft: 'String' },
+          create: {
+            updatedAt: '2022-10-24T16:56:05Z',
+            puzzleName: 'String',
+            path: 'String',
+          },
         },
-        user: { create: {} },
+        user: { create: { updatedAt: '2022-10-24T16:56:05Z' } },
       },
     },
     two: {
       data: {
         data: { foo: 'bar' },
         puzzle: {
-          create: { puzzleName: 'String', path: 'String', rewardNft: 'String' },
+          create: {
+            updatedAt: '2022-10-24T16:56:05Z',
+            puzzleName: 'String',
+            path: 'String',
+          },
         },
-        user: { create: {} },
+        user: { create: { updatedAt: '2022-10-24T16:56:05Z' } },
       },
     },
   },

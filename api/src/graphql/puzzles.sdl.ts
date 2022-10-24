@@ -2,6 +2,7 @@ export const schema = gql`
   type Puzzle {
     id: String!
     createdAt: DateTime!
+    updatedAt: DateTime!
     puzzleName: String!
     path: String!
     successMessage: String

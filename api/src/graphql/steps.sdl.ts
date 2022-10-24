@@ -2,6 +2,7 @@ export const schema = gql`
   type Step {
     id: String!
     createdAt: DateTime!
+    updatedAt: DateTime!
     solution: String!
     failMessage: String
     successMessage: String

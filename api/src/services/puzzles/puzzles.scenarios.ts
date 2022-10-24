@@ -3,8 +3,20 @@ import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard = defineScenario<Prisma.PuzzleCreateArgs>({
   puzzle: {
-    one: { data: { puzzleName: 'String', path: 'String' } },
-    two: { data: { puzzleName: 'String', path: 'String' } },
+    one: {
+      data: {
+        updatedAt: '2022-10-24T17:00:26Z',
+        puzzleName: 'String',
+        path: 'String',
+      },
+    },
+    two: {
+      data: {
+        updatedAt: '2022-10-24T17:00:26Z',
+        puzzleName: 'String',
+        path: 'String',
+      },
+    },
   },
 })
 

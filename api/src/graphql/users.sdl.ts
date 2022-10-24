@@ -2,15 +2,16 @@ export const schema = gql`
   type User {
     id: String!
     createdAt: DateTime!
+    updatedAt: DateTime!
+    nonce: String!
     username: String
     publicAddress: String
-    nonce: String!
     email: String
     twitterProfile: String
     discordProfile: String
     lensProfile: String
     submissions: [Submission]!
-    attemps: [Attempt]!
+    attempts: [Attempt]!
   }
 
   type Query {
@@ -19,9 +20,9 @@ export const schema = gql`
   }
 
   input CreateUserInput {
+    nonce: String!
     username: String
     publicAddress: String
-    nonce: String!
     email: String
     twitterProfile: String
     discordProfile: String
@@ -29,9 +30,9 @@ export const schema = gql`
   }
 
   input UpdateUserInput {
+    nonce: String
     username: String
     publicAddress: String
-    nonce: String
     email: String
     twitterProfile: String
     discordProfile: String
