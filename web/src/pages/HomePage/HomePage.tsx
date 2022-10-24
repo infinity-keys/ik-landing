@@ -7,13 +7,18 @@ import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import Text from 'src/components/Text/Text'
 import Wrapper from 'src/components/Wrapper/Wrapper'
-import LensLogo from 'src/svgs/LensLogo'
 
 /*
 @TODO:
   Puzzle
 */
 export const logoinfo = [
+  {
+    href: 'https://www.infinitykeys.io/pack/lens-bogota-pack',
+    id: 'website-assets/lens-logo_ducu7a',
+    name: 'Lens',
+    alt: 'Lens Logo',
+  },
   {
     href: 'https://www.infinitykeys.io/pack/saga-wormhole-pack',
     id: 'website-assets/saga_logo_ifk2az',
@@ -126,9 +131,6 @@ const HomePage = () => {
           <div className="mx-auto max-w-sm">
             <Heading visual="m">Collabs</Heading>
             <div className="grid grid-cols-3 items-center gap-6 pt-4 ">
-              <a href="https://www.infinitykeys.io/pack/lens-bogota-pack">
-                <LensLogo />
-              </a>
               {logoinfo.map((item) => (
                 <a href={item.href} key={item.name}>
                   <CloudImage
