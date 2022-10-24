@@ -1,18 +1,55 @@
 // import Alert from 'src/components/Alert/Alert'
+import CloudImage from 'src/components/CloudImage/CloudImage'
 import EmailNewsletter from 'src/components/EmailNewsletter/EmailNewsletter'
 import EmailPartner from 'src/components/EmailPartner/EmailPartner'
-import EmailSubmission from 'src/components/EmailSubmission/EmailSubmission'
 import Heading from 'src/components/Heading/Heading'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import Text from 'src/components/Text/Text'
 import Wrapper from 'src/components/Wrapper/Wrapper'
-import MapIcon from 'src/svgs/MapIcon'
 
 /*
 @TODO:
   Puzzle
 */
+export const logoinfo = [
+  {
+    href: 'https://www.infinitykeys.io/pack/lens-bogota-pack',
+    id: 'website-assets/lens-logo_ducu7a',
+    name: 'Lens',
+    alt: 'Lens Logo',
+  },
+  {
+    href: 'https://www.infinitykeys.io/pack/saga-wormhole-pack',
+    id: 'website-assets/saga_logo_ifk2az',
+    name: 'Saga',
+    alt: 'Saga Logo',
+  },
+  {
+    href: 'https://www.infinitykeys.io/pack/san-creator-pack',
+    id: 'website-assets/san_logo_dijhbm',
+    name: 'San',
+    alt: 'San Logo',
+  },
+  {
+    href: 'https://www.infinitykeys.io/pack/p0-pack',
+    id: 'website-assets/pn_symbol_clean_lcvuu6',
+    name: 'Probably Nothing',
+    alt: 'PN Logo',
+  },
+  {
+    href: 'https://www.infinitykeys.io/puzzle/finkel-islanders',
+    id: 'website-assets/finkel_logo_nriuwc',
+    name: 'Finkel',
+    alt: 'Finkel Logo',
+  },
+  {
+    href: 'https://www.infinitykeys.io/puzzle/second-season-rehash',
+    id: 'website-assets/rehash_logo_zwqhhw',
+    name: 'Rehash',
+    alt: 'Rehash Logo',
+  },
+]
 
 const HomePage = () => {
   // const SuccessComponent = () => (
@@ -91,15 +128,32 @@ const HomePage = () => {
       {/* Collab */}
       <Section id="collab">
         <div className="items-center md:grid md:grid-flow-col-dense md:grid-cols-2 md:gap-24">
-          <div className="mb-16 flex justify-center">
-            <MapIcon />
+          <div className="mx-auto max-w-sm">
+            <Heading visual="m">Collabs</Heading>
+            <div className="grid grid-cols-3 items-center gap-6 pt-4 ">
+              {logoinfo.map((item) => (
+                <a
+                  href={item.href}
+                  key={item.name}
+                  target="_blank"
+                  rel="noopener nonreferrer noreferrer"
+                >
+                  <CloudImage
+                    id={item.id}
+                    alt={item.alt}
+                    width={150}
+                    height={150}
+                  />
+                </a>
+              ))}
+            </div>
           </div>
           <div className="mx-auto max-w-xl">
-            <p className="mb-4 text-lg text-turquoise">
+            <p className="mt-4 mb-4 text-lg text-turquoise">
               Engagement &gt; Impressions.
             </p>
 
-            <Heading>Build an Infinity Keys Hunt for your Project</Heading>
+            <Heading>Create Infinity Keys Challenges for your Project</Heading>
             <Text>
               We work with projects to build new types of digital keys for
               engaging hunts and puzzles.
