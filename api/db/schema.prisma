@@ -10,46 +10,184 @@ generator client {
 
 // Define your own datamodels here and run `yarn redwood prisma migrate dev`
 // to create migrations for them and apply to your dev DB.
-// TODO: Please remove the following example:
 
-model Pack {
-  packId String @id @default(cuid())
-  name String
-  path String
-  rewardNftId String
-  listPublicly Boolean @default(true)
-  /// When this is shown in a list, how should it sort (is Packs grid page)
-  listSortWeight Int @default(0)
-  puzzles Puzzle[]
-}
-model Puzzle {
-  puzzleId String @id @default(cuid())
-  path String
-  successMessage String?
-  rewardNft String
-  listPublicly Boolean @default(true)
-  /// When this is shown in a list, how should it sort (ie Puzzles grid page)
-  listSortWeight Int
-  steps Step[]
-  packs Pack[]
-}
+/// Steps are whate players actually solve. One or more steps make up a Puzzle.
 model Step {
-  stepId String @id @default(cuid())
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  /// The answer. Make sure this is NOT publicly query-able
   solution String
   failMessage String?
   successMessage String?
   instructions String?
   challenge String?
-  /// When this is shown in a list, how should it sort (ie Steps in a Puzzle)
-  listSortWeight Int @default(0)
-  puzzleId String
-  puzzle Puzzle @relation(fields: [puzzleId], references: [puzzleId])
+
+  puzzles StepsOnPuzzles[]
+  attempts Attempt[]
 }
 
+/// A collection of one or more Steps makes up a Puzzle. A Puzzle is solved when
+/// all Steps are completed
+model Puzzle {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  puzzleName String
+  path String
+  successMessage String?
+  listPublicly Boolean @default(true)
+
+  nfts Nft[]
+  submissions Submission[]
+
+  steps StepsOnPuzzles[]
+  packs PuzzlesOnPacks[]
+}
+
+/// Assign Steps to Puzzles. The vast majority of Steps should be assigned to
+/// only one Puzzle, but this join table provides flexibility to store additional
+// information e.g. sort order of Steps
+model StepsOnPuzzles {
+  id String @id @default(cuid()) // Required for many-to-many
+
+  stepId String
+  step Step @relation(fields: [stepId], references: [id])
+  puzzleId String
+  puzzle Puzzle @relation(fields: [puzzleId], references: [id])
+
+  /// The order this Step should be within this Puzzle
+  stepSortWeight Int @default(1)
+  assignedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([stepId, puzzleId, stepSortWeight(sort: Asc)])
+}
+
+/// A collection of Puzzles makes up a Pack.
+model Pack {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name String
+  path String
+  listPublicly Boolean @default(true)
+
+  nfts Nft[]
+
+  bundles PacksOnBundles[]
+  puzzles PuzzlesOnPacks[]
+}
+
+model PuzzlesOnPacks {
+  id String @id @default(cuid()) // Required for many-to-many
+
+  puzzleId String
+  puzzle Puzzle @relation(fields: [puzzleId], references: [id])
+  packId String
+  pack Pack @relation(fields: [packId], references: [id])
+
+  puzzleSortWeight Int
+  assignedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([puzzleId, packId])
+}
+
+/// A collection of Packs makes up a Bundle
+model Bundle {
+  id String @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name String
+  path String
+  listPublicly Boolean @default(true)
+
+  nfts Nft[]
+
+  packs PacksOnBundles[]
+}
+
+model PacksOnBundles {
+  id String @id @default(cuid()) // Required for many-to-many
+  packId String
+  pack Pack @relation(fields: [packId], references: [id])
+  bundleId String
+  bundle Bundle @relation(fields: [bundleId], references: [id])
+
+  packSortWeight Int
+  assignedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([packId, bundleId])
+}
+
+
 model Nft {
-  nftId String @id @default(cuid())
+  id String @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
   tokenId Int
   contractName String
   data Json
   cloudinaryId String
+
+  puzzles Puzzle[]
+  packs Pack[]
+  bundles Bundle[]
+
+
+  @@unique([contractName, tokenId])
+}
+
+/// Identifiable player
+model User {
+  id String @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  nonce String @default(cuid())
+  username String?
+  /// Wallet address
+  publicAddress String?
+  /// Unique string used to cryptographically identify this person. NEVER MAKE PUBLIC
+  email String? @unique
+  twitterProfile String?
+  discordProfile String?
+  lensProfile String?
+
+  submissions Submission[]
+  attempts Attempt[]
+}
+
+/// User form submissions from post-Puzzle forms asking for email address etc
+model Submission {
+  id String @id @default(cuid())
+
+  puzzleId String
+  puzzle Puzzle @relation(fields: [puzzleId], references: [id])
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  data Json
+
+  @@unique([puzzleId, userId])
+  @@index([userId])
+}
+
+// Users guesses at Steps
+model Attempt {
+  id String @id @default(cuid())
+
+  stepId String
+  step Step @relation(fields: [stepId], references: [id])
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  attemptedAt DateTime @default(now())
+
+  // What did they guess?
+  guess String
+
+  @@unique([stepId, userId, attemptedAt])
+  @@index([userId])
 }

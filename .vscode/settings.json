@@ -7,5 +7,12 @@
   },
   "[prisma]": {
     "editor.formatOnSave": true
-  }
+  },
+  "cSpell.words": [
+    "cloudinary",
+    "redwoodjs"
+  ],
+  "editor.rulers": [
+  80
+  ]
 }
