@@ -13,6 +13,38 @@ import LensLogo from 'src/svgs/LensLogo'
 @TODO:
   Puzzle
 */
+export const logoinfo = [
+  {
+    href: 'https://www.infinitykeys.io/pack/saga-wormhole-pack',
+    id: 'website-assets/saga_logo_ifk2az',
+    name: 'Saga',
+    alt: 'Saga Logo',
+  },
+  {
+    href: 'https://www.infinitykeys.io/pack/san-creator-pack',
+    id: 'website-assets/san_logo_dijhbm',
+    name: 'San',
+    alt: 'San Logo',
+  },
+  {
+    href: 'https://www.infinitykeys.io/pack/p0-pack',
+    id: 'website-assets/pn_symbol_clean_lcvuu6',
+    name: 'Probably Nothing',
+    alt: 'PN Logo',
+  },
+  {
+    href: 'https://www.infinitykeys.io/puzzle/finkel-islanders',
+    id: 'website-assets/finkel_logo_nriuwc',
+    name: 'Finkel',
+    alt: 'Finkel Logo',
+  },
+  {
+    href: 'https://www.infinitykeys.io/puzzle/second-season-rehash',
+    id: 'website-assets/rehash_logo_zwqhhw',
+    name: 'Rehash',
+    alt: 'Rehash Logo',
+  },
+]
 
 const HomePage = () => {
   // const SuccessComponent = () => (
@@ -97,46 +129,16 @@ const HomePage = () => {
               <a href="https://www.infinitykeys.io/pack/lens-bogota-pack">
                 <LensLogo />
               </a>
-              <a href="https://www.infinitykeys.io/pack/saga-wormhole-pack">
-                <CloudImage
-                  id="website-assets/saga_logo_ifk2az"
-                  alt="Saga Logo"
-                  width={150}
-                  height={150}
-                />
-              </a>
-              <a href="https://www.infinitykeys.io/pack/san-creator-pack">
-                <CloudImage
-                  id="website-assets/san_logo_dijhbm"
-                  alt="San Logo"
-                  width={150}
-                  height={150}
-                />
-              </a>
-              <a href="https://www.infinitykeys.io/pack/p0-pack">
-                <CloudImage
-                  id="website-assets/pn_symbol_clean_lcvuu6"
-                  alt="PN Logo"
-                  width={200}
-                  height={200}
-                />
-              </a>
-              <a href="https://www.infinitykeys.io/puzzle/finkel-islanders">
-                <CloudImage
-                  id="website-assets/finkel_logo_nriuwc"
-                  alt="Finkel Logo"
-                  width={150}
-                  height={150}
-                />
-              </a>
-              <a href="https://www.infinitykeys.io/puzzle/second-season-rehash">
-                <CloudImage
-                  id="website-assets/rehash_logo_zwqhhw"
-                  alt="Rehash Logo"
-                  width={150}
-                  height={150}
-                />
-              </a>
+              {logoinfo.map((item) => (
+                <a href={item.href} key={item.name}>
+                  <CloudImage
+                    id={item.id}
+                    alt={item.alt}
+                    width={150}
+                    height={150}
+                  />
+                </a>
+              ))}
             </div>
           </div>
           <div className="mx-auto max-w-xl">
