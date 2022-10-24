@@ -24,9 +24,10 @@ describe('steps', () => {
 
   scenario('creates a step', async () => {
     const result = await createStep({
-      input: { solution: 'String' },
+      input: { updatedAt: '2022-10-24T17:00:55Z', solution: 'String' },
     })
 
+    expect(result.updatedAt).toEqual('2022-10-24T17:00:55Z')
     expect(result.solution).toEqual('String')
   })
 
@@ -34,10 +35,10 @@ describe('steps', () => {
     const original = (await step({ id: scenario.step.one.id })) as Step
     const result = await updateStep({
       id: original.id,
-      input: { solution: 'String2' },
+      input: { updatedAt: '2022-10-25T17:00:55Z' },
     })
 
-    expect(result.solution).toEqual('String2')
+    expect(result.updatedAt).toEqual('2022-10-25T17:00:55Z')
   })
 
   scenario('deletes a step', async (scenario: StandardScenario) => {

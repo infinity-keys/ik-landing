@@ -7,6 +7,7 @@ export const schema = gql`
     pack: Pack!
     puzzleSortWeight: Int!
     assignedAt: DateTime!
+    updatedAt: DateTime!
   }
 
   type Query {

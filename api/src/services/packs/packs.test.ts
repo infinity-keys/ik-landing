@@ -24,9 +24,14 @@ describe('packs', () => {
 
   scenario('creates a pack', async () => {
     const result = await createPack({
-      input: { name: 'String', path: 'String' },
+      input: {
+        updatedAt: '2022-10-24T16:59:40Z',
+        name: 'String',
+        path: 'String',
+      },
     })
 
+    expect(result.updatedAt).toEqual('2022-10-24T16:59:40Z')
     expect(result.name).toEqual('String')
     expect(result.path).toEqual('String')
   })
@@ -35,10 +40,10 @@ describe('packs', () => {
     const original = (await pack({ id: scenario.pack.one.id })) as Pack
     const result = await updatePack({
       id: original.id,
-      input: { name: 'String2' },
+      input: { updatedAt: '2022-10-25T16:59:40Z' },
     })
 
-    expect(result.name).toEqual('String2')
+    expect(result.updatedAt).toEqual('2022-10-25T16:59:40Z')
   })
 
   scenario('deletes a pack', async (scenario: StandardScenario) => {

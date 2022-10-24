@@ -2,6 +2,7 @@ export const schema = gql`
   type Bundle {
     id: String!
     createdAt: DateTime!
+    updatedAt: DateTime!
     name: String!
     path: String!
     listPublicly: Boolean!

@@ -41,13 +41,15 @@ describe('packsOnBundleses', () => {
       input: {
         packId: scenario.packsOnBundles.two.packId,
         bundleId: scenario.packsOnBundles.two.bundleId,
-        packSortWeight: 5198801,
+        packSortWeight: 7478231,
+        updatedAt: '2022-10-24T16:58:29Z',
       },
     })
 
     expect(result.packId).toEqual(scenario.packsOnBundles.two.packId)
     expect(result.bundleId).toEqual(scenario.packsOnBundles.two.bundleId)
-    expect(result.packSortWeight).toEqual(5198801)
+    expect(result.packSortWeight).toEqual(7478231)
+    expect(result.updatedAt).toEqual('2022-10-24T16:58:29Z')
   })
 
   scenario('updates a packsOnBundles', async (scenario: StandardScenario) => {
@@ -56,10 +58,10 @@ describe('packsOnBundleses', () => {
     })) as PacksOnBundles
     const result = await updatePacksOnBundles({
       id: original.id,
-      input: { packSortWeight: 343859 },
+      input: { packSortWeight: 3148387 },
     })
 
-    expect(result.packSortWeight).toEqual(343859)
+    expect(result.packSortWeight).toEqual(3148387)
   })
 
   scenario('deletes a packsOnBundles', async (scenario: StandardScenario) => {

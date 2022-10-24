@@ -39,7 +39,7 @@ export const User: UserRelationResolvers = {
   submissions: (_obj, { root }) => {
     return db.user.findUnique({ where: { id: root?.id } }).submissions()
   },
-  attemps: (_obj, { root }) => {
-    return db.user.findUnique({ where: { id: root?.id } }).attemps()
+  attempts: (_obj, { root }) => {
+    return db.user.findUnique({ where: { id: root?.id } }).attempts()
   },
 }
