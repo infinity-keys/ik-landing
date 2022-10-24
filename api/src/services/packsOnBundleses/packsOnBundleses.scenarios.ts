@@ -5,23 +5,41 @@ export const standard = defineScenario<Prisma.PacksOnBundlesCreateArgs>({
   packsOnBundles: {
     one: {
       data: {
-        packSortWeight: 9271957,
+        packSortWeight: 8628861,
+        updatedAt: '2022-10-24T16:58:29Z',
         pack: {
-          create: { name: 'String', path: 'String', rewardNftId: 'String' },
+          create: {
+            updatedAt: '2022-10-24T16:58:29Z',
+            name: 'String',
+            path: 'String',
+          },
         },
         bundle: {
-          create: { name: 'String', path: 'String', rewardNftId: 'String' },
+          create: {
+            updatedAt: '2022-10-24T16:58:29Z',
+            name: 'String',
+            path: 'String',
+          },
         },
       },
     },
     two: {
       data: {
-        packSortWeight: 5960895,
+        packSortWeight: 1111863,
+        updatedAt: '2022-10-24T16:58:29Z',
         pack: {
-          create: { name: 'String', path: 'String', rewardNftId: 'String' },
+          create: {
+            updatedAt: '2022-10-24T16:58:29Z',
+            name: 'String',
+            path: 'String',
+          },
         },
         bundle: {
-          create: { name: 'String', path: 'String', rewardNftId: 'String' },
+          create: {
+            updatedAt: '2022-10-24T16:58:29Z',
+            name: 'String',
+            path: 'String',
+          },
         },
       },
     },

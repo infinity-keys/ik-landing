@@ -30,9 +30,14 @@ describe('puzzles', () => {
 
   scenario('creates a puzzle', async () => {
     const result = await createPuzzle({
-      input: { puzzleName: 'String', path: 'String' },
+      input: {
+        updatedAt: '2022-10-24T17:00:26Z',
+        puzzleName: 'String',
+        path: 'String',
+      },
     })
 
+    expect(result.updatedAt).toEqual('2022-10-24T17:00:26Z')
     expect(result.puzzleName).toEqual('String')
     expect(result.path).toEqual('String')
   })
@@ -41,10 +46,10 @@ describe('puzzles', () => {
     const original = (await puzzle({ id: scenario.puzzle.one.id })) as Puzzle
     const result = await updatePuzzle({
       id: original.id,
-      input: { puzzleName: 'String2' },
+      input: { updatedAt: '2022-10-25T17:00:26Z' },
     })
 
-    expect(result.puzzleName).toEqual('String2')
+    expect(result.updatedAt).toEqual('2022-10-25T17:00:26Z')
   })
 
   scenario('deletes a puzzle', async (scenario: StandardScenario) => {

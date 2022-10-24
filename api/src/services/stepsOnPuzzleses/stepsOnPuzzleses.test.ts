@@ -41,13 +41,13 @@ describe('stepsOnPuzzleses', () => {
       input: {
         stepId: scenario.stepsOnPuzzles.two.stepId,
         puzzleId: scenario.stepsOnPuzzles.two.puzzleId,
-        stepSortWeight: 2945975,
+        updatedAt: '2022-10-24T17:00:06Z',
       },
     })
 
     expect(result.stepId).toEqual(scenario.stepsOnPuzzles.two.stepId)
     expect(result.puzzleId).toEqual(scenario.stepsOnPuzzles.two.puzzleId)
-    expect(result.stepSortWeight).toEqual(2945975)
+    expect(result.updatedAt).toEqual('2022-10-24T17:00:06Z')
   })
 
   scenario('updates a stepsOnPuzzles', async (scenario: StandardScenario) => {
@@ -56,10 +56,10 @@ describe('stepsOnPuzzleses', () => {
     })) as StepsOnPuzzles
     const result = await updateStepsOnPuzzles({
       id: original.id,
-      input: { stepSortWeight: 3085555 },
+      input: { updatedAt: '2022-10-25T17:00:06Z' },
     })
 
-    expect(result.stepSortWeight).toEqual(3085555)
+    expect(result.updatedAt).toEqual('2022-10-25T17:00:06Z')
   })
 
   scenario('deletes a stepsOnPuzzles', async (scenario: StandardScenario) => {

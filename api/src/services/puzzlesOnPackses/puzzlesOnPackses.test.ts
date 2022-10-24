@@ -41,13 +41,15 @@ describe('puzzlesOnPackses', () => {
       input: {
         puzzleId: scenario.puzzlesOnPacks.two.puzzleId,
         packId: scenario.puzzlesOnPacks.two.packId,
-        puzzleSortWeight: 2987692,
+        puzzleSortWeight: 2901488,
+        updatedAt: '2022-10-24T16:59:25Z',
       },
     })
 
     expect(result.puzzleId).toEqual(scenario.puzzlesOnPacks.two.puzzleId)
     expect(result.packId).toEqual(scenario.puzzlesOnPacks.two.packId)
-    expect(result.puzzleSortWeight).toEqual(2987692)
+    expect(result.puzzleSortWeight).toEqual(2901488)
+    expect(result.updatedAt).toEqual('2022-10-24T16:59:25Z')
   })
 
   scenario('updates a puzzlesOnPacks', async (scenario: StandardScenario) => {
@@ -56,10 +58,10 @@ describe('puzzlesOnPackses', () => {
     })) as PuzzlesOnPacks
     const result = await updatePuzzlesOnPacks({
       id: original.id,
-      input: { puzzleSortWeight: 7737092 },
+      input: { puzzleSortWeight: 2048522 },
     })
 
-    expect(result.puzzleSortWeight).toEqual(7737092)
+    expect(result.puzzleSortWeight).toEqual(2048522)
   })
 
   scenario('deletes a puzzlesOnPacks', async (scenario: StandardScenario) => {
