@@ -2,6 +2,7 @@
 import CloudImage from 'src/components/CloudImage/CloudImage'
 import EmailNewsletter from 'src/components/EmailNewsletter/EmailNewsletter'
 import EmailPartner from 'src/components/EmailPartner/EmailPartner'
+import Flicker from 'src/components/Flicker/Flicker'
 import Heading from 'src/components/Heading/Heading'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
@@ -53,8 +54,11 @@ export const logoinfo = [
 
 const HomePage = () => {
   // const SuccessComponent = () => (
-  //   <div className="container my-9 flex max-w-sm justify-center">
-  //     <Alert text="Now you're playing Infinity Keys! Solve more puzzles. Find more clues on IK social channels." />
+  //   <div
+  //     data-cy="success_message_check"
+  //     className="container my-16 flex max-w-[12rem] justify-center"
+  //   >
+  //     <Button text="Play More" fullWidth href={`/${PACK_COLLECTION_BASE}`} />
   //   </div>
   // )
 
@@ -63,32 +67,36 @@ const HomePage = () => {
       <Seo />
 
       {/* Top puzzle */}
-      <div className="slice--top radial-bg relative z-0 w-full">
+      <div className="slice--top radial-bg relative z-0 flex min-h-[calc(100vh-80px)] w-full items-center">
         <Section largePadding={false}>
-          {/* <Puzzle
-              puzzleId={puzzleId}
-              count={count}
-              SuccessComponent={SuccessComponent}
-            /> */}
-          <div className="mx-auto mt-5 max-w-md text-left text-white sm:max-w-2xl sm:text-xl lg:text-lg xl:text-xl">
-            <p className="text-[1.35rem] leading-normal md:text-[2.5rem]">
+          <div className="mb-8 text-center md:mb-12">
+            <Heading as="h1" visual="l">
               This is an Infinity Keys h
-              <span className="font-bold text-turquoise">un</span>
+              <Flicker once bold delay=".3s">
+                un
+              </Flicker>
               t.
-            </p>
-            <p className="leading-normal md:text-[1.50rem]">
-              Find the c<span className="font-bold text-turquoise">l</span>
+            </Heading>
+          </div>
+
+          {/* <Puzzle
+            puzzleId={puzzleId}
+            count={count}
+            SuccessComponent={SuccessComponent}
+            forwardOnFail={false}
+          /> */}
+          <div className="flicker-container mt-10 text-center text-white sm:text-xl md:text-2xl">
+            <p className="leading-normal">
+              Find the c<Flicker delay=".6s">l</Flicker>
               ues and enter the key.
             </p>
-            <p className="leading-normal md:text-[1.50rem]">
-              Hunt f<span className="font-bold text-turquoise">o</span>r{' '}
-              <span className="font-bold text-turquoise">c</span>
-              lues and <span className="font-bold text-turquoise">k</span>
+            <p className="leading-normal">
+              Hunt f<Flicker delay=".8s">o</Flicker>r{' '}
+              <Flicker delay="1s">c</Flicker>
+              lues and <Flicker delay="1.2s">k</Flicker>
               eys anywhere.
             </p>
-            <p className="leading-normal md:text-[1.50rem]">
-              (Try the colored letters!)
-            </p>
+            <p className="leading-normal">(Try the colored letters!)</p>
           </div>
 
           <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black opacity-40"></div>
