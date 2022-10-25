@@ -10063,7 +10063,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer@npm:^5.4.3, buffer@npm:^5.5.0":
+"buffer@npm:^5.0.3, buffer@npm:^5.4.3, buffer@npm:^5.5.0":
   version: 5.7.1
   resolution: "buffer@npm:5.7.1"
   dependencies:
@@ -10321,6 +10321,13 @@ __metadata:
   version: 5.3.1
   resolution: "camelcase@npm:5.3.1"
   checksum: 92ff9b443bfe8abb15f2b1513ca182d16126359ad4f955ebc83dc4ddcc4ef3fdd2c078bc223f2673dc223488e75c99b16cc4d056624374b799e6a1555cf61b23
+  languageName: node
+  linkType: hard
+
+"camelize@npm:^1.0.0":
+  version: 1.0.1
+  resolution: "camelize@npm:1.0.1"
+  checksum: 4c9ac55efd356d37ac483bad3093758236ab686192751d1c9daa43188cc5a07b09bd431eb7458a4efd9ca22424bba23253e7b353feb35d7c749ba040de2385fb
   languageName: node
   linkType: hard
 
@@ -11318,6 +11325,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"core-js@npm:^1.0.0":
+  version: 1.2.7
+  resolution: "core-js@npm:1.2.7"
+  checksum: 2b2966e40833f522129da4cc979688760654e9b38e32b06517a94c0edf2882d8990c4b1b0087cb2abfbe6219fdb21dc64343fa264a6b6280ec88c3682b8eee66
+  languageName: node
+  linkType: hard
+
 "core-js@npm:^3.0.4, core-js@npm:^3.22.1, core-js@npm:^3.6.5, core-js@npm:^3.8.2":
   version: 3.25.3
   resolution: "core-js@npm:3.25.3"
@@ -11464,6 +11478,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"create-react-class@npm:^15.6.0":
+  version: 15.7.0
+  resolution: "create-react-class@npm:15.7.0"
+  dependencies:
+    loose-envify: ^1.3.1
+    object-assign: ^4.1.1
+  checksum: bce4b46e6d85b424cb50ca8089266c7664fcecfd81abaafb829680fae2e2e60dc6999cac88f5a16a38473ed284859f2328935a42fc5cd1b7cc48888fdd8363c9
+  languageName: node
+  linkType: hard
+
 "create-require@npm:^1.1.0":
   version: 1.1.1
   resolution: "create-require@npm:1.1.1"
@@ -11588,6 +11612,13 @@ __metadata:
   bin:
     css-blank-pseudo: dist/cli.cjs
   checksum: 889b0c4e47f5172cbc1a036ed31c1b25b13e6331bd85f91c910ce29ba4a1bad33d8d7bd0d48343bc5d9bf30750b4626fe55fe9fd1042e09eda72f4a72c1d779c
+  languageName: node
+  linkType: hard
+
+"css-color-keywords@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "css-color-keywords@npm:1.0.0"
+  checksum: af205a86c68e0051846ed91eb3e30b4517e1904aac040013ff1d742019b3f9369ba5658ba40901dbbc121186fc4bf0e75a814321cc3e3182fbb2feb81c6d9cb7
   languageName: node
   linkType: hard
 
@@ -11733,6 +11764,17 @@ __metadata:
     domutils: ^3.0.1
     nth-check: ^2.0.1
   checksum: 551c60dba5b54054741032c1793b5734f6ba45e23ae9e82761a3c0ed1acbb8cfedfa443aaba3a3c1a54cac12b456d2012a09d2cd5f0e82e430454c1b9d84d500
+  languageName: node
+  linkType: hard
+
+"css-to-react-native@npm:^2.0.3":
+  version: 2.3.2
+  resolution: "css-to-react-native@npm:2.3.2"
+  dependencies:
+    camelize: ^1.0.0
+    css-color-keywords: ^1.0.0
+    postcss-value-parser: ^3.3.0
+  checksum: 37b369a52431fc356fcdfda4268ae201c8dce110e8698d8e890692cded67c7cde4872d22124e3bb026e4a2cb68e8dde4ec6e6df229206539c1d8fef70e52444e
   languageName: node
   linkType: hard
 
@@ -12790,7 +12832,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"encoding@npm:^0.1.13":
+"encoding@npm:^0.1.11, encoding@npm:^0.1.13":
   version: 0.1.13
   resolution: "encoding@npm:0.1.13"
   dependencies:
@@ -14316,6 +14358,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fbjs@npm:^0.8.9":
+  version: 0.8.18
+  resolution: "fbjs@npm:0.8.18"
+  dependencies:
+    core-js: ^1.0.0
+    isomorphic-fetch: ^2.1.1
+    loose-envify: ^1.0.0
+    object-assign: ^4.1.0
+    promise: ^7.1.1
+    setimmediate: ^1.0.5
+    ua-parser-js: ^0.7.30
+  checksum: a7e1c64c349cde000e5d94ce0289c59b725a95fbdacc22529155c4dacea1dde37a4dae7e16f0f6602dca566f15978b42acd7ee973b620eaac612b5228687ffe0
+  languageName: node
+  linkType: hard
+
 "fbjs@npm:^3.0.0":
   version: 3.0.4
   resolution: "fbjs@npm:3.0.4"
@@ -15415,6 +15472,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"has-flag@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "has-flag@npm:1.0.0"
+  checksum: d0ad4bebbbc005edccfa1e2c0600c89375be5663d23f49a129e0f817187405748b0b515abfc5b3c209c92692e39bb0481c83c0ee4df69433d6ffd0242183100b
+  languageName: node
+  linkType: hard
+
 "has-flag@npm:^3.0.0":
   version: 3.0.0
   resolution: "has-flag@npm:3.0.0"
@@ -15677,6 +15741,13 @@ __metadata:
     minimalistic-assert: ^1.0.0
     minimalistic-crypto-utils: ^1.0.1
   checksum: f3d9ba31b40257a573f162176ac5930109816036c59a09f901eb2ffd7e5e705c6832bedfff507957125f2086a0ab8f853c0df225642a88bf1fcaea945f20600d
+  languageName: node
+  linkType: hard
+
+"hoist-non-react-statics@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "hoist-non-react-statics@npm:1.2.0"
+  checksum: c6f98715f88d777b19e6bccbdf5c04bbf1d0a154a6417e922936a1ea1c2627f238e3109546fcc91dbd4d34956374393b30a4188ee3ab88009806ba6db190ffe4
   languageName: node
   linkType: hard
 
@@ -16716,7 +16787,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-plain-object@npm:^2.0.3, is-plain-object@npm:^2.0.4":
+"is-plain-object@npm:^2.0.1, is-plain-object@npm:^2.0.3, is-plain-object@npm:^2.0.4":
   version: 2.0.4
   resolution: "is-plain-object@npm:2.0.4"
   dependencies:
@@ -16774,7 +16845,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-stream@npm:^1.1.0":
+"is-stream@npm:^1.0.1, is-stream@npm:^1.1.0":
   version: 1.1.0
   resolution: "is-stream@npm:1.1.0"
   checksum: b8ae7971e78d2e8488d15f804229c6eed7ed36a28f8807a1815938771f4adff0e705218b7dab968270433f67103e4fef98062a0beea55d64835f705ee72c7002
@@ -16952,6 +17023,16 @@ __metadata:
   version: 4.0.0
   resolution: "isobject@npm:4.0.0"
   checksum: 8efcda03af98cbb193737e30ffb77c71ca4e97dbf919f7aacec44b7410a166fa4e9fd71232bf5b00a919f98b5747ae359dbb5a5bc4195c93f6291423b9707df6
+  languageName: node
+  linkType: hard
+
+"isomorphic-fetch@npm:^2.1.1":
+  version: 2.2.1
+  resolution: "isomorphic-fetch@npm:2.2.1"
+  dependencies:
+    node-fetch: ^1.0.1
+    whatwg-fetch: ">=0.10.0"
+  checksum: ea9fd37d31ec7b35b82180e1946d4a2f512506d0559fa567ec6ee6701ff1c6d924be90e75499c50982274b707e03ecd9eaa21d618872dd0deff530e4c3bdb074
   languageName: node
   linkType: hard
 
@@ -18668,7 +18749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.3.1, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -19959,6 +20040,16 @@ __metadata:
     encoding:
       optional: true
   checksum: fcae80f5ac52fbf5012f5e19df2bd3915e67d3b3ad51cb5942943df2238d32ba15890fecabd0e166876a9f98a581ab50f3f10eb942b09405c49ef8da36b826c7
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:^1.0.1":
+  version: 1.7.3
+  resolution: "node-fetch@npm:1.7.3"
+  dependencies:
+    encoding: ^0.1.11
+    is-stream: ^1.0.1
+  checksum: 5a6b56b3edf909ccd20414355867d24f15f1885da3b26be90840241c46e63754ebf4697050f897daab676e3952d969611ffe1d4bc4506cf50f70837e20ad5328
   languageName: node
   linkType: hard
 
@@ -22067,6 +22158,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss-value-parser@npm:^3.3.0":
+  version: 3.3.1
+  resolution: "postcss-value-parser@npm:3.3.1"
+  checksum: 23eed98d8eeadb1f9ef1db4a2757da0f1d8e7c1dac2a38d6b35d971aab9eb3c6d8a967d0e9f435558834ffcd966afbbe875a56bcc5bcdd09e663008c106b3e47
+  languageName: node
+  linkType: hard
+
 "postcss-value-parser@npm:^4.0.0, postcss-value-parser@npm:^4.1.0, postcss-value-parser@npm:^4.2.0":
   version: 4.2.0
   resolution: "postcss-value-parser@npm:4.2.0"
@@ -22351,7 +22449,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:15.8.1, prop-types@npm:^15.0.0, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:15.8.1, prop-types@npm:^15.0.0, prop-types@npm:^15.5.10, prop-types@npm:^15.5.4, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -22742,6 +22840,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-dom@npm:^15.6.1":
+  version: 15.7.0
+  resolution: "react-dom@npm:15.7.0"
+  dependencies:
+    fbjs: ^0.8.9
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.0
+    prop-types: ^15.5.10
+  peerDependencies:
+    react: ^15.7.0
+  checksum: df53025b8e9a63a80c99cb066e9e9db879e97f8d45d204803bfd806829e43818aae16e5ee8e4d05443931562df2bc9c0bd688607398e25de6dca2879478f0212
+  languageName: node
+  linkType: hard
+
 "react-element-to-jsx-string@npm:^14.3.4":
   version: 14.3.4
   resolution: "react-element-to-jsx-string@npm:14.3.4"
@@ -22808,6 +22920,18 @@ __metadata:
     react: ">=16"
     react-dom: ">=16"
   checksum: f6db8f0ddd5a68752f753d0924cc2174befe37e2027d0ced4ce43f6c4c74f489d1e1eeb5581c37f182b9760720a25c084ed8679279db0a74b064d56279a4923f
+  languageName: node
+  linkType: hard
+
+"react-individual-character-input-boxes@npm:^1.2.1":
+  version: 1.2.23
+  resolution: "react-individual-character-input-boxes@npm:1.2.23"
+  dependencies:
+    prop-types: ^15.5.10
+    react: ^15.6.1
+    react-dom: ^15.6.1
+    styled-components: ^2.1.2
+  checksum: 3499cf7fa526f569d7650ebcd70fae3a623ab10bfdcf93c9c6565cd1ce6a4ddbbf4ff5a7a76549755d452830bd85871bdf3a6790850c088db05cc0b57de12cef
   languageName: node
   linkType: hard
 
@@ -22967,6 +23091,19 @@ __metadata:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: 07ae8959acf1596f0550685102fd6097d461a54a4fd46a50f88a0cd7daaa97fdd6415de1dcb4bfe0da6aa43221a6746ce380410fa848acc60f8ac41f6649c148
+  languageName: node
+  linkType: hard
+
+"react@npm:^15.6.1":
+  version: 15.7.0
+  resolution: "react@npm:15.7.0"
+  dependencies:
+    create-react-class: ^15.6.0
+    fbjs: ^0.8.9
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.0
+    prop-types: ^15.5.10
+  checksum: 1b48cf636c1af90a15660ad024db1389716c495dcd19807700f0eb92678d8bd57fe362f40eb4d89a713e8db1c8ab8ac1e989cdf3b215d32ac1d3fbc4120f26d8
   languageName: node
   linkType: hard
 
@@ -25165,6 +25302,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"styled-components@npm:^2.1.2":
+  version: 2.4.1
+  resolution: "styled-components@npm:2.4.1"
+  dependencies:
+    buffer: ^5.0.3
+    css-to-react-native: ^2.0.3
+    fbjs: ^0.8.9
+    hoist-non-react-statics: ^1.2.0
+    is-plain-object: ^2.0.1
+    prop-types: ^15.5.4
+    stylis: ^3.4.0
+    supports-color: ^3.2.3
+  peerDependencies:
+    react: ">= 0.14.0 < 17.0.0-0"
+  checksum: b08042c6ee8f6a9adf8420dd5d60ac3a1d5c2f7a1a25fc4dcd4f52b13869e7079539d9956525db53f5104a829b36a1d1aa7aed767ff25bfe806b5055545cce49
+  languageName: node
+  linkType: hard
+
 "stylehacks@npm:^5.1.0":
   version: 5.1.0
   resolution: "stylehacks@npm:5.1.0"
@@ -25174,6 +25329,13 @@ __metadata:
   peerDependencies:
     postcss: ^8.2.15
   checksum: 2c46413f9c21617f2537522ee89bd88416cf0dd1d4a7998da4445666cbd01364ec371ae326c2978df36ea020d1f161aa478feb70c7bb32e8085b0857e552c603
+  languageName: node
+  linkType: hard
+
+"stylis@npm:^3.4.0":
+  version: 3.5.4
+  resolution: "stylis@npm:3.5.4"
+  checksum: 5da2f4527d6f3b4877bd575dca068698ddc7882d0f4c3f69178f19328726a2b885e03d759ef82bb06e9bd1a5d47f1f2ce17cc5acbeee2435d42940a261ee11fd
   languageName: node
   linkType: hard
 
@@ -25188,6 +25350,15 @@ __metadata:
   version: 2.0.0
   resolution: "supports-color@npm:2.0.0"
   checksum: 570e0b63be36cccdd25186350a6cb2eaad332a95ff162fa06d9499982315f2fe4217e69dd98e862fbcd9c81eaff300a825a1fe7bf5cc752e5b84dfed042b0dda
+  languageName: node
+  linkType: hard
+
+"supports-color@npm:^3.2.3":
+  version: 3.2.3
+  resolution: "supports-color@npm:3.2.3"
+  dependencies:
+    has-flag: ^1.0.0
+  checksum: d39a57dbd75c3b5740654f8ec16aaf7203b8d12b8a51314507bed590c9081120805f105b4ce741db13105e6f842ac09700e4bd665b9ffc46eb0b34ba54720bd3
   languageName: node
   linkType: hard
 
@@ -27110,6 +27281,7 @@ __metadata:
     react: 17.0.2
     react-cookie-consent: ^8.0.1
     react-dom: 17.0.2
+    react-individual-character-input-boxes: ^1.2.1
     react-markdown: ^8.0.3
     tailwindcss: ^3.1.8
     use-device-pixel-ratio: ^1.1.0
@@ -27501,7 +27673,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"whatwg-fetch@npm:3.6.2, whatwg-fetch@npm:^3.4.1":
+"whatwg-fetch@npm:3.6.2, whatwg-fetch@npm:>=0.10.0, whatwg-fetch@npm:^3.4.1":
   version: 3.6.2
   resolution: "whatwg-fetch@npm:3.6.2"
   checksum: cc10f6893fe71839250b6e2fa9bc293bcf0ca5b93129712a7d1097fb7528b3ff617eb065098dc972e74d1455378e514aa34c0901ded41584be16508db63477c8
