@@ -15,6 +15,7 @@ export const schema = gql`
   type Query {
     nfts: [Nft!]! @requireAuth
     nft(id: String!): Nft @requireAuth
+    nftByTokenId(tokenId: Int!): Nft @requireAuth
   }
 
   input CreateNftInput {
