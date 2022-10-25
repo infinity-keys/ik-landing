@@ -14,7 +14,11 @@ export const checkBalance: QueryResolvers['checkBalance'] = async ({
   const chainIdAsNumber = parseInt(chainId, 10)
 
   const contract = contractLookup[chainIdAsNumber]
-  if (!contract) return { success: false }
+  if (!contract)
+    return {
+      success: false,
+      message: 'Something went wrong. Please try again.',
+    }
 
   // faster call on avax than eth..
   const contractAVAX = contractLookup[AVAX_CHAIN_ID]
@@ -23,7 +27,11 @@ export const checkBalance: QueryResolvers['checkBalance'] = async ({
   // check if token Ids exist
   const validIds = tokenIdsArray.every((t) => parseInt(t, 10) < numTokens)
 
-  if (!validIds || !contract) return { success: false }
+  if (!validIds || !contract)
+    return {
+      success: false,
+      message: 'Something went wrong. Please try again.',
+    }
 
   const accountArray = Array(tokenIdsArray.length).fill(account)
 
