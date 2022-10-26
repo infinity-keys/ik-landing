@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@redwoodjs/api": "^3.0.3",
-    "@redwoodjs/graphql-server": "^3.0.3",
+    "@redwoodjs/api": "^3.2.0",
+    "@redwoodjs/graphql-server": "^3.2.0",
     "@sendgrid/mail": "^7.7.0",
     "cloudinary-build-url": "^0.2.4",
     "jose": "^4.10.0",
