@@ -6,15 +6,17 @@ import Footer from "@components/footer";
 type WrapperProps = {
   full?: boolean;
   radialBg?: boolean;
+  customClasses?: string[];
 };
 
 const Wrapper: FC<PropsWithChildren<WrapperProps>> = ({
   children,
   full = false,
   radialBg = true,
+  customClasses = [],
 }) => (
   <div
-    className={clsx("bg-blue text-gray-100 relative z-0", {
+    className={clsx(customClasses, "bg-blue text-gray-100 relative z-0", {
       "radial-bg": radialBg,
     })}
   >
