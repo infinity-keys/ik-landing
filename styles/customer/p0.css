@@ -15,6 +15,10 @@
   .pack__text {
     @apply text-gray-200;
   }
+  .puzzle-thumb {
+    background-color: #1e1e1e;
+    @apply border border-gray-700;
+  }
 
   .pack__main .ik-button {
     background: #e4a23a;
