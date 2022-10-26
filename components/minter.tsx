@@ -169,7 +169,7 @@ export default function Minter({
           : openConnectModal
       }
       className={clsx(
-        " block min-w-full rounded-md border border-solid py-2 px-4 text-lg font-bold text-blue",
+        "ik-button block min-w-full rounded-md border border-solid py-2 px-4 text-lg font-bold text-blue",
         !isConnected || !chainIsValid || signature || !writeError
           ? "border-turquoise bg-turquoise hover:cursor-pointer hover:bg-turquoiseDark"
           : "border-gray-150 bg-gray-150"
@@ -214,11 +214,11 @@ export default function Minter({
         </Heading>
       )}
 
-      <div className="w-full max-w-xs py-9">
+      <div className="w-full max-w-xs py-9 flex justify-center">
         {setHasChecked && !hasChecked ? (
           <button
             onClick={() => setHasChecked(true)}
-            className="block min-w-full rounded-md border border-solid py-2 px-4 text-lg font-bold text-blue border-turquoise bg-turquoise hover:cursor-pointer hover:bg-turquoiseDark"
+            className="ik-button block min-w-full rounded-md border border-solid py-2 px-4 text-lg font-bold text-blue border-turquoise bg-turquoise hover:cursor-pointer hover:bg-turquoiseDark"
           >
             Check My NFTs
           </button>

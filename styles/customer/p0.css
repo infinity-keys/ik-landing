@@ -1,0 +1,33 @@
+.pack--p0-pack {
+  background-image: url("/customer/p0/pn_pattern.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+
+  .pack__image-anchor {
+    display: inline-block;
+    width: 288px;
+    height: 76px;
+    background-image: url("/customer/p0/pn_logo_w.svg");
+    @apply mt-20;
+  }
+
+  .pack__text {
+    @apply text-gray-200;
+  }
+
+  .pack__main .ik-button {
+    background: #e4a23a;
+    border-color: #e4a23a;
+    border-radius: 999em;
+    min-width: auto;
+    @apply h-20 text-2xl px-10;
+  }
+
+  .twitter-share {
+    border: 2px solid white;
+    border-radius: 999em;
+    background: none;
+    @apply px-6 py-2 uppercase text-lg;
+  }
+}

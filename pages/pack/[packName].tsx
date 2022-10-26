@@ -19,11 +19,13 @@ import { buildUrlString, thumbnailData } from "@lib/utils";
 import { cloudinaryUrl } from "@lib/images";
 
 import useCurrentWidth from "@hooks/useCurrentWidth";
+import Head from "next/head";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
   puzzlesNftIds: number[];
   pack: {
+    simpleName: string;
     name: string;
     nftId?: number;
     cloudinaryId?: string;
@@ -50,7 +52,10 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
     width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
 
   return (
-    <Wrapper>
+    <Wrapper
+      customClasses={["pack", `pack--${pack.simpleName}`]}
+      radialBg={false}
+    >
       <Seo
         title={`${pack.name} | IK Pack`}
         imageUrl={
@@ -59,8 +64,9 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
         url={asPath}
       />
 
-      <div className="max-w-3xl items-center text-center">
-        <p className="mt-10 sm:mt-14">
+      <div className="pack__main max-w-3xl items-center text-center">
+        <div className="pack__image-anchor"></div>
+        <p className="pack__text mt-10 sm:mt-14">
           To be eligible to claim the {pack.name} Achievement you must
           successfully complete the following puzzles and claim the
           corresponding achievement NFT. All the NFTs must be claimed on the
@@ -151,6 +157,7 @@ export async function getStaticProps({
       puzzles,
       puzzlesNftIds,
       pack: {
+        simpleName: packName,
         name: pack[0].pack_name,
         nftId: pack[0].nftId,
         cloudinaryId: pack[0]?.cloudinary_id || "",
