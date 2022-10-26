@@ -30,7 +30,7 @@ export default function Button({
   children,
 }: ButtonProps) {
   const classes = clsx(
-    "inline-block border border-turquoise hover:border-white rounded-md font-medium text-center transition",
+    "ik-button inline-block border border-turquoise hover:border-white rounded-md font-medium text-center transition",
     // Sizing
     { "block w-full": fullWidth },
     // Text color
