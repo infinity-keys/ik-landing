@@ -1,4 +1,5 @@
-.pack--p0-pack {
+.pack--p0-pack,
+.puzzle--P0 {
   background-image: url("/customer/p0/pn_pattern.jpg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -20,12 +21,15 @@
     @apply border border-gray-700;
   }
 
-  .pack__main .ik-button {
-    background: #e4a23a;
-    border-color: #e4a23a;
-    border-radius: 999em;
-    min-width: auto;
-    @apply h-20 text-2xl px-10;
+  .pack__main,
+  .puzzle__main {
+    .ik-button {
+      background: #e4a23a;
+      border-color: #e4a23a;
+      border-radius: 999em;
+      min-width: auto;
+      @apply h-20 text-2xl px-10 text-black;
+    }
   }
 
   .twitter-share {

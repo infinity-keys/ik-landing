@@ -51,7 +51,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
   const { asPath } = useRouter();
 
   return (
-    <Wrapper full>
+    <Wrapper full customClasses={["puzzle", `puzzle--${name}`]}>
       <Seo
         title={`${name} | IK Puzzle`}
         description={`Can you unlock the ${name} puzzle?`}
@@ -59,7 +59,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
         url={asPath}
       />
 
-      <main className="text-center pt-10 md:pt-20 w-full px-4">
+      <main className="puzzle__main text-center pt-10 md:pt-20 w-full px-4">
         {nftCheckParameters ? (
           <NftCheck
             nftCheckParameters={nftCheckParameters}

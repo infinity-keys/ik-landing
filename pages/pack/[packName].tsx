@@ -52,10 +52,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
     width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
 
   return (
-    <Wrapper
-      customClasses={["pack", `pack--${pack.simpleName}`]}
-      radialBg={false}
-    >
+    <Wrapper customClasses={["pack", `pack--${pack.simpleName}`]}>
       <Seo
         title={`${pack.name} | IK Pack`}
         imageUrl={
