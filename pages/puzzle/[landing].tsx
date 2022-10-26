@@ -18,6 +18,7 @@ import NftCheck from "@components/nft-check";
 
 export interface PuzzlePageProps {
   name: string;
+  landingPath: string;
   count: number;
   puzzleId: string;
   inputType?: Puzzle_Input_Type_Enum;
@@ -37,6 +38,7 @@ interface PuzzlePageParams {
 
 const Dev: NextPage<PuzzlePageProps> = ({
   name,
+  landingPath,
   count,
   puzzleId,
   inputType,
@@ -51,7 +53,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
   const { asPath } = useRouter();
 
   return (
-    <Wrapper full>
+    <Wrapper full customClasses={["puzzle", `puzzle--${landingPath}`]}>
       <Seo
         title={`${name} | IK Puzzle`}
         description={`Can you unlock the ${name} puzzle?`}
@@ -59,7 +61,7 @@ const Dev: NextPage<PuzzlePageProps> = ({
         url={asPath}
       />
 
-      <main className="text-center pt-10 md:pt-20 w-full px-4">
+      <main className="puzzle__main text-center pt-10 md:pt-20 w-full px-4">
         {nftCheckParameters ? (
           <NftCheck
             nftCheckParameters={nftCheckParameters}
@@ -130,6 +132,7 @@ export async function getStaticProps({
   return {
     props: {
       name: simple_name,
+      landingPath: landing,
       count: solution_char_count || 0,
       puzzleId: puzzle_id,
       inputType: input_type || Puzzle_Input_Type_Enum.Boxes,
