@@ -16,11 +16,17 @@ export const nft: QueryResolvers['nft'] = ({ id }) => {
   })
 }
 
-export const nftByTokenId: QueryResolvers['nftByTokenId'] = ({ tokenId }) => {
-  return db.nft.findFirst({
-    where: { tokenId },
-  })
-}
+export const nftByContractAndTokenId: QueryResolvers['nftByContractAndTokenId'] =
+  ({ tokenId, contractName }) => {
+    return db.nft.findUnique({
+      where: {
+        contractName_tokenId: {
+          contractName,
+          tokenId,
+        },
+      },
+    })
+  }
 
 export const createNft: MutationResolvers['createNft'] = ({ input }) => {
   return db.nft.create({
