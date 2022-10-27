@@ -214,7 +214,7 @@ export default function Minter({
         </Heading>
       )}
 
-      <div className="w-full max-w-xs py-9 flex justify-center">
+      <div className="w-full max-w-xs py-9">
         {setHasChecked && !hasChecked ? (
           <button
             onClick={() => setHasChecked(true)}
