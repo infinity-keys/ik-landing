@@ -11,38 +11,73 @@ generator client {
 // Define your own datamodels here and run `yarn redwood prisma migrate dev`
 // to create migrations for them and apply to your dev DB.
 
-/// Steps are whate players actually solve. One or more steps make up a Puzzle.
-model Step {
-  id String @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  /// The answer. Make sure this is NOT publicly query-able
-  solution String
-  failMessage String?
-  successMessage String?
-  instructions String?
-  challenge String?
+enum RewardableType {
+  PUZZLE
+  PACK
+  BUNDLE
+}
 
-  puzzles StepsOnPuzzles[]
-  attempts Attempt[]
+/// A thing that can reward NFTs.
+model Rewardable {
+  id             String         @id @default(cuid())
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  /// Full name, with spaces, ie Not Right
+  name           String
+  /// Short name, no spaces/caps, only lowercase and dashes, ie not-right
+  slug           String
+  /// When this is successfully completed/rewarded, what should be shown
+  successMessage String?
+  /// Show in public listings
+  listPublicly   Boolean        @default(true)
+  /// Categorize rewardable into different buckets
+  type           RewardableType
+
+  nfts   Nft[]
+
+  // Connections to the gaming concepts
+  Puzzle Puzzle?
+}
+
+/// Connect puzzles to packs and packs to bundles and etc
+model RewardableConnection {
+  parentId String
+  parentRewardable Rewardable @relation(fields: [parentId], references: [id])
+  childId String
+  childSortWeight Int @default(1)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@id([parentId, childId])
 }
 
 /// A collection of one or more Steps makes up a Puzzle. A Puzzle is solved when
 /// all Steps are completed
 model Puzzle {
-  id String @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  puzzleName String
-  path String
-  successMessage String?
-  listPublicly Boolean @default(true)
+  rewardableId String     @unique
+  rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
 
-  nfts Nft[]
+  // Users can fill out a form and submit answers when completing a puzzle
   submissions Submission[]
 
   steps StepsOnPuzzles[]
-  packs PuzzlesOnPacks[]
+  // packs PuzzlesOnPacks[]
+}
+
+/// Steps are whate players actually solve. One or more steps make up a Puzzle.
+model Step {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  /// The answer. Make sure this is NOT publicly query-able
+  solution       String
+  failMessage    String?
+  successMessage String?
+  instructions   String?
+  challenge      String?
+
+  puzzles  StepsOnPuzzles[]
+  attempts Attempt[]
 }
 
 /// Assign Steps to Puzzles. The vast majority of Steps should be assigned to
@@ -51,27 +86,27 @@ model Puzzle {
 model StepsOnPuzzles {
   id String @id @default(cuid()) // Required for many-to-many
 
-  stepId String
-  step Step @relation(fields: [stepId], references: [id])
+  stepId   String
+  step     Step   @relation(fields: [stepId], references: [id])
   puzzleId String
-  puzzle Puzzle @relation(fields: [puzzleId], references: [id])
+  puzzle Puzzle @relation(fields: [puzzleId], references: [rewardableId])
 
   /// The order this Step should be within this Puzzle
-  stepSortWeight Int @default(1)
-  assignedAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  stepSortWeight Int      @default(1)
+  assignedAt     DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   @@unique([stepId, puzzleId, stepSortWeight(sort: Asc)])
 }
 
 /// A collection of Puzzles makes up a Pack.
 model Pack {
-  id String @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name String
-  path String
-  listPublicly Boolean @default(true)
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  name         String
+  path         String
+  listPublicly Boolean  @default(true)
 
   nfts Nft[]
 
@@ -83,25 +118,25 @@ model PuzzlesOnPacks {
   id String @id @default(cuid()) // Required for many-to-many
 
   puzzleId String
-  puzzle Puzzle @relation(fields: [puzzleId], references: [id])
-  packId String
-  pack Pack @relation(fields: [packId], references: [id])
+  // puzzle Puzzle @relation(fields: [puzzleId], references: [id])
+  packId   String
+  pack     Pack   @relation(fields: [packId], references: [id])
 
   puzzleSortWeight Int
-  assignedAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  assignedAt       DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@unique([puzzleId, packId])
 }
 
 /// A collection of Packs makes up a Bundle
 model Bundle {
-  id String @id @default(cuid())
-  createdAt  DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name String
-  path String
-  listPublicly Boolean @default(true)
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  name         String
+  path         String
+  listPublicly Boolean  @default(true)
 
   nfts Nft[]
 
@@ -109,54 +144,54 @@ model Bundle {
 }
 
 model PacksOnBundles {
-  id String @id @default(cuid()) // Required for many-to-many
-  packId String
-  pack Pack @relation(fields: [packId], references: [id])
+  id       String @id @default(cuid()) // Required for many-to-many
+  packId   String
+  pack     Pack   @relation(fields: [packId], references: [id])
   bundleId String
-  bundle Bundle @relation(fields: [bundleId], references: [id])
+  bundle   Bundle @relation(fields: [bundleId], references: [id])
 
   packSortWeight Int
-  assignedAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  assignedAt     DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   @@unique([packId, bundleId])
 }
 
-
 model Nft {
-  id String @id @default(cuid())
-  createdAt  DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  tokenId Int
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  tokenId      Int
   contractName String
-  data Json
+  data         Json
   cloudinaryId String
 
-  puzzles Puzzle[]
-  packs Pack[]
+  // puzzles Puzzle[]
+  packs   Pack[]
   bundles Bundle[]
 
+  rewardables Rewardable[]
 
   @@unique([contractName, tokenId])
 }
 
 /// Identifiable player
 model User {
-  id String @id @default(cuid())
-  createdAt  DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  nonce String @default(cuid())
-  username String?
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  nonce          String   @default(cuid())
+  username       String?
   /// Wallet address
-  publicAddress String?
+  publicAddress  String?
   /// Unique string used to cryptographically identify this person. NEVER MAKE PUBLIC
-  email String? @unique
+  email          String?  @unique
   twitterProfile String?
   discordProfile String?
-  lensProfile String?
+  lensProfile    String?
 
   submissions Submission[]
-  attempts Attempt[]
+  attempts    Attempt[]
 }
 
 /// User form submissions from post-Puzzle forms asking for email address etc
@@ -164,12 +199,12 @@ model Submission {
   id String @id @default(cuid())
 
   puzzleId String
-  puzzle Puzzle @relation(fields: [puzzleId], references: [id])
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  puzzle Puzzle @relation(fields: [puzzleId], references: [rewardableId])
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   createdAt DateTime @default(now())
-  data Json
+  data      Json
 
   @@unique([puzzleId, userId])
   @@index([userId])
@@ -179,10 +214,10 @@ model Submission {
 model Attempt {
   id String @id @default(cuid())
 
-  stepId String
-  step Step @relation(fields: [stepId], references: [id])
-  userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  stepId      String
+  step        Step     @relation(fields: [stepId], references: [id])
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   attemptedAt DateTime @default(now())
 
   // What did they guess?
