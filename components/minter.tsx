@@ -214,7 +214,7 @@ export default function Minter({
         </Heading>
       )}
 
-      <div className="w-full max-w-xs py-9">
+      <div className="w-full max-w-xs py-9 flex flex-col items-center">
         {setHasChecked && !hasChecked ? (
           <button
             onClick={() => setHasChecked(true)}
@@ -229,7 +229,7 @@ export default function Minter({
           buttonMint
         )}
         {parentPackName && (
-          <div className="pt-4">
+          <div className="pt-4 w-full">
             <Button
               href={`/${PACK_LANDING_BASE}/${packRoute}`}
               text={buttonText || `Go to ${parentPackName}`}
