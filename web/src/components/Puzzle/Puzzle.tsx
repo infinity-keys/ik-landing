@@ -104,19 +104,20 @@ PuzzleProps) => {
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div className="magic-input  font-bold text-turquoise">
+            <div className="magic-input font-bold text-turquoise">
               {boxes && (
                 <RICIBs
                   //amount={context.count}
                   amount={6}
                   //handleOutputString={(text) => send({ type: 'INPUT', text })}
+                  handleOutputString={(text) => console.log(text)}
                   inputRegExp={/^\S*$/}
                   //autoFocus={true}
                   // inputProps={loRange(context.count).map(() => ({
                   //   className: 'ik-code-input',
                   // }))}
                   inputProps={loRange(6).map(() => ({
-                    className: 'ik-code-input',
+                    style: { color: 'red' },
                   }))}
                 />
               )}
