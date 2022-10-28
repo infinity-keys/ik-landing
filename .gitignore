@@ -13,7 +13,6 @@ web/types/graphql.d.ts
 web/src/lib/generated
 api/types/graphql.d.ts
 api/src/lib/generateGraphiQLHeader.*
-api/src/lib/generated
 .pnp.*
 .yarn/*
 !.yarn/patches
