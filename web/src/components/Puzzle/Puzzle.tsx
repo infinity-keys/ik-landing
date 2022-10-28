@@ -37,9 +37,9 @@ interface PuzzleProps {
 const Puzzle = ({
   // Used to show number of boxes/remaining characters. Usually pulled in via
   // GrqphQL query.
-  //count,
+  count,
   // Unique uuid of the puzzle
-  //puzzleId,
+  puzzleId,
   // Show the "boxes" version of the puzzle? "false" shows textbox
   boxes = true,
   // What should be said when the guess is wrong?
