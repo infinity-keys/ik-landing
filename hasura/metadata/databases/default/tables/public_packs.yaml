@@ -19,6 +19,7 @@ select_permissions:
         - nftId
         - pack_id
         - pack_name
+        - pack_success_message
         - simple_name
         - sort_weight
       filter: {}
