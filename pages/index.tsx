@@ -123,7 +123,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
               <a href="https://www.infinitykeys.io/pack/san-creator-pack">
                 <SanLogo />
               </a>
-              <a href="https://www.infinitykeys.io/pack/p0-pack">
+              <a href="https://www.infinitykeys.io/pack/probably-nothing-pack">
                 <PnLogo />
               </a>
               <a href="https://www.infinitykeys.io/puzzle/finkel-islanders">
