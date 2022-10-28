@@ -22,12 +22,14 @@ import { useIKMinter } from "@hooks/useIKMinter";
 import LoadingIcon from "@components/loading-icon";
 import Button from "@components/button";
 import Heading from "@components/heading";
+import Markdown from "./markdown";
 
 interface MinterParams {
   tokenId: number;
   gatedIds: number[];
   nftWalletAgeCheck: boolean;
   parentPackName?: string;
+  packSuccessMessage?: string;
   buttonText?: string;
   packRoute?: string;
   setCompleted?: (b: boolean[]) => void;
@@ -40,6 +42,7 @@ export default function Minter({
   gatedIds,
   nftWalletAgeCheck,
   parentPackName,
+  packSuccessMessage,
   buttonText,
   packRoute,
   setCompleted,
@@ -214,7 +217,13 @@ export default function Minter({
         </Heading>
       )}
 
-      <div className="w-full max-w-xs py-9 flex justify-center">
+      {isConnected && claimed && packSuccessMessage && (
+        <div className="text-center pt-4">
+          <Markdown>{packSuccessMessage}</Markdown>
+        </div>
+      )}
+
+      <div className="w-full max-w-xs py-9 flex flex-col items-center">
         {setHasChecked && !hasChecked ? (
           <button
             onClick={() => setHasChecked(true)}
@@ -228,8 +237,9 @@ export default function Minter({
         ) : (
           buttonMint
         )}
+
         {parentPackName && (
-          <div className="pt-4">
+          <div className="pt-4 w-full">
             <Button
               href={`/${PACK_LANDING_BASE}/${packRoute}`}
               text={buttonText || `Go to ${parentPackName}`}
