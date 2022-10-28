@@ -285,6 +285,7 @@ query GetPuzzlesByPack($packName: String!) {
     pack_name
     nftId
     cloudinary_id
+    pack_success_message
   }
 }
 

@@ -29,6 +29,7 @@ interface PageProps {
     name: string;
     nftId?: number;
     cloudinaryId?: string;
+    packSuccessMessage?: string;
   };
 }
 
@@ -108,6 +109,7 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
             setCompleted={setCompleted}
             hasChecked={hasChecked}
             setHasChecked={setHasChecked}
+            packSuccessMessage={pack.packSuccessMessage}
           />
         </div>
         <div className="pt-2 pb-8">
@@ -155,6 +157,7 @@ export async function getStaticProps({
       puzzlesNftIds,
       pack: {
         simpleName: packName,
+        packSuccessMessage: pack[0].pack_success_message || "",
         name: pack[0].pack_name,
         nftId: pack[0].nftId,
         cloudinaryId: pack[0]?.cloudinary_id || "",
