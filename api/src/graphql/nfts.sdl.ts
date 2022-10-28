@@ -15,8 +15,6 @@ export const schema = gql`
   type Query {
     nfts: [Nft!]! @requireAuth
     nft(id: String!): Nft @requireAuth
-    nftByContractAndTokenId(tokenId: Int!, contractName: String!): Nft
-      @requireAuth
   }
 
   input CreateNftInput {

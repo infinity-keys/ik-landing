@@ -1,7 +1,7 @@
-import { nftByContractAndTokenId } from 'src/services/nfts/nfts'
+import { nftByContractAndTokenId } from 'src/services/nfts-custom/nfts-custom'
 
 export const handler = async (event) => {
-  if (event.httpMethod !== 'GET') return { statusCode: 404 }
+  if (event.httpMethod !== 'GET') return { statusCode: 405 }
 
   const { contractName, tokenId } = event.queryStringParameters
   if (!tokenId || !contractName) return { statusCode: 400 }
@@ -11,6 +11,7 @@ export const handler = async (event) => {
       tokenId: parseInt(tokenId, 10),
       contractName,
     })
+
     return {
       statusCode: 200,
       headers: {
@@ -19,6 +20,6 @@ export const handler = async (event) => {
       body: JSON.stringify(data),
     }
   } catch (e) {
-    return { statusCode: 400 }
+    return { statusCode: 500 }
   }
 }

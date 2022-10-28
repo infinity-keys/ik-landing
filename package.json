@@ -8,8 +8,7 @@
     ]
   },
   "scripts": {
-    "dev": "yarn run typechain && yarn rw dev",
-    "typechain": "typechain --target ethers-v5 \"nfts/contracts/**/*.json\" --out-dir web/src/lib/generated/ethers-contract"
+    "typechain": "typechain --target ethers-v5 \"nfts/contracts/**/*.json\" --out-dir api/src/lib/generated/ethers-contract"
   },
   "devDependencies": {
     "@redwoodjs/core": "^3.2.0",
