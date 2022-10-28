@@ -39,8 +39,8 @@ model Rewardable {
   // Connections to the gaming concepts
   puzzle Puzzle?
 
-  parentConnection RewardableConnection[] @relation("ParentLink")
-  childConnection  RewardableConnection[] @relation("ChildLink")
+  asParent RewardableConnection[] @relation("ParentLink")
+  asChild  RewardableConnection[] @relation("ChildLink")
 }
 
 /// Connect puzzles to packs and packs to bundles and etc
@@ -51,11 +51,12 @@ model RewardableConnection {
   childRewardable  Rewardable @relation("ChildLink", fields: [childId], references: [id])
 
   childSortWeight Int      @default(1)
+
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
   @@id([parentId, childId])
-  @@unique([parentId, childId, childSortWeight(sort: Asc)])
+  @@index([parentId, childId, childSortWeight(sort: Asc)])
 }
 
 /// A collection of one or more Steps makes up a Puzzle. A Puzzle is solved when
@@ -70,7 +71,6 @@ model Puzzle {
   submissions Submission[]
 
   steps Step[]
-  // packs PuzzlesOnPacks[]
 }
 
 /// Steps are whate players actually solve. One or more steps make up a Puzzle.
@@ -88,32 +88,15 @@ model Step {
   // Order shown on the puzzle
   stepSortWeight Int @default(1)
 
+  // Connect this step to exactly 1 Puzzle
   puzzleId String
   puzzle   Puzzle @relation(fields: [puzzleId], references: [rewardableId])
 
+  // A user's attempt at solving this Step
   attempts Attempt[]
 
   @@unique([id, puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
 }
-
-/// Assign Steps to Puzzles. The vast majority of Steps should be assigned to
-/// only one Puzzle, but this join table provides flexibility to store additional
-// information e.g. sort order of Steps
-// model StepsOnPuzzles {
-//   id String @id @default(cuid()) // Required for many-to-many
-
-//   stepId   String
-//   step     Step   @relation(fields: [stepId], references: [id])
-//   puzzleId String
-//   puzzle Puzzle @relation(fields: [puzzleId], references: [rewardableId])
-
-//   /// The order this Step should be within this Puzzle
-//   stepSortWeight Int      @default(1)
-//   assignedAt     DateTime @default(now())
-//   updatedAt      DateTime @updatedAt
-
-//   @@unique([stepId, puzzleId, stepSortWeight(sort: Asc)])
-// }
 
 /// A collection of Puzzles makes up a Pack.
 model Pack {
