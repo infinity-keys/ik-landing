@@ -117,7 +117,7 @@ PuzzleProps) => {
                   //   className: 'ik-code-input',
                   // }))}
                   inputProps={loRange(6).map(() => ({
-                    style: { color: 'red' },
+                    className: 'ik-code-input',
                   }))}
                 />
               )}
