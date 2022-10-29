@@ -3307,6 +3307,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@infinity-keys/contracts@workspace:^, @infinity-keys/contracts@workspace:packages/contracts":
+  version: 0.0.0-use.local
+  resolution: "@infinity-keys/contracts@workspace:packages/contracts"
+  dependencies:
+    "@typechain/ethers-v5": ^10.1.0
+    typechain: ^8.1.0
+  languageName: unknown
+  linkType: soft
+
 "@istanbuljs/load-nyc-config@npm:^1.0.0":
   version: 1.1.0
   resolution: "@istanbuljs/load-nyc-config@npm:1.1.0"
@@ -8390,6 +8399,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "api@workspace:api"
   dependencies:
+    "@infinity-keys/contracts": "workspace:^"
     "@redwoodjs/api": ^3.2.0
     "@redwoodjs/graphql-server": ^3.2.0
     "@sendgrid/mail": ^7.7.0
@@ -23254,8 +23264,6 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@redwoodjs/core": ^3.2.0
-    "@typechain/ethers-v5": ^10.1.0
-    typechain: ^8.1.0
   languageName: unknown
   linkType: soft
 
@@ -26692,6 +26700,7 @@ __metadata:
     "@formspree/react": ^2.4.0
     "@headlessui/react": ^1.7.2
     "@heroicons/react": ^2.0.11
+    "@infinity-keys/contracts": "workspace:^"
     "@rainbow-me/rainbowkit": ^0.7.0
     "@redwoodjs/forms": ^3.2.0
     "@redwoodjs/router": ^3.2.0

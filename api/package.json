@@ -2,7 +2,11 @@
   "name": "api",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "derp": "echo 'hello'"
+  },
   "dependencies": {
+    "@infinity-keys/contracts": "workspace:^",
     "@redwoodjs/api": "^3.2.0",
     "@redwoodjs/graphql-server": "^3.2.0",
     "@sendgrid/mail": "^7.7.0",

@@ -1,0 +1,14 @@
+{
+  "name": "@infinity-keys/contracts",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "yarn@3.2.3",
+  "main": "dist/ethers-contract/",
+  "scripts": {
+    "build": "typechain --target ethers-v5 \"src/contracts/**/*.json\" --out-dir dist/ethers-contract"
+  },
+  "dependencies": {
+    "@typechain/ethers-v5": "^10.1.0",
+    "typechain": "^8.1.0"
+  }
+}

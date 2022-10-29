@@ -16,6 +16,7 @@
     "@formspree/react": "^2.4.0",
     "@headlessui/react": "^1.7.2",
     "@heroicons/react": "^2.0.11",
+    "@infinity-keys/contracts": "workspace:^",
     "@rainbow-me/rainbowkit": "^0.7.0",
     "@redwoodjs/forms": "^3.2.0",
     "@redwoodjs/router": "^3.2.0",
