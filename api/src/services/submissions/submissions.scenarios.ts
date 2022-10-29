@@ -8,12 +8,12 @@ export const standard = defineScenario<Prisma.SubmissionCreateArgs>({
         data: { foo: 'bar' },
         puzzle: {
           create: {
-            updatedAt: '2022-10-24T16:56:05Z',
+            updatedAt: '2022-10-28T22:10:45.322Z',
             puzzleName: 'String',
             path: 'String',
           },
         },
-        user: { create: { updatedAt: '2022-10-24T16:56:05Z' } },
+        user: { create: { updatedAt: '2022-10-28T22:10:45.322Z' } },
       },
     },
     two: {
@@ -21,12 +21,12 @@ export const standard = defineScenario<Prisma.SubmissionCreateArgs>({
         data: { foo: 'bar' },
         puzzle: {
           create: {
-            updatedAt: '2022-10-24T16:56:05Z',
+            updatedAt: '2022-10-28T22:10:45.322Z',
             puzzleName: 'String',
             path: 'String',
           },
         },
-        user: { create: { updatedAt: '2022-10-24T16:56:05Z' } },
+        user: { create: { updatedAt: '2022-10-28T22:10:45.322Z' } },
       },
     },
   },

@@ -1,6 +1,6 @@
 import {
-  CreateSubmissionMutation,
-  CreateSubmissionMutationVariables,
+  CreateSubmissionWithOptionalEmailMutation,
+  CreateSubmissionWithOptionalEmailMutationVariables,
 } from 'types/graphql'
 
 import {
@@ -25,8 +25,10 @@ interface FormValues {
 }
 
 const CREATE_SUBMISSION_MUTATION = gql`
-  mutation CreateSubmissionMutation($input: CreateSubmissionInput!) {
-    createSubmission(input: $input) {
+  mutation CreateSubmissionWithOptionalEmailMutation(
+    $input: CreateSubmissionInput!
+  ) {
+    createSubmissionWithOptionalEmail(input: $input) {
       data
       puzzleId
     }
@@ -35,8 +37,8 @@ const CREATE_SUBMISSION_MUTATION = gql`
 
 const EmailSubmission = ({ puzzleId, userId }: EmailSubmissionProps) => {
   const [create, { loading, error }] = useMutation<
-    CreateSubmissionMutation,
-    CreateSubmissionMutationVariables
+    CreateSubmissionWithOptionalEmailMutation,
+    CreateSubmissionWithOptionalEmailMutationVariables
   >(CREATE_SUBMISSION_MUTATION, {
     onCompleted: () => {
       // @TODO: clear field
