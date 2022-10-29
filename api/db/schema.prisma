@@ -26,51 +26,86 @@ model Rewardable {
   /// Full name, with spaces, ie Not Right
   name           String
   /// Short name used in URLs, lowercase and dashes, no spaces/caps, ie not-right
-  slug           String
+  slug           String         @unique
   /// When this is successfully completed/rewarded, what should be shown
   successMessage String?
   /// Show in public listings
   listPublicly   Boolean        @default(true)
-  /// Categorize rewardable into different buckets
+  /// Categorize Rewardables into different buckets
   type           RewardableType
 
+  /// Assign management of a Rewardable to an Organization
+  organization Organization @relation(fields: [orgId], references: [id])
+  orgId        String
+
+  /// The reward for completion
   nfts Nft[]
 
   // Connections to the gaming concepts
   puzzle Puzzle?
+  pack   Pack?
+  bundle Bundle?
 
+  // Rewardables that have children, ie a parent Pack that has Puzzle children
   asParent RewardableConnection[] @relation("ParentLink")
+  // Rewardables that have a parent, ie a child Puzzle of a Pack
   asChild  RewardableConnection[] @relation("ChildLink")
 }
 
-/// Connect puzzles to packs and packs to bundles and etc
+/// Link Rewardables to each other, ie a Pack requires 3 Puzzles. Allows setting
+// sort order on child Rewardables.
 model RewardableConnection {
-  parentId         String
   parentRewardable Rewardable @relation("ParentLink", fields: [parentId], references: [id])
-  childId          String
+  parentId         String
   childRewardable  Rewardable @relation("ChildLink", fields: [childId], references: [id])
+  childId          String
 
-  childSortWeight Int      @default(1)
+  childSortWeight Int? @default(1)
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([parentId, childId])
   @@index([parentId, childId, childSortWeight(sort: Asc)])
 }
 
+/// A Pack is made up of a collection of Puzzles.
+model Pack {
+  rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
+  rewardableId String     @id
+}
+
+/// A Bundle is made up of a collection of Packs
+model Bundle {
+  rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
+  rewardableId String     @id
+}
+
 /// A collection of one or more Steps makes up a Puzzle. A Puzzle is solved when
 /// all Steps are completed
 model Puzzle {
-  // id             String         @id @default(cuid())
-
-  rewardableId String     @id
   rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
+  rewardableId String     @id
 
   // Users can fill out a form and submit answers when completing a puzzle
   submissions Submission[]
 
   steps Step[]
+}
+
+/// User form submissions from post-Puzzle forms asking for email address etc
+model Submission {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  data Json
+
+  puzzle   Puzzle @relation(fields: [puzzleId], references: [rewardableId])
+  puzzleId String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId   String
+
+  @@unique([puzzleId, userId])
 }
 
 /// Steps are whate players actually solve. One or more steps make up a Puzzle.
@@ -80,17 +115,19 @@ model Step {
   updatedAt      DateTime @updatedAt
   /// The answer. Make sure this is NOT publicly query-able
   solution       String
+  /// Shown every time the User fails the Step
   failMessage    String?
+  /// Shown when a User passes the Step
   successMessage String?
   instructions   String?
   challenge      String?
 
   // Order shown on the puzzle
-  stepSortWeight Int @default(1)
+  stepSortWeight Int? @default(1)
 
   // Connect this step to exactly 1 Puzzle
-  puzzleId String
   puzzle   Puzzle @relation(fields: [puzzleId], references: [rewardableId])
+  puzzleId String
 
   // A user's attempt at solving this Step
   attempts Attempt[]
@@ -98,64 +135,23 @@ model Step {
   @@unique([id, puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
 }
 
-/// A collection of Puzzles makes up a Pack.
-model Pack {
-  id           String   @id @default(cuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  name         String
-  path         String
-  listPublicly Boolean  @default(true)
+/// Users guesses at Steps
+model Attempt {
+  id          String   @id @default(cuid())
+  attemptedAt DateTime @default(now())
 
-  nfts Nft[]
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
 
-  bundles PacksOnBundles[]
-  puzzles PuzzlesOnPacks[]
+  // What did they guess?
+  guess String
+
+  @@unique([stepId, userId, attemptedAt])
 }
 
-model PuzzlesOnPacks {
-  id String @id @default(cuid()) // Required for many-to-many
-
-  puzzleId String
-  // puzzle Puzzle @relation(fields: [puzzleId], references: [id])
-  packId   String
-  pack     Pack   @relation(fields: [packId], references: [id])
-
-  puzzleSortWeight Int
-  assignedAt       DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
-  @@unique([puzzleId, packId])
-}
-
-/// A collection of Packs makes up a Bundle
-model Bundle {
-  id           String   @id @default(cuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  name         String
-  path         String
-  listPublicly Boolean  @default(true)
-
-  nfts Nft[]
-
-  packs PacksOnBundles[]
-}
-
-model PacksOnBundles {
-  id       String @id @default(cuid()) // Required for many-to-many
-  packId   String
-  pack     Pack   @relation(fields: [packId], references: [id])
-  bundleId String
-  bundle   Bundle @relation(fields: [bundleId], references: [id])
-
-  packSortWeight Int
-  assignedAt     DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  @@unique([packId, bundleId])
-}
-
+/// Information about NFTs. Only Rewardables can reward an NFT.
 model Nft {
   id           String   @id @default(cuid())
   createdAt    DateTime @default(now())
@@ -165,13 +161,16 @@ model Nft {
   data         Json
   cloudinaryId String
 
-  // puzzles Puzzle[]
-  packs   Pack[]
-  bundles Bundle[]
-
   rewardables Rewardable[]
 
   @@unique([contractName, tokenId])
+}
+
+/// A User's role within the overall site
+enum SiteRole {
+  ADMIN
+  VERIFIED
+  ANONYMOUS
 }
 
 /// Identifiable player
@@ -182,46 +181,54 @@ model User {
   nonce          String   @default(cuid())
   username       String?
   /// Wallet address
-  publicAddress  String?
+  publicAddress  String?  @unique
   /// Unique string used to cryptographically identify this person. NEVER MAKE PUBLIC
   email          String?  @unique
   twitterProfile String?
   discordProfile String?
   lensProfile    String?
 
-  submissions Submission[]
-  attempts    Attempt[]
+  // User's role on the site, as a whole
+  siteRole SiteRole @default(ANONYMOUS)
+
+  /// User membership in an Organization.
+  organizations OrganizationUser[]
+  /// All Submissions a user has submitted
+  submissions   Submission[]
+  /// Attempts at solving a Step on a Puzzle for this user
+  attempts      Attempt[]
 }
 
-/// User form submissions from post-Puzzle forms asking for email address etc
-model Submission {
-  id String @id @default(cuid())
+/// A User's role specifically within the Organization they belong
+enum OrgRole {
+  MANAGER
+  MEMBER
+}
 
-  puzzleId String
-  puzzle   Puzzle @relation(fields: [puzzleId], references: [rewardableId])
-  userId   String
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+/// Organizations allow groups of Users to manage Rewardables
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  /// Members of the Organization
+  users       OrganizationUser[]
+  /// Only organizations can own Rewardables (Puzzles, Packs, Bundles)
+  rewardables Rewardable[]
+}
+
+/// Connect Users to Organizations
+model OrganizationUser {
+  organization Organization @relation(fields: [orgId], references: [id])
+  orgId        String
+  user         User         @relation(fields: [userId], references: [id])
+  userId       String
+  userOrgRole  OrgRole      @default(MEMBER)
 
   createdAt DateTime @default(now())
-  data      Json
+  updatedAt DateTime @updatedAt
 
-  @@unique([puzzleId, userId])
-  @@index([userId])
-}
-
-// Users guesses at Steps
-model Attempt {
-  id String @id @default(cuid())
-
-  stepId      String
-  step        Step     @relation(fields: [stepId], references: [id])
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  attemptedAt DateTime @default(now())
-
-  // What did they guess?
-  guess String
-
-  @@unique([stepId, userId, attemptedAt])
-  @@index([userId])
+  @@unique([orgId, userId])
 }
