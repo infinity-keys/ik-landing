@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.2",
-    "@coinbase/wallet-sdk": "^3.5.3",
+    "@coinbase/wallet-sdk": "^3.5.4",
     "@formspree/react": "^2.4.0",
     "@graphql-codegen/cli": "^2.13.7",
     "@graphql-codegen/introspection": "^2.2.1",
