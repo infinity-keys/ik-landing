@@ -119,7 +119,7 @@ export const avalancheChain: Chain = {
     symbol: 'AVAX',
   },
   rpcUrls: {
-    defaultf: AVAX_RPC,
+    default: AVAX_RPC,
   },
   blockExplorers: {
     default: { name: 'SnowTrace', url: 'https://snowtrace.io' },
