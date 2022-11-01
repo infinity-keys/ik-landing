@@ -33,7 +33,6 @@
     "react-dom": "17.0.2",
     "react-individual-character-input-boxes": "1.2.1",
     "react-markdown": "^8.0.3",
-    "styled-components": "^5.3.6",
     "use-device-pixel-ratio": "^1.1.0",
     "wagmi": "^0.6.7"
   },

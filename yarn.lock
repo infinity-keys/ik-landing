@@ -24711,7 +24711,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"styled-components@npm:>=4.4.0, styled-components@npm:^5.3.6":
+"styled-components@npm:>=4.4.0":
   version: 5.3.6
   resolution: "styled-components@npm:5.3.6"
   dependencies:
@@ -26674,7 +26674,6 @@ __metadata:
     react-dom: 17.0.2
     react-individual-character-input-boxes: 1.2.1
     react-markdown: ^8.0.3
-    styled-components: ^5.3.6
     tailwindcss: ^3.1.8
     use-device-pixel-ratio: ^1.1.0
     wagmi: ^0.6.7
