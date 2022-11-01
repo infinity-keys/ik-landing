@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import { QueryResolvers } from 'types/graphql'
 
-import { chainRPCLookup } from 'src/lib/walletConstants'
+import { RPCLookup } from 'src/lib/walletConstants'
 
 export const checkWalletAge: QueryResolvers['checkWalletAge'] = async ({
   account,
@@ -13,7 +13,7 @@ export const checkWalletAge: QueryResolvers['checkWalletAge'] = async ({
 
   const chainIdInt = parseInt(chainId, 10)
 
-  const rpcURL = chainRPCLookup[chainIdInt]
+  const rpcURL = RPCLookup[chainIdInt]
 
   const provider = new ethers.providers.JsonRpcProvider(rpcURL)
   const walletTxCount = await provider.getTransactionCount(account)
