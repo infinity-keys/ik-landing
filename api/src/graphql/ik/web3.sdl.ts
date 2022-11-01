@@ -13,6 +13,12 @@ export const schema = gql`
     message: String
   }
 
+  type CheckNftResponse {
+    success: Boolean!
+    nftPass: Boolean
+    message: String
+  }
+
   type CheckWalletAgeResponse {
     success: Boolean!
     approved: Boolean!
@@ -37,6 +43,16 @@ export const schema = gql`
     # checks if user has NFT on any of the supported networks
     checkClaimed(account: String!, tokenId: String!): CheckClaimedResponse!
       @skipAuth
+
+    # checks for NFT required for puzzle solution
+    checkNft(
+      account: String!
+      chainId: String!
+      contractAddress: String!
+      tokenId: String
+      successRoute: String!
+      finalStep: Boolean!
+    ): CheckNftResponse! @skipAuth
 
     # checks age of wallet on eth, checks number of transactions on others
     checkWalletAge(account: String!, chainId: String!): CheckWalletAgeResponse!

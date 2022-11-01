@@ -57,7 +57,7 @@ export const contractAddressLookup: {
   [OPTIMISM_CHAIN_ID]: CONTRACT_ADDRESS_OPTIMISM,
 }
 
-export const chainRPCLookup: {
+export const RPCLookup: {
   [key: number]: string
 } = {
   [ETH_CHAIN_ID]: ETH_RPC,
@@ -119,7 +119,7 @@ export const avalancheChain: Chain = {
     symbol: 'AVAX',
   },
   rpcUrls: {
-    default: AVAX_RPC,
+    defaultf: AVAX_RPC,
   },
   blockExplorers: {
     default: { name: 'SnowTrace', url: 'https://snowtrace.io' },
