@@ -9,7 +9,8 @@
     "baseUrl": "./",
     "rootDirs": [
       "./src",
-      "../.redwood/types/mirror/api/src"
+      "../.redwood/types/mirror/api/src",
+      "../shared"
     ],
     "paths": {
       "src/*": [
@@ -17,7 +18,8 @@
         "../.redwood/types/mirror/api/src/*"
       ],
       "types/*": ["./types/*", "../types/*"],
-      "@redwoodjs/testing": ["../node_modules/@redwoodjs/testing/api"]
+      "@redwoodjs/testing": ["../node_modules/@redwoodjs/testing/api"],
+      "ik-shared/*": ["../shared/*"]
     },
     "typeRoots": [
       "../node_modules/@types",
@@ -25,6 +27,7 @@
     ],
     "types": ["jest"],
   },
+  "references": [{"path": "../packages/contracts"}],
   "include": [
     "src",
     "../.redwood/types/includes/all-*",
