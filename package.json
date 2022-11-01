@@ -7,8 +7,13 @@
       "packages/*"
     ]
   },
+  "scripts": {
+    "typechain": "typechain --target ethers-v5 \"nfts/contracts/**/*.json\" --out-dir api/src/lib/generated/ethers-contract"
+  },
   "devDependencies": {
-    "@redwoodjs/core": "^3.2.0"
+    "@redwoodjs/core": "^3.2.0",
+    "@typechain/ethers-v5": "^10.1.0",
+    "typechain": "^8.1.0"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
