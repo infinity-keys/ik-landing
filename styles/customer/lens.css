@@ -1,0 +1,48 @@
+/**
+ * @file
+ *
+ * The "Lens Bogota" pack and puzzle pages
+ */
+
+.pack--lens-bogota-pack,
+.puzzle--lenster-bogota,
+.puzzle--lenstube-bogota,
+.puzzle--lensta-bogota {
+  /* Scoped vars */
+  --lens-peas: #e5ffbe;
+  --lens-basil: #00501e;
+
+  @apply bg-no-repeat bg-cover bg-center;
+  background-color: var(--lens-peas);
+
+  /* This is a div that's usually hidden in the page*/
+  .pack__image-anchor {
+    @apply mt-20 inline-block w-96 h-40 bg-no-repeat bg-center;
+    background-image: url("/customer/lens/lens_logo.svg");
+  }
+
+  /* Text right below logo from above */
+  .pack__text {
+    color: var(--lens-basil);
+  }
+  /* On the pack page, the blocks representing each puzzle */
+  /* .puzzle-thumb {
+    @apply border border-gray-700;
+    background-color: var(--p0-dark);
+  } */
+
+  /* Scope to main area so we can override JUST this button */
+  /* .pack__main,
+  .puzzle__main {
+    .ik-button {
+      @apply h-20 text-2xl px-10 text-black rounded-full min-w-0;
+      background: var(--p0-orange);
+      border-color: var(--p0-orange);
+    }
+  } */
+
+  /* You know what this is */
+  /* .twitter-share {
+    @apply px-6 py-2 uppercase text-lg bg-none rounded-full bg-transparent border-2 border-solid border-white;
+  } */
+}
