@@ -79,6 +79,10 @@ export const thumbnailData = (
 
 export const validChain = (chain: number) => chainIds.includes(chain);
 
+export const buildTokenIdParams = (tokenIds: number[] | string[]) => {
+  return tokenIds.map((id) => `tokenids=${id}`).join("&");
+};
+
 export const generateUserDeleteJWT = async (userId: string, email?: string) => {
   return await makeUserToken(
     {

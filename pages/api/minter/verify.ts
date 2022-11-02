@@ -6,6 +6,7 @@ import { IK_ID_COOKIE } from "@lib/constants";
 import { gqlApiSdk } from "@lib/server";
 import { jwtHasClaim } from "@lib/jwt";
 import { contractAddressLookup } from "@lib/walletConstants";
+import { buildTokenIdParams } from "@lib/utils";
 
 const privateKey = process.env.PRIVATE_KEY_VERIFY;
 const secret = process.env.MINT_SECRET_VERIFY;
@@ -101,7 +102,7 @@ const checkIfOwned = async (
   chainId: string,
   baseUrl: string
 ) => {
-  const tokenIdsParams = tokenIds.map((id) => `tokenids=${id}`).join("&");
+  const tokenIdsParams = buildTokenIdParams(tokenIds);
 
   const url = `http://${baseUrl}/api/minter/check-balance?account=${account}&${tokenIdsParams}&chainId=${chainId}`;
   const response = await fetch(url);
