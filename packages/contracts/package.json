@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "typechain --target ethers-v5 \"src/contracts/**/*.json\" --out-dir generated/ && tsc"
+    "build": "typechain --target ethers-v5 src/contracts/**/*.json --out-dir generated/ && tsc"
   },
   "dependencies": {
     "@ethersproject/providers": "^5.7.2",

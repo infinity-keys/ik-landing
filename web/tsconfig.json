@@ -28,7 +28,6 @@
     "types": ["jest", "@testing-library/jest-dom", "@types/gtag.js"],
     "jsx": "preserve"
   },
-  "references": ["../packages/contracts"],
   "include": [
     "src",
     "../.redwood/types/includes/all-*",
