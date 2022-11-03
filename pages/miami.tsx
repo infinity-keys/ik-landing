@@ -73,12 +73,9 @@ const MiamiPage: NextPage = (props) => {
     width < 1280 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
 
   return (
-    <div className="p-6 min-h-screen max-w-[1400px] mx-auto">
+    <div className="p-6 min-h-screen max-w-[1400px] mx-auto flex flex-col justify-center">
       <Seo title="Miami" />
-      <div className="flex justify-between items-center">
-        <Image src="/logo.svg" width={100} height={55} alt="IK logo" />
-      </div>
-      <div className="mt-24">
+      <div className="">
         <ul
           className={clsx(
             "grid grid-cols-1 gap-6 py-8 max-w-md mx-auto xl:mt-6 my-10 w-full xl:max-w-none xl:grid-cols-5"
