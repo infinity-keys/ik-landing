@@ -9,8 +9,7 @@
     "baseUrl": "./",
     "rootDirs": [
       "./src",
-      "../.redwood/types/mirror/api/src",
-      "../shared"
+      "../.redwood/types/mirror/api/src"
     ],
     "paths": {
       "src/*": [
