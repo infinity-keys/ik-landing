@@ -312,6 +312,7 @@ query EventDisplay($eventName: String!) {
         puzzle {
           puzzle_id
           simple_name
+          landing_route
           nft {
             tokenId
             nft_metadatum {

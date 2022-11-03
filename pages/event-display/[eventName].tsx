@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import useSWR from "swr";
 
 import Seo from "@components/seo";
-import { EventDisplayQuery } from "@lib/generated/graphql";
+import { EventDisplayQuery, PublicPuzzlesQuery } from "@lib/generated/graphql";
 
 import { buildTokenIdParams, thumbnailData } from "@lib/utils";
 import clsx from "clsx";
@@ -11,20 +11,9 @@ import EventThumbnail from "@components/event-thumbnail";
 import { ThumbnailGridLayoutType, ThumbnailProgress } from "@lib/types";
 import useCurrentWidth from "@hooks/useCurrentWidth";
 import { gqlApiSdk } from "@lib/server";
-
-interface Puzzle {
-  puzzle_id: string;
-  simple_name: string;
-  nft: {
-    tokenId: number;
-    nft_metadatum: {
-      cloudinary_id: string;
-    };
-  };
-}
-
+import { isNumber } from "lodash";
 export interface EventPageProps {
-  puzzles: Puzzle[];
+  puzzles?: PublicPuzzlesQuery["puzzles"];
   tokenIds: number[];
   eventName: string;
 }
@@ -43,7 +32,7 @@ interface EventPageParams {
 */
 
 const REFRESH_RATE = 1000 * 30;
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+// const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const EventPage: NextPage<EventPageProps> = ({
   eventName,
@@ -97,7 +86,7 @@ const EventPage: NextPage<EventPageProps> = ({
             "grid grid-cols-1 gap-6 py-8 max-w-md mx-auto xl:mt-6 my-10 w-full xl:max-w-none xl:grid-cols-5"
           )}
         >
-          {puzzles.map(({ puzzle }, index) => {
+          {puzzles?.map((puzzle, index) => {
             const data = thumbnailData(puzzle);
 
             return (
@@ -130,14 +119,18 @@ export async function getStaticProps({
 
   const { event_displays } = await gql.EventDisplay({ eventName });
   const event = event_displays[0];
-  const tokenIds = event.pack.pack_puzzles.map(({ puzzle }) => {
-    return puzzle.nft.tokenId;
-  });
+
+  const puzzles = event.pack.pack_puzzles.map(({ puzzle }) => puzzle);
+  const tokenIds = puzzles.map(({ nft }) => nft?.tokenId);
+
+  if (!tokenIds.every(isNumber)) {
+    throw new Error("Either no NFTs or NFT IDs are not numbers");
+  }
 
   return {
     props: {
       eventName: event.simple_name,
-      puzzles: event.pack.pack_puzzles,
+      puzzles,
       tokenIds,
     },
   };
