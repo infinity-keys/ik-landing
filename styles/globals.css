@@ -125,3 +125,69 @@
 .next-image-block span {
   display: block !important;
 }
+
+.animated-thumb-unlocked {
+  animation: pulse 2.5s infinite;
+}
+
+.animated-thumb {
+  animation: pulseLocked 2.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(63, 204, 188, 0.4);
+    box-shadow: 0 0 0 0 rgba(63, 204, 188, 0.4);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 7px rgba(63, 204, 188, 0);
+    box-shadow: 0 0 0 7px rgba(63, 204, 188, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(63, 204, 188, 0);
+    box-shadow: 0 0 0 0 rgba(63, 204, 188, 0);
+  }
+}
+
+@keyframes pulseLocked {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 63, 63, 0.4);
+    box-shadow: 0 0 0 0 rgba(204, 63, 63, 0.4);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 7px rgba(204, 63, 63, 0);
+    box-shadow: 0 0 0 7px rgba(204, 63, 63, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 63, 63, 0);
+    box-shadow: 0 0 0 0 rgba(204, 63, 63, 0);
+  }
+}
+
+.animated-spin {
+  animation: spin 1000ms linear;
+}
+
+.animated-comeInOut {
+  animation: comeInOut 700ms forwards;
+}
+
+@keyframes comeInOut {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
