@@ -1,0 +1,17 @@
+table:
+  name: event_displays
+  schema: public
+object_relationships:
+  - name: pack
+    using:
+      foreign_key_constraint_on: pack_id
+select_permissions:
+  - role: api
+    permission:
+      columns:
+        - event_display_id
+        - landing_route
+        - pack_id
+        - partner_logos
+        - simple_name
+      filter: {}

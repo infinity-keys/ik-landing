@@ -302,3 +302,30 @@ query UserExist($userId: uuid!) {
     user_id
   }
 }
+
+query EventDisplay($eventName: String!) {
+  event_displays(where: { landing_route: { _eq: $eventName } }) {
+    simple_name
+    pack {
+      pack_name
+      pack_puzzles {
+        puzzle {
+          puzzle_id
+          simple_name
+          nft {
+            tokenId
+            nft_metadatum {
+              cloudinary_id
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query AllEventDisplayRoutes {
+  event_displays {
+    landing_route
+  }
+}
