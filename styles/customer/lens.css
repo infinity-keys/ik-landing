@@ -47,7 +47,7 @@
   }
 
   /* You know what this is */
-  .twitter-share {
+  .social-share {
     @apply px-6 py-2 uppercase text-lg rounded-full bg-transparent border-2 border-solid;
     color: var(--lens-basil);
     background: var(--lens-peas);

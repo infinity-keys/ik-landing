@@ -4,6 +4,7 @@ import Image from "next/image";
 import { gqlApiSdk } from "@lib/server";
 import Wrapper from "@components/wrapper";
 import WalletEmail from "@components/wallet-email";
+import LensShare from "@components/lens-share";
 import Link from "next/link";
 import Seo from "@components/seo";
 import Button from "@components/button";
@@ -84,8 +85,13 @@ const Dev: NextPage<SuccessPageProps> = ({
             />
           </div>
 
-          <div className="py-6 flex">
-            <div className="w-full flex items-center justify-center">
+          <div className="py-12 flex">
+            <div className="w-full flex items-center justify-center gap-4">
+              <LensShare
+                postBody={`I just solved the ${simpleName} puzzle! Can you unlock it?`}
+                url={buildUrlString(`/puzzle/${landingRoute}`)}
+              />
+
               <TwitterShare
                 tweetBody={`I just solved the ${simpleName} puzzle! Can you unlock it? \n\n@InfinityKeys\n\n${buildUrlString(
                   `/puzzle/${landingRoute}`

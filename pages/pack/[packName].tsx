@@ -6,8 +6,7 @@ import { useRouter } from "next/router";
 
 import Wrapper from "@components/wrapper";
 import Thumbnail from "@components/thumbnail";
-import TwitterSvg from "@components/svg/twitter-svg";
-import Discord from "@components/svg/discord-svg";
+import LensShare from "@components/lens-share";
 import Minter from "@components/minter";
 import Seo from "@components/seo";
 import TwitterShare from "@components/twitter-share";
@@ -19,7 +18,6 @@ import { buildUrlString, thumbnailData } from "@lib/utils";
 import { cloudinaryUrl } from "@lib/images";
 
 import useCurrentWidth from "@hooks/useCurrentWidth";
-import Head from "next/head";
 
 interface PageProps {
   puzzles: GetPuzzlesByPackQuery["puzzles"];
@@ -112,7 +110,11 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
             packSuccessMessage={pack.packSuccessMessage}
           />
         </div>
-        <div className="pt-2 pb-8">
+        <div className="pt-2 pb-8 flex justify-center gap-4">
+          <LensShare
+            postBody={`Collect the ${pack.name}.`}
+            url={buildUrlString(asPath)}
+          />
           <TwitterShare
             tweetBody={`Collect the ${
               pack.name
