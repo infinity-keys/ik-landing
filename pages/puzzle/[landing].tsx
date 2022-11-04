@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 // import { useMachine } from "@xstate/react";
 
 import Wrapper from "@components/wrapper";
-import KeysLink from "@components/keys-link";
 import Puzzle from "@components/puzzle";
 import PuzzleLandingInfo from "@components/puzzle-landing-info";
 import Seo from "@components/seo";
@@ -93,7 +92,6 @@ const Dev: NextPage<PuzzlePageProps> = ({
         </div>
       </main>
 
-      <KeysLink />
       <div className="mb-9 px-4">
         <TwitterShare
           tweetBody={`Can you unlock the ${name} puzzle? @InfinityKeys\n\n${buildUrlString(
