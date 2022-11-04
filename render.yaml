@@ -8,7 +8,7 @@ services:
 - name: redwoodjs-web
   type: web
   env: static
-  buildCommand: yarn && yarn rw deploy render web
+  buildCommand: yarn && yarn workspaces foreach run build && yarn rw deploy render web
   staticPublishPath: ./web/dist
   envVars:
   - key: NODE_VERSION
@@ -25,7 +25,7 @@ services:
   type: web
   env: node
   region: oregon
-  buildCommand: yarn && yarn rw build api
+  buildCommand: yarn && yarn workspaces foreach run build && yarn rw build api
   startCommand: yarn rw deploy render api
   envVars:
   - key: NODE_VERSION
