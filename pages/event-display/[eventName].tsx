@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
-import useSWR from "swr";
+import useSWR, { Fetcher } from "swr";
 
 import Seo from "@components/seo";
 import { EventDisplayQuery, PublicPuzzlesQuery } from "@lib/generated/graphql";
@@ -23,26 +23,23 @@ interface EventPageParams {
   };
 }
 
-/*
- @TODO
-  - should api return object with tokenIds
-  - type fetcher args
-  - can we test minting new token live somehow?
-  - style
-*/
-
+// how often SWR should query the api route
 const REFRESH_RATE = 1000 * 30;
-// const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+const fetcher: Fetcher<{ tokensMinted: boolean[] }, string> = (...args) =>
+  fetch(...args).then((res) => res.json());
 
 const EventPage: NextPage<EventPageProps> = ({
   eventName,
   puzzles,
   tokenIds,
 }) => {
+  // // should be set to false when we no longer want to query
+  // // the api route, (e.g. when all tokens have been minted)
   // const [shouldRefresh, setShouldRefresh] = useState(true);
   // const tokenIdsParams = buildTokenIdParams(tokenIds);
 
-  // const { data: tokenData, error } = useSWR(
+  // const { data: tokenData } = useSWR(
   //   "/api/minter/check-minted?" + tokenIdsParams,
   //   fetcher,
   //   {
