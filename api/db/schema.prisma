@@ -108,18 +108,24 @@ model Submission {
   @@unique([puzzleId, userId])
 }
 
+// All the types of Steps. Currently supports simple text guesses, but can
+// eventually handle things like retweet checks, wallet connects, etc
+enum StepType {
+  SIMPLE_TEXT
+}
+
 /// Steps are whate players actually solve. One or more steps make up a Puzzle.
 model Step {
   id             String   @id @default(cuid())
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  /// The answer. Make sure this is NOT publicly query-able
-  solution       String
   /// Shown every time the User fails the Step
   failMessage    String?
   /// Shown when a User passes the Step
   successMessage String?
+  /// Tell the playere what they're supposed to do
   instructions   String?
+  /// Often the hint/clue
   challenge      String?
 
   // Order shown on the puzzle
@@ -129,10 +135,23 @@ model Step {
   puzzle   Puzzle @relation(fields: [puzzleId], references: [rewardableId])
   puzzleId String
 
+  // Step types
+  type           StepType        @default(SIMPLE_TEXT)
+  stepSimpleText StepSimpleText?
+
   // A user's attempt at solving this Step
   attempts Attempt[]
 
   @@unique([id, puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
+}
+
+/// Simple guess of a text string
+model StepSimpleText {
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @id
+
+  /// The answer. Make sure this is NOT publicly query-able
+  solution String
 }
 
 /// Users guesses at Steps
@@ -140,13 +159,15 @@ model Attempt {
   id          String   @id @default(cuid())
   attemptedAt DateTime @default(now())
 
-  step   Step   @relation(fields: [stepId], references: [id])
-  stepId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
-  // What did they guess?
-  guess String
+  // Connect to each of the types of steps here
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String
+
+  // What did they guess/input/confirm/connect?
+  data Json
 
   @@unique([stepId, userId, attemptedAt])
 }
