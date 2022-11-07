@@ -1,5 +1,5 @@
+// import { IKAchievementABI__factory } from '@infinity-keys/contracts'
 import { Chain } from '@rainbow-me/rainbowkit'
-// import { IKAchievementABI__factory } from "./generated/ethers-contract";
 // import { ethers } from 'ethers'
 
 //AVAX PARAMS

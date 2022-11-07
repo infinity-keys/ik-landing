@@ -203,3 +203,11 @@ Migrate all database tables and columns (but NOT actual data):
 
 yarn rw prisma migrate dev
 ```
+
+## Local dev
+
+Builds all custom workspaces packages and start Redwood dev.
+
+```bash
+yarn workspaces foreach run build && yarn rw dev
+```

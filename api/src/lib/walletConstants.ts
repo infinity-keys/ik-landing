@@ -1,7 +1,6 @@
+import { IKAchievementABI__factory } from '@infinity-keys/contracts'
 import { Chain } from '@rainbow-me/rainbowkit'
 import { ethers } from 'ethers'
-
-import { IKAchievementABI__factory } from './generated/ethers-contract'
 
 //AVAX PARAMS
 export const AVAX_CHAIN_ID = 43114
