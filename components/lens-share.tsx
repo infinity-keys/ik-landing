@@ -3,6 +3,7 @@ import LensIcon from "@components/svg/lens-svg";
 interface LensShareProps {
   postBody: string;
   url?: string;
+  via?: string;
   hashtags?: string;
   buttonLabel?: string;
   icon?: boolean;
@@ -12,15 +13,18 @@ interface LensShareProps {
 const LensShare = ({
   postBody,
   url = "https://www.infinitykeys.io/",
+  via = "infinitykeys.lens",
   // comma separated for multiple hashtags ("infinitykeys,hunt")
   hashtags = "infinitykeys",
   buttonLabel,
   icon = true,
   preview = true,
 }: LensShareProps) => {
-  const href = new URL(`https://lenster.xyz/?url=${url}`);
+  const href = new URL(`https://lenster.xyz/?`);
+
   href.searchParams.set("text", postBody);
-  href.searchParams.set("via", "infinitykeys.lens");
+  via && href.searchParams.set("via", via);
+  url && href.searchParams.set("url", url);
   hashtags && href.searchParams.set("hashtags", hashtags);
   preview && href.searchParams.set("preview", "true");
 
