@@ -1,9 +1,11 @@
 // import Alert from 'src/components/Alert/Alert'
+import Button from 'src/components/Button/Button'
 import CloudImage from 'src/components/CloudImage/CloudImage'
 import EmailNewsletter from 'src/components/EmailNewsletter/EmailNewsletter'
 import EmailPartner from 'src/components/EmailPartner/EmailPartner'
 import Flicker from 'src/components/Flicker/Flicker'
 import Heading from 'src/components/Heading/Heading'
+import Puzzle from 'src/components/Puzzle/Puzzle'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import Text from 'src/components/Text/Text'
@@ -53,14 +55,14 @@ export const logoinfo = [
 ]
 
 const HomePage = () => {
-  // const SuccessComponent = () => (
-  //   <div
-  //     data-cy="success_message_check"
-  //     className="container my-16 flex justify-center max-w-[12rem]"
-  //   >
-  //     <Button text="Play More" fullWidth href={`/${PACK_COLLECTION_BASE}`} />
-  //   </div>
-  // );
+  const SuccessComponent = () => (
+    <div
+      data-cy="success_message_check"
+      className="container my-16 flex max-w-[12rem] justify-center"
+    >
+      <Button text="Play More" fullWidth to={'/packs'} />
+    </div>
+  )
 
   return (
     <Wrapper full radialBg={false}>
@@ -79,12 +81,12 @@ const HomePage = () => {
             </Heading>
           </div>
 
-          {/* <Puzzle
-            puzzleId={puzzleId}
-            count={count}
+          <Puzzle
+            puzzleId={'puzzleId'}
+            count={6}
             SuccessComponent={SuccessComponent}
             forwardOnFail={false}
-          /> */}
+          />
           <div className="flicker-container mt-10 text-center text-white sm:text-xl md:text-2xl">
             <p className="leading-normal">
               Find the c<Flicker delay=".6s">l</Flicker>
