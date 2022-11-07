@@ -1,8 +1,9 @@
+import abi1155 from '@infinity-keys/contracts/src/balanceOf1155.json'
+import abi721 from '@infinity-keys/contracts/src/balanceOf721.json'
 import { ethers } from 'ethers'
+import fetch from 'node-fetch'
 import { QueryResolvers } from 'types/graphql'
 
-import abi1155 from 'src/lib/nfts/balanceOf1155.json'
-import abi721 from 'src/lib/nfts/balanceOf721.json'
 import { RPCLookup } from 'src/lib/walletConstants'
 
 export const checkNft: QueryResolvers['checkNft'] = async ({
@@ -13,6 +14,34 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
   // successRoute,
   // finalStep,
 }) => {
+  if (parseInt(chainId, 10) === 0) {
+    // If chain id is set to 0 (no chain is 0) then it is a poap
+    // no contract address for poap, tokenId = Poap Event Id
+    const url = `https://api.poap.tech/actions/scan/${account}/${tokenId}`
+
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        'X-API-Key': process.env.POAP_API_KEY,
+      },
+    }
+
+    fetch(url, options)
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.event) {
+          // Have to move this return statement below to allow for cookies!
+          return { success: true }
+        }
+      })
+      .catch((err) => console.error('error:' + err))
+
+    // If no event or error return false
+    // Have to move this return statement below to allow for cookies!
+    return { success: false }
+  }
+
   // No token Id for ERC721
   const type721 = tokenId ? false : true
 

@@ -1,5 +1,6 @@
 // import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
+import CheckNftCell from 'src/components/CheckNftCell'
 import CloudImage from 'src/components/CloudImage/CloudImage'
 import EmailNewsletter from 'src/components/EmailNewsletter/EmailNewsletter'
 import EmailPartner from 'src/components/EmailPartner/EmailPartner'
@@ -80,6 +81,15 @@ const HomePage = () => {
               t.
             </Heading>
           </div>
+
+          <CheckNftCell
+            account="0x2B7952c3F442Eb8BaA069f90bF692Facb52890a9"
+            chainId="0"
+            contractAddress="0"
+            tokenId="42940"
+            successRoute="test"
+            finalStep={true}
+          />
 
           <Puzzle
             puzzleId={'puzzleId'}
