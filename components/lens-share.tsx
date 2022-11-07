@@ -16,7 +16,7 @@ const LensShare = ({
   via = "infinitykeys.lens",
   // comma separated for multiple hashtags ("infinitykeys,hunt")
   hashtags = "infinitykeys",
-  buttonLabel,
+  buttonLabel = "Share",
   icon = true,
   preview = true,
 }: LensShareProps) => {
@@ -35,7 +35,7 @@ const LensShare = ({
       rel="noopener noreferrer"
       className="social-share text-sm inline-flex items-center bg-[#00510e] px-3 py-1 rounded font-medium transition hover:bg-[#abfe2c] hover:text-[#00510e]"
     >
-      {buttonLabel || "Share"}
+      {buttonLabel}
       {icon && (
         <span className="ml-2 ">
           <LensIcon width={18} height={18} />
