@@ -2,7 +2,7 @@ import React from 'react'
 
 import clsx from 'clsx'
 
-import { icon } from './ShareButton.css'
+import { icon } from './styles.css'
 import { IconProps } from './types'
 
 const LensIcon = ({ height = 18, width = 18, removeStyles }: IconProps) => (

@@ -3,7 +3,7 @@ import React from 'react'
 import clsx from 'clsx'
 
 import LensIcon from './LensIcon'
-import { link, iconWrapper, lightBg } from './ShareButton.css'
+import { link, iconWrapper, lightBg, colors } from './styles.css'
 import { LensShareProps } from './types'
 import { buildLensShareUrl } from './utils'
 
@@ -32,6 +32,7 @@ const ShareButton = ({
       target="_blank"
       rel="noopener noreferrer"
       className={clsx(
+        !removeStyles && colors,
         !removeStyles && link,
         !removeStyles && light && lightBg,
         'ReactLensShareButton'

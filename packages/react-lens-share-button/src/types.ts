@@ -1,3 +1,5 @@
+import { HTMLProps } from 'react'
+
 export interface UrlProps {
   postBody: string
   url?: string
@@ -6,7 +8,7 @@ export interface UrlProps {
   preview?: boolean
 }
 
-export interface LensShareProps extends UrlProps {
+export interface LensShareProps extends UrlProps, HTMLProps<HTMLAnchorElement> {
   buttonLabel?: string
   icon?: boolean
   iconSize?: number
