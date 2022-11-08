@@ -1,8 +1,6 @@
-# react-lens-share-button
+# 🌿 react-lens-share-button
 
----
-
-A customizable, React button component for sharing to [Lens](https://www.lens.xyz/). It creates a url that opens a post preview window in Lenster
+A customizable, React button component for sharing to [Lens](https://www.lens.xyz/). It creates a url that opens a new post preview window in Lenster.
 
 ## Table of contents
 
@@ -27,8 +25,7 @@ npm install react-lens-share-button
 
 ## Usage
 
-
-You can import the component and default styles:
+Import the component and default styles:
 
 ```js
 import LenShareButton from "react-lens-share-button"
@@ -59,7 +56,7 @@ import { LensIcon } from "react-lens-share-button"
 
 ## Props
 
-These props
+Using these props...
 ```js
 <LensShareButton
   postBody="Hello, Lens!"
@@ -70,7 +67,7 @@ These props
 />
 ```
 
-result in this post editor window
+...will result in this post editor window.
 
 ![](lens-button-ex-1.png)
 
@@ -120,7 +117,7 @@ To use the default styles, import them into your file:
 import 'react-lens-share-button/dist/style.css'
 ```
 
-Classes can be passed down to each element, and inline styles can be passed down to the parent anchor link element like so:
+Classes can be passed down to each element, and inline styles can be passed down to the parent link element like so:
 
 ```js
 <LensShareButton
