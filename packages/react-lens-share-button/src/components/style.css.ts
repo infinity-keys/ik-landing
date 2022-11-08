@@ -23,6 +23,7 @@ export const link = style({
   borderRadius: '4px',
 
   transition: 'all .2s',
+
   selectors: {
     '&:hover, &:focus': {
       color: darkGreen,

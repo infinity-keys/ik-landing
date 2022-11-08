@@ -1,4 +1,4 @@
-import { UrlProps } from './types'
+import { BuildLensShareUrlProps } from './types'
 
 export const buildLensShareUrl = ({
   postBody,
@@ -6,7 +6,7 @@ export const buildLensShareUrl = ({
   url,
   hashtags,
   preview,
-}: UrlProps) => {
+}: BuildLensShareUrlProps) => {
   const href = new URL(`https://lenster.xyz/?`)
 
   href.searchParams.set('text', postBody)

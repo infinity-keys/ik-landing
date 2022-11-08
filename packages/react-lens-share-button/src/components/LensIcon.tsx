@@ -2,16 +2,25 @@ import React from 'react'
 
 import clsx from 'clsx'
 
-import { icon } from './styles.css'
-import { IconProps } from './types'
+import { icon } from './style.css'
+import { LensIconProps } from './types'
 
-const LensIcon = ({ height = 18, width = 18, removeStyles }: IconProps) => (
+export const LensIcon = ({
+  height = 18,
+  width = 18,
+  removeStyles,
+  className,
+}: LensIconProps) => (
   <svg
     width={width}
     height={height}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className={clsx(!removeStyles && icon, 'ReactLensShareButton__svg')}
+    className={clsx(
+      !removeStyles && icon,
+      'ReactLensShareButton__svg',
+      className && className
+    )}
   >
     <mask
       id="a"
@@ -42,5 +51,3 @@ const LensIcon = ({ height = 18, width = 18, removeStyles }: IconProps) => (
     />
   </svg>
 )
-
-export default LensIcon

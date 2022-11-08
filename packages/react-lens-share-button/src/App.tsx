@@ -1,17 +1,15 @@
 import React from 'react'
 
-import ShareButton from './ShareButton'
+import { LensShareButton } from './components/LensShareButton'
 
 function App() {
   return (
-    <div className="App">
-      <ShareButton
-        postBody="tesing 123"
-        url="https://google.com"
-        hashtags="one,two"
-        via="stormcloud.lens"
-      />
-    </div>
+    <LensShareButton
+      postBody="tesing 123"
+      url="https://google.com"
+      hashtags="one,two"
+      via="stormcloud.lens"
+    />
   )
 }
 

@@ -14,7 +14,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+     "paths": {
+      "react-lens-share-button": [ "src/components/index.ts" ]
+    },
+    "typeRoots": [
+      "node_modules/@types",
+      "src/components/index.d.ts"
+    ]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

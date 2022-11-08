@@ -2,22 +2,25 @@ import React from 'react'
 
 import clsx from 'clsx'
 
-import LensIcon from './LensIcon'
-import { link, iconWrapper, lightBg, colors } from './styles.css'
+import { LensIcon } from './LensIcon'
+import { link, iconWrapper, lightBg, colors } from './style.css'
 import { LensShareProps } from './types'
 import { buildLensShareUrl } from './utils'
 
-const ShareButton = ({
+export const LensShareButton = ({
   postBody,
   url,
   via,
   hashtags,
+  preview = true,
   buttonLabel = 'Share',
   icon = true,
-  preview = true,
   iconSize = 18,
   removeStyles = false,
   light = false,
+  iconWrapperClassName,
+  iconClassName,
+  className,
   ...rest
 }: LensShareProps) => {
   return (
@@ -35,7 +38,8 @@ const ShareButton = ({
         !removeStyles && colors,
         !removeStyles && link,
         !removeStyles && light && lightBg,
-        'ReactLensShareButton'
+        'ReactLensShareButton',
+        className && className
       )}
       {...rest}
     >
@@ -44,18 +48,18 @@ const ShareButton = ({
         <span
           className={clsx(
             !removeStyles && iconWrapper,
-            'ReactLensShareButton__svg-wrapper'
+            'ReactLensShareButton__svg-wrapper',
+            iconWrapperClassName && iconWrapperClassName
           )}
         >
           <LensIcon
             width={iconSize}
             height={iconSize}
             removeStyles={removeStyles}
+            className={iconClassName}
           />
         </span>
       )}
     </a>
   )
 }
-
-export default ShareButton
