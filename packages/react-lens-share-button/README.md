@@ -67,7 +67,7 @@ Using these props...
 />
 ```
 
-...will result in this post editor window.
+...will open this post editor window in Lenster.
 
 ![](lens-button-ex-1.png)
 
@@ -75,8 +75,8 @@ Using these props...
 
 | Prop                 | Type    | Required | Default Value | Description                                                                                                                            |
 |----------------------|---------|----------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| postBody             | string  | yes      |               | The body of the post.                                                                                                                  |
-| url                  | string  | no       |               | A link that will be appended below the post body.                                                                                      |
+| postBody             | string  | yes      |               | The main body of the post.                                                                                                                  |
+| url                  | string  | no       |               | A link that will be appended below the post body and hashtags.                                                                                      |
 | via                  | string  | no       |               | A Lenster user who will be tagged.                                                                                                     |
 | hashtags             | string  | no       |               | Hashtags that will be appended directly after the post body. To use multiple hashtags, pass a comma separated values, e.g. "react,js". |
 | preview              | boolean | no       | true          | Determines whether the post window opens in "preview" or "edit" mode.                                                                  |
@@ -85,9 +85,9 @@ Using these props...
 | iconSize             | number  | no       | 18            | The size of the Lens icon.                                                                                                             |
 | removeStyles         | boolean | no       | false         | If enabled, all default styles will be removed.                                                                                        |
 | light                | boolean | no       | false         | If enabled, the button's background will be light green and the text will be dark green.                                               |
-| iconWrapperClassName | string  | no       |               | Will pass classes to the span wrapping the Lens icon.                                                                                  |
-| iconClassName        | string  | no       |               | Will pass classes to the Lens icon svg.                                                                                                |
-| className            | string  | no       |               | Adds classes to the anchor tag.                                                                                                        |
+| iconWrapperClassName | string  | no       |               | Will add classes to the span wrapping the Lens icon.                                                                                  |
+| iconClassName        | string  | no       |               | Will add classes to the Lens icon svg.                                                                                                |
+| className            | string  | no       |               | Will add classes to the parent anchor tag.                                                                                                        |
 
 ### LensIcon Component Props
 
@@ -96,14 +96,14 @@ Using these props...
 | height       | number  | no       | 18            | Height of svg.                                  |
 | width        | number  | no       | 18            | Width of svg.                                   |
 | removeStyles | boolean | no       | false         | If enabled, all default styles will be removed. |
-| className    | string  | no       |               | Will pass classes to the svg.                   |
+| className    | string  | no       |               | Will add classes to the svg.                   |
 
 ### buildLensShareUrl Function Props
 
 | Prop     | Type    | Required | Default Value | Description                                                                                                                            |
 |----------|---------|----------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| postBody | string  | yes      |               | The body of the post.                                                                                                                  |
-| url      | string  | no       |               | A link that will be appended below the post body.                                                                                      |
+| postBody | string  | yes      |               | The main body of the post.                                                                                                                  |
+| url      | string  | no       |               | A link that will be appended below the post body and hashtags.                                                                                      |
 | via      | string  | no       |               | A Lenster user who will be tagged.                                                                                                     |
 | hashtags | string  | no       |               | Hashtags that will be appended directly after the post body. To use multiple hashtags, pass a comma separated values, e.g. "react,js". |
 | preview  | boolean | no       | true          | Determines whether the post window opens in "preview" or "edit" mode.                                                                  |
