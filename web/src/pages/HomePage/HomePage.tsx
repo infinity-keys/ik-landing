@@ -1,4 +1,4 @@
-// import Alert from 'src/components/Alert/Alert''
+// import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
 import CloudImage from 'src/components/CloudImage/CloudImage'
 import EmailNewsletter from 'src/components/EmailNewsletter/EmailNewsletter'
