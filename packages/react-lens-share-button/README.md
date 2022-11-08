@@ -1,0 +1,159 @@
+# react-lens-share-button
+
+---
+
+A customizable, React button component for sharing to [Lens](https://www.lens.xyz/). It creates a url that opens a post preview window in Lenster
+
+## Table of contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Props](#props)
+  - [LensShareButton Component Props](#lenssharebutton-component-props)
+  - [LensIcon Component Props](#lensicon-component-props)
+  - [buildLensShareUrl Function Props](#buildlensshareurl-function-props)
+- [Styling](#styling)
+
+## Installation
+
+```shell
+yarn add react-lens-share-button
+```
+or use npm:
+
+```shell
+npm install react-lens-share-button
+```
+
+## Usage
+
+
+You can import the component and default styles:
+
+```js
+import LenShareButton from "react-lens-share-button"
+import 'react-lens-share-button/dist/style.css'
+```
+
+And use it like this:
+
+```js
+<LensShareButton postBody="Hello, Lens!" />
+```
+
+If you need to build the url without using the component, you can import the `buildLensShareUrl` function directly:
+
+```js
+import { buildLensShareUrl } from "react-lens-share-button"
+
+const url = buildLensShareUrl({ postBody: 'Hello, Lens!' })
+
+console.log(url) // https://lenster.xyz/?text=Hello%2C+Lens%21
+```
+
+The Lens svg icon can also be imported directly:
+
+```js
+import { LensIcon } from "react-lens-share-button"
+```
+
+## Props
+
+These props
+```js
+<LensShareButton
+  postBody="Hello, Lens!"
+  url="https://lens.xyz"
+  via="lensprotocol"
+  hashtags="react,js"
+  preview={true}
+/>
+```
+
+result in this post editor window
+
+![](lens-button-ex-1.png)
+
+### LensShareButton Component Props
+
+| Prop                 | Type    | Required | Default Value | Description                                                                                                                            |
+|----------------------|---------|----------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| postBody             | string  | yes      |               | The body of the post.                                                                                                                  |
+| url                  | string  | no       |               | A link that will be appended below the post body.                                                                                      |
+| via                  | string  | no       |               | A Lenster user who will be tagged.                                                                                                     |
+| hashtags             | string  | no       |               | Hashtags that will be appended directly after the post body. To use multiple hashtags, pass a comma separated values, e.g. "react,js". |
+| preview              | boolean | no       | true          | Determines whether the post window opens in "preview" or "edit" mode.                                                                  |
+| buttonLabel          | string  | no       | "Share"       | The button's text.                                                                                                                     |
+| icon                 | boolean | no       | true          | Whether the Lens icon should show in the button.                                                                                       |
+| iconSize             | number  | no       | 18            | The size of the Lens icon.                                                                                                             |
+| removeStyles         | boolean | no       | false         | If enabled, all default styles will be removed.                                                                                        |
+| light                | boolean | no       | false         | If enabled, the button's background will be light green and the text will be dark green.                                               |
+| iconWrapperClassName | string  | no       |               | Will pass classes to the span wrapping the Lens icon.                                                                                  |
+| iconClassName        | string  | no       |               | Will pass classes to the Lens icon svg.                                                                                                |
+| className            | string  | no       |               | Adds classes to the anchor tag.                                                                                                        |
+
+### LensIcon Component Props
+
+| Prop         | Type    | Required | Default Value | Description                                     |
+|--------------|---------|----------|---------------|-------------------------------------------------|
+| height       | number  | no       | 18            | Height of svg.                                  |
+| width        | number  | no       | 18            | Width of svg.                                   |
+| removeStyles | boolean | no       | false         | If enabled, all default styles will be removed. |
+| className    | string  | no       |               | Will pass classes to the svg.                   |
+
+### buildLensShareUrl Function Props
+
+| Prop     | Type    | Required | Default Value | Description                                                                                                                            |
+|----------|---------|----------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| postBody | string  | yes      |               | The body of the post.                                                                                                                  |
+| url      | string  | no       |               | A link that will be appended below the post body.                                                                                      |
+| via      | string  | no       |               | A Lenster user who will be tagged.                                                                                                     |
+| hashtags | string  | no       |               | Hashtags that will be appended directly after the post body. To use multiple hashtags, pass a comma separated values, e.g. "react,js". |
+| preview  | boolean | no       | true          | Determines whether the post window opens in "preview" or "edit" mode.                                                                  |
+|          |         |          |               |                                                                                                                                        |
+
+## Styling
+
+To use the default styles, import them into your file:
+
+```js
+import 'react-lens-share-button/dist/style.css'
+```
+
+Classes can be passed down to each element, and inline styles can be passed down to the parent anchor link element like so:
+
+```js
+<LensShareButton
+  postBody="Hello, Lens!"
+  style={{ marginTop: 30 }}
+  className="font-bold"
+  iconWrapperClassName="p-2"
+  iconClassName="text-orange-400"
+/>
+```
+
+Each element also has a class that can be targeted via css:
+
+```css
+.ReactLensShareButton {
+  background-color: purple !important;
+  /* ... */
+}
+
+.ReactLensShareButton__svg-wrapper {
+  /* ... */
+}
+
+.ReactLensShareButton__svg {
+  /* ... */
+}
+```
+
+All default styling can be removed by passing the `removeStyles` prop:
+
+```js
+<LensShareButton
+  postBody="Hello, Lens!"
+  removeStyles
+/>
+```
