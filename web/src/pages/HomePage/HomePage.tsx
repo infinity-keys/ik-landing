@@ -1,4 +1,9 @@
 // import Alert from 'src/components/Alert/Alert'
+import LensShareButton, {
+  LensIcon,
+} from '@infinity-keys/react-lens-share-button'
+import '@infinity-keys/react-lens-share-button/dist/style.css'
+
 import Button from 'src/components/Button/Button'
 import CloudImage from 'src/components/CloudImage/CloudImage'
 import EmailNewsletter from 'src/components/EmailNewsletter/EmailNewsletter'
@@ -105,6 +110,10 @@ const HomePage = () => {
         </Section>
       </div>
       {/* Bottom of puzzle */}
+
+      <LensShareButton postBody="Hello, Lens!" />
+
+      <LensIcon />
 
       {/* About */}
       <main className="w-full bg-blue-800">
