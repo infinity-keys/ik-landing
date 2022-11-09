@@ -29,6 +29,9 @@ module.exports = {
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
       },
+      boxShadow: {
+        "3xl": "0 20px 35px -10px rgba(0, 0, 0, 0.8)",
+      },
       animation: {
         flickerGlow:
           "flicker 2s forwards, glow 1.2s alternate-reverse infinite",

@@ -38,84 +38,103 @@ const EventThumbnail = ({
   }, [progress]);
 
   return (
-    <div
-      className={clsx(
-        "puzzle-thumb bg-blue-800 rounded-lg shadow relative h-full border",
-        {
-          "flex flex-col text-center": isGrid,
-        },
-        progress === ThumbnailProgress.Completed
-          ? "animated-thumb-unlocked border-[#3fccbc8e]"
-          : "animated-thumb border-[#cc3f3f8e]"
-      )}
-    >
-      {progress === ThumbnailProgress.Completed && <Sparkles isOn={isOn} />}
-
+    <div className="shadow-3xl">
       <div
         className={clsx(
-          "flex-1 flex",
-          isGrid ? "py-8 px-6 flex-col" : "items-center p-4 lg:px-6"
+          "p-[2px] rounded-lg",
+          progress === ThumbnailProgress.Completed
+            ? "animated-thumb-unlocked"
+            : "animated-thumb"
         )}
       >
         <div
           className={clsx(
-            "flex-shrink-0",
-            isGrid ? "w-32 h-32 mx-auto" : "w-14 h-14 mr-4"
+            "puzzle-thumb bg-blue-800 rounded-md relative h-full",
+            {
+              "flex flex-col text-center": isGrid,
+            }
           )}
         >
-          {cloudinary_id ? (
-            <div className="overflow-hidden rounded-full">
-              <div className="next-image-block scale-105	">
-                <CloudImage
-                  height={128}
-                  width={128}
-                  id={cloudinary_id}
-                  circle
-                />
-              </div>
-            </div>
-          ) : (
-            <Avatar
-              size={isGrid ? 128 : 56}
-              name={id}
-              variant="marble"
-              colors={["#101D42", "#E400FF", "#3FCCBB", "#8500AC", "#303B5B"]}
-            />
-          )}
-        </div>
+          {progress === ThumbnailProgress.Completed && <Sparkles isOn={isOn} />}
 
-        <h3
-          className={clsx("text-gray-200 text-sm font-medium", {
-            "mt-6": isGrid,
-          })}
-        >
-          {name}
-        </h3>
-
-        <dl
-          className={clsx("flex-grow", {
-            " mt-1 flex flex-col justify-between": isGrid,
-          })}
-        >
-          <dt className="sr-only">Logo</dt>
-          <dd
+          <div
             className={clsx(
-              "flex",
-              isGrid ? "mt-4 justify-center" : "justify-end"
+              "flex-1 flex",
+              isGrid ? "py-8 px-6 flex-col" : "items-center p-4 lg:px-6"
             )}
           >
             <div
               className={clsx(
-                "w-8 h-8 ",
-                progress === ThumbnailProgress.Completed
-                  ? "text-turquoise"
-                  : "text-[#cc3f3f8e]"
+                "flex-shrink-0",
+                isGrid ? "w-32 h-32 mx-auto" : "w-14 h-14 mr-4"
               )}
             >
-              <MinimalKeyLogo />
+              {cloudinary_id ? (
+                <div className="overflow-hidden rounded-full">
+                  <div
+                    className={clsx(
+                      "next-image-block scale-105",
+                      progress !== ThumbnailProgress.Completed && "grayscale"
+                    )}
+                  >
+                    <CloudImage
+                      height={128}
+                      width={128}
+                      id={cloudinary_id}
+                      circle
+                    />
+                  </div>
+                </div>
+              ) : (
+                <Avatar
+                  size={isGrid ? 128 : 56}
+                  name={id}
+                  variant="marble"
+                  colors={[
+                    "#101D42",
+                    "#E400FF",
+                    "#3FCCBB",
+                    "#8500AC",
+                    "#303B5B",
+                  ]}
+                />
+              )}
             </div>
-          </dd>
-        </dl>
+
+            <h3
+              className={clsx("text-gray-200 text-sm font-medium", {
+                "mt-6": isGrid,
+              })}
+            >
+              {name}
+            </h3>
+
+            <dl
+              className={clsx("flex-grow", {
+                " mt-1 flex flex-col justify-between": isGrid,
+              })}
+            >
+              <dt className="sr-only">Logo</dt>
+              <dd
+                className={clsx(
+                  "flex",
+                  isGrid ? "mt-4 justify-center" : "justify-end"
+                )}
+              >
+                <div
+                  className={clsx(
+                    "w-8 h-8 ",
+                    progress === ThumbnailProgress.Completed
+                      ? "text-turquoise"
+                      : "text-[#cc3f3f8e]"
+                  )}
+                >
+                  <MinimalKeyLogo />
+                </div>
+              </dd>
+            </dl>
+          </div>
+        </div>
       </div>
     </div>
   );
