@@ -28,7 +28,7 @@ npm install react-lens-share-button
 Import the component and default styles:
 
 ```js
-import LenShareButton from "react-lens-share-button"
+import { LenShareButton } from "react-lens-share-button"
 import 'react-lens-share-button/dist/style.css'
 ```
 
@@ -105,7 +105,6 @@ Using these props...
 | via      | string  | no       |               | A Lenster user who will be tagged.                                                                                                     |
 | hashtags | string  | no       |               | Hashtags that will be appended directly after the post body. To use multiple hashtags, pass a comma separated values, e.g. "react,js". |
 | preview  | boolean | no       | true          | Determines whether the post window opens in "preview" or "edit" mode.                                                                  |
-|          |         |          |               |                                                                                                                                        |
 
 ## Styling
 
