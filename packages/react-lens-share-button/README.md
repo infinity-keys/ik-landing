@@ -82,8 +82,7 @@ Using these props...
 | preview              | boolean | no       | true          | Determines whether the post window opens in "preview" or "edit" mode.                                                                  |
 | buttonLabel          | string  | no       | "Share"       | The button's text.                                                                                                                     |
 | icon                 | boolean | no       | true          | Whether the Lens icon should show in the button.                                                                                       |
-| iconSize             | number  | no       | 18            | The size of the Lens icon.                                                                                                             |
-| removeStyles         | boolean | no       | false         | If enabled, all default styles will be removed.                                                                                        |
+| iconSize             | number  | no       | 18            | The size of the Lens icon.
 | light                | boolean | no       | false         | If enabled, the button's background will be light green and the text will be dark green.                                               |
 | iconWrapperClassName | string  | no       |               | Will add classes to the span wrapping the Lens icon.                                                                                  |
 | iconClassName        | string  | no       |               | Will add classes to the Lens icon svg.                                                                                                |
@@ -95,7 +94,6 @@ Using these props...
 |--------------|---------|----------|---------------|-------------------------------------------------|
 | height       | number  | no       | 18            | Height of svg.                                  |
 | width        | number  | no       | 18            | Width of svg.                                   |
-| removeStyles | boolean | no       | false         | If enabled, all default styles will be removed. |
 | className    | string  | no       |               | Will add classes to the svg.                   |
 
 ### buildLensShareUrl Function Props
@@ -111,7 +109,7 @@ Using these props...
 
 ## Styling
 
-To use the default styles, import them into your file:
+To use the default styles, import them into your file.
 
 ```js
 import 'react-lens-share-button/dist/style.css'
@@ -144,13 +142,4 @@ Each element also has a class that can be targeted via css:
 .ReactLensShareButton__svg {
   /* ... */
 }
-```
-
-All default styling can be removed by passing the `removeStyles` prop:
-
-```js
-<LensShareButton
-  postBody="Hello, Lens!"
-  removeStyles
-/>
 ```

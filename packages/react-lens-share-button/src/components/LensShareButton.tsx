@@ -16,7 +16,6 @@ export const LensShareButton = ({
   buttonLabel = 'Share',
   icon = true,
   iconSize = 18,
-  removeStyles = false,
   light = false,
   iconWrapperClassName,
   iconClassName,
@@ -35,9 +34,9 @@ export const LensShareButton = ({
       target="_blank"
       rel="noopener noreferrer"
       className={clsx(
-        !removeStyles && colors,
-        !removeStyles && link,
-        !removeStyles && light && lightBg,
+        colors,
+        link,
+        light && lightBg,
         'ReactLensShareButton',
         className && className
       )}
@@ -47,7 +46,7 @@ export const LensShareButton = ({
       {icon && (
         <span
           className={clsx(
-            !removeStyles && iconWrapper,
+            iconWrapper,
             'ReactLensShareButton__svg-wrapper',
             iconWrapperClassName && iconWrapperClassName
           )}
@@ -55,7 +54,6 @@ export const LensShareButton = ({
           <LensIcon
             width={iconSize}
             height={iconSize}
-            removeStyles={removeStyles}
             className={iconClassName}
           />
         </span>

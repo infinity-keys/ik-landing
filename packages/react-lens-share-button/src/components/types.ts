@@ -14,7 +14,6 @@ export interface LensShareProps
   buttonLabel?: string
   icon?: boolean
   iconSize?: number
-  removeStyles?: boolean
   light?: boolean
   iconWrapperClassName?: string
   iconClassName?: string
@@ -23,6 +22,5 @@ export interface LensShareProps
 export interface LensIconProps {
   height?: number
   width?: number
-  removeStyles?: boolean
   className?: string
 }

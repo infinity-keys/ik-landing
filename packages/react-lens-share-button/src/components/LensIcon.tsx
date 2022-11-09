@@ -8,7 +8,6 @@ import { LensIconProps } from './types'
 export const LensIcon = ({
   height = 18,
   width = 18,
-  removeStyles,
   className,
 }: LensIconProps) => (
   <svg
@@ -16,11 +15,7 @@ export const LensIcon = ({
     height={height}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className={clsx(
-      !removeStyles && icon,
-      'ReactLensShareButton__svg',
-      className && className
-    )}
+    className={clsx(icon, 'ReactLensShareButton__svg', className && className)}
   >
     <mask
       id="a"
