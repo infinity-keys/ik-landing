@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NextPage } from "next";
 import useSWR, { Fetcher } from "swr";
 
@@ -17,6 +17,8 @@ import { useCallback } from "react";
 import Particles from "react-tsparticles";
 import type { Container, Engine } from "tsparticles-engine";
 import { loadFull } from "tsparticles";
+import Heading from "@components/heading";
+import Flicker from "@components/flicker";
 
 export interface EventPageProps {
   puzzles?: PublicPuzzlesQuery["puzzles"];
@@ -80,6 +82,8 @@ const EventPage: NextPage<EventPageProps> = ({
   }, []);
 
   const width = useCurrentWidth();
+  const containerRef = useRef();
+
   const layout =
     width < 1280 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
 
@@ -87,12 +91,23 @@ const EventPage: NextPage<EventPageProps> = ({
     await loadFull(engine);
   }, []);
 
-  const particlesLoaded = useCallback(
-    async (container: Container | undefined) => {
-      await console.log(container);
-    },
-    []
-  );
+  const particlesInit2 = useCallback(async (engine: Engine) => {
+    await loadFull(engine);
+  }, []);
+
+  // const particlesLoaded = useCallback(
+  //   async (container: Container | undefined) => {
+  //     await console.log(container);
+  //   },
+  //   []
+  // );
+
+  // useEffect(() => {
+  //   if (containerRef && containerRef.current && options) {
+  //     console.log("containerRef.current: ", containerRef.current);
+  //     // containerRef.current?.pauseEmitter();
+  //   }
+  // }, [options]);
 
   return (
     <div className="p-6 min-h-screen max-w-[1400px] mx-auto flex flex-col justify-center relative">
@@ -101,7 +116,16 @@ const EventPage: NextPage<EventPageProps> = ({
           id="tsparticles"
           options={stars}
           init={particlesInit}
-          loaded={particlesLoaded}
+          className="z-0"
+        />
+      </div>
+
+      <div className="absolute top-0 left-0 w-full h-full">
+        <Particles
+          // container={containerRef}
+          id="tsparticles2"
+          options={fire}
+          init={particlesInit2}
           className="z-0"
         />
       </div>
@@ -133,6 +157,12 @@ const EventPage: NextPage<EventPageProps> = ({
             );
           })}
         </ul>
+
+        <div className="text-center uppercase">
+          <Heading as="h1">
+            Five keys - <Flicker bold>find them all</Flicker>
+          </Heading>
+        </div>
       </div>
     </div>
   );
@@ -182,7 +212,7 @@ export async function getStaticPaths() {
   };
 }
 
-const fire = {
+const fire: any = {
   fullScreen: {
     enable: true,
   },
@@ -221,7 +251,7 @@ const fire = {
         count: 2,
         factor: { value: 1 / 3 },
         rate: {
-          value: 5,
+          value: 10,
         },
         particles: {
           color: {
@@ -274,7 +304,9 @@ const fire = {
             direction: "none",
             random: true,
             straight: false,
-            outMode: "destroy",
+            outMode: {
+              default: "destroy",
+            },
           },
         },
       },
