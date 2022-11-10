@@ -1,8 +1,39 @@
 import type { Prisma } from '@prisma/client'
 import { db } from 'api/src/lib/db'
+import fetch from 'node-fetch'
+
+// Original data
+const { GRAPHQL_ENDPOINT, HASURA_GRAPHQL_ADMIN_SECRET } = process.env
+// Get all original data
+const query = `query AllData {
+  puzzles {
+    simple_name
+    migration_puzzle
+    migration_step
+    solution
+    success_message
+    instructions
+    challenge
+    list_publicly
+  }
+}`
 
 export default async () => {
   try {
+    const v1IkData = await fetch(GRAPHQL_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'x-hasura-admin-secret': HASURA_GRAPHQL_ADMIN_SECRET,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query,
+        variables: {},
+      }),
+    }).then((res) => res.json())
+
+    console.log(v1IkData)
+
     //
     // Manually seed via `yarn rw prisma db seed`
     // Seeds automatically with `yarn rw prisma migrate dev` and `yarn rw prisma migrate reset`
