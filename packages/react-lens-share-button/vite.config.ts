@@ -21,7 +21,7 @@ export default defineConfig(() => ({
     lib: {
       entry: resolve('src', 'components/index.ts'),
       name: 'LensShareButton',
-      formats: ['es', 'umd'],
+      formats: ['es', 'cjs'],
       fileName: (format) => `react-lens-share-button.${format}.js`,
     },
     rollupOptions: {
