@@ -82,7 +82,7 @@ const EventPage: NextPage<EventPageProps> = ({
   }, []);
 
   const width = useCurrentWidth();
-  const containerRef = useRef();
+  const containerRef = useRef<Container>(null);
 
   const layout =
     width < 1280 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
@@ -91,23 +91,12 @@ const EventPage: NextPage<EventPageProps> = ({
     await loadFull(engine);
   }, []);
 
-  const particlesInit2 = useCallback(async (engine: Engine) => {
-    await loadFull(engine);
-  }, []);
-
-  // const particlesLoaded = useCallback(
-  //   async (container: Container | undefined) => {
-  //     await console.log(container);
-  //   },
-  //   []
-  // );
-
-  // useEffect(() => {
-  //   if (containerRef && containerRef.current && options) {
-  //     console.log("containerRef.current: ", containerRef.current);
-  //     // containerRef.current?.pauseEmitter();
-  //   }
-  // }, [options]);
+  useEffect(() => {
+    if (containerRef && containerRef.current && options) {
+      console.log("containerRef.current: ", containerRef.current);
+      containerRef.current.play();
+    }
+  }, [options]);
 
   return (
     <div className="p-6 min-h-screen max-w-[1400px] mx-auto flex flex-col justify-center relative">
@@ -119,17 +108,15 @@ const EventPage: NextPage<EventPageProps> = ({
           className="z-0"
         />
       </div>
-
       <div className="absolute top-0 left-0 w-full h-full">
         <Particles
-          // container={containerRef}
+          container={containerRef}
           id="tsparticles2"
           options={fire}
-          init={particlesInit2}
+          init={particlesInit}
           className="z-0"
         />
       </div>
-
       <Seo title={eventName} />
       <div className="relative z-10">
         <ul
@@ -212,7 +199,8 @@ export async function getStaticPaths() {
   };
 }
 
-const fire: any = {
+const fire = {
+  autoPlay: false,
   fullScreen: {
     enable: true,
   },
@@ -229,7 +217,7 @@ const fire: any = {
       delay: 0.1,
     },
     rate: {
-      delay: 0.05,
+      delay: 0.15,
       quantity: 1,
     },
     size: {
@@ -380,7 +368,7 @@ const stars = {
     opacity: {
       value: 1,
       random: true,
-      anim: {
+      animation: {
         enable: true,
         speed: 1,
         opacity_min: 0,
@@ -442,146 +430,5 @@ const stars = {
     position: "50% 50%",
     repeat: "no-repeat",
     size: "20%",
-  },
-};
-
-const confetti = {
-  background: {
-    color: {
-      value: "#000000",
-    },
-  },
-  fullScreen: {
-    enable: true,
-    zIndex: -1,
-  },
-  particles: {
-    bounce: {
-      vertical: {
-        value: 0,
-      },
-      horizontal: {
-        value: 0,
-      },
-    },
-    color: {
-      value: ["#1E00FF", "#FF0061", "#E1FF00", "#00FF9E"],
-      animation: {
-        enable: true,
-        speed: 30,
-      },
-    },
-    move: {
-      decay: 0.1,
-      direction: "top",
-      enable: true,
-      gravity: {
-        acceleration: 9.81,
-        enable: true,
-        maxSpeed: 200,
-      },
-      outModes: {
-        top: "none",
-        default: "destroy",
-        bottom: "bounce",
-      },
-      speed: {
-        min: 50,
-        max: 150,
-      },
-    },
-    number: {
-      value: 0,
-      limit: 300,
-    },
-    opacity: {
-      value: 1,
-      animation: {
-        enable: false,
-        startValue: "max",
-        destroy: "min",
-        speed: 0.3,
-        sync: true,
-      },
-    },
-    rotate: {
-      value: {
-        min: 0,
-        max: 360,
-      },
-      direction: "random",
-      move: true,
-      animation: {
-        enable: true,
-        speed: 60,
-      },
-    },
-    tilt: {
-      direction: "random",
-      enable: true,
-      move: true,
-      value: {
-        min: 0,
-        max: 360,
-      },
-      animation: {
-        enable: true,
-        speed: 60,
-      },
-    },
-    shape: {
-      type: ["circle", "square", "polygon"],
-      options: {
-        polygon: [
-          {
-            sides: 5,
-          },
-          {
-            sides: 6,
-          },
-        ],
-      },
-    },
-    size: {
-      value: 3,
-    },
-    roll: {
-      darken: {
-        enable: true,
-        value: 30,
-      },
-      enlighten: {
-        enable: true,
-        value: 30,
-      },
-      enable: true,
-      speed: {
-        min: 15,
-        max: 25,
-      },
-    },
-    wobble: {
-      distance: 30,
-      enable: true,
-      move: true,
-      speed: {
-        min: -15,
-        max: 15,
-      },
-    },
-  },
-  emitters: {
-    position: {
-      x: 50,
-      y: 100,
-    },
-    size: {
-      width: 0,
-      height: 0,
-    },
-    rate: {
-      quantity: 10,
-      delay: 0.1,
-    },
   },
 };

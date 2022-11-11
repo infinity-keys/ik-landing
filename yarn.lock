@@ -9612,25 +9612,6 @@ tsparticles-plugin-emitters@^2.5.3:
   dependencies:
     tsparticles-engine "^2.5.2"
 
-tsparticles-preset-fireworks@^2.5.3:
-  version "2.5.3"
-  resolved "https://registry.yarnpkg.com/tsparticles-preset-fireworks/-/tsparticles-preset-fireworks-2.5.3.tgz#d4a05d29b8b84611ac571a8a2b696370e3be053f"
-  integrity sha512-gqu3Q5aSS86fOWotBngoM0rmSSHX0K5YD/LsMz4i53vOD9EEBnpbV9kjl4jqTjJzoheyaVkqFX/aYwzQpeF0NA==
-  dependencies:
-    tsparticles-engine "^2.5.2"
-    tsparticles-move-base "^2.5.3"
-    tsparticles-plugin-emitters "^2.5.3"
-    tsparticles-shape-circle "^2.5.3"
-    tsparticles-shape-line "^2.5.3"
-    tsparticles-updater-angle "^2.5.3"
-    tsparticles-updater-color "^2.5.3"
-    tsparticles-updater-destroy "^2.5.3"
-    tsparticles-updater-life "^2.5.3"
-    tsparticles-updater-opacity "^2.5.3"
-    tsparticles-updater-out-modes "^2.5.3"
-    tsparticles-updater-size "^2.5.3"
-    tsparticles-updater-stroke-color "^2.5.3"
-
 tsparticles-shape-circle@^2.5.3:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/tsparticles-shape-circle/-/tsparticles-shape-circle-2.5.3.tgz#1df7c5f43b26566734a2d7de6e0065a3c93b2fa9"
