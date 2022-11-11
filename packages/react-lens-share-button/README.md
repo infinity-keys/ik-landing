@@ -11,16 +11,17 @@ A customizable, React button component for sharing to [Lens](https://www.lens.xy
   - [LensIcon Component Props](#lensicon-component-props)
   - [buildLensShareUrl Function Props](#buildlensshareurl-function-props)
 - [Styling](#styling)
+- [Report Issues](#report-issues)
 
 ## Installation
 
 ```shell
-yarn add @infinity-keys/react-lens-share-button
+yarn add @infinity-keys/react-lens-share-button react react-dom
 ```
 or use npm:
 
 ```shell
-npm install @infinity-keys/react-lens-share-button
+npm install @infinity-keys/react-lens-share-button react react-dom
 ```
 
 ## Usage
@@ -69,7 +70,7 @@ Using these props...
 
 ...will open this post editor window in Lenster.
 
-![](lens-button-ex-1.png)
+![](https://res.cloudinary.com/infinity-keys/image/upload/v1668207717/npm/lens-button-ex-1_hmfwux.png)
 
 ### LensShareButton Component Props
 
@@ -142,3 +143,7 @@ Each element also has a class that can be targeted via css:
   /* ... */
 }
 ```
+
+## Report Issues
+
+If you have any issues, please reach out on our public [Discord](https://discord.gg/infinitykeys).
