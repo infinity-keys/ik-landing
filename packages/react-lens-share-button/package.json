@@ -1,7 +1,7 @@
 {
   "name": "@infinity-keys/react-lens-share-button",
   "private": false,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -36,7 +36,7 @@
     },
     "./dist/style.css": "./dist/style.css"
   },
-  "main": "./dist/react-vite-library.cjs.js",
-  "module": "./dist/react-vite-library.es.js",
+  "main": "./dist/react-lens-share-button.cjs.js",
+  "module": "./dist/react-lens-share-button.es.js",
   "types": "./dist/index.d.ts"
 }
