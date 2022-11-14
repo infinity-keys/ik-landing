@@ -29,7 +29,7 @@ npm install @infinity-keys/react-lens-share-button react react-dom
 Import the component and default styles:
 
 ```js
-import { LenShareButton } from "@infinity-keys/react-lens-share-button"
+import { LensShareButton } from "@infinity-keys/react-lens-share-button"
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 ```
 
