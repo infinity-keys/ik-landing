@@ -16,6 +16,8 @@ interface ThumbnailProps {
   progress?: ThumbnailProgress;
 }
 
+const SPARKLE_ANIMATION_DURATION = 3500;
+
 const EventThumbnail = ({
   name,
   id,
@@ -23,15 +25,16 @@ const EventThumbnail = ({
   cloudinary_id,
   progress = ThumbnailProgress.Unknown,
 }: ThumbnailProps) => {
-  const [isOn, setIsOn] = useState(true);
+  const [animationAvailable, setAnimationAvailable] = useState(true);
 
+  // turns off sparkle animation
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
     if (progress === ThumbnailProgress.Completed) {
       timer = setTimeout(() => {
-        setIsOn(false);
-      }, 3500);
+        setAnimationAvailable(false);
+      }, SPARKLE_ANIMATION_DURATION);
     }
 
     return () => clearTimeout(timer);
@@ -43,8 +46,8 @@ const EventThumbnail = ({
         className={clsx(
           "p-[2px] rounded-lg",
           progress === ThumbnailProgress.Completed
-            ? "animated-thumb-unlocked"
-            : "animated-thumb"
+            ? "event-thumb-unlocked animate-pulseGoldGradient overflow-hidden relative"
+            : "animate-pulseRed bg-[#cc3f3f]/50"
         )}
       >
         <div
@@ -55,7 +58,9 @@ const EventThumbnail = ({
             }
           )}
         >
-          {progress === ThumbnailProgress.Completed && <Sparkles isOn={isOn} />}
+          {progress === ThumbnailProgress.Completed && (
+            <Sparkles isRunning={animationAvailable} />
+          )}
 
           <div
             className={clsx(

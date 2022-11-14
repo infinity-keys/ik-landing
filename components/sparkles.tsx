@@ -3,8 +3,6 @@ import { useState } from "react";
 import random from "lodash/random";
 import useRandomInterval from "@hooks/useRandomInterval";
 
-const DEFAULT_COLOR = "#FFC700";
-
 interface LocationProps {
   top: string;
   left: string;
@@ -23,8 +21,10 @@ interface SparkleProps extends StyleProps {
 
 interface SparklesProps {
   color?: string;
-  isOn?: boolean;
+  isRunning?: boolean;
 }
+
+const DEFAULT_COLOR = "#FFC700";
 
 const generateSparkle = (color: string) => {
   const sparkle: SparkleProps = {
@@ -40,12 +40,14 @@ const generateSparkle = (color: string) => {
   return sparkle;
 };
 
-const Sparkles = ({ color = DEFAULT_COLOR, isOn = true }: SparklesProps) => {
+const Sparkles = ({
+  color = DEFAULT_COLOR,
+  isRunning = true,
+}: SparklesProps) => {
   const [sparkles, setSparkles] = useState<SparkleProps[]>([]);
 
   useRandomInterval(
     () => {
-      console.log("intre");
       const sparkle = generateSparkle(color);
       const now = Date.now();
       const nextSparkles: SparkleProps[] = sparkles.filter(
@@ -57,8 +59,8 @@ const Sparkles = ({ color = DEFAULT_COLOR, isOn = true }: SparklesProps) => {
       nextSparkles.push(sparkle);
       setSparkles(nextSparkles);
     },
-    !isOn ? null : 20,
-    !isOn ? null : 250
+    isRunning ? 20 : null,
+    isRunning ? 250 : null
   );
 
   return (
@@ -80,9 +82,9 @@ const Sparkle = ({ size, color, style }: StyleProps) => {
     "M26.5 25.5C19.0043 33.3697 0 34 0 34C0 34 19.1013 35.3684 26.5 43.5C33.234 50.901 34 68 34 68C34 68 36.9884 50.7065 44.5 43.5C51.6431 36.647 68 34 68 34C68 34 51.6947 32.0939 44.5 25.5C36.5605 18.2235 34 0 34 0C34 0 33.6591 17.9837 26.5 25.5Z";
 
   return (
-    <span className="absolute block animated-comeInOut" style={style}>
+    <span className="absolute block animate-comeInOut" style={style}>
       <svg
-        className="block animated-spin"
+        className="block animate-spin"
         width={size}
         height={size}
         viewBox="0 0 68 68"
