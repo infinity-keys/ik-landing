@@ -32,11 +32,15 @@ module.exports = {
       boxShadow: {
         "3xl": "0 20px 35px -10px rgba(0, 0, 0, 0.8)",
       },
+      fontSize: {
+        "dynamic-xl": "clamp(1rem, 16vw, 11rem)",
+      },
       animation: {
         bgMove: "bgMove 6s ease infinite",
         comeInOut: "comeInOut .7s forwards",
         flickerGlow:
           "flicker 2s forwards, glow 1.2s alternate-reverse infinite",
+        fadeInOut: "fadeInOut 6s forwards",
         fadeGlow: "fade .8s forwards, glow 1.2s alternate-reverse infinite",
         pulseGold: "pulseGold 2.5s infinite",
         pulseGoldGradient: "pulseGold 2.5s infinite, bgMove 6s ease infinite",
@@ -52,6 +56,10 @@ module.exports = {
         fade: {
           "0%": { opacity: 0 },
           "100%": { opacity: 1 },
+        },
+        fadeInOut: {
+          "0%, 100%": { opacity: 0 },
+          "10%, 90%": { opacity: 1 },
         },
         flicker: {
           "0%, 60%": { opacity: 0 },

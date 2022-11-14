@@ -13,10 +13,10 @@ export const fireworks: any = {
     life: {
       count: 0,
       duration: 0.01,
-      delay: 0.1,
+      delay: 0.15,
     },
     rate: {
-      delay: 0.15,
+      delay: 0.2,
       quantity: 1,
     },
     size: {
@@ -38,7 +38,7 @@ export const fireworks: any = {
         count: 2,
         factor: { value: 1 / 3 },
         rate: {
-          value: 10,
+          value: 5,
         },
         particles: {
           color: {

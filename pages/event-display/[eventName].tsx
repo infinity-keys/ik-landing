@@ -93,14 +93,18 @@ const EventPage: NextPage<EventPageProps> = ({
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setExampleCompleted([true, false, false, false, false, false]);
+      setExampleCompleted([true, true, true, false, false, false]);
       setCompleted(true);
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="p-6 min-h-screen max-w-[1400px] mx-auto flex flex-col justify-center relative">
+    <div
+      className={clsx(
+        "p-4 min-h-screen max-w-[1400px] mx-auto flex flex-col justify-center relative"
+      )}
+    >
       <Seo title={eventName} />
 
       <Particles
@@ -120,7 +124,7 @@ const EventPage: NextPage<EventPageProps> = ({
       <div className="relative z-10">
         <ul
           className={clsx(
-            "grid grid-cols-1 gap-6 py-8 max-w-md mx-auto xl:mt-6 my-10 w-full xl:max-w-none xl:grid-cols-5"
+            "grid grid-cols-1 gap-5 py-8 max-w-md mx-auto xl:mt-6 my-10 w-full xl:max-w-none xl:grid-cols-5"
           )}
         >
           {puzzles?.map((puzzle, index) => {
@@ -146,10 +150,26 @@ const EventPage: NextPage<EventPageProps> = ({
 
         <div className="text-center uppercase">
           <Heading as="h1">
-            Five keys - <Flicker bold>find them all</Flicker>
+            {completed ? (
+              <Flicker bold>All keys unlocked</Flicker>
+            ) : (
+              <>
+                Five keys - <Flicker bold>find them all</Flicker>
+              </>
+            )}
           </Heading>
         </div>
       </div>
+
+      {completed && (
+        <div className="flex justify-center items-center absolute top-0 left-0 w-full h-full z-50 bg-black/50 animate-fadeInOut border-8 border-amber-400">
+          <div className="bg-clip-text gold-gradient animate-bgMove">
+            <p className="text-dynamic-xl font-bold text-transparent">
+              UNLOCKED
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

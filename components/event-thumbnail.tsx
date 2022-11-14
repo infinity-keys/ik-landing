@@ -46,7 +46,7 @@ const EventThumbnail = ({
         className={clsx(
           "p-[2px] rounded-lg",
           progress === ThumbnailProgress.Completed
-            ? "event-thumb-unlocked animate-pulseGoldGradient overflow-hidden relative"
+            ? "gold-gradient shine animate-pulseGoldGradient overflow-hidden relative"
             : "animate-pulseRed bg-[#cc3f3f]/50"
         )}
       >

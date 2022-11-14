@@ -121,12 +121,12 @@
     }
   }
 
-  .event-thumb-unlocked {
+  .gold-gradient {
     background: linear-gradient(302deg, #fff86d, #ff9e2f, #ffe42f, #ffb62f);
     background-size: 600% 600%;
   }
 
-  .event-thumb-unlocked:after {
+  .shine:after {
     @apply block content-[''] h-full w-20 z-10 absolute top-0 left-0 animate-shine;
     background: linear-gradient(
       to right,
