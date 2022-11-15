@@ -3608,6 +3608,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@infinity-keys/core@workspace:^, @infinity-keys/core@workspace:packages/core":
+  version: 0.0.0-use.local
+  resolution: "@infinity-keys/core@workspace:packages/core"
+  dependencies:
+    "@types/uuid": ^8.3.4
+    cloudinary-build-url: ^0.2.4
+    jose: ^4.11.0
+    nanoid: ^4.0.0
+    typescript: ^4.8.4
+    uuid: ^9.0.0
+    zod: ^3.19.1
+  languageName: unknown
+  linkType: soft
+
 "@infinity-keys/react-lens-share-button@workspace:^, @infinity-keys/react-lens-share-button@workspace:packages/react-lens-share-button":
   version: 0.0.0-use.local
   resolution: "@infinity-keys/react-lens-share-button@workspace:packages/react-lens-share-button"
@@ -3625,29 +3639,6 @@ __metadata:
   peerDependencies:
     react: 16.8.0 || >=17.x
     react-dom: 16.8.0 || >=17.x
-  languageName: unknown
-  linkType: soft
-
-"@infinity-keys/types@workspace:^, @infinity-keys/types@workspace:packages/types":
-  version: 0.0.0-use.local
-  resolution: "@infinity-keys/types@workspace:packages/types"
-  dependencies:
-    jose: ^4.11.0
-    typescript: ^4.8.4
-    zod: ^3.19.1
-  languageName: unknown
-  linkType: soft
-
-"@infinity-keys/utils@workspace:^, @infinity-keys/utils@workspace:packages/utils":
-  version: 0.0.0-use.local
-  resolution: "@infinity-keys/utils@workspace:packages/utils"
-  dependencies:
-    "@types/uuid": ^8.3.4
-    cloudinary-build-url: ^0.2.4
-    jose: ^4.11.0
-    nanoid: ^4.0.0
-    typescript: ^4.8.4
-    uuid: ^9.0.0
   languageName: unknown
   linkType: soft
 
@@ -28001,9 +27992,8 @@ __metadata:
     "@heroicons/react": ^2.0.11
     "@infinity-keys/constants": "workspace:^"
     "@infinity-keys/contracts": "workspace:^"
+    "@infinity-keys/core": "workspace:^"
     "@infinity-keys/react-lens-share-button": "workspace:^"
-    "@infinity-keys/types": "workspace:^"
-    "@infinity-keys/utils": "workspace:^"
     "@rainbow-me/rainbowkit": ^0.7.0
     "@redwoodjs/forms": ^3.2.0
     "@redwoodjs/router": ^3.2.0
