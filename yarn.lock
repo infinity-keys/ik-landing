@@ -3612,6 +3612,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@infinity-keys/core@workspace:packages/core"
   dependencies:
+    "@infinity-keys/contracts": "workspace:^"
     "@types/uuid": ^8.3.4
     cloudinary-build-url: ^0.2.4
     jose: ^4.11.0

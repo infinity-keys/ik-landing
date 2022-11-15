@@ -11,6 +11,7 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
+    "@infinity-keys/contracts": "workspace:^",
     "cloudinary-build-url": "^0.2.4",
     "jose": "^4.11.0",
     "nanoid": "^4.0.0",

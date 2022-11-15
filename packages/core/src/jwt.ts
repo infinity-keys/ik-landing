@@ -1,9 +1,10 @@
 import { IK_CLAIMS_NAMESPACE, JWT_SECRET_KEY } from '@infinity-keys/constants'
-import { IkJwt } from '@infinity-keys/types'
 import { jwtVerify, SignJWT } from 'jose'
 import { nanoid } from 'nanoid'
 import { v4 as uuidv4 } from 'uuid'
-// import { Thumbnail, ThumbnailPack, ThumbnailPuzzle } from '@infinity-keys/types'
+
+import { IkJwt } from './types'
+// import { Thumbnail, ThumbnailPack, ThumbnailPuzzle } from './types'
 
 export const epochMinus30s = () => Math.round(new Date().getTime() / 1000) - 30
 
