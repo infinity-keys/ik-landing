@@ -11,16 +11,17 @@ A customizable, React button component for sharing to [Lens](https://www.lens.xy
   - [LensIcon Component Props](#lensicon-component-props)
   - [buildLensShareUrl Function Props](#buildlensshareurl-function-props)
 - [Styling](#styling)
+- [Report Issues](#report-issues)
 
 ## Installation
 
 ```shell
-yarn add react-lens-share-button
+yarn add @infinity-keys/react-lens-share-button react react-dom
 ```
 or use npm:
 
 ```shell
-npm install react-lens-share-button
+npm install @infinity-keys/react-lens-share-button react react-dom
 ```
 
 ## Usage
@@ -28,8 +29,8 @@ npm install react-lens-share-button
 Import the component and default styles:
 
 ```js
-import { LenShareButton } from "react-lens-share-button"
-import 'react-lens-share-button/dist/style.css'
+import { LensShareButton } from "@infinity-keys/react-lens-share-button"
+import '@infinity-keys/react-lens-share-button/dist/style.css'
 ```
 
 And use it like this:
@@ -41,7 +42,7 @@ And use it like this:
 If you need to build the url without using the component, you can import the `buildLensShareUrl` function directly:
 
 ```js
-import { buildLensShareUrl } from "react-lens-share-button"
+import { buildLensShareUrl } from "@infinity-keys/react-lens-share-button"
 
 const url = buildLensShareUrl({ postBody: 'Hello, Lens!' })
 
@@ -51,7 +52,7 @@ console.log(url) // https://lenster.xyz/?text=Hello%2C+Lens%21
 The Lens svg icon can also be imported directly:
 
 ```js
-import { LensIcon } from "react-lens-share-button"
+import { LensIcon } from "@infinity-keys/react-lens-share-button"
 ```
 
 ## Props
@@ -69,7 +70,7 @@ Using these props...
 
 ...will open this post editor window in Lenster.
 
-![](lens-button-ex-1.png)
+![](https://res.cloudinary.com/infinity-keys/image/upload/v1668207717/npm/lens-button-ex-1_hmfwux.png)
 
 ### LensShareButton Component Props
 
@@ -111,7 +112,7 @@ Using these props...
 To use the default styles, import them into your file.
 
 ```js
-import 'react-lens-share-button/dist/style.css'
+import '@infinity-keys/react-lens-share-button/dist/style.css'
 ```
 
 Classes can be passed down to each element, and inline styles can be passed down to the parent link element like so:
@@ -143,8 +144,6 @@ Each element also has a class that can be targeted via css:
 }
 ```
 
-mkdir react-lens-share-button
-cd react-lens-share-button/
-yarn init
-yarn
-yarn workspace web add @infinity-keys/react-lens-share-button
+## Report Issues
+
+If you have any issues, please reach out on our public [Discord](https://discord.gg/infinitykeys).

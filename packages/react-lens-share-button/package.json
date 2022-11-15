@@ -1,7 +1,7 @@
 {
   "name": "@infinity-keys/react-lens-share-button",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "0.0.4",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,8 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "clsx": "^1.2.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.24",
@@ -18,7 +17,6 @@
     "@vanilla-extract/css": "^1.9.1",
     "@vanilla-extract/vite-plugin": "^3.6.1",
     "@vitejs/plugin-react": "^2.2.0",
-    "clsx": "^1.2.1",
     "typescript": "^4.6.4",
     "vite": "^3.2.3",
     "vite-plugin-dts": "^1.7.0",
@@ -34,11 +32,11 @@
   "exports": {
     ".": {
       "import": "./dist/react-lens-share-button.es.js",
-      "require": "./dist/react-lens-share-button.umd.js"
+      "require": "./dist/react-lens-share-button.cjs.js"
     },
     "./dist/style.css": "./dist/style.css"
   },
-  "main": "./dist/react-vite-library.umd.js",
-  "module": "./dist/react-vite-library.es.js",
+  "main": "./dist/react-lens-share-button.cjs.js",
+  "module": "./dist/react-lens-share-button.es.js",
   "types": "./dist/index.d.ts"
 }
