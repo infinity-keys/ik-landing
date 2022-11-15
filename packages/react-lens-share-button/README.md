@@ -142,3 +142,9 @@ Each element also has a class that can be targeted via css:
   /* ... */
 }
 ```
+
+mkdir react-lens-share-button
+cd react-lens-share-button/
+yarn init
+yarn
+yarn workspace web add @infinity-keys/react-lens-share-button
