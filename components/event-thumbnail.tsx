@@ -53,21 +53,13 @@ const EventThumbnail = ({
       >
         <div
           className={clsx(
-            "absolute bg-slate-500/20 z-10 top-0 left-0 h-full w-full flex justify-center items-center",
-            {
-              "animate-fadeOut": progress === ThumbnailProgress.Completed,
-            }
-          )}
-        >
-          <LockeClosedIcon className="h-8 w-8 2xl:h-24 2xl:w-24 text-slate-300/90" />
-        </div>
-
-        <div
-          className={clsx(
-            "puzzle-thumb bg-blue-800 rounded-md relative h-full",
+            "puzzle-thumb  rounded-md relative h-full transition-colors",
             {
               "flex flex-col text-center": isGrid,
-            }
+            },
+            progress === ThumbnailProgress.Completed
+              ? "bg-blue-800"
+              : "bg-slate-800"
           )}
         >
           {progress === ThumbnailProgress.Completed && (
@@ -148,12 +140,18 @@ const EventThumbnail = ({
                     grayscale: progress !== ThumbnailProgress.Completed,
                   })}
                 >
-                  <Image
-                    src="/Ikey-Antique-Logo-sm.png"
-                    height={64}
-                    width={64}
-                    alt=""
-                  />
+                  {progress === ThumbnailProgress.Completed ? (
+                    <div className="opacity-0 animate-fade">
+                      <Image
+                        src="/Ikey-Antique-Logo-sm.png"
+                        height={64}
+                        width={64}
+                        alt=""
+                      />
+                    </div>
+                  ) : (
+                    <LockeClosedIcon className="text-slate-500/80" />
+                  )}
                 </div>
               </dd>
             </dl>

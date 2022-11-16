@@ -180,7 +180,7 @@ const EventPage: NextPage<EventPageProps> = ({
         </div>
 
         {completed && (
-          <div className="flex justify-center items-center absolute top-0 left-0 w-full h-full z-10 bg-black/50 animate-fadeInOut border-8 border-amber-400">
+          <div className="flex justify-center items-center absolute top-0 left-0 w-full h-full z-10 bg-black/70 animate-fadeInOut border-8 border-amber-400">
             <div className="bg-clip-text gold-gradient animate-bgMove">
               <p className="text-dynamic-xl font-bold text-transparent">
                 UNLOCKED
