@@ -100,69 +100,71 @@ const EventPage: NextPage<EventPageProps> = ({
   }, []);
 
   return (
-    <div
-      className={clsx(
-        "p-4 min-h-screen max-w-[1400px] mx-auto flex flex-col justify-center relative"
-      )}
-    >
-      <Seo title={eventName} />
+    <div>
+      <div
+        className={clsx(
+          "p-4 min-h-screen max-w-[1400px] mx-auto flex flex-col justify-center relative"
+        )}
+      >
+        <Seo title={eventName} />
 
-      <Particles
-        id="particlesStars"
-        options={stars}
-        init={particlesInit}
-        className="z-0"
-      />
-      <Particles
-        container={containerRef}
-        id="particlesFireworks"
-        options={fireworks}
-        init={particlesInit}
-        className="z-0"
-      />
+        <Particles
+          id="particlesStars"
+          options={stars}
+          init={particlesInit}
+          className="z-0"
+        />
+        <Particles
+          container={containerRef}
+          id="particlesFireworks"
+          options={fireworks}
+          init={particlesInit}
+          className="z-0"
+        />
 
-      <div className="relative z-10">
-        <ul
-          className={clsx(
-            "grid grid-cols-1 gap-5 py-8 max-w-md mx-auto xl:mt-6 my-10 w-full xl:max-w-none xl:grid-cols-5"
-          )}
-        >
-          {puzzles?.map((puzzle, index) => {
-            const data = thumbnailData(puzzle);
-
-            return (
-              <li key={data.id}>
-                <EventThumbnail
-                  isGrid={layout === ThumbnailGridLayoutType.Grid}
-                  id={data.id}
-                  name={data.name}
-                  cloudinary_id={data.cloudinary_id}
-                  progress={
-                    exampleCompleted[index]
-                      ? ThumbnailProgress.Completed
-                      : ThumbnailProgress.NotCompleted
-                  }
-                />
-              </li>
-            );
-          })}
-        </ul>
-
-        <div className="text-center uppercase">
-          <Heading as="h1">
-            {completed ? (
-              <Flicker bold>All keys unlocked</Flicker>
-            ) : (
-              <>
-                Five keys - <Flicker bold>find them all</Flicker>
-              </>
+        <div className="relative z-10">
+          <ul
+            className={clsx(
+              "grid grid-cols-1 gap-5 py-8 max-w-md mx-auto xl:mt-6 my-10 w-full xl:max-w-none xl:grid-cols-5"
             )}
-          </Heading>
+          >
+            {puzzles?.map((puzzle, index) => {
+              const data = thumbnailData(puzzle);
+
+              return (
+                <li key={data.id}>
+                  <EventThumbnail
+                    isGrid={layout === ThumbnailGridLayoutType.Grid}
+                    id={data.id}
+                    name={data.name}
+                    cloudinary_id={data.cloudinary_id}
+                    progress={
+                      exampleCompleted[index]
+                        ? ThumbnailProgress.Completed
+                        : ThumbnailProgress.NotCompleted
+                    }
+                  />
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="text-center uppercase">
+            <Heading as="h1">
+              {completed ? (
+                <Flicker bold>All keys unlocked</Flicker>
+              ) : (
+                <>
+                  Five keys - <Flicker bold>find them all</Flicker>
+                </>
+              )}
+            </Heading>
+          </div>
         </div>
       </div>
 
       {completed && (
-        <div className="flex justify-center items-center absolute top-0 left-0 w-full h-full z-50 bg-black/50 animate-fadeInOut border-8 border-amber-400">
+        <div className="flex justify-center items-center absolute top-0 left-0 w-full h-full z-10 bg-black/50 animate-fadeInOut border-8 border-amber-400">
           <div className="bg-clip-text gold-gradient animate-bgMove">
             <p className="text-dynamic-xl font-bold text-transparent">
               UNLOCKED
