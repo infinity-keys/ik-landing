@@ -128,9 +128,9 @@ const EventPage: NextPage<EventPageProps> = ({
       />
 
       <div className="p-4 min-h-screen max-w-[2160px] mx-auto flex flex-col">
-        <div className="">
-          <span className="inline-block -rotate-90 -ml-3 -mb-4">
-            <IkTurquoiseKey height={120} width={120} />
+        <div className="text-center">
+          <span className="inline-block -ml-2 my-2">
+            <Image src="/logo.svg" width={140} height={77} alt="IK logo" />
           </span>
           <p className="text-white text-lg 2xl:text-2xl">
             There&apos;s treasure everywhere
@@ -165,16 +165,25 @@ const EventPage: NextPage<EventPageProps> = ({
               })}
             </ul>
 
-            <div className="text-center uppercase text-4xl 2xl:text-6xl">
-              <Heading as="h1" visual="unset">
-                {completed ? (
-                  <Flicker bold>All keys unlocked</Flicker>
-                ) : (
-                  <>
-                    Five keys - <Flicker bold>find them all</Flicker>
-                  </>
-                )}
-              </Heading>
+            <div className="text-center">
+              <div className="uppercase text-4xl 2xl:text-6xl">
+                <Heading as="h1" visual="unset">
+                  {completed ? (
+                    <Flicker bold>All keys unlocked</Flicker>
+                  ) : (
+                    <>
+                      Five keys - <Flicker bold>find them all</Flicker>
+                    </>
+                  )}
+                </Heading>
+              </div>
+              <p
+                className={clsx("text-white mt-4 text-2xl", {
+                  invisible: !completed,
+                })}
+              >
+                Claim Your Free Metaverse Miami IPA
+              </p>
             </div>
           </div>
         </div>
