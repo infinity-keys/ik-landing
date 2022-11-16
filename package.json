@@ -43,6 +43,7 @@
     "jose": "^4",
     "loaders.css": "^0.1.2",
     "lodash": "^4.17.21",
+    "lottie-react": "^2.3.1",
     "nanoid": "^4.0.0",
     "next": "12.3.1",
     "nprogress": "^0.2.0",

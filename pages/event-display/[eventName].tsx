@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { NextPage } from "next";
 import useSWR, { Fetcher } from "swr";
+import Lottie, { LottieRefCurrentProps } from "lottie-react";
+import cheers from "@lib/lottie.json";
 
 import Seo from "@components/seo";
 import { EventDisplayQuery, PublicPuzzlesQuery } from "@lib/generated/graphql";
@@ -22,7 +24,6 @@ import Flicker from "@components/flicker";
 
 import { stars, fireworks } from "@lib/tsParticles";
 import Image from "next/image";
-import IkTurquoiseKey from "@components/svg/ik-turquoise-key";
 
 export interface EventPageProps {
   puzzles?: PublicPuzzlesQuery["puzzles"];
@@ -54,6 +55,7 @@ const EventPage: NextPage<EventPageProps> = ({
 
   const width = useCurrentWidth();
   const containerRef = useRef<Container>(null);
+  const lottieRef = useRef<LottieRefCurrentProps>(null);
 
   const layout =
     width < 1280 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
@@ -102,6 +104,7 @@ const EventPage: NextPage<EventPageProps> = ({
     const timer2 = setTimeout(() => {
       setExampleCompleted([true, true, true, true, true, true]);
       setCompleted(true);
+      lottieRef?.current?.play();
     }, 6000);
     return () => {
       clearTimeout(timer);
@@ -188,15 +191,21 @@ const EventPage: NextPage<EventPageProps> = ({
           </div>
         </div>
 
-        {completed && (
-          <div className="flex justify-center items-center absolute top-0 left-0 w-full h-full z-10 bg-black/70 animate-fadeInOut border-8 border-amber-400">
-            <div className="bg-clip-text gold-gradient animate-bgMove">
-              <p className="text-dynamic-xl font-bold text-transparent">
-                UNLOCKED
-              </p>
-            </div>
+        <div
+          className={clsx(
+            "flex justify-center items-center absolute top-0 left-0 w-full h-full z-10 bg-black/70 opacity-0 border-8 border-amber-400",
+            completed && "animate-fadeInOut"
+          )}
+        >
+          <div className="w-full max-w-3xl">
+            <Lottie
+              animationData={cheers}
+              lottieRef={lottieRef}
+              loop={2}
+              autoplay={false}
+            />
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
