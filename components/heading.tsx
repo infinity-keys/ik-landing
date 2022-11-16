@@ -4,7 +4,7 @@ import clsx from "clsx";
 interface HeadingProps extends HTMLProps<HTMLHeadingElement> {
   as?: "h1" | "h2" | "h3";
   center?: boolean;
-  visual?: "s" | "m" | "l";
+  visual?: "s" | "m" | "l" | "unset";
   turquoise?: boolean;
 }
 

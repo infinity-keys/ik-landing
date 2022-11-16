@@ -102,7 +102,7 @@ module.exports = {
             transform: "skewX(-20deg) translateX(-105px)",
           },
           "3%, 100%": {
-            transform: "skewX(-20deg) translateX(300px)",
+            transform: "skewX(-20deg) translateX(500px)",
           },
         },
         spin: {

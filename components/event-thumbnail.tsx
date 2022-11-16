@@ -41,10 +41,10 @@ const EventThumbnail = ({
   }, [progress]);
 
   return (
-    <div className="shadow-3xl">
+    <div className="shadow-3xl h-full">
       <div
         className={clsx(
-          "p-[2px] rounded-lg",
+          "p-[2px] rounded-lg h-full",
           progress === ThumbnailProgress.Completed
             ? "gold-gradient shine animate-pulseGoldGradient overflow-hidden relative"
             : "animate-pulseRed bg-[#cc3f3f]/50"
@@ -65,7 +65,9 @@ const EventThumbnail = ({
           <div
             className={clsx(
               "flex-1 flex",
-              isGrid ? "py-8 px-6 flex-col" : "items-center p-4 lg:px-6"
+              isGrid
+                ? "py-8 px-6 flex-col 2xl:py-16"
+                : "items-center p-4 lg:px-6"
             )}
           >
             <div
@@ -107,9 +109,12 @@ const EventThumbnail = ({
             </div>
 
             <h3
-              className={clsx("text-gray-200 text-sm font-medium", {
-                "mt-6": isGrid,
-              })}
+              className={clsx(
+                "text-gray-200 text-sm 2xl:text-2xl font-medium",
+                {
+                  "mt-6": isGrid,
+                }
+              )}
             >
               {name}
             </h3>

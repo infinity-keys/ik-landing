@@ -103,7 +103,7 @@ const EventPage: NextPage<EventPageProps> = ({
     <div>
       <div
         className={clsx(
-          "p-4 min-h-screen max-w-[1400px] mx-auto flex flex-col justify-center relative"
+          "p-4 min-h-screen max-w-[2160px] mx-auto flex flex-col justify-center relative"
         )}
       >
         <Seo title={eventName} />
@@ -132,7 +132,7 @@ const EventPage: NextPage<EventPageProps> = ({
               const data = thumbnailData(puzzle);
 
               return (
-                <li key={data.id}>
+                <li key={data.id} className="h-full">
                   <EventThumbnail
                     isGrid={layout === ThumbnailGridLayoutType.Grid}
                     id={data.id}
@@ -149,8 +149,8 @@ const EventPage: NextPage<EventPageProps> = ({
             })}
           </ul>
 
-          <div className="text-center uppercase">
-            <Heading as="h1">
+          <div className="text-center uppercase text-4xl 2xl:text-6xl">
+            <Heading as="h1" visual="unset">
               {completed ? (
                 <Flicker bold>All keys unlocked</Flicker>
               ) : (
