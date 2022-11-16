@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { ethers } from "ethers";
 import abi721 from "@nfts/balanceOf721.json";
 import abi1155 from "@nfts/balanceOf1155.json";
-import { RPCLookup } from "@lib/walletConstants";
+import { chainIds, contractLookup, RPCLookup } from "@lib/walletConstants";
 import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 import { makeUserToken, verifyToken } from "@lib/jwt";
 import { IkJwt } from "@lib/types";
@@ -35,38 +35,54 @@ export default async function handler(
 
   // No token Id for ERC721
   if (tokenId && typeof tokenId !== "string") return res.status(500).end();
-  const type721 = tokenId ? false : true;
 
-  const provider = new ethers.providers.JsonRpcProvider(
-    RPCLookup[parseInt(chainId, 10)]
-  );
-
-  const final_step = finalStep === "true";
   let nftPass;
+  const final_step = finalStep === "true";
 
-  // Dealing with ERC721
-  if (type721) {
-    try {
-      const contract = new ethers.Contract(contractAddress, abi721, provider);
-      const balance = parseInt(await contract.balanceOf(account), 10);
-      nftPass = balance > 0;
-    } catch (error) {
-      console.log(error);
-      return res.status(500).end();
-    }
+  if (chainId && tokenId && parseInt(chainId, 10) === 0) {
+    const contractPromises = chainIds.map((chainId) =>
+      contractLookup[chainId].checkIfClaimed(parseInt(tokenId, 10), account)
+    );
+
+    const contractClaims = await Promise.all(contractPromises);
+    const claimed = contractClaims.some(Boolean);
+
+    nftPass = claimed ? true : false;
   } else {
-    // Dealing with ERC1155
-    try {
-      const tokenIdAsNumber = tokenId ? parseInt(tokenId, 10) : undefined;
-      const contract = new ethers.Contract(contractAddress, abi1155, provider);
-      const balance = parseInt(
-        await contract.balanceOf(account, tokenIdAsNumber),
-        10
-      );
-      nftPass = balance > 0;
-    } catch (error) {
-      console.log(error);
-      return res.status(500).end();
+    const type721 = tokenId ? false : true;
+
+    const provider = new ethers.providers.JsonRpcProvider(
+      RPCLookup[parseInt(chainId, 10)]
+    );
+
+    // Dealing with ERC721
+    if (type721) {
+      try {
+        const contract = new ethers.Contract(contractAddress, abi721, provider);
+        const balance = parseInt(await contract.balanceOf(account), 10);
+        nftPass = balance > 0;
+      } catch (error) {
+        console.log(error);
+        return res.status(500).end();
+      }
+    } else {
+      // Dealing with ERC1155
+      try {
+        const tokenIdAsNumber = tokenId ? parseInt(tokenId, 10) : undefined;
+        const contract = new ethers.Contract(
+          contractAddress,
+          abi1155,
+          provider
+        );
+        const balance = parseInt(
+          await contract.balanceOf(account, tokenIdAsNumber),
+          10
+        );
+        nftPass = balance > 0;
+      } catch (error) {
+        console.log(error);
+        return res.status(500).end();
+      }
     }
   }
 
