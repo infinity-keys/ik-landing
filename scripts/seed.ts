@@ -2,6 +2,9 @@ import type { Prisma } from '@prisma/client'
 import { db } from 'api/src/lib/db'
 import fetch from 'node-fetch'
 
+// @TODO: use standalone creates on a loop to create user and ik org. Then loop
+// all rewardables as individual creates so the deep nesting creates can happen.
+
 // Original data
 const { GRAPHQL_ENDPOINT, HASURA_GRAPHQL_ADMIN_SECRET } = process.env
 // Get all original data
@@ -12,6 +15,7 @@ const query = `query AllData {
     migration_step
     solution
     success_message
+    fail_message
     instructions
     challenge
     list_publicly
@@ -32,7 +36,48 @@ export default async () => {
       }),
     }).then((res) => res.json())
 
-    console.log(v1IkData)
+    const puzzles = v1IkData.data.puzzles.slice(0, 1)
+    // const puzzles = v1IkData.data.puzzles
+    console.log(JSON.stringify(puzzles, null, 2))
+
+    type RewardableType = 'PUZZLE'
+    type StepType = 'SIMPLE_TEXT'
+
+    const rewardables = {
+      create: puzzles.map((puzzle) => {
+        console.log(puzzle)
+        const rewardable = {
+          name: puzzle.simple_name,
+          slug: puzzle.simple_name,
+          type: 'PUZZLE' as RewardableType,
+          explanation: puzzle.instructions,
+          successMessage: puzzle.success_message, // just dupe what's in step for now
+          puzzle: {
+            create: {
+              steps: {
+                create: [
+                  {
+                    failMessage: puzzle.fail_message,
+                    challenge: puzzle.challenge,
+                    successMessage: puzzle.success_message,
+                    type: 'SIMPLE_TEXT' as StepType,
+                    stepSimpleText: {
+                      create: {
+                        solution: puzzle.solution,
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        }
+
+        return rewardable
+      }),
+    }
+
+    console.log(JSON.stringify(rewardables, null, 2))
 
     //
     // Manually seed via `yarn rw prisma db seed`
@@ -55,6 +100,8 @@ export default async () => {
     // )
     // console.log(createdOrgs)
 
+    const ikCuid = 'cla9yay7y003k08la2z4j2xrv'
+
     const ikData: Prisma.UserCreateArgs['data'][] = [
       {
         username: 'Herp',
@@ -63,43 +110,87 @@ export default async () => {
             {
               organization: {
                 create: {
-                  id: 'cla98s0cm000008mh66occsh4', // Keep this stable
+                  id: ikCuid,
                   name: 'Infinity Keys',
                   slug: 'ik',
-                  rewardables: {
-                    create: [
-                      {
-                        name: 'Not Right',
-                        slug: 'notright',
-                        type: 'PUZZLE',
-                        puzzle: {
-                          create: {
-                            steps: {
-                              create: [
-                                {
-                                  failMessage: 'You failed',
-                                  successMessage: 'You did it!',
-                                  instructions: 'Do this.',
-                                  challenge: 'Derp challenge',
-                                  type: 'SIMPLE_TEXT',
-                                  stepSimpleText: {
-                                    create: {
-                                      solution: 'wrong',
-                                    },
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        },
-                      },
-                    ],
-                  },
+                  // rewardables,
+                  // rewardables: {
+                  //   create: [
+                  //     {
+                  //       name: 'Not Right',
+                  //       slug: 'notright',
+                  //       type: 'PUZZLE',
+                  //       explanation: 'This is a starter puzzle',
+                  //       puzzle: {
+                  //         create: {
+                  //           steps: {
+                  //             create: [
+                  //               {
+                  //                 failMessage: 'You failed',
+                  //                 successMessage: 'You did it!',
+                  //                 challenge: 'Derp challenge',
+                  //                 type: 'SIMPLE_TEXT',
+                  //                 stepSimpleText: {
+                  //                   create: {
+                  //                     solution: 'wrong',
+                  //                   },
+                  //                 },
+                  //               },
+                  //             ],
+                  //           },
+                  //         },
+                  //       },
+                  //     },
+                  //   ],
+                  // },
                 },
               },
             },
           ],
         },
+        // organizations: {
+        //   create: [
+        //     {
+        //       orgId: ikCuid,
+        //       organization: {
+        //         create: {
+        //           // id: 'cla98s0cm000008mh66occsh4', // Keep this stable
+        //           id: ikCuid,
+        //           name: 'Infinity Keys',
+        //           slug: 'ik',
+        //           rewardables: {
+        //             create: [
+        //               {
+        //                 name: 'Not Right',
+        //                 slug: 'notright',
+        //                 type: 'PUZZLE',
+        //                 puzzle: {
+        //                   create: {
+        //                     steps: {
+        //                       create: [
+        //                         {
+        //                           failMessage: 'You failed',
+        //                           successMessage: 'You did it!',
+        //                           challenge: 'Derp challenge',
+        //                           type: 'SIMPLE_TEXT',
+        //                           stepSimpleText: {
+        //                             create: {
+        //                               solution: 'wrong',
+        //                             },
+        //                           },
+        //                         },
+        //                       ],
+        //                     },
+        //                   },
+        //                 },
+        //               },
+        //             ],
+        //           },
+        //         },
+        //       },
+        //     },
+        //   ],
+        // },
       },
       // To try this example data with the UserExample model in schema.prisma,
       // uncomment the lines below and run 'yarn rw prisma migrate dev'

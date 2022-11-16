@@ -27,6 +27,8 @@ model Rewardable {
   name           String
   /// Short name used in URLs, lowercase and dashes, no spaces/caps, ie not-right
   slug           String         @unique
+  /// Shown at the overall page for this Rewardable
+  explanation    String
   /// When this is successfully completed/rewarded, what should be shown
   successMessage String?
   /// Show in public listings
@@ -55,6 +57,8 @@ model Rewardable {
 /// Link Rewardables to each other, ie a Pack requires 3 Puzzles. Allows setting
 // sort order on child Rewardables.
 model RewardableConnection {
+  id String @id @default(cuid())
+
   parentRewardable Rewardable @relation("ParentLink", fields: [parentId], references: [id])
   parentId         String
   childRewardable  Rewardable @relation("ChildLink", fields: [childId], references: [id])
@@ -65,7 +69,7 @@ model RewardableConnection {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@id([parentId, childId])
+  @@unique([parentId, childId])
   @@index([parentId, childId, childSortWeight(sort: Asc)])
 }
 
@@ -123,8 +127,6 @@ model Step {
   failMessage    String?
   /// Shown when a User passes the Step
   successMessage String?
-  /// Tell the playere what they're supposed to do
-  instructions   String?
   /// Often the hint/clue
   challenge      String?
 
@@ -242,6 +244,8 @@ model Organization {
 
 /// Connect Users to Organizations
 model OrganizationUser {
+  id           String       @id @default(cuid())
+
   organization Organization @relation(fields: [orgId], references: [id])
   orgId        String
   user         User         @relation(fields: [userId], references: [id])

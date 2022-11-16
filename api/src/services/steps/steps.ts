@@ -36,8 +36,11 @@ export const deleteStep: MutationResolvers['deleteStep'] = ({ id }) => {
 }
 
 export const Step: StepRelationResolvers = {
-  puzzles: (_obj, { root }) => {
-    return db.step.findUnique({ where: { id: root?.id } }).puzzles()
+  puzzle: (_obj, { root }) => {
+    return db.step.findUnique({ where: { id: root?.id } }).puzzle()
+  },
+  stepSimpleText: (_obj, { root }) => {
+    return db.step.findUnique({ where: { id: root?.id } }).stepSimpleText()
   },
   attempts: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).attempts()

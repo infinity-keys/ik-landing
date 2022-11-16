@@ -4,7 +4,7 @@ import { steps, step, createStep, updateStep, deleteStep } from './steps'
 import type { StandardScenario } from './steps.scenarios'
 
 // Generated boilerplate tests do not account for all circumstances
-// and can fail without adjustments, e.g. Float and DateTime types.
+// and can fail without adjustments, e.g. Float.
 //           Please refer to the RedwoodJS Testing Docs:
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
@@ -22,23 +22,26 @@ describe('steps', () => {
     expect(result).toEqual(scenario.step.one)
   })
 
-  scenario('creates a step', async () => {
+  scenario('creates a step', async (scenario: StandardScenario) => {
     const result = await createStep({
-      input: { updatedAt: '2022-10-24T17:00:55Z', solution: 'String' },
+      input: {
+        updatedAt: '2022-11-15T05:47:44.048Z',
+        puzzleId: scenario.step.two.puzzleId,
+      },
     })
 
-    expect(result.updatedAt).toEqual('2022-10-24T17:00:55Z')
-    expect(result.solution).toEqual('String')
+    expect(result.updatedAt).toEqual(new Date('2022-11-15T05:47:44.048Z'))
+    expect(result.puzzleId).toEqual(scenario.step.two.puzzleId)
   })
 
   scenario('updates a step', async (scenario: StandardScenario) => {
     const original = (await step({ id: scenario.step.one.id })) as Step
     const result = await updateStep({
       id: original.id,
-      input: { updatedAt: '2022-10-25T17:00:55Z' },
+      input: { updatedAt: '2022-11-16T05:47:44.048Z' },
     })
 
-    expect(result.updatedAt).toEqual('2022-10-25T17:00:55Z')
+    expect(result.updatedAt).toEqual(new Date('2022-11-16T05:47:44.048Z'))
   })
 
   scenario('deletes a step', async (scenario: StandardScenario) => {
