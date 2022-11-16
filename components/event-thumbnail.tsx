@@ -1,12 +1,13 @@
 import Avatar from "boring-avatars";
 import clsx from "clsx";
-import CheckIcon from "@heroicons/react/24/solid/CheckIcon";
+import LockeClosedIcon from "@heroicons/react/24/solid/LockClosedIcon";
 
 import MinimalKeyLogo from "@components/svg/minimal-key-logo-svg";
 import CloudImage from "./cloud-image";
 import { ThumbnailProgress } from "@lib/types";
 import Sparkles from "./sparkles";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 interface ThumbnailProps {
   id: string;
@@ -44,12 +45,23 @@ const EventThumbnail = ({
     <div className="shadow-3xl h-full">
       <div
         className={clsx(
-          "p-[2px] rounded-lg h-full",
+          "p-[2px] rounded-lg h-full overflow-hidden relative",
           progress === ThumbnailProgress.Completed
-            ? "gold-gradient shine animate-pulseGoldGradient overflow-hidden relative"
+            ? "gold-gradient shine animate-pulseGoldGradient"
             : "animate-pulseRed bg-[#cc3f3f]/50"
         )}
       >
+        <div
+          className={clsx(
+            "absolute bg-slate-500/20 z-10 top-0 left-0 h-full w-full flex justify-center items-center",
+            {
+              "animate-fadeOut": progress === ThumbnailProgress.Completed,
+            }
+          )}
+        >
+          <LockeClosedIcon className="h-8 w-8 2xl:h-24 2xl:w-24 text-slate-300/90" />
+        </div>
+
         <div
           className={clsx(
             "puzzle-thumb bg-blue-800 rounded-md relative h-full",
@@ -128,18 +140,20 @@ const EventThumbnail = ({
               <dd
                 className={clsx(
                   "flex",
-                  isGrid ? "mt-4 justify-center" : "justify-end"
+                  isGrid ? "mt-4 2xl:mt-8 justify-center" : "justify-end"
                 )}
               >
                 <div
-                  className={clsx(
-                    "w-8 h-8 ",
-                    progress === ThumbnailProgress.Completed
-                      ? "text-turquoise"
-                      : "text-[#cc3f3f8e]"
-                  )}
+                  className={clsx("w-8 h-8 2xl:w-12 2xl:h-12", {
+                    grayscale: progress !== ThumbnailProgress.Completed,
+                  })}
                 >
-                  <MinimalKeyLogo />
+                  <Image
+                    src="/Ikey-Antique-Logo-sm.png"
+                    height={64}
+                    width={64}
+                    alt=""
+                  />
                 </div>
               </dd>
             </dl>

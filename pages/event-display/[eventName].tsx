@@ -21,6 +21,8 @@ import Heading from "@components/heading";
 import Flicker from "@components/flicker";
 
 import { stars, fireworks } from "@lib/tsParticles";
+import Image from "next/image";
+import IkTurquoiseKey from "@components/svg/ik-turquoise-key";
 
 export interface EventPageProps {
   puzzles?: PublicPuzzlesQuery["puzzles"];
@@ -93,85 +95,100 @@ const EventPage: NextPage<EventPageProps> = ({
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setExampleCompleted([true, true, true, false, false, false]);
+      setExampleCompleted([true, true, false, false, false, false]);
+      // setCompleted(true);
+    }, 3000);
+
+    const timer2 = setTimeout(() => {
+      setExampleCompleted([true, true, true, true, true, true]);
       setCompleted(true);
-    }, 2000);
-    return () => clearTimeout(timer);
+    }, 6000);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(timer2);
+    };
   }, []);
 
   return (
     <div>
-      <div
-        className={clsx(
-          "p-4 min-h-screen max-w-[2160px] mx-auto flex flex-col justify-center relative"
-        )}
-      >
-        <Seo title={eventName} />
+      <Seo title={eventName} />
 
-        <Particles
-          id="particlesStars"
-          options={stars}
-          init={particlesInit}
-          className="z-0"
-        />
-        <Particles
-          container={containerRef}
-          id="particlesFireworks"
-          options={fireworks}
-          init={particlesInit}
-          className="z-0"
-        />
+      <Particles
+        id="particlesStars"
+        options={stars}
+        init={particlesInit}
+        className="z-0"
+      />
+      <Particles
+        container={containerRef}
+        id="particlesFireworks"
+        options={fireworks}
+        init={particlesInit}
+        className="z-0"
+      />
 
-        <div className="relative z-10">
-          <ul
-            className={clsx(
-              "grid grid-cols-1 gap-5 py-8 max-w-md mx-auto xl:mt-6 my-10 w-full xl:max-w-none xl:grid-cols-5"
-            )}
-          >
-            {puzzles?.map((puzzle, index) => {
-              const data = thumbnailData(puzzle);
+      <div className="p-4 min-h-screen max-w-[2160px] mx-auto flex flex-col">
+        <div className="">
+          <span className="inline-block -rotate-90 -ml-3 -mb-4">
+            <IkTurquoiseKey height={120} width={120} />
+          </span>
+          <p className="text-white text-lg 2xl:text-2xl">
+            There&apos;s treasure everywhere
+          </p>
+        </div>
 
-              return (
-                <li key={data.id} className="h-full">
-                  <EventThumbnail
-                    isGrid={layout === ThumbnailGridLayoutType.Grid}
-                    id={data.id}
-                    name={data.name}
-                    cloudinary_id={data.cloudinary_id}
-                    progress={
-                      exampleCompleted[index]
-                        ? ThumbnailProgress.Completed
-                        : ThumbnailProgress.NotCompleted
-                    }
-                  />
-                </li>
-              );
-            })}
-          </ul>
-
-          <div className="text-center uppercase text-4xl 2xl:text-6xl">
-            <Heading as="h1" visual="unset">
-              {completed ? (
-                <Flicker bold>All keys unlocked</Flicker>
-              ) : (
-                <>
-                  Five keys - <Flicker bold>find them all</Flicker>
-                </>
+        <div className="flex-1 flex flex-col justify-center relative">
+          <div className="relative z-10">
+            <ul
+              className={clsx(
+                "grid grid-cols-1 gap-5 py-8 max-w-md mx-auto xl:mt-6 my-10 w-full xl:max-w-none xl:grid-cols-5"
               )}
-            </Heading>
-          </div>
-        </div>
-      </div>
+            >
+              {puzzles?.map((puzzle, index) => {
+                const data = thumbnailData(puzzle);
 
-      {completed && (
-        <div className="flex justify-center items-center absolute top-0 left-0 w-full h-full z-10 bg-black/50 animate-fadeInOut border-8 border-amber-400">
-          <div className="bg-clip-text gold-gradient animate-bgMove">
-            <p className="text-dynamic-xl font-bold text-transparent">
-              UNLOCKED
-            </p>
+                return (
+                  <li key={data.id} className="h-full">
+                    <EventThumbnail
+                      isGrid={layout === ThumbnailGridLayoutType.Grid}
+                      id={data.id}
+                      name={data.name}
+                      cloudinary_id={data.cloudinary_id}
+                      progress={
+                        exampleCompleted[index]
+                          ? ThumbnailProgress.Completed
+                          : ThumbnailProgress.NotCompleted
+                      }
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+
+            <div className="text-center uppercase text-4xl 2xl:text-6xl">
+              <Heading as="h1" visual="unset">
+                {completed ? (
+                  <Flicker bold>All keys unlocked</Flicker>
+                ) : (
+                  <>
+                    Five keys - <Flicker bold>find them all</Flicker>
+                  </>
+                )}
+              </Heading>
+            </div>
           </div>
         </div>
-      )}
+
+        {completed && (
+          <div className="flex justify-center items-center absolute top-0 left-0 w-full h-full z-10 bg-black/50 animate-fadeInOut border-8 border-amber-400">
+            <div className="bg-clip-text gold-gradient animate-bgMove">
+              <p className="text-dynamic-xl font-bold text-transparent">
+                UNLOCKED
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

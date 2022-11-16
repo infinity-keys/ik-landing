@@ -30,7 +30,7 @@ module.exports = {
         sans: ["Poppins", "sans-serif"],
       },
       boxShadow: {
-        "3xl": "0 20px 35px -10px rgba(0, 0, 0, 0.8)",
+        "3xl": "0 35px 25px -15px rgba(0, 0, 0, 0.9)",
       },
       fontSize: {
         "dynamic-xl": "clamp(1rem, 16vw, 11rem)",
@@ -41,11 +41,12 @@ module.exports = {
         flickerGlow:
           "flicker 2s forwards, glow 1.2s alternate-reverse infinite",
         fadeInOut: "fadeInOut 6s forwards",
+        fadeOut: "fadeOut .6s forwards",
         fadeGlow: "fade .8s forwards, glow 1.2s alternate-reverse infinite",
         pulseGold: "pulseGold 2.5s infinite",
         pulseGoldGradient: "pulseGold 2.5s infinite, bgMove 6s ease infinite",
         pulseRed: "pulseRed 2.5s infinite",
-        shine: "shine 30s forwards infinite",
+        shine: "shine 30s forwards infinite 1s",
         spin: "spin 1s linear",
       },
       keyframes: {
@@ -60,6 +61,10 @@ module.exports = {
         fadeInOut: {
           "0%, 100%": { opacity: 0 },
           "10%, 90%": { opacity: 1 },
+        },
+        fadeOut: {
+          "0%": { opacity: 1 },
+          "100%": { opacity: 0 },
         },
         flicker: {
           "0%, 60%": { opacity: 0 },
@@ -99,9 +104,9 @@ module.exports = {
         },
         shine: {
           "0%": {
-            transform: "skewX(-20deg) translateX(-105px)",
+            transform: "skewX(-20deg) translateX(-120px)",
           },
-          "3%, 100%": {
+          "5%, 100%": {
             transform: "skewX(-20deg) translateX(500px)",
           },
         },
