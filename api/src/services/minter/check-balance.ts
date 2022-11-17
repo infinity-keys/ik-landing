@@ -1,8 +1,7 @@
+import { AVAX_CHAIN_ID } from '@infinity-keys/constants'
+import { contractLookup } from '@infinity-keys/contracts'
 import castArray from 'lodash/castArray'
 import { QueryResolvers } from 'types/graphql'
-
-import { contractLookup } from 'src/lib/walletConstants'
-import { AVAX_CHAIN_ID } from 'src/lib/walletConstants'
 
 export const checkBalance: QueryResolvers['checkBalance'] = async ({
   account,

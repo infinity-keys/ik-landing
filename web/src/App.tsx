@@ -1,3 +1,4 @@
+import { avalancheChain } from '@infinity-keys/constants'
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { getDefaultWallets } from '@rainbow-me/rainbowkit'
 import loMerge from 'lodash/merge'
@@ -11,7 +12,6 @@ import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
 import CookieConsentBanner from 'src/components/CookieConsentBanner/CookieConsentBanner'
-import { avalancheChain } from 'src/lib/walletConstants'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 

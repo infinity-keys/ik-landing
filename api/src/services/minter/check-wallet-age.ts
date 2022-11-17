@@ -1,7 +1,6 @@
+import { chainRPCLookup } from '@infinity-keys/constants'
 import { ethers } from 'ethers'
 import { QueryResolvers } from 'types/graphql'
-
-import { chainRPCLookup } from 'src/lib/walletConstants'
 
 export const checkWalletAge: QueryResolvers['checkWalletAge'] = async ({
   account,
