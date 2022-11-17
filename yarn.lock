@@ -3637,21 +3637,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@infinity-keys/corex@workspace:packages/corex":
-  version: 0.0.0-use.local
-  resolution: "@infinity-keys/corex@workspace:packages/corex"
-  dependencies:
-    "@infinity-keys/contracts": "workspace:^"
-    "@types/uuid": ^8.3.4
-    cloudinary-build-url: ^0.2.4
-    jose: ^4.11.0
-    nanoid: ^4.0.0
-    typescript: ^4.8.4
-    uuid: ^9.0.0
-    zod: ^3.19.1
-  languageName: unknown
-  linkType: soft
-
 "@infinity-keys/react-lens-share-button@workspace:^, @infinity-keys/react-lens-share-button@workspace:packages/react-lens-share-button":
   version: 0.0.0-use.local
   resolution: "@infinity-keys/react-lens-share-button@workspace:packages/react-lens-share-button"
@@ -7565,13 +7550,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:^8.3.4":
-  version: 8.3.4
-  resolution: "@types/uuid@npm:8.3.4"
-  checksum: b9ac98f82fcf35962317ef7dc44d9ac9e0f6fdb68121d384c88fe12ea318487d5585d3480fa003cf28be86a3bbe213ca688ba786601dce4a97724765eb5b1cf2
-  languageName: node
-  linkType: hard
-
 "@types/webpack-env@npm:^1.16.0":
   version: 1.18.0
   resolution: "@types/webpack-env@npm:1.18.0"
@@ -9024,7 +9002,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "api@workspace:api"
   dependencies:
+    "@infinity-keys/constants": "workspace:^"
     "@infinity-keys/contracts": "workspace:^"
+    "@infinity-keys/core": "workspace:^"
     "@redwoodjs/api": ^3.2.0
     "@redwoodjs/graphql-server": ^3.2.0
     "@sendgrid/mail": ^7.7.0
@@ -27003,7 +26983,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.6.4, typescript@npm:^4.8.4, typescript@npm:~4.8.4":
+"typescript@npm:^4.6.4, typescript@npm:~4.8.4":
   version: 4.8.4
   resolution: "typescript@npm:4.8.4"
   bin:
@@ -27023,7 +27003,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>, typescript@patch:typescript@~4.8.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@~4.8.4#~builtin<compat/typescript>":
   version: 4.8.4
   resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=a1c5e5"
   bin:
