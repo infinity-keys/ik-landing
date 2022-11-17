@@ -2,17 +2,33 @@
   "name": "@infinity-keys/constants",
   "private": true,
   "version": "0.0.0",
-  "packageManager": "yarn@3.2.3",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc"
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
   },
-  "dependencies": {
-    "@rainbow-me/rainbowkit": "^0.7.4",
-    "ethers": "^5.7.2"
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "typescript": "^4.8.4"
+    "@rollup/plugin-typescript": "^9.0.2",
+    "@types/node": "^18.11.9",
+    "rollup-plugin-typescript-paths": "^1.4.0",
+    "tslib": "^2.4.1",
+    "typescript": "^4.6.4",
+    "vite": "^3.2.3"
+  },
+  "dependencies": {
+    "@rainbow-me/rainbowkit": "^0.7.4"
   }
 }

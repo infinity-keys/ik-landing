@@ -1,9 +1,6 @@
-import { IKAchievementABI__factory } from '@infinity-keys/contracts'
 import { Chain } from '@rainbow-me/rainbowkit'
-import { ethers } from 'ethers'
 
 // JWT stuff
-export const JWT_SECRET_KEY = process.env.INFINITY_KEYS_SECRET
 export const IK_ID_COOKIE = 'ik-id'
 export const IK_CLAIMS_NAMESPACE = 'https://infinitykeys.io'
 
@@ -32,13 +29,8 @@ export const PAGINATION_COUNTS = [16, 32, 64]
 // Cloudinary
 export const CLOUDINARY_CLOUD_NAME = 'infinity-keys'
 
-/*
- *
- * **** Wallet Constants ****
- *
- */
-
-//AVAX PARAMS
+// Web3 stuff
+// AVAX PARAMS
 export const AVAX_CHAIN_ID = 43114
 export const CONTRACT_ADDRESS_AVAX =
   '0xB40fD6825a366081192d890d2760113C066761Ef'
@@ -117,27 +109,6 @@ export const RPCLookup: {
   [POLYGON_CHAIN_ID]: POLYGON_RPC,
   [AVAX_CHAIN_ID]: AVAX_RPC,
   [OPTIMISM_CHAIN_ID]: OPTIMISM_RPC,
-}
-
-export const contractLookup: {
-  [key: number]: ReturnType<typeof IKAchievementABI__factory.connect>
-} = {
-  [ETH_CHAIN_ID]: IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_ETH,
-    new ethers.providers.JsonRpcProvider(ETH_RPC)
-  ),
-  [POLYGON_CHAIN_ID]: IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_POLYGON,
-    new ethers.providers.JsonRpcProvider(POLYGON_RPC)
-  ),
-  [AVAX_CHAIN_ID]: IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_AVAX,
-    new ethers.providers.JsonRpcProvider(AVAX_RPC)
-  ),
-  [OPTIMISM_CHAIN_ID]: IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_OPTIMISM,
-    new ethers.providers.JsonRpcProvider(OPTIMISM_RPC)
-  ),
 }
 
 export const marketplaceLookup: {

@@ -1,17 +1,35 @@
 {
   "name": "@infinity-keys/core",
-  "packageManager": "yarn@3.2.3",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "@types/uuid": "^8.3.4",
-    "typescript": "^4.8.4"
+    "@rollup/plugin-typescript": "^9.0.2",
+    "@types/node": "^18.11.9",
+    "rollup-plugin-typescript-paths": "^1.4.0",
+    "tslib": "^2.4.1",
+    "typescript": "^4.6.4",
+    "vite": "^3.2.3"
   },
   "dependencies": {
-    "@infinity-keys/contracts": "workspace:^",
+    "@infinity-keys/constants": "workspace:^",
     "cloudinary-build-url": "^0.2.4",
     "jose": "^4.11.0",
     "nanoid": "^4.0.0",

@@ -5,7 +5,8 @@ export const cloudinaryUrl = (
   id: string,
   height: number,
   width: number,
-  circle: boolean
+  circle: boolean,
+  dpr: number
 ) => {
   return buildUrl(id, {
     cloud: {
@@ -15,7 +16,7 @@ export const cloudinaryUrl = (
       quality: '100',
       radius: circle ? 'max' : 0,
       format: 'png',
-      dpr: 3,
+      dpr,
       resize: {
         type: 'scale',
         width,
