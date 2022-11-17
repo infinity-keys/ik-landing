@@ -1,16 +1,9 @@
 export const schema = gql`
   type Puzzle {
-    id: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    puzzleName: String!
-    path: String!
-    successMessage: String
-    listPublicly: Boolean!
-    nfts: [Nft]!
+    rewardable: Rewardable!
+    rewardableId: String!
     submissions: [Submission]!
-    steps: [StepsOnPuzzles]!
-    packs: [PuzzlesOnPacks]!
+    steps: [Step]!
   }
 
   type Query {
@@ -19,17 +12,11 @@ export const schema = gql`
   }
 
   input CreatePuzzleInput {
-    puzzleName: String!
-    path: String!
-    successMessage: String
-    listPublicly: Boolean!
+    rewardableId: String!
   }
 
   input UpdatePuzzleInput {
-    puzzleName: String
-    path: String
-    successMessage: String
-    listPublicly: Boolean
+    rewardableId: String
   }
 
   type Mutation {

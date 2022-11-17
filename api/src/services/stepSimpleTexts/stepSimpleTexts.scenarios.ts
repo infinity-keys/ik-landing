@@ -8,21 +8,21 @@ export const standard = defineScenario<Prisma.StepSimpleTextCreateArgs>({
         solution: 'String',
         step: {
           create: {
-            updatedAt: '2022-11-15T05:35:02.687Z',
+            updatedAt: '2022-11-17T01:15:44.846Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2022-11-15T05:35:02.687Z',
+                    updatedAt: '2022-11-17T01:15:44.846Z',
                     name: 'String',
-                    slug: 'String8692029',
+                    slug: 'String439276',
                     explanation: 'String',
                     type: 'PUZZLE',
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String7613158',
-                        updatedAt: '2022-11-15T05:35:02.687Z',
+                        slug: 'String5438727',
+                        updatedAt: '2022-11-17T01:15:44.846Z',
                       },
                     },
                   },
@@ -38,21 +38,21 @@ export const standard = defineScenario<Prisma.StepSimpleTextCreateArgs>({
         solution: 'String',
         step: {
           create: {
-            updatedAt: '2022-11-15T05:35:02.687Z',
+            updatedAt: '2022-11-17T01:15:44.846Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2022-11-15T05:35:02.687Z',
+                    updatedAt: '2022-11-17T01:15:44.846Z',
                     name: 'String',
-                    slug: 'String8256800',
+                    slug: 'String1181622',
                     explanation: 'String',
                     type: 'PUZZLE',
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String6094468',
-                        updatedAt: '2022-11-15T05:35:02.687Z',
+                        slug: 'String6411194',
+                        updatedAt: '2022-11-17T01:15:44.846Z',
                       },
                     },
                   },

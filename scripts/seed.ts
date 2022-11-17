@@ -109,6 +109,7 @@ export default async () => {
         (acc, curr) => {
           const [puzzleGroup, puzzles] = curr
 
+          // Puzzles that DO NOT need to be combined
           if (puzzleGroup === 'null') {
             const rewardables = puzzles.map((puzzle) => ({
               name: puzzle.simple_name,
@@ -145,13 +146,14 @@ export default async () => {
             return acc
           }
 
-          // These are puzzles that are being combined into mult-step in new system
+          // These are puzzles that are being combined into multi-step in new system
           const rewardable = {
             name: puzzleGroup,
             slug: puzzleGroup,
             type: 'PUZZLE' as RewardableType,
             explanation: puzzles[0].instructions,
-            successMessage: puzzles[puzzles.length - 1].success_message, // just dupe what's in step for now
+            // just dupe what's in step 1 for now
+            successMessage: puzzles[puzzles.length - 1].success_message,
             organization: {
               connect: {
                 id: ikCuid,
