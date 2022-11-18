@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@infinity-keys/constants": "workspace:^",
     "@infinity-keys/contracts": "workspace:^",
+    "@infinity-keys/core": "workspace:^",
     "@redwoodjs/api": "^3.4.0",
     "@redwoodjs/graphql-server": "^3.4.0",
     "@sendgrid/mail": "^7.7.0",
