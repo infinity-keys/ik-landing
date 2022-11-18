@@ -1,4 +1,6 @@
 // import Alert from 'src/components/Alert/Alert'
+import { LensShareButton } from '@infinity-keys/react-lens-share-button'
+
 import Button from 'src/components/Button/Button'
 import CloudImage from 'src/components/CloudImage/CloudImage'
 import EmailNewsletter from 'src/components/EmailNewsletter/EmailNewsletter'
@@ -10,6 +12,8 @@ import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import Text from 'src/components/Text/Text'
 import Wrapper from 'src/components/Wrapper/Wrapper'
+
+import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 /*
 @TODO:
@@ -105,6 +109,8 @@ const HomePage = () => {
         </Section>
       </div>
       {/* Bottom of puzzle */}
+
+      <LensShareButton postBody="lskdj" light />
 
       {/* About */}
       <main className="w-full bg-blue-800">
