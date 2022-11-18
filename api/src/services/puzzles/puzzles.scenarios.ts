@@ -7,16 +7,16 @@ export const standard = defineScenario<Prisma.PuzzleCreateArgs>({
       data: {
         rewardable: {
           create: {
-            updatedAt: '2022-11-17T01:24:52.809Z',
+            updatedAt: '2022-11-18T07:06:32.911Z',
             name: 'String',
-            slug: 'String3779966',
+            slug: 'String6763863',
             explanation: 'String',
             type: 'PUZZLE',
             organization: {
               create: {
                 name: 'String',
-                slug: 'String3124707',
-                updatedAt: '2022-11-17T01:24:52.809Z',
+                slug: 'String8996766',
+                updatedAt: '2022-11-18T07:06:32.911Z',
               },
             },
           },
@@ -27,16 +27,16 @@ export const standard = defineScenario<Prisma.PuzzleCreateArgs>({
       data: {
         rewardable: {
           create: {
-            updatedAt: '2022-11-17T01:24:52.809Z',
+            updatedAt: '2022-11-18T07:06:32.911Z',
             name: 'String',
-            slug: 'String2267537',
+            slug: 'String1019818',
             explanation: 'String',
             type: 'PUZZLE',
             organization: {
               create: {
                 name: 'String',
-                slug: 'String2854625',
-                updatedAt: '2022-11-17T01:24:52.809Z',
+                slug: 'String4915588',
+                updatedAt: '2022-11-18T07:06:32.912Z',
               },
             },
           },

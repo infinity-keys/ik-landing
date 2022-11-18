@@ -1,5 +1,6 @@
 export const schema = gql`
   type Puzzle {
+    id: String!
     rewardable: Rewardable!
     rewardableId: String!
     submissions: [Submission]!

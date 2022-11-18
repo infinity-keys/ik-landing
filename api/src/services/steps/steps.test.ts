@@ -25,12 +25,12 @@ describe('steps', () => {
   scenario('creates a step', async (scenario: StandardScenario) => {
     const result = await createStep({
       input: {
-        updatedAt: '2022-11-17T01:25:01.105Z',
+        updatedAt: '2022-11-18T07:06:47.395Z',
         puzzleId: scenario.step.two.puzzleId,
       },
     })
 
-    expect(result.updatedAt).toEqual(new Date('2022-11-17T01:25:01.105Z'))
+    expect(result.updatedAt).toEqual(new Date('2022-11-18T07:06:47.395Z'))
     expect(result.puzzleId).toEqual(scenario.step.two.puzzleId)
   })
 
@@ -38,10 +38,10 @@ describe('steps', () => {
     const original = (await step({ id: scenario.step.one.id })) as Step
     const result = await updateStep({
       id: original.id,
-      input: { updatedAt: '2022-11-18T01:25:01.105Z' },
+      input: { updatedAt: '2022-11-19T07:06:47.395Z' },
     })
 
-    expect(result.updatedAt).toEqual(new Date('2022-11-18T01:25:01.105Z'))
+    expect(result.updatedAt).toEqual(new Date('2022-11-19T07:06:47.395Z'))
   })
 
   scenario('deletes a step', async (scenario: StandardScenario) => {
