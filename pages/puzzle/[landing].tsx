@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 // import { useMachine } from "@xstate/react";
 
 import Wrapper from "@components/wrapper";
-import KeysLink from "@components/keys-link";
 import Puzzle from "@components/puzzle";
 import PuzzleLandingInfo from "@components/puzzle-landing-info";
 import Seo from "@components/seo";
@@ -15,6 +14,7 @@ import { Puzzle_Input_Type_Enum } from "@lib/generated/graphql";
 import { buildUrlString } from "@lib/utils";
 import { cloudinaryUrl } from "@lib/images";
 import NftCheck from "@components/nft-check";
+import LensShare from "@components/lens-share";
 
 export interface PuzzlePageProps {
   name: string;
@@ -93,8 +93,11 @@ const Dev: NextPage<PuzzlePageProps> = ({
         </div>
       </main>
 
-      <KeysLink />
-      <div className="mb-9 px-4">
+      <div className="mb-9 px-4 flex justify-center gap-4">
+        <LensShare
+          postBody={`Can you unlock the ${name} puzzle?`}
+          url={buildUrlString(asPath)}
+        />
         <TwitterShare
           tweetBody={`Can you unlock the ${name} puzzle? @InfinityKeys\n\n${buildUrlString(
             asPath
