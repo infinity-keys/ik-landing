@@ -5,16 +5,42 @@ export const standard = defineScenario<Prisma.BundleCreateArgs>({
   bundle: {
     one: {
       data: {
-        updatedAt: '2022-10-24T16:59:00Z',
-        name: 'String',
-        path: 'String',
+        rewardable: {
+          create: {
+            updatedAt: '2022-11-18T16:40:49.842Z',
+            name: 'String',
+            slug: 'String1398787',
+            explanation: 'String',
+            type: 'PUZZLE',
+            organization: {
+              create: {
+                name: 'String',
+                slug: 'String8677824',
+                updatedAt: '2022-11-18T16:40:49.842Z',
+              },
+            },
+          },
+        },
       },
     },
     two: {
       data: {
-        updatedAt: '2022-10-24T16:59:00Z',
-        name: 'String',
-        path: 'String',
+        rewardable: {
+          create: {
+            updatedAt: '2022-11-18T16:40:49.842Z',
+            name: 'String',
+            slug: 'String4921525',
+            explanation: 'String',
+            type: 'PUZZLE',
+            organization: {
+              create: {
+                name: 'String',
+                slug: 'String3165539',
+                updatedAt: '2022-11-18T16:40:49.842Z',
+              },
+            },
+          },
+        },
       },
     },
   },

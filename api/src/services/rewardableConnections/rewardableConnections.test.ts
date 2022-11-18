@@ -45,7 +45,7 @@ describe('rewardableConnections', () => {
         input: {
           parentId: scenario.rewardableConnection.two.parentId,
           childId: scenario.rewardableConnection.two.childId,
-          updatedAt: '2022-11-15T05:32:31.320Z',
+          updatedAt: '2022-11-18T23:11:05.377Z',
         },
       })
 
@@ -53,7 +53,7 @@ describe('rewardableConnections', () => {
         scenario.rewardableConnection.two.parentId
       )
       expect(result.childId).toEqual(scenario.rewardableConnection.two.childId)
-      expect(result.updatedAt).toEqual(new Date('2022-11-15T05:32:31.320Z'))
+      expect(result.updatedAt).toEqual(new Date('2022-11-18T23:11:05.377Z'))
     }
   )
 
@@ -65,10 +65,10 @@ describe('rewardableConnections', () => {
       })) as RewardableConnection
       const result = await updateRewardableConnection({
         id: original.id,
-        input: { updatedAt: '2022-11-16T05:32:31.321Z' },
+        input: { updatedAt: '2022-11-19T23:11:05.377Z' },
       })
 
-      expect(result.updatedAt).toEqual(new Date('2022-11-16T05:32:31.321Z'))
+      expect(result.updatedAt).toEqual(new Date('2022-11-19T23:11:05.377Z'))
     }
   )
 

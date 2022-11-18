@@ -5,35 +5,35 @@ export const standard = defineScenario<Prisma.RewardableConnectionCreateArgs>({
   rewardableConnection: {
     one: {
       data: {
-        updatedAt: '2022-11-15T05:32:31.419Z',
+        updatedAt: '2022-11-18T23:11:05.478Z',
         parentRewardable: {
           create: {
-            updatedAt: '2022-11-15T05:32:31.419Z',
+            updatedAt: '2022-11-18T23:11:05.478Z',
             name: 'String',
-            slug: 'String7006428',
+            slug: 'String4736511',
             explanation: 'String',
             type: 'PUZZLE',
             organization: {
               create: {
                 name: 'String',
-                slug: 'String3194300',
-                updatedAt: '2022-11-15T05:32:31.419Z',
+                slug: 'String4264382',
+                updatedAt: '2022-11-18T23:11:05.478Z',
               },
             },
           },
         },
         childRewardable: {
           create: {
-            updatedAt: '2022-11-15T05:32:31.419Z',
+            updatedAt: '2022-11-18T23:11:05.478Z',
             name: 'String',
-            slug: 'String3754242',
+            slug: 'String5215801',
             explanation: 'String',
             type: 'PUZZLE',
             organization: {
               create: {
                 name: 'String',
-                slug: 'String540433',
-                updatedAt: '2022-11-15T05:32:31.419Z',
+                slug: 'String4892867',
+                updatedAt: '2022-11-18T23:11:05.478Z',
               },
             },
           },
@@ -42,35 +42,35 @@ export const standard = defineScenario<Prisma.RewardableConnectionCreateArgs>({
     },
     two: {
       data: {
-        updatedAt: '2022-11-15T05:32:31.419Z',
+        updatedAt: '2022-11-18T23:11:05.478Z',
         parentRewardable: {
           create: {
-            updatedAt: '2022-11-15T05:32:31.419Z',
+            updatedAt: '2022-11-18T23:11:05.478Z',
             name: 'String',
-            slug: 'String8561829',
+            slug: 'String9776518',
             explanation: 'String',
             type: 'PUZZLE',
             organization: {
               create: {
                 name: 'String',
-                slug: 'String7836699',
-                updatedAt: '2022-11-15T05:32:31.419Z',
+                slug: 'String7591604',
+                updatedAt: '2022-11-18T23:11:05.478Z',
               },
             },
           },
         },
         childRewardable: {
           create: {
-            updatedAt: '2022-11-15T05:32:31.419Z',
+            updatedAt: '2022-11-18T23:11:05.478Z',
             name: 'String',
-            slug: 'String3965497',
+            slug: 'String1834228',
             explanation: 'String',
             type: 'PUZZLE',
             organization: {
               create: {
                 name: 'String',
-                slug: 'String8157332',
-                updatedAt: '2022-11-15T05:32:31.419Z',
+                slug: 'String1922143',
+                updatedAt: '2022-11-18T23:11:05.478Z',
               },
             },
           },

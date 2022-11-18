@@ -1,13 +1,8 @@
 export const schema = gql`
   type Bundle {
     id: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    name: String!
-    path: String!
-    listPublicly: Boolean!
-    nfts: [Nft]!
-    packs: [PacksOnBundles]!
+    rewardable: Rewardable!
+    rewardableId: String!
   }
 
   type Query {
@@ -16,15 +11,11 @@ export const schema = gql`
   }
 
   input CreateBundleInput {
-    name: String!
-    path: String!
-    listPublicly: Boolean!
+    rewardableId: String!
   }
 
   input UpdateBundleInput {
-    name: String
-    path: String
-    listPublicly: Boolean
+    rewardableId: String
   }
 
   type Mutation {
