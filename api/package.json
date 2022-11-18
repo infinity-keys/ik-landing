@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "@infinity-keys/contracts": "workspace:^",
-    "@redwoodjs/api": "^3.2.0",
-    "@redwoodjs/graphql-server": "^3.2.0",
+    "@redwoodjs/api": "^3.4.0",
+    "@redwoodjs/graphql-server": "^3.4.0",
     "@sendgrid/mail": "^7.7.0",
     "cloudinary-build-url": "^0.2.4",
     "jose": "^4.10.0",
