@@ -15,7 +15,11 @@ export const LensIcon = ({
     height={height}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className={clsx(icon, 'ReactLensShareButton__svg', className && className)}
+    className={clsx(
+      icon,
+      'react-lens-share-button__svg',
+      className && className
+    )}
   >
     <mask
       id="a"
