@@ -32,11 +32,7 @@ export default defineConfig({
         typescriptPaths({
           preserveExtensions: true,
         }),
-        typescript({
-          sourceMap: false,
-          declaration: true,
-          outDir: 'dist',
-        }),
+        typescript(),
       ],
     },
   },
