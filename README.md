@@ -211,3 +211,13 @@ Builds all custom workspaces packages and start Redwood dev.
 ```bash
 yarn workspaces foreach run build && yarn rw dev
 ```
+
+## Publish a Package
+
+```bash
+npm version patch
+```
+
+```bash
+yarn npm publish --access public
+```
