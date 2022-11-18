@@ -56,7 +56,7 @@ export const contractAddressLookup: {
   [OPTIMISM_CHAIN_ID]: CONTRACT_ADDRESS_OPTIMISM,
 }
 
-export const chainRPCLookup: {
+export const RPCLookup: {
   [key: number]: string
 } = {
   [ETH_CHAIN_ID]: ETH_RPC,
