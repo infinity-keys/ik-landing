@@ -20,7 +20,7 @@
     "@infinity-keys/contracts": "workspace:^",
     "@infinity-keys/core": "workspace:^",
     "@infinity-keys/react-lens-share-button": "workspace:^",
-    "@rainbow-me/rainbowkit": "^0.7.0",
+    "@rainbow-me/rainbowkit": "^0.8.0",
     "@redwoodjs/forms": "^3.4.0",
     "@redwoodjs/router": "^3.4.0",
     "@redwoodjs/web": "^3.4.0",

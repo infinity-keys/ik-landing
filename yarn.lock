@@ -3467,7 +3467,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@infinity-keys/constants@workspace:packages/constants"
   dependencies:
-    "@rainbow-me/rainbowkit": ^0.7.4
+    "@rainbow-me/rainbowkit": ^0.8.0
     "@rollup/plugin-typescript": ^9.0.2
     "@types/node": ^18.11.9
     rollup-plugin-typescript-paths: ^1.4.0
@@ -4474,9 +4474,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rainbow-me/rainbowkit@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "@rainbow-me/rainbowkit@npm:0.7.0"
+"@rainbow-me/rainbowkit@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "@rainbow-me/rainbowkit@npm:0.8.0"
   dependencies:
     "@vanilla-extract/css": 1.9.1
     "@vanilla-extract/dynamic": 2.0.2
@@ -4488,27 +4488,8 @@ __metadata:
     ethers: ">=5.5.1"
     react: ">=17"
     react-dom: ">=17"
-    wagmi: 0.5.x || 0.6.x
-  checksum: 95fefecc02486f03f8554bb299ecaaf14a739299f86e18e9a76266835d4c325ca158fd908cf2139de270422f65fedc7cc839202325676f6ad836b2098b5fb13a
-  languageName: node
-  linkType: hard
-
-"@rainbow-me/rainbowkit@npm:^0.7.4":
-  version: 0.7.4
-  resolution: "@rainbow-me/rainbowkit@npm:0.7.4"
-  dependencies:
-    "@vanilla-extract/css": 1.9.1
-    "@vanilla-extract/dynamic": 2.0.2
-    "@vanilla-extract/sprinkles": 1.5.0
-    clsx: 1.1.1
-    qrcode: 1.5.0
-    react-remove-scroll: 2.5.4
-  peerDependencies:
-    ethers: ">=5.5.1"
-    react: ">=17"
-    react-dom: ">=17"
-    wagmi: 0.5.x || 0.6.x || 0.7.x
-  checksum: 6fb54097aecf995a62ad1d24dece205fdee36608851a519952fdaabb34c85e0e8f285aebb758c95cee4b231d80c7fb8cb300fd9393f4562fd729c56779d31a8a
+    wagmi: 0.8.x
+  checksum: d3ba49c0f7c5b0542a0890adc4c79d50cbc5f591c23edbd715f343a6a17e5c96ea56d8a853007418833ec8fc32e87ec099bbdcdb58c570d4e98219e8b4a15e0f
   languageName: node
   linkType: hard
 
@@ -27902,7 +27883,7 @@ __metadata:
     "@infinity-keys/contracts": "workspace:^"
     "@infinity-keys/core": "workspace:^"
     "@infinity-keys/react-lens-share-button": "workspace:^"
-    "@rainbow-me/rainbowkit": ^0.7.0
+    "@rainbow-me/rainbowkit": ^0.8.0
     "@redwoodjs/forms": ^3.4.0
     "@redwoodjs/router": ^3.4.0
     "@redwoodjs/web": ^3.4.0
