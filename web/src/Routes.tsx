@@ -9,11 +9,18 @@
 
 import { Router, Route, Set } from '@redwoodjs/router'
 
+import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
 import SiteLayout from 'src/layouts/SiteLayout'
 
 const Routes = () => {
   return (
     <Router>
+      <Set wrap={ScaffoldLayout} title="Puzzles" titleTo="puzzles" buttonLabel="New Puzzle" buttonTo="newPuzzle">
+        <Route path="/puzzle/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newPuzzle" />
+        <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" />
+        <Route path="/puzzle/{id}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzle" />
+        <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
+      </Set>
       <Set wrap={SiteLayout}>
         <Route path="/" page={HomePage} name="home" />
         <Route path="/user/delete" page={DeletePage} name="delete" />

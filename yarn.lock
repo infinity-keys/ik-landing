@@ -27913,6 +27913,7 @@ __metadata:
     cloudinary-build-url: ^0.2.4
     clsx: ^1.2.1
     ethers: ^5.7.1
+    humanize-string: 2.1.0
     loaders.css: ^0.1.2
     lodash: ^4.17.21
     postcss: ^8.4.16
