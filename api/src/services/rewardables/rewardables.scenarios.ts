@@ -5,32 +5,32 @@ export const standard = defineScenario<Prisma.RewardableCreateArgs>({
   rewardable: {
     one: {
       data: {
-        updatedAt: '2022-11-19T06:08:43.070Z',
+        updatedAt: '2022-11-20T21:02:16.054Z',
         name: 'String',
-        slug: 'String8681685',
+        slug: 'String9642501',
         explanation: 'String',
         type: 'PUZZLE',
         organization: {
           create: {
             name: 'String',
-            slug: 'String2782747',
-            updatedAt: '2022-11-19T06:08:43.070Z',
+            slug: 'String1628973',
+            updatedAt: '2022-11-20T21:02:16.054Z',
           },
         },
       },
     },
     two: {
       data: {
-        updatedAt: '2022-11-19T06:08:43.070Z',
+        updatedAt: '2022-11-20T21:02:16.054Z',
         name: 'String',
-        slug: 'String5721511',
+        slug: 'String9960641',
         explanation: 'String',
         type: 'PUZZLE',
         organization: {
           create: {
             name: 'String',
-            slug: 'String5799329',
-            updatedAt: '2022-11-19T06:08:43.070Z',
+            slug: 'String9069477',
+            updatedAt: '2022-11-20T21:02:16.054Z',
           },
         },
       },

@@ -1,11 +1,11 @@
 import RewardableCell from 'src/components/RewardablePuzzle/RewardablePuzzleCell'
 
 type RewardablePageProps = {
-  id: string
+  slug: string
 }
 
-const RewardablePage = ({ id }: RewardablePageProps) => {
-  return <RewardableCell id={id} />
+const RewardablePage = ({ slug }: RewardablePageProps) => {
+  return <RewardableCell slug={slug} />
 }
 
 export default RewardablePage

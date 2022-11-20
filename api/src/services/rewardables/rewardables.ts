@@ -15,13 +15,6 @@ export const rewardable: QueryResolvers['rewardable'] = ({ id }) => {
     where: { id },
   })
 }
-export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
-  slug,
-}) => {
-  return db.rewardable.findUnique({
-    where: { slug },
-  })
-}
 
 export const createRewardable: MutationResolvers['createRewardable'] = ({
   input,

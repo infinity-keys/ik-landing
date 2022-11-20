@@ -18,7 +18,7 @@ const Routes = () => {
       <Set wrap={ScaffoldLayout} title="Puzzles" titleTo="puzzles" buttonLabel="New Puzzle" buttonTo="newPuzzle">
         <Route path="/puzzle/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newPuzzle" />
         <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" />
-        <Route path="/puzzle/{id}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzle" />
+        <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzle" />
         <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
       </Set>
       <Set wrap={SiteLayout}>
