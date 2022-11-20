@@ -15,6 +15,7 @@ const { GRAPHQL_ENDPOINT, HASURA_GRAPHQL_ADMIN_SECRET } = process.env
 const query = `query AllData {
   puzzles {
     simple_name
+    landing_route
     solution
     success_message
     fail_message
@@ -28,6 +29,7 @@ const query = `query AllData {
 
 const ApiPuzzle = z.object({
   simple_name: z.string(),
+  landing_route: z.string(),
   solution: z.string(),
   success_message: z.nullable(z.string()),
   fail_message: z.nullable(z.string()),
@@ -113,7 +115,7 @@ export default async () => {
           if (puzzleGroup === 'null') {
             const rewardables = puzzles.map((puzzle) => ({
               name: puzzle.simple_name,
-              slug: puzzle.simple_name,
+              slug: puzzle.landing_route,
               type: 'PUZZLE' as RewardableType,
               explanation: puzzle.instructions || '',
               successMessage: puzzle.success_message, // just dupe what's in step for now
