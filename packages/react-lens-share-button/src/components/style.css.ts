@@ -19,6 +19,7 @@ export const link = style({
   color: lightGreen,
   backgroundColor: darkGreen,
 
+  boxSizing: 'border-box',
   padding: '8px 16px',
   borderRadius: '4px',
 
@@ -35,8 +36,6 @@ export const link = style({
 export const lightBg = style({
   color: darkGreen,
   backgroundColor: lightGreen,
-
-  transition: 'all .2s',
 
   selectors: {
     '&:hover, &:focus': {

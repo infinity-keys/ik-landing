@@ -130,16 +130,16 @@ Classes can be passed down to each element, and inline styles can be passed down
 Each element also has a class that can be targeted via css:
 
 ```css
-.ReactLensShareButton {
+.react-lens-share-button {
   background-color: purple !important;
   /* ... */
 }
 
-.ReactLensShareButton__svg-wrapper {
+.react-lens-share-button__svg-wrapper {
   /* ... */
 }
 
-.ReactLensShareButton__svg {
+.react-lens-share-button__svg {
   /* ... */
 }
 ```

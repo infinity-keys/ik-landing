@@ -37,7 +37,7 @@ export const LensShareButton = ({
         colors,
         link,
         light && lightBg,
-        'ReactLensShareButton',
+        'react-lens-share-button',
         className && className
       )}
       {...rest}
@@ -47,7 +47,7 @@ export const LensShareButton = ({
         <span
           className={clsx(
             iconWrapper,
-            'ReactLensShareButton__svg-wrapper',
+            'react-lens-share-button__svg-wrapper',
             iconWrapperClassName && iconWrapperClassName
           )}
         >
