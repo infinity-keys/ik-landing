@@ -1,9 +1,7 @@
-import { balanceOf1155 } from '@infinity-keys/contracts'
-import { balanceOf721 } from '@infinity-keys/contracts'
+import { RPCLookup } from '@infinity-keys/constants'
+import { balanceOf1155, balanceOf721 } from '@infinity-keys/contracts'
 import { ethers } from 'ethers'
 import { QueryResolvers } from 'types/graphql'
-
-import { RPCLookup } from 'src/lib/walletConstants'
 
 export const checkNft: QueryResolvers['checkNft'] = async ({
   account,
