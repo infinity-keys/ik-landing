@@ -166,7 +166,7 @@ export default async () => {
                 steps: {
                   create: puzzles.map((puzzle) => ({
                     failMessage: puzzle.fail_message,
-                    challenge: puzzle.challenge,
+                    challenge: puzzle.instructions,
                     successMessage: puzzle.success_message,
                     type: 'SIMPLE_TEXT' as StepType,
                     stepSortWeight: parseInt(puzzle.migration_step, 10),

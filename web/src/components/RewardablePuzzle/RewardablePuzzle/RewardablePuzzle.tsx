@@ -1,6 +1,6 @@
 import type {
   DeleteRewardableMutationVariables,
-  FindRewardablePuzzleById,
+  FindRewardablePuzzleBySlug,
 } from 'types/graphql'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
@@ -18,7 +18,7 @@ const DELETE_REWARDABLE_MUTATION = gql`
 `
 
 interface Props {
-  rewardable: NonNullable<FindRewardablePuzzleById['puzzle']>
+  rewardable: NonNullable<FindRewardablePuzzleBySlug['puzzle']>
 }
 
 const Rewardable = ({ rewardable }: Props) => {
@@ -84,10 +84,19 @@ const Rewardable = ({ rewardable }: Props) => {
               <th>Type</th>
               <td>{formatEnum(rewardable.type)}</td>
             </tr>
-            <tr>
-              <th>Org id</th>
-              <td>{rewardable.orgId}</td>
-            </tr>
+
+            {rewardable.puzzle.steps.map((step) => (
+              <tr key={step.id}>
+                <th>Step {step.stepSortWeight}: </th>
+                <td>
+                  <span>
+                    Challenge: {step.challenge} | Step success message:{' '}
+                    {step.successMessage} | Solution:{' '}
+                    {step.stepSimpleText.solution}
+                  </span>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

@@ -17,6 +17,20 @@ export const QUERY = gql`
       listPublicly
       type
       orgId
+      puzzle {
+        id
+        steps {
+          stepSortWeight
+          id
+          challenge
+          successMessage
+          type
+          stepSimpleText {
+            stepId
+            solution
+          }
+        }
+      }
     }
   }
 `
