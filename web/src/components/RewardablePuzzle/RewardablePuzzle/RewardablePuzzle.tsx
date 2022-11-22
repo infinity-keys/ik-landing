@@ -91,8 +91,8 @@ const Rewardable = ({ rewardable }: Props) => {
                 <td>
                   <span>
                     Challenge: {step.challenge} | Step success message:{' '}
-                    {step.successMessage} | Solution:{' '}
-                    {step.stepSimpleText.solution}
+                    {step.successMessage} | Solution character count:{' '}
+                    {step.stepSimpleText.solutionCharCount}
                   </span>
                 </td>
               </tr>

@@ -7,23 +7,17 @@ import type {
 import { db } from 'src/lib/db'
 
 export const steps: QueryResolvers['steps'] = () => {
-  const query = db.step.findMany({
+  return db.step.findMany({
     orderBy: {
       stepSortWeight: 'asc',
     },
   })
-
-  query.then((output) => console.log(output))
-
-  return query
 }
 
 export const step: QueryResolvers['step'] = ({ id }) => {
-  const query = db.step.findUnique({
+  return db.step.findUnique({
     where: { id },
   })
-  query.then((output) => console.log(output))
-  return query
 }
 
 export const createStep: MutationResolvers['createStep'] = ({ input }) => {

@@ -27,7 +27,7 @@ export const QUERY = gql`
           type
           stepSimpleText {
             stepId
-            solution
+            solutionCharCount
           }
         }
       }

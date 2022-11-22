@@ -42,4 +42,8 @@ export const StepSimpleText: StepSimpleTextRelationResolvers = {
   step: (_obj, { root }) => {
     return db.stepSimpleText.findUnique({ where: { id: root?.id } }).step()
   },
+  // Override the actual field with logic here
+  solutionCharCount: (_obj, { root }) => {
+    return root.solution.length
+  },
 }

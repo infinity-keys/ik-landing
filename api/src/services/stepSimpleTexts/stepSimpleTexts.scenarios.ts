@@ -6,23 +6,24 @@ export const standard = defineScenario<Prisma.StepSimpleTextCreateArgs>({
     one: {
       data: {
         solution: 'String',
+        solutionCharCount: 7228485,
         step: {
           create: {
-            updatedAt: '2022-11-21T02:51:54.005Z',
+            updatedAt: '2022-11-22T06:15:08.917Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2022-11-21T02:51:54.005Z',
+                    updatedAt: '2022-11-22T06:15:08.918Z',
                     name: 'String',
-                    slug: 'String8748665',
+                    slug: 'String6063705',
                     explanation: 'String',
                     type: 'PUZZLE',
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String3240657',
-                        updatedAt: '2022-11-21T02:51:54.005Z',
+                        slug: 'String8816816',
+                        updatedAt: '2022-11-22T06:15:08.918Z',
                       },
                     },
                   },
@@ -36,23 +37,24 @@ export const standard = defineScenario<Prisma.StepSimpleTextCreateArgs>({
     two: {
       data: {
         solution: 'String',
+        solutionCharCount: 8981945,
         step: {
           create: {
-            updatedAt: '2022-11-21T02:51:54.005Z',
+            updatedAt: '2022-11-22T06:15:08.918Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2022-11-21T02:51:54.005Z',
+                    updatedAt: '2022-11-22T06:15:08.918Z',
                     name: 'String',
-                    slug: 'String1744156',
+                    slug: 'String3437835',
                     explanation: 'String',
                     type: 'PUZZLE',
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String8466597',
-                        updatedAt: '2022-11-21T02:51:54.005Z',
+                        slug: 'String4823532',
+                        updatedAt: '2022-11-22T06:15:08.918Z',
                       },
                     },
                   },

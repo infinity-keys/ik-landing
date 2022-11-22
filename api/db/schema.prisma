@@ -86,7 +86,7 @@ model Bundle {
   id String @id @default(cuid())
 
   rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
-  rewardableId String    @unique
+  rewardableId String     @unique
 }
 
 /// A collection of one or more Steps makes up a Puzzle. A Puzzle is solved when
@@ -95,7 +95,7 @@ model Puzzle {
   id String @id @default(cuid())
 
   rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
-  rewardableId String @unique
+  rewardableId String     @unique
 
   // Users can fill out a form and submit answers when completing a puzzle
   submissions Submission[]
@@ -146,7 +146,9 @@ model StepSimpleText {
   stepId String @unique
 
   /// The answer. Make sure this is NOT publicly query-able
-  solution String
+  solution          String
+  /// Database will show 0, but the GraphQL resolver for this will provide a char count
+  solutionCharCount Int    @default(0)
 }
 
 /// User form submissions from post-Puzzle forms asking for email address etc
@@ -252,7 +254,7 @@ model Organization {
 
 /// Connect Users to Organizations
 model OrganizationUser {
-  id           String       @id @default(cuid())
+  id String @id @default(cuid())
 
   organization Organization @relation(fields: [orgId], references: [id])
   orgId        String

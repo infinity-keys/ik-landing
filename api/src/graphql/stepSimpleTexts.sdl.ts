@@ -4,6 +4,7 @@ export const schema = gql`
     step: Step!
     stepId: String!
     solution: String!
+    solutionCharCount: Int!
   }
 
   type Query {
@@ -14,11 +15,13 @@ export const schema = gql`
   input CreateStepSimpleTextInput {
     stepId: String!
     solution: String!
+    solutionCharCount: Int!
   }
 
   input UpdateStepSimpleTextInput {
     stepId: String
     solution: String
+    solutionCharCount: Int
   }
 
   type Mutation {

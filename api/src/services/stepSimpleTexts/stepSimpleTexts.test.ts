@@ -38,11 +38,16 @@ describe('stepSimpleTexts', () => {
 
   scenario('creates a stepSimpleText', async (scenario: StandardScenario) => {
     const result = await createStepSimpleText({
-      input: { stepId: scenario.stepSimpleText.two.stepId, solution: 'String' },
+      input: {
+        stepId: scenario.stepSimpleText.two.stepId,
+        solution: 'String',
+        solutionCharCount: 5941884,
+      },
     })
 
     expect(result.stepId).toEqual(scenario.stepSimpleText.two.stepId)
     expect(result.solution).toEqual('String')
+    expect(result.solutionCharCount).toEqual(5941884)
   })
 
   scenario('updates a stepSimpleText', async (scenario: StandardScenario) => {
