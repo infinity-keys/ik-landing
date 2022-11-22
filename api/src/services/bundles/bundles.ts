@@ -39,10 +39,7 @@ export const deleteBundle: MutationResolvers['deleteBundle'] = ({ id }) => {
 }
 
 export const Bundle: BundleRelationResolvers = {
-  nfts: (_obj, { root }) => {
-    return db.bundle.findUnique({ where: { id: root?.id } }).nfts()
-  },
-  packs: (_obj, { root }) => {
-    return db.bundle.findUnique({ where: { id: root?.id } }).packs()
+  rewardable: (_obj, { root }) => {
+    return db.bundle.findUnique({ where: { id: root?.id } }).rewardable()
   },
 }

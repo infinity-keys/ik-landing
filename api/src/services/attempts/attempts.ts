@@ -41,10 +41,10 @@ export const deleteAttempt: MutationResolvers['deleteAttempt'] = ({ id }) => {
 }
 
 export const Attempt: AttemptRelationResolvers = {
-  step: (_obj, { root }) => {
-    return db.attempt.findUnique({ where: { id: root?.id } }).step()
-  },
   user: (_obj, { root }) => {
     return db.attempt.findUnique({ where: { id: root?.id } }).user()
+  },
+  step: (_obj, { root }) => {
+    return db.attempt.findUnique({ where: { id: root?.id } }).step()
   },
 }

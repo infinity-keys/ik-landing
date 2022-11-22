@@ -1,12 +1,12 @@
 export const schema = gql`
   type Attempt {
     id: String!
-    stepId: String!
-    step: Step!
-    userId: String!
-    user: User!
     attemptedAt: DateTime!
-    guess: String!
+    user: User!
+    userId: String!
+    step: Step!
+    stepId: String!
+    data: JSON!
   }
 
   type Query {
@@ -15,17 +15,17 @@ export const schema = gql`
   }
 
   input CreateAttemptInput {
-    stepId: String!
-    userId: String!
     attemptedAt: DateTime!
-    guess: String!
+    userId: String!
+    stepId: String!
+    data: JSON!
   }
 
   input UpdateAttemptInput {
-    stepId: String
-    userId: String
     attemptedAt: DateTime
-    guess: String
+    userId: String
+    stepId: String
+    data: JSON
   }
 
   type Mutation {

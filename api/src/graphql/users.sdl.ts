@@ -10,8 +10,16 @@ export const schema = gql`
     twitterProfile: String
     discordProfile: String
     lensProfile: String
+    siteRole: SiteRole!
+    organizations: [OrganizationUser]!
     submissions: [Submission]!
     attempts: [Attempt]!
+  }
+
+  enum SiteRole {
+    ADMIN
+    VERIFIED
+    ANONYMOUS
   }
 
   type Query {
@@ -27,6 +35,7 @@ export const schema = gql`
     twitterProfile: String
     discordProfile: String
     lensProfile: String
+    siteRole: SiteRole!
   }
 
   input UpdateUserInput {
@@ -37,6 +46,7 @@ export const schema = gql`
     twitterProfile: String
     discordProfile: String
     lensProfile: String
+    siteRole: SiteRole
   }
 
   type Mutation {
