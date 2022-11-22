@@ -12,6 +12,7 @@ import Wrapper from 'src/components/Wrapper/Wrapper'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
+// @TODO: remove and replace
 const steps = [
   { name: 'Step One', step: 1 },
   { name: 'Step Two with a longer name', step: 2 },
@@ -21,14 +22,14 @@ const steps = [
   { name: 'Six', step: 6 },
 ]
 
-const StepPage = () => {
-  const title = 'Puzzle Name'
-  const currentStep = 3
-  const instructions =
-    '*Intructions* This is some markdown **bold** but it is a little longer than the other. We should start wrapping sometime soon.'
-  const challenge = 'This is some markdown **bold**'
-  const url = '/step'
+const title = 'Puzzle Name'
+const currentStep = 3
+const instructions =
+  '*Intructions* This is some markdown **bold** but it is a little longer than the other. We should start wrapping sometime soon.'
+const challenge = 'This is some markdown **bold**'
+const url = '/step'
 
+const StepPage = () => {
   return (
     <Wrapper full>
       <Seo
@@ -60,16 +61,23 @@ const StepPage = () => {
           )}
         </div>
 
-        <div className="flex-cols flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
-          {steps.map(({ name, step }) => (
-            <ThumbnailMini
-              key={name}
-              name={name}
-              step={step}
-              currentStep={currentStep}
-            />
-          ))}
-        </div>
+        {steps.length > 1 && (
+          <div>
+            <p className="mb-8 text-4xl font-bold uppercase opacity-90">
+              Puzzle Name Steps
+            </p>
+            <div className="flex-cols flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
+              {steps.map(({ name, step }) => (
+                <ThumbnailMini
+                  key={name}
+                  name={name}
+                  step={step}
+                  currentStep={currentStep}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </main>
 
       <div className="mb-9 flex justify-center gap-4 px-4">
