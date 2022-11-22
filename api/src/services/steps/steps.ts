@@ -19,11 +19,11 @@ export const steps: QueryResolvers['steps'] = () => {
 }
 
 export const step: QueryResolvers['step'] = ({ id }) => {
-  console.log('Am in Step resolver?')
-
-  return db.step.findUnique({
+  const query = db.step.findUnique({
     where: { id },
   })
+  query.then((output) => console.log(output))
+  return query
 }
 
 export const createStep: MutationResolvers['createStep'] = ({ input }) => {

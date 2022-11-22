@@ -7,11 +7,7 @@ import type {
 import { db } from 'src/lib/db'
 
 export const puzzles: QueryResolvers['puzzles'] = () => {
-  const query = db.puzzle.findMany()
-
-  query.then((results) => console.log(results))
-
-  return query
+  return db.puzzle.findMany()
 }
 
 export const puzzle: QueryResolvers['puzzle'] = ({ id }) => {
@@ -50,6 +46,11 @@ export const Puzzle: PuzzleRelationResolvers = {
     return db.puzzle.findUnique({ where: { id: root?.id } }).submissions()
   },
   steps: (_obj, { root }) => {
-    return db.puzzle.findUnique({ where: { id: root?.id } }).steps()
+    return db.puzzle.findUnique({ where: { id: root?.id } }).steps({
+      // Steps should always return ASC
+      orderBy: {
+        stepSortWeight: 'asc',
+      },
+    })
   },
 }

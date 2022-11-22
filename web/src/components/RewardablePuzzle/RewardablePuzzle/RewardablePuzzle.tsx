@@ -38,8 +38,6 @@ const Rewardable = ({ rewardable }: Props) => {
     }
   }
 
-  console.log(rewardable.puzzle.steps)
-
   return (
     <>
       <div className="rw-segment">
