@@ -1,5 +1,6 @@
 export const schema = gql`
   type StepSimpleText {
+    id: String!
     step: Step!
     stepId: String!
     solution: String!

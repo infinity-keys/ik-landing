@@ -20,8 +20,8 @@ export const QUERY = gql`
       puzzle {
         id
         steps {
-          stepSortWeight
           id
+          stepSortWeight
           challenge
           successMessage
           type

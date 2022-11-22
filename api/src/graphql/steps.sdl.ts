@@ -6,7 +6,7 @@ export const schema = gql`
     failMessage: String
     successMessage: String
     challenge: String
-    stepSortWeight: Int
+    stepSortWeight: Int!
     puzzle: Puzzle!
     puzzleId: String!
     type: StepType!
@@ -27,7 +27,7 @@ export const schema = gql`
     failMessage: String
     successMessage: String
     challenge: String
-    stepSortWeight: Int
+    stepSortWeight: Int!
     puzzleId: String!
     type: StepType!
   }

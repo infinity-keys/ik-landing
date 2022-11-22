@@ -7,10 +7,20 @@ import type {
 import { db } from 'src/lib/db'
 
 export const steps: QueryResolvers['steps'] = () => {
-  return db.step.findMany()
+  const query = db.step.findMany({
+    orderBy: {
+      stepSortWeight: 'asc',
+    },
+  })
+
+  query.then((output) => console.log(output))
+
+  return query
 }
 
 export const step: QueryResolvers['step'] = ({ id }) => {
+  console.log('Am in Step resolver?')
+
   return db.step.findUnique({
     where: { id },
   })

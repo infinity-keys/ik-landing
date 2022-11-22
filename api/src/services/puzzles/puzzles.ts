@@ -7,7 +7,11 @@ import type {
 import { db } from 'src/lib/db'
 
 export const puzzles: QueryResolvers['puzzles'] = () => {
-  return db.puzzle.findMany()
+  const query = db.puzzle.findMany()
+
+  query.then((results) => console.log(results))
+
+  return query
 }
 
 export const puzzle: QueryResolvers['puzzle'] = ({ id }) => {

@@ -122,7 +122,7 @@ model Step {
   challenge      String?
 
   // Order shown on the puzzle
-  stepSortWeight Int? @default(1)
+  stepSortWeight Int @default(1)
 
   // Connect this step to exactly 1 Puzzle
   puzzle   Puzzle @relation(fields: [puzzleId], references: [id])
@@ -135,13 +135,15 @@ model Step {
   // A user's attempt at solving this Step
   attempts Attempt[]
 
-  @@unique([id, puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
+  @@unique([puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
 }
 
 /// Simple guess of a text string
 model StepSimpleText {
+  id String @id @default(cuid())
+
   step   Step   @relation(fields: [stepId], references: [id])
-  stepId String @id
+  stepId String @unique
 
   /// The answer. Make sure this is NOT publicly query-able
   solution String
