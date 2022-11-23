@@ -1,3 +1,4 @@
+import CheckIcon from '@heroicons/react/24/solid/CheckIcon'
 import Avatar from 'boring-avatars'
 import clsx from 'clsx'
 
@@ -22,7 +23,7 @@ const ThumbnailMini = ({
   return (
     <Link
       className={clsx(
-        'flex w-full max-w-[9rem] items-center rounded-lg border bg-blue-800 py-3 px-4 shadow sm:max-w-[10rem]',
+        'relative flex w-full max-w-[9rem] items-center rounded-lg border bg-blue-800 py-3 px-4 shadow sm:max-w-[10rem]',
         {
           'cursor-pointer border-turquoise': status === 'solved',
           'border-yellow-400': status === 'current',
@@ -31,6 +32,12 @@ const ThumbnailMini = ({
       )}
       to={status === 'solved' && href ? href : null}
     >
+      {status === 'solved' && (
+        <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-turquoise/40">
+          <CheckIcon className="h-3 w-3 text-turquoise" />
+        </span>
+      )}
+
       <Avatar
         size={28}
         name={name + step}
