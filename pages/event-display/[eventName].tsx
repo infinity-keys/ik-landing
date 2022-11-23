@@ -5,7 +5,7 @@ import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import cheers from "@lib/lottie.json";
 
 import Seo from "@components/seo";
-import { EventDisplayQuery, PublicPuzzlesQuery } from "@lib/generated/graphql";
+import { PublicPuzzlesQuery } from "@lib/generated/graphql";
 
 import { buildTokenIdParams, thumbnailData } from "@lib/utils";
 import clsx from "clsx";
@@ -29,10 +29,12 @@ export interface EventPageProps {
   puzzles?: PublicPuzzlesQuery["puzzles"];
   tokenIds: number[];
   eventName: string;
+  unlockText: string;
 }
 interface EventPageParams {
   params: {
     eventName: string;
+    unlockText: string;
   };
 }
 
@@ -44,13 +46,14 @@ const fetcher: Fetcher<{ tokensMinted: boolean[] }, string> = (...args) =>
 
 const EventPage: NextPage<EventPageProps> = ({
   eventName,
+  unlockText,
   puzzles,
   tokenIds,
 }) => {
-  // // should be set to false when we no longer want to query
-  // // the api route, (e.g. when all tokens have been minted)
-  // const [shouldRefresh, setShouldRefresh] = useState(true);
-  // const tokenIdsParams = buildTokenIdParams(tokenIds);
+  // set to false when we no longer want to query the api route,
+  // (e.g. when all tokens have been minted)
+  const [shouldRefresh, setShouldRefresh] = useState(true);
+  const tokenIdsParams = buildTokenIdParams(tokenIds);
   const [completed, setCompleted] = useState(false);
 
   const width = useCurrentWidth();
@@ -64,53 +67,25 @@ const EventPage: NextPage<EventPageProps> = ({
     await loadFull(engine);
   }, []);
 
-  // const { data: tokenData } = useSWR(
-  //   "/api/minter/check-minted?" + tokenIdsParams,
-  //   fetcher,
-  //   {
-  //     refreshInterval: shouldRefresh ? REFRESH_RATE : 0,
-  //     revalidateOnFocus: shouldRefresh,
-  //   }
-  // );
-
-  // useEffect(() => {
-  //   // if all tokens have been minted, stop pinging the api
-  //   const allMinted = tokenData?.tokensMinted.every((b: boolean) => b);
-  //   if (allMinted) {
-  //     setShouldRefresh(false);
-  //     setCompleted(true);
-  //   }
-  // }, [tokenData]);
+  const { data: tokenData } = useSWR(
+    "/api/minter/check-minted?" + tokenIdsParams,
+    fetcher,
+    {
+      refreshInterval: shouldRefresh ? REFRESH_RATE : 0,
+      revalidateOnFocus: shouldRefresh,
+    }
+  );
 
   useEffect(() => {
-    if (completed) containerRef?.current?.play();
-  }, [completed]);
-
-  const [exampleCompleted, setExampleCompleted] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setExampleCompleted([true, true, false, false, false, false]);
-      // setCompleted(true);
-    }, 3000);
-
-    const timer2 = setTimeout(() => {
-      setExampleCompleted([true, true, true, true, true, true]);
+    // if all tokens have been minted, stop pinging the api
+    const allMinted = tokenData?.tokensMinted.every((b: boolean) => b);
+    if (allMinted) {
+      setShouldRefresh(false);
       setCompleted(true);
       lottieRef?.current?.play();
-    }, 6000);
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(timer2);
-    };
-  }, []);
+      containerRef?.current?.play();
+    }
+  }, [tokenData]);
 
   return (
     <div>
@@ -158,7 +133,7 @@ const EventPage: NextPage<EventPageProps> = ({
                       name={data.name}
                       cloudinary_id={data.cloudinary_id}
                       progress={
-                        exampleCompleted[index]
+                        tokenData?.tokensMinted[index]
                           ? ThumbnailProgress.Completed
                           : ThumbnailProgress.NotCompleted
                       }
@@ -175,7 +150,7 @@ const EventPage: NextPage<EventPageProps> = ({
                     <Flicker bold>All keys unlocked</Flicker>
                   ) : (
                     <>
-                      Five keys - <Flicker bold>find them all</Flicker>
+                      {unlockText} - <Flicker bold>find them all</Flicker>
                     </>
                   )}
                 </Heading>
@@ -193,7 +168,7 @@ const EventPage: NextPage<EventPageProps> = ({
 
         <div
           className={clsx(
-            "flex justify-center items-center absolute top-0 left-0 w-full h-full z-10 bg-black/70 opacity-0 border-8 border-amber-400",
+            "flex justify-center items-center fixed top-0 left-0 w-full h-full z-10 bg-black/70 opacity-0 border-8 border-amber-400",
             completed && "animate-fadeInOut"
           )}
         >
@@ -230,6 +205,7 @@ export async function getStaticProps({
   return {
     props: {
       eventName: event.simple_name,
+      unlockText: event.unlock_text || "",
       puzzles,
       tokenIds,
     },
