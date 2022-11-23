@@ -40,6 +40,7 @@ export enum ThumbnailGridLayoutType {
 
 export enum ThumbnailProgress {
   Completed = 'completed',
+  Current = 'current',
   NotCompleted = 'notCompleted',
   Unknown = 'unknown',
 }
