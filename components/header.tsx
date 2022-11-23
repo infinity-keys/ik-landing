@@ -22,7 +22,10 @@ export const navigation = [
 
 export default function Header() {
   return (
-    <Disclosure as="header" className="header w-full sticky top-0 z-50 bg-blue">
+    <Disclosure
+      as="header"
+      className="header w-full sticky top-0 z-50 bg-blue shadow-lg"
+    >
       {({ open }) => (
         <>
           <div
