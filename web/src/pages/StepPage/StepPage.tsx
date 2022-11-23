@@ -14,12 +14,12 @@ import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 // @TODO: remove and replace
 const steps = [
-  { name: 'Step One', step: 1 },
-  { name: 'Step Two with a longer name', step: 2 },
-  { name: 'Step Threeeee', step: 3 },
-  { name: 'Step Four', step: 4 },
-  { name: 'The Penultimate', step: 5 },
-  { name: 'Six', step: 6 },
+  { name: 'Step 1', step: 1 },
+  { name: 'Step 2', step: 2 },
+  { name: 'Step 3', step: 3 },
+  { name: 'Step 4', step: 4 },
+  { name: 'Step 5', step: 5 },
+  { name: 'Step 6', step: 6 },
 ]
 
 const title = 'Puzzle Name'
@@ -66,7 +66,7 @@ const StepPage = () => {
             <p className="mb-8 text-4xl font-bold uppercase opacity-90">
               Puzzle Name Steps
             </p>
-            <div className="flex-cols flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
+            <div className="mx-auto flex max-w-6xl flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
               {steps.map(({ name, step }) => (
                 <ThumbnailMini
                   key={name}

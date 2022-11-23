@@ -16,10 +16,10 @@ const ThumbnailMini = ({ name, step, currentStep }: ThumbnailMiniProps) => {
   return (
     <Link
       className={clsx(
-        'relative flex items-center rounded-lg border bg-blue-800 py-3 px-4 shadow',
+        'flex w-full max-w-[136px] items-center rounded-lg border bg-blue-800 py-3 px-4 shadow sm:max-w-[164px]',
         {
-          'cursor-pointer border-yellow-400': status === 'solved',
-          'border-turquoise': status === 'current',
+          'cursor-pointer border-turquoise': status === 'solved',
+          'border-yellow-400': status === 'current',
           'border-transparent opacity-60 grayscale': status === 'locked',
         }
       )}
