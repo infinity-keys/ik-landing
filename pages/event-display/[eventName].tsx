@@ -1,30 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { NextPage } from "next";
+import Image from "next/image";
 import useSWR, { Fetcher } from "swr";
-import Lottie, { LottieRefCurrentProps } from "lottie-react";
-import cheers from "@lib/lottie.json";
-
-import Seo from "@components/seo";
-import { PublicPuzzlesQuery } from "@lib/generated/graphql";
-
-import { buildTokenIdParams, thumbnailData } from "@lib/utils";
 import clsx from "clsx";
-import EventThumbnail from "@components/event-thumbnail";
-import { ThumbnailGridLayoutType, ThumbnailProgress } from "@lib/types";
-import useCurrentWidth from "@hooks/useCurrentWidth";
-import { gqlApiSdk } from "@lib/server";
 import { isNumber } from "lodash";
-
-import { useCallback } from "react";
+import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import Particles from "react-tsparticles";
 import type { Container, Engine } from "tsparticles-engine";
 import { loadFull } from "tsparticles";
-import Heading from "@components/heading";
-import Flicker from "@components/flicker";
 
+import { PublicPuzzlesQuery } from "@lib/generated/graphql";
+import { gqlApiSdk } from "@lib/server";
 import { stars, fireworks } from "@lib/tsParticles";
-import Image from "next/image";
+import { ThumbnailGridLayoutType, ThumbnailProgress } from "@lib/types";
+import { buildTokenIdParams, thumbnailData } from "@lib/utils";
 
+import useCurrentWidth from "@hooks/useCurrentWidth";
+
+import EventThumbnail from "@components/event-thumbnail";
+import Flicker from "@components/flicker";
+import Heading from "@components/heading";
+import Seo from "@components/seo";
 export interface EventPageProps {
   puzzles?: PublicPuzzlesQuery["puzzles"];
   tokenIds: number[];
@@ -40,6 +36,8 @@ interface EventPageParams {
 
 // how often SWR should query the api route (in milliseconds)
 const REFRESH_RATE = 1000 * 30;
+const LOTTIE_ANIMATION_URL =
+  "https://assets6.lottiefiles.com/packages/lf20_IxoHFO.json";
 
 const fetcher: Fetcher<{ tokensMinted: boolean[] }, string> = (...args) =>
   fetch(...args).then((res) => res.json());
@@ -55,6 +53,7 @@ const EventPage: NextPage<EventPageProps> = ({
   const [shouldRefresh, setShouldRefresh] = useState(true);
   const tokenIdsParams = buildTokenIdParams(tokenIds);
   const [completed, setCompleted] = useState(false);
+  const [animationJson, setAnimationJson] = useState();
 
   const width = useCurrentWidth();
   const containerRef = useRef<Container>(null);
@@ -86,6 +85,22 @@ const EventPage: NextPage<EventPageProps> = ({
       containerRef?.current?.play();
     }
   }, [tokenData]);
+
+  useEffect(() => {
+    fetch(LOTTIE_ANIMATION_URL)
+      .then((res) => res.json())
+      .then((data) => setAnimationJson(data));
+  }, []);
+
+  // @TODO: remove after unlock animation approval
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCompleted(true);
+      lottieRef?.current?.play();
+      containerRef?.current?.play();
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div>
@@ -172,13 +187,15 @@ const EventPage: NextPage<EventPageProps> = ({
             completed && "animate-fadeInOut"
           )}
         >
-          <div className="w-full max-w-3xl">
-            <Lottie
-              animationData={cheers}
-              lottieRef={lottieRef}
-              loop={2}
-              autoplay={false}
-            />
+          <div className="w-full">
+            {animationJson && (
+              <Lottie
+                animationData={animationJson}
+                lottieRef={lottieRef}
+                loop={1}
+                autoplay={false}
+              />
+            )}
           </div>
         </div>
       </div>

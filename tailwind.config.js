@@ -41,7 +41,7 @@ module.exports = {
         flickerGlow:
           "flicker 2s forwards, glow 1.2s alternate-reverse infinite",
         fade: "fade .6s forwards",
-        fadeInOut: "fadeInOut 6s forwards",
+        fadeInOut: "fadeInOut 7s forwards",
         fadeOut: "fadeOut .6s forwards",
         fadeGlow: "fade .8s forwards, glow 1.2s alternate-reverse infinite",
         pulseGold: "pulseGold 2.5s infinite",
