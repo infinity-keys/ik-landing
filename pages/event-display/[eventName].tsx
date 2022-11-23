@@ -90,20 +90,11 @@ const EventPage: NextPage<EventPageProps> = ({
     }
   }, [tokenData]);
 
+  // gets the Lottie animation json file
   useEffect(() => {
     fetch(LOTTIE_ANIMATION_URL)
       .then((res) => res.json())
       .then((data) => setAnimationJson(data));
-  }, []);
-
-  // @TODO: remove after unlock animation approval
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setCompleted(true);
-      lottieRef?.current?.play();
-      containerRef?.current?.play();
-    }, 2000);
-    return () => clearTimeout(timer);
   }, []);
 
   return (
