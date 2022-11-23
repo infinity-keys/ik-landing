@@ -307,6 +307,8 @@ query EventDisplay($eventName: String!) {
   event_displays(where: { landing_route: { _eq: $eventName } }) {
     simple_name
     unlock_text
+    flicker_text
+    solid_text
     pack {
       pack_name
       pack_puzzles {

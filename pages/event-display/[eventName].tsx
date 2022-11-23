@@ -26,6 +26,8 @@ export interface EventPageProps {
   tokenIds: number[];
   eventName: string;
   unlockText: string;
+  flickerText: string;
+  solidText: string;
 }
 interface EventPageParams {
   params: {
@@ -45,6 +47,8 @@ const fetcher: Fetcher<{ tokensMinted: boolean[] }, string> = (...args) =>
 const EventPage: NextPage<EventPageProps> = ({
   eventName,
   unlockText,
+  flickerText,
+  solidText,
   puzzles,
   tokenIds,
 }) => {
@@ -165,18 +169,20 @@ const EventPage: NextPage<EventPageProps> = ({
                     <Flicker bold>All keys unlocked</Flicker>
                   ) : (
                     <>
-                      {unlockText} - <Flicker bold>find them all</Flicker>
+                      {solidText} <Flicker bold>{flickerText}</Flicker>
                     </>
                   )}
                 </Heading>
               </div>
-              <p
-                className={clsx("text-white mt-4 text-2xl", {
-                  invisible: !completed,
-                })}
-              >
-                Claim Your Free Metaverse Miami IPA
-              </p>
+              {unlockText && (
+                <p
+                  className={clsx("text-white mt-4 text-2xl", {
+                    invisible: !completed,
+                  })}
+                >
+                  {unlockText}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -223,6 +229,8 @@ export async function getStaticProps({
     props: {
       eventName: event.simple_name,
       unlockText: event.unlock_text || "",
+      flickerText: event.flicker_text || "",
+      solidText: event.solid_text || "",
       puzzles,
       tokenIds,
     },
