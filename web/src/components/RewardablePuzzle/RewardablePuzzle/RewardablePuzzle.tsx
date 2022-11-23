@@ -89,10 +89,19 @@ const Rewardable = ({ rewardable }: Props) => {
               <tr key={step.id}>
                 <th>Step {step.stepSortWeight}: </th>
                 <td>
+                  <div>Load custom steps component here.</div>
                   <span>
                     Challenge: {step.challenge} | Step success message:{' '}
                     {step.successMessage} | Solution character count:{' '}
-                    {step.stepSimpleText.solutionCharCount}
+                    {step.stepSimpleText.solutionCharCount} |
+                    <Link
+                      to={routes.puzzle({
+                        slug: 'firstgate',
+                        step: step.stepSortWeight,
+                      })}
+                    >
+                      Go to this step
+                    </Link>
                   </span>
                 </td>
               </tr>
