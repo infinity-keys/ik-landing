@@ -20,8 +20,8 @@ const Routes = () => {
         <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" />
         <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
         {/* Handle both /puzzle and /puzzle/1 routes. Place shorter route last to allow url creation to work */}
-        <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzle" />
-        <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzle" />
+        <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleStep" />
+        <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleLanding" />
       </Set>
       <Set wrap={SiteLayout}>
         <Route path="/" page={HomePage} name="home" />
