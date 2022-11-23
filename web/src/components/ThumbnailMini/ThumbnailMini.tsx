@@ -7,9 +7,15 @@ interface ThumbnailMiniProps {
   name: string
   step: number
   currentStep: number
+  href?: string
 }
 
-const ThumbnailMini = ({ name, step, currentStep }: ThumbnailMiniProps) => {
+const ThumbnailMini = ({
+  name,
+  step,
+  currentStep,
+  href,
+}: ThumbnailMiniProps) => {
   const status =
     step === currentStep ? 'current' : step < currentStep ? 'solved' : 'locked'
 
@@ -23,7 +29,7 @@ const ThumbnailMini = ({ name, step, currentStep }: ThumbnailMiniProps) => {
           'border-transparent opacity-60 grayscale': status === 'locked',
         }
       )}
-      to={status === 'solved' ? '/' : null}
+      to={status === 'solved' && href ? href : null}
     >
       <Avatar
         size={28}

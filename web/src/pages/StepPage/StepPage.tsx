@@ -73,6 +73,7 @@ const StepPage = () => {
                   name={name}
                   step={step}
                   currentStep={currentStep}
+                  // @TODO: add href for solved puzzles
                 />
               ))}
             </div>
