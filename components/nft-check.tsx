@@ -65,8 +65,8 @@ const NftCheck = ({
       <div className="pb-8">
         <Heading as="h2" visual="s">
           {nftApproval
-            ? "Congratulations. You may proceed."
-            : "You must own the correct NFT to pass"}
+            ? "Challenge complete!"
+            : "This challenge requires a digital key. Please connect your web3 wallet to unlock."}
         </Heading>
       </div>
 
@@ -91,7 +91,7 @@ const NftCheck = ({
 
       <div className="flex justify-center">
         <Button
-          text="Continue"
+          text="Unlock"
           disabled={!nftApproval}
           href={nftApproval ? `/${PUZZLE_SUCCESS_BASE}/${successRoute}` : ""}
         />
