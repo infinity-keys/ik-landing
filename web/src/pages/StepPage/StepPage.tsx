@@ -63,10 +63,10 @@ const StepPage = () => {
 
         {steps.length > 1 && (
           <div>
-            <p className="mb-8 text-4xl font-bold uppercase opacity-90">
+            <p className="mb-8 text-4xl font-bold opacity-90">
               Puzzle Name Steps
             </p>
-            <div className="mx-auto flex max-w-6xl flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
+            <div className="mx-auto flex max-w-6xl flex-wrap justify-center gap-4 pb-12 sm:flex-row md:flex-nowrap md:pb-20">
               {steps.map(({ name, step }) => (
                 <ThumbnailMini
                   key={name}
