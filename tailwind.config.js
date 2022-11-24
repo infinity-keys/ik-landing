@@ -36,13 +36,13 @@ module.exports = {
       },
       keyframes: {
         fade: {
-          "0%": { opacity: 0 },
-          "100%": { opacity: 1 },
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
         },
         flicker: {
-          "0%, 60%": { opacity: 0 },
-          "30%": { opacity: 0.8 },
-          "100%": { opacity: 1 },
+          "0%, 60%": { opacity: "0" },
+          "30%": { opacity: "0.8" },
+          "100%": { opacity: "1" },
         },
         glow: {
           "0%": { textShadow: "0 0 0px #3fccbb" },
