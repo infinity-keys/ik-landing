@@ -1,4 +1,9 @@
 import type { IOptions, RecursivePartial } from "tsparticles-engine";
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "../../tailwind.config.js";
+
+const fullConfig = resolveConfig(tailwindConfig) as any;
+const { white, black, turquoise } = fullConfig.theme?.colors;
 
 export const heroStars: RecursivePartial<IOptions> = {
   fps_limit: 60,
@@ -29,9 +34,9 @@ export const heroStars: RecursivePartial<IOptions> = {
     },
   },
   particles: {
-    color: { value: "#3FCCBB" },
+    color: { value: turquoise },
     line_linked: {
-      color: "#ffffff",
+      color: white,
       distance: 150,
       enable: false,
       opacity: 0.4,
@@ -59,7 +64,7 @@ export const heroStars: RecursivePartial<IOptions> = {
     },
     shape: {
       polygon: { nb_sides: 5 },
-      stroke: { color: "#000000", width: 0 },
+      stroke: { color: black, width: 0 },
       type: "circle",
     },
     size: {
@@ -69,7 +74,11 @@ export const heroStars: RecursivePartial<IOptions> = {
     },
   },
   polygon: {
-    draw: { enable: false, lineColor: "#ffffff", lineWidth: 0.5 },
+    draw: {
+      enable: false,
+      lineColor: white,
+      lineWidth: 0.5,
+    },
     move: { radius: 10 },
     scale: 1,
     type: "none",
