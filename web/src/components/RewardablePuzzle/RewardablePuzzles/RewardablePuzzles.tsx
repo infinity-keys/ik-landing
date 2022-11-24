@@ -78,7 +78,7 @@ const RewardablesList = ({ rewardables }: FindRewardables) => {
               <td>
                 <nav className="rw-table-actions">
                   <Link
-                    to={routes.puzzle({ slug: rewardable.slug })}
+                    to={routes.puzzleLanding({ slug: rewardable.slug })}
                     title={'Show rewardable ' + rewardable.slug + ' detail'}
                     className="rw-button rw-button-small"
                   >
