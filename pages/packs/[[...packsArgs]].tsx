@@ -81,7 +81,6 @@ export async function getStaticProps({
   });
 
   const numberOfPacks = count.aggregate?.count || 0;
-  console.log("numberOfPacks: ", numberOfPacks);
   const numOfPages = Math.ceil(numberOfPacks / limit);
 
   return {
