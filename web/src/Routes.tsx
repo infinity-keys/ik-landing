@@ -15,6 +15,12 @@ import SiteLayout from 'src/layouts/SiteLayout'
 const Routes = () => {
   return (
     <Router>
+      <Set wrap={ScaffoldLayout} title="UserPuzzles" titleTo="userPuzzles" buttonLabel="New UserPuzzle" buttonTo="newUserPuzzle">
+        <Route path="/user-puzzles/new" page={UserPuzzleNewUserPuzzlePage} name="newUserPuzzle" />
+        <Route path="/user-puzzles/{id}/edit" page={UserPuzzleEditUserPuzzlePage} name="editUserPuzzle" />
+        <Route path="/user-puzzles/{id}" page={UserPuzzleUserPuzzlePage} name="userPuzzle" />
+        <Route path="/user-puzzles" page={UserPuzzleUserPuzzlesPage} name="userPuzzles" />
+      </Set>
       <Set wrap={ScaffoldLayout} title="Puzzles" titleTo="puzzles" buttonLabel="New Puzzle" buttonTo="newPuzzle">
         <Route path="/puzzle/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newPuzzle" />
         <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" />
