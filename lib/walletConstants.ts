@@ -13,7 +13,7 @@ export const AVAX_MARKETPLACE_LINK = `https://joepegs.com/item/${CONTRACT_ADDRES
 export const ETH_CHAIN_ID = 1;
 export const CONTRACT_ADDRESS_ETH =
   "0x54b743D6055e3BBBF13eb2C748A3783516156e5B";
-export const ETH_RPC = `https://mainnet.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d`;
+export const ETH_RPC = `https://mainnet.infura.io/v3/5cf1694f9c344154b7902b466a7bc6e3`;
 export const ETH_MARKETPLACE_LINK = `https://opensea.io/assets/ethereum/${CONTRACT_ADDRESS_ETH}/`;
 
 // POLYGON PARAMS
@@ -26,7 +26,7 @@ export const POLYGON_MARKETPLACE_LINK = `https://opensea.io/assets/matic/${CONTR
 // OPTIMISM PARAMS
 export const OPTIMISM_CHAIN_ID = 10;
 export const OPTIMISM_RPC =
-  "https://optimism-mainnet.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d";
+  "https://optimism-mainnet.infura.io/v3/5cf1694f9c344154b7902b466a7bc6e3";
 export const CONTRACT_ADDRESS_OPTIMISM =
   "0x54b743D6055e3BBBF13eb2C748A3783516156e5B";
 export const OPTIMISM_MARKETPLACE_LINK = `https://quixotic.io/asset/${CONTRACT_ADDRESS_OPTIMISM}/`;
@@ -37,7 +37,7 @@ export const OPTIMISM_MARKETPLACE_LINK = `https://quixotic.io/asset/${CONTRACT_A
 // export const CONTRACT_ADDRESS_RINKEBY =
 //   "0x831684656038388D9361FfAacec6763003033eC4";
 // export const RINKEBYSCAN_TRACKER = "https://rinkeby.etherscan.io";
-// export const RINKEBY_RPC = `https://rinkeby.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d`;
+// export const RINKEBY_RPC = `https://rinkeby.infura.io/v3/5cf1694f9c344154b7902b466a7bc6e3`;
 // export const RINKEBY_MARKETPLACE_LINK = `https://testnets.opensea.io/assets/rinkeby/${CONTRACT_ADDRESS_RINKEBY}/`;
 
 //COMMENT RINKEBY HERE FOR PROD
