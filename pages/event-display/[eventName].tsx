@@ -38,6 +38,7 @@ interface EventPageParams {
 
 // how often SWR should query the api route (in milliseconds)
 const REFRESH_RATE = 1000 * 30;
+// our main "all tokens unlocked" animation
 const LOTTIE_ANIMATION_URL =
   "https://assets6.lottiefiles.com/packages/lf20_IxoHFO.json";
 
@@ -52,9 +53,6 @@ const EventPage: NextPage<EventPageProps> = ({
   puzzles,
   tokenIds,
 }) => {
-  // set to false when we no longer want to query the api route,
-  // (e.g. when all tokens have been minted)
-  const [shouldRefresh, setShouldRefresh] = useState(true);
   const tokenIdsParams = buildTokenIdParams(tokenIds);
   const [completed, setCompleted] = useState(false);
   const [animationJson, setAnimationJson] = useState();
@@ -63,8 +61,9 @@ const EventPage: NextPage<EventPageProps> = ({
   const containerRef = useRef<Container>(null);
   const lottieRef = useRef<LottieRefCurrentProps>(null);
 
+  // grid to list break point
   const layout =
-    width < 1280 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
+    width < 1024 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
 
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
@@ -74,8 +73,9 @@ const EventPage: NextPage<EventPageProps> = ({
     "/api/minter/check-minted?" + tokenIdsParams,
     fetcher,
     {
-      refreshInterval: shouldRefresh ? REFRESH_RATE : 0,
-      revalidateOnFocus: shouldRefresh,
+      // should stop refreshing after all tokens are minted
+      refreshInterval: !completed ? REFRESH_RATE : 0,
+      revalidateOnFocus: !completed,
     }
   );
 
@@ -83,7 +83,6 @@ const EventPage: NextPage<EventPageProps> = ({
     // if all tokens have been minted, stop pinging the api
     const allMinted = tokenData?.tokensMinted.every((b: boolean) => b);
     if (allMinted) {
-      setShouldRefresh(false);
       setCompleted(true);
       lottieRef?.current?.play();
       containerRef?.current?.play();
@@ -118,7 +117,13 @@ const EventPage: NextPage<EventPageProps> = ({
       <div className="p-4 min-h-screen max-w-[2160px] mx-auto flex flex-col">
         <div className="text-center">
           <span className="inline-block -ml-2 my-2">
-            <Image src="/logo.svg" width={140} height={77} alt="IK logo" />
+            <Image
+              src="/logo.svg"
+              width={140}
+              height={77}
+              alt="IK logo"
+              priority
+            />
           </span>
           <p className="text-white text-lg 2xl:text-2xl">
             There&apos;s treasure everywhere
@@ -129,7 +134,7 @@ const EventPage: NextPage<EventPageProps> = ({
           <div className="relative z-10">
             <ul
               className={clsx(
-                "grid grid-cols-1 gap-5 py-8 max-w-md mx-auto xl:mt-6 my-10 w-full xl:max-w-none xl:grid-cols-5"
+                "grid grid-cols-1 gap-5 py-8 max-w-md mx-auto xl:mt-6 my-10 w-full lg:max-w-none lg:grid-cols-5"
               )}
             >
               {puzzles?.map((puzzle, index) => {

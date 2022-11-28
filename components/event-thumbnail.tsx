@@ -77,7 +77,7 @@ const EventThumbnail = ({
             <div
               className={clsx(
                 "flex-shrink-0",
-                isGrid ? "w-32 h-32 mx-auto" : "w-14 h-14 mr-4"
+                isGrid ? "w-24 h-24 xl:w-32 xl:h-32 mx-auto" : "w-14 h-14 mr-4"
               )}
             >
               {cloudinary_id ? (
@@ -114,7 +114,7 @@ const EventThumbnail = ({
 
             <h3
               className={clsx(
-                "text-gray-200 text-sm 2xl:text-2xl font-medium",
+                "text-gray-200 text-base 2xl:text-2xl font-medium",
                 {
                   "mt-6": isGrid,
                 }
