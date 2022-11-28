@@ -1,4 +1,5 @@
-import CheckIcon from '@heroicons/react/24/solid/CheckIcon'
+import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon'
+import LockOpenIcon from '@heroicons/react/24/solid/LockOpenIcon'
 import { ThumbnailProgress } from '@infinity-keys/core'
 import Avatar from 'boring-avatars'
 import clsx from 'clsx'
@@ -34,11 +35,14 @@ const Thumbnail = ({
         }
       )}
     >
-      {progress === ThumbnailProgress.Completed && (
-        <div className="absolute top-0 right-0 flex h-6 w-6 translate-x-1/3 -translate-y-1/3 items-center justify-center rounded-full bg-turquoise/40  sm:top-2 sm:right-2 sm:translate-x-0 sm:translate-y-0">
-          <CheckIcon className="h-4 w-4 text-turquoise" />
-        </div>
-      )}
+      <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full ">
+        {progress === ThumbnailProgress.Completed ? (
+          <LockOpenIcon className="h-3 w-3 text-turquoise" />
+        ) : (
+          <LockClosedIcon className="h-3 w-3 text-turquoise" />
+        )}
+      </span>
+
       <Link to={url}>
         <div
           className={clsx(
