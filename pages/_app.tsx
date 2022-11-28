@@ -53,7 +53,7 @@ export const { chains, provider } = configureChains(
     chain.polygon,
     chain.optimism,
     // Leave out avalanche?
-    // avalancheChain
+    avalancheChain,
   ],
   [
     infuraProvider({ apiKey: process.env.INFURA_KEY }),

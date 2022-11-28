@@ -5,7 +5,6 @@ import { Disclosure } from "@headlessui/react";
 import Bars3Icon from "@heroicons/react/24/outline/Bars3Icon";
 import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon";
 import WalletButton from "./wallet-button";
-
 import { PACK_COLLECTION_BASE, PUZZLE_LANDING_BASE } from "@lib/constants";
 import Button from "./button";
 

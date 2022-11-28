@@ -6,8 +6,8 @@ import { ethers } from "ethers";
 export const AVAX_CHAIN_ID = 43114;
 export const CONTRACT_ADDRESS_AVAX =
   "0xB40fD6825a366081192d890d2760113C066761Ef";
-// export const AVAX_RPC = "https://api.avax.network/ext/bc/C/rpc";
-export const AVAX_RPC = "https://1rpc.io/avax/c";
+export const AVAX_RPC = "https://api.avax.network/ext/bc/C/rpc";
+// export const AVAX_RPC = "https://1rpc.io/avax/c";
 export const AVAX_MARKETPLACE_LINK = `https://joepegs.com/item/${CONTRACT_ADDRESS_AVAX}/`;
 
 // ETH PARAMS
@@ -88,36 +88,6 @@ export const RPCLookup: {
   [OPTIMISM_CHAIN_ID]: OPTIMISM_RPC,
 };
 
-const ethRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(ETH_RPC);
-const polygonRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(
-  POLYGON_RPC
-);
-const avaxRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(AVAX_RPC);
-const optimismRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(
-  OPTIMISM_RPC
-);
-
-export const contractLookup: {
-  [key: number]: ReturnType<typeof IKAchievementABI__factory.connect>;
-} = {
-  [ETH_CHAIN_ID]: IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_ETH,
-    ethRpcJsonRpcProvider
-  ),
-  [POLYGON_CHAIN_ID]: IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_POLYGON,
-    polygonRpcJsonRpcProvider
-  ),
-  [AVAX_CHAIN_ID]: IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_AVAX,
-    avaxRpcJsonRpcProvider
-  ),
-  [OPTIMISM_CHAIN_ID]: IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_OPTIMISM,
-    optimismRpcJsonRpcProvider
-  ),
-};
-
 export const marketplaceLookup: {
   [key: number]: string;
 } = {
@@ -126,6 +96,8 @@ export const marketplaceLookup: {
   [AVAX_CHAIN_ID]: AVAX_MARKETPLACE_LINK,
   [OPTIMISM_CHAIN_ID]: OPTIMISM_MARKETPLACE_LINK,
 };
+
+export const validChain = (chain: number) => chainIds.includes(chain);
 
 // RAINBOW KIT PARAMS
 export const avalancheChain: Chain = {
