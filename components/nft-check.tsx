@@ -73,7 +73,7 @@ const NftCheck = ({
       {!address && (
         <div className="pb-8 max-w-lg mx-auto flex justify-center">
           {mounted ? (
-            <Alert text="This puzzle relies on owning and NFT. Please connect your wallet." />
+            <Alert text="This puzzle relies on owning an NFT. Please connect your wallet." />
           ) : (
             <></>
           )}
