@@ -1,6 +1,12 @@
+import { useCallback } from "react";
 import { NextPage } from "next";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import type { Engine } from "tsparticles-engine";
 
 import { gqlApiSdk } from "@lib/server";
+import { heroStars } from "@lib/animations/hero-stars";
+import { PACK_COLLECTION_BASE } from "@lib/constants";
 
 import Wrapper from "@components/wrapper";
 import Puzzle from "@components/puzzle";
@@ -11,15 +17,14 @@ import Text from "@components/text";
 import Heading from "@components/heading";
 import Seo from "@components/seo";
 import Button from "@components/button";
+import Flicker from "@components/flicker";
 
-import { PACK_COLLECTION_BASE } from "@lib/constants";
 import LensLogo from "@components/svg/partner-logos/lens_logo-svg";
 import SagaLogo from "@components/svg/partner-logos/saga_logo-png";
 import SanLogo from "@components/svg/partner-logos/san_logo-png";
 import PnLogo from "@components/svg/partner-logos/pn_logo-png";
 import IslandersLogo from "@components/svg/partner-logos/islanders_logo-png";
 import RehashLogo from "@components/svg/partner-logos/rehash_logo-jpeg";
-import Flicker from "@components/flicker";
 
 interface PageProps {
   count: number;
@@ -27,6 +32,10 @@ interface PageProps {
 }
 
 const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadFull(engine);
+  }, []);
+
   const SuccessComponent = () => (
     <div
       data-cy="success_message_check"
@@ -41,40 +50,49 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
       <Seo />
 
       {/* Top puzzle */}
-      <div className="slice--top w-full radial-bg relative z-0 min-h-[calc(100vh-80px)] flex items-center">
-        <Section largePadding={false}>
-          <div className="text-center mb-8 md:mb-12">
-            <Heading as="h1" visual="l">
-              This is an Infinity Keys h
-              <Flicker once bold delay=".3s">
-                un
-              </Flicker>
-              t.
-            </Heading>
-          </div>
+      <div className="slice--top w-full radial-bg relative z-0 overflow-hidden min-h-[calc(100vh-80px)] flex items-center justify-center">
+        <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40" />
 
-          <Puzzle
-            puzzleId={puzzleId}
-            count={count}
-            SuccessComponent={SuccessComponent}
-            forwardOnFail={false}
-          />
-          <div className="text-white text-center mt-10 sm:text-xl md:text-2xl flicker-container">
-            <p className="leading-normal">
-              Find the c<Flicker delay=".6s">l</Flicker>
-              ues and enter the key.
-            </p>
-            <p className="leading-normal">
-              Hunt f<Flicker delay=".8s">o</Flicker>r{" "}
-              <Flicker delay="1s">c</Flicker>
-              lues and <Flicker delay="1.2s">k</Flicker>
-              eys anywhere.
-            </p>
-            <p className="leading-normal">(Try the colored letters!)</p>
-          </div>
+        <Particles
+          id="tsparticles-hero"
+          className="absolute top-0 left-0 h-full w-full z-0"
+          options={heroStars}
+          init={particlesInit}
+        />
 
-          <div className="absolute top-0 inset-x-0 h-40 pointer-events-none bg-gradient-to-b from-black opacity-40"></div>
-        </Section>
+        <div className="relative z-10">
+          <Section largePadding={false}>
+            <div className="text-center mb-8 md:mb-12">
+              <Heading as="h1" visual="l">
+                This is an Infinity Keys h
+                <Flicker once bold delay=".3s">
+                  un
+                </Flicker>
+                t.
+              </Heading>
+            </div>
+
+            <Puzzle
+              puzzleId={puzzleId}
+              count={count}
+              SuccessComponent={SuccessComponent}
+              forwardOnFail={false}
+            />
+            <div className="text-white text-center mt-10 sm:text-xl md:text-2xl flicker-container">
+              <p className="leading-normal">
+                Find the c<Flicker delay=".6s">l</Flicker>
+                ues and enter the key.
+              </p>
+              <p className="leading-normal">
+                Hunt f<Flicker delay=".8s">o</Flicker>r{" "}
+                <Flicker delay="1s">c</Flicker>
+                lues and <Flicker delay="1.2s">k</Flicker>
+                eys anywhere.
+              </p>
+              <p className="leading-normal">(Try the colored letters!)</p>
+            </div>
+          </Section>
+        </div>
       </div>
 
       {/* Bottom of puzzle */}

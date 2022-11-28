@@ -56,8 +56,8 @@ module.exports = {
           "50%": { transform: "scale(1)" },
         },
         fade: {
-          "0%": { opacity: 0 },
-          "100%": { opacity: 1 },
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
         },
         fadeInOut: {
           "0%, 100%": { opacity: 0 },
@@ -68,9 +68,9 @@ module.exports = {
           "100%": { opacity: 0 },
         },
         flicker: {
-          "0%, 60%": { opacity: 0 },
-          "30%": { opacity: 0.8 },
-          "100%": { opacity: 1 },
+          "0%, 60%": { opacity: "0" },
+          "30%": { opacity: "0.8" },
+          "100%": { opacity: "1" },
         },
         glow: {
           "0%": { textShadow: "0 0 0px #3fccbb" },
