@@ -1,9 +1,17 @@
+import clsx from 'clsx'
 import type {
   DeletePuzzleMutationVariables,
   FindStepsByPuzzleId,
 } from 'types/graphql'
 
-import { Link, routes, navigate, NavLink, useParams } from '@redwoodjs/router'
+import {
+  Link,
+  routes,
+  navigate,
+  NavLink,
+  useParams,
+  useMatch,
+} from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
@@ -32,7 +40,7 @@ const Puzzle = ({ puzzle }: Props) => {
     },
   })
 
-  const { slug } = useParams()
+  const { slug, step: stepParam } = useParams()
 
   const onDeleteClick = (id: DeletePuzzleMutationVariables['id']) => {
     if (confirm('Are you sure you want to delete puzzle ' + id + '?')) {
@@ -59,7 +67,12 @@ const Puzzle = ({ puzzle }: Props) => {
               <td>{puzzle.rewardableId}</td>
             </tr>
             {puzzle.steps.map((step) => (
-              <tr key={step.id}>
+              <tr
+                key={step.id}
+                className={clsx({
+                  'bg-red-400': step.stepSortWeight === parseInt(stepParam, 10),
+                })}
+              >
                 <th>Step {step.stepSortWeight}: </th>
                 <td>
                   <div>Load custom steps component here.</div>

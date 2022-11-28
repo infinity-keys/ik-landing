@@ -33,10 +33,6 @@ const Rewardable = ({ rewardable }: Props) => {
     },
   })
 
-  const matchInfo = useMatch('step')
-
-  console.log(matchInfo)
-
   const onDeleteClick = (id: DeleteRewardableMutationVariables['id']) => {
     if (confirm('Are you sure you want to delete rewardable ' + id + '?')) {
       deleteRewardable({ variables: { id } })
