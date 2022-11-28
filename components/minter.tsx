@@ -15,7 +15,7 @@ import {
   marketplaceLookup,
   OPTIMISM_CHAIN_ID,
 } from "@lib/walletConstants";
-import { validChain } from "@lib/utils";
+import { validChain } from "@lib/walletConstants";
 import { checkIfClaimed, verify, walletAgeChecker } from "@lib/fetchers";
 import { PACK_LANDING_BASE } from "@lib/constants";
 import { useIKMinter } from "@hooks/useIKMinter";

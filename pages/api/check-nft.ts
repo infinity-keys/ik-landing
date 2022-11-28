@@ -3,13 +3,15 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { ethers } from "ethers";
 import abi721 from "@nfts/balanceOf721.json";
 import abi1155 from "@nfts/balanceOf1155.json";
-import { chainIds, contractLookup, RPCLookup } from "@lib/walletConstants";
+import { chainIds, RPCLookup } from "@lib/walletConstants";
+
 import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 import { makeUserToken, verifyToken } from "@lib/jwt";
 import { IkJwt } from "@lib/types";
 import { routeLandingUrl, routeSuccessUrl } from "@lib/utils";
 import { uniq } from "lodash";
 import { gqlApiSdk } from "@lib/server";
+import { contractLookup } from "@lib/contractLookup";
 
 export default async function handler(
   req: NextApiRequest,
