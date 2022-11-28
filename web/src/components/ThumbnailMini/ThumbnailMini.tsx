@@ -1,5 +1,6 @@
 import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon'
 import LockOpenIcon from '@heroicons/react/24/solid/LockOpenIcon'
+import { ThumbnailProgress } from '@infinity-keys/core'
 import Avatar from 'boring-avatars'
 import clsx from 'clsx'
 
@@ -8,34 +9,30 @@ import { Link } from '@redwoodjs/router'
 interface ThumbnailMiniProps {
   name: string
   step: number
-  currentStep: number
+  progress: ThumbnailProgress
   href?: string
 }
 
-const ThumbnailMini = ({
-  name,
-  step,
-  currentStep,
-  href,
-}: ThumbnailMiniProps) => {
-  const status =
-    step === currentStep ? 'current' : step < currentStep ? 'solved' : 'locked'
-
+const ThumbnailMini = ({ name, step, progress, href }: ThumbnailMiniProps) => {
   return (
     <Link
       className={clsx(
         'relative flex w-full max-w-[10rem] items-center rounded-lg border bg-blue-800 py-3 px-3 text-center shadow lg:px-4',
-        status === 'current' ? 'border-turquoise' : 'border-transparent',
+        progress === ThumbnailProgress.Current
+          ? 'border-turquoise'
+          : 'border-transparent',
         {
           'cursor-pointer transition hover:border-turquoise':
-            status === 'solved',
-          'opacity-60 grayscale': status === 'locked',
+            progress === ThumbnailProgress.Completed,
+          'opacity-60 grayscale':
+            progress === ThumbnailProgress.NotCompleted ||
+            progress === ThumbnailProgress.Unknown,
         }
       )}
-      to={status === 'solved' && href ? href : null}
+      to={progress === ThumbnailProgress.Completed && href ? href : null}
     >
       <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full ">
-        {status === 'solved' ? (
+        {progress === ThumbnailProgress.Completed ? (
           <LockOpenIcon className="h-3 w-3 text-turquoise" />
         ) : (
           <LockClosedIcon className="h-3 w-3 text-turquoise" />

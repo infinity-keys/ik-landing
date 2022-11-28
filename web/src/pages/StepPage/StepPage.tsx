@@ -1,4 +1,4 @@
-import { buildUrlString } from '@infinity-keys/core'
+import { buildUrlString, getThumbnailProgress } from '@infinity-keys/core'
 import { LensShareButton } from '@infinity-keys/react-lens-share-button'
 
 import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown'
@@ -68,7 +68,10 @@ const StepPage = () => {
                   key={name}
                   name={name}
                   step={step}
-                  currentStep={currentStep}
+                  progress={getThumbnailProgress({
+                    currentStep,
+                    puzzleStep: step,
+                  })}
                   // @TODO: add href for solved puzzles
                 />
               ))}
