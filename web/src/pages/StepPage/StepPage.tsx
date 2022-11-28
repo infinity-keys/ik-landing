@@ -1,10 +1,9 @@
-import { buildUrlString } from '@infinity-keys/core'
+import { buildUrlString, getThumbnailProgress } from '@infinity-keys/core'
 import { LensShareButton } from '@infinity-keys/react-lens-share-button'
 
 import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown'
-import Heading from 'src/components/Heading/Heading'
-import Markdown from 'src/components/Markdown/Markdown'
 import Puzzle from 'src/components/Puzzle/Puzzle'
+import PuzzleHeader from 'src/components/PuzzleHeader/PuzzleHeader'
 import Seo from 'src/components/Seo/Seo'
 import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
 import TwitterShare from 'src/components/TwitterShare/TwitterShare'
@@ -40,14 +39,11 @@ const StepPage = () => {
       />
 
       <main className="puzzle__main w-full px-4 pt-10 text-center md:pt-20">
-        <div className="mx-auto max-w-prose pb-12">
-          <Heading as="h1">
-            {title} - {currentStep}
-          </Heading>
-          <div className="pt-4 text-lg">
-            <Markdown>{instructions}</Markdown>
-          </div>
-        </div>
+        <PuzzleHeader
+          name={title}
+          instructions={instructions}
+          currentStep={currentStep}
+        />
 
         <Puzzle puzzleId={'puzzleId'} count={5} />
 
@@ -72,7 +68,10 @@ const StepPage = () => {
                   key={name}
                   name={name}
                   step={step}
-                  currentStep={currentStep}
+                  progress={getThumbnailProgress({
+                    currentStep,
+                    puzzleStep: step,
+                  })}
                   // @TODO: add href for solved puzzles
                 />
               ))}
