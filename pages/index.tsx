@@ -26,7 +26,6 @@ import PnLogo from "@components/svg/partner-logos/pn_logo-png";
 import IslandersLogo from "@components/svg/partner-logos/islanders_logo-png";
 import RehashLogo from "@components/svg/partner-logos/rehash_logo-jpeg";
 
-console.log("hi");
 
 interface PageProps {
   count: number;
