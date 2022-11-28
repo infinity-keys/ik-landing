@@ -162,7 +162,14 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
               We work with projects to build new types of digital keys for
               engaging hunts and puzzles.
             </Text>
-            <Text>
+            <div className="mt-10 text-center sm:text-left">
+              <Button
+                text="Get in Touch"
+                variant="purple"
+                href="https://twitter.com/InfinityKeys"
+              />
+            </div>
+            {/* <Text>
               If you would like to use IK to increase engagement with your
               community, users, players, or fans, please reach out, and we will
               contact you directly.
@@ -170,6 +177,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
             <div className="mt-10 sm:mt-12 flex justify-center">
               <PartnerForm />
             </div>
+            */}
           </div>
         </div>
       </Section>
