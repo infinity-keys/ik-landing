@@ -1,13 +1,11 @@
 import {
   buildUrlString,
+  getThumbnailProgress,
   ThumbnailGridLayoutType,
-  ThumbnailProgress,
 } from '@infinity-keys/core'
 import { LensShareButton } from '@infinity-keys/react-lens-share-button'
 
-import CloudImage from 'src/components/CloudImage/CloudImage'
-import Heading from 'src/components/Heading/Heading'
-import Markdown from 'src/components/Markdown/Markdown'
+import PuzzleHeader from 'src/components/PuzzleHeader/PuzzleHeader'
 import Seo from 'src/components/Seo/Seo'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
 import TwitterShare from 'src/components/TwitterShare/TwitterShare'
@@ -45,22 +43,11 @@ const PuzzlePage = () => {
       />
 
       <main className="puzzle__main w-full px-4 pt-10 text-center md:pt-20">
-        <div className="flex justify-center pb-8">
-          <div className="rounded-md bg-black/20 p-2">
-            <CloudImage
-              height={240}
-              width={240}
-              id={cloudinary_id}
-              circle={false}
-            />
-          </div>
-        </div>
-        <div className="mx-auto max-w-prose pb-12">
-          <Heading as="h1">{title}</Heading>
-          <div className="pt-4 text-lg">
-            <Markdown>{instructions}</Markdown>
-          </div>
-        </div>
+        <PuzzleHeader
+          name={title}
+          instructions={instructions}
+          cloudinaryId={cloudinary_id}
+        />
 
         <ul className="align-stretch mx-auto my-10 flex flex-wrap justify-center gap-6 py-8 sm:mt-6 sm:max-w-none">
           {puzzles.map((data) => {
@@ -74,15 +61,12 @@ const PuzzlePage = () => {
                   isGrid={layout === ThumbnailGridLayoutType.Grid}
                   id={data.id}
                   name={data.name}
-                  url={data.url}
+                  href={data.url}
                   // cloudinary_id={data.cloudinary_id}
-                  progress={
-                    data.step === currentStep
-                      ? ThumbnailProgress.Current
-                      : data.step < currentStep
-                      ? ThumbnailProgress.Completed
-                      : ThumbnailProgress.NotCompleted
-                  }
+                  progress={getThumbnailProgress({
+                    currentStep,
+                    puzzleStep: data.step,
+                  })}
                 />
               </li>
             )
