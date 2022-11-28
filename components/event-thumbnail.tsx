@@ -2,7 +2,6 @@ import Avatar from "boring-avatars";
 import clsx from "clsx";
 import LockeClosedIcon from "@heroicons/react/24/solid/LockClosedIcon";
 
-import MinimalKeyLogo from "@components/svg/minimal-key-logo-svg";
 import CloudImage from "./cloud-image";
 import { ThumbnailProgress } from "@lib/types";
 import Sparkles from "./sparkles";
