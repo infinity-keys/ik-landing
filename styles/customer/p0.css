@@ -7,7 +7,18 @@
 .pack--probably-nothing-pack,
 .puzzle--p0-limited-supply,
 .puzzle--p0-genesis-inspection,
-.puzzle--p0-live-the-dream {
+.puzzle--p0-live-the-dream,
+.puzzle--p0-entrance-check-in,
+.puzzle--p0-meet-the-team,
+.puzzle--product-0-reveal,
+.puzzle--p0-social-share,
+.pack--p0-vip-party-pack,
+.puzzle--p0-reveal-video-virtual,
+.puzzle--social-code,
+.puzzle--p0-pack-check-virtual,
+.pack--p0-after-party-virtual-vip-pack,
+.puzzle--p0-pool-dive,
+.puzzle--p0-beach-run {
   /* Scoped vars */
   --p0-orange: #e4a23a;
   --p0-dark: #1e1e1e;
