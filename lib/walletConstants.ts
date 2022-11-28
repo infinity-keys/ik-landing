@@ -1,4 +1,4 @@
-import { Chain } from "@rainbow-me/rainbowkit";
+import type { Chain } from "@rainbow-me/rainbowkit";
 import { IKAchievementABI__factory } from "./generated/ethers-contract";
 import { ethers } from "ethers";
 
@@ -6,14 +6,16 @@ import { ethers } from "ethers";
 export const AVAX_CHAIN_ID = 43114;
 export const CONTRACT_ADDRESS_AVAX =
   "0xB40fD6825a366081192d890d2760113C066761Ef";
-export const AVAX_RPC = "https://api.avax.network/ext/bc/C/rpc";
+// export const AVAX_RPC = "https://api.avax.network/ext/bc/C/rpc";
+export const AVAX_RPC = "https://1rpc.io/avax/c";
 export const AVAX_MARKETPLACE_LINK = `https://joepegs.com/item/${CONTRACT_ADDRESS_AVAX}/`;
 
 // ETH PARAMS
 export const ETH_CHAIN_ID = 1;
 export const CONTRACT_ADDRESS_ETH =
   "0x54b743D6055e3BBBF13eb2C748A3783516156e5B";
-export const ETH_RPC = `https://mainnet.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d`;
+// export const ETH_RPC = `https://mainnet.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d`;
+export const ETH_RPC = `https://mainnet.infura.io/v3/5cf1694f9c344154b7902b466a7bc6e3`;
 export const ETH_MARKETPLACE_LINK = `https://opensea.io/assets/ethereum/${CONTRACT_ADDRESS_ETH}/`;
 
 // POLYGON PARAMS
@@ -25,8 +27,10 @@ export const POLYGON_MARKETPLACE_LINK = `https://opensea.io/assets/matic/${CONTR
 
 // OPTIMISM PARAMS
 export const OPTIMISM_CHAIN_ID = 10;
+// export const OPTIMISM_RPC =
+// "https://optimism-mainnet.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d";
 export const OPTIMISM_RPC =
-  "https://optimism-mainnet.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d";
+  "https://optimism-mainnet.infura.io/v3/5cf1694f9c344154b7902b466a7bc6e3";
 export const CONTRACT_ADDRESS_OPTIMISM =
   "0x54b743D6055e3BBBF13eb2C748A3783516156e5B";
 export const OPTIMISM_MARKETPLACE_LINK = `https://quixotic.io/asset/${CONTRACT_ADDRESS_OPTIMISM}/`;
@@ -84,24 +88,33 @@ export const RPCLookup: {
   [OPTIMISM_CHAIN_ID]: OPTIMISM_RPC,
 };
 
+const ethRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(ETH_RPC);
+const polygonRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(
+  POLYGON_RPC
+);
+const avaxRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(AVAX_RPC);
+const optimismRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(
+  OPTIMISM_RPC
+);
+
 export const contractLookup: {
   [key: number]: ReturnType<typeof IKAchievementABI__factory.connect>;
 } = {
   [ETH_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_ETH,
-    new ethers.providers.JsonRpcProvider(ETH_RPC)
+    ethRpcJsonRpcProvider
   ),
   [POLYGON_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_POLYGON,
-    new ethers.providers.JsonRpcProvider(POLYGON_RPC)
+    polygonRpcJsonRpcProvider
   ),
   [AVAX_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_AVAX,
-    new ethers.providers.JsonRpcProvider(AVAX_RPC)
+    avaxRpcJsonRpcProvider
   ),
   [OPTIMISM_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_OPTIMISM,
-    new ethers.providers.JsonRpcProvider(OPTIMISM_RPC)
+    optimismRpcJsonRpcProvider
   ),
 };
 
