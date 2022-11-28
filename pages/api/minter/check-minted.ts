@@ -1,7 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { chainIds, contractLookup } from "@lib/walletConstants";
+import { chainIds } from "@lib/walletConstants";
 import { castArray } from "lodash";
+import { contractLookup } from "@lib/contractLookup";
 
 export default async function handler(
   req: NextApiRequest,
