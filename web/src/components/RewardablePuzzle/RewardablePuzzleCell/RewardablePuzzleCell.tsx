@@ -19,17 +19,17 @@ export const QUERY = gql`
       orgId
       puzzle {
         id
-        steps {
-          id
-          stepSortWeight
-          challenge
-          successMessage
-          type
-          stepSimpleText {
-            stepId
-            solutionCharCount
-          }
-        }
+        # steps {
+        #   id
+        #   stepSortWeight
+        #   challenge
+        #   successMessage
+        #   type
+        #   stepSimpleText {
+        #     stepId
+        #     solutionCharCount
+        #   }
+        # }
       }
     }
   }

@@ -7,6 +7,7 @@ import { Link, routes, navigate, useMatch, NavLink } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
+import PuzzleStepsCell from 'src/components/Puzzle/PuzzleCell'
 import { checkboxInputTag, formatEnum, timeTag } from 'src/lib/formatters'
 
 const DELETE_REWARDABLE_MUTATION = gql`
@@ -89,28 +90,12 @@ const Rewardable = ({ rewardable }: Props) => {
               <td>{formatEnum(rewardable.type)}</td>
             </tr>
 
-            {rewardable.puzzle.steps.map((step) => (
-              <tr key={step.id}>
-                <th>Step {step.stepSortWeight}: </th>
-                <td>
-                  <div>Load custom steps component here.</div>
-                  <span>
-                    Challenge: {step.challenge} | Step success message:{' '}
-                    {step.successMessage} | Solution character count:{' '}
-                    {step.stepSimpleText.solutionCharCount} |
-                    <NavLink
-                      activeClassName="step-active"
-                      to={routes.puzzleStep({
-                        slug: 'firstgate',
-                        step: step.stepSortWeight,
-                      })}
-                    >
-                      Go to this step
-                    </NavLink>
-                  </span>
-                </td>
-              </tr>
-            ))}
+            <tr>
+              <th>Steps from cell</th>
+              <td>
+                <PuzzleStepsCell id={rewardable.puzzle.id} />
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
