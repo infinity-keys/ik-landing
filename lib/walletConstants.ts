@@ -13,7 +13,7 @@ export const ETH_CHAIN_ID = 1;
 export const CONTRACT_ADDRESS_ETH =
   "0x54b743D6055e3BBBF13eb2C748A3783516156e5B";
 // export const ETH_RPC = `https://mainnet.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d`;
-export const ETH_RPC = `https://mainnet.infura.io/v3/5cf1694f9c344154b7902b466a7bc6e3`;
+export const ETH_RPC = `https://mainnet.infura.io/v3/f836dbcdf7b54df9a815ba03d868a210`;
 export const ETH_MARKETPLACE_LINK = `https://opensea.io/assets/ethereum/${CONTRACT_ADDRESS_ETH}/`;
 
 // POLYGON PARAMS
@@ -28,7 +28,7 @@ export const OPTIMISM_CHAIN_ID = 10;
 // export const OPTIMISM_RPC =
 // "https://optimism-mainnet.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d";
 export const OPTIMISM_RPC =
-  "https://optimism-mainnet.infura.io/v3/5cf1694f9c344154b7902b466a7bc6e3";
+  "https://optimism-mainnet.infura.io/v3/f836dbcdf7b54df9a815ba03d868a210";
 export const CONTRACT_ADDRESS_OPTIMISM =
   "0x54b743D6055e3BBBF13eb2C748A3783516156e5B";
 export const OPTIMISM_MARKETPLACE_LINK = `https://quixotic.io/asset/${CONTRACT_ADDRESS_OPTIMISM}/`;
