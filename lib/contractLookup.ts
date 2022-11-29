@@ -2,18 +2,29 @@ import { ethers } from "ethers";
 import { IKAchievementABI__factory } from "./generated/ethers-contract";
 import {
   AVAX_CHAIN_ID,
-  AVAX_RPC,
   CONTRACT_ADDRESS_AVAX,
   CONTRACT_ADDRESS_ETH,
   CONTRACT_ADDRESS_OPTIMISM,
   CONTRACT_ADDRESS_POLYGON,
   ETH_CHAIN_ID,
-  ETH_RPC,
   OPTIMISM_CHAIN_ID,
-  OPTIMISM_RPC,
   POLYGON_CHAIN_ID,
-  POLYGON_RPC,
 } from "./walletConstants";
+
+export const AVAX_RPC = "https://api.avax.network/ext/bc/C/rpc";
+export const ETH_RPC = `https://mainnet.infura.io/v3/9d0cdbccaa254f32812c75779eed3b32`;
+export const OPTIMISM_RPC =
+  "https://optimism-mainnet.infura.io/v3/9d0cdbccaa254f32812c75779eed3b32";
+export const POLYGON_RPC = "https://polygon-rpc.com";
+
+export const chainRPCLookup: {
+  [key: number]: string;
+} = {
+  [ETH_CHAIN_ID]: ETH_RPC,
+  [POLYGON_CHAIN_ID]: POLYGON_RPC,
+  [AVAX_CHAIN_ID]: AVAX_RPC,
+  [OPTIMISM_CHAIN_ID]: OPTIMISM_RPC,
+};
 
 const ethRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(ETH_RPC);
 const polygonRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(
