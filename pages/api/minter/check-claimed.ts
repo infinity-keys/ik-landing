@@ -44,11 +44,30 @@ export default async function handler(
   }
 
   try {
-    const contractPromises = chainIds.map((chainId) =>
-      contractLookup[chainId].checkIfClaimed(tokenId, account)
-    );
+    const contractPromises = chainIds.map((chainId) => {
+      return contractLookup[chainId].checkIfClaimed(tokenId, account);
+    });
+
+    // Debug below, remove when stable
+
+    // const avax = contractLookup[43114].checkIfClaimed(tokenId, account);
+    // const poly = contractLookup[137].checkIfClaimed(tokenId, account);
+    // const eth = contractLookup[1].checkIfClaimed(tokenId, account);
+    // const opt = contractLookup[10].checkIfClaimed(tokenId, account);
+
+    // const contractPromises = [
+    //   // avax
+    //   avax,
+    //   // poly
+    //   poly,
+    //   // eth
+    //   eth,
+    //   // opt
+    //   opt,
+    // ];
 
     const contractClaims = await Promise.all(contractPromises);
+
     const claimed = contractClaims.some(Boolean);
 
     const chainClaimed = claimed

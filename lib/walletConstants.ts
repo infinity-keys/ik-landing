@@ -12,8 +12,7 @@ export const AVAX_MARKETPLACE_LINK = `https://joepegs.com/item/${CONTRACT_ADDRES
 export const ETH_CHAIN_ID = 1;
 export const CONTRACT_ADDRESS_ETH =
   "0x54b743D6055e3BBBF13eb2C748A3783516156e5B";
-// export const ETH_RPC = `https://mainnet.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d`;
-export const ETH_RPC = `https://mainnet.infura.io/v3/dee2f0c5ce1b409a9eab68a33a04e87e`;
+export const ETH_RPC = `https://mainnet.infura.io/v3/9d0cdbccaa254f32812c75779eed3b32`;
 export const ETH_MARKETPLACE_LINK = `https://opensea.io/assets/ethereum/${CONTRACT_ADDRESS_ETH}/`;
 
 // POLYGON PARAMS
@@ -25,10 +24,8 @@ export const POLYGON_MARKETPLACE_LINK = `https://opensea.io/assets/matic/${CONTR
 
 // OPTIMISM PARAMS
 export const OPTIMISM_CHAIN_ID = 10;
-// export const OPTIMISM_RPC =
-// "https://optimism-mainnet.infura.io/v3/c10d222a5bae4a8e97fad0915b06ff5d";
 export const OPTIMISM_RPC =
-  "https://optimism-mainnet.infura.io/v3/dee2f0c5ce1b409a9eab68a33a04e87e";
+  "https://optimism-mainnet.infura.io/v3/9d0cdbccaa254f32812c75779eed3b32";
 export const CONTRACT_ADDRESS_OPTIMISM =
   "0x54b743D6055e3BBBF13eb2C748A3783516156e5B";
 export const OPTIMISM_MARKETPLACE_LINK = `https://quixotic.io/asset/${CONTRACT_ADDRESS_OPTIMISM}/`;
