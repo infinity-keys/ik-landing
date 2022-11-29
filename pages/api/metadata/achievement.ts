@@ -1,10 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { gqlApiSdk } from "@lib/server";
-import { IKAchievementABI__factory } from "@lib/generated/ethers-contract";
-import { CONTRACT_ADDRESS_POLYGON, POLYGON_RPC } from "@lib/walletConstants";
-import { ethers } from "ethers";
-
-const ethersJsonRpcProvider = new ethers.providers.JsonRpcProvider(POLYGON_RPC);
 
 export default async function handler(
   req: NextApiRequest,
