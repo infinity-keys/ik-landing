@@ -302,3 +302,13 @@ query UserExist($userId: uuid!) {
     user_id
   }
 }
+
+# Used on backend to make sure token exists before doing chain lookup
+query CheckNftOrPackForToken($tokenIdInt: Int!, $tokenIdNum: numeric!) {
+  nfts(where: { tokenId: { _eq: $tokenIdInt } }) {
+    tokenId
+  }
+  packs(where: { nftId: { _eq: $tokenIdNum } }) {
+    nftId
+  }
+}
