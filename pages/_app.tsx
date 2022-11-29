@@ -56,7 +56,6 @@ export const { chains, provider } = configureChains(
     avalancheChain,
   ],
   [
-    infuraProvider({ apiKey: process.env.INFURA_KEY }),
     publicProvider(),
     jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) }),
   ]
