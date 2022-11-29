@@ -39,7 +39,7 @@ export default async function handler(
   const existsPacks = results.packs.some((pack) => !!pack.nftId);
 
   // The nft token id sent in does not exist in our
-  if (!existsNfts || !existsPacks) {
+  if (!existsNfts && !existsPacks) {
     return res.status(404).end();
   }
 
