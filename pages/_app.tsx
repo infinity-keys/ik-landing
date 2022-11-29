@@ -10,6 +10,7 @@ import { WagmiConfig } from "wagmi";
 import { chain, configureChains, createClient } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
+import { infuraProvider } from "wagmi/providers/infura";
 import { getDefaultWallets } from "@rainbow-me/rainbowkit";
 import loMerge from "lodash/merge";
 import CookieConsentBanner from "@components/cookie-consent";
@@ -55,6 +56,7 @@ export const { chains, provider } = configureChains(
     avalancheChain,
   ],
   [
+    infuraProvider(),
     publicProvider(),
     jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) }),
   ]
