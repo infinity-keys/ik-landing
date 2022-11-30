@@ -21,8 +21,6 @@ export default async function handler(
 
   const provider = providerLookup[chainIdInt];
 
-  // const provider = new ethers.providers.JsonRpcProvider(rpcURL);
-
   if (!provider) {
     throw new Error("Cannot instantiate provider for some reason.");
   }
