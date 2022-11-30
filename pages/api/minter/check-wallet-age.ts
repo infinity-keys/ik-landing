@@ -1,7 +1,12 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { chainRPCLookup } from "@lib/contractLookup";
+import { providerLookup } from "@lib/contractLookup";
 import { ethers } from "ethers";
+
+const etherscanProvider = new ethers.providers.EtherscanProvider(
+  undefined,
+  process.env.ETHERSCAN_API_KEY
+);
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,19 +19,22 @@ export default async function handler(
 
   const chainIdInt = parseInt(chainId, 10);
 
-  const rpcURL = chainRPCLookup[chainIdInt];
+  const provider = providerLookup[chainIdInt];
 
-  const provider = new ethers.providers.JsonRpcProvider(rpcURL);
+  if (!provider) {
+    throw new Error("Cannot instantiate provider for some reason.");
+  }
+
   const walletTxCount = await provider.getTransactionCount(account);
-  if (walletTxCount === 0) return res.json({ approved: false }); // ETH will blow up if 0
+
+  if (walletTxCount < 2) {
+    console.log(`Wallet ${account} has less than 2 transactions.`);
+    return res.json({ approved: false });
+  } // ETH will blow up if 0
 
   // Trying to work this, but currently only eth has this etherscan provider
   // that can be called to get history, and check the oldest block of account
   if (chainIdInt === 1) {
-    const etherscanProvider = new ethers.providers.EtherscanProvider(
-      undefined,
-      process.env.ETHERSCAN_API_KEY
-    );
     const oldestTransaction = (await etherscanProvider.getHistory(account))[0]
       .blockNumber;
     const currentBlock = await provider.getBlockNumber();
