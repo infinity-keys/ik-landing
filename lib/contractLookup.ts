@@ -37,6 +37,13 @@ const setUpProvider = (
   return provider;
 };
 
+export const providerLookup: { [key: number]: Provider } = {
+  [POLYGON_CHAIN_ID]: setUpProvider(polygonProvider, POLYGON_RPC),
+  [AVAX_CHAIN_ID]: setUpProvider(avaxProvider, AVAX_RPC),
+  [ETH_CHAIN_ID]: setUpProvider(ethProvider, ETH_RPC),
+  [OPTIMISM_CHAIN_ID]: setUpProvider(optimismProvider, OPTIMISM_RPC),
+};
+
 export const contractLookup: {
   [key: number]: ReturnType<typeof IKAchievementABI__factory.connect>;
 } = {
