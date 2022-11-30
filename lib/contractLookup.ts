@@ -21,40 +21,62 @@ export const chainRPCLookup: {
   [OPTIMISM_CHAIN_ID]: OPTIMISM_RPC,
 };
 
-const ethRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider({
-  url: ETH_RPC,
-  headers: {
-    Origin: "clb3yaxak0001356n8iawecm4.infinitykeys.io",
-  },
-});
-const optimismRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider({
-  url: OPTIMISM_RPC,
-  headers: {
-    Origin: "clb3yaxak0001356n8iawecm4.infinitykeys.io",
-  },
-});
-const polygonRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(
-  POLYGON_RPC
-);
-const avaxRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(AVAX_RPC);
+let ethProvider: ethers.providers.JsonRpcProvider | undefined = undefined;
+let optimismProvider: ethers.providers.JsonRpcProvider | undefined = undefined;
+let polygonProvider: ethers.providers.JsonRpcProvider | undefined = undefined;
+let avaxProvider: ethers.providers.JsonRpcProvider | undefined = undefined;
+
+const ethRpcJsonRpcProvider = () => {
+  if (ethProvider) return ethProvider;
+  ethProvider = new ethers.providers.JsonRpcProvider({
+    url: ETH_RPC,
+    headers: {
+      Origin: "clb3yaxak0001356n8iawecm4.infinitykeys.io",
+    },
+  });
+  return ethProvider;
+};
+
+const optimismRpcJsonRpcProvider = () => {
+  if (optimismProvider) return optimismProvider;
+  optimismProvider = new ethers.providers.JsonRpcProvider({
+    url: OPTIMISM_RPC,
+    headers: {
+      Origin: "clb3yaxak0001356n8iawecm4.infinitykeys.io",
+    },
+  });
+  return optimismProvider;
+};
+
+const polygonRpcJsonRpcProvider = () => {
+  if (polygonProvider) return polygonProvider;
+  polygonProvider = new ethers.providers.JsonRpcProvider(POLYGON_RPC);
+  return polygonProvider;
+};
+
+const avaxRpcJsonRpcProvider = () => {
+  if (avaxProvider) return avaxProvider;
+  avaxProvider = new ethers.providers.JsonRpcProvider(AVAX_RPC);
+  return avaxProvider;
+};
 
 export const contractLookup: {
   [key: number]: ReturnType<typeof IKAchievementABI__factory.connect>;
 } = {
   [ETH_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_ETH,
-    ethRpcJsonRpcProvider
+    ethRpcJsonRpcProvider()
   ),
   [POLYGON_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_POLYGON,
-    polygonRpcJsonRpcProvider
+    polygonRpcJsonRpcProvider()
   ),
   [AVAX_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_AVAX,
-    avaxRpcJsonRpcProvider
+    avaxRpcJsonRpcProvider()
   ),
   [OPTIMISM_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_OPTIMISM,
-    optimismRpcJsonRpcProvider
+    optimismRpcJsonRpcProvider()
   ),
 };
