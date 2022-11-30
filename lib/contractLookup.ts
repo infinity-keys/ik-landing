@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import { IKAchievementABI__factory } from "./generated/ethers-contract";
+import { AVAX_RPC, ETH_RPC, OPTIMISM_RPC, POLYGON_RPC } from "./rpc";
 import {
   AVAX_CHAIN_ID,
   CONTRACT_ADDRESS_AVAX,
@@ -10,12 +11,6 @@ import {
   OPTIMISM_CHAIN_ID,
   POLYGON_CHAIN_ID,
 } from "./walletConstants";
-
-export const AVAX_RPC = "https://api.avax.network/ext/bc/C/rpc";
-export const ETH_RPC = `https://mainnet.infura.io/v3/05e9523d724744c0b1f398a7ebcb602e`;
-export const OPTIMISM_RPC =
-  "https://optimism-mainnet.infura.io/v3/05e9523d724744c0b1f398a7ebcb602e";
-export const POLYGON_RPC = "https://polygon-rpc.com";
 
 export const chainRPCLookup: {
   [key: number]: string;

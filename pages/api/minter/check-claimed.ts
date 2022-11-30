@@ -1,10 +1,21 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { chainIds } from "@lib/walletConstants";
-import { contractLookup } from "@lib/contractLookup";
 import { gqlApiSdk } from "@lib/server";
 import { IK_ID_COOKIE } from "@lib/constants";
 import { verifyToken } from "@lib/jwt";
+import { IKAchievementABI__factory } from "@lib/generated/ethers-contract";
+import { ethers } from "ethers";
+import { AVAX_RPC, ETH_RPC, OPTIMISM_RPC, POLYGON_RPC } from "@lib/rpc";
+import {
+  AVAX_CHAIN_ID,
+  CONTRACT_ADDRESS_POLYGON,
+  POLYGON_CHAIN_ID,
+  CONTRACT_ADDRESS_AVAX,
+  CONTRACT_ADDRESS_ETH,
+  ETH_CHAIN_ID,
+  CONTRACT_ADDRESS_OPTIMISM,
+  OPTIMISM_CHAIN_ID,
+} from "@lib/walletConstants";
 
 export default async function handler(
   req: NextApiRequest,
@@ -44,39 +55,37 @@ export default async function handler(
   }
 
   try {
-    const contractPromises = chainIds.map((chainId) => {
-      return contractLookup[chainId].checkIfClaimed(tokenId, account);
-    });
+    //POLYGON
+    const polygonContract = IKAchievementABI__factory.connect(
+      CONTRACT_ADDRESS_POLYGON,
+      new ethers.providers.JsonRpcProvider(POLYGON_RPC)
+    );
+    const polygonClaim = await polygonContract.checkIfClaimed(tokenId, account);
+    if (polygonClaim) return res.json({ polygonClaim, POLYGON_CHAIN_ID });
 
-    // Debug below, remove when stable
+    //AVAX
+    const avaxContract = IKAchievementABI__factory.connect(
+      CONTRACT_ADDRESS_AVAX,
+      new ethers.providers.JsonRpcProvider(AVAX_RPC)
+    );
+    const avaxClaim = await avaxContract.checkIfClaimed(tokenId, account);
+    if (avaxClaim) return res.json({ avaxClaim, AVAX_CHAIN_ID });
 
-    // const avax = contractLookup[43114].checkIfClaimed(tokenId, account);
-    // const poly = contractLookup[137].checkIfClaimed(tokenId, account);
-    // const eth = contractLookup[1].checkIfClaimed(tokenId, account);
-    // const opt = contractLookup[10].checkIfClaimed(tokenId, account);
+    //ETH
+    const ethContract = IKAchievementABI__factory.connect(
+      CONTRACT_ADDRESS_ETH,
+      new ethers.providers.JsonRpcProvider(ETH_RPC)
+    );
+    const ethClaim = await ethContract.checkIfClaimed(tokenId, account);
+    if (ethClaim) return res.json({ ethClaim, ETH_CHAIN_ID });
 
-    // const contractPromises = [
-    //   // avax
-    //   avax,
-    //   // poly
-    //   poly,
-    //   // eth
-    //   eth,
-    //   // opt
-    //   opt,
-    // ];
-
-    const contractClaims = await Promise.all(contractPromises);
-
-    const claimed = contractClaims.some(Boolean);
-
-    const chainClaimed = claimed
-      ? chainIds[
-          contractClaims.flatMap((bool, index) => (bool ? index : []))[0]
-        ]
-      : 0;
-
-    return res.json({ claimed, chainClaimed });
+    //Optimism
+    const optContract = IKAchievementABI__factory.connect(
+      CONTRACT_ADDRESS_OPTIMISM,
+      new ethers.providers.JsonRpcProvider(OPTIMISM_RPC)
+    );
+    const optClaim = await optContract.checkIfClaimed(tokenId, account);
+    if (optClaim) return res.json({ optClaim, OPTIMISM_CHAIN_ID });
   } catch (error) {
     console.log(error);
     return res.status(500).end();
