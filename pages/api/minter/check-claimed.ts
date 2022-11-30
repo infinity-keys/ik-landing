@@ -35,8 +35,10 @@ export default async function handler(
     tokenIdNum: tokenIdAsInt,
   });
 
-  const existsNfts = results.nfts.some((nft) => !!nft.tokenId);
-  const existsPacks = results.packs.some((pack) => !!pack.nftId);
+  const existsNfts = results.nfts.some((nft) => nft.tokenId >= 0);
+  const existsPacks = results.packs.some(
+    (pack) => parseInt(pack.nftId, 10) >= 0
+  );
 
   // The nft token id sent in does not exist in our
   if (!existsNfts && !existsPacks) {
