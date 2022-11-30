@@ -29,7 +29,10 @@ export default async function handler(
 
   const walletTxCount = await provider.getTransactionCount(account);
 
-  if (walletTxCount === 0) return res.json({ approved: false }); // ETH will blow up if 0
+  if (walletTxCount === 0) {
+    console.log(`Wallet ${account} is not at least 24 hours old.`);
+    return res.json({ approved: false });
+  } // ETH will blow up if 0
 
   // Trying to work this, but currently only eth has this etherscan provider
   // that can be called to get history, and check the oldest block of account
