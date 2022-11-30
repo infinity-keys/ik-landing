@@ -3,19 +3,13 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { gqlApiSdk } from "@lib/server";
 import { IK_ID_COOKIE } from "@lib/constants";
 import { verifyToken } from "@lib/jwt";
-import { IKAchievementABI__factory } from "@lib/generated/ethers-contract";
-import { ethers } from "ethers";
-import { AVAX_RPC, ETH_RPC, OPTIMISM_RPC, POLYGON_RPC } from "@lib/rpc";
 import {
   AVAX_CHAIN_ID,
-  CONTRACT_ADDRESS_POLYGON,
   POLYGON_CHAIN_ID,
-  CONTRACT_ADDRESS_AVAX,
-  CONTRACT_ADDRESS_ETH,
   ETH_CHAIN_ID,
-  CONTRACT_ADDRESS_OPTIMISM,
   OPTIMISM_CHAIN_ID,
 } from "@lib/walletConstants";
+import { contractLookup } from "@lib/contractLookup";
 
 export default async function handler(
   req: NextApiRequest,
@@ -58,10 +52,8 @@ export default async function handler(
 
   try {
     //POLYGON
-    const polygonContract = IKAchievementABI__factory.connect(
-      CONTRACT_ADDRESS_POLYGON,
-      new ethers.providers.JsonRpcProvider(POLYGON_RPC)
-    );
+    const polygonContract = contractLookup[POLYGON_CHAIN_ID];
+
     const polygonClaim = await polygonContract.checkIfClaimed(tokenId, account);
     if (polygonClaim)
       return res.json({
@@ -70,28 +62,19 @@ export default async function handler(
       });
 
     //AVAX
-    const avaxContract = IKAchievementABI__factory.connect(
-      CONTRACT_ADDRESS_AVAX,
-      new ethers.providers.JsonRpcProvider(AVAX_RPC)
-    );
+    const avaxContract = contractLookup[AVAX_CHAIN_ID];
     const avaxClaim = await avaxContract.checkIfClaimed(tokenId, account);
     if (avaxClaim)
       return res.json({ claimed: avaxClaim, chainClaimed: AVAX_CHAIN_ID });
 
     //ETH
-    const ethContract = IKAchievementABI__factory.connect(
-      CONTRACT_ADDRESS_ETH,
-      new ethers.providers.JsonRpcProvider(ETH_RPC)
-    );
+    const ethContract = contractLookup[ETH_CHAIN_ID];
     const ethClaim = await ethContract.checkIfClaimed(tokenId, account);
     if (ethClaim)
       return res.json({ claimed: ethClaim, chainClaimed: ETH_CHAIN_ID });
 
     //Optimism
-    const optContract = IKAchievementABI__factory.connect(
-      CONTRACT_ADDRESS_OPTIMISM,
-      new ethers.providers.JsonRpcProvider(OPTIMISM_RPC)
-    );
+    const optContract = contractLookup[OPTIMISM_CHAIN_ID];
     const optClaim = await optContract.checkIfClaimed(tokenId, account);
     if (optClaim)
       return res.json({ claimed: optClaim, chainClaimed: OPTIMISM_CHAIN_ID });
