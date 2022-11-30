@@ -21,14 +21,22 @@ export const chainRPCLookup: {
   [OPTIMISM_CHAIN_ID]: OPTIMISM_RPC,
 };
 
-const ethRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(ETH_RPC);
+const ethRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider({
+  url: ETH_RPC,
+  headers: {
+    Origin: "clb3yaxak0001356n8iawecm4.infinitykeys.io",
+  },
+});
+const optimismRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider({
+  url: OPTIMISM_RPC,
+  headers: {
+    Origin: "clb3yaxak0001356n8iawecm4.infinitykeys.io",
+  },
+});
 const polygonRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(
   POLYGON_RPC
 );
 const avaxRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(AVAX_RPC);
-const optimismRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(
-  OPTIMISM_RPC
-);
 
 export const contractLookup: {
   [key: number]: ReturnType<typeof IKAchievementABI__factory.connect>;
