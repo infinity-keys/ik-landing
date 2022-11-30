@@ -61,7 +61,11 @@ export default async function handler(
       new ethers.providers.JsonRpcProvider(POLYGON_RPC)
     );
     const polygonClaim = await polygonContract.checkIfClaimed(tokenId, account);
-    if (polygonClaim) return res.json({ polygonClaim, POLYGON_CHAIN_ID });
+    if (polygonClaim)
+      return res.json({
+        claimed: polygonClaim,
+        chainClaimed: POLYGON_CHAIN_ID,
+      });
 
     //AVAX
     const avaxContract = IKAchievementABI__factory.connect(
@@ -69,7 +73,8 @@ export default async function handler(
       new ethers.providers.JsonRpcProvider(AVAX_RPC)
     );
     const avaxClaim = await avaxContract.checkIfClaimed(tokenId, account);
-    if (avaxClaim) return res.json({ avaxClaim, AVAX_CHAIN_ID });
+    if (avaxClaim)
+      return res.json({ claimed: avaxClaim, chainClaimed: AVAX_CHAIN_ID });
 
     //ETH
     const ethContract = IKAchievementABI__factory.connect(
@@ -77,7 +82,8 @@ export default async function handler(
       new ethers.providers.JsonRpcProvider(ETH_RPC)
     );
     const ethClaim = await ethContract.checkIfClaimed(tokenId, account);
-    if (ethClaim) return res.json({ ethClaim, ETH_CHAIN_ID });
+    if (ethClaim)
+      return res.json({ claimed: ethClaim, chainClaimed: ETH_CHAIN_ID });
 
     //Optimism
     const optContract = IKAchievementABI__factory.connect(
@@ -85,7 +91,10 @@ export default async function handler(
       new ethers.providers.JsonRpcProvider(OPTIMISM_RPC)
     );
     const optClaim = await optContract.checkIfClaimed(tokenId, account);
-    if (optClaim) return res.json({ optClaim, OPTIMISM_CHAIN_ID });
+    if (optClaim)
+      return res.json({ claimed: optClaim, chainClaimed: OPTIMISM_CHAIN_ID });
+
+    return res.json({ claimed: false, chainClaimed: 0 });
   } catch (error) {
     console.log(error);
     return res.status(500).end();
