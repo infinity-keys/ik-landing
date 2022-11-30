@@ -29,8 +29,8 @@ export default async function handler(
 
   const walletTxCount = await provider.getTransactionCount(account);
 
-  if (walletTxCount === 0) {
-    console.log(`Wallet ${account} is not at least 24 hours old.`);
+  if (walletTxCount < 2) {
+    console.log(`Wallet ${account} has less than 2 transactions.`);
     return res.json({ approved: false });
   } // ETH will blow up if 0
 
