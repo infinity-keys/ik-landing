@@ -1,5 +1,7 @@
+import { ConnectionInfo } from "@ethersproject/web";
 import { ethers } from "ethers";
 import { IKAchievementABI__factory } from "./generated/ethers-contract";
+import { AVAX_RPC, ETH_RPC, OPTIMISM_RPC, POLYGON_RPC } from "./rpc";
 import {
   AVAX_CHAIN_ID,
   CONTRACT_ADDRESS_AVAX,
@@ -11,13 +13,6 @@ import {
   POLYGON_CHAIN_ID,
 } from "./walletConstants";
 
-export const AVAX_RPC = "https://api.avax.network/ext/bc/C/rpc";
-export const ETH_RPC =
-  "https://mainnet.infura.io/v3/65a0c8457d9045fcb68d976e951a1d82";
-export const OPTIMISM_RPC =
-  "https://optimism-mainnet.infura.io/v3/65a0c8457d9045fcb68d976e951a1d82";
-export const POLYGON_RPC = "https://polygon-rpc.com";
-
 export const chainRPCLookup: {
   [key: number]: string;
 } = {
@@ -26,41 +21,49 @@ export const chainRPCLookup: {
   [AVAX_CHAIN_ID]: AVAX_RPC,
   [OPTIMISM_CHAIN_ID]: OPTIMISM_RPC,
 };
+type Provider = ethers.providers.JsonRpcProvider | undefined;
 
-const ethRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider({
-  url: ETH_RPC,
-  headers: {
-    Origin: "clb3yaxak0001356n8iawecm4.infinitykeys.io",
-  },
-});
-const optimismRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider({
-  url: OPTIMISM_RPC,
-  headers: {
-    Origin: "clb3yaxak0001356n8iawecm4.infinitykeys.io",
-  },
-});
-const polygonRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(
-  POLYGON_RPC
-);
-const avaxRpcJsonRpcProvider = new ethers.providers.JsonRpcProvider(AVAX_RPC);
+let ethProvider: Provider = undefined;
+let optimismProvider: Provider = undefined;
+let polygonProvider: Provider = undefined;
+let avaxProvider: Provider = undefined;
+
+const setUpProvider = (
+  provider: Provider,
+  options: string | ConnectionInfo | undefined
+) => {
+  if (provider) return provider;
+  provider = new ethers.providers.JsonRpcProvider(options);
+  return provider;
+};
 
 export const contractLookup: {
   [key: number]: ReturnType<typeof IKAchievementABI__factory.connect>;
 } = {
-  [ETH_CHAIN_ID]: IKAchievementABI__factory.connect(
-    CONTRACT_ADDRESS_ETH,
-    ethRpcJsonRpcProvider
-  ),
   [POLYGON_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_POLYGON,
-    polygonRpcJsonRpcProvider
+    setUpProvider(polygonProvider, POLYGON_RPC)
   ),
   [AVAX_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_AVAX,
-    avaxRpcJsonRpcProvider
+    setUpProvider(avaxProvider, AVAX_RPC)
+  ),
+  [ETH_CHAIN_ID]: IKAchievementABI__factory.connect(
+    CONTRACT_ADDRESS_ETH,
+    setUpProvider(ethProvider, {
+      url: ETH_RPC,
+      headers: {
+        Origin: "clb3yaxak0001356n8iawecm4.infinitykeys.io",
+      },
+    })
   ),
   [OPTIMISM_CHAIN_ID]: IKAchievementABI__factory.connect(
     CONTRACT_ADDRESS_OPTIMISM,
-    optimismRpcJsonRpcProvider
+    setUpProvider(optimismProvider, {
+      url: OPTIMISM_RPC,
+      headers: {
+        Origin: "clb3yaxak0001356n8iawecm4.infinitykeys.io",
+      },
+    })
   ),
 };

@@ -1,10 +1,15 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { chainIds } from "@lib/walletConstants";
-import { contractLookup } from "@lib/contractLookup";
 import { gqlApiSdk } from "@lib/server";
 import { IK_ID_COOKIE } from "@lib/constants";
 import { verifyToken } from "@lib/jwt";
+import {
+  AVAX_CHAIN_ID,
+  POLYGON_CHAIN_ID,
+  ETH_CHAIN_ID,
+  OPTIMISM_CHAIN_ID,
+} from "@lib/walletConstants";
+import { contractLookup } from "@lib/contractLookup";
 
 export default async function handler(
   req: NextApiRequest,
@@ -46,39 +51,35 @@ export default async function handler(
   }
 
   try {
-    const contractPromises = chainIds.map((chainId) => {
-      return contractLookup[chainId].checkIfClaimed(tokenId, account);
-    });
+    //POLYGON
+    const polygonContract = contractLookup[POLYGON_CHAIN_ID];
 
-    // Debug below, remove when stable
+    const polygonClaim = await polygonContract.checkIfClaimed(tokenId, account);
+    if (polygonClaim)
+      return res.json({
+        claimed: polygonClaim,
+        chainClaimed: POLYGON_CHAIN_ID,
+      });
 
-    // const avax = contractLookup[43114].checkIfClaimed(tokenId, account);
-    // const poly = contractLookup[137].checkIfClaimed(tokenId, account);
-    // const eth = contractLookup[1].checkIfClaimed(tokenId, account);
-    // const opt = contractLookup[10].checkIfClaimed(tokenId, account);
+    //AVAX
+    const avaxContract = contractLookup[AVAX_CHAIN_ID];
+    const avaxClaim = await avaxContract.checkIfClaimed(tokenId, account);
+    if (avaxClaim)
+      return res.json({ claimed: avaxClaim, chainClaimed: AVAX_CHAIN_ID });
 
-    // const contractPromises = [
-    //   // avax
-    //   avax,
-    //   // poly
-    //   poly,
-    //   // eth
-    //   eth,
-    //   // opt
-    //   opt,
-    // ];
+    //ETH
+    const ethContract = contractLookup[ETH_CHAIN_ID];
+    const ethClaim = await ethContract.checkIfClaimed(tokenId, account);
+    if (ethClaim)
+      return res.json({ claimed: ethClaim, chainClaimed: ETH_CHAIN_ID });
 
-    const contractClaims = await Promise.all(contractPromises);
+    //Optimism
+    const optContract = contractLookup[OPTIMISM_CHAIN_ID];
+    const optClaim = await optContract.checkIfClaimed(tokenId, account);
+    if (optClaim)
+      return res.json({ claimed: optClaim, chainClaimed: OPTIMISM_CHAIN_ID });
 
-    const claimed = contractClaims.some(Boolean);
-
-    const chainClaimed = claimed
-      ? chainIds[
-          contractClaims.flatMap((bool, index) => (bool ? index : []))[0]
-        ]
-      : 0;
-
-    return res.json({ claimed, chainClaimed });
+    return res.json({ claimed: false, chainClaimed: 0 });
   } catch (error) {
     console.log(error);
     return res.status(500).end();
