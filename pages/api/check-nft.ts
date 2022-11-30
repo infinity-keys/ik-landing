@@ -11,7 +11,7 @@ import { IkJwt } from "@lib/types";
 import { routeLandingUrl, routeSuccessUrl } from "@lib/utils";
 import { uniq } from "lodash";
 import { gqlApiSdk } from "@lib/server";
-import { contractLookup, chainRPCLookup } from "@lib/contractLookup";
+import { contractLookup, providerLookup } from "@lib/contractLookup";
 
 export default async function handler(
   req: NextApiRequest,
@@ -53,9 +53,7 @@ export default async function handler(
   } else {
     const type721 = tokenId ? false : true;
 
-    const provider = new ethers.providers.JsonRpcProvider(
-      chainRPCLookup[parseInt(chainId, 10)]
-    );
+    const provider = providerLookup[parseInt(chainId, 10)];
 
     // Dealing with ERC721
     if (type721) {
