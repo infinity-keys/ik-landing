@@ -28,12 +28,18 @@ export default async function handler(
     typeof tokenId !== "string" ||
     typeof account !== "string" ||
     typeof chainId !== "string"
-  )
-    return res.status(500).end();
+  ) {
+    return res
+      .setHeader("Cache-Control", "max-age=31536000, public")
+      .status(500)
+      .end();
+  }
+
+  // All responses will have 15 second cache time
+  res.setHeader("Cache-Control", "max-age=15, public");
 
   const getSignature = async () => {
     const chainIdAsNumber = parseInt(chainId, 10);
-
     const contractAddress = contractAddressLookup[chainIdAsNumber];
 
     if (!contractAddress) throw new Error("No contract address!");
