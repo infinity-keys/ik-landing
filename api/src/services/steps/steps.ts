@@ -7,7 +7,11 @@ import type {
 import { db } from 'src/lib/db'
 
 export const steps: QueryResolvers['steps'] = () => {
-  return db.step.findMany()
+  return db.step.findMany({
+    orderBy: {
+      stepSortWeight: 'asc',
+    },
+  })
 }
 
 export const step: QueryResolvers['step'] = ({ id }) => {
@@ -36,8 +40,11 @@ export const deleteStep: MutationResolvers['deleteStep'] = ({ id }) => {
 }
 
 export const Step: StepRelationResolvers = {
-  puzzles: (_obj, { root }) => {
-    return db.step.findUnique({ where: { id: root?.id } }).puzzles()
+  puzzle: (_obj, { root }) => {
+    return db.step.findUnique({ where: { id: root?.id } }).puzzle()
+  },
+  stepSimpleText: (_obj, { root }) => {
+    return db.step.findUnique({ where: { id: root?.id } }).stepSimpleText()
   },
   attempts: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).attempts()

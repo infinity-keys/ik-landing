@@ -8,7 +8,9 @@
     ]
   },
   "devDependencies": {
-    "@redwoodjs/core": "^3.2.0"
+    "@redwoodjs/core": "^3.4.0",
+    "node-fetch": "^2",
+    "zod": "^3.19.1"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
@@ -21,5 +23,8 @@
   "prisma": {
     "seed": "yarn rw exec seed"
   },
-  "packageManager": "yarn@3.2.3"
+  "packageManager": "yarn@3.2.3",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
 }

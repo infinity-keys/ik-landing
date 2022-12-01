@@ -16,7 +16,7 @@ services:
   routes:
   - type: rewrite
     source: /.redwood/functions/*
-    destination: https://redwoodjs-web-uwgl.onrender.com/*
+    destination: https://api.infinitykeys.io/*
   - type: rewrite
     source: /*
     destination: /index.html

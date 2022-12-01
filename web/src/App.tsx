@@ -15,6 +15,7 @@ import CookieConsentBanner from 'src/components/CookieConsentBanner/CookieConsen
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 
+import './scaffold.css'
 import './index.css'
 import 'loaders.css/loaders.min.css'
 import '@rainbow-me/rainbowkit/styles.css'

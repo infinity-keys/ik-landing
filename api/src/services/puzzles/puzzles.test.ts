@@ -10,7 +10,7 @@ import {
 import type { StandardScenario } from './puzzles.scenarios'
 
 // Generated boilerplate tests do not account for all circumstances
-// and can fail without adjustments, e.g. Float and DateTime types.
+// and can fail without adjustments, e.g. Float.
 //           Please refer to the RedwoodJS Testing Docs:
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
@@ -28,28 +28,22 @@ describe('puzzles', () => {
     expect(result).toEqual(scenario.puzzle.one)
   })
 
-  scenario('creates a puzzle', async () => {
+  scenario('creates a puzzle', async (scenario: StandardScenario) => {
     const result = await createPuzzle({
-      input: {
-        updatedAt: '2022-10-24T17:00:26Z',
-        puzzleName: 'String',
-        path: 'String',
-      },
+      input: { rewardableId: scenario.puzzle.two.rewardableId },
     })
 
-    expect(result.updatedAt).toEqual('2022-10-24T17:00:26Z')
-    expect(result.puzzleName).toEqual('String')
-    expect(result.path).toEqual('String')
+    expect(result.rewardableId).toEqual(scenario.puzzle.two.rewardableId)
   })
 
   scenario('updates a puzzle', async (scenario: StandardScenario) => {
     const original = (await puzzle({ id: scenario.puzzle.one.id })) as Puzzle
     const result = await updatePuzzle({
       id: original.id,
-      input: { updatedAt: '2022-10-25T17:00:26Z' },
+      input: { rewardableId: scenario.puzzle.two.rewardableId },
     })
 
-    expect(result.updatedAt).toEqual('2022-10-25T17:00:26Z')
+    expect(result.rewardableId).toEqual(scenario.puzzle.two.rewardableId)
   })
 
   scenario('deletes a puzzle', async (scenario: StandardScenario) => {
