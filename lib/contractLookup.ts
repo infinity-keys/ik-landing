@@ -40,8 +40,18 @@ const setUpProvider = (
 export const providerLookup: { [key: number]: Provider } = {
   [POLYGON_CHAIN_ID]: setUpProvider(polygonProvider, POLYGON_RPC),
   [AVAX_CHAIN_ID]: setUpProvider(avaxProvider, AVAX_RPC),
-  [ETH_CHAIN_ID]: setUpProvider(ethProvider, ETH_RPC),
-  [OPTIMISM_CHAIN_ID]: setUpProvider(optimismProvider, OPTIMISM_RPC),
+  [ETH_CHAIN_ID]: setUpProvider(ethProvider, {
+    url: ETH_RPC,
+    headers: {
+      Origin: "clb3yaxak0001356n8iawecm4.infinitykeys.io",
+    },
+  }),
+  [OPTIMISM_CHAIN_ID]: setUpProvider(optimismProvider, {
+    url: OPTIMISM_RPC,
+    headers: {
+      Origin: "clb3yaxak0001356n8iawecm4.infinitykeys.io",
+    },
+  }),
 };
 
 export const contractLookup: {
