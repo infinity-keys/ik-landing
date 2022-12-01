@@ -17,8 +17,15 @@ export default async function handler(
 ) {
   const { account, tokenId } = req.query;
 
-  if (typeof tokenId !== "string" || typeof account !== "string")
-    return res.status(500).end();
+  if (typeof tokenId !== "string" || typeof account !== "string") {
+    return res
+      .setHeader("Cache-Control", "max-age=31536000, public")
+      .status(500)
+      .end();
+  }
+
+  // All responses will have 15 second cache time
+  res.setHeader("Cache-Control", "max-age=15, public");
 
   const tokenIdAsInt = parseInt(tokenId, 10);
 

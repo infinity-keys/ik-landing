@@ -9,8 +9,15 @@ export default async function handler(
 ) {
   const { account, tokenids, chainId } = req.query;
 
-  if (typeof account !== "string" || typeof chainId !== "string" || !tokenids)
-    return res.status(500).end();
+  if (typeof account !== "string" || typeof chainId !== "string" || !tokenids) {
+    return res
+      .setHeader("Cache-Control", "max-age=31536000, public")
+      .status(500)
+      .end();
+  }
+
+  // All responses will have 15 second cache time
+  res.setHeader("Cache-Control", "max-age=15, public");
 
   const tokenIds = castArray(tokenids);
 

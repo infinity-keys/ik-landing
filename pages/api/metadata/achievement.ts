@@ -7,7 +7,18 @@ export default async function handler(
 ) {
   const { tokenid } = req.query;
 
-  if (typeof tokenid !== "string") return res.status(500).end();
+  if (typeof tokenid !== "string") {
+    return (
+      res
+        // If bad tokenid, always bad forever
+        .setHeader("Cache-Control", "max-age=31536000, public")
+        .status(500)
+        .end()
+    );
+  }
+
+  // Achievements rarely change, set 10 minute cache
+  res.setHeader("Cache-Control", "max-age=600, public");
 
   // Does our contract exist for this tokenid?
   const gql = await gqlApiSdk();
@@ -19,8 +30,5 @@ export default async function handler(
   if (!nft_metadata_by_pk?.data) return res.status(500).end();
 
   // Finally, return
-  res
-    // Cache response for 10 minutes
-    .setHeader("Cache-Control", "max-age=600, public")
-    .json(nft_metadata_by_pk?.data);
+  res.json(nft_metadata_by_pk?.data);
 }
