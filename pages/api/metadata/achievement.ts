@@ -19,5 +19,8 @@ export default async function handler(
   if (!nft_metadata_by_pk?.data) return res.status(500).end();
 
   // Finally, return
-  res.json(nft_metadata_by_pk?.data);
+  res
+    // Cache response for 10 minutes
+    .setHeader("Cache-Control", "max-age=600, public")
+    .json(nft_metadata_by_pk?.data);
 }
