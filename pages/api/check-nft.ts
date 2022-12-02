@@ -38,6 +38,19 @@ export default async function handler(
   // No token Id for ERC721
   if (tokenId && typeof tokenId !== "string") return res.status(500).end();
 
+  // checks ik jwt exists
+  const jwt = req.cookies[IK_ID_COOKIE];
+  if (!jwt) return res.status(401).end();
+
+  // Validate token first, no valid JWT, bail
+  let verified = undefined;
+  try {
+    verified = await verifyToken(jwt);
+  } catch (e) {
+    // Bad token
+    return res.status(401).end();
+  }
+
   let nftPass;
   const final_step = finalStep === "true";
 
@@ -87,18 +100,6 @@ export default async function handler(
   }
 
   if (nftPass) {
-    const token = req.cookies[IK_ID_COOKIE];
-    if (!token) return res.status(401).end();
-
-    // Validate token first
-    let verified = undefined;
-    try {
-      verified = await verifyToken(token);
-    } catch (e) {
-      // Bad token
-      return res.status(401).end();
-    }
-
     const guessResults = { fail_route: "/", success_route: successRoute };
     const payload = verified.payload as unknown as IkJwt;
 
