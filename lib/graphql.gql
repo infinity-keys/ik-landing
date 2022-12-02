@@ -312,3 +312,22 @@ query CheckNftOrPackForToken($tokenIdInt: Int!, $tokenIdNum: numeric!) {
     nftId
   }
 }
+
+query GetGatedIdsByNftId($nftIdNum: numeric, $nftIdInt: Int) {
+  packs(where: { nftId: { _eq: $nftIdNum } }) {
+    nftId
+    pack_puzzles {
+      puzzle {
+        success_route
+        nft {
+          tokenId
+        }
+      }
+    }
+  }
+  puzzles(where: { nft: { tokenId: { _eq: $nftIdInt } } }) {
+    simple_name
+    puzzle_id
+    success_route
+  }
+}

@@ -85,3 +85,13 @@ export const jwtHasClaim = async (jwt: string, puzzle: string[]) => {
     payload?.claims?.[IK_CLAIMS_NAMESPACE].puzzles.includes(puzzle)
   ).length;
 };
+
+export const jwtHasNoClaims = async (jwt: string) => {
+  const verified = await verifyToken(jwt);
+  if (!verified) return false;
+
+  // @TOOD: pull in superstruct or use jose's validator to ensure shape
+  const payload = verified.payload as unknown as IkJwt;
+
+  return payload.claims[IK_CLAIMS_NAMESPACE].puzzles.length === 0;
+};
