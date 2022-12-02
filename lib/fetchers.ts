@@ -96,7 +96,7 @@ export const nftChecker = async (
   successRoute: string,
   finalStep: boolean
 ) => {
-  const url = new URL("check-nft", ikApiUrlBase);
+  const url = new URL("minter/check-nft", ikApiUrlBase);
   url.searchParams.set("account", account);
   url.searchParams.set("chainId", chainId.toString());
   url.searchParams.set("contractAddress", contractAddress);
