@@ -83,7 +83,7 @@ export default function Minter({
         setClaimed(tokenClaimed);
         setChainClaimed(tokenChainClaimed);
         if (!tokenClaimed) {
-          const res = await verify(address, tokenId, chain.id, gatedIds);
+          const res = await verify(address, tokenId, chain.id);
           setCompleted && setCompleted(res.claimedTokens || []);
           setSignature(res.signature);
         }
