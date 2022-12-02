@@ -60,16 +60,13 @@ export const checkIfClaimed = async (account: string, tokenId: number) => {
 export const verify = async (
   account: string,
   tokenId: number,
-  chain: number,
-  gatedIds: number[]
+  chain: number
 ) => {
-  // const gatedIdsString = `&${gatedIds.map((id) => `gatedIds=${id}`).join("&")}`;
   //If pack (requires other NFTs) include gated, if single ignore
   const url = new URL("minter/verify", ikApiUrlBase);
   url.searchParams.set("account", account);
   url.searchParams.set("tokenId", tokenId.toString());
   url.searchParams.set("chainId", chain.toString());
-  gatedIds.forEach((id) => url.searchParams.append("gatedIds", id.toString()));
 
   const response = await fetch(url);
 
