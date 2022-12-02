@@ -153,7 +153,7 @@ export default function Minter({
   };
 
   const buttonMint = (
-    // @TOOD: utilize existing Button component for this
+    // @TODO: utilize existing Button component for this
     <button
       disabled={
         isConnected && chainIsValid

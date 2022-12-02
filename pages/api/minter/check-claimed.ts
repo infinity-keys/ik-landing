@@ -15,9 +15,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { account, tokenId } = req.query;
+  const { account, tokenId, successRoute } = req.query;
 
-  if (typeof tokenId !== "string" || typeof account !== "string") {
+  if (
+    typeof tokenId !== "string" ||
+    typeof account !== "string" ||
+    typeof successRoute !== "string"
+  ) {
     return res
       .setHeader("Cache-Control", "max-age=31536000, public")
       .status(500)
@@ -32,22 +36,18 @@ export default async function handler(
   const jwt = req.cookies[IK_ID_COOKIE];
   if (!jwt) return res.status(401).end();
 
-  const gql = await gqlApiSdk();
-
-  // Validate token first, no valid JWT, bail
+  // Validate token first, no valid JWT, bail. If not allowed to visit this route
+  // then also bail.
   try {
-    await verifyToken(jwt);
-
-    const { puzzles } = await gql.GetPuzzleInfoByNftId({
-      nftId: tokenIdAsInt,
-    });
-    const successRoutes = puzzles.map(({ success_route }) => success_route);
-    const canAccess = await jwtHasClaim(jwt, successRoutes);
+    const canAccess = await jwtHasClaim(jwt, [successRoute]);
     if (!canAccess) return res.status(403).end();
   } catch (e) {
     // Bad token
+    console.warn(e);
     return res.status(401).end();
   }
+
+  const gql = await gqlApiSdk();
 
   // Next gate: check the DB for tokenId in both NFT table AND! pack table
   const results = await gql.CheckNftOrPackForToken({

@@ -1,11 +1,18 @@
 {
   "cSpell.words": [
+    "AVAX",
     "cloudinary",
     "clsx",
+    "IERC",
+    "Joepegs",
     "leaderboard",
+    "rainbowkit",
     "submiitted",
     "tailwindforms",
     "tokenid",
+    "Ungated",
+    "uuidv",
+    "wagmi",
     "xstate"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",

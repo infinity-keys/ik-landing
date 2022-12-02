@@ -47,10 +47,15 @@ export const deleteUser = async (jwt: string) => {
   return res;
 };
 
-export const checkIfClaimed = async (account: string, tokenId: number) => {
+export const checkIfClaimed = async (
+  account: string,
+  tokenId: number,
+  successRoute: string
+) => {
   const url = new URL("minter/check-claimed", ikApiUrlBase);
   url.searchParams.set("account", account);
   url.searchParams.set("tokenId", tokenId.toString());
+  url.searchParams.set("successRoute", successRoute);
 
   const response = await fetch(url);
   if (response.ok) return await response.json();

@@ -1,7 +1,6 @@
 import { jwtVerify, SignJWT } from "jose";
 import { nanoid } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
-import isEmpty from "lodash/isEmpty";
 
 import { IK_CLAIMS_NAMESPACE, JWT_SECRET_KEY } from "@lib/constants";
 import { IkJwt } from "./types";
@@ -40,7 +39,7 @@ export const makeApiToken = () => {
     .setExpirationTime("1H")
     .setProtectedHeader({ alg: "HS256" })
     .setJti(nanoid())
-    .setIssuedAt(epochMinus30s()) // Offset 30s because stuipd clocks
+    .setIssuedAt(epochMinus30s()) // Offset 30s because stupid clocks
     .sign(new TextEncoder().encode(JWT_SECRET_KEY));
 
   return apiToken;
@@ -71,14 +70,14 @@ export const verifyToken = (token: string) =>
   jwtVerify(token, new TextEncoder().encode(JWT_SECRET_KEY));
 
 /**
- * Given a JWT string, check that the users claims claim one or mroe puzzle
+ * Given a JWT string, check that the users claims claim one or more puzzle
  * namespaces
  */
 export const jwtHasClaim = async (jwt: string, puzzle: string[]) => {
   const verified = await verifyToken(jwt);
   if (!verified) return false;
 
-  // @TOOD: pull in superstruct or use jose's validator to ensure shape
+  // @TODO: pull in superstruct or use jose's validator to ensure shape
   const payload = verified.payload as unknown as IkJwt;
 
   return !!puzzle.filter((puzzle) =>
