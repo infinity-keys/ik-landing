@@ -1,8 +1,6 @@
 import { jwtVerify, SignJWT } from "jose";
 import { nanoid } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
-import isEmpty from "lodash/isEmpty";
-import difference from "lodash/difference";
 
 import { IK_CLAIMS_NAMESPACE, JWT_SECRET_KEY } from "@lib/constants";
 import { IkJwt } from "./types";
@@ -82,9 +80,8 @@ export const jwtHasClaim = async (jwt: string, puzzles: string[]) => {
   // @TODO: pull in superstruct or use jose's validator to ensure shape
   const payload = verified.payload as unknown as IkJwt;
 
-  return (
-    difference(puzzles, payload.claims[IK_CLAIMS_NAMESPACE].puzzles).length ===
-    0
+  return puzzles.every((puzzle) =>
+    payload.claims[IK_CLAIMS_NAMESPACE].puzzles.includes(puzzle)
   );
 };
 
