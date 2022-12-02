@@ -41,7 +41,7 @@ export async function middleware(req: NextRequest) {
       if (!token) throw new Error("No token on solved page");
       await verifyToken(token);
     } catch (e) {
-      return NextResponse.redirect(new URL("/", req.url));
+      return NextResponse.redirect(new URL("/404", req.url));
     }
   }
 
