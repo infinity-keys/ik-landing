@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { gqlApiSdk } from "@lib/server";
 import { IK_ID_COOKIE } from "@lib/constants";
-import { verifyToken } from "@lib/jwt";
+import { jwtHasClaim, verifyToken } from "@lib/jwt";
 import {
   AVAX_CHAIN_ID,
   POLYGON_CHAIN_ID,
@@ -29,19 +29,27 @@ export default async function handler(
 
   const tokenIdAsInt = parseInt(tokenId, 10);
 
-  const jwtToken = req.cookies[IK_ID_COOKIE];
-  if (!jwtToken) return res.status(401).end();
+  const jwt = req.cookies[IK_ID_COOKIE];
+  if (!jwt) return res.status(401).end();
+
+  const gql = await gqlApiSdk();
 
   // Validate token first, no valid JWT, bail
   try {
-    await verifyToken(jwtToken);
+    await verifyToken(jwt);
+
+    const { puzzles } = await gql.GetPuzzleInfoByNftId({
+      nftId: tokenIdAsInt,
+    });
+    const successRoutes = puzzles.map(({ success_route }) => success_route);
+    const canAccess = await jwtHasClaim(jwt, successRoutes);
+    if (!canAccess) return res.status(403).end();
   } catch (e) {
     // Bad token
     return res.status(401).end();
   }
 
   // Next gate: check the DB for tokenId in both NFT table AND! pack table
-  const gql = await gqlApiSdk();
   const results = await gql.CheckNftOrPackForToken({
     tokenIdInt: tokenIdAsInt,
     tokenIdNum: tokenIdAsInt,
