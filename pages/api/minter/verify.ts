@@ -1,11 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ethers } from "ethers";
-import castArray from "lodash/castArray";
-import { IK_ID_COOKIE } from "@lib/constants";
+import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 import { gqlApiSdk } from "@lib/server";
-import { jwtHasClaim } from "@lib/jwt";
+import { jwtHasClaim, jwtHasNoClaims, verifyToken } from "@lib/jwt";
 import { contractAddressLookup } from "@lib/walletConstants";
+import { IkJwt } from "@lib/types";
 
 const privateKey = process.env.PRIVATE_KEY_VERIFY;
 const secret = process.env.MINT_SECRET_VERIFY;
@@ -22,7 +22,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Signature>
 ) {
-  const { account, tokenId, chainId, gatedIds } = req.query;
+  const { account, tokenId, chainId } = req.query;
 
   if (
     typeof tokenId !== "string" ||
@@ -37,6 +37,24 @@ export default async function handler(
 
   // All responses will have 15 second cache time
   res.setHeader("Cache-Control", "max-age=15, public");
+
+  const jwt = req.cookies[IK_ID_COOKIE];
+  if (!jwt) return res.status(401).end();
+
+  // @TODO: make live after p0 event
+  // if (await jwtHasNoClaims(jwt)) {
+  //   // checks if they've solved any puzzles at all
+  //   return res.status(401).end();
+  // }
+
+  // check if whether pack or puzzle and get gatedIds when pack
+  const gql = await gqlApiSdk();
+  const { puzzles, packs } = await gql.GetGatedIdsByNftId({
+    nftIdNum: tokenId,
+    nftIdInt: parseInt(tokenId),
+  });
+
+  if (!puzzles.length && !packs.length) return res.status(400).end();
 
   const getSignature = async () => {
     const chainIdAsNumber = parseInt(chainId, 10);
@@ -54,8 +72,20 @@ export default async function handler(
 
   // If not gated- its a single puzzle and we need to check cookie
   // If gated- its a pack, check the balance of the gatedIds
-  if (gatedIds) {
-    const gatedTokenIds = castArray(gatedIds);
+  if (packs.length) {
+    // @TODO: make live after p0 event
+    // const successRoutes = packs[0].pack_puzzles.map(
+    //   ({ puzzle }) => puzzle.success_route
+    // );
+    // const canAccess = await jwtHasClaim(jwt, successRoutes);
+    // if (!canAccess) return res.status(403).end();
+
+    const gatedTokenIds = packs[0].pack_puzzles.map(({ puzzle }) => {
+      if (!puzzle.nft) {
+        throw new Error("NFT does not exist on this puzzle");
+      }
+      return puzzle?.nft?.tokenId.toString();
+    });
 
     const baseUrl = req.headers.host || "infinitykeys.io";
     const { ownedStatus, message, claimedTokens } = await checkIfOwned(
@@ -79,13 +109,7 @@ export default async function handler(
     }
   }
 
-  if (!gatedIds) {
-    const jwt = req.cookies[IK_ID_COOKIE];
-    if (!jwt) return res.status(401).end();
-    const gql = await gqlApiSdk();
-    const { puzzles } = await gql.GetPuzzleInfoByNftId({
-      nftId: parseInt(tokenId, 10),
-    });
+  if (puzzles.length) {
     const successRoutes = puzzles.map(({ success_route }) => success_route);
     const canAccess = await jwtHasClaim(jwt, successRoutes);
     if (!canAccess) return res.status(403).end();
