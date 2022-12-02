@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { IK_CLAIMS_NAMESPACE, IK_ID_COOKIE } from "@lib/constants";
 
-import { jwtHasClaim, makeUserToken } from "@lib/jwt";
+import { jwtHasClaim, makeUserToken, verifyToken } from "@lib/jwt";
 
 export async function middleware(req: NextRequest) {
   const response = NextResponse.next();
@@ -31,6 +31,16 @@ export async function middleware(req: NextRequest) {
       throw new Error("User does not have solved puzzle claim");
     } catch (e) {
       console.error(e);
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+  }
+
+  if (req.nextUrl.pathname.startsWith("/api/minter")) {
+    try {
+      // No token is nonstarter
+      if (!token) throw new Error("No token on solved page");
+      await verifyToken(token);
+    } catch (e) {
       return NextResponse.redirect(new URL("/", req.url));
     }
   }

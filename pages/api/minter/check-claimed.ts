@@ -27,19 +27,10 @@ export default async function handler(
   // All responses will have 15 second cache time
   res.setHeader("Cache-Control", "max-age=15, public");
 
-  // checks ik jwt exists
+  // checks if they've solved any puzzles at all
   const jwt = req.cookies[IK_ID_COOKIE];
   if (!jwt) return res.status(401).end();
 
-  // Validate token first, no valid JWT, bail
-  try {
-    await verifyToken(jwt);
-  } catch (e) {
-    // Bad token
-    return res.status(401).end();
-  }
-
-  // checks if they've solved any puzzles at all
   if (await jwtHasNoClaims(jwt)) {
     return res.status(401).end();
   }

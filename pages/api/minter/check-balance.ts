@@ -2,8 +2,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import castArray from "lodash/castArray";
 import { contractLookup } from "@lib/contractLookup";
-import { IK_ID_COOKIE } from "@lib/constants";
-import { verifyToken } from "@lib/jwt";
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,18 +18,6 @@ export default async function handler(
 
   // All responses will have 15 second cache time
   res.setHeader("Cache-Control", "max-age=15, public");
-
-  // checks ik jwt exists
-  const jwt = req.cookies[IK_ID_COOKIE];
-  if (!jwt) return res.status(401).end();
-
-  // Validate token first, no valid JWT, bail
-  try {
-    await verifyToken(jwt);
-  } catch (e) {
-    // Bad token
-    return res.status(401).end();
-  }
 
   const tokenIds = castArray(tokenids);
 
