@@ -87,13 +87,14 @@ export default async function handler(
   }
 
   if (nftPass) {
-    const token = req.cookies[IK_ID_COOKIE];
-    if (!token) return res.status(401).end();
+    // checks ik jwt exists
+    const jwt = req.cookies[IK_ID_COOKIE];
+    if (!jwt) return res.status(401).end();
 
-    // Validate token first
+    // Validate token first, no valid JWT, bail
     let verified = undefined;
     try {
-      verified = await verifyToken(token);
+      verified = await verifyToken(jwt);
     } catch (e) {
       // Bad token
       return res.status(401).end();

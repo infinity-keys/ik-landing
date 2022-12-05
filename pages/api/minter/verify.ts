@@ -38,16 +38,24 @@ export default async function handler(
   // All responses will have 15 second cache time
   res.setHeader("Cache-Control", "max-age=15, public");
 
+  // checks ik jwt exists
   const jwt = req.cookies[IK_ID_COOKIE];
   if (!jwt) return res.status(401).end();
 
-  // @TODO: make live after p0 event
-  // if (await jwtHasNoClaims(jwt)) {
-  //   // checks if they've solved any puzzles at all
-  //   return res.status(401).end();
-  // }
+  // Validate token first, no valid JWT, bail
+  try {
+    await verifyToken(jwt);
+  } catch (e) {
+    // Bad token
+    return res.status(401).end();
+  }
 
-  // check if whether pack or puzzle and get gatedIds when pack
+  // checks if they've solved any puzzles at all
+  if (await jwtHasNoClaims(jwt)) {
+    return res.status(401).end();
+  }
+
+  // check whether pack or puzzle and get gatedIds when pack
   const gql = await gqlApiSdk();
   const { puzzles, packs } = await gql.GetGatedIdsByNftId({
     nftIdNum: tokenId,
@@ -73,12 +81,11 @@ export default async function handler(
   // If not gated- its a single puzzle and we need to check cookie
   // If gated- its a pack, check the balance of the gatedIds
   if (packs.length) {
-    // @TODO: make live after p0 event
-    // const successRoutes = packs[0].pack_puzzles.map(
-    //   ({ puzzle }) => puzzle.success_route
-    // );
-    // const canAccess = await jwtHasClaim(jwt, successRoutes);
-    // if (!canAccess) return res.status(403).end();
+    const successRoutes = packs[0].pack_puzzles.map(
+      ({ puzzle }) => puzzle.success_route
+    );
+    const canAccess = await jwtHasClaim(jwt, successRoutes);
+    if (!canAccess) return res.status(403).end();
 
     const gatedTokenIds = packs[0].pack_puzzles.map(({ puzzle }) => {
       if (!puzzle.nft) {

@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { gqlApiSdk } from "@lib/server";
 import { IK_ID_COOKIE } from "@lib/constants";
-import { verifyToken } from "@lib/jwt";
+import { jwtHasClaim, jwtHasNoClaims, verifyToken } from "@lib/jwt";
 import {
   AVAX_CHAIN_ID,
   POLYGON_CHAIN_ID,
@@ -27,35 +27,31 @@ export default async function handler(
   // All responses will have 15 second cache time
   res.setHeader("Cache-Control", "max-age=15, public");
 
-  const tokenIdAsInt = parseInt(tokenId, 10);
+  // checks if they've solved any puzzles at all
+  const jwt = req.cookies[IK_ID_COOKIE];
+  if (!jwt) return res.status(401).end();
 
-  const jwtToken = req.cookies[IK_ID_COOKIE];
-  if (!jwtToken) return res.status(401).end();
-
-  // Validate token first, no valid JWT, bail
-  try {
-    await verifyToken(jwtToken);
-  } catch (e) {
-    // Bad token
+  if (await jwtHasNoClaims(jwt)) {
     return res.status(401).end();
   }
 
+  const tokenIdAsInt = parseInt(tokenId, 10);
   // Next gate: check the DB for tokenId in both NFT table AND! pack table
   const gql = await gqlApiSdk();
-  const results = await gql.CheckNftOrPackForToken({
-    tokenIdInt: tokenIdAsInt,
-    tokenIdNum: tokenIdAsInt,
+  const { puzzles, packs } = await gql.GetGatedIdsByNftId({
+    nftIdNum: tokenId,
+    nftIdInt: tokenIdAsInt,
   });
 
-  const existsNfts = results.nfts.some((nft) => nft.tokenId >= 0);
-  const existsPacks = results.packs.some(
-    (pack) => parseInt(pack.nftId, 10) >= 0
-  );
+  if (!puzzles.length && !packs.length) return res.status(400).end();
 
-  // The nft token id sent in does not exist in our
-  if (!existsNfts && !existsPacks) {
-    return res.status(404).end();
-  }
+  // ensures all related puzzles have been solved
+  const successRoutes = puzzles.length
+    ? puzzles.map(({ success_route }) => success_route)
+    : packs[0].pack_puzzles.map(({ puzzle }) => puzzle.success_route);
+
+  const canAccess = await jwtHasClaim(jwt, successRoutes);
+  if (!canAccess) return res.status(403).end();
 
   try {
     //POLYGON
