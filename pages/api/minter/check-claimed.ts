@@ -29,10 +29,16 @@ export default async function handler(
 
   // checks if they've solved any puzzles at all
   const jwt = req.cookies[IK_ID_COOKIE];
-  if (!jwt) return res.status(401).end();
+  if (!jwt) {
+    return res
+      .status(401)
+      .send({ error: "You have not solved the puzzles needed to mint" });
+  }
 
   if (await jwtHasNoClaims(jwt)) {
-    return res.status(401).end();
+    return res
+      .status(401)
+      .send({ error: "You have not solved the puzzles needed to mint" });
   }
 
   const tokenIdAsInt = parseInt(tokenId, 10);
@@ -51,7 +57,10 @@ export default async function handler(
     : packs[0].pack_puzzles.map(({ puzzle }) => puzzle.success_route);
 
   const canAccess = await jwtHasClaim(jwt, successRoutes);
-  if (!canAccess) return res.status(403).end();
+  if (!canAccess)
+    return res
+      .status(403)
+      .send({ error: "You have not solved the puzzles needed to mint" });
 
   try {
     //POLYGON
