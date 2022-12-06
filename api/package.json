@@ -6,6 +6,7 @@
     "@infinity-keys/constants": "workspace:^",
     "@infinity-keys/contracts": "workspace:^",
     "@infinity-keys/core": "workspace:^",
+    "@magic-sdk/admin": "^1.8.0",
     "@redwoodjs/api": "^3.4.0",
     "@redwoodjs/graphql-server": "^3.4.0",
     "@sendgrid/mail": "^7.7.0",
