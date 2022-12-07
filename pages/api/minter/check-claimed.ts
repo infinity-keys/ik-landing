@@ -59,7 +59,7 @@ export default async function handler(
   const canAccess = await jwtHasClaim(jwt, successRoutes);
   if (!canAccess)
     return res
-      .status(403)
+      .status(401)
       .send({ error: "You have not solved the puzzles needed to mint" });
 
   try {
