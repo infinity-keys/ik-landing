@@ -60,6 +60,7 @@ export default function Minter({
   const [claimed, setClaimed] = useState(false);
   const [chainClaimed, setChainClaimed] = useState(0);
   const [approved, setApproved] = useState(true);
+  const [jwtError, setJwtError] = useState("");
 
   const [chainIsValid, setChainIsValid] = useState(false);
 
@@ -74,8 +75,17 @@ export default function Minter({
       const setSig = async () => {
         setIsVerifying(true);
 
+        const claimData = await checkIfClaimed(address, tokenId);
+
+        if (claimData.error) {
+          setIsVerifying(false);
+          setJwtError(claimData.error);
+          return;
+        }
+
+        setJwtError("");
         const { claimed: tokenClaimed, chainClaimed: tokenChainClaimed } =
-          await checkIfClaimed(address, tokenId);
+          claimData;
 
         if (nftWalletAgeCheck)
           setApproved(await walletAgeChecker(address, chain.id));
@@ -203,6 +213,13 @@ export default function Minter({
           {mintButtonText()}
         </Heading>
       )}
+
+      {jwtError && (
+        <Heading as="h2" visual="s">
+          {jwtError}
+        </Heading>
+      )}
+
       {isConnected && claimed && packSuccessMessage && (
         <div className="text-center pt-4">
           <Markdown>{packSuccessMessage}</Markdown>
@@ -210,7 +227,8 @@ export default function Minter({
       )}
 
       <div className="w-full max-w-xs py-8 flex flex-col items-center">
-        {!claimed &&
+        {!jwtError &&
+          !claimed &&
           (setHasChecked && !hasChecked ? (
             <button
               onClick={() => setHasChecked(true)}
