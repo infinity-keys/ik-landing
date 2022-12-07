@@ -28,6 +28,7 @@ const Routes = () => {
         <Route path="/user/delete" page={DeletePage} name="delete" />
         <Route path="/user" page={UserPage} name="user" />
         <Route path="/privacy-policy" page={PrivacyPolicyPage} name="privacyPolicy" />
+        <Route path="/auth" page={AuthPage} name="auth" />
       </Set>
 
       {/* NotFoundPage can't be in a set */}

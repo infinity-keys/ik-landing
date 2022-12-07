@@ -10,8 +10,25 @@
 import { Magic } from '@magic-sdk/admin'
 
 export const getCurrentUser = async (_decoded, { token }) => {
-  const mAdmin = new Magic(process.env.MAGIC_LINK_SECRET)
+  const mAdmin = new Magic(process.env.MAGIC_SECRET_API_KEY)
   const user = await mAdmin.users.getMetadataByToken(token)
 
   return user
+}
+
+export const isAuthenticated = () => {
+  return true
+}
+
+export const hasRole = ({ roles }) => {
+  return roles !== undefined
+}
+
+// This is used by the redwood directive
+// in ./api/src/directives/requireAuth
+
+// Roles are passed in by the requireAuth directive if you have auth setup
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+export const requireAuth = ({ roles }) => {
+  return isAuthenticated()
 }
