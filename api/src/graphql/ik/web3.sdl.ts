@@ -35,8 +35,8 @@ export const schema = gql`
     # checks user's balance of token ids
     checkBalance(
       account: String!
-      tokenIds: [String!]!
-      chainId: String!
+      tokenIds: [Int!]!
+      chainId: Int!
     ): CheckBalanceResponse! @skipAuth
 
     # checks if user has NFT on any of the supported networks
