@@ -1,5 +1,6 @@
 import TwitterIcon from "./svg/twitter-icon-svg";
 import Discord from "./svg/discord-svg";
+import RedditSVG from "./svg/reddit-svg";
 import Link from "next/link";
 import Button from "./button";
 import { PACK_COLLECTION_BASE } from "@lib/constants";
@@ -35,6 +36,16 @@ export default function Footer() {
                   rel="noreferrer"
                 >
                   <Discord />
+                </a>
+              </div>
+              <div className="redditIcon hover: fill-redditOrange">
+                <a
+                  data-cy="reddit"
+                  href="https://www.reddit.com/r/infinitykeys/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <RedditSVG />
                 </a>
               </div>
             </div>
