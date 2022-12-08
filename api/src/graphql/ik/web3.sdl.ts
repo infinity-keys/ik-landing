@@ -22,7 +22,6 @@ export const schema = gql`
   type CheckWalletAgeResponse {
     success: Boolean!
     approved: Boolean!
-    message: String
   }
 
   type VerifyResponse {
@@ -53,7 +52,7 @@ export const schema = gql`
     ): CheckNftResponse! @skipAuth
 
     # checks age of wallet on eth, checks number of transactions on others
-    checkWalletAge(account: String!, chainId: String!): CheckWalletAgeResponse!
+    checkWalletAge(account: String!, chainId: Int!): CheckWalletAgeResponse!
       @skipAuth
 
     # finds unique db entry by contract name and token id
