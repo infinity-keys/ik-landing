@@ -1,32 +1,60 @@
+import { contractLookup } from '@infinity-keys/contracts'
 import { QueryResolvers } from 'types/graphql'
 
-import { chainIds, contractLookup } from 'src/lib/walletConstants'
-import { AVAX_CHAIN_ID } from 'src/lib/walletConstants'
+import {
+  ETH_CHAIN_ID,
+  OPTIMISM_CHAIN_ID,
+  POLYGON_CHAIN_ID,
+  AVAX_CHAIN_ID,
+} from 'src/lib/walletConstants'
 
 export const checkClaimed: QueryResolvers['checkClaimed'] = async ({
   account,
   tokenId,
 }) => {
-  // @TODO: is this still needed in Redwood
-  if (typeof tokenId !== 'string' || typeof account !== 'string')
-    return { success: false }
+  // Had check to see if tokenId exists => will now revert in try catch.
+  // Could also move to constant from DB NFT metadata table or something
 
-  // faster call on avax than eth.. theoretically should be the same
-  // ensure token were checking exists
-  // would be dope to move this to database
-  const totalSupply = await contractLookup[AVAX_CHAIN_ID].totalSupplyAll()
-  if (parseInt(tokenId, 10) >= totalSupply.length) return { success: false }
+  // COMMENTS FROM NEXT:
+  // checks if they've solved any puzzles at all
+  // Next gate: check the DB for tokenId in both NFT table AND! pack table
+  // ensures all related puzzles have been solved
 
-  const contractPromises = chainIds.map((chainId) =>
-    contractLookup[chainId].checkIfClaimed(tokenId, account)
-  )
+  try {
+    //POLYGON
+    const polygonContract = contractLookup[POLYGON_CHAIN_ID]
+    const polygonClaim = await polygonContract.checkIfClaimed(tokenId, account)
+    if (polygonClaim)
+      return {
+        success: true,
+        claimed: polygonClaim,
+        chainClaimed: POLYGON_CHAIN_ID,
+      }
 
-  const contractClaims = await Promise.all(contractPromises)
-  const claimed = contractClaims.some(Boolean)
+    //AVAX
+    const avaxContract = contractLookup[AVAX_CHAIN_ID]
+    const avaxClaim = await avaxContract.checkIfClaimed(tokenId, account)
+    if (avaxClaim)
+      return { success: true, claimed: avaxClaim, chainClaimed: AVAX_CHAIN_ID }
 
-  const chainClaimed = claimed
-    ? chainIds[contractClaims.flatMap((bool, index) => (bool ? index : []))[0]]
-    : 0
+    //ETH
+    const ethContract = contractLookup[ETH_CHAIN_ID]
+    const ethClaim = await ethContract.checkIfClaimed(tokenId, account)
+    if (ethClaim)
+      return { success: true, claimed: ethClaim, chainClaimed: ETH_CHAIN_ID }
 
-  return { success: true, claimed, chainClaimed }
+    //Optimism
+    const optContract = contractLookup[OPTIMISM_CHAIN_ID]
+    const optClaim = await optContract.checkIfClaimed(tokenId, account)
+    if (optClaim)
+      return {
+        success: true,
+        claimed: optClaim,
+        chainClaimed: OPTIMISM_CHAIN_ID,
+      }
+
+    return { success: true, claimed: false }
+  } catch (error) {
+    return { success: false, message: error }
+  }
 }

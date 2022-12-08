@@ -40,7 +40,7 @@ export const schema = gql`
     ): CheckBalanceResponse! @skipAuth
 
     # checks if user has NFT on any of the supported networks
-    checkClaimed(account: String!, tokenId: String!): CheckClaimedResponse!
+    checkClaimed(account: String!, tokenId: Int!): CheckClaimedResponse!
       @skipAuth
 
     # checks for NFT required for puzzle solution
