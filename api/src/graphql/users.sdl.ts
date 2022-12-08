@@ -3,7 +3,9 @@ export const schema = gql`
     id: String!
     createdAt: DateTime!
     updatedAt: DateTime!
+    lastLoggedIn: DateTime!
     nonce: String!
+    authId: String
     username: String
     publicAddress: String
     email: String
@@ -28,7 +30,9 @@ export const schema = gql`
   }
 
   input CreateUserInput {
+    lastLoggedIn: DateTime!
     nonce: String!
+    authId: String
     username: String
     publicAddress: String
     email: String
@@ -39,7 +43,9 @@ export const schema = gql`
   }
 
   input UpdateUserInput {
+    lastLoggedIn: DateTime
     nonce: String
+    authId: String
     username: String
     publicAddress: String
     email: String

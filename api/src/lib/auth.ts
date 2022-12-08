@@ -9,11 +9,14 @@
  */
 import { Magic } from '@magic-sdk/admin'
 
-export const getCurrentUser = async (_decoded, { token }) => {
-  const mAdmin = new Magic(process.env.MAGIC_SECRET_API_KEY)
-  const user = await mAdmin.users.getMetadataByToken(token)
+import { db } from './db'
 
-  return user
+export const getCurrentUser = async (_decoded, { token }) => {
+  const mAdmin = new Magic(process.env.MAGICLINK_SECRET)
+  const { email, publicAddress, issuer } =
+    await mAdmin.users.getMetadataByToken(token)
+
+  return await db.user.findUnique({ where: { issuer } })
 }
 
 export const isAuthenticated = () => {
