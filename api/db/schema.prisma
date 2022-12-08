@@ -230,6 +230,8 @@ model User {
   submissions   Submission[]
   /// Attempts at solving a Step on a Puzzle for this user
   attempts      Attempt[]
+  // Has this user submitted to create any puzzles?
+  userpuzzles UserPuzzle[]
 }
 
 /// A User's role specifically within the Organization they belong
@@ -266,4 +268,27 @@ model OrganizationUser {
   updatedAt DateTime @updatedAt
 
   @@unique([orgId, userId])
+}
+
+model UserPuzzle {
+  id String @id @default(cuid())
+
+  user User @relation(fields: [userId], references: [id])
+  userId String
+
+  //Name of puzzle
+  name String
+  // Slug
+  slug String
+  // OVerall explanation
+  explanation String
+  // The puzzle challenge, fun
+  challenge String
+
+  // IF user chooses text solution, answer here
+  solution String?
+
+  // Image for NFT
+  imageUrl String?
+
 }
