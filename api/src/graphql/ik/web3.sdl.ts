@@ -46,9 +46,9 @@ export const schema = gql`
     # checks for NFT required for puzzle solution
     checkNft(
       account: String!
-      chainId: String!
+      chainId: Int!
       contractAddress: String!
-      tokenId: String
+      tokenId: Int
     ): CheckNftResponse! @skipAuth
 
     # checks age of wallet on eth, checks number of transactions on others
