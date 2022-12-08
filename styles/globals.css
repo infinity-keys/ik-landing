@@ -58,6 +58,10 @@
     color: #1da1f2;
   }
 
+  .redditIcon:hover {
+    color: #FF4500;
+  }
+
   .markdown {
     h1,
     h2,
