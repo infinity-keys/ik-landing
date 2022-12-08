@@ -20,6 +20,8 @@ export const checkClaimed: QueryResolvers['checkClaimed'] = async ({
   // Next gate: check the DB for tokenId in both NFT table AND! pack table
   // ensures all related puzzles have been solved
 
+  // Could move all of these checks to Moralis or ideally database-
+  // every time someone claims, just update DB with token ID
   try {
     //POLYGON
     const polygonContract = contractLookup[POLYGON_CHAIN_ID]
