@@ -16,9 +16,9 @@ export const checkClaimed: QueryResolvers['checkClaimed'] = async ({
   // Could also move to constant from DB NFT metadata table or something
 
   // COMMENTS FROM NEXT:
-  // checks if they've solved any puzzles at all
-  // Next gate: check the DB for tokenId in both NFT table AND! pack table
-  // ensures all related puzzles have been solved
+  // checks if they've solved any puzzles at all (JWT stuff)
+  // Next gate: check the DB for tokenId in both NFT table AND! pack table (Graphql)
+  // ensures all related puzzles have been solved (JWT checks)
 
   // Could move all of these checks to Moralis or ideally database-
   // every time someone claims, just update DB with token ID
