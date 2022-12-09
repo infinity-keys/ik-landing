@@ -1,7 +1,7 @@
-import { AVAX_CHAIN_ID } from '@infinity-keys/constants'
-import { contractLookup } from '@infinity-keys/contracts'
 import castArray from 'lodash/castArray'
 import { QueryResolvers } from 'types/graphql'
+
+import { contractLookup } from 'src/lib/lookups'
 
 export const checkBalance: QueryResolvers['checkBalance'] = async ({
   account,
@@ -19,9 +19,7 @@ export const checkBalance: QueryResolvers['checkBalance'] = async ({
       message: 'Something went wrong. Please try again.',
     }
 
-  // faster call on avax than eth..
-  const contractAVAX = contractLookup[AVAX_CHAIN_ID]
-  const numTokens = (await contractAVAX.totalSupplyAll()).length
+  const numTokens = (await contract.totalSupplyAll()).length
 
   // check if token Ids exist
   const validIds = tokenIdsArray.every((t) => parseInt(t, 10) < numTokens)
