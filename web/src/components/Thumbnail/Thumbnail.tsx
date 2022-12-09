@@ -1,11 +1,11 @@
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon'
+import { ThumbnailProgress } from '@infinity-keys/core'
 import Avatar from 'boring-avatars'
 import clsx from 'clsx'
 
 import { Link } from '@redwoodjs/router'
 
 import CloudImage from 'src/components/CloudImage/CloudImage'
-import { ThumbnailProgress } from 'src/lib/types'
 import MinimalKeyLogo from 'src/svgs/MinimalKeyLogo'
 
 interface ThumbnailProps {

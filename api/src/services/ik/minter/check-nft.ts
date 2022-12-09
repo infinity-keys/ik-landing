@@ -1,9 +1,8 @@
-import { balanceOf1155 } from '@infinity-keys/contracts'
-import { balanceOf721 } from '@infinity-keys/contracts'
+import { balanceOf1155, balanceOf721 } from '@infinity-keys/contracts'
 import { ethers } from 'ethers'
 import { QueryResolvers } from 'types/graphql'
 
-import { RPCLookup } from 'src/lib/walletConstants'
+import { providerLookup } from 'src/lib/lookups'
 
 export const checkNft: QueryResolvers['checkNft'] = async ({
   account,
@@ -14,9 +13,7 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
   // No token Id for ERC721
   const type721 = tokenId ? false : true
 
-  const provider = new ethers.providers.JsonRpcProvider(
-    RPCLookup[parseInt(chainId, 10)]
-  )
+  const provider = providerLookup[parseInt(chainId, 10)]
 
   // Dealing with ERC721
   if (type721) {

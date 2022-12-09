@@ -1,11 +1,10 @@
+import { SENDGRID_SENDER_ACCOUNT } from '@infinity-keys/constants'
+import { cloudinaryUrl, emailSchema } from '@infinity-keys/core'
 import sendgrid from '@sendgrid/mail'
 import { MutationResolvers } from 'types/graphql'
 
-import { SENDGRID_SENDER_ACCOUNT } from 'src/lib/constants'
 import { db } from 'src/lib/db'
-import { cloudinaryUrl } from 'src/lib/images'
-import { emailSchema } from 'src/lib/types'
-import { generateUserDeleteUrl } from 'src/lib/utils'
+import { generateUserDeleteUrl } from 'src/lib/jwt'
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY || '')
 

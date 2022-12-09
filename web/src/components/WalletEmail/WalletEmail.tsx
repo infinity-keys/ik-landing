@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { PuzzleInput } from '@infinity-keys/core'
+
 import {
   useForm,
   // SubmitHandler
@@ -9,7 +11,6 @@ import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
 import ButtonSocialTwitter from 'src/components/ButtonSocialTwitter/ButtonSocialTwitter'
 import Markdown from 'src/components/Markdown/Markdown'
-import { PuzzleInput } from 'src/lib/types'
 
 // @TODO: handle form submit
 // import { formSubmit } from "src/lib/fetchers";
