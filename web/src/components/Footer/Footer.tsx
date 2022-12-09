@@ -2,6 +2,7 @@ import { Link, routes } from '@redwoodjs/router'
 
 import Button from 'src/components/Button/Button'
 import DiscordIcon from 'src/svgs/DiscordIcon'
+import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
 // @TODO: replace link urls with constants
@@ -14,8 +15,9 @@ const Footer = () => {
         <nav className="px-4 sm:px-6 lg:px-8" aria-label="Top">
           <div className="flex w-full flex-col items-center justify-center border-b border-indigo-500 py-6 sm:flex-row lg:border-none">
             <div className="mb-4 flex items-center space-x-4 sm:mb-0">
-              <div className="twitterIcon hover: fill-twitterBlue">
+              <div>
                 <a
+                  className="twitterIcon"
                   data-cy="twitter"
                   href="https://twitter.com/InfinityKeys"
                   target="_blank"
@@ -25,8 +27,9 @@ const Footer = () => {
                   <TwitterIcon />
                 </a>
               </div>
-              <div className="discordIcon hover: fill-discordPurple">
+              <div>
                 <a
+                  className="discordIcon"
                   data-cy="discord"
                   href="https://discord.com/invite/infinitykeys"
                   target="_blank"
@@ -34,6 +37,18 @@ const Footer = () => {
                   aria-label="visit IK Discord."
                 >
                   <DiscordIcon />
+                </a>
+              </div>
+              <div>
+                <a
+                  className="redditIcon"
+                  data-cy="discord"
+                  href="https://discord.com/invite/infinitykeys"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="visit IK Discord."
+                >
+                  <RedditIcon />
                 </a>
               </div>
             </div>
