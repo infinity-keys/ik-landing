@@ -13,10 +13,9 @@ import { db } from './db'
 
 export const getCurrentUser = async (_decoded, { token }) => {
   const mAdmin = new Magic(process.env.MAGICLINK_SECRET)
-  const { email, publicAddress, issuer } =
-    await mAdmin.users.getMetadataByToken(token)
+  const { issuer } = await mAdmin.users.getMetadataByToken(token)
 
-  return await db.user.findUnique({ where: { issuer } })
+  return await db.user.findUnique({ where: { authId: issuer } })
 }
 
 export const isAuthenticated = () => {
