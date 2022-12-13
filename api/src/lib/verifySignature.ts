@@ -1,6 +1,5 @@
+import { contractAddressLookup } from '@infinity-keys/constants'
 import { ethers } from 'ethers'
-
-import { contractAddressLookup } from './walletConstants'
 
 const { PRIVATE_KEY_VERIFY, MINT_SECRET_VERIFY } = process.env
 
