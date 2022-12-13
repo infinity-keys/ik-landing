@@ -1,10 +1,9 @@
 import ArrowLeftIcon from '@heroicons/react/20/solid/ArrowLeftIcon'
 import ArrowRightIcon from '@heroicons/react/20/solid/ArrowRightIcon'
+import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import clsx from 'clsx'
 
 import { Link } from '@redwoodjs/router'
-
-import { PAGINATION_COUNTS } from 'src/lib/constants'
 
 export interface GridPaginationProps {
   isFirstPage: boolean

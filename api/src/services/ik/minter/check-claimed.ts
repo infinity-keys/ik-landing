@@ -1,12 +1,12 @@
-import { contractLookup } from '@infinity-keys/contracts'
-import { QueryResolvers } from 'types/graphql'
-
 import {
   ETH_CHAIN_ID,
   OPTIMISM_CHAIN_ID,
   POLYGON_CHAIN_ID,
   AVAX_CHAIN_ID,
-} from 'src/lib/walletConstants'
+} from '@infinity-keys/constants'
+import { QueryResolvers } from 'types/graphql'
+
+import { contractLookup } from 'src/lib/lookups'
 
 export const checkClaimed: QueryResolvers['checkClaimed'] = async ({
   account,

@@ -1,7 +1,7 @@
+import { IK_CLAIMS_NAMESPACE } from '@infinity-keys/constants'
+
 import { Head } from '@redwoodjs/web'
 import { MetaTags } from '@redwoodjs/web'
-
-import { IK_CLAIMS_NAMESPACE } from 'src/lib/constants'
 
 interface Props {
   title?: string

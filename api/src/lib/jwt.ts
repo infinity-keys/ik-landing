@@ -1,10 +1,12 @@
+import { IK_CLAIMS_NAMESPACE } from '@infinity-keys/constants'
+import { IkJwt } from '@infinity-keys/core'
 import { jwtVerify, SignJWT } from 'jose'
 // import isEmpty from 'lodash/isEmpty'
 import { nanoid } from 'nanoid'
 import { v4 as uuidv4 } from 'uuid'
 
-import { IK_CLAIMS_NAMESPACE, JWT_SECRET_KEY } from './constants'
-import { IkJwt } from './types'
+const JWT_SECRET_KEY = process.env.INFINITY_KEYS_SECRET
+
 export const epochMinus30s = () => Math.round(new Date().getTime() / 1000) - 30
 
 export type HasuraRoles = 'anonymous' | 'user' | 'manager' | 'api' | 'admin'
@@ -84,4 +86,24 @@ export const jwtHasClaim = async (jwt: string, puzzle: string[]) => {
   return !!puzzle.filter((puzzle) =>
     payload?.claims?.[IK_CLAIMS_NAMESPACE].puzzles.includes(puzzle)
   ).length
+}
+
+export const generateUserDeleteJWT = async (userId: string, email?: string) => {
+  return await makeUserToken(
+    {
+      claims: {
+        [IK_CLAIMS_NAMESPACE]: { puzzles: [], email },
+      },
+    },
+    userId
+  )
+}
+
+export const generateUserDeleteUrl = async (userId: string, email?: string) => {
+  const jwt = await generateUserDeleteJWT(userId, email)
+
+  const url = new URL('/user/delete', IK_CLAIMS_NAMESPACE)
+  url.searchParams.set('jwt', jwt)
+
+  return url
 }

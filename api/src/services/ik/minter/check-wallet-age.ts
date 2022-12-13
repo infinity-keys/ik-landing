@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import { QueryResolvers } from 'types/graphql'
 
-import { providerLookup } from 'src/lib/contractLookup'
+import { providerLookup } from 'src/lib/lookups'
 
 const etherscanProvider = new ethers.providers.EtherscanProvider(
   undefined,

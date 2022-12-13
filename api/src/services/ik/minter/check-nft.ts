@@ -1,9 +1,8 @@
-import { balanceOf1155 } from '@infinity-keys/contracts'
-import { balanceOf721 } from '@infinity-keys/contracts'
+import { balanceOf1155, balanceOf721 } from '@infinity-keys/contracts'
 import { ethers } from 'ethers'
 import { QueryResolvers } from 'types/graphql'
 
-import { providerLookup } from 'src/lib/contractLookup'
+import { providerLookup } from 'src/lib/lookups'
 
 export const checkNft: QueryResolvers['checkNft'] = async ({
   account,

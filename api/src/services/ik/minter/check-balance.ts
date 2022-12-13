@@ -1,6 +1,7 @@
-import { contractLookup } from '@infinity-keys/contracts'
 import { ethers } from 'ethers'
 import { QueryResolvers } from 'types/graphql'
+
+import { contractLookup } from 'src/lib/lookups'
 
 export const checkBalance: QueryResolvers['checkBalance'] = async ({
   account,
@@ -17,6 +18,7 @@ export const checkBalance: QueryResolvers['checkBalance'] = async ({
     }
 
   // ADD CHECK TO MAKE SURE TOKEN IDS VALID => Will just catch here
+  const numTokens = (await contract.totalSupplyAll()).length
 
   try {
     const accountArray = Array(tokenIds.length).fill(account)

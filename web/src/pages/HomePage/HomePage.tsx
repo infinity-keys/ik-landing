@@ -1,5 +1,9 @@
 // import Alert from 'src/components/Alert/Alert'
-import { LensShareButton } from '@infinity-keys/react-lens-share-button'
+import { useCallback } from 'react'
+
+import Particles from 'react-particles'
+import { loadFull } from 'tsparticles'
+import type { Engine } from 'tsparticles-engine'
 
 import Button from 'src/components/Button/Button'
 import CloudImage from 'src/components/CloudImage/CloudImage'
@@ -12,6 +16,7 @@ import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import Text from 'src/components/Text/Text'
 import Wrapper from 'src/components/Wrapper/Wrapper'
+import { heroStars } from 'src/lib/animations/hero-stars'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
@@ -59,6 +64,10 @@ export const logoinfo = [
 ]
 
 const HomePage = () => {
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadFull(engine)
+  }, [])
+
   const SuccessComponent = () => (
     <div
       data-cy="success_message_check"
@@ -72,45 +81,50 @@ const HomePage = () => {
     <Wrapper full radialBg={false}>
       <Seo />
 
-      {/* Top puzzle */}
-      <div className="slice--top radial-bg relative z-0 flex min-h-[calc(100vh-80px)] w-full items-center">
-        <Section largePadding={false}>
-          <div className="mb-8 text-center md:mb-12">
-            <Heading as="h1" visual="l">
-              This is an Infinity Keys h
-              <Flicker once bold delay=".3s">
-                un
-              </Flicker>
-              t.
-            </Heading>
-          </div>
+      <div className="slice--top radial-bg relative z-0 flex min-h-[calc(100vh-80px)] w-full items-center justify-center overflow-hidden">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black opacity-40" />
 
-          <Puzzle
-            puzzleId={'puzzleId'}
-            count={6}
-            SuccessComponent={SuccessComponent}
-            forwardOnFail={false}
-          />
-          <div className="flicker-container mt-10 text-center text-white sm:text-xl md:text-2xl">
-            <p className="leading-normal">
-              Find the c<Flicker delay=".6s">l</Flicker>
-              ues and enter the key.
-            </p>
-            <p className="leading-normal">
-              Hunt f<Flicker delay=".8s">o</Flicker>r{' '}
-              <Flicker delay="1s">c</Flicker>
-              lues and <Flicker delay="1.2s">k</Flicker>
-              eys anywhere.
-            </p>
-            <p className="leading-normal">(Try the colored letters!)</p>
-          </div>
+        <Particles
+          id="tsparticles-hero"
+          className="absolute top-0 left-0 z-0 h-full w-full"
+          options={heroStars}
+          init={particlesInit}
+        />
 
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black opacity-40"></div>
-        </Section>
+        <div className="relative z-10">
+          <Section largePadding={false}>
+            <div className="mb-8 text-center md:mb-12">
+              <Heading as="h1" visual="l">
+                This is an Infinity Keys h
+                <Flicker once bold delay=".3s">
+                  un
+                </Flicker>
+                t.
+              </Heading>
+            </div>
+
+            <Puzzle
+              puzzleId={'puzzleId'}
+              count={6}
+              SuccessComponent={SuccessComponent}
+              forwardOnFail={false}
+            />
+            <div className="flicker-container mt-10 text-center text-white sm:text-xl md:text-2xl">
+              <p className="leading-normal">
+                Find the c<Flicker delay=".6s">l</Flicker>
+                ues and enter the key.
+              </p>
+              <p className="leading-normal">
+                Hunt f<Flicker delay=".8s">o</Flicker>r{' '}
+                <Flicker delay="1s">c</Flicker>
+                lues and <Flicker delay="1.2s">k</Flicker>
+                eys anywhere.
+              </p>
+              <p className="leading-normal">(Try the colored letters!)</p>
+            </div>
+          </Section>
+        </div>
       </div>
-      {/* Bottom of puzzle */}
-
-      <LensShareButton postBody="lskdj" light />
 
       {/* About */}
       <main className="w-full bg-blue-800">
