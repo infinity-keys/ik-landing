@@ -27,6 +27,8 @@ model Rewardable {
   name           String
   /// Short name used in URLs, lowercase and dashes, no spaces/caps, ie not-right
   slug           String         @unique
+  /// Shown at the overall page for this Rewardable
+  explanation    String
   /// When this is successfully completed/rewarded, what should be shown
   successMessage String?
   /// Show in public listings
@@ -55,6 +57,8 @@ model Rewardable {
 /// Link Rewardables to each other, ie a Pack requires 3 Puzzles. Allows setting
 // sort order on child Rewardables.
 model RewardableConnection {
+  id String @id @default(cuid())
+
   parentRewardable Rewardable @relation("ParentLink", fields: [parentId], references: [id])
   parentId         String
   childRewardable  Rewardable @relation("ChildLink", fields: [childId], references: [id])
@@ -65,47 +69,38 @@ model RewardableConnection {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@id([parentId, childId])
+  @@unique([parentId, childId])
   @@index([parentId, childId, childSortWeight(sort: Asc)])
 }
 
 /// A Pack is made up of a collection of Puzzles.
 model Pack {
+  id String @id @default(cuid())
+
   rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
-  rewardableId String     @id
+  rewardableId String     @unique
 }
 
 /// A Bundle is made up of a collection of Packs
 model Bundle {
+  id String @id @default(cuid())
+
   rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
-  rewardableId String     @id
+  rewardableId String     @unique
 }
 
 /// A collection of one or more Steps makes up a Puzzle. A Puzzle is solved when
 /// all Steps are completed
 model Puzzle {
+  id String @id @default(cuid())
+
   rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
-  rewardableId String     @id
+  rewardableId String     @unique
 
   // Users can fill out a form and submit answers when completing a puzzle
   submissions Submission[]
 
   steps Step[]
-}
-
-/// User form submissions from post-Puzzle forms asking for email address etc
-model Submission {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-
-  data Json
-
-  puzzle   Puzzle @relation(fields: [puzzleId], references: [rewardableId])
-  puzzleId String
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId   String
-
-  @@unique([puzzleId, userId])
 }
 
 // All the types of Steps. Currently supports simple text guesses, but can
@@ -123,16 +118,14 @@ model Step {
   failMessage    String?
   /// Shown when a User passes the Step
   successMessage String?
-  /// Tell the playere what they're supposed to do
-  instructions   String?
   /// Often the hint/clue
   challenge      String?
 
   // Order shown on the puzzle
-  stepSortWeight Int? @default(1)
+  stepSortWeight Int @default(1)
 
   // Connect this step to exactly 1 Puzzle
-  puzzle   Puzzle @relation(fields: [puzzleId], references: [rewardableId])
+  puzzle   Puzzle @relation(fields: [puzzleId], references: [id])
   puzzleId String
 
   // Step types
@@ -142,16 +135,35 @@ model Step {
   // A user's attempt at solving this Step
   attempts Attempt[]
 
-  @@unique([id, puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
+  @@unique([puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
 }
 
 /// Simple guess of a text string
 model StepSimpleText {
+  id String @id @default(cuid())
+
   step   Step   @relation(fields: [stepId], references: [id])
-  stepId String @id
+  stepId String @unique
 
   /// The answer. Make sure this is NOT publicly query-able
-  solution String
+  solution          String
+  /// Database will show 0, but the GraphQL resolver for this will provide a char count
+  solutionCharCount Int    @default(0)
+}
+
+/// User form submissions from post-Puzzle forms asking for email address etc
+model Submission {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  data Json
+
+  puzzle   Puzzle @relation(fields: [puzzleId], references: [rewardableId])
+  puzzleId String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId   String
+
+  @@unique([puzzleId, userId])
 }
 
 /// Users guesses at Steps
@@ -242,6 +254,8 @@ model Organization {
 
 /// Connect Users to Organizations
 model OrganizationUser {
+  id String @id @default(cuid())
+
   organization Organization @relation(fields: [orgId], references: [id])
   orgId        String
   user         User         @relation(fields: [userId], references: [id])

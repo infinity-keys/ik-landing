@@ -3,13 +3,19 @@ export const schema = gql`
     id: String!
     createdAt: DateTime!
     updatedAt: DateTime!
-    solution: String!
     failMessage: String
     successMessage: String
-    instructions: String
     challenge: String
-    puzzles: [StepsOnPuzzles]!
+    stepSortWeight: Int!
+    puzzle: Puzzle!
+    puzzleId: String!
+    type: StepType!
+    stepSimpleText: StepSimpleText
     attempts: [Attempt]!
+  }
+
+  enum StepType {
+    SIMPLE_TEXT
   }
 
   type Query {
@@ -18,19 +24,21 @@ export const schema = gql`
   }
 
   input CreateStepInput {
-    solution: String!
     failMessage: String
     successMessage: String
-    instructions: String
     challenge: String
+    stepSortWeight: Int!
+    puzzleId: String!
+    type: StepType!
   }
 
   input UpdateStepInput {
-    solution: String
     failMessage: String
     successMessage: String
-    instructions: String
     challenge: String
+    stepSortWeight: Int
+    puzzleId: String
+    type: StepType
   }
 
   type Mutation {

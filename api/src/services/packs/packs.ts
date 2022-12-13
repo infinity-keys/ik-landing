@@ -36,13 +36,7 @@ export const deletePack: MutationResolvers['deletePack'] = ({ id }) => {
 }
 
 export const Pack: PackRelationResolvers = {
-  nfts: (_obj, { root }) => {
-    return db.pack.findUnique({ where: { id: root?.id } }).nfts()
-  },
-  bundles: (_obj, { root }) => {
-    return db.pack.findUnique({ where: { id: root?.id } }).bundles()
-  },
-  puzzles: (_obj, { root }) => {
-    return db.pack.findUnique({ where: { id: root?.id } }).puzzles()
+  rewardable: (_obj, { root }) => {
+    return db.pack.findUnique({ where: { id: root?.id } }).rewardable()
   },
 }

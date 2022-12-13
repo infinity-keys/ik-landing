@@ -15,6 +15,7 @@ import CookieConsentBanner from 'src/components/CookieConsentBanner/CookieConsen
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 
+import './scaffold.css'
 import './index.css'
 import 'loaders.css/loaders.min.css'
 import '@rainbow-me/rainbowkit/styles.css'
@@ -40,7 +41,7 @@ export const IKTheme = loMerge(darkTheme(), {
 export const { chains, provider } = configureChains(
   [chain.mainnet, chain.polygon, avalancheChain, chain.optimism, chain.rinkeby],
   [
-    infuraProvider({ apiKey: process.env.INFURA_KEY }),
+    infuraProvider(),
     publicProvider(),
     jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) }),
   ]

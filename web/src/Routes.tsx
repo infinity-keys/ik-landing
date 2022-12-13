@@ -9,11 +9,20 @@
 
 import { Router, Route, Set } from '@redwoodjs/router'
 
+import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
 import SiteLayout from 'src/layouts/SiteLayout'
 
 const Routes = () => {
   return (
     <Router>
+      <Set wrap={ScaffoldLayout} title="Puzzles" titleTo="puzzles" buttonLabel="New Puzzle" buttonTo="newPuzzle">
+        <Route path="/puzzle/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newPuzzle" />
+        <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" />
+        <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
+        {/* Handle both /puzzle and /puzzle/1 routes. Place shorter route last to allow url creation to work */}
+        <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzle" />
+        <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzle" />
+      </Set>
       <Set wrap={SiteLayout}>
         <Route path="/" page={HomePage} name="home" />
         <Route path="/step" page={StepPage} name="step" />

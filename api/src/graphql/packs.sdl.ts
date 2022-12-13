@@ -1,14 +1,8 @@
 export const schema = gql`
   type Pack {
     id: String!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    name: String!
-    path: String!
-    listPublicly: Boolean!
-    nfts: [Nft]!
-    bundles: [PacksOnBundles]!
-    puzzles: [PuzzlesOnPacks]!
+    rewardable: Rewardable!
+    rewardableId: String!
   }
 
   type Query {
@@ -17,15 +11,11 @@ export const schema = gql`
   }
 
   input CreatePackInput {
-    name: String!
-    path: String!
-    listPublicly: Boolean!
+    rewardableId: String!
   }
 
   input UpdatePackInput {
-    name: String
-    path: String
-    listPublicly: Boolean
+    rewardableId: String
   }
 
   type Mutation {
