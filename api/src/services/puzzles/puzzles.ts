@@ -39,16 +39,18 @@ export const deletePuzzle: MutationResolvers['deletePuzzle'] = ({ id }) => {
 }
 
 export const Puzzle: PuzzleRelationResolvers = {
-  nfts: (_obj, { root }) => {
-    return db.puzzle.findUnique({ where: { id: root?.id } }).nfts()
+  rewardable: (_obj, { root }) => {
+    return db.puzzle.findUnique({ where: { id: root?.id } }).rewardable()
   },
   submissions: (_obj, { root }) => {
     return db.puzzle.findUnique({ where: { id: root?.id } }).submissions()
   },
   steps: (_obj, { root }) => {
-    return db.puzzle.findUnique({ where: { id: root?.id } }).steps()
-  },
-  packs: (_obj, { root }) => {
-    return db.puzzle.findUnique({ where: { id: root?.id } }).packs()
+    return db.puzzle.findUnique({ where: { id: root?.id } }).steps({
+      // Steps should always return ASC
+      orderBy: {
+        stepSortWeight: 'asc',
+      },
+    })
   },
 }
