@@ -34,7 +34,7 @@ const PuzzlePage = () => {
     width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid
 
   return (
-    <Wrapper>
+    <Wrapper full>
       <Seo
         title={title}
         description={`Can you unlock the ${title} puzzle?`}
@@ -49,7 +49,7 @@ const PuzzlePage = () => {
           cloudinaryId={cloudinary_id}
         />
 
-        <ul className="align-stretch mx-auto my-10 flex flex-wrap justify-center gap-6 py-8 sm:mt-6 sm:max-w-none">
+        <ul className="align-stretch mx-auto my-10 flex flex-wrap justify-center gap-4 py-8 sm:mt-6 sm:max-w-7xl ">
           {puzzles.map((data) => {
             // const data = thumbnailData(puzzle)
             return (
