@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react'
 
-import "./GameStats.css";
+import './GameStats.css'
 
 const GameStats = ({ gameStats }) => {
-  const { level, points, linesCompleted, linesPerLevel } = gameStats;
-  const linesToLevel = linesPerLevel - linesCompleted;
+  const { level, points, linesCompleted, linesPerLevel } = gameStats
+  const linesToLevel = linesPerLevel - linesCompleted
 
   return (
     <ul className="GameStats GameStats__right">
@@ -15,7 +15,7 @@ const GameStats = ({ gameStats }) => {
       <li>Points</li>
       <li className="value">{points}</li>
     </ul>
-  );
-};
+  )
+}
 
-export default React.memo(GameStats);
+export default React.memo(GameStats)

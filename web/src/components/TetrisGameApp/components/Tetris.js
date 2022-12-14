@@ -1,31 +1,32 @@
-import "./Tetris.css";
+import './Tetris.css'
 
-import Board from "./Board";
-import GameController from "./GameController";
-import GameStats from "./GameStats";
-import Previews from "./Previews";
+import { useEffect } from 'react'
 
-import { useBoard } from "../hooks/useBoard";
-import { useGameStats } from "../hooks/useGameStats";
-import { usePlayer } from "../hooks/usePlayer";
-import { useEffect } from "react";
+import { useBoard } from '../hooks/useBoard'
+import { useGameStats } from '../hooks/useGameStats'
+import { usePlayer } from '../hooks/usePlayer'
+
+import Board from './Board'
+import GameController from './GameController'
+import GameStats from './GameStats'
+import Previews from './Previews'
 
 const Tetris = ({ rows, columns, setGameOver, setCompleted }) => {
-  const [gameStats, addLinesCleared] = useGameStats();
-  const [player, setPlayer, resetPlayer] = usePlayer();
+  const [gameStats, addLinesCleared] = useGameStats()
+  const [player, setPlayer, resetPlayer] = usePlayer()
   const [board, setBoard] = useBoard({
     rows,
     columns,
     player,
     resetPlayer,
     addLinesCleared,
-  });
+  })
 
   useEffect(() => {
     if (gameStats.level >= 2) {
-      setCompleted(true);
+      setCompleted(true)
     }
-  }, [gameStats, setCompleted]);
+  }, [gameStats, setCompleted])
 
   return (
     <div className="Tetris">
@@ -40,7 +41,7 @@ const Tetris = ({ rows, columns, setGameOver, setCompleted }) => {
         setPlayer={setPlayer}
       />
     </div>
-  );
-};
+  )
+}
 
-export default Tetris;
+export default Tetris

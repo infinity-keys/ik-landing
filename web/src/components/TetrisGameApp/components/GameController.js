@@ -1,10 +1,9 @@
-import "./GameController.css";
+import './GameController.css'
 
-import { Action, actionForKey, actionIsDrop } from "../business/Input";
-import { playerController } from "../business/PlayerController";
-
-import { useDropTime } from "../hooks/useDropTime";
-import { useInterval } from "../hooks/useInterval";
+import { Action, actionForKey, actionIsDrop } from '../business/Input'
+import { playerController } from '../business/PlayerController'
+import { useDropTime } from '../hooks/useDropTime'
+import { useInterval } from '../hooks/useInterval'
 
 const GameController = ({
   board,
@@ -15,36 +14,36 @@ const GameController = ({
 }) => {
   const [dropTime, pauseDropTime, resumeDropTime] = useDropTime({
     gameStats,
-  });
+  })
 
   useInterval(() => {
-    handleInput({ action: Action.SlowDrop });
-  }, dropTime);
+    handleInput({ action: Action.SlowDrop })
+  }, dropTime)
 
   const onKeyUp = ({ code }) => {
-    const action = actionForKey(code);
-    if (actionIsDrop(action)) resumeDropTime();
-  };
+    const action = actionForKey(code)
+    if (actionIsDrop(action)) resumeDropTime()
+  }
 
   const onKeyDown = ({ code }) => {
-    const action = actionForKey(code);
+    const action = actionForKey(code)
 
     if (action === Action.Pause) {
       if (dropTime) {
-        pauseDropTime();
+        pauseDropTime()
       } else {
-        resumeDropTime();
+        resumeDropTime()
       }
     } else if (action === Action.Quit) {
-      setGameOver(true);
+      setGameOver(true)
     } else {
-      if (actionIsDrop(action)) pauseDropTime();
+      if (actionIsDrop(action)) pauseDropTime()
       if (!dropTime) {
-        return;
+        return
       }
-      handleInput({ action });
+      handleInput({ action })
     }
-  };
+  }
 
   const handleInput = ({ action }) => {
     playerController({
@@ -53,8 +52,8 @@ const GameController = ({
       player,
       setPlayer,
       setGameOver,
-    });
-  };
+    })
+  }
 
   return (
     <input
@@ -64,7 +63,7 @@ const GameController = ({
       onKeyUp={onKeyUp}
       autoFocus
     />
-  );
-};
+  )
+}
 
-export default GameController;
+export default GameController

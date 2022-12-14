@@ -2,14 +2,13 @@ import './styles.css'
 
 import { useState } from 'react'
 
-import Game from '../src/components/Game'
-
+import Game from './components/Game'
 import Message from './components/Message'
 
 export default function TetrisApp() {
   const [completed, setCompleted] = useState(false)
   return (
-    <div className="TetrisApp">
+    <div className="App">
       {completed ? (
         <Message />
       ) : (

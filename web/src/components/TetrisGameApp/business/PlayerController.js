@@ -1,17 +1,17 @@
-import { hasCollision, isWithinBoard } from "../business/Board";
-import { rotate } from "../business/Tetrominoes";
-import { Action } from "../business/Input";
+import { hasCollision, isWithinBoard } from '../business/Board'
+import { Action } from '../business/Input'
+import { rotate } from '../business/Tetrominoes'
 
 const attemptRotation = ({ board, player, setPlayer }) => {
   const shape = rotate({
     piece: player.tetromino.shape,
     direction: 1,
-  });
+  })
 
-  const position = player.position;
+  const position = player.position
   const isValidRotation =
     isWithinBoard({ board, position, shape }) &&
-    !hasCollision({ board, position, shape });
+    !hasCollision({ board, position, shape })
 
   if (isValidRotation) {
     setPlayer({
@@ -20,51 +20,51 @@ const attemptRotation = ({ board, player, setPlayer }) => {
         ...player.tetromino,
         shape,
       },
-    });
+    })
   } else {
-    return false;
+    return false
   }
-};
+}
 
 export const movePlayer = ({ delta, position, shape, board }) => {
   const desiredNextPosition = {
     row: position.row + delta.row,
     column: position.column + delta.column,
-  };
+  }
 
   const collided = hasCollision({
     board,
     position: desiredNextPosition,
     shape,
-  });
+  })
 
   const isOnBoard = isWithinBoard({
     board,
     position: desiredNextPosition,
     shape,
-  });
+  })
 
-  const preventMove = !isOnBoard || (isOnBoard && collided);
-  const nextPosition = preventMove ? position : desiredNextPosition;
+  const preventMove = !isOnBoard || (isOnBoard && collided)
+  const nextPosition = preventMove ? position : desiredNextPosition
 
-  const isMovingDown = delta.row > 0;
-  const isHit = isMovingDown && (collided || !isOnBoard);
+  const isMovingDown = delta.row > 0
+  const isHit = isMovingDown && (collided || !isOnBoard)
 
-  return { collided: isHit, nextPosition };
-};
+  return { collided: isHit, nextPosition }
+}
 
 const attemptMovement = ({ board, action, player, setPlayer, setGameOver }) => {
-  const delta = { row: 0, column: 0 };
-  let isFastDropping = false;
+  const delta = { row: 0, column: 0 }
+  let isFastDropping = false
 
   if (action === Action.FastDrop) {
-    isFastDropping = true;
+    isFastDropping = true
   } else if (action === Action.SlowDrop) {
-    delta.row += 1;
+    delta.row += 1
   } else if (action === Action.Left) {
-    delta.column -= 1;
+    delta.column -= 1
   } else if (action === Action.Right) {
-    delta.column += 1;
+    delta.column += 1
   }
 
   const { collided, nextPosition } = movePlayer({
@@ -72,12 +72,12 @@ const attemptMovement = ({ board, action, player, setPlayer, setGameOver }) => {
     position: player.position,
     shape: player.tetromino.shape,
     board,
-  });
+  })
 
   // Did we collide immediately? If so, game over, man!
-  const isGameOver = collided && player.position.row === 0;
+  const isGameOver = collided && player.position.row === 0
   if (isGameOver) {
-    setGameOver(isGameOver);
+    setGameOver(isGameOver)
   }
 
   setPlayer({
@@ -85,8 +85,8 @@ const attemptMovement = ({ board, action, player, setPlayer, setGameOver }) => {
     collided,
     isFastDropping,
     position: nextPosition,
-  });
-};
+  })
+}
 
 export const playerController = ({
   action,
@@ -95,11 +95,11 @@ export const playerController = ({
   setPlayer,
   setGameOver,
 }) => {
-  if (!action) return;
+  if (!action) return
 
   if (action === Action.Rotate) {
-    attemptRotation({ board, player, setPlayer });
+    attemptRotation({ board, player, setPlayer })
   } else {
-    attemptMovement({ board, player, setPlayer, action, setGameOver });
+    attemptMovement({ board, player, setPlayer, action, setGameOver })
   }
-};
+}

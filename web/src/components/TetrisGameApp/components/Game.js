@@ -1,12 +1,12 @@
-import Menu from "./Menu";
-import Tetris from "./Tetris";
+import { useGameOver } from '../hooks/useGameOver'
 
-import { useGameOver } from "../hooks/useGameOver";
+import Menu from './Menu'
+import Tetris from './Tetris'
 
-const Game = ({ rows, columns, completed, setCompleted }) => {
-  const [gameOver, setGameOver, resetGameOver] = useGameOver();
+const Game = ({ rows, columns, setCompleted }) => {
+  const [gameOver, setGameOver, resetGameOver] = useGameOver()
 
-  const start = () => resetGameOver();
+  const start = () => resetGameOver()
 
   return (
     <div className="Game">
@@ -21,7 +21,7 @@ const Game = ({ rows, columns, completed, setCompleted }) => {
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Game;
+export default Game

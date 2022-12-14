@@ -1,12 +1,12 @@
-import "./Board.css";
+import './Board.css'
 
-import BoardCell from "./BoardCell";
+import BoardCell from './BoardCell'
 
 const Board = ({ board }) => {
   const boardStyles = {
     gridTemplateRows: `repeat(${board.size.rows}, 1fr)`,
     gridTemplateColumns: `repeat(${board.size.columns}, 1fr)`,
-  };
+  }
 
   return (
     <div className="Board" style={boardStyles}>
@@ -16,7 +16,7 @@ const Board = ({ board }) => {
         ))
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Board;
+export default Board
