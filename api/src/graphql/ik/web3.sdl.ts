@@ -61,9 +61,9 @@ export const schema = gql`
     # checks if user has the NFTs required to claim a gated token
     verify(
       account: String!
-      tokenId: String!
-      chainId: String!
-      gatedIds: [String!]
+      tokenId: Int!
+      chainId: Int!
+      gatedIds: [Int!]
     ): VerifyResponse! @skipAuth
   }
 `

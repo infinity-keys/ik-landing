@@ -12,7 +12,7 @@ export const checkClaimed: QueryResolvers['checkClaimed'] = async ({
   account,
   tokenId,
 }) => {
-  // Had check to see if tokenId exists => will now revert in try catch.
+  // @TODO: Had check to see if tokenId exists => will now revert in try catch.
   // Could also move to constant from DB NFT metadata table or something
 
   // COMMENTS FROM NEXT:

@@ -9,7 +9,6 @@ export const verify: QueryResolvers['verify'] = async ({
   account,
   tokenId,
   chainId,
-  gatedIds,
 }) => {
   let claimedTokens: boolean[] | undefined
   // @BLOOM: I think if statement should move to middleware- if its a pack, do
@@ -17,6 +16,12 @@ export const verify: QueryResolvers['verify'] = async ({
 
   // If not gated- its a single puzzle
   // If gated- its a pack, check the balance of the gatedIds
+
+  // @TODO: check puzzle or pack by NFT tokenId
+  // @TODO: get any gated ids from the DB and replace gatedIds const
+  const gatedIds = [0, 1]
+  // @TODO: handle no gatedIds use case
+
   if (gatedIds) {
     try {
       const tokenIds = castArray(gatedIds)
@@ -42,7 +47,6 @@ export const verify: QueryResolvers['verify'] = async ({
       return { success: false }
     }
   }
-
-  const signature = await getSignature(parseInt(chainId, 10), account, tokenId)
+  const signature = await getSignature(chainId, account, tokenId.toString())
   return { success: true, signature, claimedTokens }
 }

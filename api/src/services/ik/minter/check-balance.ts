@@ -18,6 +18,7 @@ export const checkBalance: QueryResolvers['checkBalance'] = async ({
     }
 
   // ADD CHECK TO MAKE SURE TOKEN IDS VALID => Will just catch here
+  // @TODO: make db lookup instead of hitting the chain
   const numTokens = (await contract.totalSupplyAll()).length
 
   try {
