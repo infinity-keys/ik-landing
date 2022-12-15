@@ -18,8 +18,8 @@
 
   /* This is a div that's usually hidden in the page*/
   .pack__image-anchor {
-    @apply mt-20 inline-block w-40 h-40 bg-no-repeat bg-center;
-    background-image: url("/customer/saga/saga-logo.jpg");
+    @apply mt-20 inline-block w-52 h-56 bg-no-repeat bg-center;
+    background-image: url("/customer/saga/saga-logo.png");
   }
 
   /* Text right below logo from above */
