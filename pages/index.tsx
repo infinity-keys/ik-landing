@@ -133,7 +133,7 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
           <div className="max-w-sm mx-auto">
             <Heading visual="m">Collabs</Heading>
             <div className="pt-4 items-center grid grid-cols-3 gap-6 ">
-              <a href="https://www.infinitykeys.io/pack/lens-bogota-pack">
+              <a href="https://www.infinitykeys.io/pack/lens-collector-pack">
                 <LensLogo />
               </a>
               <a href="https://www.infinitykeys.io/pack/saga-wormhole-pack">
