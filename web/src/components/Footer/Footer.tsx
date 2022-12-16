@@ -42,11 +42,11 @@ const Footer = () => {
               <div>
                 <a
                   className="redditIcon"
-                  data-cy="discord"
-                  href="https://discord.com/invite/infinitykeys"
+                  data-cy="reddit"
+                  href="https://www.reddit.com/r/infinitykeys/"
                   target="_blank"
                   rel="noreferrer"
-                  aria-label="visit IK Discord."
+                  aria-label="visit the IK subreddit."
                 >
                   <RedditIcon />
                 </a>
