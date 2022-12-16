@@ -8,8 +8,10 @@ import { useMutation } from '@redwoodjs/web'
 
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import ProfileCell from 'src/components/ProfileCell'
 import Wrapper from 'src/components/Wrapper/Wrapper'
 
+// @TODO: when do we call this?
 const MUTATION = gql`
   mutation UpsertUser($authId: String!, $email: String!) {
     upsertUser(authId: $authId, email: $email) {
@@ -28,7 +30,6 @@ const AuthPage = () => {
   const [create] = useMutation<UpsertUser, UpsertUserVariables>(MUTATION)
 
   useEffect(() => {
-    console.log(userMetadata)
     if (isAuthenticated) {
       create({
         variables: { email: userMetadata.email, authId: userMetadata.issuer },
@@ -47,9 +48,7 @@ const AuthPage = () => {
     }
 
     try {
-      const user = await logIn({ email })
-
-      console.log('user: ', user)
+      await logIn({ email })
     } catch (e) {
       setErrorMessage('Problem sending email')
     }
@@ -76,6 +75,8 @@ const AuthPage = () => {
           <p className="absolute -bottom-8 left-0">{errorMessage}</p>
         </div>
       )}
+
+      {isAuthenticated && <ProfileCell authId={userMetadata.issuer} />}
     </Wrapper>
   )
 }
