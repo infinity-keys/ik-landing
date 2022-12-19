@@ -38,6 +38,7 @@ const AuthPage = () => {
         variables: {
           email: userMetadata.email,
           authId: userMetadata.issuer,
+          // @TODO: when to use real wallet address?
           publicAddress: userMetadata.publicAddress,
         },
       })
@@ -55,6 +56,7 @@ const AuthPage = () => {
     }
 
     try {
+      // @TODO: redirectURI not working with built-in logIn function
       await logIn({ email })
     } catch (e) {
       setErrorMessage('Problem sending email')
