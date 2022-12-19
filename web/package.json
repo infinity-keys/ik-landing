@@ -17,7 +17,6 @@
     "@headlessui/react": "^1.7.2",
     "@heroicons/react": "^2.0.11",
     "@infinity-keys/constants": "workspace:^",
-    "@infinity-keys/contracts": "workspace:^",
     "@infinity-keys/core": "workspace:^",
     "@infinity-keys/react-lens-share-button": "workspace:^",
     "@rainbow-me/rainbowkit": "^0.8.0",
@@ -40,6 +39,8 @@
     "react-dom": "17.0.2",
     "react-individual-character-input-boxes": "1.2.1",
     "react-markdown": "^8.0.3",
+    "react-particles": "^2.5.3",
+    "tsparticles": "^2.5.3",
     "use-device-pixel-ratio": "^1.1.0",
     "wagmi": "^0.6.7"
   },

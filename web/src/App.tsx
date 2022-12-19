@@ -1,3 +1,4 @@
+import { avalancheChain } from '@infinity-keys/constants'
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { getDefaultWallets } from '@rainbow-me/rainbowkit'
 import loMerge from 'lodash/merge'
@@ -13,7 +14,6 @@ import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
 import CookieConsentBanner from 'src/components/CookieConsentBanner/CookieConsentBanner'
-import { avalancheChain } from 'src/lib/walletConstants'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 
@@ -43,7 +43,7 @@ export const IKTheme = loMerge(darkTheme(), {
 export const { chains, provider } = configureChains(
   [chain.mainnet, chain.polygon, avalancheChain, chain.optimism, chain.rinkeby],
   [
-    infuraProvider({ apiKey: process.env.INFURA_KEY }),
+    infuraProvider(),
     publicProvider(),
     jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) }),
   ]

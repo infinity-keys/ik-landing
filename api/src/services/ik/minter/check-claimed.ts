@@ -1,7 +1,7 @@
+import { chainIds, AVAX_CHAIN_ID } from '@infinity-keys/constants'
 import { QueryResolvers } from 'types/graphql'
 
-import { chainIds, contractLookup } from 'src/lib/walletConstants'
-import { AVAX_CHAIN_ID } from 'src/lib/walletConstants'
+import { contractLookup } from 'src/lib/lookups'
 
 export const checkClaimed: QueryResolvers['checkClaimed'] = async ({
   account,

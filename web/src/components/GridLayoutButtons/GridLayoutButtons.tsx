@@ -1,10 +1,10 @@
 import Bars4Icon from '@heroicons/react/20/solid/Bars4Icon'
 import Squares2X2Icon from '@heroicons/react/20/solid/Squares2X2Icon'
+import { PAGINATION_COUNTS } from '@infinity-keys/constants'
+import { ThumbnailGridLayoutType } from '@infinity-keys/core'
 import clsx from 'clsx'
 
 import Dropdown from 'src/components/GridDropdown/GridDropdown'
-import { PAGINATION_COUNTS } from 'src/lib/constants'
-import { ThumbnailGridLayoutType } from 'src/lib/types'
 
 export interface GridLayoutButtonsProps {
   isGrid: boolean

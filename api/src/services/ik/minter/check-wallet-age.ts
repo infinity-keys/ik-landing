@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import { QueryResolvers } from 'types/graphql'
 
-import { RPCLookup } from 'src/lib/walletConstants'
+import { providerLookup } from 'src/lib/lookups'
 
 export const checkWalletAge: QueryResolvers['checkWalletAge'] = async ({
   account,
@@ -13,9 +13,8 @@ export const checkWalletAge: QueryResolvers['checkWalletAge'] = async ({
 
   const chainIdInt = parseInt(chainId, 10)
 
-  const rpcURL = RPCLookup[chainIdInt]
+  const provider = providerLookup[chainIdInt]
 
-  const provider = new ethers.providers.JsonRpcProvider(rpcURL)
   const walletTxCount = await provider.getTransactionCount(account)
   if (walletTxCount === 0) return { success: false, approved: false } // ETH will blow up if 0
 

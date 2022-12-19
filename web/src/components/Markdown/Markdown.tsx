@@ -1,10 +1,10 @@
+import { IK_CLAIMS_NAMESPACE } from '@infinity-keys/constants'
+import { cleanGqlMarkdown } from '@infinity-keys/core'
 import ReactMarkdown from 'react-markdown'
 
 import { Link } from '@redwoodjs/router'
 
 import Iframe from 'src/components/Iframe/Iframe'
-import { IK_CLAIMS_NAMESPACE } from 'src/lib/constants'
-import { cleanGqlMarkdown } from 'src/lib/utils'
 
 type Props = {
   children: string
