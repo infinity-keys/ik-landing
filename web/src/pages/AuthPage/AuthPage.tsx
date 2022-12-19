@@ -13,8 +13,12 @@ import Wrapper from 'src/components/Wrapper/Wrapper'
 
 // @TODO: when do we call this?
 const MUTATION = gql`
-  mutation UpsertUser($authId: String!, $email: String!) {
-    upsertUser(authId: $authId, email: $email) {
+  mutation UpsertUser(
+    $authId: String!
+    $email: String!
+    $publicAddress: String
+  ) {
+    upsertUser(authId: $authId, email: $email, publicAddress: $publicAddress) {
       id
     }
   }
@@ -23,7 +27,6 @@ const isValidEmail = (email) => z.string().email().safeParse(email).success
 
 const AuthPage = () => {
   const { logIn, logOut, isAuthenticated, loading, userMetadata } = useAuth()
-
   const [errorMessage, setErrorMessage] = useState('')
   const emailRef = useRef(null)
 
@@ -32,7 +35,11 @@ const AuthPage = () => {
   useEffect(() => {
     if (isAuthenticated) {
       create({
-        variables: { email: userMetadata.email, authId: userMetadata.issuer },
+        variables: {
+          email: userMetadata.email,
+          authId: userMetadata.issuer,
+          publicAddress: userMetadata.publicAddress,
+        },
       })
     }
   }, [isAuthenticated, userMetadata, create])
@@ -76,7 +83,11 @@ const AuthPage = () => {
         </div>
       )}
 
-      {isAuthenticated && <ProfileCell authId={userMetadata.issuer} />}
+      {isAuthenticated && (
+        <div className="pt-12">
+          <ProfileCell authId={userMetadata.issuer} />
+        </div>
+      )}
     </Wrapper>
   )
 }

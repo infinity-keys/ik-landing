@@ -12,6 +12,7 @@ export const QUERY = gql`
     user: user(authId: $authId) {
       username
       email
+      publicAddress
       twitterProfile
       discordProfile
       lensProfile
