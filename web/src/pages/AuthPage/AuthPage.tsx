@@ -26,7 +26,10 @@ const AuthPage = () => {
   const [errorMessage, setErrorMessage] = useState('')
   const emailRef = useRef(null)
 
-  const [create] = useMutation<UpsertUser, UpsertUserVariables>(MUTATION)
+  const [create, { loading: mutationLoading }] = useMutation<
+    UpsertUser,
+    UpsertUserVariables
+  >(MUTATION)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -79,7 +82,7 @@ const AuthPage = () => {
         </div>
       )}
 
-      {isAuthenticated && (
+      {isAuthenticated && !mutationLoading && (
         <div className="pt-12">
           <ProfileCell authId={userMetadata.issuer} />
         </div>
