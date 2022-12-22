@@ -5,7 +5,6 @@ import { db } from 'src/lib/db'
 export const upsertUser: MutationResolvers['upsertUser'] = ({
   authId,
   email,
-  publicAddress,
 }) => {
   return db.user.upsert({
     where: {
@@ -17,7 +16,6 @@ export const upsertUser: MutationResolvers['upsertUser'] = ({
     create: {
       email,
       authId,
-      publicAddress,
       siteRole: 'VERIFIED',
     },
   })

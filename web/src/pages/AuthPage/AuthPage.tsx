@@ -13,12 +13,8 @@ import Wrapper from 'src/components/Wrapper/Wrapper'
 
 // @TODO: when do we call this?
 const MUTATION = gql`
-  mutation UpsertUser(
-    $authId: String!
-    $email: String!
-    $publicAddress: String
-  ) {
-    upsertUser(authId: $authId, email: $email, publicAddress: $publicAddress) {
+  mutation UpsertUser($authId: String!, $email: String!) {
+    upsertUser(authId: $authId, email: $email) {
       id
     }
   }
