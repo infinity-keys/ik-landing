@@ -8,6 +8,7 @@ import { Link, routes } from '@redwoodjs/router'
 // @TODO: update links urls to constants
 // import { PACK_COLLECTION_BASE, PUZZLE_LANDING_BASE } from '@lib/constants'
 import Button from 'src/components/Button/Button'
+import WalletButton from 'src/components/WalletButton/WalletButton'
 import Logo from 'src/svgs/Logo'
 import LogoMobile from 'src/svgs/LogoMobile'
 
@@ -88,6 +89,7 @@ const Header = () => {
                   variant="outline"
                   responsive
                 />
+                <WalletButton />
                 {isAuthenticated ? (
                   <Button onClick={logOut} text="Log Out" />
                 ) : (

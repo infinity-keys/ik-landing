@@ -215,8 +215,6 @@ model User {
   nonce          String   @default(cuid())
   authId         String?  @unique
   username       String?
-  /// Wallet address
-  publicAddress  String?  @unique
   /// Unique string used to cryptographically identify this person. NEVER MAKE PUBLIC
   email          String?  @unique
   twitterProfile String?

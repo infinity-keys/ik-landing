@@ -12,7 +12,6 @@ export const QUERY = gql`
     user: user(authId: $authId) {
       username
       email
-      publicAddress
       twitterProfile
       discordProfile
       lensProfile
@@ -38,13 +37,13 @@ export const Success = ({
       <div className="flex items-center bg-black/20 py-8 px-10">
         <Avatar
           size={56}
-          name={user.publicAddress}
+          name={user.email}
           variant="marble"
           colors={['#101D42', '#E400FF', '#3FCCBB', '#8500AC', '#303B5B']}
         />
         <div className="ml-6">
           <p className="text-xl font-bold text-white">{user.username}</p>
-          <p className="text-turquoise">{user.publicAddress}</p>
+          <p className="text-turquoise">{'getaddress'}</p>
         </div>
       </div>
 

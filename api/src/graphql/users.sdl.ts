@@ -7,7 +7,6 @@ export const schema = gql`
     nonce: String!
     authId: String
     username: String
-    publicAddress: String
     email: String
     twitterProfile: String
     discordProfile: String
@@ -34,7 +33,6 @@ export const schema = gql`
     nonce: String!
     authId: String
     username: String
-    publicAddress: String
     email: String
     twitterProfile: String
     discordProfile: String
@@ -47,7 +45,6 @@ export const schema = gql`
     nonce: String
     authId: String
     username: String
-    publicAddress: String
     email: String
     twitterProfile: String
     discordProfile: String

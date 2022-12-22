@@ -34,8 +34,6 @@ const AuthPage = () => {
         variables: {
           email: userMetadata.email,
           authId: userMetadata.issuer,
-          // @TODO: when to use real wallet address?
-          publicAddress: userMetadata.publicAddress,
         },
       })
     }
