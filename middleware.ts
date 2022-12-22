@@ -37,6 +37,7 @@ export async function middleware(req: NextRequest) {
 
   if (req.nextUrl.pathname.startsWith("/api/minter")) {
     try {
+      if (req.nextUrl.pathname.startsWith("/api/minter/check-balance")) return;
       // No token is nonstarter
       if (!token) throw new Error("No token on solved page");
       await verifyToken(token);
