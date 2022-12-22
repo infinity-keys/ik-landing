@@ -49,7 +49,7 @@ export const Success = ({
         />
         <div className="ml-6">
           <p className="text-xl font-bold text-white">
-            {user.email.split('@')[0]}
+            {user.username || user.email.split('@')[0]}
           </p>
           {address && <p className="text-turquoise">{truncate(address)}</p>}
         </div>
