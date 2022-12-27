@@ -3,12 +3,14 @@ import {
   marketplaceLookup,
   marketplaceNameLookup,
 } from '@infinity-keys/constants'
+import { validChain } from '@infinity-keys/core'
 import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import {
   useContractWrite,
   usePrepareContractWrite,
   useNetwork,
   useWaitForTransaction,
+  useAccount,
 } from 'wagmi'
 
 import Button from 'src/components/Button/Button'
@@ -17,7 +19,6 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Seo from 'src/components/Seo/Seo'
 import Wrapper from 'src/components/Wrapper/Wrapper'
 import { useIKContract } from 'src/hooks/useIKContract'
-import { useIKMinter } from 'src/hooks/useIKMinter'
 
 const GET_CLAIM = gql`
   query GetClaim($account: String!, $tokenId: Int!, $chainId: Int!) {
@@ -30,11 +31,12 @@ const GET_CLAIM = gql`
   }
 `
 const ClaimPage = () => {
-  const { isConnected } = useIKMinter()
-  const { contractAddress, isValidChain, abi } = useIKContract()
   const { chain } = useNetwork()
+  const { isConnected } = useAccount()
+  const { contractAddress, abi } = useIKContract(chain)
   const { openConnectModal } = useConnectModal()
   const { openChainModal } = useChainModal()
+  const isValidChain = validChain(chain?.id || 0)
 
   const [claim, { loading: queryLoading, data }] = useLazyQuery(GET_CLAIM, {
     variables: { account, tokenId, chainId: chain?.id },
