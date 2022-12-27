@@ -13,6 +13,14 @@ export const schema = gql`
     message: String
   }
 
+  type claimResponse {
+    success: Boolean!
+    claimed: Boolean
+    chainClaimed: Int
+    signature: String
+    message: String
+  }
+
   type CheckNftResponse {
     success: Boolean!
     nftPass: Boolean
@@ -38,6 +46,10 @@ export const schema = gql`
       tokenIds: [Int!]!
       chainId: Int!
     ): CheckBalanceResponse! @skipAuth
+
+    # runs through entire nft claim flow
+    claim(account: String!, tokenId: Int!, chainId: Int!): claimResponse!
+      @skipAuth
 
     # checks if user has NFT on any of the supported networks
     checkClaimed(account: String!, tokenId: Int!): CheckClaimedResponse!
