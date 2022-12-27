@@ -1,4 +1,4 @@
-import castArray from 'lodash/castArray'
+import { ethers } from 'ethers'
 import { QueryResolvers } from 'types/graphql'
 
 import { contractLookup } from 'src/lib/lookups'
@@ -8,37 +8,37 @@ export const checkBalance: QueryResolvers['checkBalance'] = async ({
   tokenIds,
   chainId,
 }) => {
-  const tokenIdsArray = castArray(tokenIds)
+  // Again, this whole API could be migrated to Moralis
+  const contract = contractLookup[chainId]
 
-  const chainIdAsNumber = parseInt(chainId, 10)
-
-  const contract = contractLookup[chainIdAsNumber]
   if (!contract)
     return {
       success: false,
       message: 'Something went wrong. Please try again.',
     }
 
+  // ADD CHECK TO MAKE SURE TOKEN IDS VALID => Will just catch here
+  // @TODO: make db lookup instead of hitting the chain
   const numTokens = (await contract.totalSupplyAll()).length
 
-  // check if token Ids exist
-  const validIds = tokenIdsArray.every((t) => parseInt(t, 10) < numTokens)
+  try {
+    const accountArray = Array(tokenIds.length).fill(account)
 
-  if (!validIds || !contract)
+    // returns type ethers.BigNumber
+    const balances = await contract?.balanceOfBatch(accountArray, tokenIds)
+
+    // check every balance of every tokenId- if 0 for any of them return false
+    const claimedTokens = balances?.map(
+      (b: ethers.BigNumber) => b.toNumber() > 0
+    )
+    // checks if all nft are claimed, returns true if eligible to claim pack nft
+    const claimed = claimedTokens?.every((b: boolean) => b)
+
+    return { success: true, claimed: claimed, claimedTokens: claimedTokens }
+  } catch (error) {
     return {
       success: false,
-      message: 'Something went wrong. Please try again.',
+      message: error,
     }
-
-  const accountArray = Array(tokenIdsArray.length).fill(account)
-
-  // returns type ethers.BigNumber
-  const balances = await contract?.balanceOfBatch(accountArray, tokenIdsArray)
-
-  // check every balance of every tokenId- if 0 for any of them return false
-  const claimedTokens = balances?.map((b) => b.toNumber() > 0)
-  // checks if all nft are claimed, returns true if eligible to claim pack nft
-  const claimed = claimedTokens?.every((b) => b)
-
-  return { success: true, claimed, claimedTokens }
+  }
 }
