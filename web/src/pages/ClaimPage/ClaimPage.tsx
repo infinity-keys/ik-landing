@@ -55,18 +55,14 @@ const ClaimPage = () => {
     enabled: !!signature,
   })
 
-  const {
-    data: contractData,
-    write,
-    error: writeError,
-  } = useContractWrite(config)
+  const { data: writeData, write, error: writeError } = useContractWrite(config)
 
   const {
     error: transactionError,
     isLoading: transactionPending,
     isSuccess: transactionSuccess,
   } = useWaitForTransaction({
-    hash: contractData?.hash,
+    hash: writeData?.hash,
   })
 
   return (
