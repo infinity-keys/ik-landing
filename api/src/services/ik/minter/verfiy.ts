@@ -19,7 +19,8 @@ export const verify: QueryResolvers['verify'] = async ({
 
   // @TODO: check puzzle or pack by NFT tokenId
   // @TODO: get any gated ids from the DB and replace gatedIds const
-  const gatedIds = [0, 1]
+  // const gatedIds = [0, 1]
+  const gatedIds = false
   // @TODO: handle no gatedIds use case
 
   if (gatedIds) {
@@ -44,9 +45,13 @@ export const verify: QueryResolvers['verify'] = async ({
         }
       }
     } catch (e) {
-      return { success: false }
+      return {
+        success: false,
+        message: 'Something went wrong verifying your claim',
+      }
     }
   }
   const signature = await getSignature(chainId, account, tokenId.toString())
+
   return { success: true, signature, claimedTokens }
 }

@@ -17,6 +17,7 @@ export const claim: QueryResolvers['claim'] = async ({
     return {
       success: false,
       claimed,
+      chainClaimed,
       message: 'You have already claimed this NFT',
     }
   }
@@ -34,7 +35,6 @@ export const claim: QueryResolvers['claim'] = async ({
   return {
     success: true,
     chainClaimed,
-    message: 'You are eligible to claim this NFT',
     signature,
   }
 }
