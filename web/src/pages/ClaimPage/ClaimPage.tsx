@@ -1,8 +1,10 @@
 import { gql, useLazyQuery } from '@apollo/client'
 import {
+  contractAddressLookup,
   marketplaceLookup,
   marketplaceNameLookup,
 } from '@infinity-keys/constants'
+import { IKAchievementABI__factory } from '@infinity-keys/contracts'
 import { validChain } from '@infinity-keys/core'
 import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import {
@@ -18,10 +20,12 @@ import Heading from 'src/components/Heading/Heading'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Seo from 'src/components/Seo/Seo'
 import Wrapper from 'src/components/Wrapper/Wrapper'
-import { useIKContract } from 'src/hooks/useIKContract'
 
-const GET_CLAIM = gql`
-  query GetClaim($account: String!, $tokenId: Int!, $chainId: Int!) {
+// @TODO: get this dynamically
+const tokenId = 105
+
+const CHECK_CLAIM = gql`
+  query CheckClaim($account: String!, $tokenId: Int!, $chainId: Int!) {
     claim(account: $account, tokenId: $tokenId, chainId: $chainId) {
       claimed
       chainClaimed
@@ -32,14 +36,14 @@ const GET_CLAIM = gql`
 `
 const ClaimPage = () => {
   const { chain } = useNetwork()
-  const { isConnected } = useAccount()
-  const { contractAddress, abi } = useIKContract(chain)
+  const { isConnected, address } = useAccount()
   const { openConnectModal } = useConnectModal()
   const { openChainModal } = useChainModal()
   const isValidChain = validChain(chain?.id || 0)
+  const contractAddress = isValidChain && contractAddressLookup[chain?.id]
 
-  const [claim, { loading: queryLoading, data }] = useLazyQuery(GET_CLAIM, {
-    variables: { account, tokenId, chainId: chain?.id },
+  const [claim, { loading: queryLoading, data }] = useLazyQuery(CHECK_CLAIM, {
+    variables: { account: address, tokenId, chainId: chain?.id },
   })
 
   const {
@@ -51,13 +55,17 @@ const ClaimPage = () => {
 
   const { config } = usePrepareContractWrite({
     addressOrName: contractAddress,
-    contractInterface: abi,
+    contractInterface: IKAchievementABI__factory.abi,
     functionName: 'claim',
     args: [tokenId, signature],
     enabled: !!signature,
   })
 
-  const { data: writeData, write, error: writeError } = useContractWrite(config)
+  const {
+    data: writeData,
+    write: mintNft,
+    error: writeError,
+  } = useContractWrite(config)
 
   const {
     error: transactionError,
@@ -75,9 +83,13 @@ const ClaimPage = () => {
         <Heading>ClaimPage</Heading>
       </div>
 
-      {(queryLoading || transactionPending) && <LoadingIcon />}
+      {(queryLoading || transactionPending) && (
+        <div className="mb-4">
+          <LoadingIcon />
+        </div>
+      )}
 
-      {message && <p>{message}</p>}
+      {message && <p className="mb-4">{message}</p>}
 
       {!isConnected && (
         <Button text="Connect Wallet" onClick={openConnectModal} />
@@ -92,28 +104,36 @@ const ClaimPage = () => {
       )}
 
       {signature &&
-        isConnected &&
         !claimed &&
         !transactionSuccess &&
+        isConnected &&
         isValidChain && (
           <>
-            <p>Claim Your Trophy on {chain.name}</p>
-            <Button text="Mint Treasure" onClick={() => write()} />
+            <p className="mb-4">Claim Your Trophy on {chain.name}</p>
+            <Button text="Mint Treasure" onClick={mintNft} />
           </>
         )}
 
-      {claimed && chainClaimed !== 0 && (
+      {transactionSuccess && (
+        <p className="mb-4">Your trophy has been claimed!</p>
+      )}
+
+      {(claimed || transactionSuccess) && (
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href={`${marketplaceLookup[chainClaimed]}${tokenId}`}
+          href={`${marketplaceLookup[chainClaimed || chain?.id]}${tokenId}`}
           className="mt-6 text-gray-200 underline"
         >
-          View NFT On {marketplaceNameLookup[chainClaimed]}
+          View NFT On {marketplaceNameLookup[chainClaimed || chain?.id]}
         </a>
       )}
 
-      {(writeError || transactionError) && <p>Error processing transaction</p>}
+      {(writeError || transactionError) && (
+        <p className="mt-4 italic text-gray-200">
+          Error processing transaction. Please try again.
+        </p>
+      )}
     </Wrapper>
   )
 }
