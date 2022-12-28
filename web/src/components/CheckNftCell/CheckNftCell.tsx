@@ -8,19 +8,15 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 export const QUERY = gql`
   query FindCheckNftQuery(
     $account: String!
-    $chainId: String!
-    $contractAddress: String!
-    $tokenId: String
-    $successRoute: String!
-    $finalStep: Boolean!
+    $poapEventId: String
+    $tokenId: Int
+    $chainId: Int
   ) {
     checkNft: checkNft(
       account: $account
-      chainId: $chainId
-      contractAddress: $contractAddress
+      poapEventId: $poapEventId
       tokenId: $tokenId
-      successRoute: $successRoute
-      finalStep: $finalStep
+      chainId: $chainId
     ) {
       success
     }

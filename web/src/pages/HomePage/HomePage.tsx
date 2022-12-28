@@ -85,15 +85,6 @@ const HomePage = () => {
       <div className="slice--top radial-bg relative z-0 flex min-h-[calc(100vh-80px)] w-full items-center justify-center overflow-hidden">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black opacity-40" />
 
-        <CheckNftCell
-          account="0x2B7952c3F442Eb8BaA069f90bF692Facb52890a9"
-          chainId="0"
-          contractAddress="0"
-          tokenId="42940"
-          successRoute="test"
-          finalStep={true}
-        />
-
         <Particles
           id="tsparticles-hero"
           className="absolute top-0 left-0 z-0 h-full w-full"
@@ -136,6 +127,13 @@ const HomePage = () => {
         </div>
       </div>
       {/* Bottom of puzzle */}
+
+      <CheckNftCell
+        account="0x2B7952c3F442Eb8BaA069f90bF692Facb52890a9"
+        // poapEventId="42940"
+        chainId={1}
+        tokenId={1}
+      />
 
       {/* About */}
       <main className="w-full bg-blue-800">
