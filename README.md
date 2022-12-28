@@ -203,11 +203,26 @@ Migrate all database tables and columns (but NOT actual data):
 
 yarn rw prisma migrate dev
 ```
+Migrate all database tables and clumns WITH data pulled from v1.0 IK:
+
+```bash
+yarn rw prisma migrate reset --force
+```
 
 ## Local dev
 
-Builds all custom workspaces packages and start Redwood dev.
+Builds all custom workspaces packages and start Redwood dev. (You'll use this daily!)
 
 ```bash
 yarn workspaces foreach run build && yarn rw dev
+```
+
+## Publish a Package
+
+```bash
+npm version patch
+```
+
+```bash
+yarn npm publish --access public
 ```

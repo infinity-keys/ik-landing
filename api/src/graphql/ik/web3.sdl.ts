@@ -50,8 +50,6 @@ export const schema = gql`
       chainId: String!
       contractAddress: String!
       tokenId: String
-      successRoute: String!
-      finalStep: Boolean!
     ): CheckNftResponse! @skipAuth
 
     # checks age of wallet on eth, checks number of transactions on others

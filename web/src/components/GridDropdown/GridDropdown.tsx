@@ -2,11 +2,10 @@ import { Fragment, forwardRef, HTMLProps } from 'react'
 
 import { Menu, Transition } from '@headlessui/react'
 import ChevronDownIcon from '@heroicons/react/20/solid/ChevronDownIcon'
+import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import clsx from 'clsx'
 
 import { Link } from '@redwoodjs/router'
-
-import { PAGINATION_COUNTS } from 'src/lib/constants'
 
 interface GridDropdownProps {
   currentCount: number

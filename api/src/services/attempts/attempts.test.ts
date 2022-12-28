@@ -10,7 +10,7 @@ import {
 import type { StandardScenario } from './attempts.scenarios'
 
 // Generated boilerplate tests do not account for all circumstances
-// and can fail without adjustments, e.g. Float and DateTime types.
+// and can fail without adjustments, e.g. Float.
 //           Please refer to the RedwoodJS Testing Docs:
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
@@ -31,25 +31,25 @@ describe('attempts', () => {
   scenario('creates a attempt', async (scenario: StandardScenario) => {
     const result = await createAttempt({
       input: {
-        stepId: scenario.attempt.two.stepId,
         userId: scenario.attempt.two.userId,
-        guess: 'String',
+        stepId: scenario.attempt.two.stepId,
+        data: { foo: 'bar' },
       },
     })
 
-    expect(result.stepId).toEqual(scenario.attempt.two.stepId)
     expect(result.userId).toEqual(scenario.attempt.two.userId)
-    expect(result.guess).toEqual('String')
+    expect(result.stepId).toEqual(scenario.attempt.two.stepId)
+    expect(result.data).toEqual({ foo: 'bar' })
   })
 
   scenario('updates a attempt', async (scenario: StandardScenario) => {
     const original = (await attempt({ id: scenario.attempt.one.id })) as Attempt
     const result = await updateAttempt({
       id: original.id,
-      input: { guess: 'String2' },
+      input: { data: { foo: 'baz' } },
     })
 
-    expect(result.guess).toEqual('String2')
+    expect(result.data).toEqual({ foo: 'baz' })
   })
 
   scenario('deletes a attempt', async (scenario: StandardScenario) => {

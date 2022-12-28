@@ -3,12 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@infinity-keys/constants": "workspace:^",
     "@infinity-keys/contracts": "workspace:^",
-    "@redwoodjs/api": "^3.2.0",
-    "@redwoodjs/graphql-server": "^3.2.0",
+    "@infinity-keys/core": "workspace:^",
+    "@moralisweb3/common-evm-utils": "^2.9.0",
+    "@redwoodjs/api": "^3.4.0",
+    "@redwoodjs/graphql-server": "^3.4.0",
     "@sendgrid/mail": "^7.7.0",
     "cloudinary-build-url": "^0.2.4",
     "jose": "^4.10.0",
+    "moralis": "^2.9.0",
     "nanoid": "^3.0.0",
     "uuid": "^9.0.0",
     "zod": "^3.19.1"
