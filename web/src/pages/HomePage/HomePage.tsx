@@ -125,6 +125,7 @@ const HomePage = () => {
           </Section>
         </div>
       </div>
+      {/* Bottom of puzzle */}
 
       {/* About */}
       <main className="w-full bg-blue-800">
