@@ -15,7 +15,7 @@ import {
   marketplaceLookup,
   OPTIMISM_CHAIN_ID,
 } from "@lib/walletConstants";
-import { validChain } from "@lib/utils";
+import { validChain } from "@lib/walletConstants";
 import { checkIfClaimed, verify, walletAgeChecker } from "@lib/fetchers";
 import { PACK_LANDING_BASE } from "@lib/constants";
 import { useIKMinter } from "@hooks/useIKMinter";
@@ -60,6 +60,7 @@ export default function Minter({
   const [claimed, setClaimed] = useState(false);
   const [chainClaimed, setChainClaimed] = useState(0);
   const [approved, setApproved] = useState(true);
+  const [jwtError, setJwtError] = useState("");
 
   const [chainIsValid, setChainIsValid] = useState(false);
 
@@ -74,8 +75,17 @@ export default function Minter({
       const setSig = async () => {
         setIsVerifying(true);
 
+        const claimData = await checkIfClaimed(address, tokenId);
+
+        if (claimData.error) {
+          setIsVerifying(false);
+          setJwtError(claimData.error);
+          return;
+        }
+
+        setJwtError("");
         const { claimed: tokenClaimed, chainClaimed: tokenChainClaimed } =
-          await checkIfClaimed(address, tokenId);
+          claimData;
 
         if (nftWalletAgeCheck)
           setApproved(await walletAgeChecker(address, chain.id));
@@ -83,7 +93,7 @@ export default function Minter({
         setClaimed(tokenClaimed);
         setChainClaimed(tokenChainClaimed);
         if (!tokenClaimed) {
-          const res = await verify(address, tokenId, chain.id, gatedIds);
+          const res = await verify(address, tokenId, chain.id);
           setCompleted && setCompleted(res.claimedTokens || []);
           setSignature(res.signature);
         }
@@ -183,20 +193,7 @@ export default function Minter({
           claimed ? (
             chainClaimed === 0 ? (
               <a>NFT Claimed- Refresh Page!</a>
-            ) : (
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`${marketplaceLookup[chainClaimed]}${tokenId}`}
-              >
-                View NFT On{" "}
-                {chainClaimed === AVAX_CHAIN_ID
-                  ? "Joepegs"
-                  : chainClaimed === OPTIMISM_CHAIN_ID
-                  ? "Quixotic"
-                  : "OpenSea"}
-              </a>
-            )
+            ) : null
           ) : (
             "Claim"
           )
@@ -217,26 +214,34 @@ export default function Minter({
         </Heading>
       )}
 
+      {jwtError && (
+        <Heading as="h2" visual="s">
+          {jwtError}
+        </Heading>
+      )}
+
       {isConnected && claimed && packSuccessMessage && (
         <div className="text-center pt-4">
           <Markdown>{packSuccessMessage}</Markdown>
         </div>
       )}
 
-      <div className="w-full max-w-xs py-9 flex flex-col items-center">
-        {setHasChecked && !hasChecked ? (
-          <button
-            onClick={() => setHasChecked(true)}
-            className="ik-button block min-w-full rounded-md border border-solid py-2 px-4 text-lg font-bold text-blue border-turquoise bg-turquoise hover:cursor-pointer hover:bg-turquoiseDark"
-          >
-            Check My NFTs
-          </button>
-        ) : ((isVerifying || isLoading) && chainIsValid) ||
-          (claimed && chainClaimed === 0) ? (
-          <LoadingIcon />
-        ) : (
-          buttonMint
-        )}
+      <div className="w-full max-w-xs py-8 flex flex-col items-center">
+        {!jwtError &&
+          !claimed &&
+          (setHasChecked && !hasChecked ? (
+            <button
+              onClick={() => setHasChecked(true)}
+              className="ik-button block min-w-full rounded-md border border-solid py-2 px-4 text-lg font-bold text-blue border-turquoise bg-turquoise hover:cursor-pointer hover:bg-turquoiseDark mt-4"
+            >
+              Check My NFTs
+            </button>
+          ) : ((isVerifying || isLoading) && chainIsValid) ||
+            (claimed && chainClaimed === 0) ? (
+            <LoadingIcon />
+          ) : (
+            buttonMint
+          ))}
 
         {parentPackName && (
           <div className="pt-4 w-full">
@@ -248,6 +253,26 @@ export default function Minter({
             />
           </div>
         )}
+
+        {!isLoading &&
+          isConnected &&
+          chainIsValid &&
+          claimed &&
+          chainClaimed !== 0 && (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`${marketplaceLookup[chainClaimed]}${tokenId}`}
+              className="text-gray-200 underline mt-6"
+            >
+              View NFT On{" "}
+              {chainClaimed === AVAX_CHAIN_ID
+                ? "Joepegs"
+                : chainClaimed === OPTIMISM_CHAIN_ID
+                ? "Quixotic"
+                : "OpenSea"}
+            </a>
+          )}
       </div>
     </div>
   );

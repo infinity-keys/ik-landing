@@ -18,6 +18,7 @@ module.exports = {
         turquoiseDark: "#5ffae7",
         twitterBlue: "#1da1f2",
         discordPurple: "#5865f2",
+        redditOrange: "#FF4500",
         gray: {
           100: "#EEEFFC",
           150: "#A6ADB4",
@@ -36,13 +37,13 @@ module.exports = {
       },
       keyframes: {
         fade: {
-          "0%": { opacity: 0 },
-          "100%": { opacity: 1 },
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
         },
         flicker: {
-          "0%, 60%": { opacity: 0 },
-          "30%": { opacity: 0.8 },
-          "100%": { opacity: 1 },
+          "0%, 60%": { opacity: "0" },
+          "30%": { opacity: "0.8" },
+          "100%": { opacity: "1" },
         },
         glow: {
           "0%": { textShadow: "0 0 0px #3fccbb" },

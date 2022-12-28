@@ -1,8 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import castArray from "lodash/castArray";
-import { AVAX_CHAIN_ID } from "@lib/walletConstants";
-import { contractLookup } from "@lib/walletConstants";
+import { contractLookup } from "@lib/contractLookup";
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,8 +9,15 @@ export default async function handler(
 ) {
   const { account, tokenids, chainId } = req.query;
 
-  if (typeof account !== "string" || typeof chainId !== "string" || !tokenids)
-    return res.status(500).end();
+  if (typeof account !== "string" || typeof chainId !== "string" || !tokenids) {
+    return res
+      .setHeader("Cache-Control", "max-age=31536000, public")
+      .status(500)
+      .end();
+  }
+
+  // All responses will have 15 second cache time
+  res.setHeader("Cache-Control", "max-age=15, public");
 
   const tokenIds = castArray(tokenids);
 
@@ -20,9 +26,7 @@ export default async function handler(
   const contract = contractLookup[chainIdAsNumber];
   if (!contract) return res.status(500).end();
 
-  // faster call on avax than eth..
-  const contractAVAX = contractLookup[AVAX_CHAIN_ID];
-  const numTokens = (await contractAVAX.totalSupplyAll()).length;
+  const numTokens = (await contract.totalSupplyAll()).length;
 
   // check if token Ids exist
   const validIds = tokenIds.every((t) => parseInt(t, 10) < numTokens);

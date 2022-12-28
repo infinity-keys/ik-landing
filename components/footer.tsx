@@ -1,5 +1,6 @@
 import TwitterIcon from "./svg/twitter-icon-svg";
 import Discord from "./svg/discord-svg";
+import RedditSVG from "./svg/reddit-svg";
 import Link from "next/link";
 import Button from "./button";
 import { PACK_COLLECTION_BASE } from "@lib/constants";
@@ -17,8 +18,9 @@ export default function Footer() {
         <nav className="px-4 sm:px-6 lg:px-8" aria-label="Top">
           <div className="w-full py-6 flex flex-col sm:flex-row items-center justify-center border-b border-indigo-500 lg:border-none">
             <div className="flex items-center space-x-4 mb-4 sm:mb-0">
-              <div className="twitterIcon hover: fill-twitterBlue">
+              <div>
                 <a
+                  className="twitterIcon"
                   data-cy="twitter"
                   href="https://twitter.com/InfinityKeys"
                   target="_blank"
@@ -27,14 +29,26 @@ export default function Footer() {
                   <TwitterIcon />
                 </a>
               </div>
-              <div className="discordIcon hover: fill-discordPurple">
+              <div>
                 <a
+                  className="discordIcon"
                   data-cy="discord"
                   href="https://discord.com/invite/infinitykeys"
                   target="_blank"
                   rel="noreferrer"
                 >
                   <Discord />
+                </a>
+              </div>
+              <div>
+                <a
+                  className="redditIcon"
+                  data-cy="reddit"
+                  href="https://www.reddit.com/r/infinitykeys/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <RedditSVG />
                 </a>
               </div>
             </div>

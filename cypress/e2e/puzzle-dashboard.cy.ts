@@ -22,9 +22,11 @@ describe("infinitykeys.io/puzzles", () => {
   });
 
   it("go to landing page and verify input boxes", () => {
-    cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
-    cy.get(".puzzle-thumb").contains("notright").click();
-    cy.url().should("include", "/puzzle/notright");
+    // @TODO: remove this when notright is public
+    cy.visit("/puzzle/supersecret-notright");
+    // cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
+    // cy.get(".puzzle-thumb").contains("notright").click();
+    // cy.url().should("include", "/puzzle/notright");
     cy.get("input").should("have.length", 5);
   });
 

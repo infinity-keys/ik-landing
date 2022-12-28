@@ -1,7 +1,6 @@
 import { jwtVerify, SignJWT } from "jose";
 import { nanoid } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
-import isEmpty from "lodash/isEmpty";
 
 import { IK_CLAIMS_NAMESPACE, JWT_SECRET_KEY } from "@lib/constants";
 import { IkJwt } from "./types";
@@ -74,14 +73,24 @@ export const verifyToken = (token: string) =>
  * Given a JWT string, check that the users claims claim one or mroe puzzle
  * namespaces
  */
-export const jwtHasClaim = async (jwt: string, puzzle: string[]) => {
+export const jwtHasClaim = async (jwt: string, puzzles: string[]) => {
+  const verified = await verifyToken(jwt);
+  if (!verified) return false;
+
+  // @TODO: pull in superstruct or use jose's validator to ensure shape
+  const payload = verified.payload as unknown as IkJwt;
+
+  return puzzles.every((puzzle) =>
+    payload.claims[IK_CLAIMS_NAMESPACE].puzzles.includes(puzzle)
+  );
+};
+
+export const jwtHasNoClaims = async (jwt: string) => {
   const verified = await verifyToken(jwt);
   if (!verified) return false;
 
   // @TOOD: pull in superstruct or use jose's validator to ensure shape
   const payload = verified.payload as unknown as IkJwt;
 
-  return !!puzzle.filter((puzzle) =>
-    payload?.claims?.[IK_CLAIMS_NAMESPACE].puzzles.includes(puzzle)
-  ).length;
+  return payload.claims[IK_CLAIMS_NAMESPACE].puzzles.length === 0;
 };

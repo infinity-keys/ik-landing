@@ -259,7 +259,7 @@ query GetAllPublicPacks($limit: Int = 10, $offset: Int = 0) {
     pack_id
     cloudinary_id
   }
-  count: packs_aggregate {
+  count: packs_aggregate(where: { list_publicly: { _eq: true } }) {
     aggregate {
       count
     }
@@ -300,5 +300,34 @@ query NftMetadata($nftId: Int!, $contractName: String!) {
 query UserExist($userId: uuid!) {
   users_by_pk(user_id: $userId) {
     user_id
+  }
+}
+
+# Used on backend to make sure token exists before doing chain lookup
+query CheckNftOrPackForToken($tokenIdInt: Int!, $tokenIdNum: numeric!) {
+  nfts(where: { tokenId: { _eq: $tokenIdInt } }) {
+    tokenId
+  }
+  packs(where: { nftId: { _eq: $tokenIdNum } }) {
+    nftId
+  }
+}
+
+query GetGatedIdsByNftId($nftIdNum: numeric, $nftIdInt: Int) {
+  packs(where: { nftId: { _eq: $nftIdNum } }) {
+    nftId
+    pack_puzzles {
+      puzzle {
+        success_route
+        nft {
+          tokenId
+        }
+      }
+    }
+  }
+  puzzles(where: { nft: { tokenId: { _eq: $nftIdInt } } }) {
+    simple_name
+    puzzle_id
+    success_route
   }
 }

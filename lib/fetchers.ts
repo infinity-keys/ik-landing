@@ -53,23 +53,20 @@ export const checkIfClaimed = async (account: string, tokenId: number) => {
   url.searchParams.set("tokenId", tokenId.toString());
 
   const response = await fetch(url);
-  if (response.ok) return await response.json();
+  if (response.ok || response.status === 401) return await response.json();
   else throw await response.text();
 };
 
 export const verify = async (
   account: string,
   tokenId: number,
-  chain: number,
-  gatedIds: number[]
+  chain: number
 ) => {
-  // const gatedIdsString = `&${gatedIds.map((id) => `gatedIds=${id}`).join("&")}`;
   //If pack (requires other NFTs) include gated, if single ignore
   const url = new URL("minter/verify", ikApiUrlBase);
   url.searchParams.set("account", account);
   url.searchParams.set("tokenId", tokenId.toString());
   url.searchParams.set("chainId", chain.toString());
-  gatedIds.forEach((id) => url.searchParams.append("gatedIds", id.toString()));
 
   const response = await fetch(url);
 
@@ -99,7 +96,7 @@ export const nftChecker = async (
   successRoute: string,
   finalStep: boolean
 ) => {
-  const url = new URL("check-nft", ikApiUrlBase);
+  const url = new URL("minter/check-nft", ikApiUrlBase);
   url.searchParams.set("account", account);
   url.searchParams.set("chainId", chainId.toString());
   url.searchParams.set("contractAddress", contractAddress);

@@ -24,6 +24,7 @@ import "nprogress/nprogress.css";
 // @TODO: make this load dynamically based on url
 import "../styles/customer/p0.css";
 import "../styles/customer/lens.css";
+import "../styles/customer/saga.css";
 
 // Re-enable here and below for auth via auth0
 // import { UserProvider } from "@auth0/nextjs-auth0";
@@ -48,9 +49,15 @@ const IKTheme = loMerge(darkTheme(), {
 });
 
 export const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, avalancheChain, chain.optimism],
   [
-    infuraProvider({ apiKey: process.env.INFURA_KEY }),
+    chain.mainnet,
+    chain.polygon,
+    chain.optimism,
+    // Leave out avalanche?
+    avalancheChain,
+  ],
+  [
+    infuraProvider(),
     publicProvider(),
     jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) }),
   ]
