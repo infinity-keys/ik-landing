@@ -28,7 +28,7 @@ const puzzles = [
 ]
 const currentStep = 3
 
-const PuzzlePage = () => {
+const PuzzleTestPage = () => {
   const width = useCurrentWidth()
   const layout =
     width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid
@@ -90,4 +90,4 @@ const PuzzlePage = () => {
   )
 }
 
-export default PuzzlePage
+export default PuzzleTestPage
