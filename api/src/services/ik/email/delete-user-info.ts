@@ -1,9 +1,9 @@
+import { IK_CLAIMS_NAMESPACE } from '@infinity-keys/constants'
+import { IkJwt } from '@infinity-keys/core'
 import { MutationResolvers } from 'types/graphql'
 
-import { IK_CLAIMS_NAMESPACE } from 'src/lib/constants'
 import { db } from 'src/lib/db'
 import { verifyToken } from 'src/lib/jwt'
-import { IkJwt } from 'src/lib/types'
 
 export const deleteAllUserInfo: MutationResolvers['deleteAllUserInfo'] =
   async ({ jwt }) => {

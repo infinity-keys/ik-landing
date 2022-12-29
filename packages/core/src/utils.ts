@@ -10,6 +10,8 @@ import {
   chainIds,
 } from '@infinity-keys/constants'
 
+import { ThumbnailProgress } from './types'
+
 // Routes
 export const routeLandingUrl = (slug: string) =>
   `/${PUZZLE_LANDING_BASE}/${slug}`
@@ -68,6 +70,19 @@ export const toHex = (num: number) => {
 //     cloudinary_id: cloudinary_id || undefined,
 //   }
 // }
+
+export const getThumbnailProgress = ({
+  currentStep,
+  puzzleStep,
+}: {
+  currentStep: number
+  puzzleStep: number
+}) => {
+  if (puzzleStep === currentStep) return ThumbnailProgress.Current
+  if (puzzleStep < currentStep) return ThumbnailProgress.Completed
+  if (puzzleStep > currentStep) return ThumbnailProgress.NotCompleted
+  return ThumbnailProgress.Unknown
+}
 
 export const validChain = (chain: number) => chainIds.includes(chain)
 

@@ -1,8 +1,7 @@
+import { contractAddressLookup } from '@infinity-keys/constants'
 import { ethers } from 'ethers'
 import castArray from 'lodash/castArray'
 import { QueryResolvers } from 'types/graphql'
-
-import { contractAddressLookup } from 'src/lib/walletConstants'
 
 import { checkBalance } from './check-balance'
 const privateKey = process.env.PRIVATE_KEY_VERIFY
