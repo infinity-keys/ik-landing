@@ -4,10 +4,12 @@ import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 
 import { useAuth } from '@redwoodjs/auth'
 import { Link, routes } from '@redwoodjs/router'
+import { LoaderIcon } from '@redwoodjs/web/dist/toast'
 
 // @TODO: update links urls to constants
 // import { PACK_COLLECTION_BASE, PUZZLE_LANDING_BASE } from '@lib/constants'
 import Button from 'src/components/Button/Button'
+import WalletButton from 'src/components/WalletButton/WalletButton'
 import Logo from 'src/svgs/Logo'
 import LogoMobile from 'src/svgs/LogoMobile'
 
@@ -22,7 +24,7 @@ export const navigation = [
 ]
 
 const Header = () => {
-  const { isAuthenticated, logOut } = useAuth()
+  const { isAuthenticated, logOut, loading } = useAuth()
 
   return (
     <Disclosure as="header" className="header sticky top-0 z-50 w-full bg-blue">
@@ -88,10 +90,15 @@ const Header = () => {
                   variant="outline"
                   responsive
                 />
-                {isAuthenticated ? (
-                  <Button onClick={logOut} text="Log Out" />
+                <WalletButton />
+                {!loading ? (
+                  isAuthenticated ? (
+                    <Button onClick={logOut} text="Log Out" />
+                  ) : (
+                    <Button to={routes.auth()} text="Log In" />
+                  )
                 ) : (
-                  <Button to={routes.auth()} text="Log In" />
+                  <LoaderIcon />
                 )}
               </div>
 

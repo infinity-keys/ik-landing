@@ -13,12 +13,8 @@ import Wrapper from 'src/components/Wrapper/Wrapper'
 
 // @TODO: when do we call this?
 const MUTATION = gql`
-  mutation UpsertUser(
-    $authId: String!
-    $email: String!
-    $publicAddress: String
-  ) {
-    upsertUser(authId: $authId, email: $email, publicAddress: $publicAddress) {
+  mutation UpsertUser($authId: String!, $email: String!) {
+    upsertUser(authId: $authId, email: $email) {
       id
     }
   }
@@ -30,7 +26,10 @@ const AuthPage = () => {
   const [errorMessage, setErrorMessage] = useState('')
   const emailRef = useRef(null)
 
-  const [create] = useMutation<UpsertUser, UpsertUserVariables>(MUTATION)
+  const [create, { loading: mutationLoading }] = useMutation<
+    UpsertUser,
+    UpsertUserVariables
+  >(MUTATION)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -38,8 +37,6 @@ const AuthPage = () => {
         variables: {
           email: userMetadata.email,
           authId: userMetadata.issuer,
-          // @TODO: when to use real wallet address?
-          publicAddress: userMetadata.publicAddress,
         },
       })
     }
@@ -85,7 +82,7 @@ const AuthPage = () => {
         </div>
       )}
 
-      {isAuthenticated && (
+      {isAuthenticated && !mutationLoading && (
         <div className="pt-12">
           <ProfileCell authId={userMetadata.issuer} />
         </div>
