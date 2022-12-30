@@ -76,6 +76,16 @@ const Puzzle = ({ puzzle }: Props) => {
                 <th>Step {step.stepSortWeight}: </th>
                 <td>
                   <div>Load custom steps component here.</div>
+                  <div>
+                    <input type="text" />
+                  </div>
+                  {/* {[...Array(step.stepSimpleText.solutionCharCount).keys()].map(
+                    () => (
+                      <div key="">
+                        <input type="text" />
+                      </div>
+                    )
+                  )} */}
                   <span>
                     Challenge: {step.challenge} | Step success message:{' '}
                     {step.successMessage} | Solution character count:{' '}
