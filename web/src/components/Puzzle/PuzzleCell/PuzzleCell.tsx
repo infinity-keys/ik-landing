@@ -2,11 +2,11 @@ import type { FindStepsByPuzzleId } from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import Puzzle from 'src/components/Puzzle/Puzzle'
+import PuzzleSteps from 'src/components/Puzzle/Puzzle'
 
 export const QUERY = gql`
   query FindStepsByPuzzleId($id: String!) {
-    puzzle: puzzle(id: $id) {
+    puzzle(id: $id) {
       id
       rewardableId
       steps {
@@ -33,5 +33,5 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({ puzzle }: CellSuccessProps<FindStepsByPuzzleId>) => {
-  return <Puzzle puzzle={puzzle} />
+  return <PuzzleSteps puzzle={puzzle} />
 }

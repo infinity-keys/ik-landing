@@ -43,7 +43,8 @@ export const Step: StepRelationResolvers = {
   puzzle: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).puzzle()
   },
-  stepSimpleText: (_obj, { root }) => {
+  stepSimpleText: (_obj, { root, context }) => {
+    console.log({ _obj, root, context })
     return db.step.findUnique({ where: { id: root?.id } }).stepSimpleText()
   },
   attempts: (_obj, { root }) => {
