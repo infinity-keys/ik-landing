@@ -50,4 +50,5 @@ export const Step: StepRelationResolvers = {
   attempts: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).attempts()
   },
+  didCurrentUserSolveThisStep: () => {},
 }
