@@ -613,10 +613,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@csstools/postcss-cascade-layers@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@csstools/postcss-cascade-layers/-/postcss-cascade-layers-1.1.0.tgz#05a820357aac0de097b4acac43f85a55973220e7"
-  integrity sha512-XpA7g2KViA2ia23A5kZ/EQw+Sy308kLbvMlDPjFZmojwaJ9DYdJuwujFcDGK9v1QhHRmMEHbV2brVSQSLkN/7A==
+"@csstools/postcss-cascade-layers@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@csstools/postcss-cascade-layers/-/postcss-cascade-layers-1.1.1.tgz#8a997edf97d34071dd2e37ea6022447dd9e795ad"
+  integrity sha512-+KdYrpKC5TgomQr2DlZF4lDEpHcoxnj5IGddYYfBWJAKfj1JtuHUIqMa+E1pJJ+z3kvDViWMqyqPlG4Ja7amQA==
   dependencies:
     "@csstools/selector-specificity" "^2.0.2"
     postcss-selector-parser "^6.0.10"
@@ -3020,13 +3020,13 @@ auto-bind@~4.0.0:
   resolved "https://registry.yarnpkg.com/auto-bind/-/auto-bind-4.0.0.tgz#e3589fc6c2da8f7ca43ba9f84fa52a744fc997fb"
   integrity sha512-Hdw8qdNiqdJ8LqT0iK0sVzkFbzg6fhnQqqfWhBDxcHZvU75+B+ayzTy8x+k5Ix0Y92XOhOUlx74ps+bA6BeYMQ==
 
-autoprefixer@^10.4.11:
-  version "10.4.11"
-  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.4.11.tgz#835136aff1d9cd43640151e0d2dba00f8eac7c1c"
-  integrity sha512-5lHp6DgRodxlBLSkzHOTcufWFflH1ewfy2hvFQyjrblBFlP/0Yh4O/Wrg4ow8WRlN3AAUFFLAQwX8hTptzqVHg==
+autoprefixer@^10.4.13:
+  version "10.4.13"
+  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.4.13.tgz#b5136b59930209a321e9fa3dca2e7c4d223e83a8"
+  integrity sha512-49vKpMqcZYsJjwotvt4+h/BCjJVnhGwcLpDt5xkcaOG3eLrG/HUYLagrihYsQ+qrIBgIzX1Rw7a6L8I/ZA1Atg==
   dependencies:
-    browserslist "^4.21.3"
-    caniuse-lite "^1.0.30001399"
+    browserslist "^4.21.4"
+    caniuse-lite "^1.0.30001426"
     fraction.js "^4.2.0"
     normalize-range "^0.1.2"
     picocolors "^1.0.0"
@@ -3339,15 +3339,15 @@ browserify-aes@^1.2.0:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-browserslist@^4.20.2, browserslist@^4.21.3:
-  version "4.21.3"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.21.3.tgz#5df277694eb3c48bc5c4b05af3e8b7e09c5a6d1a"
-  integrity sha512-898rgRXLAyRkM1GryrrBHGkqA5hlpkV5MhtZwg9QXeiyLUYs2k00Un05aX5l2/yJIOObYKOpS2JNo8nJDE7fWQ==
+browserslist@^4.20.2, browserslist@^4.21.3, browserslist@^4.21.4:
+  version "4.21.4"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.21.4.tgz#e7496bbc67b9e39dd0f98565feccdcb0d4ff6987"
+  integrity sha512-CBHJJdDmgjl3daYjN5Cp5kbTf1mUhZoS+beLklHIvkOWscs83YAhLlF3Wsh/lciQYAcbBJgTOD44VtG31ZM4Hw==
   dependencies:
-    caniuse-lite "^1.0.30001370"
-    electron-to-chromium "^1.4.202"
+    caniuse-lite "^1.0.30001400"
+    electron-to-chromium "^1.4.251"
     node-releases "^2.0.6"
-    update-browserslist-db "^1.0.5"
+    update-browserslist-db "^1.0.9"
 
 bs58@^4.0.0, bs58@^4.0.1:
   version "4.0.1"
@@ -3533,7 +3533,12 @@ camelize@^1.0.0:
   resolved "https://registry.yarnpkg.com/camelize/-/camelize-1.0.0.tgz#164a5483e630fa4321e5af07020e531831b2609b"
   integrity sha512-W2lPwkBkMZwFlPCXhIlYgxu+7gC/NUlCtdK652DAJ1JdgV0sTrvuPFshNPrFa1TY2JOkLhgdeEBplB4ezEa+xg==
 
-caniuse-lite@^1.0.30001370, caniuse-lite@^1.0.30001399, caniuse-lite@^1.0.30001406:
+caniuse-lite@^1.0.30001400, caniuse-lite@^1.0.30001426:
+  version "1.0.30001441"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001441.tgz#987437b266260b640a23cd18fbddb509d7f69f3e"
+  integrity sha512-OyxRR4Vof59I3yGWXws6i908EtGbMzVUi3ganaZQHmydk1iwDhRnvaPG2WaR0KcqrDFKrxVZHULT396LEPhXfg==
+
+caniuse-lite@^1.0.30001406:
   version "1.0.30001407"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001407.tgz#92281a6ee67cb90bfd8a6a1201fcc2dc19b60a15"
   integrity sha512-4ydV+t4P7X3zH83fQWNDX/mQEzYomossfpViCOx9zHBSMV+rIe3LFqglHHtVyvNl1FhTNxPxs3jei82iqOW04w==
@@ -4086,10 +4091,10 @@ css-what@^5.0.1:
   resolved "https://registry.yarnpkg.com/css-what/-/css-what-5.1.0.tgz#3f7b707aadf633baf62c2ceb8579b545bb40f7fe"
   integrity sha512-arSMRWIIFY0hV8pIxZMEfmMI47Wj3R/aWpZDDxWYCPEiOMv6tfOrnpDtgxBYPEQD4V0Y/958+1TdC3iWTFcUPw==
 
-cssdb@^7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/cssdb/-/cssdb-7.0.1.tgz#3810a0c67ae06362982dfe965dbedf57a0f26617"
-  integrity sha512-pT3nzyGM78poCKLAEy2zWIVX2hikq6dIrjuZzLV98MumBg+xMTNYfHx7paUlfiRTgg91O/vR889CIf+qiv79Rw==
+cssdb@^7.1.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/cssdb/-/cssdb-7.2.0.tgz#f44bd4abc430f0ff7f4c64b8a1fb857a753f77a8"
+  integrity sha512-JYlIsE7eKHSi0UNuCyo96YuIDFqvhGgHw4Ck6lsN+DP0Tp8M64UTDT2trGbkMDqnCoEjks7CkS0XcjU0rkvBdg==
 
 cssesc@^3.0.0:
   version "3.0.0"
@@ -4435,10 +4440,10 @@ eip1193-provider@1.0.1:
   dependencies:
     "@json-rpc-tools/provider" "^1.5.5"
 
-electron-to-chromium@^1.4.202:
-  version "1.4.206"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.206.tgz#580ff85b54d7ec0c05f20b1e37ea0becdd7b0ee4"
-  integrity sha512-h+Fadt1gIaQ06JaIiyqPsBjJ08fV5Q7md+V8bUvQW/9OvXfL2LRICTz2EcnnCP7QzrFTS6/27MRV6Bl9Yn97zA==
+electron-to-chromium@^1.4.251:
+  version "1.4.284"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.284.tgz#61046d1e4cab3a25238f6bf7413795270f125592"
+  integrity sha512-M8WEXFuKXMYMVr45fo8mq0wUrrJHheiKZf6BArTKk9ZBYCKJEOU5H8cdWgDT+qCVZf7Na4lVUaZsA+h6uA9+PA==
 
 elliptic@6.5.4, elliptic@^6.5.2, elliptic@^6.5.4:
   version "6.5.4"
@@ -7920,10 +7925,10 @@ postcss-custom-media@^8.0.2:
   dependencies:
     postcss-value-parser "^4.2.0"
 
-postcss-custom-properties@^12.1.9:
-  version "12.1.9"
-  resolved "https://registry.yarnpkg.com/postcss-custom-properties/-/postcss-custom-properties-12.1.9.tgz#0883429a7ef99f1ba239d1fea29ce84906daa8bd"
-  integrity sha512-/E7PRvK8DAVljBbeWrcEQJPG72jaImxF3vvCNFwv9cC8CzigVoNIpeyfnJzphnN3Fd8/auBf5wvkw6W9MfmTyg==
+postcss-custom-properties@^12.1.10:
+  version "12.1.11"
+  resolved "https://registry.yarnpkg.com/postcss-custom-properties/-/postcss-custom-properties-12.1.11.tgz#d14bb9b3989ac4d40aaa0e110b43be67ac7845cf"
+  integrity sha512-0IDJYhgU8xDv1KY6+VgUwuQkVtmYzRwu+dMjnmdMafXYv86SWqfxkc7qdDvWS38vsjaEtv8e0vGOUQrAiMBLpQ==
   dependencies:
     postcss-value-parser "^4.2.0"
 
@@ -8073,12 +8078,12 @@ postcss-place@^7.0.5:
   dependencies:
     postcss-value-parser "^4.2.0"
 
-postcss-preset-env@^7.8.2:
-  version "7.8.2"
-  resolved "https://registry.yarnpkg.com/postcss-preset-env/-/postcss-preset-env-7.8.2.tgz#4c834d5cbd2e29df2abf59118947c456922b79ba"
-  integrity sha512-rSMUEaOCnovKnwc5LvBDHUDzpGP+nrUeWZGWt9M72fBvckCi45JmnJigUr4QG4zZeOHmOCNCZnd2LKDvP++ZuQ==
+postcss-preset-env@^7.8.3:
+  version "7.8.3"
+  resolved "https://registry.yarnpkg.com/postcss-preset-env/-/postcss-preset-env-7.8.3.tgz#2a50f5e612c3149cc7af75634e202a5b2ad4f1e2"
+  integrity sha512-T1LgRm5uEVFSEF83vHZJV2z19lHg4yJuZ6gXZZkqVsqv63nlr6zabMH3l4Pc01FQCyfWVrh2GaUeCVy9Po+Aag==
   dependencies:
-    "@csstools/postcss-cascade-layers" "^1.1.0"
+    "@csstools/postcss-cascade-layers" "^1.1.1"
     "@csstools/postcss-color-function" "^1.1.1"
     "@csstools/postcss-font-format-keywords" "^1.0.1"
     "@csstools/postcss-hwb-function" "^1.0.2"
@@ -8092,19 +8097,19 @@ postcss-preset-env@^7.8.2:
     "@csstools/postcss-text-decoration-shorthand" "^1.0.0"
     "@csstools/postcss-trigonometric-functions" "^1.0.2"
     "@csstools/postcss-unset-value" "^1.0.2"
-    autoprefixer "^10.4.11"
-    browserslist "^4.21.3"
+    autoprefixer "^10.4.13"
+    browserslist "^4.21.4"
     css-blank-pseudo "^3.0.3"
     css-has-pseudo "^3.0.4"
     css-prefers-color-scheme "^6.0.3"
-    cssdb "^7.0.1"
+    cssdb "^7.1.0"
     postcss-attribute-case-insensitive "^5.0.2"
     postcss-clamp "^4.1.0"
     postcss-color-functional-notation "^4.2.4"
     postcss-color-hex-alpha "^8.0.4"
     postcss-color-rebeccapurple "^7.1.1"
     postcss-custom-media "^8.0.2"
-    postcss-custom-properties "^12.1.9"
+    postcss-custom-properties "^12.1.10"
     postcss-custom-selectors "^6.0.3"
     postcss-dir-pseudo-class "^6.0.5"
     postcss-double-position-gradients "^3.1.2"
@@ -10102,10 +10107,10 @@ untildify@^4.0.0:
   resolved "https://registry.yarnpkg.com/untildify/-/untildify-4.0.0.tgz#2bc947b953652487e4600949fb091e3ae8cd919b"
   integrity sha512-KK8xQ1mkzZeg9inewmFVDNkg3l5LUhoq9kN6iWYB/CC9YMG8HA+c1Q8HwDe6dEX7kErrEVNVBO3fWsVq5iDgtw==
 
-update-browserslist-db@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/update-browserslist-db/-/update-browserslist-db-1.0.5.tgz#be06a5eedd62f107b7c19eb5bcefb194411abf38"
-  integrity sha512-dteFFpCyvuDdr9S/ff1ISkKt/9YZxKjI9WlRR99c180GaztJtRa/fn18FdxGVKVsnPY7/a/FDN68mcvUmP4U7Q==
+update-browserslist-db@^1.0.9:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/update-browserslist-db/-/update-browserslist-db-1.0.10.tgz#0f54b876545726f17d00cd9a2561e6dade943ff3"
+  integrity sha512-OztqDenkfFkbSG+tRxBeAnCVPckDBcvibKd35yDONx6OU8N7sqgwc7rCbkJ/WcYtVRZ4ba68d6byhC21GFh7sQ==
   dependencies:
     escalade "^3.1.1"
     picocolors "^1.0.0"
