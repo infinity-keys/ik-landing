@@ -1,11 +1,7 @@
 import { chainIdLookup } from '@infinity-keys/constants'
-//import Web3 from 'web3'
 
 const discord = require('discord.js')
 const Moralis = require('moralis').default
-
-//const web3 = new Web3()
-require('dotenv').config()
 
 const client = new discord.Client({
   intents: [],
@@ -15,18 +11,19 @@ client.login(process.env.PASS)
 
 export const handler = async (event) => {
   const { body, headers } = event
+  const parsedBody = await JSON.parse(body)
 
   try {
     await Moralis.Streams.verifySignature({
-      body,
+      body: parsedBody,
       signature: headers['x-signature'],
     })
 
-    // console.log(body)
+    //console.log(body)
 
-    const from = body.txs[0].fromAddress
-    const tokenId = parseInt(body.logs[0].topic1, 16)
-    const chainId = parseInt(body.chainId, 16)
+    const from = parsedBody.txs[0].fromAddress
+    const tokenId = parseInt(parsedBody.logs[0].topic1, 16)
+    const chainId = parseInt(parsedBody.chainId, 16)
     const chain = chainIdLookup[chainId]
 
     const channel = await client.channels.fetch(process.env.CHANNEL)

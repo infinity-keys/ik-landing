@@ -12,13 +12,11 @@
     "@sendgrid/mail": "^7.7.0",
     "cloudinary-build-url": "^0.2.4",
     "discord.js": "^14.7.1",
-    "dotenv": "^16.0.3",
     "jose": "^4.10.0",
     "moralis": "^2.10.4",
     "nanoid": "^3.0.0",
     "nodemon": "^2.0.20",
     "uuid": "^9.0.0",
-    "web3": "^1.8.1",
     "zod": "^3.19.1"
   }
 }
