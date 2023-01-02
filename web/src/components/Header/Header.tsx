@@ -2,7 +2,9 @@ import { Disclosure } from '@headlessui/react'
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon'
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 
+import { useAuth } from '@redwoodjs/auth'
 import { Link, routes } from '@redwoodjs/router'
+import { LoaderIcon } from '@redwoodjs/web/dist/toast'
 
 // @TODO: update links urls to constants
 // import { PACK_COLLECTION_BASE, PUZZLE_LANDING_BASE } from '@lib/constants'
@@ -22,6 +24,8 @@ export const navigation = [
 ]
 
 const Header = () => {
+  const { isAuthenticated, logOut, loading } = useAuth()
+
   return (
     <Disclosure as="header" className="header sticky top-0 z-50 w-full bg-blue">
       {({ open }) => (
@@ -86,8 +90,16 @@ const Header = () => {
                   variant="outline"
                   responsive
                 />
-
                 <WalletButton />
+                {!loading ? (
+                  isAuthenticated ? (
+                    <Button onClick={logOut} text="Log Out" />
+                  ) : (
+                    <Button to={routes.auth()} text="Log In" />
+                  )
+                ) : (
+                  <LoaderIcon />
+                )}
               </div>
 
               {/* hamburger icon, visible mobile only */}

@@ -6,7 +6,7 @@
 //
 // 'src/pages/HomePage/HomePage.js'         -> HomePage
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
-
+import { useAuth } from '@redwoodjs/auth'
 import { Router, Route, Set } from '@redwoodjs/router'
 
 import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
@@ -14,7 +14,7 @@ import SiteLayout from 'src/layouts/SiteLayout'
 
 const Routes = () => {
   return (
-    <Router>
+    <Router useAuth={useAuth}>
       <Set wrap={ScaffoldLayout} title="Puzzles" titleTo="puzzles" buttonLabel="New Puzzle" buttonTo="newPuzzle">
         <Route path="/puzzle/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newPuzzle" />
         <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" />
@@ -30,6 +30,7 @@ const Routes = () => {
         <Route path="/user/delete" page={DeletePage} name="delete" />
         <Route path="/user" page={UserPage} name="user" />
         <Route path="/privacy-policy" page={PrivacyPolicyPage} name="privacyPolicy" />
+        <Route path="/auth" page={AuthPage} name="auth" />
       </Set>
 
       {/* NotFoundPage can't be in a set */}
