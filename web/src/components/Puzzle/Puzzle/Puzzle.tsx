@@ -1,17 +1,12 @@
+import { useRef } from 'react'
+
 import clsx from 'clsx'
 import type {
   DeletePuzzleMutationVariables,
   FindStepsByPuzzleId,
 } from 'types/graphql'
 
-import {
-  Link,
-  routes,
-  navigate,
-  NavLink,
-  useParams,
-  useMatch,
-} from '@redwoodjs/router'
+import { Link, routes, navigate, NavLink, useParams } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
@@ -20,6 +15,14 @@ import {} from 'src/lib/formatters'
 const DELETE_PUZZLE_MUTATION = gql`
   mutation DeletePuzzleMutation($id: String!) {
     deletePuzzle(id: $id) {
+      id
+    }
+  }
+`
+
+const MAKE_ATTEMPT_MUTATION = gql`
+  mutation MakeAttemptMutation($stepId: String!, $data: JSON!) {
+    makeAttempt(stepId: $stepId, data: $data) {
       id
     }
   }
@@ -40,12 +43,38 @@ const Puzzle = ({ puzzle }: Props) => {
     },
   })
 
+  const [makeAttempt] = useMutation(MAKE_ATTEMPT_MUTATION)
+
   const { slug, step: stepParam } = useParams()
 
   const onDeleteClick = (id: DeletePuzzleMutationVariables['id']) => {
     if (confirm('Are you sure you want to delete puzzle ' + id + '?')) {
       deletePuzzle({ variables: { id } })
     }
+  }
+
+  const stepsRef = useRef([])
+  stepsRef.current = []
+
+  const addToRefs: (el) => void = (el) => {
+    if (el && !stepsRef.current.includes(el)) {
+      stepsRef.current.push(el)
+    }
+  }
+
+  const handleMakeAttempt = (e, stepId, index, charCount) => {
+    e.preventDefault()
+    if (stepsRef.current[index].value.length !== charCount) {
+      return
+    }
+    makeAttempt({
+      variables: {
+        stepId,
+        data: { simpleTextSolution: stepsRef.current[index].value },
+      },
+    })
+
+    stepsRef.current[index].value = ''
   }
 
   return (
@@ -66,7 +95,7 @@ const Puzzle = ({ puzzle }: Props) => {
               <th>Rewardable id</th>
               <td>{puzzle.rewardableId}</td>
             </tr>
-            {puzzle.steps.map((step) => (
+            {puzzle.steps.map((step, index) => (
               <tr
                 key={step.id}
                 className={clsx({
@@ -77,7 +106,19 @@ const Puzzle = ({ puzzle }: Props) => {
                 <td>
                   <div>Load custom steps component here.</div>
                   <div>
-                    <input type="text" />
+                    <form
+                      onSubmit={(e) =>
+                        handleMakeAttempt(
+                          e,
+                          step.id,
+                          index,
+                          step.stepSimpleText.solutionCharCount
+                        )
+                      }
+                    >
+                      <input type="text" ref={addToRefs} />
+                      <button type="submit">submit</button>
+                    </form>
                   </div>
                   {/* {[...Array(step.stepSimpleText.solutionCharCount).keys()].map(
                     () => (
