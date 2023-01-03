@@ -23,7 +23,7 @@ export const handler = async (event) => {
       signature: headers['x-signature'],
     })
 
-    if (parsedBody.txs.length === 0) {
+    if (parsedBody.txs.length === 0 || !parsedBody.confirmed) {
       return { statusCode: 200 }
     }
 
