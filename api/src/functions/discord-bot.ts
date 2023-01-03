@@ -11,6 +11,7 @@ client.login(process.env.PASS)
 
 export const handler = async (event) => {
   const { body, headers } = event
+  console.log({ body, headers })
   const parsedBody = await JSON.parse(body)
 
   try {
@@ -19,9 +20,12 @@ export const handler = async (event) => {
       signature: headers['x-signature'],
     })
 
+
     if (parsedBody.txs.length === 0) {
       return { statusCode: 200 }
     }
+
+
 
     const from = parsedBody.txs[0].fromAddress
     const tokenId = parseInt(parsedBody.logs[0].topic1, 16)
