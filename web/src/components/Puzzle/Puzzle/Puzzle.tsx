@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 
+import { gql, useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
 import type {
   DeletePuzzleMutationVariables,
@@ -28,6 +29,17 @@ const MAKE_ATTEMPT_MUTATION = gql`
   }
 `
 
+const GET_COMPLETED_STEPS = gql`
+  query GetCompletedSteps($id: String!) {
+    getStepsByPuzzleId(id: $id) {
+      stepProgress {
+        stepId
+        solved
+      }
+    }
+  }
+`
+
 interface Props {
   puzzle: NonNullable<FindStepsByPuzzleId['puzzle']>
 }
@@ -43,6 +55,11 @@ const Puzzle = ({ puzzle }: Props) => {
     },
   })
 
+  const [getSteps, { data }] = useLazyQuery(GET_COMPLETED_STEPS, {
+    variables: { id: puzzle.id },
+  })
+
+  console.log('data: ', data)
   const [makeAttempt] = useMutation(MAKE_ATTEMPT_MUTATION)
 
   const { slug, step: stepParam } = useParams()
@@ -84,6 +101,7 @@ const Puzzle = ({ puzzle }: Props) => {
           <h2 className="rw-heading rw-heading-secondary">
             Puzzle {puzzle.id} Detail
           </h2>
+          <button onClick={() => getSteps()}>Steps</button>
         </header>
         <table className="rw-table">
           <tbody>

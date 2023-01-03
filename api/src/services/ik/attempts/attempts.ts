@@ -1,26 +1,74 @@
-import type { MutationResolvers } from 'types/graphql'
+import type { MutationResolvers, QueryResolvers } from 'types/graphql'
 
-import { AuthenticationError } from '@redwoodjs/graphql-server'
+// import { AuthenticationError } from '@redwoodjs/graphql-server'
+import { context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 
-export const makeAttempt: MutationResolvers['makeAttempt'] = (
-  { stepId, data },
-  { context }
-) => {
-  if (!context.currentUser || typeof context.currentUser === 'string') {
-    throw new AuthenticationError('Not authenticated')
-  }
-
-  console.log('context: ')
-  console.log({ stepId, data })
+export const makeAttempt: MutationResolvers['makeAttempt'] = ({
+  stepId,
+  data,
+}) => {
   return db.attempt.create({
     data: {
-      attemptedAt: new Date().toISOString(),
-      // @TODO: why error
       userId: context?.currentUser.id,
       stepId,
       data,
     },
   })
+}
+
+export const getStepsByPuzzleId: QueryResolvers['stepsByPuzzleId'] = async ({
+  id,
+}) => {
+  const puzzleData = await db.puzzle.findUnique({
+    where: { id: 'clcf3zxj201djl6khqo94kuz1' },
+    include: {
+      steps: {
+        include: {
+          stepSimpleText: true,
+        },
+      },
+    },
+  })
+
+  // console.log(JSON.stringify(puzzleData, null, 2))
+
+  const stepData = puzzleData.steps.map(
+    ({ id, stepSortWeight, stepSimpleText, type }) => {
+      console.log('type: ', type)
+      return {
+        step: { id, stepSortWeight },
+        data: {
+          path: ['simpleTextSolution'],
+          equals: stepSimpleText.solution,
+        },
+      }
+    }
+  )
+
+  const solvedSteps = await db.attempt.findMany({
+    where: {
+      user: { id: 'clcf5fosv0000l6mzsjzpr8u4' },
+      OR: stepData,
+    },
+  })
+
+  const stepProgress = stepData.map(({ step }) => {
+    const solved = solvedSteps.some(({ stepId }) => stepId === step.id)
+    return {
+      stepId: step.id,
+      stepSortWeight: step.stepSortWeight,
+      solved,
+    }
+  })
+
+  console.log(stepProgress)
+
+  // console.log(solvedSteps)
+
+  return {
+    puzzle: puzzleData,
+    stepProgress,
+  }
 }
