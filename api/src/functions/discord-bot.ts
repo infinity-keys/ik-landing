@@ -20,7 +20,12 @@ export const handler = async (event) => {
       signature: headers['x-signature'],
     })
 
-    // console.log(body)
+
+    if (parsedBody.txs.length === 0) {
+      return { statusCode: 200 }
+    }
+
+
 
     const from = parsedBody.txs[0].fromAddress
     const tokenId = parseInt(parsedBody.logs[0].topic1, 16)
