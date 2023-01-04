@@ -32,11 +32,8 @@ export const getStepsByPuzzleId: QueryResolvers['stepsByPuzzleId'] = async ({
     },
   })
 
-  // console.log(JSON.stringify(puzzleData, null, 2))
-
   const stepData = puzzleData.steps.map(
     ({ id, stepSortWeight, stepSimpleText, type }) => {
-      console.log('type: ', type)
       return {
         step: { id, stepSortWeight },
         data: {
@@ -62,10 +59,6 @@ export const getStepsByPuzzleId: QueryResolvers['stepsByPuzzleId'] = async ({
       solved,
     }
   })
-
-  console.log(stepProgress)
-
-  // console.log(solvedSteps)
 
   return {
     puzzle: puzzleData,

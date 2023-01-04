@@ -47,4 +47,7 @@ export const Attempt: AttemptRelationResolvers = {
   step: (_obj, { root }) => {
     return db.attempt.findUnique({ where: { id: root?.id } }).step()
   },
+  solves: (_obj, { root }) => {
+    return db.attempt.findUnique({ where: { id: root?.id } }).solves()
+  },
 }

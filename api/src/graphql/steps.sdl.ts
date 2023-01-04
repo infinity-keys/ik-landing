@@ -21,6 +21,7 @@ export const schema = gql`
   type Query {
     steps: [Step!]! @requireAuth
     step(id: String!): Step @requireAuth
+    didCurrentUserSolveThisStep(id: String!): Boolean @requireAuth
   }
 
   input CreateStepInput {

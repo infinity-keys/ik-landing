@@ -6,24 +6,24 @@ export const standard = defineScenario<Prisma.AttemptCreateArgs>({
     one: {
       data: {
         data: { foo: 'bar' },
-        user: { create: { updatedAt: '2022-11-21T02:51:26.587Z' } },
+        user: { create: { updatedAt: '2023-01-04T00:49:52.528Z' } },
         step: {
           create: {
-            updatedAt: '2022-11-21T02:51:26.587Z',
+            updatedAt: '2023-01-04T00:49:52.528Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2022-11-21T02:51:26.587Z',
+                    updatedAt: '2023-01-04T00:49:52.528Z',
                     name: 'String',
-                    slug: 'String9229304',
+                    slug: 'String511347',
                     explanation: 'String',
                     type: 'PUZZLE',
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String6504332',
-                        updatedAt: '2022-11-21T02:51:26.587Z',
+                        slug: 'String2376711',
+                        updatedAt: '2023-01-04T00:49:52.528Z',
                       },
                     },
                   },
@@ -37,24 +37,24 @@ export const standard = defineScenario<Prisma.AttemptCreateArgs>({
     two: {
       data: {
         data: { foo: 'bar' },
-        user: { create: { updatedAt: '2022-11-21T02:51:26.587Z' } },
+        user: { create: { updatedAt: '2023-01-04T00:49:52.528Z' } },
         step: {
           create: {
-            updatedAt: '2022-11-21T02:51:26.587Z',
+            updatedAt: '2023-01-04T00:49:52.528Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2022-11-21T02:51:26.587Z',
+                    updatedAt: '2023-01-04T00:49:52.528Z',
                     name: 'String',
-                    slug: 'String615633',
+                    slug: 'String1023348',
                     explanation: 'String',
                     type: 'PUZZLE',
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String1111149',
-                        updatedAt: '2022-11-21T02:51:26.587Z',
+                        slug: 'String917288',
+                        updatedAt: '2023-01-04T00:49:52.528Z',
                       },
                     },
                   },
