@@ -30,7 +30,7 @@ const url = '/step'
 
 const StepPage = () => {
   return (
-    <Wrapper full>
+    <Wrapper full customClasses={['puzzle', `puzzle--${'steps'}`]}>
       <Seo
         title={title}
         description={`Can you unlock the ${title} puzzle?`}

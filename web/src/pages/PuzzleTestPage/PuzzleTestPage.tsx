@@ -34,7 +34,7 @@ const PuzzleTestPage = () => {
     width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid
 
   return (
-    <Wrapper full>
+    <Wrapper full customClasses={["pack", `pack--${pack.simpleName}`]}>
       <Seo
         title={title}
         description={`Can you unlock the ${title} puzzle?`}

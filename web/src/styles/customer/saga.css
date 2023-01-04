@@ -1,0 +1,51 @@
+/**
+ * @file
+ *
+ * The "Saga" pack and puzzle pages
+ */
+
+ .pack--saga-wormhole-pack,
+.puzzle--saga-home,
+.puzzle--saga-lite {
+  /* Scoped vars */
+  --saga-button-color: #d37b3c;
+  --saga-text-color: #ffffff;
+  --saga-button-text: #56130c;
+  --saga-background-color: #200303;
+
+  @apply bg-no-repeat bg-cover bg-center;
+  background-image: url("web/public/customer/saga/saga-background.jpg");
+
+  /* This is a div that's usually hidden in the page*/
+  .pack__image-anchor {
+    @apply mt-20 inline-block w-52 h-56 bg-no-repeat bg-center;
+    background-image: url("web/public/customer/saga/saga-logo.png");
+  }
+
+  /* Text right below logo from above */
+  .pack__text {
+    color: var(--saga-text-color);
+  }
+  /* On the pack page, the blocks representing each puzzle */
+  .puzzle-thumb {
+    background-color: var(--saga-button-color);
+  }
+
+  /* Scope to main area so we can override JUST this button */
+  .pack__main,
+  .puzzle__main {
+    .ik-button {
+      @apply h-20 text-2xl px-10 rounded-full min-w-0;
+      color: var(--saga-button-text);
+      background: var(--saga-button-color);
+      border-color: var(--saga-button-text);
+    }
+  }
+
+  /* You know what this is */
+  .social-share {
+    @apply px-6 py-2 uppercase text-lg rounded-full bg-transparent border-2 border-solid;
+    color: var(--saga-button-color);
+    border-color: var(--saga-button-color);
+  }
+}

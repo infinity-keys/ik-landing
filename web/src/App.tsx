@@ -20,6 +20,12 @@ import './index.css'
 import 'loaders.css/loaders.min.css'
 import '@rainbow-me/rainbowkit/styles.css'
 
+// Custom per-path, but we'll load for all pages right now
+// @TODO: make this load dynamically based on url
+import './styles/customer/p0.css'
+import './styles/customer/lens.css'
+import './styles/customer/saga.css'
+
 export const IKTheme = loMerge(darkTheme(), {
   colors: {
     accentColor: '#3FCCBB',
