@@ -1,6 +1,5 @@
 import { useRef } from 'react'
 
-import { gql, useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
 import type {
   DeletePuzzleMutationVariables,
@@ -24,22 +23,10 @@ const DELETE_PUZZLE_MUTATION = gql`
 const MAKE_ATTEMPT_MUTATION = gql`
   mutation MakeAttemptMutation($stepId: String!, $data: JSON!) {
     makeAttempt(stepId: $stepId, data: $data) {
-      id
+      success
     }
   }
 `
-
-const GET_COMPLETED_STEPS = gql`
-  query GetCompletedSteps($id: String!) {
-    getStepsByPuzzleId(id: $id) {
-      stepProgress {
-        stepId
-        solved
-      }
-    }
-  }
-`
-
 interface Props {
   puzzle: NonNullable<FindStepsByPuzzleId['puzzle']>
 }
@@ -55,12 +42,14 @@ const Puzzle = ({ puzzle }: Props) => {
     },
   })
 
-  const [getSteps, { data }] = useLazyQuery(GET_COMPLETED_STEPS, {
-    variables: { id: puzzle.id },
+  const [makeAttempt] = useMutation(MAKE_ATTEMPT_MUTATION, {
+    onCompleted: (data) => {
+      if (data.makeAttempt.success) {
+        return toast.success('Unlocked')
+      }
+      toast.error('Wrong')
+    },
   })
-
-  console.log('data: ', data)
-  const [makeAttempt] = useMutation(MAKE_ATTEMPT_MUTATION)
 
   const { slug, step: stepParam } = useParams()
 
@@ -94,6 +83,9 @@ const Puzzle = ({ puzzle }: Props) => {
     stepsRef.current[index].value = ''
   }
 
+  const currentStepIndex =
+    puzzle.steps.findLastIndex((step) => step.hasUserCompletedStep) + 1
+
   return (
     <>
       <div className="rw-segment">
@@ -101,7 +93,6 @@ const Puzzle = ({ puzzle }: Props) => {
           <h2 className="rw-heading rw-heading-secondary">
             Puzzle {puzzle.id} Detail
           </h2>
-          <button onClick={() => getSteps()}>Steps</button>
         </header>
         <table className="rw-table">
           <tbody>
@@ -120,23 +111,30 @@ const Puzzle = ({ puzzle }: Props) => {
                   'bg-red-400': step.stepSortWeight === parseInt(stepParam, 10),
                 })}
               >
-                <th>Step {step.stepSortWeight}: </th>
+                <th>
+                  {step.hasUserCompletedStep && (
+                    <b className="mr-2 text-green-500">&#10003;</b>
+                  )}{' '}
+                  Step {step.stepSortWeight}:{' '}
+                </th>
                 <td>
                   <div>Load custom steps component here.</div>
                   <div>
-                    <form
-                      onSubmit={(e) =>
-                        handleMakeAttempt(
-                          e,
-                          step.id,
-                          index,
-                          step.stepSimpleText.solutionCharCount
-                        )
-                      }
-                    >
-                      <input type="text" ref={addToRefs} />
-                      <button type="submit">submit</button>
-                    </form>
+                    {index <= currentStepIndex && (
+                      <form
+                        onSubmit={(e) =>
+                          handleMakeAttempt(
+                            e,
+                            step.id,
+                            index,
+                            step.stepSimpleText.solutionCharCount
+                          )
+                        }
+                      >
+                        <input type="text" ref={addToRefs} />
+                        <button type="submit">submit</button>
+                      </form>
+                    )}
                   </div>
                   {/* {[...Array(step.stepSimpleText.solutionCharCount).keys()].map(
                     () => (

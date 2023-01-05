@@ -5,28 +5,28 @@ export const standard = defineScenario<Prisma.SolveCreateArgs>({
   solve: {
     one: {
       data: {
-        user: { create: { updatedAt: '2023-01-04T00:27:49.654Z' } },
+        user: { create: { updatedAt: '2023-01-05T19:14:19.285Z' } },
         attempt: {
           create: {
             data: { foo: 'bar' },
-            user: { create: { updatedAt: '2023-01-04T00:27:49.654Z' } },
+            user: { create: { updatedAt: '2023-01-05T19:14:19.285Z' } },
             step: {
               create: {
-                updatedAt: '2023-01-04T00:27:49.654Z',
+                updatedAt: '2023-01-05T19:14:19.285Z',
                 puzzle: {
                   create: {
                     rewardable: {
                       create: {
-                        updatedAt: '2023-01-04T00:27:49.654Z',
+                        updatedAt: '2023-01-05T19:14:19.285Z',
                         name: 'String',
-                        slug: 'String4227549',
+                        slug: 'String8156020',
                         explanation: 'String',
                         type: 'PUZZLE',
                         organization: {
                           create: {
                             name: 'String',
-                            slug: 'String6723499',
-                            updatedAt: '2023-01-04T00:27:49.654Z',
+                            slug: 'String9133493',
+                            updatedAt: '2023-01-05T19:14:19.285Z',
                           },
                         },
                       },
@@ -41,28 +41,28 @@ export const standard = defineScenario<Prisma.SolveCreateArgs>({
     },
     two: {
       data: {
-        user: { create: { updatedAt: '2023-01-04T00:27:49.654Z' } },
+        user: { create: { updatedAt: '2023-01-05T19:14:19.285Z' } },
         attempt: {
           create: {
             data: { foo: 'bar' },
-            user: { create: { updatedAt: '2023-01-04T00:27:49.654Z' } },
+            user: { create: { updatedAt: '2023-01-05T19:14:19.285Z' } },
             step: {
               create: {
-                updatedAt: '2023-01-04T00:27:49.654Z',
+                updatedAt: '2023-01-05T19:14:19.285Z',
                 puzzle: {
                   create: {
                     rewardable: {
                       create: {
-                        updatedAt: '2023-01-04T00:27:49.654Z',
+                        updatedAt: '2023-01-05T19:14:19.285Z',
                         name: 'String',
-                        slug: 'String7379113',
+                        slug: 'String4974158',
                         explanation: 'String',
                         type: 'PUZZLE',
                         organization: {
                           create: {
                             name: 'String',
-                            slug: 'String7436144',
-                            updatedAt: '2023-01-04T00:27:49.654Z',
+                            slug: 'String3239357',
+                            updatedAt: '2023-01-05T19:14:19.285Z',
                           },
                         },
                       },

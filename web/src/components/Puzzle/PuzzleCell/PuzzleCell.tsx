@@ -10,6 +10,7 @@ export const QUERY = gql`
       id
       rewardableId
       steps {
+        hasUserCompletedStep
         id
         stepSortWeight
         challenge

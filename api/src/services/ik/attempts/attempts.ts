@@ -1,67 +1,47 @@
-import type { MutationResolvers, QueryResolvers } from 'types/graphql'
+import type { MutationResolvers } from 'types/graphql'
 
-// import { AuthenticationError } from '@redwoodjs/graphql-server'
 import { context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
+import { createSolve } from 'src/services/solves/solves'
 
-export const makeAttempt: MutationResolvers['makeAttempt'] = ({
+export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   stepId,
   data,
 }) => {
-  return db.attempt.create({
-    data: {
-      userId: context?.currentUser.id,
-      stepId,
-      data,
-    },
-  })
-}
-
-export const getStepsByPuzzleId: QueryResolvers['stepsByPuzzleId'] = async ({
-  id,
-}) => {
-  const puzzleData = await db.puzzle.findUnique({
-    where: { id: 'clcf3zxj201djl6khqo94kuz1' },
-    include: {
-      steps: {
-        include: {
-          stepSimpleText: true,
-        },
+  try {
+    const attempt = await db.attempt.create({
+      data: {
+        userId: context?.currentUser.id,
+        stepId,
+        data,
       },
-    },
-  })
+    })
 
-  const stepData = puzzleData.steps.map(
-    ({ id, stepSortWeight, stepSimpleText, type }) => {
-      return {
-        step: { id, stepSortWeight },
-        data: {
-          path: ['simpleTextSolution'],
-          equals: stepSimpleText.solution,
+    const stepType = 'stepSimpleText'
+    const solutionType = 'simpleTextSolution'
+
+    const step = await db.step.findUnique({
+      where: { id: stepId },
+      select: { [stepType]: true },
+    })
+
+    const userAttempt = data[solutionType]
+
+    if (step[stepType].solution === userAttempt) {
+      await createSolve({
+        input: {
+          attemptId: attempt.id,
+          userId: 'clcgie35q0011l6e5tstfjy69',
+          //  context.currentUser.id
         },
-      }
+      })
+      return { success: true }
     }
-  )
-
-  const solvedSteps = await db.attempt.findMany({
-    where: {
-      user: { id: 'clcf5fosv0000l6mzsjzpr8u4' },
-      OR: stepData,
-    },
-  })
-
-  const stepProgress = stepData.map(({ step }) => {
-    const solved = solvedSteps.some(({ stepId }) => stepId === step.id)
-    return {
-      stepId: step.id,
-      stepSortWeight: step.stepSortWeight,
-      solved,
-    }
-  })
-
-  return {
-    puzzle: puzzleData,
-    stepProgress,
+  } catch (e) {
+    console.log(e)
+    return { success: false }
   }
+
+  return { success: false }
 }

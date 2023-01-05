@@ -49,11 +49,26 @@ export const Step: StepRelationResolvers = {
     return db.step.findUnique({ where: { id: root?.id } }).stepSimpleText()
   },
   attempts: (_obj, { root }) => {
-    return db.step
-      .findUnique({ where: { id: root?.id } })
-      .attempts({ where: { userId: context.currentUser.id } })
+    return db.step.findUnique({ where: { id: root?.id } }).attempts({
+      where: {
+        userId: 'clcgie35q0011l6e5tstfjy69',
+        //  context.currentUser.id
+      },
+    })
   },
-  didCurrentUserSolveThisStep: () => {
-    return true
+  hasUserCompletedStep: async (_obj, { root }) => {
+    const solve = await db.step
+      .findUnique({ where: { id: root?.id } })
+      .attempts({
+        where: {
+          userId: 'clcgie35q0011l6e5tstfjy69',
+          //  context.currentUser.id
+          solve: {
+            isNot: null,
+          },
+        },
+      })
+
+    return solve.length > 0
   },
 }

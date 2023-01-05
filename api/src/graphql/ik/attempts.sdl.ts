@@ -15,11 +15,15 @@ export const schema = gql`
     stepProgress: [StepProgress!]!
   }
 
+  type MakeAttemptResponse {
+    success: Boolean!
+  }
+
   type Query {
     getStepsByPuzzleId(id: String!): StepsByPuzzleIdResponse @requireAuth
   }
 
   type Mutation {
-    makeAttempt(stepId: String!, data: JSON!): Attempt! @requireAuth
+    makeAttempt(stepId: String!, data: JSON!): MakeAttemptResponse! @requireAuth
   }
 `

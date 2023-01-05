@@ -178,7 +178,7 @@ model Attempt {
   step   Step   @relation(fields: [stepId], references: [id])
   stepId String
 
-  solves Solve[]
+  solve Solve?
 
   // What did they guess/input/confirm/connect?
   data Json
@@ -196,7 +196,7 @@ model Solve {
   attempt Attempt   @relation(fields: [attemptId], references: [id])
   attemptId String @unique
 
-  data    Json?
+  data    Json? @default("{}")
 }
 
 /// Information about NFTs. Only Rewardables can reward an NFT.
