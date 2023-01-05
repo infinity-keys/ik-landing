@@ -34,15 +34,15 @@ const PuzzleTestPage = () => {
     width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid
 
   return (
-    <Wrapper full customClasses={["pack", `pack--${pack.simpleName}`]}>
+    <Wrapper full customClasses={['pack', `pack--${'steps'}`]}>
       <Seo
         title={title}
         description={`Can you unlock the ${title} puzzle?`}
         // imageUrl={cloudinaryId && cloudinaryUrl(cloudinaryId, 500, 500, false)}
         // url={asPath}
       />
-
-      <main className="puzzle__main w-full px-4 pt-10 text-center md:pt-20">
+      <div className="pack__image-anchor"></div>
+      <main className="pack__main w-full px-4 pt-10 text-center md:pt-20">
         <PuzzleHeader
           name={title}
           instructions={instructions}

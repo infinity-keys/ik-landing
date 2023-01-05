@@ -34,6 +34,7 @@ export const LensShareButton = ({
       target="_blank"
       rel="noopener noreferrer"
       className={clsx(
+        'social-share',
         colors,
         link,
         light && lightBg,

@@ -17,7 +17,7 @@ const ThumbnailMini = ({ name, step, progress, href }: ThumbnailMiniProps) => {
   return (
     <Link
       className={clsx(
-        'relative flex w-full max-w-[10rem] items-center rounded-lg border bg-blue-800 py-3 px-3 text-center shadow lg:px-4',
+        'puzzle-thumb relative flex w-full max-w-[10rem] items-center rounded-lg border bg-blue-800 py-3 px-3 text-center shadow lg:px-4',
         progress === ThumbnailProgress.Current
           ? 'border-turquoise'
           : 'border-transparent',
