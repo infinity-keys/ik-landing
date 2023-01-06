@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 
 import clsx from 'clsx'
 import type {
@@ -31,7 +31,17 @@ interface Props {
   puzzle: NonNullable<FindStepsByPuzzleId['puzzle']>
 }
 
+// exclude nonrelevant data
+// query with all minimum step data, and all the data for the current step
+//
+
 const Puzzle = ({ puzzle }: Props) => {
+  const { slug, step: stepParam } = useParams()
+
+  useEffect(() => {
+    console.log(stepParam)
+  }, [stepParam])
+
   const [deletePuzzle] = useMutation(DELETE_PUZZLE_MUTATION, {
     onCompleted: () => {
       toast.success('Puzzle deleted')
@@ -45,13 +55,12 @@ const Puzzle = ({ puzzle }: Props) => {
   const [makeAttempt] = useMutation(MAKE_ATTEMPT_MUTATION, {
     onCompleted: (data) => {
       if (data.makeAttempt.success) {
+        navigate(routes.puzzleStep({ slug, step: parseInt(stepParam) + 1 }))
         return toast.success('Unlocked')
       }
       toast.error('Wrong')
     },
   })
-
-  const { slug, step: stepParam } = useParams()
 
   const onDeleteClick = (id: DeletePuzzleMutationVariables['id']) => {
     if (confirm('Are you sure you want to delete puzzle ' + id + '?')) {
@@ -59,28 +68,21 @@ const Puzzle = ({ puzzle }: Props) => {
     }
   }
 
-  const stepsRef = useRef([])
-  stepsRef.current = []
+  const inputRef = useRef(null)
 
-  const addToRefs: (el) => void = (el) => {
-    if (el && !stepsRef.current.includes(el)) {
-      stepsRef.current.push(el)
-    }
-  }
-
-  const handleMakeAttempt = (e, stepId, index, charCount) => {
+  const handleMakeAttempt = (e, stepId, charCount) => {
     e.preventDefault()
-    if (stepsRef.current[index].value.length !== charCount) {
+    if (inputRef.current.value.length !== charCount) {
       return
     }
     makeAttempt({
       variables: {
         stepId,
-        data: { simpleTextSolution: stepsRef.current[index].value },
+        data: { simpleTextSolution: inputRef.current.value },
       },
     })
 
-    stepsRef.current[index].value = ''
+    inputRef.current.value = ''
   }
 
   const currentStepIndex =
@@ -120,18 +122,17 @@ const Puzzle = ({ puzzle }: Props) => {
                 <td>
                   <div>Load custom steps component here.</div>
                   <div>
-                    {index <= currentStepIndex && (
+                    {index === currentStepIndex && (
                       <form
                         onSubmit={(e) =>
                           handleMakeAttempt(
                             e,
                             step.id,
-                            index,
                             step.stepSimpleText.solutionCharCount
                           )
                         }
                       >
-                        <input type="text" ref={addToRefs} />
+                        <input type="text" ref={inputRef} />
                         <button type="submit">submit</button>
                       </form>
                     )}

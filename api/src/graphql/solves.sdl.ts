@@ -15,7 +15,7 @@ export const schema = gql`
   }
 
   input CreateSolveInput {
-    solvedAt: DateTime!
+    solvedAt: DateTime
     userId: String!
     attemptId: String!
     data: JSON

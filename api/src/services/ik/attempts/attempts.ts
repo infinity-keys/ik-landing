@@ -1,15 +1,29 @@
 import type { MutationResolvers } from 'types/graphql'
+import { z } from 'zod'
 
 import { context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 import { createSolve } from 'src/services/solves/solves'
 
+const SolutionData = z
+  .object({
+    simpleTextSolution: z.string(),
+    test: z.string(),
+  })
+  .partial()
+  .refine(
+    (data) => data.simpleTextSolution || data.test,
+    'Invalid solution type'
+  )
+
 export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   stepId,
   data,
 }) => {
   try {
+    SolutionData.parse(data)
+
     const attempt = await db.attempt.create({
       data: {
         userId: context?.currentUser.id,
