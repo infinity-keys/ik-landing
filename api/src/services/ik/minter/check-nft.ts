@@ -12,7 +12,7 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
   poapEventId,
 }) => {
   if (poapEventId) {
-    const url = `https://api.poap.tech/actions/scan/${account}/${tokenId}`
+    const url = `https://api.poap.tech/actions/scan/${account}/${poapEventId}`
 
     const options = {
       method: 'GET',
@@ -22,19 +22,17 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
       },
     }
 
-    fetch(url, options)
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.event) {
-          // Have to move this return statement below to allow for cookies!
-          return { success: true }
-        }
-      })
-      .catch((err) => console.error('error:' + err))
+    try {
+      const res = await fetch(url, options)
+      const data = await res.json()
 
-    // If no event or error return false
-    // Have to move this return statement below to allow for cookies!
-    return { success: false }
+      // If no event or error return false
+      // Have to move this return statement below to allow for cookies!
+      if (!data.event) return { success: true, nftPass: false }
+      return { success: true, nftPass: true }
+    } catch (e) {
+      return { success: false }
+    }
   }
 
   // No token Id for ERC721
