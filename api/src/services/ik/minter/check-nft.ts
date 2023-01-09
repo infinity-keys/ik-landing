@@ -31,7 +31,7 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
       if (!data.event) return { success: true, nftPass: false }
       return { success: true, nftPass: true }
     } catch (e) {
-      return { success: false }
+      return { success: false, nftPass: false }
     }
   }
 
