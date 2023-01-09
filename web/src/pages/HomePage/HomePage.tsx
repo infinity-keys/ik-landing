@@ -6,7 +6,6 @@ import { loadFull } from 'tsparticles'
 import type { Engine } from 'tsparticles-engine'
 
 import Button from 'src/components/Button/Button'
-import CheckNftCell from 'src/components/CheckNftCell'
 import CloudImage from 'src/components/CloudImage/CloudImage'
 import EmailNewsletter from 'src/components/EmailNewsletter/EmailNewsletter'
 import EmailPartner from 'src/components/EmailPartner/EmailPartner'
