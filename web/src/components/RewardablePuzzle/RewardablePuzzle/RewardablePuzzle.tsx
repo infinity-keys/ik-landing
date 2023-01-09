@@ -3,7 +3,12 @@ import type {
   FindRewardablePuzzleBySlug,
 } from 'types/graphql'
 
-import { Link, routes, navigate, useMatch, NavLink } from '@redwoodjs/router'
+import {
+  Link,
+  routes,
+  navigate,
+  // useParams
+} from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
@@ -23,6 +28,8 @@ interface Props {
 }
 
 const Rewardable = ({ rewardable }: Props) => {
+  // const { step } = useParams()
+
   const [deleteRewardable] = useMutation(DELETE_REWARDABLE_MUTATION, {
     onCompleted: () => {
       toast.success('Rewardable deleted')
@@ -54,14 +61,6 @@ const Rewardable = ({ rewardable }: Props) => {
               <td>{rewardable.id}</td>
             </tr>
             <tr>
-              <th>Created at</th>
-              <td>{timeTag(rewardable.createdAt)}</td>
-            </tr>
-            <tr>
-              <th>Updated at</th>
-              <td>{timeTag(rewardable.updatedAt)}</td>
-            </tr>
-            <tr>
               <th>Name</th>
               <td>{rewardable.name}</td>
             </tr>
@@ -77,19 +76,14 @@ const Rewardable = ({ rewardable }: Props) => {
               <th>Success message</th>
               <td>{rewardable.successMessage}</td>
             </tr>
-            <tr>
-              <th>List publicly</th>
-              <td>{checkboxInputTag(rewardable.listPublicly)}</td>
-            </tr>
-            <tr>
-              <th>Type</th>
-              <td>{formatEnum(rewardable.type)}</td>
-            </tr>
 
             <tr>
               <th>Steps from cell</th>
               <td>
-                <PuzzleStepsCell id={rewardable.puzzle.id} />
+                <PuzzleStepsCell
+                  id={rewardable.puzzle.id}
+                  // step={step.toString()}
+                />
               </td>
             </tr>
           </tbody>

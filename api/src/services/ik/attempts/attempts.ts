@@ -46,7 +46,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
       await createSolve({
         input: {
           attemptId: attempt.id,
-          userId: 'clcgie35q0011l6e5tstfjy69',
+          userId: 'clcp3dx5z0000l6gv8neydops',
           //  context.currentUser.id
         },
       })

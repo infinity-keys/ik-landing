@@ -1,5 +1,3 @@
-import { useRef, useEffect } from 'react'
-
 import clsx from 'clsx'
 import type {
   DeletePuzzleMutationVariables,
@@ -9,6 +7,8 @@ import type {
 import { Link, routes, navigate, NavLink, useParams } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
+
+import StepCell from 'src/components/StepCell'
 
 import {} from 'src/lib/formatters'
 
@@ -20,13 +20,6 @@ const DELETE_PUZZLE_MUTATION = gql`
   }
 `
 
-const MAKE_ATTEMPT_MUTATION = gql`
-  mutation MakeAttemptMutation($stepId: String!, $data: JSON!) {
-    makeAttempt(stepId: $stepId, data: $data) {
-      success
-    }
-  }
-`
 interface Props {
   puzzle: NonNullable<FindStepsByPuzzleId['puzzle']>
 }
@@ -37,10 +30,7 @@ interface Props {
 
 const Puzzle = ({ puzzle }: Props) => {
   const { slug, step: stepParam } = useParams()
-
-  useEffect(() => {
-    console.log(stepParam)
-  }, [stepParam])
+  const stepIndex = (parseInt(stepParam) - 1).toString()
 
   const [deletePuzzle] = useMutation(DELETE_PUZZLE_MUTATION, {
     onCompleted: () => {
@@ -52,39 +42,13 @@ const Puzzle = ({ puzzle }: Props) => {
     },
   })
 
-  const [makeAttempt] = useMutation(MAKE_ATTEMPT_MUTATION, {
-    onCompleted: (data) => {
-      if (data.makeAttempt.success) {
-        navigate(routes.puzzleStep({ slug, step: parseInt(stepParam) + 1 }))
-        return toast.success('Unlocked')
-      }
-      toast.error('Wrong')
-    },
-  })
-
   const onDeleteClick = (id: DeletePuzzleMutationVariables['id']) => {
     if (confirm('Are you sure you want to delete puzzle ' + id + '?')) {
       deletePuzzle({ variables: { id } })
     }
   }
 
-  const inputRef = useRef(null)
-
-  const handleMakeAttempt = (e, stepId, charCount) => {
-    e.preventDefault()
-    if (inputRef.current.value.length !== charCount) {
-      return
-    }
-    makeAttempt({
-      variables: {
-        stepId,
-        data: { simpleTextSolution: inputRef.current.value },
-      },
-    })
-
-    inputRef.current.value = ''
-  }
-
+  // on solve, write cookie ik-solves, rewardable id and step for specific path
   const currentStepIndex =
     puzzle.steps.findLastIndex((step) => step.hasUserCompletedStep) + 1
 
@@ -106,61 +70,46 @@ const Puzzle = ({ puzzle }: Props) => {
               <th>Rewardable id</th>
               <td>{puzzle.rewardableId}</td>
             </tr>
-            {puzzle.steps.map((step, index) => (
-              <tr
-                key={step.id}
-                className={clsx({
-                  'bg-red-400': step.stepSortWeight === parseInt(stepParam, 10),
-                })}
-              >
-                <th>
-                  {step.hasUserCompletedStep && (
-                    <b className="mr-2 text-green-500">&#10003;</b>
-                  )}{' '}
-                  Step {step.stepSortWeight}:{' '}
-                </th>
-                <td>
-                  <div>Load custom steps component here.</div>
-                  <div>
-                    {index === currentStepIndex && (
-                      <form
-                        onSubmit={(e) =>
-                          handleMakeAttempt(
-                            e,
-                            step.id,
-                            step.stepSimpleText.solutionCharCount
-                          )
-                        }
-                      >
-                        <input type="text" ref={inputRef} />
-                        <button type="submit">submit</button>
-                      </form>
-                    )}
-                  </div>
-                  {/* {[...Array(step.stepSimpleText.solutionCharCount).keys()].map(
+            {!stepParam ? (
+              puzzle.steps.map((step) => (
+                <tr
+                  key={step.id}
+                  className={clsx({
+                    'bg-red-400':
+                      step.stepSortWeight === parseInt(stepParam, 10),
+                  })}
+                >
+                  <th>
+                    {step.hasUserCompletedStep && (
+                      <b className="mr-2 text-green-500">&#10003;</b>
+                    )}{' '}
+                    Step {step.stepSortWeight}:{' '}
+                  </th>
+                  <td>
+                    {/* {[...Array(step.stepSimpleText.solutionCharCount).keys()].map(
                     () => (
                       <div key="">
                         <input type="text" />
                       </div>
                     )
                   )} */}
-                  <span>
-                    Challenge: {step.challenge} | Step success message:{' '}
-                    {step.successMessage} | Solution character count:{' '}
-                    {step.stepSimpleText.solutionCharCount} |
-                    <NavLink
-                      activeClassName="step-active"
-                      to={routes.puzzleStep({
-                        slug,
-                        step: step.stepSortWeight,
-                      })}
-                    >
-                      Go to this step
-                    </NavLink>
-                  </span>
-                </td>
-              </tr>
-            ))}
+                    <span>
+                      <NavLink
+                        activeClassName="step-active"
+                        to={routes.puzzleStep({
+                          slug,
+                          step: step.stepSortWeight,
+                        })}
+                      >
+                        Go to this step
+                      </NavLink>
+                    </span>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <StepCell id={puzzle.steps[stepIndex].id} />
+            )}
           </tbody>
         </table>
       </div>

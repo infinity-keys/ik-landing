@@ -8,28 +8,12 @@ export const QUERY = gql`
   query FindRewardablePuzzleBySlug($slug: String!) {
     puzzle: rewardableBySlug(slug: $slug) {
       id
-      createdAt
-      updatedAt
       name
       slug
       explanation
       successMessage
-      listPublicly
-      type
-      orgId
       puzzle {
         id
-        # steps {
-        #   id
-        #   stepSortWeight
-        #   challenge
-        #   successMessage
-        #   type
-        #   stepSimpleText {
-        #     stepId
-        #     solutionCharCount
-        #   }
-        # }
       }
     }
   }

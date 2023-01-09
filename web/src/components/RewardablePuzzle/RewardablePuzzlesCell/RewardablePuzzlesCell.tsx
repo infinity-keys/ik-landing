@@ -9,15 +9,8 @@ export const QUERY = gql`
   query FindRewardables {
     rewardables {
       id
-      createdAt
-      updatedAt
       name
       slug
-      explanation
-      successMessage
-      listPublicly
-      type
-      orgId
     }
   }
 `

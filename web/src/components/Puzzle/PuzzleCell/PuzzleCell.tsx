@@ -10,16 +10,9 @@ export const QUERY = gql`
       id
       rewardableId
       steps {
-        hasUserCompletedStep
         id
+        hasUserCompletedStep
         stepSortWeight
-        challenge
-        successMessage
-        type
-        stepSimpleText {
-          stepId
-          solutionCharCount
-        }
       }
     }
   }

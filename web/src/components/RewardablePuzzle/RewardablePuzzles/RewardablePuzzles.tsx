@@ -50,15 +50,8 @@ const RewardablesList = ({ rewardables }: FindRewardables) => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>Created at</th>
-            <th>Updated at</th>
             <th>Name</th>
             <th>Slug</th>
-            <th>Explanation</th>
-            <th>Success message</th>
-            <th>List publicly</th>
-            <th>Type</th>
-            <th>Org id</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -66,15 +59,12 @@ const RewardablesList = ({ rewardables }: FindRewardables) => {
           {rewardables.map((rewardable) => (
             <tr key={rewardable.id}>
               <td>{truncate(rewardable.id)}</td>
-              <td>{timeTag(rewardable.createdAt)}</td>
-              <td>{timeTag(rewardable.updatedAt)}</td>
               <td>{truncate(rewardable.name)}</td>
-              <td>{truncate(rewardable.slug)}</td>
-              <td>{truncate(rewardable.explanation)}</td>
-              <td>{truncate(rewardable.successMessage)}</td>
-              <td>{checkboxInputTag(rewardable.listPublicly)}</td>
-              <td>{formatEnum(rewardable.type)}</td>
-              <td>{truncate(rewardable.orgId)}</td>
+              <td>
+                <Link to={`/puzzle/${truncate(rewardable.slug)}`}>
+                  {truncate(rewardable.slug)}
+                </Link>
+              </td>
               <td>
                 <nav className="rw-table-actions">
                   <Link
