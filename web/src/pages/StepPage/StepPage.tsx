@@ -30,7 +30,7 @@ const url = '/step'
 
 const StepPage = () => {
   return (
-    <Wrapper full>
+    <Wrapper full customClasses={['puzzle', `puzzle--${'steps'}`]}>
       <Seo
         title={title}
         description={`Can you unlock the ${title} puzzle?`}
@@ -84,7 +84,7 @@ const StepPage = () => {
         <LensShareButton
           postBody={`Can you unlock the ${name} puzzle?`}
           url={buildUrlString(url)}
-          className="text-sm font-medium"
+          className="social-share text-sm font-medium"
         />
         <TwitterShare
           tweetBody={`Can you unlock the ${name} puzzle? @InfinityKeys\n\n${buildUrlString(
