@@ -7,13 +7,14 @@ import {
   Link,
   routes,
   navigate,
+  useParams,
   // useParams
 } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-import PuzzleStepsCell from 'src/components/Puzzle/PuzzleCell'
-import { checkboxInputTag, formatEnum, timeTag } from 'src/lib/formatters'
+// import PuzzleStepsCell from 'src/components/Puzzle/PuzzleCell'
+import StepCell from 'src/components/StepCell'
 
 const DELETE_REWARDABLE_MUTATION = gql`
   mutation DeleteRewardableMutation($id: String!) {
@@ -28,7 +29,8 @@ interface Props {
 }
 
 const Rewardable = ({ rewardable }: Props) => {
-  // const { step } = useParams()
+  const { step: stepParam } = useParams()
+  const stepIndex = stepParam && parseInt(stepParam, 10) - 1
 
   const [deleteRewardable] = useMutation(DELETE_REWARDABLE_MUTATION, {
     onCompleted: () => {
@@ -80,9 +82,9 @@ const Rewardable = ({ rewardable }: Props) => {
             <tr>
               <th>Steps from cell</th>
               <td>
-                <PuzzleStepsCell
-                  id={rewardable.puzzle.id}
-                  // step={step.toString()}
+                <StepCell
+                  stepId={stepParam && rewardable.puzzle.steps[stepIndex].id}
+                  puzzleId={rewardable.puzzle.id}
                 />
               </td>
             </tr>

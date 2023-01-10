@@ -8,12 +8,7 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { QUERY } from 'src/components/RewardablePuzzle/RewardablePuzzlesCell'
-import {
-  checkboxInputTag,
-  formatEnum,
-  timeTag,
-  truncate,
-} from 'src/lib/formatters'
+import { truncate } from 'src/lib/formatters'
 
 const DELETE_REWARDABLE_MUTATION = gql`
   mutation DeleteRewardableMutation($id: String!) {

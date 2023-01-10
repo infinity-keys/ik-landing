@@ -21,6 +21,7 @@ export const schema = gql`
 
   type Query {
     getStepsByPuzzleId(id: String!): StepsByPuzzleIdResponse @requireAuth
+    optionalStep(id: String): Step @requireAuth
   }
 
   type Mutation {

@@ -1,19 +1,22 @@
-import type { MutationResolvers } from 'types/graphql'
+import type { MutationResolvers, QueryResolvers } from 'types/graphql'
 import { z } from 'zod'
 
 import { context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 import { createSolve } from 'src/services/solves/solves'
+import { step } from 'src/services/steps/steps'
 
 const SolutionData = z
   .object({
     simpleTextSolution: z.string(),
-    test: z.string(),
+    // add more types here
   })
   .partial()
   .refine(
-    (data) => data.simpleTextSolution || data.test,
+    (data) =>
+      // add corresponding type here
+      data.simpleTextSolution,
     'Invalid solution type'
   )
 
@@ -58,4 +61,10 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   }
 
   return { success: false }
+}
+
+export const optionalStep: QueryResolvers['optionalStep'] = async ({ id }) => {
+  if (!id) return
+
+  return step({ id })
 }

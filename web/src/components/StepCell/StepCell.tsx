@@ -2,14 +2,21 @@ import { useRef } from 'react'
 
 import type { FindStepQuery, FindStepQueryVariables } from 'types/graphql'
 
-import { routes, navigate, useParams } from '@redwoodjs/router'
+import { routes, navigate, useParams, Link } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 export const QUERY = gql`
-  query FindStepQuery($id: String!) {
-    step: step(id: $id) {
+  query FindStepQuery($stepId: String, $puzzleId: String!) {
+    puzzle(id: $puzzleId) {
+      steps {
+        id
+        stepSortWeight
+        hasUserCompletedStep
+      }
+    }
+    step: optionalStep(id: $stepId) {
       id
       challenge
       failMessage
@@ -17,11 +24,6 @@ export const QUERY = gql`
       type
       stepSimpleText {
         solutionCharCount
-      }
-      puzzle {
-        steps {
-          id
-        }
       }
     }
   }
@@ -47,16 +49,19 @@ export const Failure = ({
 
 export const Success = ({
   step,
+  puzzle,
 }: CellSuccessProps<FindStepQuery, FindStepQueryVariables>) => {
   const { slug, step: stepParam } = useParams()
 
   const [makeAttempt] = useMutation(MAKE_ATTEMPT_MUTATION, {
     onCompleted: (data) => {
+      const nextStep = parseInt(stepParam) + 1
+
       if (data.makeAttempt.success) {
-        if (parseInt(stepParam) + 1 >= step.puzzle.steps.length) {
+        if (nextStep > puzzle.steps.length) {
           navigate(routes.puzzleLanding({ slug }))
         } else {
-          navigate(routes.puzzleStep({ slug, step: parseInt(stepParam) + 1 }))
+          navigate(routes.puzzleStep({ slug, step: nextStep }))
         }
         return toast.success('Unlocked')
       }
@@ -83,7 +88,7 @@ export const Success = ({
 
   return (
     <div>
-      {step.type === 'SIMPLE_TEXT' && (
+      {step && (
         <form
           onSubmit={(e) =>
             handleMakeAttempt(e, step.id, step.stepSimpleText.solutionCharCount)
@@ -94,6 +99,18 @@ export const Success = ({
           <button type="submit">submit</button>
         </form>
       )}
+      {puzzle.steps.map((s) => (
+        <Link
+          to={routes.puzzleStep({
+            slug,
+            step: s.stepSortWeight,
+          })}
+          key={s.id}
+          className={s.hasUserCompletedStep && 'text-green-500'}
+        >
+          {s.stepSortWeight}
+        </Link>
+      ))}
     </div>
   )
 }

@@ -14,6 +14,9 @@ export const QUERY = gql`
       successMessage
       puzzle {
         id
+        steps {
+          id
+        }
       }
     }
   }
