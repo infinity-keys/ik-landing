@@ -1,11 +1,14 @@
-import { useRef } from 'react'
-
+import { getThumbnailProgress } from '@infinity-keys/core'
 import type { FindStepQuery, FindStepQueryVariables } from 'types/graphql'
 
-import { routes, navigate, useParams, Link } from '@redwoodjs/router'
+import { routes, navigate, useParams } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
+
+import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown'
+import SimpleTextInput from 'src/components/SimpleTextInput/SimpleTextInput'
+import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
 
 export const QUERY = gql`
   query FindStepQuery($stepId: String, $puzzleId: String!) {
@@ -47,6 +50,8 @@ export const Failure = ({
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
+// @TODO: make this not puzzle specific
+
 export const Success = ({
   step,
   puzzle,
@@ -66,51 +71,54 @@ export const Success = ({
         return toast.success('Unlocked')
       }
       toast.error('Wrong')
+      // @TODO: set fail message
     },
   })
 
-  const inputRef = useRef(null)
-
-  const handleMakeAttempt = (e, stepId, charCount) => {
-    e.preventDefault()
-    if (inputRef.current.value.length !== charCount) {
-      return
-    }
-    makeAttempt({
-      variables: {
-        stepId,
-        data: { simpleTextSolution: inputRef.current.value },
-      },
-    })
-
-    inputRef.current.value = ''
-  }
+  const currentStepIndex =
+    puzzle.steps.findLastIndex((step) => step.hasUserCompletedStep) + 1
 
   return (
     <div>
       {step && (
-        <form
-          onSubmit={(e) =>
-            handleMakeAttempt(e, step.id, step.stepSimpleText.solutionCharCount)
-          }
-        >
-          <input type="text" ref={inputRef} />
-          <p>Char count: {step.stepSimpleText.solutionCharCount}</p>
-          <button type="submit">submit</button>
-        </form>
+        <>
+          <SimpleTextInput
+            count={step.stepSimpleText.solutionCharCount}
+            stepId={step.id}
+            makeAttempt={makeAttempt}
+          />
+
+          <div className="mx-auto mt-12 mb-12 max-w-prose bg-black/10 p-4 md:mt-16 md:mb-20">
+            {step.challenge && (
+              <CollapsibleMarkdown
+                title="Challenge"
+                content={step.challenge}
+                defaultOpen
+              />
+            )}
+          </div>
+        </>
       )}
-      {puzzle.steps.map((s) => (
-        <Link
-          to={routes.puzzleStep({
-            slug,
-            step: s.stepSortWeight,
-          })}
-          key={s.id}
-          className={s.hasUserCompletedStep && 'text-green-500'}
-        >
-          {s.stepSortWeight}
-        </Link>
-      ))}
+
+      {puzzle.steps.length > 1 && (
+        <div className="mx-auto mt-12 flex max-w-6xl flex-wrap justify-center gap-4 pb-12 sm:flex-row md:flex-nowrap md:pb-20">
+          {puzzle.steps.map(({ stepSortWeight }) => (
+            <ThumbnailMini
+              key={stepSortWeight}
+              name={stepSortWeight.toString()}
+              step={stepSortWeight}
+              progress={getThumbnailProgress({
+                currentStep: currentStepIndex + 1,
+                puzzleStep: stepSortWeight,
+              })}
+              to={routes.puzzleStep({
+                slug,
+                step: stepSortWeight,
+              })}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

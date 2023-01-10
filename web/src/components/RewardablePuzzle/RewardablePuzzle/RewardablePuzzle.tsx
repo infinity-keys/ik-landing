@@ -1,112 +1,65 @@
-import type {
-  DeleteRewardableMutationVariables,
-  FindRewardablePuzzleBySlug,
-} from 'types/graphql'
+import { buildUrlString } from '@infinity-keys/core'
+import { LensShareButton } from '@infinity-keys/react-lens-share-button'
+import type { FindRewardablePuzzleBySlug } from 'types/graphql'
 
 import {
-  Link,
-  routes,
-  navigate,
   useParams,
   // useParams
 } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
 
-// import PuzzleStepsCell from 'src/components/Puzzle/PuzzleCell'
+import PuzzleHeader from 'src/components/PuzzleHeader/PuzzleHeader'
+import Seo from 'src/components/Seo/Seo'
 import StepCell from 'src/components/StepCell'
-
-const DELETE_REWARDABLE_MUTATION = gql`
-  mutation DeleteRewardableMutation($id: String!) {
-    deleteRewardable(id: $id) {
-      id
-    }
-  }
-`
+import TwitterShare from 'src/components/TwitterShare/TwitterShare'
+import Wrapper from 'src/components/Wrapper/Wrapper'
+import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface Props {
   rewardable: NonNullable<FindRewardablePuzzleBySlug['puzzle']>
 }
 
+const url = '/puzzle'
+const cloudinary_id = 'ik-alpha-trophies/Map-04_xzczep'
+
 const Rewardable = ({ rewardable }: Props) => {
   const { step: stepParam } = useParams()
   const stepIndex = stepParam && parseInt(stepParam, 10) - 1
 
-  const [deleteRewardable] = useMutation(DELETE_REWARDABLE_MUTATION, {
-    onCompleted: () => {
-      toast.success('Rewardable deleted')
-      navigate(routes.puzzles())
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
-
-  const onDeleteClick = (id: DeleteRewardableMutationVariables['id']) => {
-    if (confirm('Are you sure you want to delete rewardable ' + id + '?')) {
-      deleteRewardable({ variables: { id } })
-    }
-  }
-
   return (
-    <>
-      <div className="rw-segment">
-        <header className="rw-segment-header">
-          <h2 className="rw-heading rw-heading-secondary">
-            Rewardable {rewardable.id} Detail
-          </h2>
-        </header>
-        <table className="rw-table">
-          <tbody>
-            <tr>
-              <th>Id</th>
-              <td>{rewardable.id}</td>
-            </tr>
-            <tr>
-              <th>Name</th>
-              <td>{rewardable.name}</td>
-            </tr>
-            <tr>
-              <th>Slug</th>
-              <td>{rewardable.slug}</td>
-            </tr>
-            <tr>
-              <th>Explanation</th>
-              <td>{rewardable.explanation}</td>
-            </tr>
-            <tr>
-              <th>Success message</th>
-              <td>{rewardable.successMessage}</td>
-            </tr>
+    <Wrapper full fullHeight>
+      <Seo
+        title={rewardable.name}
+        description={`Can you unlock the ${rewardable.name} puzzle?`}
+        // imageUrl={cloudinaryId && cloudinaryUrl(cloudinaryId, 500, 500, false)}
+        // url={asPath}
+      />
 
-            <tr>
-              <th>Steps from cell</th>
-              <td>
-                <StepCell
-                  stepId={stepParam && rewardable.puzzle.steps[stepIndex].id}
-                  puzzleId={rewardable.puzzle.id}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <main className="puzzle__main w-full px-4 pt-10 text-center md:pt-20">
+        <PuzzleHeader
+          name={rewardable.name}
+          instructions={rewardable.explanation}
+          cloudinaryId={cloudinary_id}
+        />
+
+        <StepCell
+          stepId={stepParam && rewardable.puzzle.steps[stepIndex].id}
+          puzzleId={rewardable.puzzle.id}
+        />
+      </main>
+
+      <div className="flex justify-center gap-4 px-4 pb-9 pt-8">
+        <LensShareButton
+          postBody={`Can you unlock the ${rewardable.name} puzzle?`}
+          url={buildUrlString(rewardable.slug)}
+          className="text-sm font-medium"
+        />
+        <TwitterShare
+          tweetBody={`Can you unlock the ${
+            rewardable.name
+          } puzzle? @InfinityKeys\n\n${buildUrlString(url)}`}
+        />
       </div>
-      <nav className="rw-button-group">
-        <Link
-          to={routes.editPuzzle({ id: rewardable.id })}
-          className="rw-button rw-button-blue"
-        >
-          Edit
-        </Link>
-        <button
-          type="button"
-          className="rw-button rw-button-red"
-          onClick={() => onDeleteClick(rewardable.id)}
-        >
-          Delete
-        </button>
-      </nav>
-    </>
+    </Wrapper>
   )
 }
 
