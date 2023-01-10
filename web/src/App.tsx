@@ -25,6 +25,7 @@ import '@rainbow-me/rainbowkit/styles.css'
 import './styles/customer/p0.css'
 import './styles/customer/lens.css'
 import './styles/customer/saga.css'
+import './styles/customer/lens_collector.css'
 
 export const IKTheme = loMerge(darkTheme(), {
   colors: {
