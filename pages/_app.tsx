@@ -25,6 +25,7 @@ import "nprogress/nprogress.css";
 import "../styles/customer/p0.css";
 import "../styles/customer/lens.css";
 import "../styles/customer/saga.css";
+import "../styles/customer/lens_collector.css";
 
 // Re-enable here and below for auth via auth0
 // import { UserProvider } from "@auth0/nextjs-auth0";
