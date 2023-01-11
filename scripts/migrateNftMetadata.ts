@@ -1,4 +1,3 @@
-// import type { Prisma } from '@prisma/client'
 import { db } from 'api/src/lib/db'
 import fetch from 'node-fetch'
 import { z } from 'zod'
