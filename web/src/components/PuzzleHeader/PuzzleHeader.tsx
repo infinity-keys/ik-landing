@@ -4,7 +4,7 @@ import Markdown from 'src/components/Markdown/Markdown'
 
 interface PuzzleHeaderProps {
   name: string
-  currentStep?: number
+  currentStep?: string
   instructions?: string
   cloudinaryId?: string
 }

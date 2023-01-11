@@ -9,7 +9,7 @@ import {
 
 import PuzzleHeader from 'src/components/PuzzleHeader/PuzzleHeader'
 import Seo from 'src/components/Seo/Seo'
-import StepCell from 'src/components/StepCell'
+import StepsCell from 'src/components/StepsCell'
 import TwitterShare from 'src/components/TwitterShare/TwitterShare'
 import Wrapper from 'src/components/Wrapper/Wrapper'
 import '@infinity-keys/react-lens-share-button/dist/style.css'
@@ -39,9 +39,10 @@ const Rewardable = ({ rewardable }: Props) => {
           name={rewardable.name}
           instructions={rewardable.explanation}
           cloudinaryId={cloudinary_id}
+          currentStep={stepParam}
         />
 
-        <StepCell
+        <StepsCell
           stepId={stepParam && rewardable.puzzle.steps[stepIndex].id}
           puzzleId={rewardable.puzzle.id}
         />

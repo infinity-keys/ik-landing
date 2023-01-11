@@ -4,6 +4,7 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import RewardablePuzzle from 'src/components/RewardablePuzzle/RewardablePuzzle'
 
+// @TODO: make this not puzzle specific
 export const QUERY = gql`
   query FindRewardablePuzzleBySlug($slug: String!) {
     puzzle: rewardableBySlug(slug: $slug) {
