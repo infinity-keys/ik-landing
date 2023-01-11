@@ -36,7 +36,7 @@ export default async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        nftMetadataQuery,
+        query: nftMetadataQuery,
         variables: {},
       }),
     }).then((res) => res.json())
@@ -45,15 +45,19 @@ export default async () => {
 
     await Promise.all(
       metadata.map(async (data) => {
-        const record = await db.nft.create({
-          data: {
-            tokenId: data.token_id,
-            contractName: data.contract_name,
-            data: data.data,
-            cloudinaryId: data.cloudinary_id,
-          },
-        })
-        console.log(record)
+        try {
+          const record = await db.nft.create({
+            data: {
+              tokenId: data.token_id,
+              contractName: data.contract_name,
+              data: data.data,
+              cloudinaryId: data.cloudinary_id,
+            },
+          })
+          console.log(record)
+        } catch (error) {
+          console.log(`duplicate entry, skipping...${data.token_id}`)
+        }
       })
     )
   } catch (error) {
