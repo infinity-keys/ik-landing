@@ -1,11 +1,8 @@
-import { buildUrlString } from '@infinity-keys/core'
+import { buildUrlString, cloudinaryUrl } from '@infinity-keys/core'
 import { LensShareButton } from '@infinity-keys/react-lens-share-button'
 import type { FindRewardablePuzzleBySlug } from 'types/graphql'
 
-import {
-  useParams,
-  // useParams
-} from '@redwoodjs/router'
+import { useParams } from '@redwoodjs/router'
 
 import PuzzleHeader from 'src/components/PuzzleHeader/PuzzleHeader'
 import Seo from 'src/components/Seo/Seo'
@@ -18,8 +15,8 @@ interface Props {
   rewardable: NonNullable<FindRewardablePuzzleBySlug['puzzle']>
 }
 
-const url = '/puzzle'
-const cloudinary_id = 'ik-alpha-trophies/Map-04_xzczep'
+// @TODO: get from NFT
+const cloudinaryId = 'ik-alpha-trophies/Map-04_xzczep'
 
 const Rewardable = ({ rewardable }: Props) => {
   const { step: stepParam } = useParams()
@@ -30,15 +27,17 @@ const Rewardable = ({ rewardable }: Props) => {
       <Seo
         title={rewardable.name}
         description={`Can you unlock the ${rewardable.name} puzzle?`}
-        // imageUrl={cloudinaryId && cloudinaryUrl(cloudinaryId, 500, 500, false)}
-        // url={asPath}
+        imageUrl={
+          cloudinaryId && cloudinaryUrl(cloudinaryId, 500, 500, false, 1)
+        }
+        url={buildUrlString(`/puzzle/${rewardable.slug}`)}
       />
 
       <main className="puzzle__main w-full px-4 pt-10 text-center md:pt-20">
         <PuzzleHeader
           name={rewardable.name}
           instructions={rewardable.explanation}
-          cloudinaryId={cloudinary_id}
+          cloudinaryId={cloudinaryId}
           currentStep={stepParam}
         />
 
@@ -51,13 +50,15 @@ const Rewardable = ({ rewardable }: Props) => {
       <div className="flex justify-center gap-4 px-4 pb-9 pt-8">
         <LensShareButton
           postBody={`Can you unlock the ${rewardable.name} puzzle?`}
-          url={buildUrlString(rewardable.slug)}
+          url={buildUrlString(`/puzzle/${rewardable.slug}`)}
           className="text-sm font-medium"
         />
         <TwitterShare
           tweetBody={`Can you unlock the ${
             rewardable.name
-          } puzzle? @InfinityKeys\n\n${buildUrlString(url)}`}
+          } puzzle? @InfinityKeys\n\n${buildUrlString(
+            `/puzzle/${rewardable.slug}`
+          )}`}
         />
       </div>
     </Wrapper>

@@ -1,10 +1,8 @@
 import { getThumbnailProgress } from '@infinity-keys/core'
 import type { FindStepQuery, FindStepQueryVariables } from 'types/graphql'
 
-import { routes, navigate, useParams } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
+import { routes, useParams } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
 
 import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown'
 import SimpleTextInput from 'src/components/SimpleTextInput/SimpleTextInput'
@@ -32,14 +30,6 @@ export const QUERY = gql`
   }
 `
 
-const MAKE_ATTEMPT_MUTATION = gql`
-  mutation MakeAttemptMutation($stepId: String!, $data: JSON!) {
-    makeAttempt(stepId: $stepId, data: $data) {
-      success
-    }
-  }
-`
-
 export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => <div>Empty</div>
@@ -54,24 +44,7 @@ export const Success = ({
   step,
   puzzle,
 }: CellSuccessProps<FindStepQuery, FindStepQueryVariables>) => {
-  const { slug, step: stepParam } = useParams()
-
-  const [makeAttempt] = useMutation(MAKE_ATTEMPT_MUTATION, {
-    onCompleted: (data) => {
-      const nextStep = parseInt(stepParam) + 1
-
-      if (data.makeAttempt.success) {
-        if (nextStep > puzzle.steps.length) {
-          navigate(routes.puzzleLanding({ slug }))
-        } else {
-          navigate(routes.puzzleStep({ slug, step: nextStep }))
-        }
-        return toast.success('Unlocked')
-      }
-      toast.error('Wrong')
-      // @TODO: set fail message
-    },
-  })
+  const { slug } = useParams()
 
   const currentStepIndex =
     puzzle.steps.findLastIndex((step) => step.hasUserCompletedStep) + 1
@@ -82,8 +55,8 @@ export const Success = ({
         <>
           <SimpleTextInput
             count={step.stepSimpleText.solutionCharCount}
-            stepId={step.id}
-            makeAttempt={makeAttempt}
+            step={step}
+            numberOfSteps={puzzle.steps.length}
           />
 
           <div className="mx-auto mt-12 mb-12 max-w-prose bg-black/10 p-4 md:mt-16 md:mb-20">
