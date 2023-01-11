@@ -1,96 +1,97 @@
-import type {
-  DeleteRewardableMutationVariables,
-  FindRewardables,
-} from 'types/graphql'
+import { useEffect, useState } from 'react'
+
+import { PAGINATION_COUNTS } from '@infinity-keys/constants'
+import { buildUrlString, ThumbnailGridLayoutType } from '@infinity-keys/core'
+import clsx from 'clsx'
+import type { FindRewardables } from 'types/graphql'
 
 import { Link, routes } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
 
-import { QUERY } from 'src/components/RewardablePuzzle/RewardablePuzzlesCell'
-import { truncate } from 'src/lib/formatters'
-
-const DELETE_REWARDABLE_MUTATION = gql`
-  mutation DeleteRewardableMutation($id: String!) {
-    deleteRewardable(id: $id) {
-      id
-    }
-  }
-`
+import GridLayoutButtons from 'src/components/GridLayoutButtons/GridLayoutButtons'
+import GridPagination from 'src/components/GridPagination/GridPagination'
+import Seo from 'src/components/Seo/Seo'
+import Thumbnail from 'src/components/Thumbnail/Thumbnail'
+import Wrapper from 'src/components/Wrapper/Wrapper'
 
 const RewardablesList = ({ rewardables }: FindRewardables) => {
-  const [deleteRewardable] = useMutation(DELETE_REWARDABLE_MUTATION, {
-    onCompleted: () => {
-      toast.success('Rewardable deleted')
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-    // This refetches the query on the list page. Read more about other ways to
-    // update the cache over here:
-    // https://www.apollographql.com/docs/react/data/mutations/#making-all-other-cache-updates
-    refetchQueries: [{ query: QUERY }],
-    awaitRefetchQueries: true,
-  })
+  const [layout, setLayout] = useState<ThumbnailGridLayoutType>(
+    ThumbnailGridLayoutType.Unknown
+  )
+  const [smallestThumbnailCount] = PAGINATION_COUNTS
+  // const [count, page] = query.packsArgs ||
+  //   query.puzzlesArgs || [smallestThumbnailCount, "1"];
+  const thumbnailCount = 16
+  const pageNum = 1
+  const isPack = true
 
-  const onDeleteClick = (id: DeleteRewardableMutationVariables['id']) => {
-    if (confirm('Are you sure you want to delete rewardable ' + id + '?')) {
-      deleteRewardable({ variables: { id } })
-    }
+  useEffect(() => {
+    const thumbnailGridLayout = window.localStorage.getItem(
+      'thumbnailGridLayout'
+    )
+    setLayout(
+      thumbnailGridLayout
+        ? JSON.parse(thumbnailGridLayout)
+        : ThumbnailGridLayoutType.List
+    )
+  }, [])
+
+  const setView = (gridLayout: ThumbnailGridLayoutType) => {
+    setLayout(gridLayout)
+    window.localStorage.setItem(
+      'thumbnailGridLayout',
+      JSON.stringify(gridLayout)
+    )
   }
 
   return (
-    <div className="rw-segment rw-table-wrapper-responsive">
-      <table className="rw-table">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Slug</th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rewardables.map((rewardable) => (
-            <tr key={rewardable.id}>
-              <td>{truncate(rewardable.id)}</td>
-              <td>{truncate(rewardable.name)}</td>
-              <td>
-                <Link to={`/puzzle/${truncate(rewardable.slug)}`}>
-                  {truncate(rewardable.slug)}
-                </Link>
-              </td>
-              <td>
-                <nav className="rw-table-actions">
-                  <Link
-                    to={routes.puzzleLanding({ slug: rewardable.slug })}
-                    title={'Show rewardable ' + rewardable.slug + ' detail'}
-                    className="rw-button rw-button-small"
-                  >
-                    Show
-                  </Link>
-                  <Link
-                    to={routes.editPuzzle({ id: rewardable.id })}
-                    title={'Edit rewardable ' + rewardable.id}
-                    className="rw-button rw-button-small rw-button-blue"
-                  >
-                    Edit
-                  </Link>
-                  <button
-                    type="button"
-                    title={'Delete rewardable ' + rewardable.id}
-                    className="rw-button rw-button-small rw-button-red"
-                    onClick={() => onDeleteClick(rewardable.id)}
-                  >
-                    Delete
-                  </button>
-                </nav>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <Wrapper>
+      <Seo title="Infinity Keys Puzzles" url={buildUrlString(`/puzzles`)} />
+
+      <main className="">
+        {layout !== ThumbnailGridLayoutType.Unknown && (
+          <div className="w-full">
+            <GridLayoutButtons
+              isGrid={layout === ThumbnailGridLayoutType.Grid}
+              thumbnailCount={thumbnailCount}
+              setView={setView}
+              urlBase={'puzzle'}
+            />
+
+            <ul
+              className={clsx(
+                'grid grid-cols-1 gap-6 py-8 sm:grid-cols-2',
+                layout === ThumbnailGridLayoutType.Grid
+                  ? 'md:grid-cols-3 lg:grid-cols-4'
+                  : 'lg:grid-cols-3 xl:grid-cols-4'
+              )}
+            >
+              {rewardables.map((rewardable) => {
+                // const data = thumbnailData(thumbnail)
+                return (
+                  <li key={rewardable.id}>
+                    <Thumbnail
+                      isGrid={layout === ThumbnailGridLayoutType.Grid}
+                      id={rewardable.id}
+                      name={rewardable.name}
+                      href={`/puzzle/${rewardable.slug}`}
+                      // cloudinary_id={'laskdj'}
+                    />
+                  </li>
+                )
+              })}
+            </ul>
+
+            <GridPagination
+              isFirstPage={false}
+              isLastPage={false}
+              pageNum={pageNum}
+              thumbnailCount={thumbnailCount}
+              urlBase={'puzzle'}
+            />
+          </div>
+        )}
+      </main>
+    </Wrapper>
   )
 }
 
