@@ -50,8 +50,6 @@ export const Failure = ({
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
-// @TODO: make this not puzzle specific
-
 export const Success = ({
   step,
   puzzle,
@@ -100,25 +98,24 @@ export const Success = ({
         </>
       )}
 
-      {puzzle.steps.length > 1 && (
-        <div className="mx-auto mt-12 flex max-w-6xl flex-wrap justify-center gap-4 pb-12 sm:flex-row md:flex-nowrap md:pb-20">
-          {puzzle.steps.map(({ stepSortWeight }) => (
-            <ThumbnailMini
-              key={stepSortWeight}
-              name={stepSortWeight.toString()}
-              step={stepSortWeight}
-              progress={getThumbnailProgress({
-                currentStep: currentStepIndex + 1,
-                puzzleStep: stepSortWeight,
-              })}
-              to={routes.puzzleStep({
-                slug,
-                step: stepSortWeight,
-              })}
-            />
-          ))}
-        </div>
-      )}
+      {/* @TODO: should we forward if there's only one step? */}
+      <div className="mx-auto mt-12 flex max-w-6xl flex-wrap justify-center gap-4 pb-12 sm:flex-row md:flex-nowrap md:pb-20">
+        {puzzle.steps.map(({ stepSortWeight }) => (
+          <ThumbnailMini
+            key={stepSortWeight}
+            name={stepSortWeight.toString()}
+            step={stepSortWeight}
+            progress={getThumbnailProgress({
+              currentStep: currentStepIndex + 1,
+              puzzleStep: stepSortWeight,
+            })}
+            to={routes.puzzleStep({
+              slug,
+              step: stepSortWeight,
+            })}
+          />
+        ))}
+      </div>
     </div>
   )
 }
