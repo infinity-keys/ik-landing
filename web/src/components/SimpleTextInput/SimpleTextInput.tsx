@@ -9,8 +9,9 @@ import { routes, navigate, useParams } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 
 import Button from 'src/components/Button'
-
-import LoadingIcon from '../LoadingIcon/LoadingIcon'
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import Markdown from 'src/components/Markdown/Markdown'
+import Lock from 'src/svgs/Lock'
 
 interface SimpleTextInputProps {
   count: number
@@ -70,36 +71,49 @@ const SimpleTextInput = ({
       {loading ? (
         <LoadingIcon />
       ) : (
-        <form onSubmit={handleMakeAttempt}>
-          <RICIBs
-            amount={count}
-            handleOutputString={(t) => setText(t)}
-            inputRegExp={/^\S*$/}
-            inputProps={loRange(count).map(() => ({
-              className: 'ik-code-input',
-            }))}
-          />
+        <div className="z-10 flex justify-center">
+          <div>
+            <div className="flex py-5">
+              <div className="w-6">
+                <Lock />
+              </div>
+              <p className="pt-2 pl-4 text-base font-bold">Solve Puzzle</p>
+            </div>
 
-          <div className="pt-8">
-            <Button
-              text="Submit"
-              type="submit"
-              disabled={text.length !== count}
-            />
+            <form className="magic-input" onSubmit={handleMakeAttempt}>
+              <RICIBs
+                amount={count}
+                handleOutputString={(t) => setText(t)}
+                inputRegExp={/^\S*$/}
+                inputProps={loRange(count).map(() => ({
+                  className: 'ik-code-input',
+                }))}
+              />
+
+              <div
+                className={clsx(
+                  'relative flex justify-center pt-6 text-gray-150',
+                  failMessage ? 'opacity-1' : 'opacity-0'
+                )}
+                data-cy="fail_message_check"
+              >
+                <Markdown>
+                  {failMessage ||
+                    'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
+                </Markdown>
+              </div>
+
+              <div className="pt-8" data-cy="submit">
+                <Button
+                  text="Submit"
+                  type="submit"
+                  disabled={text.length !== count}
+                />
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       )}
-
-      <div className="relative flex justify-center pt-6">
-        <p
-          className={clsx(
-            'absolute italic text-gray-200',
-            failMessage ? 'opacity-1' : 'opacity-0'
-          )}
-        >
-          {failMessage}
-        </p>
-      </div>
     </div>
   )
 }
