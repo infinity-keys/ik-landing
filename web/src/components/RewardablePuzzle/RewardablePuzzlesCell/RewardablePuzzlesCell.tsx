@@ -1,9 +1,10 @@
 import type { FindRewardables } from 'types/graphql'
 
-import { Link, routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Rewardables from 'src/components/RewardablePuzzle/RewardablePuzzles'
+import Wrapper from 'src/components/Wrapper/Wrapper'
 
 export const QUERY = gql`
   query FindRewardables($count: Int, $page: Int, $type: RewardableType) {
@@ -19,17 +20,14 @@ export const QUERY = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => (
+  <Wrapper>
+    <LoadingIcon />
+  </Wrapper>
+)
 
 export const Empty = () => {
-  return (
-    <div className="rw-text-center">
-      {'No rewardables yet. '}
-      <Link to={routes.newRewardable()} className="rw-link">
-        {'Create one?'}
-      </Link>
-    </div>
-  )
+  return <div className="rw-text-center">No rewardables yet.</div>
 }
 
 export const Failure = ({ error }: CellFailureProps) => (
