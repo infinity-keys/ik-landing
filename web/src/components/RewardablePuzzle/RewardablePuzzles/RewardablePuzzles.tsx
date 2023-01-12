@@ -5,7 +5,7 @@ import { buildUrlString, ThumbnailGridLayoutType } from '@infinity-keys/core'
 import clsx from 'clsx'
 import type { FindRewardables } from 'types/graphql'
 
-import { Link, routes } from '@redwoodjs/router'
+import { routes, useParams } from '@redwoodjs/router'
 
 import GridLayoutButtons from 'src/components/GridLayoutButtons/GridLayoutButtons'
 import GridPagination from 'src/components/GridPagination/GridPagination'
@@ -13,16 +13,33 @@ import Seo from 'src/components/Seo/Seo'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
 import Wrapper from 'src/components/Wrapper/Wrapper'
 
-const RewardablesList = ({ rewardables }: FindRewardables) => {
+const buildUrl = (type) => {
+  if (type === 'PUZZLE')
+    return {
+      collection: '/puzzles',
+      single: routes.puzzleLanding,
+    }
+}
+
+const RewardablesList = ({
+  rewardables,
+  totalCount,
+}: FindRewardables['rewardablesCollection']) => {
+  const { page, count } = useParams()
   const [layout, setLayout] = useState<ThumbnailGridLayoutType>(
     ThumbnailGridLayoutType.Unknown
   )
+  const pageNum = parseInt(page, 10)
+  const countNum = parseInt(count, 10)
+
   const [smallestThumbnailCount] = PAGINATION_COUNTS
-  // const [count, page] = query.packsArgs ||
-  //   query.puzzlesArgs || [smallestThumbnailCount, "1"];
-  const thumbnailCount = 16
-  const pageNum = 1
-  const isPack = true
+  const thumbnailCount =
+    !count || !PAGINATION_COUNTS.includes(countNum)
+      ? smallestThumbnailCount
+      : countNum
+  const isLastPage = pageNum * countNum >= totalCount
+  const isFirstPage = !pageNum || pageNum === 1
+  const collectionType = rewardables[0].type
 
   useEffect(() => {
     const thumbnailGridLayout = window.localStorage.getItem(
@@ -54,7 +71,7 @@ const RewardablesList = ({ rewardables }: FindRewardables) => {
               isGrid={layout === ThumbnailGridLayoutType.Grid}
               thumbnailCount={thumbnailCount}
               setView={setView}
-              urlBase={'puzzle'}
+              urlBase={buildUrl(collectionType).collection}
             />
 
             <ul
@@ -66,15 +83,17 @@ const RewardablesList = ({ rewardables }: FindRewardables) => {
               )}
             >
               {rewardables.map((rewardable) => {
-                // const data = thumbnailData(thumbnail)
                 return (
                   <li key={rewardable.id}>
                     <Thumbnail
                       isGrid={layout === ThumbnailGridLayoutType.Grid}
                       id={rewardable.id}
                       name={rewardable.name}
-                      href={`/puzzle/${rewardable.slug}`}
-                      // cloudinary_id={'laskdj'}
+                      href={buildUrl(collectionType).single({
+                        slug: rewardable.slug,
+                      })}
+                      // @TODO: get cloudinary ids when linked to NFT
+                      // cloudinaryId={}
                     />
                   </li>
                 )
@@ -82,11 +101,11 @@ const RewardablesList = ({ rewardables }: FindRewardables) => {
             </ul>
 
             <GridPagination
-              isFirstPage={false}
-              isLastPage={false}
-              pageNum={pageNum}
+              isFirstPage={isFirstPage}
+              isLastPage={isLastPage}
+              pageNum={pageNum || 1}
               thumbnailCount={thumbnailCount}
-              urlBase={'puzzle'}
+              urlBase={buildUrl(collectionType).collection}
             />
           </div>
         )}

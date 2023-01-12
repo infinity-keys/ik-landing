@@ -6,11 +6,15 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import Rewardables from 'src/components/RewardablePuzzle/RewardablePuzzles'
 
 export const QUERY = gql`
-  query FindRewardables {
-    rewardables {
-      id
-      name
-      slug
+  query FindRewardables($count: Int, $page: Int, $type: RewardableType) {
+    rewardablesCollection(type: $type, page: $page, count: $count) {
+      rewardables {
+        id
+        name
+        slug
+        type
+      }
+      totalCount
     }
   }
 `
@@ -32,6 +36,13 @@ export const Failure = ({ error }: CellFailureProps) => (
   <div className="rw-cell-error">{error?.message}</div>
 )
 
-export const Success = ({ rewardables }: CellSuccessProps<FindRewardables>) => {
-  return <Rewardables rewardables={rewardables} />
+export const Success = ({
+  rewardablesCollection,
+}: CellSuccessProps<FindRewardables>) => {
+  return (
+    <Rewardables
+      rewardables={rewardablesCollection.rewardables}
+      totalCount={rewardablesCollection.totalCount}
+    />
+  )
 }

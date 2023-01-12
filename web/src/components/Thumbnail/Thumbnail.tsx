@@ -1,5 +1,5 @@
-import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon'
-import LockOpenIcon from '@heroicons/react/24/solid/LockOpenIcon'
+// import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon'
+// import LockOpenIcon from '@heroicons/react/24/solid/LockOpenIcon'
 import { ThumbnailProgress } from '@infinity-keys/core'
 import Avatar from 'boring-avatars'
 import clsx from 'clsx'
@@ -18,6 +18,8 @@ interface ThumbnailProps {
   progress?: ThumbnailProgress
 }
 
+// @TODO: how do show solved puzzles?
+
 const Thumbnail = ({
   name,
   id,
@@ -28,7 +30,6 @@ const Thumbnail = ({
 }: ThumbnailProps) => {
   return (
     <Link
-      // @TODO: this href logic will change if this is used in packs grid
       to={href}
       className={clsx(
         'puzzle-thumb relative block cursor-pointer break-all rounded-lg border border-transparent bg-blue-800 shadow transition hover:border-turquoise',
