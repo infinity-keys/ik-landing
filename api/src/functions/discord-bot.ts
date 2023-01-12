@@ -1,7 +1,5 @@
 import { chainIdLookup } from '@infinity-keys/constants'
 import { cloudinaryUrl } from '@infinity-keys/core'
-const fetch = (...args) =>
-  import('node-fetch').then(({ default: fetch }) => fetch(...args))
 
 const discord = require('discord.js')
 const { EmbedBuilder } = require('discord.js')
@@ -63,6 +61,7 @@ export const handler = async (event) => {
         { name: 'Mint Address', value: `${from}`, inline: true },
         { name: 'Chain', value: `${chain}`, inline: true }
       )
+
       .setTimestamp()
       .setFooter({
         text: 'Claimed',
