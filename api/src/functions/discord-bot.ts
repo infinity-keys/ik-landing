@@ -1,4 +1,5 @@
 import { chainIdLookup } from '@infinity-keys/constants'
+import { cloudinaryUrl } from '@infinity-keys/core'
 const fetch = (...args) =>
   import('node-fetch').then(({ default: fetch }) => fetch(...args))
 
@@ -19,8 +20,6 @@ Moralis.start({
 export const handler = async (event) => {
   const { body, headers } = event
   const parsedBody = await JSON.parse(body)
-
-  console.log(parsedBody)
 
   try {
     await Moralis.Streams.verifySignature({
@@ -43,7 +42,9 @@ export const handler = async (event) => {
     const nftMetadata = await response.json()
     const image = nftMetadata.image
 
-    console.log(nftMetadata)
+    const url = new URL(image)
+    const pathName = url.pathname
+    const cloudImage = pathName.split('/').slice(-2).join('/')
 
     const claimedNFT = new EmbedBuilder()
       .setColor('101d42')
@@ -56,12 +57,12 @@ export const handler = async (event) => {
         url: 'https://infinitykeys.io',
       })
       .setDescription('New Mint!!')
+      .setThumbnail(cloudinaryUrl(cloudImage, 50, 50, false, 1))
       .addFields(
         { name: 'Token', value: `${tokenId}`, inline: true },
         { name: 'Mint Address', value: `${from}`, inline: true },
         { name: 'Chain', value: `${chain}`, inline: true }
       )
-      .setImage(`${image}`)
       .setTimestamp()
       .setFooter({
         text: 'Claimed',
