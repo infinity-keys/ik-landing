@@ -26,8 +26,6 @@ const Routes = () => {
       </Private>
       <Set wrap={SiteLayout}>
         <Route path="/" page={HomePage} name="home" />
-        <Route path="/puzzleTest" page={PuzzleTestPage} name="puzzleTest" />
-        <Route path="/step" page={StepPage} name="step" />
         <Route path="/user/delete" page={DeletePage} name="delete" />
         <Route path="/user" page={UserPage} name="user" />
         <Route path="/privacy-policy" page={PrivacyPolicyPage} name="privacyPolicy" />
