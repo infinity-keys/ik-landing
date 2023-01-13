@@ -4,7 +4,7 @@ import type { FindRewardablePuzzleBySlug } from 'types/graphql'
 
 import { useParams } from '@redwoodjs/router'
 
-import PuzzleHeader from 'src/components/PuzzleHeader/PuzzleHeader'
+import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'
 import StepsCell from 'src/components/StepsCell'
 import TwitterShare from 'src/components/TwitterShare/TwitterShare'
@@ -34,7 +34,7 @@ const Rewardable = ({ rewardable }: Props) => {
       />
 
       <main className="puzzle__main w-full px-4 pt-10 text-center md:pt-20">
-        <PuzzleHeader
+        <RewardableHeader
           name={rewardable.name}
           instructions={rewardable.explanation}
           cloudinaryId={cloudinaryId}

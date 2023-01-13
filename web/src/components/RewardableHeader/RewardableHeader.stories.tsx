@@ -4,8 +4,8 @@
 // ```tsx
 // import type { ComponentStory } from '@storybook/react'
 //
-// export const generated: ComponentStory<typeof PuzzleHeader> = (args) => {
-//   return <PuzzleHeader {...args} />
+// export const generated: ComponentStory<typeof RewardableHeader> = (args) => {
+//   return <RewardableHeader {...args} />
 // }
 // ```
 //
@@ -13,13 +13,13 @@
 
 import type { ComponentMeta } from '@storybook/react'
 
-import PuzzleHeader from './PuzzleHeader'
+import RewardableHeader from './RewardableHeader'
 
 export const generated = () => {
-  return <PuzzleHeader />
+  return <RewardableHeader />
 }
 
 export default {
-  title: 'Components/PuzzleHeader',
-  component: PuzzleHeader,
-} as ComponentMeta<typeof PuzzleHeader>
+  title: 'Components/RewardableHeader',
+  component: RewardableHeader,
+} as ComponentMeta<typeof RewardableHeader>

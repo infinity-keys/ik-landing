@@ -2,7 +2,7 @@ import { buildUrlString, cloudinaryUrl } from '@infinity-keys/core'
 import { LensShareButton } from '@infinity-keys/react-lens-share-button'
 import type { FindRewardablePackBySlug } from 'types/graphql'
 
-import PuzzleHeader from 'src/components/PuzzleHeader/PuzzleHeader'
+import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
 import TwitterShare from 'src/components/TwitterShare/TwitterShare'
@@ -32,7 +32,7 @@ const Rewardable = ({ rewardable }: Props) => {
       />
 
       <main className="pack__main w-full px-4 pt-10 text-center md:pt-20">
-        <PuzzleHeader
+        <RewardableHeader
           name={rewardable.name}
           instructions={rewardable.explanation}
           cloudinaryId={cloudinaryId}

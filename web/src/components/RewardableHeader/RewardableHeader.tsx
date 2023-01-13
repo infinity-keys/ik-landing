@@ -2,19 +2,19 @@ import CloudImage from 'src/components/CloudImage/CloudImage'
 import Heading from 'src/components/Heading/Heading'
 import Markdown from 'src/components/Markdown/Markdown'
 
-interface PuzzleHeaderProps {
+interface RewardableHeaderProps {
   name: string
   currentStep?: string
   instructions?: string
   cloudinaryId?: string
 }
 
-const PuzzleHeader = ({
+const RewardableHeader = ({
   name,
   currentStep,
   instructions,
   cloudinaryId,
-}: PuzzleHeaderProps) => {
+}: RewardableHeaderProps) => {
   return (
     <div className="mx-auto max-w-prose pb-12">
       {cloudinaryId && (
@@ -43,4 +43,4 @@ const PuzzleHeader = ({
   )
 }
 
-export default PuzzleHeader
+export default RewardableHeader
