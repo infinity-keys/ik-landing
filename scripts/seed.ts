@@ -14,6 +14,7 @@ const { GRAPHQL_ENDPOINT, HASURA_GRAPHQL_ADMIN_SECRET } = process.env
 // Get all original data
 const query = `query AllData {
   puzzles {
+    puzzle_id
     simple_name
     landing_route
     solution
@@ -29,15 +30,17 @@ const query = `query AllData {
   packs {
     pack_id
     pack_name
-    pack_puzzles
+    pack_puzzles {
+      puzzle_id
+    }
     nftId
     cloudinary_id
-    pack_puzzles_aggregate
     list_publicly
-  } 
+  }
 }`
 
 const ApiPuzzle = z.object({
+  puzzle_id: z.string(),
   simple_name: z.string(),
   landing_route: z.string(),
   solution: z.string(),
@@ -50,9 +53,19 @@ const ApiPuzzle = z.object({
   migration_step: z.nullable(z.string()),
 })
 
+const ApiPack = z.object({
+  pack_id: z.string(),
+  pack_name: z.string(),
+  pack_puzzles: z.array(z.object({ puzzle_id: z.string() })),
+  nftId: z.number(),
+  cloudinary_id: z.string(),
+  list_publicly: z.boolean(),
+})
+
 const ApiResponse = z.object({
   data: z.object({
     puzzles: z.array(ApiPuzzle),
+    packs: z.array(ApiPack),
   }),
 })
 
@@ -115,6 +128,11 @@ export default async () => {
     // Validate and type incoming data
     const puzzles = ApiResponse.parse(apiRaw).data.puzzles
 
+    // const packs = ApiResponse.parse(apiRaw).data.packs
+
+    // migrate packs
+    // const migratePacks = packs.forEach
+
     // Group by the named puzzle flagged in migration column
     const migratePuzzles: Prisma.RewardableCreateArgs['data'][] =
       Object.entries(groupBy(puzzles, 'migration_puzzle')).reduce(
@@ -124,6 +142,7 @@ export default async () => {
           // Puzzles that DO NOT need to be combined
           if (puzzleGroup === 'null') {
             const rewardables = puzzles.map((puzzle) => ({
+              migrateId: puzzle.puzzle_id,
               name: puzzle.simple_name,
               slug: puzzle.landing_route,
               type: 'PUZZLE' as RewardableType,
@@ -160,6 +179,7 @@ export default async () => {
 
           // These are puzzles that are being combined into multi-step in new system
           const rewardable = {
+            migrateId: puzzles[0].puzzle_id,
             name: puzzleGroup,
             slug: puzzleGroup,
             type: 'PUZZLE' as RewardableType,
@@ -204,6 +224,13 @@ export default async () => {
         console.log(record)
       })
     )
+
+    // await Promise.all(
+    //   migratePacks.map(async (data) => {
+    //     const record = await db.rewardable.create({ data })
+    //     console.log(record)
+    //   })
+    // )
 
     // If using dbAuth and seeding users, you'll need to add a `hashedPassword`
     // and associated `salt` to their record. Here's how to create them using

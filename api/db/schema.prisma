@@ -54,7 +54,7 @@ model Rewardable {
   asChild  RewardableConnection[] @relation("ChildLink")
 
   // temp field to allow migrating old puzzles/packs to new system
-  migrateId String?
+  migrateId String? @unique
 }
 
 /// Link Rewardables to each other, ie a Pack requires 3 Puzzles. Allows setting
