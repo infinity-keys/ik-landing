@@ -1,6 +1,8 @@
 import { chainIdLookup } from '@infinity-keys/constants'
+import { cloudinaryUrl } from '@infinity-keys/core'
 
 const discord = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const Moralis = require('moralis').default
 
 const client = new discord.Client({
@@ -32,8 +34,43 @@ export const handler = async (event) => {
     const chainId = parseInt(parsedBody.chainId, 16)
     const chain = chainIdLookup[chainId]
 
+    const response = await fetch(
+      `https://www.infinitykeys.io/api/metadata/achievement?tokenid=${tokenId}`
+    )
+    const nftMetadata = await response.json()
+    const image = nftMetadata.image
+
+    const url = new URL(image)
+    const pathName = url.pathname
+    const cloudImage = pathName.split('/').slice(-2).join('/')
+
+    const claimedNFT = new EmbedBuilder()
+      .setColor('101d42')
+      .setTitle('Infinity Keys')
+      .setURL('https://infinitykeys.io')
+      .setAuthor({
+        name: 'Infinity Keys',
+        iconURL:
+          'https://res.cloudinary.com/infinity-keys/image/upload/v1671162913/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
+        url: 'https://infinitykeys.io',
+      })
+      .setDescription('New Mint!!')
+      .setThumbnail(cloudinaryUrl(cloudImage, 50, 50, false, 1))
+      .addFields(
+        { name: 'Token', value: `${tokenId}`, inline: true },
+        { name: 'Mint Address', value: `${from}`, inline: true },
+        { name: 'Chain', value: `${chain}`, inline: true }
+      )
+
+      .setTimestamp()
+      .setFooter({
+        text: 'Claimed',
+        iconURL:
+          'https://res.cloudinary.com/infinity-keys/image/upload/v1671162913/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
+      })
+
     const channel = await client.channels.fetch(process.env.MINT_CHANNEL)
-    channel.send(`Token ID ${tokenId} claimed by ${from} from ${chain}`)
+    channel.send({ embeds: [claimedNFT] })
 
     return {
       statusCode: 200,
