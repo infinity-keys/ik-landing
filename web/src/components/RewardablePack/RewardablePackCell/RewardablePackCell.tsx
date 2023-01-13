@@ -25,7 +25,7 @@ export const QUERY = gql`
 `
 
 export const Loading = () => (
-  <Wrapper>
+  <Wrapper fullHeight>
     <LoadingIcon />
   </Wrapper>
 )
