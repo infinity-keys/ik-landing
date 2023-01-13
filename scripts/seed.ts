@@ -25,6 +25,16 @@ const query = `query AllData {
     migration_puzzle
     migration_step
   }
+
+  packs {
+    pack_id
+    pack_name
+    pack_puzzles
+    nftId
+    cloudinary_id
+    pack_puzzles_aggregate
+    list_publicly
+  } 
 }`
 
 const ApiPuzzle = z.object({
