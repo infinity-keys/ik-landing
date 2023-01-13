@@ -2,7 +2,9 @@ import type { FindRewardablePackBySlug } from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import RewardablePack from 'src/components/RewardablePack/RewardablePack'
+import Wrapper from 'src/components/Wrapper/Wrapper'
 
 export const QUERY = gql`
   query FindRewardablePackBySlug($slug: String!) {
@@ -22,7 +24,11 @@ export const QUERY = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => (
+  <Wrapper>
+    <LoadingIcon />
+  </Wrapper>
+)
 
 export const Empty = () => <div>Rewardable not found</div>
 

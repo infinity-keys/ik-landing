@@ -5,8 +5,10 @@ import { routes, useParams } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown'
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import SimpleTextInput from 'src/components/SimpleTextInput/SimpleTextInput'
 import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
+import Wrapper from 'src/components/Wrapper/Wrapper'
 
 export const QUERY = gql`
   query FindStepQuery($stepId: String, $puzzleId: String!) {
@@ -30,7 +32,11 @@ export const QUERY = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => (
+  <Wrapper>
+    <LoadingIcon />
+  </Wrapper>
+)
 
 export const Empty = () => <div>Empty</div>
 
