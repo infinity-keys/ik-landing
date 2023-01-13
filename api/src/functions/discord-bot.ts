@@ -1,6 +1,9 @@
 import { chainIdLookup } from '@infinity-keys/constants'
 import { cloudinaryUrl } from '@infinity-keys/core'
+import { RequestInfo, RequestInit } from 'node-fetch'
 
+const fetch = (url: RequestInfo, init?: RequestInit) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(url, init))
 const discord = require('discord.js')
 const { EmbedBuilder } = require('discord.js')
 const Moralis = require('moralis').default
@@ -14,6 +17,10 @@ client.login(process.env.DISCORD_MINT_BOT_KEY)
 Moralis.start({
   apiKey: process.env.MORALIS_API_KEY,
 })
+
+interface MetadataResponse {
+  image: string
+}
 
 export const handler = async (event) => {
   const { body, headers } = event
@@ -37,7 +44,7 @@ export const handler = async (event) => {
     const response = await fetch(
       `https://www.infinitykeys.io/api/metadata/achievement?tokenid=${tokenId}`
     )
-    const nftMetadata = await response.json()
+    const nftMetadata = (await response.json()) as MetadataResponse
     const image = nftMetadata.image
 
     const url = new URL(image)
