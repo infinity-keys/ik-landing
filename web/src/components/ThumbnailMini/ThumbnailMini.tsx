@@ -8,12 +8,11 @@ import { Link } from '@redwoodjs/router'
 
 interface ThumbnailMiniProps {
   name: string
-  step: number
   progress: ThumbnailProgress
   to?: string
 }
 
-const ThumbnailMini = ({ name, step, progress, to }: ThumbnailMiniProps) => {
+const ThumbnailMini = ({ name, progress, to }: ThumbnailMiniProps) => {
   return (
     <Link
       className={clsx(
@@ -47,12 +46,12 @@ const ThumbnailMini = ({ name, step, progress, to }: ThumbnailMiniProps) => {
 
       <Avatar
         size={28}
-        name={name + step}
+        name={name}
         variant="marble"
         colors={['#101D42', '#E400FF', '#3FCCBB', '#8500AC', '#303B5B']}
       />
 
-      <p className="ml-2 text-sm text-gray-150 lg:ml-4">Step {step}</p>
+      <p className="ml-2 text-sm text-gray-150 lg:ml-4">{name}</p>
     </Link>
   )
 }

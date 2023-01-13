@@ -9,11 +9,14 @@ export const QUERY = gql`
     pack: rewardableBySlug(slug: $slug, type: PACK) {
       id
       name
-      slug
       explanation
-      successMessage
-      pack {
-        id
+      slug
+      asParent {
+        childRewardable {
+          id
+          name
+          slug
+        }
       }
     }
   }

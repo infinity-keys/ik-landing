@@ -76,8 +76,7 @@ export const Success = ({
         {puzzle.steps.map(({ stepSortWeight }) => (
           <ThumbnailMini
             key={stepSortWeight}
-            name={stepSortWeight.toString()}
-            step={stepSortWeight}
+            name={`Step ${stepSortWeight.toString()}`}
             progress={getThumbnailProgress({
               currentStep: currentStepIndex + 1,
               puzzleStep: stepSortWeight,
