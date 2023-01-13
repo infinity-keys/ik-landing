@@ -5,9 +5,15 @@ import { db } from 'src/lib/db'
 
 export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
   slug,
+  type,
 }) => {
   return db.rewardable.findUnique({
-    where: { slug },
+    where: {
+      slug_type: {
+        slug,
+        type,
+      },
+    },
   })
 }
 

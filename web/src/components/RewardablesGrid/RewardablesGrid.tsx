@@ -14,11 +14,18 @@ import Thumbnail from 'src/components/Thumbnail/Thumbnail'
 import Wrapper from 'src/components/Wrapper/Wrapper'
 
 const buildUrl = (type) => {
-  if (type === 'PUZZLE')
+  if (type === 'PUZZLE') {
     return {
       collection: '/puzzles',
       single: routes.puzzleLanding,
     }
+  }
+  if (type === 'PACK') {
+    return {
+      collection: '/packs',
+      single: routes.packLanding,
+    }
+  }
 }
 
 const RewardablesList = ({
@@ -29,7 +36,7 @@ const RewardablesList = ({
   const [layout, setLayout] = useState<ThumbnailGridLayoutType>(
     ThumbnailGridLayoutType.Unknown
   )
-  const pageNum = parseInt(page, 10)
+  const pageNum = parseInt(page, 10) || 1
   const countNum = parseInt(count, 10)
 
   const [smallestThumbnailCount] = PAGINATION_COUNTS
@@ -37,7 +44,8 @@ const RewardablesList = ({
     !count || !PAGINATION_COUNTS.includes(countNum)
       ? smallestThumbnailCount
       : countNum
-  const isLastPage = pageNum * countNum >= totalCount
+  const isLastPage = pageNum * thumbnailCount >= totalCount
+
   const isFirstPage = !pageNum || pageNum === 1
   const collectionType = rewardables[0].type
 

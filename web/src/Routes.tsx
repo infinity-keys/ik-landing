@@ -21,6 +21,7 @@ const Routes = () => {
         <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" />
         {/* Handle both /puzzle and /puzzle/1 routes. Place shorter route last to allow url creation to work */}
         <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleStep" />
+
         {/* </Set> */}
       </Private>
       <Set wrap={SiteLayout}>
@@ -33,8 +34,11 @@ const Routes = () => {
         <Route path="/auth" page={AuthPage} name="auth" />
         <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
         <Route path="/puzzles/{count:Int}/{page:Int}" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
+        <Route path="/packs" page={RewardablePackRewardablePacksPage} name="packs" />
+        <Route path="/packs/{count:Int}/{page:Int}" page={RewardablePackRewardablePacksPage} name="packs" />
       </Set>
       <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleLanding" />
+      <Route path="/pack/{slug}" page={RewardablePackRewardablePackPage} name="packLanding" />
 
       {/* NotFoundPage can't be in a set */}
       <Route notfound page={NotFoundPage} />

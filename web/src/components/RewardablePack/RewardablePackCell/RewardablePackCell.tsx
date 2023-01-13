@@ -1,22 +1,19 @@
-import type { FindRewardablePuzzleBySlug } from 'types/graphql'
+import type { FindRewardablePackBySlug } from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import RewardablePuzzle from 'src/components/RewardablePuzzle/RewardablePuzzle'
+import RewardablePack from 'src/components/RewardablePack/RewardablePack'
 
 export const QUERY = gql`
-  query FindRewardablePuzzleBySlug($slug: String!) {
-    puzzle: rewardableBySlug(slug: $slug, type: PUZZLE) {
+  query FindRewardablePackBySlug($slug: String!) {
+    pack: rewardableBySlug(slug: $slug, type: PACK) {
       id
       name
       slug
       explanation
       successMessage
-      puzzle {
+      pack {
         id
-        steps {
-          id
-        }
       }
     }
   }
@@ -31,7 +28,7 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({
-  puzzle,
-}: CellSuccessProps<FindRewardablePuzzleBySlug>) => {
-  return <RewardablePuzzle rewardable={puzzle} />
+  pack,
+}: CellSuccessProps<FindRewardablePackBySlug>) => {
+  return <RewardablePack rewardable={pack} />
 }

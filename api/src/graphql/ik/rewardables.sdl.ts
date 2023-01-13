@@ -4,7 +4,8 @@ export const schema = gql`
     totalCount: Int!
   }
   type Query {
-    rewardableBySlug(slug: String!): Rewardable @requireAuth
+    rewardableBySlug(slug: String!, type: RewardableType!): Rewardable
+      @requireAuth
     rewardablesCollection(
       type: RewardableType
       page: Int

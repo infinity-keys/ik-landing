@@ -3,7 +3,7 @@ import type { FindRewardables } from 'types/graphql'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-import Rewardables from 'src/components/RewardablePuzzle/RewardablePuzzles'
+import RewardablesGrid from 'src/components/RewardablesGrid'
 import Wrapper from 'src/components/Wrapper/Wrapper'
 
 export const QUERY = gql`
@@ -38,7 +38,7 @@ export const Success = ({
   rewardablesCollection,
 }: CellSuccessProps<FindRewardables>) => {
   return (
-    <Rewardables
+    <RewardablesGrid
       rewardables={rewardablesCollection.rewardables}
       totalCount={rewardablesCollection.totalCount}
     />

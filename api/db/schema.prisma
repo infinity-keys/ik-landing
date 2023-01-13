@@ -26,7 +26,7 @@ model Rewardable {
   /// Full name, with spaces, ie Not Right
   name           String
   /// Short name used in URLs, lowercase and dashes, no spaces/caps, ie not-right
-  slug           String         @unique
+  slug           String
   /// Shown at the overall page for this Rewardable
   explanation    String
   /// When this is successfully completed/rewarded, what should be shown
@@ -52,6 +52,7 @@ model Rewardable {
   asParent RewardableConnection[] @relation("ParentLink")
   // Rewardables that have a parent, ie a child Puzzle of a Pack
   asChild  RewardableConnection[] @relation("ChildLink")
+  @@unique([slug, type])
 }
 
 /// Link Rewardables to each other, ie a Pack requires 3 Puzzles. Allows setting
