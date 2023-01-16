@@ -1,3 +1,8 @@
+import {
+  PACK_COLLECTION_BASE,
+  PUZZLE_COLLECTION_BASE,
+} from '@infinity-keys/constants'
+
 import { Link, routes } from '@redwoodjs/router'
 
 import Button from 'src/components/Button/Button'
@@ -54,8 +59,20 @@ const Footer = () => {
             </div>
             {/* right */}
             <div className="mb-4 flex gap-4 sm:mb-0 sm:ml-6">
-              <Button text="Packs" to="/packs" variant="outline" />
-              <Button text="Puzzles" to="/puzzles" variant="outline" />
+              {/* <Button text="Packs" to="/packs" variant="outline" /> */}
+              {/* <Button text="Puzzles" to="/puzzles" variant="outline" /> */}
+              <Button
+                text="Packs"
+                to={`/${PACK_COLLECTION_BASE}`}
+                variant="outline"
+                responsive
+              />
+              <Button
+                text="Puzzles"
+                to={`/${PUZZLE_COLLECTION_BASE}`}
+                variant="outline"
+                responsive
+              />
             </div>
           </div>
         </nav>

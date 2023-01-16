@@ -1,6 +1,10 @@
 import { Disclosure } from '@headlessui/react'
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon'
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
+import {
+  PACK_COLLECTION_BASE,
+  PUZZLE_COLLECTION_BASE,
+} from '@infinity-keys/constants'
 
 import { Link, routes } from '@redwoodjs/router'
 
@@ -79,10 +83,16 @@ const Header = () => {
               </div>
 
               <div data-cy="puzzle-link" className="flex items-center gap-2">
-                <Button text="Packs" to="/packs" variant="outline" responsive />
+                {/* <Button text="Packs" to="/packs" variant="outline" responsive /> */}
+                <Button
+                  text="Packs"
+                  to={`/${PACK_COLLECTION_BASE}`}
+                  variant="outline"
+                  responsive
+                />
                 <Button
                   text="Puzzles"
-                  to="/puzzles"
+                  to={`/${PUZZLE_COLLECTION_BASE}`}
                   variant="outline"
                   responsive
                 />
