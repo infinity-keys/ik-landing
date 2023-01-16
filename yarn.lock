@@ -9320,6 +9320,8 @@ __metadata:
     "@redwoodjs/graphql-server": ^3.4.0
     "@sendgrid/mail": ^7.7.0
     cloudinary-build-url: ^0.2.4
+    cookie: ^0.5.0
+    crypto-js: ^4.1.1
     jose: ^4.10.0
     moralis: ^2.9.0
     nanoid: ^3.0.0
@@ -12316,7 +12318,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"crypto-js@npm:4.1.1":
+"crypto-js@npm:4.1.1, crypto-js@npm:^4.1.1":
   version: 4.1.1
   resolution: "crypto-js@npm:4.1.1"
   checksum: 50cc66a35f2738171d9a6d80c85ba7d00cb6440b756db035ba9ccd03032c0a803029a62969ecd4c844106c980af87687c64b204dd967989379c4f354fb482d37

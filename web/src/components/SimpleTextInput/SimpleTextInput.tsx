@@ -1,10 +1,12 @@
 import { FormEvent, useState } from 'react'
 
+import { connectorsForWallets } from '@rainbow-me/rainbowkit'
 import clsx from 'clsx'
 import loRange from 'lodash/range'
 import RICIBs from 'react-individual-character-input-boxes'
 import { FindStepQuery } from 'types/graphql'
 
+import { useAuth } from '@redwoodjs/auth'
 import { routes, navigate, useParams } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 
@@ -36,6 +38,37 @@ const SimpleTextInput = ({
 
   const [text, setText] = useState('')
   const [failMessage, setFailMessage] = useState('')
+
+  const { getToken } = useAuth()
+
+  // This will use useMemo, possibly
+  const devSubmit = async () => {
+    // localhost:8910 vs api.infinitykeys.io
+    const apiBase = global.RWJS_API_URL.includes('.redwood')
+      ? window.location.origin
+      : global.RWJS_API_URL
+
+    // /.redwood/functions/attempt vs /attempt
+    const apiPath = global.RWJS_API_URL.includes('.redwood')
+      ? global.RWJS_API_URL + '/attempt'
+      : '/attempt'
+
+    const apiUrl = new URL(apiPath, apiBase)
+
+    apiUrl.searchParams.set('puzzle', slug)
+    apiUrl.searchParams.set('step', stepParam)
+
+    // Get JWT from MagicLink
+    const token = await getToken()
+    const response = await fetch(apiUrl, {
+      headers: {
+        'auth-provider': 'magicLink',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    console.log(data)
+  }
 
   const [makeAttempt, { loading }] = useMutation(MAKE_ATTEMPT_MUTATION, {
     onCompleted: (data) => {
@@ -101,6 +134,10 @@ const SimpleTextInput = ({
                   {failMessage ||
                     'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
                 </Markdown>
+              </div>
+
+              <div className="pt-8">
+                <Button text="Do stuff" onClick={devSubmit} />
               </div>
 
               <div className="pt-8" data-cy="submit">
