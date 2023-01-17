@@ -59,8 +59,6 @@ const Footer = () => {
             </div>
             {/* right */}
             <div className="mb-4 flex gap-4 sm:mb-0 sm:ml-6">
-              {/* <Button text="Packs" to="/packs" variant="outline" /> */}
-              {/* <Button text="Puzzles" to="/puzzles" variant="outline" /> */}
               <Button
                 text="Packs"
                 to={`/${PACK_COLLECTION_BASE}`}

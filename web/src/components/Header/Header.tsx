@@ -83,7 +83,6 @@ const Header = () => {
               </div>
 
               <div data-cy="puzzle-link" className="flex items-center gap-2">
-                {/* <Button text="Packs" to="/packs" variant="outline" responsive /> */}
                 <Button
                   text="Packs"
                   to={`/${PACK_COLLECTION_BASE}`}
