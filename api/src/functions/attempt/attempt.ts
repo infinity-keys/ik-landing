@@ -50,11 +50,11 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     return { statusCode: 403 }
   }
 
-  const { puzzle, step } = event.queryStringParameters
-  console.log({ puzzle, step })
+  const { puzzle, step, stepId } = event.queryStringParameters
+  console.log({ puzzle, step, stepId })
 
   // Garbage request, bail
-  if (!puzzle || !step) {
+  if (!puzzle || !step || !stepId) {
     logger.info('/attempt called without puzzle or step')
     return { statusCode: 400 }
   }
@@ -78,7 +78,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     // @TODO: graphql attempt call here
     // @NOTE: this does not work, this gql function requires step cuid, not step NUMBER
     const { success } = await makeAttempt({
-      stepId: 'clcwn8v010157uqb67iboe76h', // @TODO: get stepId in here
+      stepId,
       data: { simpleTextSolution: attempt },
     })
 

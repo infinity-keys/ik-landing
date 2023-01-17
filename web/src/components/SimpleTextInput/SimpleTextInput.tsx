@@ -57,6 +57,7 @@ const SimpleTextInput = ({
 
     apiUrl.searchParams.set('puzzle', slug)
     apiUrl.searchParams.set('step', stepParam)
+    apiUrl.searchParams.set('stepId', step.id)
 
     const body = JSON.stringify({ attempt: '9000' })
 
