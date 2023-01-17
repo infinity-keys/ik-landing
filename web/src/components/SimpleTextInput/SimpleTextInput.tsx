@@ -58,13 +58,17 @@ const SimpleTextInput = ({
     apiUrl.searchParams.set('puzzle', slug)
     apiUrl.searchParams.set('step', stepParam)
 
+    const body = JSON.stringify({ attempt: '9000' })
+
     // Get JWT from MagicLink
     const token = await getToken()
     const response = await fetch(apiUrl, {
+      method: 'POST',
       headers: {
         'auth-provider': 'magicLink',
         Authorization: `Bearer ${token}`,
       },
+      body,
     })
     const data = await response.json()
     console.log(data)

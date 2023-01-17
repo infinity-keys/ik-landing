@@ -7,6 +7,7 @@ import { useRequireAuth } from '@redwoodjs/graphql-server'
 
 import { isAuthenticated, getCurrentUser } from 'src/lib/auth'
 import { logger } from 'src/lib/logger'
+import { makeAttempt } from 'src/services/ik/attempts/attempts'
 
 const puzzleCookieName = `ik-puzzles`
 
@@ -29,6 +30,10 @@ const puzzleCookieName = `ik-puzzles`
 const attemptHandler = async (event: APIGatewayEvent) => {
   console.log(process.env.INFINITY_KEYS_SECRET)
 
+  // We only accept POST requests
+  const { httpMethod } = event
+  if (httpMethod !== 'POST') return { statusCode: 405 }
+
   // @TODO: make this dynamic, no hardcoding
   // @example: localhost:8910/.redwood/functions/attempt
   let path = '/.redwood/functions/attempt'
@@ -46,6 +51,8 @@ const attemptHandler = async (event: APIGatewayEvent) => {
   }
 
   const { puzzle, step } = event.queryStringParameters
+  console.log({ puzzle, step })
+
   // Garbage request, bail
   if (!puzzle || !step) {
     logger.info('/attempt called without puzzle or step')
@@ -63,9 +70,37 @@ const attemptHandler = async (event: APIGatewayEvent) => {
       logger.info('Attempted first step without being logged in')
       return { statusCode: 403 }
     }
+    // Aight, what's did they guess?
+    const { attempt } = JSON.parse(event.body)
+
+    console.log('first step allowed')
 
     // @TODO: graphql attempt call here
+    // @NOTE: this does not work, this gql function requires step cuid, not step NUMBER
+    const { success } = await makeAttempt({
+      stepId: 'clcwn8v010157uqb67iboe76h', // @TODO: get stepId in here
+      data: { simpleTextSolution: attempt },
+    })
+
+    console.log(success)
+
     // @TODO: work out cookie headers required here
+    if (success) {
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          // @TODO: DO COOKIE HERE
+        },
+        body: JSON.stringify({ success }),
+      }
+    }
+    // Womp womp
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ success }),
+    }
   }
 
   // Access our cookie raw cyphertext
@@ -87,7 +122,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
         .decrypt(puzzlesCompletedCypherText, process.env.INFINITY_KEYS_SECRET)
         .toString(encUtf8)
     )
-    console.log({ puzzlesCompleted })
+    console.log(puzzlesCompleted)
 
     // @TODO: Zod goes here to validate shape of puzzlesCompleted
 
