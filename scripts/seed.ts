@@ -128,10 +128,34 @@ export default async () => {
     // Validate and type incoming data
     const puzzles = ApiResponse.parse(apiRaw).data.puzzles
 
-    // const packs = ApiResponse.parse(apiRaw).data.packs
+    // Rewardables/Puzzles
 
-    // migrate packs
-    // const migratePacks = packs.forEach
+    // Validate and type incoming data
+    const packs = ApiResponse.parse(apiRaw).data.packs
+
+    console.log('start migratePacks stuff...')
+
+    const migratePacks = packs.forEach((pack) => {
+      const rewardable = {
+        migrateId: pack.pack_id,
+        name: pack.pack_name,
+        slug: pack.pack_name,
+        type: 'PACK' as RewardableType,
+        explanation: pack.pack_name,
+        successMessage: 'Success!',
+        organization: {
+          connect: {
+            id: ikCuid,
+          },
+        },
+        pack: {
+          create: {
+            // what goes here? <-------
+          },
+        },
+      }
+      return rewardable
+    })
 
     // Group by the named puzzle flagged in migration column
     const migratePuzzles: Prisma.RewardableCreateArgs['data'][] =
@@ -216,21 +240,19 @@ export default async () => {
         [] as Prisma.RewardableCreateArgs['data'][]
       )
 
-    // console.log(migratePuzzles)
-
     await Promise.all(
       migratePuzzles.map(async (data) => {
         const record = await db.rewardable.create({ data })
-        console.log(record)
+        // console.log(record)
       })
     )
 
-    // await Promise.all(
-    //   migratePacks.map(async (data) => {
-    //     const record = await db.rewardable.create({ data })
-    //     console.log(record)
-    //   })
-    // )
+    await Promise.all(
+      migratePacks.map(async (data) => {
+        const record = await db.rewardable.create({ data })
+        // console.log(record)
+      })
+    )
 
     // If using dbAuth and seeding users, you'll need to add a `hashedPassword`
     // and associated `salt` to their record. Here's how to create them using
