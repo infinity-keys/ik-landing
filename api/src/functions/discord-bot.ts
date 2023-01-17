@@ -54,7 +54,6 @@ export const handler = async (event) => {
     const claimedNFT = new EmbedBuilder()
       .setColor('101d42')
       .setTitle('Infinity Keys')
-      .setURL('https://infinitykeys.io')
       .setAuthor({
         name: 'Infinity Keys',
         iconURL:
