@@ -23,7 +23,7 @@ describe("infinitykeys.io/puzzles", () => {
 
   it("go to landing page and verify input boxes", () => {
     // @TODO: remove this when notright is public
-    cy.visit("/puzzle/supersecret-notright");
+    cy.visit("/puzzle/notright");
     // cy.get('[data-cy="puzzle-link"]').contains("Puzzles").click();
     // cy.get(".puzzle-thumb").contains("notright").click();
     // cy.url().should("include", "/puzzle/notright");

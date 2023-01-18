@@ -5,7 +5,7 @@ import { gqlApiSdk } from "@lib/server";
 
 describe("read cookies in cypress", () => {
   beforeEach(() => {
-    cy.visit("/puzzle/supersecret-notright");
+    cy.visit("/puzzle/notright");
   });
 
   // Update 9/30/2022: code stub to delete test users, ran into HMAC error,
