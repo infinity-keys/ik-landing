@@ -2,6 +2,7 @@ import type { APIGatewayEvent } from 'aws-lambda'
 import cookie from 'cookie'
 import aes from 'crypto-js/aes'
 import encUtf8 from 'crypto-js/enc-utf8'
+import { z } from 'zod'
 
 import { useRequireAuth } from '@redwoodjs/graphql-server'
 
@@ -10,6 +11,16 @@ import { logger } from 'src/lib/logger'
 import { makeAttempt } from 'src/services/ik/attempts/attempts'
 
 const puzzleCookieName = `ik-puzzles`
+
+const PuzzlesData = z.object({
+  version: z.string(),
+  puzzles: z.record(
+    z.string().min(1),
+    z.object({ steps: z.array(z.string().min(1)).min(1) })
+  ),
+})
+
+type PuzzlesDataType = z.TypeOf<typeof PuzzlesData>
 
 const decryptCookie = (data: string | undefined) => {
   return (
@@ -20,7 +31,7 @@ const decryptCookie = (data: string | undefined) => {
   )
 }
 
-const getSteps = (completed, puzzle, step) => {
+const getSteps = (completed: PuzzlesDataType, puzzle: string, step: string) => {
   const steps = new Set(
     completed && completed.puzzles[puzzle]
       ? completed.puzzles[puzzle].steps
@@ -30,7 +41,11 @@ const getSteps = (completed, puzzle, step) => {
   return steps
 }
 
-const buildCookieData = (completed, puzzle, steps) => {
+const buildCookieData = (
+  completed: PuzzlesDataType,
+  puzzle: string,
+  steps: Set<string>
+) => {
   return {
     version: 'v1',
     puzzles: {
@@ -60,8 +75,6 @@ const buildCookieData = (completed, puzzle, steps) => {
  * function, and execution environment.
  */
 const attemptHandler = async (event: APIGatewayEvent) => {
-  console.log(process.env.INFINITY_KEYS_SECRET)
-
   // We only accept POST requests
   const { httpMethod } = event
   if (httpMethod !== 'POST') return { statusCode: 405 }
@@ -75,7 +88,6 @@ const attemptHandler = async (event: APIGatewayEvent) => {
   }
 
   const { puzzleId, step, stepId } = event.queryStringParameters
-  console.log({ puzzleId, step, stepId })
 
   // Garbage request, bail
   if (!puzzleId || !step || !stepId) {
@@ -96,13 +108,11 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     }
     // Aight, what's did they guess?
     const { attempt } = JSON.parse(event.body)
-    console.log('first step allowed')
 
     const { success } = await makeAttempt({
       stepId,
       data: { simpleTextSolution: attempt },
     })
-    console.log(success)
 
     // @TODO: work out cookie headers required here
     if (success) {
@@ -114,12 +124,12 @@ const attemptHandler = async (event: APIGatewayEvent) => {
       // @TODO: try/catch here
       const puzzlesCompleted = decryptCookie(puzzlesCompletedCypherText)
 
-      console.log(JSON.stringify(puzzlesCompleted, null, 2))
+      if (puzzlesCompleted) {
+        PuzzlesData.parse(puzzlesCompleted)
+      }
 
       const steps = getSteps(puzzlesCompleted, puzzleId, stepId)
-
       const stepsCompleted = buildCookieData(puzzlesCompleted, puzzleId, steps)
-
       const cyphertext = aes
         .encrypt(
           JSON.stringify(stepsCompleted),
@@ -155,13 +165,6 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     puzzleCookieName
   ]
 
-  // @TODO: try/catch here
-  const puzzlesCompleted = decryptCookie(puzzlesCompletedCypherText)
-
-  console.log(JSON.stringify(puzzlesCompleted, null, 2))
-
-  const steps = getSteps(puzzlesCompleted, puzzleId, stepId)
-
   // Only the first step is allowed to be attempted without any prior solves (no cookie)
   if (!isFirstStep && !puzzlesCompletedCypherText) {
     logger.info(`Non-first step (${step}) attempted without cookie`)
@@ -170,7 +173,12 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
   // We can safely parse the cookie to discover what a user has actually solved
   if (!isFirstStep && puzzlesCompletedCypherText) {
-    // @TODO: Zod goes here to validate shape of puzzlesCompleted
+    // @TODO: try/catch here
+    const puzzlesCompleted = decryptCookie(puzzlesCompletedCypherText)
+    PuzzlesData.parse(puzzlesCompleted)
+
+    const steps = getSteps(puzzlesCompleted, puzzleId, stepId)
+
     const thisPuzzle = puzzlesCompleted.puzzles[puzzleId]
     // No record for this puzzle, and since this isn't the first step, bail
     if (!thisPuzzle) {
@@ -203,8 +211,6 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     }
     // @DEV: temp testing cookie
     const stepsCompleted = buildCookieData(puzzlesCompleted, puzzleId, steps)
-
-    console.log(JSON.stringify(stepsCompleted, null, 2))
 
     const cyphertext = aes
       .encrypt(JSON.stringify(stepsCompleted), process.env.INFINITY_KEYS_SECRET)
