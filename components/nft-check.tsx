@@ -66,7 +66,7 @@ const NftCheck = ({
         <Heading as="h2" visual="s">
           {nftApproval
             ? "Challenge complete!"
-            : "This challenge requires a digital key. Please connect your web3 wallet to unlock."}
+            : "This challenge requires a digital key. Please collect the required NFT to unlock."}
         </Heading>
       </div>
 
