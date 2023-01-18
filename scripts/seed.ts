@@ -135,7 +135,7 @@ export default async () => {
 
     console.log('start migratePacks stuff...')
 
-    const migratePacks = packs.forEach((pack) => {
+    const migratePacks = packs.map((pack) => {
       const rewardable = {
         migrateId: pack.pack_id,
         name: pack.pack_name,
@@ -149,9 +149,7 @@ export default async () => {
           },
         },
         pack: {
-          create: {
-            // what goes here? <-------
-          },
+          create: {},
         },
       }
       return rewardable
@@ -207,7 +205,7 @@ export default async () => {
             name: puzzleGroup,
             slug: puzzleGroup,
             type: 'PUZZLE' as RewardableType,
-            explanation: puzzles[0].instructions,
+            explanation: puzzles[0].instructions || '',
             // just dupe what's in step 1 for now
             successMessage: puzzles[puzzles.length - 1].success_message,
             organization: {
