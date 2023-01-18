@@ -51,8 +51,7 @@ export const Step: StepRelationResolvers = {
   attempts: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).attempts({
       where: {
-        userId: 'clcp3dx5z0000l6gv8neydops',
-        //  context.currentUser.id
+        userId: context.currentUser.id,
       },
     })
   },
@@ -61,8 +60,7 @@ export const Step: StepRelationResolvers = {
       .findUnique({ where: { id: root?.id } })
       .attempts({
         where: {
-          userId: 'clcp3dx5z0000l6gv8neydops',
-          //  context.currentUser.id
+          userId: context.currentUser.id,
           solve: {
             isNot: null,
           },
