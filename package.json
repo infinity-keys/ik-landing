@@ -53,7 +53,7 @@
     "react-individual-character-input-boxes": "^1.2.1",
     "react-markdown": "^8.0.3",
     "react-particles": "^2.5.3",
-    "tsparticles": "^2.5.3",
+    "tsparticles": "^2.8.0",
     "uuid": "^9.0.0",
     "wagmi": "^0.6.8",
     "web3modal": "^1.9.9",
