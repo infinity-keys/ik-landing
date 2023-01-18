@@ -77,7 +77,7 @@ describe("read cookies in cypress", () => {
         const ikDecoded = decodeJwt(String(cookie)) as unknown as IkJwt;
         puzzlesClaims = ikDecoded.claims["https://infinitykeys.io"].puzzles;
         expect(ikDecoded.sub).equals(userId);
-        expect(puzzlesClaims).to.include("supersecret-notright");
+        expect(puzzlesClaims).to.include("notright");
       });
   });
 });
