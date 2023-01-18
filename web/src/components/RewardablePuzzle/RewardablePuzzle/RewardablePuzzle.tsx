@@ -44,6 +44,7 @@ const Rewardable = ({ rewardable }: Props) => {
         <StepsCell
           stepId={stepParam && rewardable.puzzle.steps[stepIndex].id}
           puzzleId={rewardable.puzzle.id}
+          stepNum={stepParam && parseInt(stepParam)}
         />
       </main>
 

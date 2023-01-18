@@ -1,7 +1,10 @@
+import cookie from 'cookie'
+import aes from 'crypto-js/aes'
+import encUtf8 from 'crypto-js/enc-utf8'
 import type { MutationResolvers, QueryResolvers } from 'types/graphql'
 import { z } from 'zod'
 
-import { context } from '@redwoodjs/graphql-server'
+import { context, ForbiddenError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 import { createSolve } from 'src/services/solves/solves'
@@ -49,7 +52,6 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
       await createSolve({
         input: {
           attemptId: attempt.id,
-          // userId: 'clcp3dx5z0000l6gv8neydops',
           userId: context.currentUser.id,
         },
       })
@@ -63,8 +65,31 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   return { success: false }
 }
 
-export const optionalStep: QueryResolvers['optionalStep'] = async ({ id }) => {
+export const optionalStep: QueryResolvers['optionalStep'] = async (
+  { id, puzzleId, stepNum },
+  { context }
+) => {
   if (!id) return
+
+  if (stepNum === 1) return step({ id })
+
+  const puzzleCookieName = `ik-puzzles`
+
+  const puzzlesCompletedCypherText = cookie.parse(context.event.headers.cookie)[
+    puzzleCookieName
+  ]
+
+  const puzzlesCompleted = JSON.parse(
+    aes
+      .decrypt(puzzlesCompletedCypherText, process.env.INFINITY_KEYS_SECRET)
+      .toString(encUtf8)
+  )
+
+  const lastSolve = puzzlesCompleted.puzzles[puzzleId].steps.length
+
+  if (stepNum > lastSolve + 1) {
+    throw new ForbiddenError('Step currently not viewable.')
+  }
 
   return step({ id })
 }

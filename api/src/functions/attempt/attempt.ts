@@ -11,6 +11,38 @@ import { makeAttempt } from 'src/services/ik/attempts/attempts'
 
 const puzzleCookieName = `ik-puzzles`
 
+const decryptCookie = (data: string | undefined) => {
+  return (
+    data &&
+    JSON.parse(
+      aes.decrypt(data, process.env.INFINITY_KEYS_SECRET).toString(encUtf8)
+    )
+  )
+}
+
+const getSteps = (completed, puzzle, step) => {
+  const steps = new Set(
+    completed && completed.puzzles[puzzle]
+      ? completed.puzzles[puzzle].steps
+      : []
+  )
+  steps.add(step)
+  return steps
+}
+
+const buildCookieData = (completed, puzzle, steps) => {
+  return {
+    version: 'v1',
+    puzzles: {
+      ...(completed?.puzzles || {}),
+      [puzzle]: {
+        ...(completed?.puzzles[puzzle] || {}),
+        steps: [...steps],
+      },
+    },
+  }
+}
+
 /**
  * The handler function is your code that processes http request events.
  * You can use return and throw to send a response or error, respectively.
@@ -34,14 +66,6 @@ const attemptHandler = async (event: APIGatewayEvent) => {
   const { httpMethod } = event
   if (httpMethod !== 'POST') return { statusCode: 405 }
 
-  // @TODO: make this dynamic, no hardcoding
-  // @example: localhost:8910/.redwood/functions/attempt
-  let path = '/.redwood/functions/attempt'
-  if (process.env.NODE_ENV === 'production') {
-    // @example: api.infinitykeys.io/attempt
-    path = '/attempt'
-  }
-
   // Check that the referer is from the puzzle page
   const { referer } = event.headers
   const refererUrl = new URL(referer)
@@ -50,17 +74,17 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     return { statusCode: 403 }
   }
 
-  const { puzzle, step, stepId } = event.queryStringParameters
-  console.log({ puzzle, step, stepId })
+  const { puzzleId, step, stepId } = event.queryStringParameters
+  console.log({ puzzleId, step, stepId })
 
   // Garbage request, bail
-  if (!puzzle || !step || !stepId) {
+  if (!puzzleId || !step || !stepId) {
     logger.info('/attempt called without puzzle or step')
     return { statusCode: 400 }
   }
 
   logger.info(
-    `Invoked '/attempt' function for puzzle ${puzzle} and step ${step}`
+    `Invoked '/attempt' function for puzzle ${puzzleId} and step ${step}`
   )
   const isFirstStep = parseInt(step, 10) === 1
 
@@ -72,25 +96,48 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     }
     // Aight, what's did they guess?
     const { attempt } = JSON.parse(event.body)
-
     console.log('first step allowed')
 
-    // @TODO: graphql attempt call here
-    // @NOTE: this does not work, this gql function requires step cuid, not step NUMBER
     const { success } = await makeAttempt({
       stepId,
       data: { simpleTextSolution: attempt },
     })
-
     console.log(success)
 
     // @TODO: work out cookie headers required here
     if (success) {
+      // Access our cookie raw cyphertext
+      const puzzlesCompletedCypherText = cookie.parse(event.headers.cookie)[
+        puzzleCookieName
+      ]
+
+      // @TODO: try/catch here
+      const puzzlesCompleted = decryptCookie(puzzlesCompletedCypherText)
+
+      console.log(JSON.stringify(puzzlesCompleted, null, 2))
+
+      const steps = getSteps(puzzlesCompleted, puzzleId, stepId)
+
+      const stepsCompleted = buildCookieData(puzzlesCompleted, puzzleId, steps)
+
+      const cyphertext = aes
+        .encrypt(
+          JSON.stringify(stepsCompleted),
+          process.env.INFINITY_KEYS_SECRET
+        )
+        .toString()
+
       return {
         statusCode: 200,
         headers: {
           'Content-Type': 'application/json',
           // @TODO: DO COOKIE HERE
+          'Set-Cookie': cookie.serialize(puzzleCookieName, cyphertext, {
+            path: '/',
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+          }),
         },
         body: JSON.stringify({ success }),
       }
@@ -108,6 +155,13 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     puzzleCookieName
   ]
 
+  // @TODO: try/catch here
+  const puzzlesCompleted = decryptCookie(puzzlesCompletedCypherText)
+
+  console.log(JSON.stringify(puzzlesCompleted, null, 2))
+
+  const steps = getSteps(puzzlesCompleted, puzzleId, stepId)
+
   // Only the first step is allowed to be attempted without any prior solves (no cookie)
   if (!isFirstStep && !puzzlesCompletedCypherText) {
     logger.info(`Non-first step (${step}) attempted without cookie`)
@@ -116,61 +170,60 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
   // We can safely parse the cookie to discover what a user has actually solved
   if (!isFirstStep && puzzlesCompletedCypherText) {
-    // @TODO: try/catch here
-    const puzzlesCompleted = JSON.parse(
-      aes
-        .decrypt(puzzlesCompletedCypherText, process.env.INFINITY_KEYS_SECRET)
-        .toString(encUtf8)
-    )
-    console.log(puzzlesCompleted)
-
     // @TODO: Zod goes here to validate shape of puzzlesCompleted
-
-    const thisPuzzle = puzzlesCompleted.puzzles[puzzle]
+    const thisPuzzle = puzzlesCompleted.puzzles[puzzleId]
     // No record for this puzzle, and since this isn't the first step, bail
     if (!thisPuzzle) {
       logger.info(
-        `Since this isn't the first step (${step}), we need at least a record for this puzzle (${puzzle})`
+        `Since this isn't the first step (${step}), we need at least a record for this puzzle (${puzzleId})`
       )
       return { statusCode: 400 }
     }
 
-    // @TODO: graphql attempt call here
-    // @TODO: work out cookie headers required here
-  }
+    // trying to check a step they aren't allowed to see
+    const lastSolve = puzzlesCompleted.puzzles[puzzleId].steps.length
+    if (parseInt(step, 10) > lastSolve + 1) {
+      logger.info(`Attempted to solve step without required previous steps`)
+      return { statusCode: 400 }
+    }
 
-  // console.log(event)
-  // console.log(event.queryStringParameters)
-  // console.log({ isAuthenticated: isAuthenticated() })
+    const { attempt } = JSON.parse(event.body)
 
-  // @DEV: temp testing cookie
-  const stepsCompleted = {
-    version: 'v1',
-    puzzles: {
-      [puzzle]: {
-        steps: ['1', '2'],
+    const { success } = await makeAttempt({
+      stepId,
+      data: { simpleTextSolution: attempt },
+    })
+
+    if (!success) {
+      return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success }),
+      }
+    }
+    // @DEV: temp testing cookie
+    const stepsCompleted = buildCookieData(puzzlesCompleted, puzzleId, steps)
+
+    console.log(JSON.stringify(stepsCompleted, null, 2))
+
+    const cyphertext = aes
+      .encrypt(JSON.stringify(stepsCompleted), process.env.INFINITY_KEYS_SECRET)
+      .toString()
+
+    // @TODO: return different headers based on if we got this right or not
+    return {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Set-Cookie': cookie.serialize(puzzleCookieName, cyphertext, {
+          path: '/',
+          httpOnly: true,
+          secure: true,
+          sameSite: 'strict',
+        }),
       },
-    },
-  }
-  const cyphertext = aes
-    .encrypt(JSON.stringify(stepsCompleted), process.env.INFINITY_KEYS_SECRET)
-    .toString()
-
-  // @TODO: return different headers based on if we got this right or not
-  return {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Set-Cookie': cookie.serialize(puzzleCookieName, cyphertext, {
-        path,
-        httpOnly: true,
-        secure: true,
-        sameSite: 'strict',
-      }),
-    },
-    body: JSON.stringify({
-      data: 'attempt function',
-    }),
+      body: JSON.stringify({ success }),
+    }
   }
 }
 

@@ -1,14 +1,12 @@
 import { FormEvent, useState } from 'react'
 
-import { connectorsForWallets } from '@rainbow-me/rainbowkit'
 import clsx from 'clsx'
 import loRange from 'lodash/range'
 import RICIBs from 'react-individual-character-input-boxes'
 import { FindStepQuery } from 'types/graphql'
 
 import { useAuth } from '@redwoodjs/auth'
-import { routes, navigate, useParams } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
+import { navigate, routes, useParams } from '@redwoodjs/router'
 
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
@@ -19,89 +17,76 @@ interface SimpleTextInputProps {
   count: number
   numberOfSteps: number
   step: FindStepQuery['step']
+  puzzleId: string
 }
-
-const MAKE_ATTEMPT_MUTATION = gql`
-  mutation MakeAttemptMutation($stepId: String!, $data: JSON!) {
-    makeAttempt(stepId: $stepId, data: $data) {
-      success
-    }
-  }
-`
 
 const SimpleTextInput = ({
   count,
   step,
   numberOfSteps,
+  puzzleId,
 }: SimpleTextInputProps) => {
   const { slug, step: stepParam } = useParams()
+  const [loading, setLoading] = useState(false)
+  const [failedAttempt, setFailedAttempt] = useState(false)
 
   const [text, setText] = useState('')
-  const [failMessage, setFailMessage] = useState('')
 
   const { getToken } = useAuth()
 
   // This will use useMemo, possibly
-  const devSubmit = async () => {
-    // localhost:8910 vs api.infinitykeys.io
-    const apiBase = global.RWJS_API_URL.includes('.redwood')
-      ? window.location.origin
-      : global.RWJS_API_URL
+  const handleMakeAttempt = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (text.length !== count) return
+    setFailedAttempt(false)
+    setLoading(true)
 
     // /.redwood/functions/attempt vs /attempt
-    const apiPath = global.RWJS_API_URL.includes('.redwood')
-      ? global.RWJS_API_URL + '/attempt'
-      : '/attempt'
+    const apiPath = `${
+      global.RWJS_API_URL.includes('.redwood') ? window.location.origin : ''
+    }${global.RWJS_API_URL}/attempt`
 
-    const apiUrl = new URL(apiPath, apiBase)
+    const apiUrl = new URL(apiPath)
 
-    apiUrl.searchParams.set('puzzle', slug)
+    apiUrl.searchParams.set('puzzleId', puzzleId)
     apiUrl.searchParams.set('step', stepParam)
     apiUrl.searchParams.set('stepId', step.id)
 
-    const body = JSON.stringify({ attempt: '9000' })
+    const body = JSON.stringify({ attempt: text })
 
-    // Get JWT from MagicLink
-    const token = await getToken()
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'auth-provider': 'magicLink',
-        Authorization: `Bearer ${token}`,
-      },
-      body,
-    })
-    const data = await response.json()
-    console.log(data)
-  }
+    try {
+      // Get JWT from MagicLink
+      const token = await getToken()
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'auth-provider': 'magicLink',
+          Authorization: `Bearer ${token}`,
+        },
+        body,
+      })
+      setLoading(false)
 
-  const [makeAttempt, { loading }] = useMutation(MAKE_ATTEMPT_MUTATION, {
-    onCompleted: (data) => {
-      const nextStep = parseInt(stepParam) + 1
+      if (response.ok) {
+        const data = await response.json()
 
-      if (data.makeAttempt.success) {
-        if (nextStep > numberOfSteps) {
-          navigate(routes.puzzleLanding({ slug }))
-        } else {
-          navigate(routes.puzzleStep({ slug, step: nextStep }))
+        // if user guesses correctly, move them to next step
+        // or puzzle landing if it is the last step
+        if (data.success) {
+          if (parseInt(stepParam, 10) + 1 > numberOfSteps) {
+            navigate(routes.puzzleLanding({ slug }))
+          } else {
+            navigate(
+              routes.puzzleStep({ slug, step: parseInt(stepParam, 10) + 1 })
+            )
+          }
         }
-        return
+        setFailedAttempt(true)
       }
-      setFailMessage(step.failMessage || "That's not it. Try again")
-    },
-  })
-
-  const handleMakeAttempt = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (text.length !== count) return
-    setFailMessage('')
-
-    makeAttempt({
-      variables: {
-        stepId: step.id,
-        data: { simpleTextSolution: text },
-      },
-    })
+    } catch (e) {
+      console.log(e)
+      setLoading(false)
+    }
   }
 
   return (
@@ -131,18 +116,14 @@ const SimpleTextInput = ({
               <div
                 className={clsx(
                   'relative flex justify-center pt-6 text-gray-150',
-                  failMessage ? 'opacity-1' : 'opacity-0'
+                  failedAttempt ? 'opacity-1' : 'opacity-0'
                 )}
                 data-cy="fail_message_check"
               >
                 <Markdown>
-                  {failMessage ||
+                  {step.failMessage ||
                     'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
                 </Markdown>
-              </div>
-
-              <div className="pt-8">
-                <Button text="Do stuff" onClick={devSubmit} />
               </div>
 
               <div className="pt-8" data-cy="submit">
