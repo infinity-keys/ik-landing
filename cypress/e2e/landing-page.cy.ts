@@ -67,12 +67,8 @@ describe("infinitykeys.io", () => {
     cy.url().should("include", "https://blog.infinitykeys.io");
 
     cy.visit("/");
-    cy.get(".header").contains("Packs").click();
+    cy.get(".header").contains("Play").click();
     cy.url().should("include", Cypress.config().baseUrl + "/packs");
-
-    cy.visit("/");
-    cy.get(".header").contains("Puzzles").click();
-    cy.url().should("include", Cypress.config().baseUrl + "/puzzles");
 
     cy.visit("/");
     cy.get('[data-cy="ik logo"]').click();
