@@ -15,7 +15,7 @@ import SiteLayout from 'src/layouts/SiteLayout'
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
-      <Private unauthenticated="/auth">
+      <Private unauthenticated="auth">
         {/* <Set wrap={ScaffoldLayout} title="Puzzles" titleTo="puzzles" buttonLabel="New Puzzle" buttonTo="newPuzzle"> */}
         <Route path="/puzzle/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newPuzzle" />
         <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" />

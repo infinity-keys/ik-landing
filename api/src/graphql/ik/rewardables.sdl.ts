@@ -4,12 +4,11 @@ export const schema = gql`
     totalCount: Int!
   }
   type Query {
-    rewardableBySlug(slug: String!, type: RewardableType!): Rewardable
-      @requireAuth
+    rewardableBySlug(slug: String!, type: RewardableType!): Rewardable @skipAuth
     rewardablesCollection(
       type: RewardableType
       page: Int
       count: Int
-    ): RewardablesCollection @requireAuth
+    ): RewardablesCollection @skipAuth
   }
 `

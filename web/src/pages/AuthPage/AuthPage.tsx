@@ -37,8 +37,9 @@ const AuthPage = () => {
     }
 
     try {
-      // @TODO: redirectURI not working with built-in logIn function
+      // @NOTE: redirectURI not working with built-in logIn function
       await logIn({ email })
+      // function -> reconcile cookies
     } catch (e) {
       setErrorMessage('Problem sending email')
     }

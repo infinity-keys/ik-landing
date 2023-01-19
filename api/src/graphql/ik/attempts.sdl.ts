@@ -20,8 +20,8 @@ export const schema = gql`
   }
 
   type Query {
-    getStepsByPuzzleId(id: String!): StepsByPuzzleIdResponse @requireAuth
-    optionalStep(id: String, puzzleId: String, stepNum: Int): Step @requireAuth
+    getStepsByPuzzleId(id: String!): StepsByPuzzleIdResponse @skipAuth
+    optionalStep(id: String, puzzleId: String, stepNum: Int): Step @skipAuth
   }
 
   type Mutation {

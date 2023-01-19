@@ -56,6 +56,10 @@ export const Step: StepRelationResolvers = {
     })
   },
   hasUserCompletedStep: async (_obj, { root }) => {
+    if (!context.currentUser) {
+      return false
+    }
+
     const solve = await db.step
       .findUnique({ where: { id: root?.id } })
       .attempts({

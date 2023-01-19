@@ -15,7 +15,8 @@ import { makeAttempt } from 'src/services/ik/attempts/attempts'
 const puzzleCookieName = `ik-puzzles`
 
 const PuzzlesData = z.object({
-  version: z.string(),
+  version: z.string().min(1),
+  authId: z.string().min(1),
   puzzles: z.record(
     z.string().min(1),
     z.object({ steps: z.array(z.string().min(1)).min(1) })
@@ -23,6 +24,12 @@ const PuzzlesData = z.object({
 })
 
 type PuzzlesDataType = z.TypeOf<typeof PuzzlesData>
+interface BuildCookieDataProps {
+  completed: PuzzlesDataType
+  puzzle: string
+  authId: string
+  steps: Set<string>
+}
 
 const decryptCookie = (data: string | undefined) => {
   return data && JSON.parse(decryptAndDecompressText(data))
@@ -38,13 +45,15 @@ const getSteps = (completed: PuzzlesDataType, puzzle: string, step: string) => {
   return steps
 }
 
-const buildCookieData = (
-  completed: PuzzlesDataType,
-  puzzle: string,
-  steps: Set<string>
-) => {
+const buildCookieData = ({
+  completed,
+  puzzle,
+  authId,
+  steps,
+}: BuildCookieDataProps) => {
   return {
     version: 'v1',
+    authId,
     puzzles: {
       ...(completed?.puzzles || {}),
       [puzzle]: {
@@ -103,6 +112,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
       logger.info('Attempted first step without being logged in')
       return { statusCode: 403 }
     }
+
     // Aight, what's did they guess?
     const { attempt } = JSON.parse(event.body)
 
@@ -123,10 +133,18 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
       if (puzzlesCompleted) {
         PuzzlesData.parse(puzzlesCompleted)
+        if (puzzlesCompleted.authId !== context.currentUser.authId) {
+          return { statusCode: 403 }
+        }
       }
 
       const steps = getSteps(puzzlesCompleted, puzzleId, stepId)
-      const stepsCompleted = buildCookieData(puzzlesCompleted, puzzleId, steps)
+      const stepsCompleted = buildCookieData({
+        completed: puzzlesCompleted,
+        puzzle: puzzleId,
+        authId: context.currentUser.authId,
+        steps,
+      })
 
       const cyphertext = compressAndEncryptText(JSON.stringify(stepsCompleted))
 
@@ -166,9 +184,18 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
   // We can safely parse the cookie to discover what a user has actually solved
   if (!isFirstStep && puzzlesCompletedCypherText) {
+    if (!isAuthenticated()) {
+      logger.info('Attempted first step without being logged in')
+      return { statusCode: 403 }
+    }
+
     // @TODO: try/catch here
     const puzzlesCompleted = decryptCookie(puzzlesCompletedCypherText)
     PuzzlesData.parse(puzzlesCompleted)
+
+    if (puzzlesCompleted.authId !== context.currentUser.authId) {
+      return { statusCode: 403 }
+    }
 
     const steps = getSteps(puzzlesCompleted, puzzleId, stepId)
 
@@ -203,7 +230,12 @@ const attemptHandler = async (event: APIGatewayEvent) => {
       }
     }
     // @DEV: temp testing cookie
-    const stepsCompleted = buildCookieData(puzzlesCompleted, puzzleId, steps)
+    const stepsCompleted = buildCookieData({
+      completed: puzzlesCompleted,
+      puzzle: puzzleId,
+      authId: context.currentUser.authId,
+      steps,
+    })
 
     const cyphertext = compressAndEncryptText(JSON.stringify(stepsCompleted))
 

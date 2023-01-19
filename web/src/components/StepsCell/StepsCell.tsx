@@ -1,6 +1,7 @@
 import { getThumbnailProgress } from '@infinity-keys/core'
 import type { FindStepQuery, FindStepQueryVariables } from 'types/graphql'
 
+import { useAuth } from '@redwoodjs/auth'
 import { routes, useParams } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
@@ -11,7 +12,7 @@ import SimpleTextInput from 'src/components/SimpleTextInput/SimpleTextInput'
 import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
 
 export const QUERY = gql`
-  query FindStepQuery($stepId: String, $puzzleId: String!, $stepNum: Int) {
+  query FindStepQuery($puzzleId: String!, $stepId: String, $stepNum: Int) {
     puzzle(id: $puzzleId) {
       id
       steps {
@@ -57,9 +58,11 @@ export const Success = ({
   puzzle,
 }: CellSuccessProps<FindStepQuery, FindStepQueryVariables>) => {
   const { slug } = useParams()
+  const { isAuthenticated } = useAuth()
 
-  const currentStepIndex =
-    puzzle.steps.findLastIndex((step) => step.hasUserCompletedStep) + 1
+  const currentStepIndex = isAuthenticated
+    ? puzzle.steps.findLastIndex((step) => step.hasUserCompletedStep) + 1
+    : 0
 
   return (
     <div>
@@ -94,10 +97,14 @@ export const Success = ({
               currentStep: currentStepIndex + 1,
               puzzleStep: stepSortWeight,
             })}
-            to={routes.puzzleStep({
-              slug,
-              step: stepSortWeight,
-            })}
+            to={
+              isAuthenticated
+                ? routes.puzzleStep({
+                    slug,
+                    step: stepSortWeight,
+                  })
+                : null
+            }
           />
         ))}
       </div>

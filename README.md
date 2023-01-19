@@ -226,3 +226,7 @@ npm version patch
 ```bash
 yarn npm publish --access public
 ```
+
+## Mac Tests
+`watch-del-all`
+`watchman shutdown-server`
