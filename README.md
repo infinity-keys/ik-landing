@@ -227,6 +227,14 @@ npm version patch
 yarn npm publish --access public
 ```
 
-## Mac Tests
+## Tests
+`yarn rw test api <filename>`
+
+### For Mac Users
+
+`homebrew install watchman`
+
+There can be a permissions error that happens in MacOS if project is in Documents. [Fix is here.](https://github.com/facebook/watchman/issues/977#issuecomment-1189903929)
+
 `watch-del-all`
 `watchman shutdown-server`
