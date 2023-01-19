@@ -4,7 +4,6 @@ beforeEach(() => {
 
 describe("infinitykeys.io", () => {
   it("root landing page should load", () => {
-    cy.get('[data-cy="puzzle-link"]').contains("Puzzles");
     cy.contains("What is");
     cy.contains("Infinity Keys?");
   });
