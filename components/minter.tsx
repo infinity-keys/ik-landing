@@ -234,7 +234,7 @@ export default function Minter({
               onClick={() => setHasChecked(true)}
               className="ik-button block min-w-full rounded-md border border-solid py-2 px-4 text-lg font-bold text-blue border-turquoise bg-turquoise hover:cursor-pointer hover:bg-turquoiseDark mt-4"
             >
-              Check My NFTs
+              Check My Keys
             </button>
           ) : ((isVerifying || isLoading) && chainIsValid) ||
             (claimed && chainClaimed === 0) ? (
