@@ -57,7 +57,6 @@ describe("infinitykeys.io", () => {
 
     cy.visit("/");
     cy.get(".header").contains("Collab").click();
-    cy.url().should("include", Cypress.config().baseUrl + "/#collab");
 
     cy.visit("/");
     cy.get(".header").contains("Thesis").click();

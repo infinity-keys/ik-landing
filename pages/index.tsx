@@ -127,62 +127,6 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
         </Section>
       </main>
 
-      {/* Collab */}
-      <Section id="collab">
-        <div className="items-center md:grid md:grid-cols-2 md:grid-flow-col-dense md:gap-24">
-          <div className="max-w-sm mx-auto">
-            <Heading visual="m">Collabs</Heading>
-            <div className="pt-4 items-center grid grid-cols-3 gap-6 ">
-              <a href="https://www.infinitykeys.io/pack/lens-collector-pack">
-                <LensLogo />
-              </a>
-              <a href="https://www.infinitykeys.io/pack/saga-wormhole-pack">
-                <SagaLogo />
-              </a>
-              <a href="https://www.infinitykeys.io/pack/san-creator-pack">
-                <SanLogo />
-              </a>
-              <a href="https://www.infinitykeys.io/pack/probably-nothing-pack">
-                <PnLogo />
-              </a>
-              <a href="https://www.infinitykeys.io/puzzle/finkel-islanders">
-                <IslandersLogo />
-              </a>
-              <a href="https://www.infinitykeys.io/puzzle/second-season-rehash">
-                <RehashLogo />
-              </a>
-            </div>
-          </div>
-          <div className="max-w-xl mx-auto">
-            <p className="text-turquoise text-lg mb-4">
-              Engagement &gt; Impressions.
-            </p>
-
-            <Heading>Create Infinity Keys Challenges for your Project</Heading>
-            <Text>
-              We work with projects to build new types of digital keys for
-              engaging hunts and puzzles.
-            </Text>
-            <div className="mt-10 text-center sm:text-left">
-              <Button
-                text="Get in Touch"
-                variant="purple"
-                href="https://twitter.com/InfinityKeys"
-              />
-            </div>
-            {/* <Text>
-              If you would like to use IK to increase engagement with your
-              community, users, players, or fans, please reach out, and we will
-              contact you directly.
-            </Text>
-            <div className="mt-10 sm:mt-12 flex justify-center">
-              <PartnerForm />
-            </div>
-            */}
-          </div>
-        </div>
-      </Section>
-
       {/* Newsletter*/}
       <div className="bg-blue-800 w-full">
         <Section>

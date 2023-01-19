@@ -7,7 +7,6 @@ import { PACK_COLLECTION_BASE } from "@lib/constants";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Collab", href: "#collab" },
   { name: "Thesis", href: "#" },
 ];
 
