@@ -71,18 +71,11 @@ export default function Header() {
 
               <div data-cy="puzzle-link" className="flex items-center gap-2">
                 <Button
-                  text="Packs"
+                  text="Play"
                   href={`/${PACK_COLLECTION_BASE}`}
                   variant="outline"
                   responsive
                 />
-                <Button
-                  text="Puzzles"
-                  href="/puzzles"
-                  variant="outline"
-                  responsive
-                />
-
                 <WalletButton />
               </div>
 
