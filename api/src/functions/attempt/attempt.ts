@@ -1,12 +1,14 @@
 import type { APIGatewayEvent } from 'aws-lambda'
 import cookie from 'cookie'
-import aes from 'crypto-js/aes'
-import encUtf8 from 'crypto-js/enc-utf8'
 import { z } from 'zod'
 
 import { useRequireAuth } from '@redwoodjs/graphql-server'
 
 import { isAuthenticated, getCurrentUser } from 'src/lib/auth'
+import {
+  compressAndEncryptText,
+  decryptAndDecompressText,
+} from 'src/lib/encoding/encoding'
 import { logger } from 'src/lib/logger'
 import { makeAttempt } from 'src/services/ik/attempts/attempts'
 
@@ -23,12 +25,7 @@ const PuzzlesData = z.object({
 type PuzzlesDataType = z.TypeOf<typeof PuzzlesData>
 
 const decryptCookie = (data: string | undefined) => {
-  return (
-    data &&
-    JSON.parse(
-      aes.decrypt(data, process.env.INFINITY_KEYS_SECRET).toString(encUtf8)
-    )
-  )
+  return data && JSON.parse(decryptAndDecompressText(data))
 }
 
 const getSteps = (completed: PuzzlesDataType, puzzle: string, step: string) => {
@@ -130,12 +127,8 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
       const steps = getSteps(puzzlesCompleted, puzzleId, stepId)
       const stepsCompleted = buildCookieData(puzzlesCompleted, puzzleId, steps)
-      const cyphertext = aes
-        .encrypt(
-          JSON.stringify(stepsCompleted),
-          process.env.INFINITY_KEYS_SECRET
-        )
-        .toString()
+
+      const cyphertext = compressAndEncryptText(JSON.stringify(stepsCompleted))
 
       return {
         statusCode: 200,
@@ -212,9 +205,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     // @DEV: temp testing cookie
     const stepsCompleted = buildCookieData(puzzlesCompleted, puzzleId, steps)
 
-    const cyphertext = aes
-      .encrypt(JSON.stringify(stepsCompleted), process.env.INFINITY_KEYS_SECRET)
-      .toString()
+    const cyphertext = compressAndEncryptText(JSON.stringify(stepsCompleted))
 
     // @TODO: return different headers based on if we got this right or not
     return {
