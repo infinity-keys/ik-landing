@@ -10,7 +10,6 @@ import Button from "./button";
 
 export const navigation = [
   { name: "Home", href: "/" },
-  { name: "Collab", href: "/#collab" },
   {
     name: "Thesis",
     href: "https://blog.infinitykeys.io/what-is-infinity-keys",

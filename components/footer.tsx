@@ -7,7 +7,6 @@ import { PACK_COLLECTION_BASE } from "@lib/constants";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Collab", href: "#collab" },
   { name: "Thesis", href: "#" },
 ];
 
@@ -64,7 +63,7 @@ export default function Footer() {
           </div>
         </nav>
         <p className="mt-8 text-center text-base text-white/50">
-          &copy; 2022 Infinity Keys. All rights reserved. |{" "}
+          &copy; 2023 Infinity Keys. All rights reserved. |{" "}
           <Link href="/privacy-policy">
             <a className="transition hover:text-turquoise">Privacy Policy</a>
           </Link>

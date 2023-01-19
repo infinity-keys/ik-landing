@@ -107,81 +107,23 @@ const Landing: NextPage<PageProps> = ({ count, puzzleId }) => {
               <span className="block text-turquoise">Infinity Keys?</span>
             </Heading>
             <Text>
-              Infinity Keys is a no-code creator tools platform for brands and
-              fans to build engaging metaverse treasure hunt experiences.
+              Infinity Keys is a gamified task-reward platform that allows creators to build engaging virtual quests and own your own alternative marketing pipeline.
             </Text>
             <Text>
-              The IK team and community are building a series of demo hunts and
-              puzzles to show the power of engagement using scalable games with
-              opt-in Web3 NFTs as an alternative to passive, impression-based
-              marketing.
+              Creators build fun challenges that have stories and gaming hooks, and use them to direct new audiences to evergreen content or special events.
             </Text>
             <Text>
-              If you&apos;re a player, find clues, decipher keys, and claim
-              treasure. Join our online communities on Twitter and Discord to
-              connect with other players and builders - and click on the Puzzles
-              button up top to see the variety of hunts, clues, puzzles, and
-              treasure live now.
+              We focus on gamification, and are building a platform and community to make your marketing tasks more fun, enaging, memorable, and long-lasting.
+            </Text>
+            <Text>
+              Read more about the vision, background, and platform behind the Society of the Infinite Keys in our docs - or click PLAY above and try it out for yourself.
+            </Text>
+            <Text>
+              There&apos;s treasure everywhere!
             </Text>
           </div>
         </Section>
       </main>
-
-      {/* Collab */}
-      <Section id="collab">
-        <div className="items-center md:grid md:grid-cols-2 md:grid-flow-col-dense md:gap-24">
-          <div className="max-w-sm mx-auto">
-            <Heading visual="m">Collabs</Heading>
-            <div className="pt-4 items-center grid grid-cols-3 gap-6 ">
-              <a href="https://www.infinitykeys.io/pack/lens-collector-pack">
-                <LensLogo />
-              </a>
-              <a href="https://www.infinitykeys.io/pack/saga-wormhole-pack">
-                <SagaLogo />
-              </a>
-              <a href="https://www.infinitykeys.io/pack/san-creator-pack">
-                <SanLogo />
-              </a>
-              <a href="https://www.infinitykeys.io/pack/probably-nothing-pack">
-                <PnLogo />
-              </a>
-              <a href="https://www.infinitykeys.io/puzzle/finkel-islanders">
-                <IslandersLogo />
-              </a>
-              <a href="https://www.infinitykeys.io/puzzle/second-season-rehash">
-                <RehashLogo />
-              </a>
-            </div>
-          </div>
-          <div className="max-w-xl mx-auto">
-            <p className="text-turquoise text-lg mb-4">
-              Engagement &gt; Impressions.
-            </p>
-
-            <Heading>Create Infinity Keys Challenges for your Project</Heading>
-            <Text>
-              We work with projects to build new types of digital keys for
-              engaging hunts and puzzles.
-            </Text>
-            <div className="mt-10 text-center sm:text-left">
-              <Button
-                text="Get in Touch"
-                variant="purple"
-                href="https://twitter.com/InfinityKeys"
-              />
-            </div>
-            {/* <Text>
-              If you would like to use IK to increase engagement with your
-              community, users, players, or fans, please reach out, and we will
-              contact you directly.
-            </Text>
-            <div className="mt-10 sm:mt-12 flex justify-center">
-              <PartnerForm />
-            </div>
-            */}
-          </div>
-        </div>
-      </Section>
 
       {/* Newsletter*/}
       <div className="bg-blue-800 w-full">
