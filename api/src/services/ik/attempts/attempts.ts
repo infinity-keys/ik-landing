@@ -4,6 +4,7 @@ import { z } from 'zod'
 
 import { context, ForbiddenError } from '@redwoodjs/graphql-server'
 
+import { isAuthenticated } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 import { decryptAndDecompressText } from 'src/lib/encoding/encoding'
 import { createSolve } from 'src/services/solves/solves'
@@ -74,6 +75,10 @@ export const optionalStep: QueryResolvers['optionalStep'] = async (
 ) => {
   if (!id) return
 
+  if (!isAuthenticated()) {
+    throw new ForbiddenError('must sign in')
+  }
+
   if (stepNum === 1) return step({ id })
 
   const puzzleCookieName = `ik-puzzles`
@@ -84,9 +89,9 @@ export const optionalStep: QueryResolvers['optionalStep'] = async (
 
   const puzzlesCompleted = decryptCookie(puzzlesCompletedCypherText)
 
-  const lastSolve = puzzlesCompleted.puzzles[puzzleId].steps.length
+  const lastSolve = puzzlesCompleted?.puzzles[puzzleId]?.steps.length
 
-  if (stepNum > lastSolve + 1) {
+  if (stepNum > lastSolve + 1 || !lastSolve) {
     throw new ForbiddenError('Step currently not viewable.')
   }
 
