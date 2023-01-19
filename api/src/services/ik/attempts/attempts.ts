@@ -1,12 +1,11 @@
 import cookie from 'cookie'
-import aes from 'crypto-js/aes'
-import encUtf8 from 'crypto-js/enc-utf8'
 import type { MutationResolvers, QueryResolvers } from 'types/graphql'
 import { z } from 'zod'
 
 import { context, ForbiddenError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
+import { decryptAndDecompressText } from 'src/lib/encoding/encoding'
 import { createSolve } from 'src/services/solves/solves'
 import { step } from 'src/services/steps/steps'
 
@@ -65,6 +64,10 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   return { success: false }
 }
 
+const decryptCookie = (data: string | undefined) => {
+  return data && JSON.parse(decryptAndDecompressText(data))
+}
+
 export const optionalStep: QueryResolvers['optionalStep'] = async (
   { id, puzzleId, stepNum },
   { context }
@@ -79,11 +82,7 @@ export const optionalStep: QueryResolvers['optionalStep'] = async (
     puzzleCookieName
   ]
 
-  const puzzlesCompleted = JSON.parse(
-    aes
-      .decrypt(puzzlesCompletedCypherText, process.env.INFINITY_KEYS_SECRET)
-      .toString(encUtf8)
-  )
+  const puzzlesCompleted = decryptCookie(puzzlesCompletedCypherText)
 
   const lastSolve = puzzlesCompleted.puzzles[puzzleId].steps.length
 

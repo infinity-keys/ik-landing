@@ -27,12 +27,11 @@ const SimpleTextInput = ({
   puzzleId,
 }: SimpleTextInputProps) => {
   const { slug, step: stepParam } = useParams()
+  const { getToken } = useAuth()
+
   const [loading, setLoading] = useState(false)
   const [failedAttempt, setFailedAttempt] = useState(false)
-
   const [text, setText] = useState('')
-
-  const { getToken } = useAuth()
 
   // This will use useMemo, possibly
   const handleMakeAttempt = async (e: FormEvent<HTMLFormElement>) => {
@@ -53,6 +52,7 @@ const SimpleTextInput = ({
     apiUrl.searchParams.set('stepId', step.id)
 
     const body = JSON.stringify({ attempt: text })
+    setText('')
 
     try {
       // Get JWT from MagicLink
@@ -74,9 +74,9 @@ const SimpleTextInput = ({
         // or puzzle landing if it is the last step
         if (data.success) {
           if (parseInt(stepParam, 10) + 1 > numberOfSteps) {
-            navigate(routes.puzzleLanding({ slug }))
+            return navigate(routes.puzzleLanding({ slug }))
           } else {
-            navigate(
+            return navigate(
               routes.puzzleStep({ slug, step: parseInt(stepParam, 10) + 1 })
             )
           }
