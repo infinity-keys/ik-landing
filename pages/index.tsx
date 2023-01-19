@@ -10,7 +10,6 @@ import { PACK_COLLECTION_BASE } from "@lib/constants";
 
 import Wrapper from "@components/wrapper";
 import Puzzle from "@components/puzzle";
-import PartnerForm from "@components/email-partner";
 import NewsLetterForm from "@components/email-newsletter";
 import Section from "@components/section";
 import Text from "@components/text";
@@ -18,14 +17,6 @@ import Heading from "@components/heading";
 import Seo from "@components/seo";
 import Button from "@components/button";
 import Flicker from "@components/flicker";
-
-import LensLogo from "@components/svg/partner-logos/lens_logo-svg";
-import SagaLogo from "@components/svg/partner-logos/saga_logo-png";
-import SanLogo from "@components/svg/partner-logos/san_logo-png";
-import PnLogo from "@components/svg/partner-logos/pn_logo-png";
-import IslandersLogo from "@components/svg/partner-logos/islanders_logo-png";
-import RehashLogo from "@components/svg/partner-logos/rehash_logo-jpeg";
-
 
 interface PageProps {
   count: number;

@@ -54,11 +54,10 @@ export default function Footer() {
             {/* right */}
             <div className="mb-4 sm:mb-0 sm:ml-6 flex gap-4">
               <Button
-                text="Packs"
+                text="Play"
                 href={`/${PACK_COLLECTION_BASE}`}
                 variant="outline"
               />
-              <Button text="Puzzles" href="/puzzles" variant="outline" />
             </div>
           </div>
         </nav>
