@@ -78,18 +78,23 @@ const Dev: NextPage<PuzzlePageProps> = ({
         )}
 
         <div className="max-w-prose mx-auto bg-black/10 p-4 mt-12 md:mt-16 mb-12 rounded-md">
-          {instructions && (
-            <PuzzleLandingInfo title="Instructions" content={instructions} />
-          )}
-
           {challenge && (
             <PuzzleLandingInfo
               title="Challenge"
               content={challenge}
-              marginTop={!!instructions}
               defaultOpen
             />
           )}
+
+          {instructions && (
+            <PuzzleLandingInfo
+              title="Instructions"
+              content={instructions}
+              marginTop={!!challenge}
+            />
+          )}
+
+
         </div>
       </main>
 
