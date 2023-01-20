@@ -11,10 +11,11 @@ export const schema = gql`
     twitterProfile: String
     discordProfile: String
     lensProfile: String
-    siteRole: SiteRole!
+    roles: [SiteRole]!
     organizations: [OrganizationUser]!
     submissions: [Submission]!
     attempts: [Attempt]!
+    solved: [Solve]!
   }
 
   enum SiteRole {
@@ -24,8 +25,8 @@ export const schema = gql`
   }
 
   type Query {
-    users: [User!]! @requireAuth
-    user(authId: String!): User @requireAuth
+    users: [User!]! @requireAuth(roles: ["ADMIN"])
+    user: User @requireAuth
   }
 
   input CreateUserInput {
@@ -37,7 +38,7 @@ export const schema = gql`
     twitterProfile: String
     discordProfile: String
     lensProfile: String
-    siteRole: SiteRole!
+    roles: [SiteRole]!
   }
 
   input UpdateUserInput {
@@ -49,7 +50,7 @@ export const schema = gql`
     twitterProfile: String
     discordProfile: String
     lensProfile: String
-    siteRole: SiteRole
+    roles: [SiteRole]!
   }
 
   type Mutation {

@@ -2,7 +2,7 @@ export const schema = gql`
   type Attempt {
     id: String!
     attemptedAt: DateTime!
-    user: User!
+    user: User! @requireAuth(roles: ["ADMIN"])
     userId: String!
     step: Step!
     stepId: String!

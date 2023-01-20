@@ -23,7 +23,7 @@ import Wrapper from 'src/components/Wrapper/Wrapper'
 const isValidEmail = (email) => z.string().email().safeParse(email).success
 
 const AuthPage = () => {
-  const { logIn, logOut, isAuthenticated, loading, userMetadata } = useAuth()
+  const { logIn, logOut, isAuthenticated, loading } = useAuth()
   const [errorMessage, setErrorMessage] = useState('')
   const emailRef = useRef(null)
 
@@ -69,7 +69,7 @@ const AuthPage = () => {
 
       {isAuthenticated && (
         <div className="pt-12">
-          <ProfileCell authId={userMetadata.issuer} />
+          <ProfileCell />
         </div>
       )}
     </Wrapper>

@@ -238,7 +238,7 @@ model User {
   lensProfile    String?
 
   // User's role on the site, as a whole
-  siteRole SiteRole @default(ANONYMOUS)
+  roles          SiteRole[] @default([ANONYMOUS])
 
   /// User membership in an Organization.
   organizations OrganizationUser[]

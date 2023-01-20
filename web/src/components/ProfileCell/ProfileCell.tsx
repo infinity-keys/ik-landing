@@ -9,8 +9,8 @@ import DiscordIcon from 'src/svgs/DiscordIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
 export const QUERY = gql`
-  query FindUserQuery($authId: String!) {
-    user: user(authId: $authId) {
+  query FindUserQuery {
+    user {
       username
       email
       twitterProfile
