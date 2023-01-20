@@ -82,13 +82,16 @@ const Dev: NextPage<PuzzlePageProps> = ({
             <PuzzleLandingInfo
               title="Challenge"
               content={challenge}
-              marginTop={!!instructions}
               defaultOpen
             />
           )}
-          <br></br>
+
           {instructions && (
-            <PuzzleLandingInfo title="Instructions" content={instructions} />
+            <PuzzleLandingInfo
+              title="Instructions"
+              content={instructions}
+              marginTop={!!challenge}
+            />
           )}
 
 
