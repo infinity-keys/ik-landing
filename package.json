@@ -9,7 +9,6 @@
   },
   "devDependencies": {
     "@redwoodjs/core": "^3.4.0",
-    "node-fetch": "^2",
     "zod": "^3.19.1"
   },
   "eslintConfig": {
