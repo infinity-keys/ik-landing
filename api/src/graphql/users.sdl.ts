@@ -3,9 +3,10 @@ export const schema = gql`
     id: String!
     createdAt: DateTime!
     updatedAt: DateTime!
+    lastLoggedIn: DateTime!
     nonce: String!
+    authId: String
     username: String
-    publicAddress: String
     email: String
     twitterProfile: String
     discordProfile: String
@@ -24,13 +25,14 @@ export const schema = gql`
 
   type Query {
     users: [User!]! @requireAuth
-    user(id: String!): User @requireAuth
+    user(authId: String!): User @requireAuth
   }
 
   input CreateUserInput {
+    lastLoggedIn: DateTime!
     nonce: String!
+    authId: String
     username: String
-    publicAddress: String
     email: String
     twitterProfile: String
     discordProfile: String
@@ -39,9 +41,10 @@ export const schema = gql`
   }
 
   input UpdateUserInput {
+    lastLoggedIn: DateTime
     nonce: String
+    authId: String
     username: String
-    publicAddress: String
     email: String
     twitterProfile: String
     discordProfile: String
