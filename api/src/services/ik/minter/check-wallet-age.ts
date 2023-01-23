@@ -3,28 +3,21 @@ import { QueryResolvers } from 'types/graphql'
 
 import { providerLookup } from 'src/lib/lookups'
 
+const etherscanProvider = new ethers.providers.EtherscanProvider(
+  undefined,
+  process.env.ETHERSCAN_API_KEY
+)
+
 export const checkWalletAge: QueryResolvers['checkWalletAge'] = async ({
   account,
   chainId,
 }) => {
-  // @TODO: is this still needed in Redwood
-  if (typeof chainId !== 'string' || typeof account !== 'string')
-    return { success: false, approved: false }
-
-  const chainIdInt = parseInt(chainId, 10)
-
-  const provider = providerLookup[chainIdInt]
-
+  // TODO: Move this to Moralis. Can check true wallet age for all chains there.
+  const provider = providerLookup[chainId]
   const walletTxCount = await provider.getTransactionCount(account)
-  if (walletTxCount === 0) return { success: false, approved: false } // ETH will blow up if 0
+  if (walletTxCount === 0) return { success: true, approved: false } // ETH will blow up if 0
 
-  // Trying to work this, but currently only eth has this etherscan provider
-  // that can be called to get history, and check the oldest block of account
-  if (chainIdInt === 1) {
-    const etherscanProvider = new ethers.providers.EtherscanProvider(
-      undefined,
-      process.env.ETHERSCAN_API_KEY
-    )
+  if (chainId === 1) {
     const oldestTransaction = (await etherscanProvider.getHistory(account))[0]
       .blockNumber
     const currentBlock = await provider.getBlockNumber()
@@ -32,6 +25,6 @@ export const checkWalletAge: QueryResolvers['checkWalletAge'] = async ({
 
     return { success: true, approved: age > 5760 }
   }
-  // @TODO: >= 1?
+
   return { success: true, approved: walletTxCount > 1 }
 }
