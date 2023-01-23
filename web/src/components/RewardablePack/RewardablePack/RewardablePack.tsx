@@ -1,7 +1,14 @@
-import { buildUrlString, cloudinaryUrl } from '@infinity-keys/core'
+import {
+  buildUrlString,
+  cloudinaryUrl,
+  ThumbnailProgress,
+} from '@infinity-keys/core'
 import { LensShareButton } from '@infinity-keys/react-lens-share-button'
 import type { FindRewardablePackBySlug } from 'types/graphql'
 
+// import { routes } from '@redwoodjs/router'
+
+import Button from 'src/components/Button/Button'
 import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
@@ -47,24 +54,25 @@ const Rewardable = ({ rewardable }: Props) => {
           cloudinaryId={cloudinaryId}
         />
 
-        {isPackCompleted(rewardable.asParent) ? 'completed' : 'not completed'}
+        {isPackCompleted(rewardable.asParent) && (
+          // replace with routes.claim
+          <Button text="Claim Your Treasure" to={'/claim'} />
+        )}
 
         <div className="mx-auto mt-12 flex max-w-6xl flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20 lg:flex-nowrap">
           {rewardable.asParent.map(({ childRewardable }) => (
-            <div key={childRewardable.id}>
-              <Thumbnail
-                key={childRewardable.id}
-                id={childRewardable.id}
-                name={childRewardable.name}
-                href={`/puzzle/${childRewardable.slug}`}
-                isGrid={width >= LAYOUT_BREAKPOINT}
-              />
-              <p>
-                {isPuzzleCompleted(childRewardable.puzzle)
-                  ? 'completed'
-                  : 'not completed'}
-              </p>
-            </div>
+            <Thumbnail
+              key={childRewardable.id}
+              id={childRewardable.id}
+              name={childRewardable.name}
+              href={`/puzzle/${childRewardable.slug}`}
+              isGrid={width >= LAYOUT_BREAKPOINT}
+              progress={
+                isPuzzleCompleted(childRewardable.puzzle)
+                  ? ThumbnailProgress.Completed
+                  : ThumbnailProgress.NotCompleted
+              }
+            />
           ))}
         </div>
       </main>

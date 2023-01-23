@@ -1,5 +1,5 @@
-// import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon'
-// import LockOpenIcon from '@heroicons/react/24/solid/LockOpenIcon'
+import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon'
+import LockOpenIcon from '@heroicons/react/24/solid/LockOpenIcon'
 import { ThumbnailProgress } from '@infinity-keys/core'
 import Avatar from 'boring-avatars'
 import clsx from 'clsx'
@@ -25,7 +25,7 @@ const Thumbnail = ({
   id,
   isGrid,
   href,
-  // progress = ThumbnailProgress.Unknown,
+  progress = ThumbnailProgress.Unknown,
   cloudinary_id,
 }: ThumbnailProps) => {
   return (
@@ -33,26 +33,26 @@ const Thumbnail = ({
       to={href}
       className={clsx(
         'puzzle-thumb relative block w-full max-w-[18rem] cursor-pointer break-all rounded-lg border border-transparent bg-blue-800 shadow transition hover:border-turquoise',
-        // progress === ThumbnailProgress.Current
-        //   ? 'border-turquoise'
-        //   : 'border-transparent',
+        progress === ThumbnailProgress.Current
+          ? 'border-turquoise'
+          : 'border-transparent',
         {
           'flex flex-col text-center': isGrid,
-          // 'cursor-pointer transition hover:border-turquoise':
-          //   progress === ThumbnailProgress.Completed,
-          // 'opacity-60 grayscale':
-          //   progress === ThumbnailProgress.NotCompleted ||
-          //   progress === ThumbnailProgress.Unknown,
+          'cursor-pointer transition hover:border-turquoise':
+            progress === ThumbnailProgress.Completed,
+          'opacity-60 grayscale': progress === ThumbnailProgress.NotCompleted,
         }
       )}
     >
-      {/* <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full ">
-        {progress === ThumbnailProgress.Completed ? (
-          <LockOpenIcon className="h-3 w-3 text-turquoise" />
-        ) : (
-          <LockClosedIcon className="h-3 w-3 text-turquoise" />
-        )}
-      </span> */}
+      {progress !== ThumbnailProgress.Unknown && (
+        <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full ">
+          {progress === ThumbnailProgress.Completed ? (
+            <LockOpenIcon className="h-3 w-3 text-turquoise" />
+          ) : (
+            <LockClosedIcon className="h-3 w-3 text-turquoise" />
+          )}
+        </span>
+      )}
 
       <span
         className={clsx(
