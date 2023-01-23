@@ -88,6 +88,15 @@ export const chainRPCNameLookup: {
   [OPTIMISM_CHAIN_ID]: 'optimism',
 }
 
+export const chainIdLookup: {
+  [key: number]: string
+} = {
+  [ETH_CHAIN_ID]: 'Ethereum',
+  [POLYGON_CHAIN_ID]: 'Polygon',
+  [AVAX_CHAIN_ID]: 'Avalanche',
+  [OPTIMISM_CHAIN_ID]: 'Optimism',
+}
+
 export const marketplaceLookup: {
   [key: number]: string
 } = {

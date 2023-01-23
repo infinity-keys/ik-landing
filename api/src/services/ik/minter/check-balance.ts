@@ -19,7 +19,7 @@ export const checkBalance: QueryResolvers['checkBalance'] = async ({
 
   // ADD CHECK TO MAKE SURE TOKEN IDS VALID => Will just catch here
   // @TODO: make db lookup instead of hitting the chain
-  const numTokens = (await contract.totalSupplyAll()).length
+  // const numTokens = (await contract.totalSupplyAll()).length
 
   try {
     const accountArray = Array(tokenIds.length).fill(account)
@@ -28,13 +28,13 @@ export const checkBalance: QueryResolvers['checkBalance'] = async ({
     const balances = await contract?.balanceOfBatch(accountArray, tokenIds)
 
     // check every balance of every tokenId- if 0 for any of them return false
-    const claimedTokens = balances?.map(
+    const claimedTokens: boolean[] = balances?.map(
       (b: ethers.BigNumber) => b.toNumber() > 0
     )
     // checks if all nft are claimed, returns true if eligible to claim pack nft
-    const claimed = claimedTokens?.every((b: boolean) => b)
+    const claimed = claimedTokens?.every((b) => b)
 
-    return { success: true, claimed: claimed, claimedTokens: claimedTokens }
+    return { success: true, claimed, claimedTokens }
   } catch (error) {
     return {
       success: false,
