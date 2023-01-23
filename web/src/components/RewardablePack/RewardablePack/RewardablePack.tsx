@@ -18,8 +18,17 @@ interface Props {
 const cloudinaryId = 'ik-alpha-trophies/Map-04_xzczep'
 const LAYOUT_BREAKPOINT = 768
 
+const isPuzzleCompleted = ({ steps }) =>
+  steps.every(({ hasUserCompletedStep }) => hasUserCompletedStep)
+
+const isPackCompleted = (pack) =>
+  pack.every(({ childRewardable }) => {
+    return isPuzzleCompleted(childRewardable.puzzle)
+  })
+
 const Rewardable = ({ rewardable }: Props) => {
   const width = useCurrentWidth()
+
   return (
     <Wrapper full fullHeight>
       <Seo
@@ -38,15 +47,24 @@ const Rewardable = ({ rewardable }: Props) => {
           cloudinaryId={cloudinaryId}
         />
 
+        {isPackCompleted(rewardable.asParent) ? 'completed' : 'not completed'}
+
         <div className="mx-auto mt-12 flex max-w-6xl flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20 lg:flex-nowrap">
           {rewardable.asParent.map(({ childRewardable }) => (
-            <Thumbnail
-              key={childRewardable.id}
-              id={childRewardable.id}
-              name={childRewardable.name}
-              href={`/puzzle/${childRewardable.slug}`}
-              isGrid={width >= LAYOUT_BREAKPOINT}
-            />
+            <div key={childRewardable.id}>
+              <Thumbnail
+                key={childRewardable.id}
+                id={childRewardable.id}
+                name={childRewardable.name}
+                href={`/puzzle/${childRewardable.slug}`}
+                isGrid={width >= LAYOUT_BREAKPOINT}
+              />
+              <p>
+                {isPuzzleCompleted(childRewardable.puzzle)
+                  ? 'completed'
+                  : 'not completed'}
+              </p>
+            </div>
           ))}
         </div>
       </main>

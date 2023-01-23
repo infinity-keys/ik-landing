@@ -18,6 +18,12 @@ export const QUERY = gql`
           id
           name
           slug
+          puzzle {
+            steps {
+              id
+              hasUserCompletedStep
+            }
+          }
         }
       }
     }
