@@ -35,7 +35,7 @@ const PuzzleHeader = ({
       </Heading>
 
       {instructions && (
-        <div className="pt-4 text-lg">
+        <div className="pack__text pt-4 text-lg">
           <Markdown>{instructions}</Markdown>
         </div>
       )}
