@@ -1,11 +1,17 @@
-import RewardableCell from 'src/components/RewardablePuzzle/RewardablePuzzleCell'
+// import PuzzleStepsCell from 'src/components/Puzzle/PuzzleCell'
+import RewardablePuzzleCell from 'src/components/RewardablePuzzle/RewardablePuzzleCell'
 
 type RewardablePageProps = {
   slug: string
 }
 
 const RewardablePage = ({ slug }: RewardablePageProps) => {
-  return <RewardableCell slug={slug} />
+  return (
+    <div>
+      <RewardablePuzzleCell slug={slug} />
+      {/* <PuzzleStepsCell slug={slug}/> */}
+    </div>
+  )
 }
 
 export default RewardablePage

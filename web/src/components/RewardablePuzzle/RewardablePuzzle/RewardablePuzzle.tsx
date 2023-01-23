@@ -3,10 +3,11 @@ import type {
   FindRewardablePuzzleBySlug,
 } from 'types/graphql'
 
-import { Link, routes, navigate } from '@redwoodjs/router'
+import { Link, routes, navigate, useMatch, NavLink } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
+import PuzzleStepsCell from 'src/components/Puzzle/PuzzleCell'
 import { checkboxInputTag, formatEnum, timeTag } from 'src/lib/formatters'
 
 const DELETE_REWARDABLE_MUTATION = gql`
@@ -85,18 +86,12 @@ const Rewardable = ({ rewardable }: Props) => {
               <td>{formatEnum(rewardable.type)}</td>
             </tr>
 
-            {rewardable.puzzle.steps.map((step) => (
-              <tr key={step.id}>
-                <th>Step {step.stepSortWeight}: </th>
-                <td>
-                  <span>
-                    Challenge: {step.challenge} | Step success message:{' '}
-                    {step.successMessage} | Solution character count:{' '}
-                    {step.stepSimpleText.solutionCharCount}
-                  </span>
-                </td>
-              </tr>
-            ))}
+            <tr>
+              <th>Steps from cell</th>
+              <td>
+                <PuzzleStepsCell id={rewardable.puzzle.id} />
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
