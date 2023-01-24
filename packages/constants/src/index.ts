@@ -3,6 +3,7 @@ import { Chain } from '@rainbow-me/rainbowkit'
 // JWT stuff
 export const IK_ID_COOKIE = 'ik-id'
 export const IK_CLAIMS_NAMESPACE = 'https://infinitykeys.io'
+export const PUZZLE_COOKIE_NAME = `ik-puzzles`
 
 // Crypto stuff
 export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/

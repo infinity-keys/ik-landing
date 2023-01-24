@@ -20,7 +20,8 @@ const cloudinaryId = 'ik-alpha-trophies/Map-04_xzczep'
 
 const Rewardable = ({ rewardable }: Props) => {
   const { step: stepParam } = useParams()
-  const stepIndex = stepParam && parseInt(stepParam, 10) - 1
+  const stepNum = stepParam && parseInt(stepParam, 10)
+  const stepIndex = stepNum && stepNum - 1
 
   return (
     <Wrapper full fullHeight>
@@ -44,7 +45,7 @@ const Rewardable = ({ rewardable }: Props) => {
         <StepsCell
           stepId={stepParam && rewardable.puzzle.steps[stepIndex].id}
           puzzleId={rewardable.puzzle.id}
-          stepNum={stepParam && parseInt(stepParam)}
+          stepNum={stepNum && stepNum}
         />
       </main>
 

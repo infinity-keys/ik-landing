@@ -1,18 +1,18 @@
+import { PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
 import type { APIGatewayEvent } from 'aws-lambda'
 import cookie from 'cookie'
 import { z } from 'zod'
 
+import { context } from '@redwoodjs/graphql-server'
 import { useRequireAuth } from '@redwoodjs/graphql-server'
 
-import { isAuthenticated, getCurrentUser } from 'src/lib/auth'
+import { getCurrentUser } from 'src/lib/auth'
 import {
   compressAndEncryptText,
-  decryptAndDecompressText,
+  decryptCookie,
 } from 'src/lib/encoding/encoding'
 import { logger } from 'src/lib/logger'
 import { makeAttempt } from 'src/services/ik/attempts/attempts'
-
-const puzzleCookieName = `ik-puzzles`
 
 const PuzzlesData = z.object({
   version: z.string().min(1),
@@ -24,40 +24,31 @@ const PuzzlesData = z.object({
 })
 
 type PuzzlesDataType = z.TypeOf<typeof PuzzlesData>
-interface BuildCookieDataProps {
-  completed: PuzzlesDataType
-  puzzle: string
-  authId: string
-  steps: Set<string>
-}
-
-const decryptCookie = (data: string | undefined) => {
-  return data && JSON.parse(decryptAndDecompressText(data))
-}
-
-const getSteps = (completed: PuzzlesDataType, puzzle: string, step: string) => {
-  const steps = new Set(
-    completed && completed.puzzles[puzzle]
-      ? completed.puzzles[puzzle].steps
-      : []
-  )
-  steps.add(step)
-  return steps
-}
 
 const buildCookieData = ({
   completed,
-  puzzle,
+  puzzleId,
   authId,
-  steps,
-}: BuildCookieDataProps) => {
+  stepId,
+}: {
+  completed: PuzzlesDataType
+  puzzleId: string
+  authId: string
+  stepId: string
+}) => {
+  const steps = new Set(
+    completed && completed.puzzles[puzzleId]
+      ? completed.puzzles[puzzleId].steps
+      : []
+  ).add(stepId)
+
   return {
     version: 'v1',
     authId,
     puzzles: {
       ...(completed?.puzzles || {}),
-      [puzzle]: {
-        ...(completed?.puzzles[puzzle] || {}),
+      [puzzleId]: {
+        ...(completed?.puzzles[puzzleId] || {}),
         steps: [...steps],
       },
     },
@@ -93,22 +84,23 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     return { statusCode: 403 }
   }
 
-  const { puzzleId, step, stepId } = event.queryStringParameters
+  const { puzzleId, stepParam, stepId } = event.queryStringParameters
+  const stepNum = parseInt(stepParam, 10)
 
   // Garbage request, bail
-  if (!puzzleId || !step || !stepId) {
+  if (!puzzleId || !stepParam || !stepId) {
     logger.info('/attempt called without puzzle or step')
     return { statusCode: 400 }
   }
 
   logger.info(
-    `Invoked '/attempt' function for puzzle ${puzzleId} and step ${step}`
+    `Invoked '/attempt' function for puzzle ${puzzleId} and step ${stepNum}`
   )
-  const isFirstStep = parseInt(step, 10) === 1
+  const isFirstStep = stepNum === 1
 
   // Everyone (who is logged in) can attempt the first step
   if (isFirstStep) {
-    if (!isAuthenticated()) {
+    if (!context.currentUser.authId) {
       logger.info('Attempted first step without being logged in')
       return { statusCode: 403 }
     }
@@ -125,7 +117,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     if (success) {
       // Access our cookie raw cyphertext
       const puzzlesCompletedCypherText = cookie.parse(event.headers.cookie)[
-        puzzleCookieName
+        PUZZLE_COOKIE_NAME
       ]
 
       // @TODO: try/catch here
@@ -138,12 +130,11 @@ const attemptHandler = async (event: APIGatewayEvent) => {
         }
       }
 
-      const steps = getSteps(puzzlesCompleted, puzzleId, stepId)
       const stepsCompleted = buildCookieData({
         completed: puzzlesCompleted,
-        puzzle: puzzleId,
+        puzzleId,
         authId: context.currentUser.authId,
-        steps,
+        stepId,
       })
 
       const cyphertext = compressAndEncryptText(JSON.stringify(stepsCompleted))
@@ -153,7 +144,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
         headers: {
           'Content-Type': 'application/json',
           // @TODO: DO COOKIE HERE
-          'Set-Cookie': cookie.serialize(puzzleCookieName, cyphertext, {
+          'Set-Cookie': cookie.serialize(PUZZLE_COOKIE_NAME, cyphertext, {
             path: '/',
             httpOnly: true,
             secure: true,
@@ -173,18 +164,18 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
   // Access our cookie raw cyphertext
   const puzzlesCompletedCypherText = cookie.parse(event.headers.cookie)[
-    puzzleCookieName
+    PUZZLE_COOKIE_NAME
   ]
 
   // Only the first step is allowed to be attempted without any prior solves (no cookie)
   if (!isFirstStep && !puzzlesCompletedCypherText) {
-    logger.info(`Non-first step (${step}) attempted without cookie`)
+    logger.info(`Non-first step (${stepNum}) attempted without cookie`)
     return { statusCode: 400 }
   }
 
   // We can safely parse the cookie to discover what a user has actually solved
   if (!isFirstStep && puzzlesCompletedCypherText) {
-    if (!isAuthenticated()) {
+    if (!context.currentUser.authId) {
       logger.info('Attempted first step without being logged in')
       return { statusCode: 403 }
     }
@@ -197,20 +188,18 @@ const attemptHandler = async (event: APIGatewayEvent) => {
       return { statusCode: 403 }
     }
 
-    const steps = getSteps(puzzlesCompleted, puzzleId, stepId)
-
     const thisPuzzle = puzzlesCompleted.puzzles[puzzleId]
     // No record for this puzzle, and since this isn't the first step, bail
     if (!thisPuzzle) {
       logger.info(
-        `Since this isn't the first step (${step}), we need at least a record for this puzzle (${puzzleId})`
+        `Since this isn't the first step (${stepNum}), we need at least a record for this puzzle (${puzzleId})`
       )
       return { statusCode: 400 }
     }
 
     // trying to check a step they aren't allowed to see
-    const lastSolve = puzzlesCompleted.puzzles[puzzleId].steps.length
-    if (parseInt(step, 10) > lastSolve + 1) {
+    const visibleSteps = puzzlesCompleted.puzzles[puzzleId].steps.length + 1
+    if (stepNum > visibleSteps) {
       logger.info(`Attempted to solve step without required previous steps`)
       return { statusCode: 400 }
     }
@@ -229,12 +218,12 @@ const attemptHandler = async (event: APIGatewayEvent) => {
         body: JSON.stringify({ success }),
       }
     }
-    // @DEV: temp testing cookie
+
     const stepsCompleted = buildCookieData({
       completed: puzzlesCompleted,
-      puzzle: puzzleId,
+      puzzleId,
       authId: context.currentUser.authId,
-      steps,
+      stepId,
     })
 
     const cyphertext = compressAndEncryptText(JSON.stringify(stepsCompleted))
@@ -244,7 +233,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
       statusCode: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Set-Cookie': cookie.serialize(puzzleCookieName, cyphertext, {
+        'Set-Cookie': cookie.serialize(PUZZLE_COOKIE_NAME, cyphertext, {
           path: '/',
           httpOnly: true,
           secure: true,
