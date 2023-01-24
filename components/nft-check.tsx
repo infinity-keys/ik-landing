@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import { useIKMinter } from "@hooks/useIKMinter";
 
-import { PUZZLE_SUCCESS_BASE } from "@lib/constants";
+import { PUZZLE_LANDING_BASE, PUZZLE_SUCCESS_BASE } from "@lib/constants";
 import { nftChecker } from "@lib/fetchers";
 
 import Alert from "@components/alert";
@@ -15,7 +15,7 @@ import LoadingIcon from "@components/loading-icon";
 interface NftCheckProps {
   nftCheckParameters: any;
   successRoute?: string;
-  finalStep?: boolean;
+  finalStep: boolean;
 }
 
 const NftCheck = ({
@@ -31,6 +31,8 @@ const NftCheck = ({
   const { nftChainId, nftTokenId, nftContractAddress } =
     nftCheckParameters || {};
 
+  const nextStepBase = finalStep ? PUZZLE_SUCCESS_BASE : PUZZLE_LANDING_BASE;
+
   useEffect(() => {
     const checkNFT = async () => {
       if (address) {
@@ -41,7 +43,7 @@ const NftCheck = ({
           nftContractAddress,
           nftTokenId,
           successRoute || "/",
-          finalStep || true //true for default ?
+          finalStep
         );
         setLoading(false);
         setNftApproval(checker);
@@ -93,7 +95,7 @@ const NftCheck = ({
         <Button
           text="Unlock"
           disabled={!nftApproval}
-          href={nftApproval ? `/${PUZZLE_SUCCESS_BASE}/${successRoute}` : ""}
+          href={nftApproval ? `/${nextStepBase}/${successRoute}` : ""}
         />
       </div>
     </div>
