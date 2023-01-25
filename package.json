@@ -9,7 +9,6 @@
   },
   "devDependencies": {
     "@redwoodjs/core": "^3.4.0",
-    "node-fetch": "^2",
     "zod": "^3.19.1"
   },
   "eslintConfig": {
@@ -25,6 +24,7 @@
   },
   "packageManager": "yarn@3.2.3",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "node-fetch": "^2"
   }
 }

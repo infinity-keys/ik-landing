@@ -9,33 +9,49 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
   chainId,
   contractAddress,
   tokenId,
+  poapEventId,
 }) => {
-  // No token Id for ERC721
-  const type721 = tokenId ? false : true
+  if (poapEventId) {
+    const url = `https://api.poap.tech/actions/scan/${account}/${poapEventId}`
 
-  const provider = providerLookup[parseInt(chainId, 10)]
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        'X-API-Key': process.env.POAP_API_KEY,
+      },
+    }
 
-  // Dealing with ERC721
-  if (type721) {
-    const contract = new ethers.Contract(
-      contractAddress,
-      balanceOf721,
-      provider
-    )
-    const balance = parseInt(await contract.balanceOf(account), 10)
-    return { success: true, nftPass: balance > 0 }
-  } else {
-    // Dealing with ERC1155
-    const tokenIdAsNumber = tokenId ? parseInt(tokenId, 10) : undefined
-    const contract = new ethers.Contract(
-      contractAddress,
-      balanceOf1155,
-      provider
-    )
-    const balance = parseInt(
-      await contract.balanceOf(account, tokenIdAsNumber),
-      10
-    )
-    return { success: true, nftPass: balance > 0 }
+    try {
+      const res = await fetch(url, options)
+      const data = await res.json()
+
+      // If no event or error return false
+      // Have to move this return statement below to allow for cookies!
+      if (!data.event) return { success: true, nftPass: false }
+      return { success: true, nftPass: true }
+    } catch (e) {
+      return { success: false, nftPass: false }
+    }
   }
+
+  // No token Id for ERC721
+  // @NOTE: tokenId can be zero, which is falsy. Can't just check for existence tokenId
+  const abi =
+    typeof tokenId === 'number' && !poapEventId ? balanceOf1155 : balanceOf721
+
+  const provider = providerLookup[chainId]
+
+  // @BLOOM: Using provider here- maybe a better way ?
+  // This contract is a generic one, thus can't use our contract instances
+  const contract = new ethers.Contract(contractAddress, abi, provider)
+
+  const balance = parseInt(
+    typeof tokenId === 'number'
+      ? await contract.balanceOf(account, tokenId)
+      : await contract.balanceOf(account),
+    10
+  )
+
+  return { success: true, nftPass: balance > 0 }
 }
