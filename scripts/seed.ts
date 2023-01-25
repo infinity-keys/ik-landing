@@ -30,8 +30,13 @@ const query = `query AllData {
   packs {
     pack_id
     pack_name
+    simple_name
     pack_puzzles {
-      puzzle_id
+      puzzle {
+        sort_weight
+        puzzle_id
+        migration_puzzle
+      }
     }
     nftId
     cloudinary_id
@@ -56,7 +61,16 @@ const ApiPuzzle = z.object({
 const ApiPack = z.object({
   pack_id: z.string(),
   pack_name: z.string(),
-  pack_puzzles: z.array(z.object({ puzzle_id: z.string() })),
+  simple_name: z.string(),
+  pack_puzzles: z.array(
+    z.object({
+      puzzle: z.object({
+        sort_weight: z.number(),
+        puzzle_id: z.string(),
+        migration_puzzle: z.nullable(z.string()),
+      }),
+    })
+  ),
   nftId: z.number(),
   cloudinary_id: z.string(),
   list_publicly: z.boolean(),
@@ -118,8 +132,7 @@ export default async () => {
     // @see: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
     await Promise.all(
       userOrg.map(async (data: Prisma.UserCreateArgs['data']) => {
-        const record = await db.user.create({ data })
-        console.log(record)
+        return await db.user.create({ data })
       })
     )
 
@@ -133,13 +146,11 @@ export default async () => {
     // Validate and type incoming data
     const packs = ApiResponse.parse(apiRaw).data.packs
 
-    console.log('start migratePacks stuff...')
-
-    const migratePacks = packs.map((pack) => {
+    const migratePacks = packs.flatMap((pack) => {
       const rewardable = {
         migrateId: pack.pack_id,
         name: pack.pack_name,
-        slug: pack.pack_name,
+        slug: pack.simple_name,
         type: 'PACK' as RewardableType,
         explanation: pack.pack_name,
         successMessage: 'Success!',
@@ -238,18 +249,49 @@ export default async () => {
         [] as Prisma.RewardableCreateArgs['data'][]
       )
 
-    await Promise.all(
+    const newPuzzles = await Promise.all(
       migratePuzzles.map(async (data) => {
-        const record = await db.rewardable.create({ data })
-        // console.log(record)
+        return await db.rewardable.create({ data })
       })
     )
 
-    await Promise.all(
+    console.log(`created ${newPuzzles.length} new puzzles`)
+
+    const newPacks = await Promise.all(
       migratePacks.map(async (data) => {
-        const record = await db.rewardable.create({ data })
-        // console.log(record)
+        return await db.rewardable.create({ data })
       })
+    )
+
+    console.log(`created ${newPacks.length} new packs`)
+
+    const puzzlesOnPacks = newPacks.flatMap((newPack) => {
+      // for each new pack, find its associated old pack and get its puzzles
+      const oldPuzzles = packs.find(
+        ({ pack_id }) => pack_id === newPack.migrateId
+      ).pack_puzzles
+
+      // for each old puzzle, find its new puzzle and create a connection
+      return oldPuzzles.map(({ puzzle }) => {
+        const newPuzzle = puzzle.migration_puzzle
+          ? newPuzzles.find(({ slug }) => slug === puzzle.migration_puzzle)
+          : newPuzzles.find(({ migrateId }) => migrateId === puzzle.puzzle_id)
+        return {
+          parentId: newPack.id,
+          childId: newPuzzle.id,
+          childSortWeight: puzzle.sort_weight,
+        }
+      })
+    })
+
+    const newRewardableConnections = await Promise.all(
+      puzzlesOnPacks.map(async (data) => {
+        return await db.rewardableConnection.create({ data })
+      })
+    )
+
+    console.log(
+      `created ${newRewardableConnections.length} new rewardable connections`
     )
 
     // If using dbAuth and seeding users, you'll need to add a `hashedPassword`
