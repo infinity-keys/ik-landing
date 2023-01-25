@@ -7,7 +7,6 @@ import { useAuth } from '@redwoodjs/auth'
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
-import Wrapper from 'src/components/Wrapper/Wrapper'
 
 /*
   IMPORTANT: This page needs to run a GraphQL function to create a new user in
@@ -46,11 +45,11 @@ const AuthPage = () => {
   }
 
   return (
-    <Wrapper>
+    <>
       {loading ? (
         <LoadingIcon />
       ) : (
-        <div className="relative">
+        <div className="relative text-center">
           {!isAuthenticated && (
             <input
               type="email"
@@ -72,7 +71,7 @@ const AuthPage = () => {
           <ProfileCell authId={userMetadata.issuer} />
         </div>
       )}
-    </Wrapper>
+    </>
   )
 }
 

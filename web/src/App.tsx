@@ -71,9 +71,9 @@ const magic = new Magic(process.env.MAGIC_LINK_PUBLIC)
 
 const App = () => {
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} theme={IKTheme}>
-        <FatalErrorBoundary page={FatalErrorPage}>
+    <FatalErrorBoundary page={FatalErrorPage}>
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider chains={chains} theme={IKTheme}>
           <AuthProvider client={magic} type="magicLink">
             <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
               <RedwoodApolloProvider useAuth={useAuth}>
@@ -82,9 +82,9 @@ const App = () => {
               </RedwoodApolloProvider>
             </RedwoodProvider>
           </AuthProvider>
-        </FatalErrorBoundary>
-      </RainbowKitProvider>
-    </WagmiConfig>
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </FatalErrorBoundary>
   )
 }
 

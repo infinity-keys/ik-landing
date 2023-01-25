@@ -4,7 +4,6 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import RewardablePuzzle from 'src/components/RewardablePuzzle/RewardablePuzzle'
-import Wrapper from 'src/components/Wrapper/Wrapper'
 
 export const QUERY = gql`
   query FindRewardablePuzzleBySlug($slug: String!) {
@@ -24,11 +23,7 @@ export const QUERY = gql`
   }
 `
 
-export const Loading = () => (
-  <Wrapper fullHeight>
-    <LoadingIcon />
-  </Wrapper>
-)
+export const Loading = () => <LoadingIcon />
 
 export const Empty = () => <div>Rewardable not found</div>
 

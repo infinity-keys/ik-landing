@@ -81,7 +81,7 @@ const HomePage = () => {
     <Wrapper full radialBg={false}>
       <Seo />
 
-      <div className="slice--top radial-bg relative z-0 flex min-h-[calc(100vh-80px)] w-full items-center justify-center overflow-hidden">
+      <div className="slice--top radial-bg relative z-0 flex min-h-screen w-full items-center justify-center overflow-hidden pt-20">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black opacity-40" />
 
         <Particles
@@ -128,7 +128,7 @@ const HomePage = () => {
       {/* Bottom of puzzle */}
 
       {/* About */}
-      <main className="w-full bg-blue-800">
+      <div className="w-full bg-blue-800">
         <Section>
           <div className="mx-auto max-w-md sm:max-w-2xl">
             <Heading as="h1" visual="l">
@@ -154,7 +154,7 @@ const HomePage = () => {
             </Text>
           </div>
         </Section>
-      </main>
+      </div>
 
       {/* Collab */}
       <Section id="collab">

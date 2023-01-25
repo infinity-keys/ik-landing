@@ -14,7 +14,6 @@ import Heading from 'src/components/Heading/Heading'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Seo from 'src/components/Seo/Seo'
 import Text from 'src/components/Text/Text'
-import Wrapper from 'src/components/Wrapper/Wrapper'
 import Logo from 'src/svgs/Logo'
 
 const DELETE_ALL_USER_INFO_MUTATION = gql`
@@ -43,7 +42,7 @@ const DeletePage = ({ jwt }) => {
   }
 
   return (
-    <Wrapper>
+    <>
       <Seo title="Delete My Data" />
 
       <div className="max-w-2xl text-center">
@@ -87,7 +86,7 @@ const DeletePage = ({ jwt }) => {
           </div>
         )}
       </div>
-    </Wrapper>
+    </>
   )
 }
 
