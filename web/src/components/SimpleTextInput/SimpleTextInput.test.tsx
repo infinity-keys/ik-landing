@@ -1,14 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import StepPage from './StepPage'
+import SimpleTextInput from './SimpleTextInput'
 
 //   Improve this test with help from the Redwood Testing Doc:
-//   https://redwoodjs.com/docs/testing#testing-pages-layouts
+//    https://redwoodjs.com/docs/testing#testing-components
 
-describe('StepPage', () => {
+describe('SimpleTextInput', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<StepPage />)
+      render(<SimpleTextInput />)
     }).not.toThrow()
   })
 })

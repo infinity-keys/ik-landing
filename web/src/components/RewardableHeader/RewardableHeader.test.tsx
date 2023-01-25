@@ -1,14 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import PuzzleTestPage from './PuzzleTestPage'
+import RewardableHeader from './RewardableHeader'
 
 //   Improve this test with help from the Redwood Testing Doc:
-//   https://redwoodjs.com/docs/testing#testing-pages-layouts
+//    https://redwoodjs.com/docs/testing#testing-components
 
-describe('PuzzleTestPage', () => {
+describe('RewardableHeader', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<PuzzleTestPage />)
+      render(<RewardableHeader />)
     }).not.toThrow()
   })
 })

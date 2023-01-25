@@ -14,10 +14,26 @@ import { AuthenticationError, context } from '@redwoodjs/graphql-server'
 import { db } from './db'
 
 export const getCurrentUser = async (_decoded, { token }) => {
-  const mAdmin = new Magic(process.env.MAGICLINK_SECRET)
-  const { issuer } = await mAdmin.users.getMetadataByToken(token)
+  if (!token) throw new AuthenticationError('No token')
 
-  return await db.user.findUnique({ where: { authId: issuer } })
+  const mAdmin = new Magic(process.env.MAGICLINK_SECRET)
+  const { issuer, email } = await mAdmin.users.getMetadataByToken(token)
+
+  if (!issuer) throw new AuthenticationError('Not recognized by auth provider')
+
+  return await db.user.upsert({
+    where: {
+      authId: issuer,
+    },
+    update: {
+      lastLoggedIn: new Date().toISOString(),
+    },
+    create: {
+      email,
+      authId: issuer,
+      siteRole: 'VERIFIED',
+    },
+  })
 }
 
 export const isAuthenticated = () => {
@@ -32,7 +48,6 @@ export const hasRole = ({ roles }) => {
 // in ./api/src/directives/requireAuth
 
 // Roles are passed in by the requireAuth directive if you have auth setup
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 export const requireAuth = () => {
   if (!isAuthenticated()) {
     throw new AuthenticationError('Not authenticated')

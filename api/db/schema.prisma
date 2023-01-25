@@ -26,7 +26,7 @@ model Rewardable {
   /// Full name, with spaces, ie Not Right
   name           String
   /// Short name used in URLs, lowercase and dashes, no spaces/caps, ie not-right
-  slug           String         @unique
+  slug           String
   /// Shown at the overall page for this Rewardable
   explanation    String
   /// When this is successfully completed/rewarded, what should be shown
@@ -52,6 +52,7 @@ model Rewardable {
   asParent RewardableConnection[] @relation("ParentLink")
   // Rewardables that have a parent, ie a child Puzzle of a Pack
   asChild  RewardableConnection[] @relation("ChildLink")
+  @@unique([slug, type])
 }
 
 /// Link Rewardables to each other, ie a Pack requires 3 Puzzles. Allows setting
@@ -178,10 +179,25 @@ model Attempt {
   step   Step   @relation(fields: [stepId], references: [id])
   stepId String
 
+  solve Solve?
+
   // What did they guess/input/confirm/connect?
   data Json
 
   @@unique([stepId, userId, attemptedAt])
+}
+
+model Solve {
+  id       String   @id @default(cuid())
+  solvedAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  attempt Attempt   @relation(fields: [attemptId], references: [id])
+  attemptId String @unique
+
+  data    Json? @default("{}")
 }
 
 /// Information about NFTs. Only Rewardables can reward an NFT.
@@ -230,6 +246,8 @@ model User {
   submissions   Submission[]
   /// Attempts at solving a Step on a Puzzle for this user
   attempts      Attempt[]
+
+  solved Solve[]
 }
 
 /// A User's role specifically within the Organization they belong

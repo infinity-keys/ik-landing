@@ -9427,12 +9427,15 @@ __metadata:
     "@redwoodjs/graphql-server": ^3.4.0
     "@sendgrid/mail": ^7.7.0
     cloudinary-build-url: ^0.2.4
+    cookie: ^0.5.0
+    crypto-js: ^4.1.1
     discord.js: ^14.7.1
     jose: ^4.10.0
     moralis: ^2.10.4
     nanoid: ^3.0.0
     node-fetch: ^3.3.0
     nodemon: ^2.0.20
+    qfs-compression: ^0.2.1
     uuid: ^9.0.0
     zod: ^3.19.1
   languageName: unknown
@@ -12437,7 +12440,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"crypto-js@npm:4.1.1":
+"crypto-js@npm:4.1.1, crypto-js@npm:^4.1.1":
   version: 4.1.1
   resolution: "crypto-js@npm:4.1.1"
   checksum: 50cc66a35f2738171d9a6d80c85ba7d00cb6440b756db035ba9ccd03032c0a803029a62969ecd4c844106c980af87687c64b204dd967989379c4f354fb482d37
@@ -21139,6 +21142,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-fetch@npm:^2":
+  version: 2.6.8
+  resolution: "node-fetch@npm:2.6.8"
+  dependencies:
+    whatwg-url: ^5.0.0
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: 4e3cfdeb3e5e0e6d1192be08942d6530d74b0ac4fe6d8fc1cbcc3e7f274807b4f662ff1218393ba9e5e0e0c15c66365128726ed5400585feda707c31234d1f16
+  languageName: node
+  linkType: hard
+
 "node-fetch@npm:^3.3.0":
   version: 3.3.0
   resolution: "node-fetch@npm:3.3.0"
@@ -23731,6 +23748,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"qfs-compression@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "qfs-compression@npm:0.2.1"
+  checksum: 2f2f74b1b6f53cdda1cdd9637c27ed33b37aa45490979a24795202a7b3b8bbd2d2b0afabff06fbdfb6a7f84bc5b088a2ae4f25ee81a97d3d95cb98c9e9d9d86f
+  languageName: node
+  linkType: hard
+
 "qrcode@npm:1.4.4":
   version: 1.4.4
   resolution: "qrcode@npm:1.4.4"
@@ -25054,6 +25078,7 @@ __metadata:
   dependencies:
     "@redwoodjs/core": ^3.4.0
     lodash: ^4.17.21
+    node-fetch: ^2
     zod: ^3.19.1
   languageName: unknown
   linkType: soft

@@ -60,8 +60,8 @@ const GridDropdown = ({ currentCount, urlBase }: GridDropdownProps) => {
               return (
                 <Menu.Item key={count} disabled={selectedCount}>
                   {({ active }) => (
-                    <DropdownLink
-                      href={
+                    <Link
+                      to={
                         count === smallestThumbnailCount
                           ? urlBase
                           : `${urlBase}/${count}/1`
@@ -78,7 +78,7 @@ const GridDropdown = ({ currentCount, urlBase }: GridDropdownProps) => {
                       )}
                     >
                       {count}
-                    </DropdownLink>
+                    </Link>
                   )}
                 </Menu.Item>
               )

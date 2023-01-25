@@ -4,8 +4,8 @@
 // ```tsx
 // import type { ComponentStory } from '@storybook/react'
 //
-// export const generated: ComponentStory<typeof PuzzleHeader> = (args) => {
-//   return <PuzzleHeader {...args} />
+// export const generated: ComponentStory<typeof SimpleTextInput> = (args) => {
+//   return <SimpleTextInput {...args} />
 // }
 // ```
 //
@@ -13,13 +13,13 @@
 
 import type { ComponentMeta } from '@storybook/react'
 
-import PuzzleHeader from './PuzzleHeader'
+import SimpleTextInput from './SimpleTextInput'
 
 export const generated = () => {
-  return <PuzzleHeader />
+  return <SimpleTextInput />
 }
 
 export default {
-  title: 'Components/PuzzleHeader',
-  component: PuzzleHeader,
-} as ComponentMeta<typeof PuzzleHeader>
+  title: 'Components/SimpleTextInput',
+  component: SimpleTextInput,
+} as ComponentMeta<typeof SimpleTextInput>
