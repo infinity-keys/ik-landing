@@ -6,7 +6,6 @@ import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
 import TwitterShare from 'src/components/TwitterShare/TwitterShare'
-import Wrapper from 'src/components/Wrapper/Wrapper'
 import useCurrentWidth from 'src/hooks/useCurrentWidth'
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
@@ -21,7 +20,7 @@ const LAYOUT_BREAKPOINT = 768
 const Rewardable = ({ rewardable }: Props) => {
   const width = useCurrentWidth()
   return (
-    <Wrapper full fullHeight>
+    <>
       <Seo
         title={rewardable.name}
         description={`Can you unlock the ${rewardable.name}?`}
@@ -31,7 +30,7 @@ const Rewardable = ({ rewardable }: Props) => {
         url={buildUrlString(`/pack/${rewardable.slug}`)}
       />
 
-      <main className="pack__main w-full px-4 pt-10 text-center md:pt-20">
+      <div className="pack__main w-full px-4 text-center">
         <RewardableHeader
           name={rewardable.name}
           instructions={rewardable.explanation}
@@ -49,7 +48,7 @@ const Rewardable = ({ rewardable }: Props) => {
             />
           ))}
         </div>
-      </main>
+      </div>
 
       <div className="flex justify-center gap-4 px-4 pb-9 pt-8">
         <LensShareButton
@@ -63,7 +62,7 @@ const Rewardable = ({ rewardable }: Props) => {
           }? @InfinityKeys\n\n${buildUrlString(`/pack/${rewardable.slug}`)}`}
         />
       </div>
-    </Wrapper>
+    </>
   )
 }
 

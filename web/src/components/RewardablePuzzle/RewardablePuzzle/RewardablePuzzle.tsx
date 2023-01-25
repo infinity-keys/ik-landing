@@ -8,7 +8,6 @@ import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'
 import StepsCell from 'src/components/StepsCell'
 import TwitterShare from 'src/components/TwitterShare/TwitterShare'
-import Wrapper from 'src/components/Wrapper/Wrapper'
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface Props {
@@ -24,7 +23,7 @@ const Rewardable = ({ rewardable }: Props) => {
   const stepIndex = stepNum && stepNum - 1
 
   return (
-    <Wrapper full fullHeight>
+    <>
       <Seo
         title={rewardable.name}
         description={`Can you unlock the ${rewardable.name} puzzle?`}
@@ -34,7 +33,7 @@ const Rewardable = ({ rewardable }: Props) => {
         url={buildUrlString(`/puzzle/${rewardable.slug}`)}
       />
 
-      <main className="puzzle__main w-full px-4 pt-10 text-center md:pt-20">
+      <div className="puzzle__main w-full px-4 text-center">
         <RewardableHeader
           name={rewardable.name}
           instructions={rewardable.explanation}
@@ -47,7 +46,7 @@ const Rewardable = ({ rewardable }: Props) => {
           puzzleId={rewardable.puzzle.id}
           stepNum={stepNum && stepNum}
         />
-      </main>
+      </div>
 
       <div className="flex justify-center gap-4 px-4 pb-9 pt-8">
         <LensShareButton
@@ -63,7 +62,7 @@ const Rewardable = ({ rewardable }: Props) => {
           )}`}
         />
       </div>
-    </Wrapper>
+    </>
   )
 }
 
