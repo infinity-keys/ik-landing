@@ -1,4 +1,5 @@
 import { getThumbnailProgress } from '@infinity-keys/core'
+import loFindLastIndex from 'lodash/findLastIndex'
 import type { FindStepQuery, FindStepQueryVariables } from 'types/graphql'
 
 import { useAuth } from '@redwoodjs/auth'
@@ -61,7 +62,7 @@ export const Success = ({
   const { isAuthenticated } = useAuth()
 
   const currentStepIndex = isAuthenticated
-    ? puzzle.steps.findLastIndex((step) => step.hasUserCompletedStep) + 1
+    ? loFindLastIndex(puzzle.steps, (step) => step.hasUserCompletedStep) + 1
     : 0
 
   return (

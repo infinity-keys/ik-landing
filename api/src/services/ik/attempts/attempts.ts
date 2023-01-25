@@ -1,3 +1,4 @@
+import { PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
 import cookie from 'cookie'
 import type { MutationResolvers, QueryResolvers } from 'types/graphql'
 import { z } from 'zod'
@@ -6,7 +7,7 @@ import { context, ForbiddenError } from '@redwoodjs/graphql-server'
 
 import { isAuthenticated } from 'src/lib/auth'
 import { db } from 'src/lib/db'
-import { decryptAndDecompressText } from 'src/lib/encoding/encoding'
+import { decryptCookie } from 'src/lib/encoding/encoding'
 import { createSolve } from 'src/services/solves/solves'
 import { step } from 'src/services/steps/steps'
 
@@ -65,33 +66,34 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   return { success: false }
 }
 
-const decryptCookie = (data: string | undefined) => {
-  return data && JSON.parse(decryptAndDecompressText(data))
-}
-
 export const optionalStep: QueryResolvers['optionalStep'] = async (
   { id, puzzleId, stepNum },
   { context }
 ) => {
+  // users don't need specific step data on the puzzle landing page
   if (!id) return
 
+  // unauthenticated users can't see specific step data
   if (!isAuthenticated()) {
     throw new ForbiddenError('must sign in')
   }
 
+  // authenticated users should be allowed to view first steps
   if (stepNum === 1) return step({ id })
 
-  const puzzleCookieName = `ik-puzzles`
-
   const puzzlesCompletedCypherText = cookie.parse(context.event.headers.cookie)[
-    puzzleCookieName
+    PUZZLE_COOKIE_NAME
   ]
 
   const puzzlesCompleted = decryptCookie(puzzlesCompletedCypherText)
 
-  const lastSolve = puzzlesCompleted?.puzzles[puzzleId]?.steps.length
+  // get the number of completed steps for user on this puzzle. they should
+  // be allowed to view previous steps and the current step they are on
+  const visibleSteps = puzzlesCompleted?.puzzles[puzzleId]?.steps.length + 1
 
-  if (stepNum > lastSolve + 1 || !lastSolve) {
+  // ensure they've solved the correct number of previous steps for the step
+  // they are trying to view
+  if (stepNum > visibleSteps || !visibleSteps) {
     throw new ForbiddenError('Step currently not viewable.')
   }
 

@@ -27,3 +27,7 @@ export const decryptAndDecompressText = (cyphertext: string) => {
 
   return plaintext
 }
+
+export const decryptCookie = (data: string | undefined) => {
+  return data && JSON.parse(decryptAndDecompressText(data))
+}

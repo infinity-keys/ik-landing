@@ -3,6 +3,7 @@ import { Chain } from '@rainbow-me/rainbowkit'
 // JWT stuff
 export const IK_ID_COOKIE = 'ik-id'
 export const IK_CLAIMS_NAMESPACE = 'https://infinitykeys.io'
+export const PUZZLE_COOKIE_NAME = `ik-puzzles`
 
 // Crypto stuff
 export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
@@ -86,6 +87,15 @@ export const chainRPCNameLookup: {
   [POLYGON_CHAIN_ID]: 'matic',
   [AVAX_CHAIN_ID]: 'avax',
   [OPTIMISM_CHAIN_ID]: 'optimism',
+}
+
+export const chainIdLookup: {
+  [key: number]: string
+} = {
+  [ETH_CHAIN_ID]: 'Ethereum',
+  [POLYGON_CHAIN_ID]: 'Polygon',
+  [AVAX_CHAIN_ID]: 'Avalanche',
+  [OPTIMISM_CHAIN_ID]: 'Optimism',
 }
 
 export const marketplaceLookup: {
