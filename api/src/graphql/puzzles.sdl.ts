@@ -9,7 +9,7 @@ export const schema = gql`
 
   type Query {
     puzzles: [Puzzle!]! @requireAuth
-    puzzle(id: String!): Puzzle @requireAuth
+    puzzle(id: String!): Puzzle @skipAuth
   }
 
   input CreatePuzzleInput {

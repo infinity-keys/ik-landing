@@ -12,6 +12,7 @@ export const schema = gql`
     type: StepType!
     stepSimpleText: StepSimpleText
     attempts: [Attempt]!
+    hasUserCompletedStep: Boolean
   }
 
   enum StepType {
@@ -19,7 +20,7 @@ export const schema = gql`
   }
 
   type Query {
-    steps: [Step!]! @requireAuth
+    steps: [Step!]! @skipAuth
     step(id: String!): Step @requireAuth
   }
 

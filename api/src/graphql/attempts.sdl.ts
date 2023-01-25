@@ -6,6 +6,7 @@ export const schema = gql`
     userId: String!
     step: Step!
     stepId: String!
+    solve: Solve
     data: JSON!
   }
 
