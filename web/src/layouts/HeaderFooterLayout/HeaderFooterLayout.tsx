@@ -1,15 +1,11 @@
-import { SkipNavLink, SkipNavContent } from '@redwoodjs/router'
+import { SkipNavLink } from '@redwoodjs/router'
 
 import Footer from 'src/components/Footer/Footer'
 import Header from 'src/components/Header/Header'
 
 import '@reach/skip-nav/styles.css'
 
-type SiteLayoutProps = {
-  children?: React.ReactNode
-}
-
-const SiteLayout = ({ children }: SiteLayoutProps) => {
+const HeaderFooterLayout = ({ children }: { children?: React.ReactNode }) => {
   return (
     <>
       <div className="absolute top-0 left-0 z-[55]">
@@ -17,11 +13,12 @@ const SiteLayout = ({ children }: SiteLayoutProps) => {
       </div>
 
       <Header />
-      <SkipNavContent id="main-content" />
-      <main>{children}</main>
+
+      {children}
+
       <Footer />
     </>
   )
 }
 
-export default SiteLayout
+export default HeaderFooterLayout
