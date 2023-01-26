@@ -7,7 +7,6 @@ export const schema = gql`
     step: Step!
     stepId: String!
     solve: Solve
-    data: JSON!
   }
 
   type Query {
