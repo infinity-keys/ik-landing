@@ -9434,7 +9434,6 @@ __metadata:
     moralis: ^2.10.4
     nanoid: ^3.0.0
     node-fetch: ^3.3.0
-    nodemon: ^2.0.20
     qfs-compression: ^0.2.1
     uuid: ^9.0.0
     zod: ^3.19.1
@@ -21250,7 +21249,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemon@npm:2.0.20, nodemon@npm:^2.0.20":
+"nodemon@npm:2.0.20":
   version: 2.0.20
   resolution: "nodemon@npm:2.0.20"
   dependencies:
