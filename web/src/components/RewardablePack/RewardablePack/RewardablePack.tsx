@@ -13,8 +13,6 @@ interface Props {
   rewardable: NonNullable<FindRewardablePackBySlug['pack']>
 }
 
-// @TODO: get from NFT
-const cloudinaryId = 'ik-alpha-trophies/Map-04_xzczep'
 const LAYOUT_BREAKPOINT = 768
 
 const Rewardable = ({ rewardable }: Props) => {
@@ -25,7 +23,8 @@ const Rewardable = ({ rewardable }: Props) => {
         title={rewardable.name}
         description={`Can you unlock the ${rewardable.name}?`}
         imageUrl={
-          cloudinaryId && cloudinaryUrl(cloudinaryId, 500, 500, false, 1)
+          rewardable.nfts[0]?.cloudinaryId &&
+          cloudinaryUrl(rewardable.nfts[0]?.cloudinaryId, 500, 500, false, 1)
         }
         url={buildUrlString(`/pack/${rewardable.slug}`)}
       />
@@ -34,10 +33,10 @@ const Rewardable = ({ rewardable }: Props) => {
         <RewardableHeader
           name={rewardable.name}
           instructions={rewardable.explanation}
-          cloudinaryId={cloudinaryId}
+          cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
         />
 
-        <div className="mx-auto mt-12 flex max-w-6xl flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20 lg:flex-nowrap">
+        <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
           {rewardable.asParent.map(({ childRewardable }) => (
             <Thumbnail
               key={childRewardable.id}
@@ -45,6 +44,7 @@ const Rewardable = ({ rewardable }: Props) => {
               name={childRewardable.name}
               href={`/puzzle/${childRewardable.slug}`}
               isGrid={width >= LAYOUT_BREAKPOINT}
+              cloudinaryId={childRewardable.nfts[0]?.cloudinaryId}
             />
           ))}
         </div>

@@ -13,6 +13,9 @@ export const QUERY = gql`
         name
         slug
         type
+        nfts {
+          cloudinaryId
+        }
       }
       totalCount
     }

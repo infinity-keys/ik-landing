@@ -14,7 +14,7 @@ interface ThumbnailProps {
   name: string
   href: string
   isGrid: boolean
-  cloudinary_id?: string
+  cloudinaryId?: string
   progress?: ThumbnailProgress
 }
 
@@ -26,7 +26,7 @@ const Thumbnail = ({
   isGrid,
   href,
   // progress = ThumbnailProgress.Unknown,
-  cloudinary_id,
+  cloudinaryId,
 }: ThumbnailProps) => {
   return (
     <Link
@@ -66,15 +66,10 @@ const Thumbnail = ({
             isGrid ? 'mx-auto h-32 w-32' : 'mr-4 h-14 w-14'
           )}
         >
-          {cloudinary_id ? (
+          {cloudinaryId ? (
             <span className="block overflow-hidden rounded-full">
               <span className="next-image-block scale-105	">
-                <CloudImage
-                  height={128}
-                  width={128}
-                  id={cloudinary_id}
-                  circle
-                />
+                <CloudImage height={128} width={128} id={cloudinaryId} circle />
               </span>
             </span>
           ) : (
