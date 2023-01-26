@@ -43,10 +43,10 @@ export default async () => {
 
     const metadata = ApiNftResponse.parse(apiRaw).data.nft_metadata
 
-    await Promise.all(
+    return await Promise.all(
       metadata.map(async (data) => {
         try {
-          const record = await db.nft.create({
+          return await db.nft.create({
             data: {
               tokenId: data.token_id,
               contractName: data.contract_name,
@@ -54,7 +54,6 @@ export default async () => {
               cloudinaryId: data.cloudinary_id,
             },
           })
-          console.log(record)
         } catch (error) {
           console.log(`duplicate entry, skipping...${data.token_id}`)
         }
