@@ -98,8 +98,7 @@ const RewardablesList = ({
                     href={buildUrl(collectionType).single({
                       slug: rewardable.slug,
                     })}
-                    // @TODO: get cloudinary ids when linked to NFT
-                    // cloudinaryId={}
+                    cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
                   />
                 </li>
               )
