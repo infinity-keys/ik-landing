@@ -4,7 +4,6 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import RewardablesGrid from 'src/components/RewardablesGrid'
-import Wrapper from 'src/components/Wrapper/Wrapper'
 
 export const QUERY = gql`
   query FindRewardables($count: Int, $page: Int, $type: RewardableType) {
@@ -20,11 +19,7 @@ export const QUERY = gql`
   }
 `
 
-export const Loading = () => (
-  <Wrapper>
-    <LoadingIcon />
-  </Wrapper>
-)
+export const Loading = () => <LoadingIcon />
 
 export const Empty = () => {
   return <div className="rw-text-center">No rewardables yet.</div>

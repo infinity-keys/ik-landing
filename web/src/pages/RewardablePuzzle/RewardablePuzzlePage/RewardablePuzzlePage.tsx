@@ -6,11 +6,7 @@ type RewardablePageProps = {
 }
 
 const RewardablePuzzlePage = ({ slug }: RewardablePageProps) => {
-  return (
-    <div>
-      <RewardablePuzzleCell slug={slug} />
-    </div>
-  )
+  return <RewardablePuzzleCell slug={slug} />
 }
 
 export default RewardablePuzzlePage

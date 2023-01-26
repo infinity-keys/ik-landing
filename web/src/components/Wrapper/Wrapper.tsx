@@ -4,7 +4,6 @@ import clsx from 'clsx'
 
 type WrapperProps = {
   full?: boolean
-  fullHeight?: boolean
   radialBg?: boolean
   customClasses?: string[]
 }
@@ -12,7 +11,6 @@ type WrapperProps = {
 const Wrapper: FC<PropsWithChildren<WrapperProps>> = ({
   children,
   full = false,
-  fullHeight = false,
   radialBg = true,
   customClasses = [],
 }) => (
@@ -23,8 +21,7 @@ const Wrapper: FC<PropsWithChildren<WrapperProps>> = ({
   >
     <div
       className={clsx(
-        'flex flex-col items-center justify-center',
-        fullHeight ? 'min-h-screen' : ' min-h-[calc(100vh-80px)]',
+        'flex min-h-screen flex-col items-center justify-center',
         {
           'container px-4': !full,
         }

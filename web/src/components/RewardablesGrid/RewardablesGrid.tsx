@@ -11,7 +11,6 @@ import GridLayoutButtons from 'src/components/GridLayoutButtons/GridLayoutButton
 import GridPagination from 'src/components/GridPagination/GridPagination'
 import Seo from 'src/components/Seo/Seo'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
-import Wrapper from 'src/components/Wrapper/Wrapper'
 
 const buildUrl = (type) => {
   if (type === 'PUZZLE') {
@@ -69,56 +68,54 @@ const RewardablesList = ({
   }
 
   return (
-    <Wrapper>
+    <>
       <Seo title="Infinity Keys Puzzles" url={buildUrlString(`/puzzles`)} />
 
-      <main className="">
-        {layout !== ThumbnailGridLayoutType.Unknown && (
-          <div className="w-full">
-            <GridLayoutButtons
-              isGrid={layout === ThumbnailGridLayoutType.Grid}
-              thumbnailCount={thumbnailCount}
-              setView={setView}
-              urlBase={buildUrl(collectionType).collection}
-            />
+      {layout !== ThumbnailGridLayoutType.Unknown && (
+        <div className="w-full">
+          <GridLayoutButtons
+            isGrid={layout === ThumbnailGridLayoutType.Grid}
+            thumbnailCount={thumbnailCount}
+            setView={setView}
+            urlBase={buildUrl(collectionType).collection}
+          />
 
-            <ul
-              className={clsx(
-                'grid grid-cols-1 gap-6 py-8 sm:grid-cols-2',
-                layout === ThumbnailGridLayoutType.Grid
-                  ? 'md:grid-cols-3 lg:grid-cols-4'
-                  : 'lg:grid-cols-3 xl:grid-cols-4'
-              )}
-            >
-              {rewardables.map((rewardable) => {
-                return (
-                  <li key={rewardable.id}>
-                    <Thumbnail
-                      isGrid={layout === ThumbnailGridLayoutType.Grid}
-                      id={rewardable.id}
-                      name={rewardable.name}
-                      href={buildUrl(collectionType).single({
-                        slug: rewardable.slug,
-                      })}
-                      // @TODO: get cloudinary ids when linked to NFT
-                      // cloudinaryId={}
-                    />
-                  </li>
-                )
-              })}
-            </ul>
+          <ul
+            className={clsx(
+              'grid grid-cols-1 gap-6 py-8 sm:grid-cols-2',
+              layout === ThumbnailGridLayoutType.Grid
+                ? 'md:grid-cols-3 lg:grid-cols-4'
+                : 'lg:grid-cols-3 xl:grid-cols-4'
+            )}
+          >
+            {rewardables.map((rewardable) => {
+              return (
+                <li key={rewardable.id}>
+                  <Thumbnail
+                    isGrid={layout === ThumbnailGridLayoutType.Grid}
+                    id={rewardable.id}
+                    name={rewardable.name}
+                    href={buildUrl(collectionType).single({
+                      slug: rewardable.slug,
+                    })}
+                    // @TODO: get cloudinary ids when linked to NFT
+                    // cloudinaryId={}
+                  />
+                </li>
+              )
+            })}
+          </ul>
 
-            <GridPagination
-              isFirstPage={isFirstPage}
-              isLastPage={isLastPage}
-              pageNum={pageNum || 1}
-              thumbnailCount={thumbnailCount}
-              urlBase={buildUrl(collectionType).collection}
-            />
-          </div>
-        )}
-      </main>
-    </Wrapper>
+          <GridPagination
+            isFirstPage={isFirstPage}
+            isLastPage={isLastPage}
+            pageNum={pageNum || 1}
+            thumbnailCount={thumbnailCount}
+            urlBase={buildUrl(collectionType).collection}
+          />
+        </div>
+      )}
+    </>
   )
 }
 
