@@ -14,9 +14,6 @@ interface Props {
   rewardable: NonNullable<FindRewardablePuzzleBySlug['puzzle']>
 }
 
-// @TODO: get from NFT
-const cloudinaryId = 'ik-alpha-trophies/Map-04_xzczep'
-
 const Rewardable = ({ rewardable }: Props) => {
   const { step: stepParam } = useParams()
   const stepNum = stepParam && parseInt(stepParam, 10)
@@ -28,7 +25,8 @@ const Rewardable = ({ rewardable }: Props) => {
         title={rewardable.name}
         description={`Can you unlock the ${rewardable.name} puzzle?`}
         imageUrl={
-          cloudinaryId && cloudinaryUrl(cloudinaryId, 500, 500, false, 1)
+          rewardable.nfts[0]?.cloudinaryId &&
+          cloudinaryUrl(rewardable.nfts[0]?.cloudinaryId, 500, 500, false, 1)
         }
         url={buildUrlString(`/puzzle/${rewardable.slug}`)}
       />
@@ -37,7 +35,7 @@ const Rewardable = ({ rewardable }: Props) => {
         <RewardableHeader
           name={rewardable.name}
           instructions={rewardable.explanation}
-          cloudinaryId={cloudinaryId}
+          cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
           currentStep={stepParam}
         />
 

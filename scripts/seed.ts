@@ -5,6 +5,8 @@ import { groupBy } from 'lodash'
 import fetch from 'node-fetch'
 import { z } from 'zod'
 
+import MigrateNfts from './migrateNftMetadata'
+
 // @TODO: use standalone creates on a loop to create user and ik org. Then loop
 // all rewardables as individual creates so the deep nesting creates can happen.
 
@@ -25,6 +27,9 @@ const query = `query AllData {
     list_publicly
     migration_puzzle
     migration_step
+    nft {
+      tokenId
+    }
   }
 
   packs {
@@ -56,6 +61,11 @@ const ApiPuzzle = z.object({
   list_publicly: z.boolean(),
   migration_puzzle: z.nullable(z.string()),
   migration_step: z.nullable(z.string()),
+  nft: z.nullable(
+    z.object({
+      tokenId: z.number(),
+    })
+  ),
 })
 
 const ApiPack = z.object({
@@ -85,6 +95,19 @@ const ApiResponse = z.object({
 
 // Stable IK org ID
 const ikCuid = 'cla9yay7y003k08la2z4j2xrv'
+
+const createNftConnectionObject = (nfts, nftId) => {
+  const nft = nfts.find(({ tokenId }) => tokenId === nftId)
+  return nft
+    ? {
+        nfts: {
+          connect: {
+            id: nft?.id,
+          },
+        },
+      }
+    : {}
+}
 
 export default async () => {
   try {
@@ -136,6 +159,11 @@ export default async () => {
       })
     )
 
+    // NFTs
+    const nfts = await MigrateNfts()
+
+    console.log(`created ${nfts.length} new NFTs`)
+
     // Rewardables/Puzzles
 
     // Validate and type incoming data
@@ -146,7 +174,7 @@ export default async () => {
     // Validate and type incoming data
     const packs = ApiResponse.parse(apiRaw).data.packs
 
-    const migratePacks = packs.flatMap((pack) => {
+    const migratePacks = packs.map((pack) => {
       const rewardable = {
         migrateId: pack.pack_id,
         name: pack.pack_name,
@@ -163,7 +191,8 @@ export default async () => {
           create: {},
         },
       }
-      return rewardable
+
+      return { ...rewardable, ...createNftConnectionObject(nfts, pack.nftId) }
     })
 
     // Group by the named puzzle flagged in migration column
@@ -174,38 +203,45 @@ export default async () => {
 
           // Puzzles that DO NOT need to be combined
           if (puzzleGroup === 'null') {
-            const rewardables = puzzles.map((puzzle) => ({
-              migrateId: puzzle.puzzle_id,
-              name: puzzle.simple_name,
-              slug: puzzle.landing_route,
-              type: 'PUZZLE' as RewardableType,
-              explanation: puzzle.instructions || '',
-              successMessage: puzzle.success_message, // just dupe what's in step for now
-              organization: {
-                connect: {
-                  id: ikCuid,
-                },
-              },
-              puzzle: {
-                create: {
-                  steps: {
-                    create: [
-                      {
-                        failMessage: puzzle.fail_message,
-                        challenge: puzzle.challenge,
-                        successMessage: puzzle.success_message,
-                        type: 'SIMPLE_TEXT' as StepType,
-                        stepSimpleText: {
-                          create: {
-                            solution: puzzle.solution,
-                          },
-                        },
-                      },
-                    ],
+            const rewardables = puzzles.map((puzzle) => {
+              const rewardable = {
+                migrateId: puzzle.puzzle_id,
+                name: puzzle.simple_name,
+                slug: puzzle.landing_route,
+                type: 'PUZZLE' as RewardableType,
+                explanation: puzzle.instructions || '',
+                successMessage: puzzle.success_message, // just dupe what's in step for now
+                organization: {
+                  connect: {
+                    id: ikCuid,
                   },
                 },
-              },
-            }))
+                puzzle: {
+                  create: {
+                    steps: {
+                      create: [
+                        {
+                          failMessage: puzzle.fail_message,
+                          challenge: puzzle.challenge,
+                          successMessage: puzzle.success_message,
+                          type: 'SIMPLE_TEXT' as StepType,
+                          stepSimpleText: {
+                            create: {
+                              solution: puzzle.solution,
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
+              }
+
+              return {
+                ...rewardable,
+                ...createNftConnectionObject(nfts, puzzle.nft?.tokenId),
+              }
+            })
             acc = [...acc, ...rewardables]
             return acc
           }
@@ -243,7 +279,14 @@ export default async () => {
               },
             },
           }
-          acc = [...acc, rewardable]
+
+          acc = [
+            ...acc,
+            {
+              ...rewardable,
+              ...createNftConnectionObject(nfts, puzzles[0].nft?.tokenId),
+            },
+          ]
           return acc
         },
         [] as Prisma.RewardableCreateArgs['data'][]
