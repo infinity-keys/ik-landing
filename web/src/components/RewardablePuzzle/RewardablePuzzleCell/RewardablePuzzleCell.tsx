@@ -13,6 +13,9 @@ export const QUERY = gql`
       slug
       explanation
       successMessage
+      nfts {
+        cloudinaryId
+      }
       puzzle {
         id
         steps {

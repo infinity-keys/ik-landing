@@ -12,11 +12,17 @@ export const QUERY = gql`
       name
       explanation
       slug
+      nfts {
+        cloudinaryId
+      }
       asParent {
         childRewardable {
           id
           name
           slug
+          nfts {
+            cloudinaryId
+          }
         }
       }
     }
