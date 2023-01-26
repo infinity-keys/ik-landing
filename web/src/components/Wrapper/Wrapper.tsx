@@ -21,7 +21,7 @@ const Wrapper: FC<PropsWithChildren<WrapperProps>> = ({
   >
     <div
       className={clsx(
-        'flex min-h-[calc(100vh-80px)] flex-col items-center justify-center',
+        'flex min-h-screen flex-col items-center justify-center',
         {
           'container px-4': !full,
         }

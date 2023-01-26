@@ -4,6 +4,8 @@ import type {
   StepRelationResolvers,
 } from 'types/graphql'
 
+// import { context } from '@redwoodjs/graphql-server'
+
 import { db } from 'src/lib/db'
 
 export const steps: QueryResolvers['steps'] = () => {
@@ -47,6 +49,28 @@ export const Step: StepRelationResolvers = {
     return db.step.findUnique({ where: { id: root?.id } }).stepSimpleText()
   },
   attempts: (_obj, { root }) => {
-    return db.step.findUnique({ where: { id: root?.id } }).attempts()
+    return db.step.findUnique({ where: { id: root?.id } }).attempts({
+      where: {
+        userId: context.currentUser.id,
+      },
+    })
+  },
+  hasUserCompletedStep: async (_obj, { root }) => {
+    if (!context.currentUser) {
+      return false
+    }
+
+    const solve = await db.step
+      .findUnique({ where: { id: root?.id } })
+      .attempts({
+        where: {
+          userId: context.currentUser.id,
+          solve: {
+            isNot: null,
+          },
+        },
+      })
+
+    return solve.length > 0
   },
 }

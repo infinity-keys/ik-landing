@@ -7,7 +7,7 @@ const PrivacyPolicyPage = () => {
     <Wrapper radialBg={false}>
       <Seo title="Privacy Policy" />
 
-      <div className="my-20 max-w-2xl">
+      <div className="my-20 max-w-2xl pt-20">
         <Heading as="h1">Privacy Policy</Heading>
         <p className="mb-12 mt-4 font-bold">Last Updated: 8/30/2022</p>
         <p className="mt-6">

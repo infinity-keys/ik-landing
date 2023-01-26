@@ -1,5 +1,5 @@
-import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon'
-import LockOpenIcon from '@heroicons/react/24/solid/LockOpenIcon'
+// import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon'
+// import LockOpenIcon from '@heroicons/react/24/solid/LockOpenIcon'
 import { ThumbnailProgress } from '@infinity-keys/core'
 import Avatar from 'boring-avatars'
 import clsx from 'clsx'
@@ -18,40 +18,41 @@ interface ThumbnailProps {
   progress?: ThumbnailProgress
 }
 
+// @TODO: how do show solved puzzles?
+
 const Thumbnail = ({
   name,
   id,
   isGrid,
   href,
+  // progress = ThumbnailProgress.Unknown,
   cloudinary_id,
-  progress = ThumbnailProgress.Unknown,
 }: ThumbnailProps) => {
   return (
     <Link
-      // @TODO: this href logic will change if this is used in packs grid
-      to={href && progress === ThumbnailProgress.Completed ? href : null}
+      to={href}
       className={clsx(
-        'puzzle-thumb relative block rounded-lg border bg-blue-800 shadow',
-        progress === ThumbnailProgress.Current
-          ? 'border-turquoise'
-          : 'border-transparent',
+        'puzzle-thumb relative block w-full max-w-[18rem] cursor-pointer break-all rounded-lg border border-transparent bg-blue-800 shadow transition hover:border-turquoise',
+        // progress === ThumbnailProgress.Current
+        //   ? 'border-turquoise'
+        //   : 'border-transparent',
         {
           'flex flex-col text-center': isGrid,
-          'cursor-pointer transition hover:border-turquoise':
-            progress === ThumbnailProgress.Completed,
-          'opacity-60 grayscale':
-            progress === ThumbnailProgress.NotCompleted ||
-            progress === ThumbnailProgress.Unknown,
+          // 'cursor-pointer transition hover:border-turquoise':
+          //   progress === ThumbnailProgress.Completed,
+          // 'opacity-60 grayscale':
+          //   progress === ThumbnailProgress.NotCompleted ||
+          //   progress === ThumbnailProgress.Unknown,
         }
       )}
     >
-      <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full ">
+      {/* <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full ">
         {progress === ThumbnailProgress.Completed ? (
           <LockOpenIcon className="h-3 w-3 text-turquoise" />
         ) : (
           <LockClosedIcon className="h-3 w-3 text-turquoise" />
         )}
-      </span>
+      </span> */}
 
       <span
         className={clsx(

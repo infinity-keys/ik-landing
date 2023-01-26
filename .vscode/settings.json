@@ -10,8 +10,14 @@
   },
   "cSpell.words": [
     "cloudinary",
+    "cyphertext",
+    "fastify",
+    "infinitykeys",
+    "MAGICLINK",
     "redwoodjs",
-    "rewardables"
+    "rewardables",
+    "RWJS",
+    "sdls"
   ],
   "editor.rulers": [
   80
