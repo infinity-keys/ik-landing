@@ -16,6 +16,7 @@ export const QUERY = gql`
       twitterProfile
       discordProfile
       lensProfile
+      authId
     }
   }
 `
@@ -81,6 +82,11 @@ export const Success = ({
         <div className="flex items-center pb-4">
           <EnvelopeIcon className="h-5 w-5 text-white" />
           <p className="ml-4 text-sm text-white/70">{user.email}</p>
+        </div>
+
+        <div>
+          <p className="font-bold">Auth ID:</p>
+          <p className="text-sm text-white/70">{user.authId}</p>
         </div>
 
         {user.twitterProfile && (

@@ -38,7 +38,6 @@ export const schema = gql`
     twitterProfile: String
     discordProfile: String
     lensProfile: String
-    roles: [SiteRole]!
   }
 
   input UpdateUserInput {
@@ -50,7 +49,6 @@ export const schema = gql`
     twitterProfile: String
     discordProfile: String
     lensProfile: String
-    roles: [SiteRole]!
   }
 
   type Mutation {
