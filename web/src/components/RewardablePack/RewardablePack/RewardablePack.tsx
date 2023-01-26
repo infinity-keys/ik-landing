@@ -36,7 +36,7 @@ const Rewardable = ({ rewardable }: Props) => {
           cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
         />
 
-        <div className="mx-auto mt-12 flex max-w-6xl flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20 lg:flex-nowrap">
+        <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
           {rewardable.asParent.map(({ childRewardable }) => (
             <Thumbnail
               key={childRewardable.id}

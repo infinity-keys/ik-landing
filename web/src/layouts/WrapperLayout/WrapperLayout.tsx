@@ -3,7 +3,7 @@ import Wrapper from 'src/components/Wrapper/Wrapper'
 const WrapperLayout = ({ children }: { children?: React.ReactNode }) => {
   return (
     <Wrapper>
-      <div className="pt-20">{children}</div>
+      <div className="w-full pt-20">{children}</div>
     </Wrapper>
   )
 }
