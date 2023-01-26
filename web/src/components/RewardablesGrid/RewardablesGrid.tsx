@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import { buildUrlString, ThumbnailGridLayoutType } from '@infinity-keys/core'
 import clsx from 'clsx'
+import loCapitalize from 'lodash/capitalize'
 import type { FindRewardables } from 'types/graphql'
 
 import { routes, useParams } from '@redwoodjs/router'
@@ -69,10 +70,13 @@ const RewardablesList = ({
 
   return (
     <>
-      <Seo title="Infinity Keys Puzzles" url={buildUrlString(`/puzzles`)} />
+      <Seo
+        title={`Infinity Keys ${loCapitalize(rewardables[0].type)}s`}
+        url={buildUrlString(`/puzzles`)}
+      />
 
       {layout !== ThumbnailGridLayoutType.Unknown && (
-        <div className="w-full">
+        <>
           <GridLayoutButtons
             isGrid={layout === ThumbnailGridLayoutType.Grid}
             thumbnailCount={thumbnailCount}
@@ -112,7 +116,7 @@ const RewardablesList = ({
             thumbnailCount={thumbnailCount}
             urlBase={buildUrl(collectionType).collection}
           />
-        </div>
+        </>
       )}
     </>
   )

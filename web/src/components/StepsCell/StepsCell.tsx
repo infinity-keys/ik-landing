@@ -76,7 +76,7 @@ export const Success = ({
             puzzleId={puzzle.id}
           />
 
-          <div className="mx-auto mt-12 mb-12 max-w-prose bg-black/10 p-4 md:mt-16 md:mb-20">
+          <div className="mx-auto mt-12 mb-12 max-w-prose p-4 md:mt-16 md:mb-20">
             {step.challenge && (
               <CollapsibleMarkdown
                 title="Challenge"
@@ -89,7 +89,7 @@ export const Success = ({
       )}
 
       {/* @TODO: should we forward if there's only one step? */}
-      <div className="mx-auto mt-12 flex max-w-6xl flex-wrap justify-center gap-4 pb-12 sm:flex-row md:flex-nowrap md:pb-20">
+      <div className="md:flex-nowraps mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
         {puzzle.steps.map(({ stepSortWeight }) => (
           <ThumbnailMini
             key={stepSortWeight}
