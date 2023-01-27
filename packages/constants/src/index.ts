@@ -3,6 +3,7 @@ import { Chain } from '@rainbow-me/rainbowkit'
 // JWT stuff
 export const IK_ID_COOKIE = 'ik-id'
 export const IK_CLAIMS_NAMESPACE = 'https://infinitykeys.io'
+export const PUZZLE_COOKIE_NAME = `ik-puzzles`
 
 // Crypto stuff
 export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
@@ -24,7 +25,7 @@ export const PUZZLE_SUCCESS_BASE = 'solved'
 export const PUZZLE_FAILED_BASE = 'puzzle' // back to landing
 
 // Puzzles per page
-export const PAGINATION_COUNTS = [16, 32, 64]
+export const PAGINATION_COUNTS = [32, 64, 128]
 
 // Cloudinary
 export const CLOUDINARY_CLOUD_NAME = 'infinity-keys'

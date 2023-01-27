@@ -27,7 +27,7 @@ const Header = () => {
   const { isAuthenticated, logOut, loading } = useAuth()
 
   return (
-    <Disclosure as="header" className="header sticky top-0 z-50 w-full bg-blue">
+    <Disclosure as="header" className="header fixed top-0 z-50 w-full bg-blue">
       {({ open }) => (
         <>
           <div
