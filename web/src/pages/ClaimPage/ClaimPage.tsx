@@ -77,11 +77,11 @@ const ClaimPage = () => {
   })
 
   return (
-    <>
+    <div className="text-center">
       <Seo title="Claim" description="Claim page" />
 
       <div className="mb-8">
-        <Heading>ClaimPage</Heading>
+        <Heading>Claim Your Treasure</Heading>
       </div>
 
       {(queryLoading || transactionPending) && (
@@ -135,7 +135,7 @@ const ClaimPage = () => {
           Error processing transaction. Please try again.
         </p>
       )}
-    </>
+    </div>
   )
 }
 
