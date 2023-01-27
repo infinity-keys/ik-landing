@@ -1,13 +1,29 @@
 import { QueryResolvers } from 'types/graphql'
 
+import { rewardableClaim } from 'src/services/ik/rewardables/rewardables'
+
 import { checkClaimed } from './check-claimed'
 import { verify } from './verify'
 
 export const claim: QueryResolvers['claim'] = async ({
   account,
-  tokenId,
+  rewardableId,
   chainId,
 }) => {
+  // check cookie to see if puzzleId steps are greater than 0, but what about steps...
+  // check db to see if user can claim before hitting block chain
+
+  const rewardableData = await rewardableClaim({ id: rewardableId })
+
+  if (!rewardableData || !rewardableData.completed) {
+    return {
+      success: true,
+      message: 'You have not completed this',
+    }
+  }
+
+  const tokenId = rewardableData.nfts[0].tokenId
+
   const {
     claimed,
     chainClaimed,
@@ -30,6 +46,12 @@ export const claim: QueryResolvers['claim'] = async ({
     }
   }
 
+  const gatedIds =
+    rewardableData.asParent &&
+    rewardableData.asParent.map(
+      ({ childRewardable }) => childRewardable.nfts[0].tokenId
+    )
+
   const {
     signature,
     success: verifySuccess,
@@ -38,6 +60,7 @@ export const claim: QueryResolvers['claim'] = async ({
     account,
     tokenId,
     chainId,
+    gatedIds,
   })
 
   if (!verifySuccess || !signature) {
@@ -48,5 +71,6 @@ export const claim: QueryResolvers['claim'] = async ({
     success: true,
     chainClaimed,
     signature,
+    tokenId,
   }
 }

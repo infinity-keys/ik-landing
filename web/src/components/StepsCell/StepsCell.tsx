@@ -1,9 +1,12 @@
+import { useEffect } from 'react'
+
 import { getThumbnailProgress } from '@infinity-keys/core'
 import loFindLastIndex from 'lodash/findLastIndex'
 import type { FindStepQuery, FindStepQueryVariables } from 'types/graphql'
 
 import { useAuth } from '@redwoodjs/auth'
 import { routes, useParams } from '@redwoodjs/router'
+import { useMutation } from '@redwoodjs/web'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Button from 'src/components/Button/Button'
@@ -16,6 +19,10 @@ export const QUERY = gql`
   query FindStepQuery($puzzleId: String!, $stepId: String, $stepNum: Int) {
     puzzle(id: $puzzleId) {
       id
+      rewardable {
+        id
+        completed
+      }
       steps {
         id
         stepSortWeight
@@ -31,6 +38,18 @@ export const QUERY = gql`
       stepSimpleText {
         solutionCharCount
       }
+    }
+  }
+`
+
+// @TODO: needs server side validation
+const UPDATE_REWARDABLE_COMPLETE = gql`
+  mutation UpdateRewardableCompleteMutation(
+    $id: String!
+    $input: UpdateRewardableInput!
+  ) {
+    updateRewardable(id: $id, input: $input) {
+      id
     }
   }
 `
@@ -61,9 +80,33 @@ export const Success = ({
   const { slug } = useParams()
   const { isAuthenticated } = useAuth()
 
+  const [updateRewardable] = useMutation(UPDATE_REWARDABLE_COMPLETE, {
+    onCompleted: () => {},
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
   const currentStepIndex = isAuthenticated
     ? loFindLastIndex(puzzle.steps, (step) => step.hasUserCompletedStep) + 1
     : 0
+
+  const hasCompletedAllSteps = puzzle.steps.every(
+    ({ hasUserCompletedStep }) => hasUserCompletedStep
+  )
+
+  useEffect(() => {
+    if (!puzzle.rewardable.completed && hasCompletedAllSteps) {
+      updateRewardable({
+        variables: {
+          id: puzzle.rewardable.id,
+          input: {
+            completed: true,
+          },
+        },
+      })
+    }
+  }, [hasCompletedAllSteps, puzzle.rewardable, updateRewardable])
 
   return (
     <div>
@@ -88,8 +131,12 @@ export const Success = ({
         </>
       )}
 
+      {puzzle.rewardable.completed && (
+        <Button to={routes.claim({ id: puzzle.rewardable.id })} text="Mint" />
+      )}
+
       {/* @TODO: should we forward if there's only one step? */}
-      <div className="md:flex-nowraps mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
+      <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
         {puzzle.steps.map(({ stepSortWeight }) => (
           <ThumbnailMini
             key={stepSortWeight}

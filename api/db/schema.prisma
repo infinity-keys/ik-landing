@@ -35,6 +35,10 @@ model Rewardable {
   listPublicly   Boolean        @default(true)
   /// Categorize Rewardables into different buckets
   type           RewardableType
+  /// Has user solved this rewardable
+  completed      Boolean        @default(false)
+  /// Has user claimed this rewardable's NFT
+  claimed        Boolean        @default(false)
 
   /// Assign management of a Rewardable to an Organization
   organization Organization @relation(fields: [orgId], references: [id])
@@ -55,6 +59,7 @@ model Rewardable {
 
   // temp field to allow migrating old puzzles/packs to new system
   migrateId String? @unique
+
   @@unique([slug, type])
 }
 
@@ -197,10 +202,10 @@ model Solve {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
-  attempt Attempt   @relation(fields: [attemptId], references: [id])
-  attemptId String @unique
+  attempt   Attempt @relation(fields: [attemptId], references: [id])
+  attemptId String  @unique
 
-  data    Json? @default("{}")
+  data Json? @default("{}")
 }
 
 /// Information about NFTs. Only Rewardables can reward an NFT.
@@ -241,7 +246,7 @@ model User {
   lensProfile    String?
 
   // User's role on the site, as a whole
-  roles          SiteRole[] @default([ANONYMOUS])
+  roles SiteRole[] @default([ANONYMOUS])
 
   /// User membership in an Organization.
   organizations OrganizationUser[]

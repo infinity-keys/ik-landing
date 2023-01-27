@@ -15,27 +15,27 @@ import {
   useAccount,
 } from 'wagmi'
 
+import { useParams } from '@redwoodjs/router'
+
 import Button from 'src/components/Button/Button'
 import Heading from 'src/components/Heading/Heading'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Seo from 'src/components/Seo/Seo'
-import Wrapper from 'src/components/Wrapper/Wrapper'
-
-// @TODO: get this dynamically
-const tokenId = 105
 
 const CHECK_CLAIM = gql`
-  query CheckClaim($account: String!, $tokenId: Int!, $chainId: Int!) {
-    claim(account: $account, tokenId: $tokenId, chainId: $chainId) {
+  query CheckClaim($account: String!, $rewardableId: String!, $chainId: Int!) {
+    claim(account: $account, rewardableId: $rewardableId, chainId: $chainId) {
       claimed
       chainClaimed
       signature
       message
+      tokenId
     }
   }
 `
 const ClaimPage = () => {
   const { chain } = useNetwork()
+  const { id: rewardableId } = useParams()
   const { isConnected, address } = useAccount()
   const { openConnectModal } = useConnectModal()
   const { openChainModal } = useChainModal()
@@ -43,7 +43,7 @@ const ClaimPage = () => {
   const contractAddress = isValidChain && contractAddressLookup[chain?.id]
 
   const [claim, { loading: queryLoading, data }] = useLazyQuery(CHECK_CLAIM, {
-    variables: { account: address, tokenId, chainId: chain?.id },
+    variables: { account: address, rewardableId, chainId: chain?.id },
   })
 
   const {
@@ -51,6 +51,7 @@ const ClaimPage = () => {
     chainClaimed = 0,
     signature = '',
     message = '',
+    tokenId = undefined,
   } = data?.claim || {}
 
   const { config } = usePrepareContractWrite({
@@ -76,7 +77,7 @@ const ClaimPage = () => {
   })
 
   return (
-    <Wrapper>
+    <>
       <Seo title="Claim" description="Claim page" />
 
       <div className="mb-8">
@@ -134,7 +135,7 @@ const ClaimPage = () => {
           Error processing transaction. Please try again.
         </p>
       )}
-    </Wrapper>
+    </>
   )
 }
 

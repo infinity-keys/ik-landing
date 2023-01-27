@@ -1,7 +1,13 @@
+import { useEffect } from 'react'
+
 import { buildUrlString, cloudinaryUrl } from '@infinity-keys/core'
 import { LensShareButton } from '@infinity-keys/react-lens-share-button'
 import type { FindRewardablePackBySlug } from 'types/graphql'
 
+import { routes } from '@redwoodjs/router'
+import { useMutation } from '@redwoodjs/web'
+
+import Button from 'src/components/Button'
 import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
@@ -13,10 +19,47 @@ interface Props {
   rewardable: NonNullable<FindRewardablePackBySlug['pack']>
 }
 
+// @TODO: needs server side validation
+const UPDATE_REWARDABLE_COMPLETE = gql`
+  mutation UpdateRewardableCompleteMutation(
+    $id: String!
+    $input: UpdateRewardableInput!
+  ) {
+    updateRewardable(id: $id, input: $input) {
+      id
+    }
+  }
+`
+
 const LAYOUT_BREAKPOINT = 768
 
 const Rewardable = ({ rewardable }: Props) => {
   const width = useCurrentWidth()
+
+  const hasCompletedAllPuzzles = rewardable.asParent.every(
+    ({ childRewardable }) => childRewardable.completed
+  )
+
+  const [updateRewardable] = useMutation(UPDATE_REWARDABLE_COMPLETE, {
+    onCompleted: () => {},
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
+  useEffect(() => {
+    if (!rewardable.completed && hasCompletedAllPuzzles) {
+      updateRewardable({
+        variables: {
+          id: rewardable.id,
+          input: {
+            completed: true,
+          },
+        },
+      })
+    }
+  }, [hasCompletedAllPuzzles, rewardable, updateRewardable])
+
   return (
     <>
       <Seo
@@ -35,6 +78,10 @@ const Rewardable = ({ rewardable }: Props) => {
           instructions={rewardable.explanation}
           cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
         />
+
+        {rewardable.completed && (
+          <Button to={routes.claim({ id: rewardable.id })} text="Mint" />
+        )}
 
         <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
           {rewardable.asParent.map(({ childRewardable }) => (

@@ -9,6 +9,8 @@ export const schema = gql`
     successMessage: String
     listPublicly: Boolean!
     type: RewardableType!
+    completed: Boolean!
+    claimed: Boolean!
     organization: Organization!
     orgId: String!
     nfts: [Nft]!
@@ -17,6 +19,7 @@ export const schema = gql`
     bundle: Bundle
     asParent: [RewardableConnection]!
     asChild: [RewardableConnection]!
+    migrateId: String
   }
 
   enum RewardableType {
@@ -37,7 +40,10 @@ export const schema = gql`
     successMessage: String
     listPublicly: Boolean!
     type: RewardableType!
+    completed: Boolean!
+    claimed: Boolean!
     orgId: String!
+    migrateId: String
   }
 
   input UpdateRewardableInput {
@@ -47,7 +53,10 @@ export const schema = gql`
     successMessage: String
     listPublicly: Boolean
     type: RewardableType
+    completed: Boolean
+    claimed: Boolean
     orgId: String
+    migrateId: String
   }
 
   type Mutation {
