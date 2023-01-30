@@ -37,3 +37,27 @@ export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
       }),
     }
   }
+
+// @TODO: what is this return type?
+export const rewardableClaim = ({ id }) => {
+  return db.rewardable.findUnique({
+    where: { id },
+    select: {
+      nfts: true,
+      completed: true,
+      asParent: {
+        select: {
+          childRewardable: {
+            select: {
+              nfts: {
+                select: {
+                  tokenId: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+}

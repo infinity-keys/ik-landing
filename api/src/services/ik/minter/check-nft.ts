@@ -53,6 +53,5 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
       : await contract.balanceOf(account),
     10
   )
-
   return { success: true, nftPass: balance > 0 }
 }

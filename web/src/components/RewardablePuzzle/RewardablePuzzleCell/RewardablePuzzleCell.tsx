@@ -13,6 +13,7 @@ export const QUERY = gql`
       slug
       explanation
       successMessage
+      completed
       nfts {
         cloudinaryId
       }

@@ -13,6 +13,15 @@ export const schema = gql`
     message: String
   }
 
+  type claimResponse {
+    success: Boolean!
+    claimed: Boolean
+    chainClaimed: Int
+    signature: String
+    message: String
+    tokenId: Int
+  }
+
   type CheckNftResponse {
     success: Boolean!
     nftPass: Boolean
@@ -37,11 +46,18 @@ export const schema = gql`
       account: String!
       tokenIds: [Int!]!
       chainId: Int!
-    ): CheckBalanceResponse! @skipAuth
+    ): CheckBalanceResponse! @requireAuth
+
+    # runs through entire nft claim flow
+    claim(
+      account: String!
+      rewardableId: String!
+      chainId: Int!
+    ): claimResponse! @requireAuth
 
     # checks if user has NFT on any of the supported networks
     checkClaimed(account: String!, tokenId: Int!): CheckClaimedResponse!
-      @skipAuth
+      @requireAuth
 
     # checks for NFT required for puzzle solution
     checkNft(
@@ -50,14 +66,15 @@ export const schema = gql`
       contractAddress: String
       tokenId: Int
       poapEventId: String
-    ): CheckNftResponse! @skipAuth
+    ): CheckNftResponse! @requireAuth
 
     # checks age of wallet on eth, checks number of transactions on others
     checkWalletAge(account: String!, chainId: Int!): CheckWalletAgeResponse!
-      @skipAuth
+      @requireAuth
 
     # finds unique db entry by contract name and token id
-    nftByContractAndTokenId(tokenId: Int!, contractName: String!): Nft @skipAuth
+    nftByContractAndTokenId(tokenId: Int!, contractName: String!): Nft
+      @requireAuth
 
     # checks if user has the NFTs required to claim a gated token
     verify(
@@ -65,6 +82,6 @@ export const schema = gql`
       tokenId: Int!
       chainId: Int!
       gatedIds: [Int!]
-    ): VerifyResponse! @skipAuth
+    ): VerifyResponse! @requireAuth
   }
 `
