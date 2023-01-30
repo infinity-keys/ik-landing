@@ -49,7 +49,11 @@ export const rewardableClaim = ({ id }) => {
         select: {
           childRewardable: {
             select: {
-              nfts: true,
+              nfts: {
+                select: {
+                  tokenId: true,
+                },
+              },
             },
           },
         },

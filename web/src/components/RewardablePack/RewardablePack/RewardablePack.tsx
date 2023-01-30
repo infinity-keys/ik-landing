@@ -27,6 +27,7 @@ const UPDATE_REWARDABLE_COMPLETE = gql`
   ) {
     updateRewardable(id: $id, input: $input) {
       id
+      completed
     }
   }
 `
@@ -40,7 +41,7 @@ const Rewardable = ({ rewardable }: Props) => {
     ({ childRewardable }) => childRewardable.completed
   )
 
-  const [updateRewardable] = useMutation(UPDATE_REWARDABLE_COMPLETE, {
+  const [updateRewardable, { data }] = useMutation(UPDATE_REWARDABLE_COMPLETE, {
     onCompleted: () => {},
     onError: (error) => {
       console.log(error)

@@ -50,6 +50,7 @@ const UPDATE_REWARDABLE_COMPLETE = gql`
   ) {
     updateRewardable(id: $id, input: $input) {
       id
+      completed
     }
   }
 `
@@ -80,7 +81,7 @@ export const Success = ({
   const { slug } = useParams()
   const { isAuthenticated } = useAuth()
 
-  const [updateRewardable] = useMutation(UPDATE_REWARDABLE_COMPLETE, {
+  const [updateRewardable, { data }] = useMutation(UPDATE_REWARDABLE_COMPLETE, {
     onCompleted: () => {},
     onError: (error) => {
       console.log(error)
