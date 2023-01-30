@@ -2687,10 +2687,10 @@
   dependencies:
     fast-safe-stringify "^2.1.1"
 
-"@xstate/react@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@xstate/react/-/react-3.0.1.tgz#937eeb5d5d61734ab756ca40146f84a6fe977095"
-  integrity sha512-/tq/gg92P9ke8J+yDNDBv5/PAxBvXJf2cYyGDByzgtl5wKaxKxzDT82Gj3eWlCJXkrBg4J5/V47//gRJuVH2fA==
+"@xstate/react@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@xstate/react/-/react-3.1.1.tgz#8c0a38fa38b94551162ac38742791f11d5a43c50"
+  integrity sha512-5jvJ38Lvx9MWHvQykmmtC6oK2Gk32M22IHJHrPJR9X54nY+XkLdAa71JcvpUlveBES0ieZytwQe6B6rxoxBgAA==
   dependencies:
     use-isomorphic-layout-effect "^1.0.0"
     use-sync-external-store "^1.0.0"
