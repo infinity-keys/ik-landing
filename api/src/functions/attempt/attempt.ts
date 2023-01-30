@@ -84,14 +84,16 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     return { statusCode: 403 }
   }
 
-  const { puzzleId, stepParam, stepId } = event.queryStringParameters
+  const { puzzleId, stepParam, stepId, stepType } = event.queryStringParameters
   const stepNum = parseInt(stepParam, 10)
+  const solutionType =
+    stepType === 'NFT_CHECK' ? 'nftCheckSolution' : 'simpleTextSolution'
 
   // Garbage request, bail
-  if (!puzzleId || !stepParam || !stepId) {
-    logger.info('/attempt called without puzzle or step')
-    return { statusCode: 400 }
-  }
+  // if (!puzzleId || !stepParam || !stepId) {
+  //   logger.info('/attempt called without puzzle or step')
+  //   return { statusCode: 400 }
+  // }
 
   logger.info(
     `Invoked '/attempt' function for puzzle ${puzzleId} and step ${stepNum}`
@@ -110,7 +112,8 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     const { success } = await makeAttempt({
       stepId,
-      data: { simpleTextSolution: attempt },
+      stepType,
+      data: { [solutionType]: attempt },
     })
 
     // @TODO: work out cookie headers required here
@@ -208,7 +211,8 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     const { success } = await makeAttempt({
       stepId,
-      data: { simpleTextSolution: attempt },
+      stepType,
+      data: { [solutionType]: attempt },
     })
 
     if (!success) {

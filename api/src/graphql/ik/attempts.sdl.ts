@@ -1,6 +1,7 @@
 export const schema = gql`
   input MakeAttemptInput {
     stepId: String!
+    stepType: StepType
     data: JSON!
   }
 
@@ -25,6 +26,10 @@ export const schema = gql`
   }
 
   type Mutation {
-    makeAttempt(stepId: String!, data: JSON!): MakeAttemptResponse! @requireAuth
+    makeAttempt(
+      stepId: String!
+      stepType: StepType!
+      data: JSON!
+    ): MakeAttemptResponse! @requireAuth
   }
 `

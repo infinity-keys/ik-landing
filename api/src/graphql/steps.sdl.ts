@@ -17,6 +17,7 @@ export const schema = gql`
 
   enum StepType {
     SIMPLE_TEXT
+    NFT_CHECK
   }
 
   type Query {

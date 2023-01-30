@@ -111,6 +111,7 @@ model Puzzle {
 // eventually handle things like retweet checks, wallet connects, etc
 enum StepType {
   SIMPLE_TEXT
+  NFT_CHECK
 }
 
 /// Steps are whate players actually solve. One or more steps make up a Puzzle.
@@ -135,6 +136,7 @@ model Step {
   // Step types
   type           StepType        @default(SIMPLE_TEXT)
   stepSimpleText StepSimpleText?
+  stepNftCheck   StepNftCheck?
 
   // A user's attempt at solving this Step
   attempts Attempt[]
@@ -154,6 +156,18 @@ model StepSimpleText {
   /// Database will show 0, but the GraphQL resolver for this will provide a char count
   solutionCharCount Int    @default(0)
 }
+
+model StepNftCheck {
+  id String @id @default(cuid())
+
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @unique
+
+  contractAddress String?
+  tokenId Int?
+  chainId Int?
+}
+
 
 /// User form submissions from post-Puzzle forms asking for email address etc
 model Submission {

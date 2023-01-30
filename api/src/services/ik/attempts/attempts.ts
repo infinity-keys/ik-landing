@@ -11,25 +11,60 @@ import { decryptCookie } from 'src/lib/encoding/encoding'
 import { createSolve } from 'src/services/solves/solves'
 import { step } from 'src/services/steps/steps'
 
+import { checkNft } from '../minter/check-nft'
+
 const SolutionData = z
   .object({
     simpleTextSolution: z.string(),
+    nftCheckSolution: z.string(),
     // add more types here
   })
   .partial()
   .refine(
     (data) =>
       // add corresponding type here
-      data.simpleTextSolution,
+      data.simpleTextSolution || data.nftCheckSolution,
     'Invalid solution type'
   )
 
 export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   stepId,
+  stepType,
   data,
 }) => {
   try {
     SolutionData.parse(data)
+    const type = stepType === 'NFT_CHECK' ? 'stepNftCheck' : 'stepSimpleText'
+    const solutionType =
+      stepType === 'NFT_CHECK' ? 'nftCheckSolution' : 'simpleTextSolution'
+
+    if (stepType === 'NFT_CHECK') {
+      const { success, nftPass } = await checkNft({
+        account: '0x748De431c0a978f4f5B61dbED749Adca710A282B',
+        contractAddress: '0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9',
+        chainId: parseInt('137'),
+        tokenId: parseInt('1'),
+      })
+
+      const attempt = await db.attempt.create({
+        data: {
+          userId: context?.currentUser.id,
+          stepId,
+          data: { nftCheckSolution: stepId },
+        },
+      })
+
+      if (success && nftPass) {
+        await createSolve({
+          input: {
+            attemptId: attempt.id,
+            userId: context.currentUser.id,
+          },
+        })
+      }
+
+      return { success: success && nftPass }
+    }
 
     const attempt = await db.attempt.create({
       data: {
@@ -39,17 +74,14 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
       },
     })
 
-    const stepType = 'stepSimpleText'
-    const solutionType = 'simpleTextSolution'
-
     const step = await db.step.findUnique({
       where: { id: stepId },
-      select: { [stepType]: true },
+      select: { [type]: true },
     })
 
     const userAttempt = data[solutionType]
 
-    if (step[stepType].solution === userAttempt) {
+    if (step[type].solution === userAttempt) {
       await createSolve({
         input: {
           attemptId: attempt.id,
