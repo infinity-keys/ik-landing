@@ -6,6 +6,7 @@ export const schema = gql`
     contractAddress: String
     tokenId: Int
     chainId: Int
+    poapEventId: String
   }
 
   type Query {
@@ -18,6 +19,7 @@ export const schema = gql`
     contractAddress: String
     tokenId: Int
     chainId: Int
+    poapEventId: String
   }
 
   input UpdateStepNftCheckInput {
@@ -25,6 +27,7 @@ export const schema = gql`
     contractAddress: String
     tokenId: Int
     chainId: Int
+    poapEventId: String
   }
 
   type Mutation {

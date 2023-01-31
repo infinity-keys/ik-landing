@@ -19,15 +19,17 @@ const NftCheckButton = ({
 }) => {
   const { address } = useAccount()
   const { loading, failedAttempt, makeAttempt } = UseMakeAttempt()
+  const { chainId, tokenId, contractAddress, poapEventId } = step.stepNftCheck
 
   const handleClick = async () => {
     if (!address) return
 
     const reqBody = {
-      chainId: step.stepNftCheck?.chainId,
-      tokenId: step.stepNftCheck?.tokenId,
-      contractAddress: step.stepNftCheck?.contractAddress,
       account: address,
+      ...(chainId && { chainId }),
+      ...(tokenId && { tokenId }),
+      ...(contractAddress && { contractAddress }),
+      ...(poapEventId && { poapEventId }),
     }
 
     await makeAttempt({

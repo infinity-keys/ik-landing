@@ -43,6 +43,7 @@ export const QUERY = gql`
         chainId
         tokenId
         contractAddress
+        poapEventId
       }
     }
   }

@@ -169,10 +169,10 @@ model StepNftCheck {
   stepId String @unique
 
   contractAddress String?
-  tokenId Int?
-  chainId Int?
+  tokenId         Int?
+  chainId         Int?
+  poapEventId     String?
 }
-
 
 /// User form submissions from post-Puzzle forms asking for email address etc
 model Submission {
