@@ -1,4 +1,7 @@
-import { PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
+import {
+  PUZZLE_COOKIE_NAME,
+  stepSolutionTypeLookup,
+} from '@infinity-keys/constants'
 import type { APIGatewayEvent } from 'aws-lambda'
 import cookie from 'cookie'
 import { z } from 'zod'
@@ -86,8 +89,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
   const { puzzleId, stepParam, stepId, stepType } = event.queryStringParameters
   const stepNum = parseInt(stepParam, 10)
-  const solutionType =
-    stepType === 'NFT_CHECK' ? 'nftCheckSolution' : 'simpleTextSolution'
+  const solutionType = stepSolutionTypeLookup[stepType]
 
   // Garbage request, bail
   // if (!puzzleId || !stepParam || !stepId) {

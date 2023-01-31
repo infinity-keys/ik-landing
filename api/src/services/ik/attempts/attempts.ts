@@ -1,31 +1,21 @@
-import { PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
+import {
+  PUZZLE_COOKIE_NAME,
+  stepSolutionTypeLookup,
+  stepTypeLookup,
+} from '@infinity-keys/constants'
 import cookie from 'cookie'
 import type { MutationResolvers, QueryResolvers } from 'types/graphql'
-import { z } from 'zod'
 
 import { context, ForbiddenError } from '@redwoodjs/graphql-server'
 
 import { isAuthenticated } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 import { decryptCookie } from 'src/lib/encoding/encoding'
+import { SolutionData } from 'src/lib/steps'
 import { createSolve } from 'src/services/solves/solves'
 import { step } from 'src/services/steps/steps'
 
 import { checkNft } from '../minter/check-nft'
-
-const SolutionData = z
-  .object({
-    simpleTextSolution: z.string(),
-    nftCheckSolution: z.string(),
-    // add more types here
-  })
-  .partial()
-  .refine(
-    (data) =>
-      // add corresponding type here
-      data.simpleTextSolution || data.nftCheckSolution,
-    'Invalid solution type'
-  )
 
 export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   stepId,
@@ -34,9 +24,36 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 }) => {
   try {
     SolutionData.parse(data)
-    const type = stepType === 'NFT_CHECK' ? 'stepNftCheck' : 'stepSimpleText'
-    const solutionType =
-      stepType === 'NFT_CHECK' ? 'nftCheckSolution' : 'simpleTextSolution'
+
+    const type = stepTypeLookup[stepType]
+    const solutionType = stepSolutionTypeLookup[stepType]
+
+    if (stepType === 'SIMPLE_TEXT') {
+      const attempt = await db.attempt.create({
+        data: {
+          userId: context?.currentUser.id,
+          stepId,
+          data,
+        },
+      })
+
+      const step = await db.step.findUnique({
+        where: { id: stepId },
+        select: { [type]: true },
+      })
+
+      const userAttempt = data[solutionType]
+
+      if (step[type].solution === userAttempt) {
+        await createSolve({
+          input: {
+            attemptId: attempt.id,
+            userId: context.currentUser.id,
+          },
+        })
+        return { success: true }
+      }
+    }
 
     if (stepType === 'NFT_CHECK') {
       const { success, nftPass } = await checkNft({
@@ -50,7 +67,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         data: {
           userId: context?.currentUser.id,
           stepId,
-          data: { nftCheckSolution: stepId },
+          data: {},
         },
       })
 
@@ -64,31 +81,6 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
       }
 
       return { success: success && nftPass }
-    }
-
-    const attempt = await db.attempt.create({
-      data: {
-        userId: context?.currentUser.id,
-        stepId,
-        data,
-      },
-    })
-
-    const step = await db.step.findUnique({
-      where: { id: stepId },
-      select: { [type]: true },
-    })
-
-    const userAttempt = data[solutionType]
-
-    if (step[type].solution === userAttempt) {
-      await createSolve({
-        input: {
-          attemptId: attempt.id,
-          userId: context.currentUser.id,
-        },
-      })
-      return { success: true }
     }
   } catch (e) {
     console.log(e)

@@ -24,7 +24,6 @@ const NftCheckButton = ({
   const { slug, step: stepParam } = useParams()
   const { getToken } = useAuth()
   const { address } = useAccount()
-  console.log('account: ', address)
 
   const [loading, setLoading] = useState(false)
   const [failedAttempt, setFailedAttempt] = useState(false)
@@ -45,7 +44,6 @@ const NftCheckButton = ({
     apiUrl.searchParams.set('stepParam', stepParam)
     apiUrl.searchParams.set('puzzleId', puzzleId)
     apiUrl.searchParams.set('stepType', step.type)
-    console.log('step: ', step)
 
     apiUrl.searchParams.set('chainId', '137')
     apiUrl.searchParams.set('tokenId', '1')

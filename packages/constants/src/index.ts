@@ -116,6 +116,20 @@ export const marketplaceNameLookup: {
   [OPTIMISM_CHAIN_ID]: 'Quixotic',
 }
 
+export const stepTypeLookup: {
+  [key: string]: string
+} = {
+  SIMPLE_TEXT: 'stepSimpleText',
+  NFT_CHECK: 'stepNftCheck',
+}
+
+export const stepSolutionTypeLookup: {
+  [key: string]: string
+} = {
+  SIMPLE_TEXT: 'simpleTextSolution',
+  NFT_CHECK: 'nftCheckSolution',
+}
+
 // RAINBOW KIT PARAMS
 export const avalancheChain: Chain = {
   id: AVAX_CHAIN_ID,
