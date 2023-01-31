@@ -92,10 +92,10 @@ const attemptHandler = async (event: APIGatewayEvent) => {
   const solutionType = stepSolutionTypeLookup[stepType]
 
   // Garbage request, bail
-  // if (!puzzleId || !stepParam || !stepId) {
-  //   logger.info('/attempt called without puzzle or step')
-  //   return { statusCode: 400 }
-  // }
+  if (!puzzleId || !stepParam || !stepId || !stepType) {
+    logger.info('/attempt called without puzzle or step')
+    return { statusCode: 400 }
+  }
 
   logger.info(
     `Invoked '/attempt' function for puzzle ${puzzleId} and step ${stepNum}`

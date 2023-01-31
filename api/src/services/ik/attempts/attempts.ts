@@ -3,6 +3,7 @@ import {
   stepSolutionTypeLookup,
   stepTypeLookup,
 } from '@infinity-keys/constants'
+import { SolutionData } from '@infinity-keys/core'
 import cookie from 'cookie'
 import type { MutationResolvers, QueryResolvers } from 'types/graphql'
 
@@ -11,7 +12,6 @@ import { context, ForbiddenError } from '@redwoodjs/graphql-server'
 import { isAuthenticated } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 import { decryptCookie } from 'src/lib/encoding/encoding'
-import { SolutionData } from 'src/lib/steps'
 import { createSolve } from 'src/services/solves/solves'
 import { step } from 'src/services/steps/steps'
 
