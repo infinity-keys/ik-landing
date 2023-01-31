@@ -4,7 +4,7 @@ import { useAccount } from 'wagmi'
 
 import Button from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-import UseMakeAttempt from 'src/hooks/useMakeAttempt'
+import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
 import Markdown from '../Markdown'
 
@@ -18,7 +18,7 @@ const NftCheckButton = ({
   numberOfSteps: number
 }) => {
   const { address } = useAccount()
-  const { loading, failedAttempt, makeAttempt } = UseMakeAttempt()
+  const { loading, failedAttempt, makeAttempt } = useMakeAttempt()
   const { chainId, tokenId, contractAddress, poapEventId } = step.stepNftCheck
 
   const handleClick = async () => {

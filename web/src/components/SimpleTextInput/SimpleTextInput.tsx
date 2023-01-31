@@ -8,7 +8,7 @@ import { FindStepQuery } from 'types/graphql'
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
-import UseMakeAttempt from 'src/hooks/useMakeAttempt'
+import useMakeAttempt from 'src/hooks/useMakeAttempt'
 import Lock from 'src/svgs/Lock'
 
 interface SimpleTextInputProps {
@@ -24,7 +24,7 @@ const SimpleTextInput = ({
   numberOfSteps,
   puzzleId,
 }: SimpleTextInputProps) => {
-  const { loading, failedAttempt, makeAttempt } = UseMakeAttempt()
+  const { loading, failedAttempt, makeAttempt } = useMakeAttempt()
   const [text, setText] = useState('')
 
   // This will use useMemo, possibly

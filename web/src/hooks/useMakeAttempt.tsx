@@ -14,7 +14,7 @@ interface SendAttemptProps {
   redirectOnSuccess?: boolean
 }
 
-const UseMakeAttempt = () => {
+const useMakeAttempt = () => {
   const { getToken } = useAuth()
   const { slug, step: stepParam } = useParams()
 
@@ -92,4 +92,4 @@ const UseMakeAttempt = () => {
   }
 }
 
-export default UseMakeAttempt
+export default useMakeAttempt
