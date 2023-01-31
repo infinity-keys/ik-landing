@@ -39,6 +39,11 @@ export const QUERY = gql`
       stepSimpleText {
         solutionCharCount
       }
+      stepNftCheck {
+        chainId
+        tokenId
+        contractAddress
+      }
     }
   }
 `

@@ -27,6 +27,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
     const type = stepTypeLookup[stepType]
     const solutionType = stepSolutionTypeLookup[stepType]
+    const userAttempt = data[solutionType]
 
     if (stepType === 'SIMPLE_TEXT') {
       const attempt = await db.attempt.create({
@@ -42,8 +43,6 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         select: { [type]: true },
       })
 
-      const userAttempt = data[solutionType]
-
       if (step[type].solution === userAttempt) {
         await createSolve({
           input: {
@@ -56,12 +55,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     }
 
     if (stepType === 'NFT_CHECK') {
-      const { success, nftPass } = await checkNft({
-        account: '0x748De431c0a978f4f5B61dbED749Adca710A282B',
-        contractAddress: '0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9',
-        chainId: parseInt('137'),
-        tokenId: parseInt('1'),
-      })
+      const { success, nftPass } = await checkNft(userAttempt)
 
       const attempt = await db.attempt.create({
         data: {

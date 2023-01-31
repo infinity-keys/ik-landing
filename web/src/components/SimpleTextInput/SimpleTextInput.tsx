@@ -5,12 +5,10 @@ import loRange from 'lodash/range'
 import RICIBs from 'react-individual-character-input-boxes'
 import { FindStepQuery } from 'types/graphql'
 
-import { useAuth } from '@redwoodjs/auth'
-import { navigate, routes, useParams } from '@redwoodjs/router'
-
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
+import UseMakeAttempt from 'src/hooks/useMakeAttempt'
 import Lock from 'src/svgs/Lock'
 
 interface SimpleTextInputProps {
@@ -26,68 +24,21 @@ const SimpleTextInput = ({
   numberOfSteps,
   puzzleId,
 }: SimpleTextInputProps) => {
-  const { slug, step: stepParam } = useParams()
-  const { getToken } = useAuth()
-
-  const [loading, setLoading] = useState(false)
-  const [failedAttempt, setFailedAttempt] = useState(false)
+  const { loading, failedAttempt, makeAttempt } = UseMakeAttempt()
   const [text, setText] = useState('')
 
   // This will use useMemo, possibly
   const handleMakeAttempt = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (text.length !== count) return
-    setFailedAttempt(false)
-    setLoading(true)
 
-    // /.redwood/functions/attempt vs /attempt
-    const apiPath = `${
-      global.RWJS_API_URL.includes('.redwood') ? window.location.origin : ''
-    }${global.RWJS_API_URL}/attempt`
-
-    const apiUrl = new URL(apiPath)
-
-    apiUrl.searchParams.set('puzzleId', puzzleId)
-    apiUrl.searchParams.set('stepParam', stepParam)
-    apiUrl.searchParams.set('stepId', step.id)
-    apiUrl.searchParams.set('stepType', step.type)
-
-    const body = JSON.stringify({ attempt: text })
-    setText('')
-
-    try {
-      // Get JWT from MagicLink
-      const token = await getToken()
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'auth-provider': 'magicLink',
-          Authorization: `Bearer ${token}`,
-        },
-        body,
-      })
-      setLoading(false)
-
-      if (response.ok) {
-        const data = await response.json()
-
-        // if user guesses correctly, move them to next step
-        // or puzzle landing if it is the last step
-        if (data.success) {
-          if (parseInt(stepParam, 10) + 1 > numberOfSteps) {
-            return navigate(routes.puzzleLanding({ slug }))
-          } else {
-            return navigate(
-              routes.puzzleStep({ slug, step: parseInt(stepParam, 10) + 1 })
-            )
-          }
-        }
-        setFailedAttempt(true)
-      }
-    } catch (e) {
-      console.log(e)
-      setLoading(false)
-    }
+    await makeAttempt({
+      stepId: step.id,
+      stepType: step.type,
+      numberOfSteps,
+      puzzleId,
+      reqBody: text,
+    })
   }
 
   return (
