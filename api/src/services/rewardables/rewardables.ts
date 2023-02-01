@@ -58,6 +58,9 @@ export const Rewardable: RewardableRelationResolvers = {
   bundle: (_obj, { root }) => {
     return db.rewardable.findUnique({ where: { id: root?.id } }).bundle()
   },
+  userRewards: (_obj, { root }) => {
+    return db.rewardable.findUnique({ where: { id: root?.id } }).userRewards()
+  },
   asParent: (_obj, { root }) => {
     return db.rewardable.findUnique({ where: { id: root?.id } }).asParent()
   },

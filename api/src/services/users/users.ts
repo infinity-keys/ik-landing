@@ -42,4 +42,7 @@ export const User: UserRelationResolvers = {
   solved: (_obj, { root }) => {
     return db.user.findUnique({ where: { id: root?.id } }).solved()
   },
+  userRewards: (_obj, { root }) => {
+    return db.user.findUnique({ where: { id: root?.id } }).userRewards()
+  },
 }

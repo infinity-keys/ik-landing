@@ -34,24 +34,20 @@ describe('rewardables', () => {
   scenario('creates a rewardable', async (scenario: StandardScenario) => {
     const result = await createRewardable({
       input: {
-        updatedAt: '2023-01-27T17:45:30.468Z',
+        updatedAt: '2023-02-01T18:11:39.739Z',
         name: 'String',
         slug: 'String',
         explanation: 'String',
         type: 'PUZZLE',
-        completed: true,
-        claimed: true,
         orgId: scenario.rewardable.two.orgId,
       },
     })
 
-    expect(result.updatedAt).toEqual(new Date('2023-01-27T17:45:30.468Z'))
+    expect(result.updatedAt).toEqual(new Date('2023-02-01T18:11:39.739Z'))
     expect(result.name).toEqual('String')
     expect(result.slug).toEqual('String')
     expect(result.explanation).toEqual('String')
     expect(result.type).toEqual('PUZZLE')
-    expect(result.completed).toEqual(true)
-    expect(result.claimed).toEqual(true)
     expect(result.orgId).toEqual(scenario.rewardable.two.orgId)
   })
 
@@ -61,10 +57,10 @@ describe('rewardables', () => {
     })) as Rewardable
     const result = await updateRewardable({
       id: original.id,
-      input: { updatedAt: '2023-01-28T17:45:30.468Z' },
+      input: { updatedAt: '2023-02-02T18:11:39.740Z' },
     })
 
-    expect(result.updatedAt).toEqual(new Date('2023-01-28T17:45:30.468Z'))
+    expect(result.updatedAt).toEqual(new Date('2023-02-02T18:11:39.740Z'))
   })
 
   scenario('deletes a rewardable', async (scenario: StandardScenario) => {
