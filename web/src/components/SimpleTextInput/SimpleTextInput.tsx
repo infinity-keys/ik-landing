@@ -15,17 +15,11 @@ import Lock from 'src/svgs/Lock'
 
 interface SimpleTextInputProps {
   count: number
-  numberOfSteps: number
   step: FindStepQuery['step']
   puzzleId: string
 }
 
-const SimpleTextInput = ({
-  count,
-  step,
-  numberOfSteps,
-  puzzleId,
-}: SimpleTextInputProps) => {
+const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
   const { slug, step: stepParam } = useParams()
   const { getToken } = useAuth()
 
@@ -68,12 +62,12 @@ const SimpleTextInput = ({
       setLoading(false)
 
       if (response.ok) {
-        const data = await response.json()
+        const { success, finalStep } = await response.json()
 
         // if user guesses correctly, move them to next step
         // or puzzle landing if it is the last step
-        if (data.success) {
-          if (parseInt(stepParam, 10) + 1 > numberOfSteps) {
+        if (success) {
+          if (finalStep) {
             return navigate(routes.puzzleLanding({ slug }))
           } else {
             return navigate(

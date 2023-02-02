@@ -52,6 +52,11 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
             rewardable: {
               select: {
                 id: true,
+                asChild: {
+                  select: {
+                    parentId: true,
+                  },
+                },
               },
             },
             steps: {
@@ -81,12 +86,51 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
       const finalStep = step.puzzle.steps.at(-1).id === stepId
 
       if (finalStep) {
+        // @TODO: handle user solving multiple
+        // create puzzle reward when user solves last step
         await createUserReward({
           input: {
             rewardableId: step.puzzle.rewardable.id,
             userId: context.currentUser.id,
           },
         })
+
+        // does this step's puzzle belong to a pack
+        if (step.puzzle.rewardable.asChild.length > 0) {
+          const parentPack = await db.rewardable.findUnique({
+            where: { id: step.puzzle.rewardable.asChild[0].parentId },
+            select: {
+              asParent: {
+                select: {
+                  childRewardable: {
+                    select: {
+                      userRewards: {
+                        select: {
+                          id: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          })
+
+          // has this user now completed all puzzles in this pack
+          const allPuzzlesSolved = parentPack.asParent.every(
+            ({ childRewardable }) => childRewardable.userRewards.length > 0
+          )
+
+          // create reward for pack
+          if (allPuzzlesSolved) {
+            await createUserReward({
+              input: {
+                rewardableId: step.puzzle.rewardable.asChild[0].parentId,
+                userId: context.currentUser.id,
+              },
+            })
+          }
+        }
       }
 
       return { success: true, finalStep }
