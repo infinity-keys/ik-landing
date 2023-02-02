@@ -12,14 +12,11 @@ export const verify: QueryResolvers['verify'] = async ({
   gatedIds,
 }) => {
   let claimedTokens: boolean[] | undefined
-  // @BLOOM: I think if statement should move to middleware- if its a pack, do
-  // the gatedIds check before sending them here
 
   // If not gated- its a single puzzle
   // If gated- its a pack, check the balance of the gatedIds
 
   // @TODO: check puzzle or pack by NFT tokenId
-  // @TODO: handle no gatedIds use case
 
   if (gatedIds) {
     try {

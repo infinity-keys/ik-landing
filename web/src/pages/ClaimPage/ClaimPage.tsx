@@ -56,10 +56,13 @@ const ClaimPage = () => {
   const isValidChain = validChain(chain?.id || 0)
   const contractAddress = isValidChain && contractAddressLookup[chain?.id]
 
+  // checks both db and blockchain to see if user is eligible to mint
+  // if successful, it returns all the data needed to mint nft
   const [claim, { loading: queryLoading, data }] = useLazyQuery(CHECK_CLAIM, {
     variables: { account: address, rewardableId, chainId: chain?.id },
   })
 
+  // add nft to userRewards table on successful transaction
   const [updateReward] = useMutation<AddNftRewardMutation>(
     ADD_NFT_REWARD_MUTATION
   )
@@ -77,6 +80,7 @@ const ClaimPage = () => {
     contractInterface: IKAchievementABI__factory.abi,
     functionName: 'claim',
     args: [tokenId, signature],
+    // keeps this hook from firing until we get a valid signature
     enabled: !!signature,
   })
 

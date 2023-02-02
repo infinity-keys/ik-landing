@@ -10,7 +10,7 @@ export const claim: QueryResolvers['claim'] = async ({
   rewardableId,
   chainId,
 }) => {
-  // check cookie to see if puzzleId steps are greater than 0, but what about packs...
+  // @TODO: can we check cookie to see if puzzleId steps are greater than 0, (but what about packs...)
 
   const rewardableData = await rewardableClaim({ id: rewardableId })
 
@@ -40,6 +40,7 @@ export const claim: QueryResolvers['claim'] = async ({
 
   const { tokenId } = rewardableData.nfts[0]
 
+  // has this nft already been claimed on this account
   const {
     claimed,
     chainClaimed,
@@ -62,6 +63,7 @@ export const claim: QueryResolvers['claim'] = async ({
     }
   }
 
+  // generate gatedIds if claiming a pack
   const gatedIds =
     isPack &&
     rewardableData.asParent.map(

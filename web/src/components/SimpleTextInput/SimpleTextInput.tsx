@@ -77,7 +77,7 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
           }
         }
         setFailedAttempt(true)
-        setErrorMessage(message)
+        message && setErrorMessage(message)
       }
     } catch (e) {
       console.log(e)
