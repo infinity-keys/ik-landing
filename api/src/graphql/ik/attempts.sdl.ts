@@ -17,6 +17,7 @@ export const schema = gql`
 
   type MakeAttemptResponse {
     success: Boolean!
+    finalStep: Boolean
   }
 
   type Query {

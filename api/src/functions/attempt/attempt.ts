@@ -108,7 +108,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     // Aight, what's did they guess?
     const { attempt } = JSON.parse(event.body)
 
-    const { success } = await makeAttempt({
+    const { success, finalStep } = await makeAttempt({
       stepId,
       data: { simpleTextSolution: attempt },
     })
@@ -151,7 +151,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
             sameSite: 'strict',
           }),
         },
-        body: JSON.stringify({ success }),
+        body: JSON.stringify({ success, finalStep }),
       }
     }
     // Womp womp
@@ -206,7 +206,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     const { attempt } = JSON.parse(event.body)
 
-    const { success } = await makeAttempt({
+    const { success, finalStep } = await makeAttempt({
       stepId,
       data: { simpleTextSolution: attempt },
     })
@@ -240,7 +240,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
           sameSite: 'strict',
         }),
       },
-      body: JSON.stringify({ success }),
+      body: JSON.stringify({ success, finalStep }),
     }
   }
 }

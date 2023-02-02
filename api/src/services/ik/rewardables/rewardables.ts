@@ -44,7 +44,6 @@ export const rewardableClaim = ({ id }) => {
     where: { id },
     select: {
       nfts: true,
-      completed: true,
       asParent: {
         select: {
           childRewardable: {

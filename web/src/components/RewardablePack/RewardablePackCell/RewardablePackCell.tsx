@@ -12,7 +12,6 @@ export const QUERY = gql`
       name
       explanation
       slug
-      completed
       nfts {
         cloudinaryId
       }
@@ -21,7 +20,6 @@ export const QUERY = gql`
           id
           name
           slug
-          completed
           nfts {
             cloudinaryId
           }

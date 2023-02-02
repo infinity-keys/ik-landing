@@ -10,6 +10,7 @@ import { db } from 'src/lib/db'
 import { decryptCookie } from 'src/lib/encoding/encoding'
 import { createSolve } from 'src/services/solves/solves'
 import { step } from 'src/services/steps/steps'
+import { createUserReward } from 'src/services/userRewards/userRewards'
 
 const SolutionData = z
   .object({
@@ -44,7 +45,27 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
     const step = await db.step.findUnique({
       where: { id: stepId },
-      select: { [stepType]: true },
+      select: {
+        [stepType]: true,
+        puzzle: {
+          select: {
+            rewardable: {
+              select: {
+                id: true,
+              },
+            },
+            steps: {
+              orderBy: {
+                stepSortWeight: 'asc',
+              },
+              select: {
+                id: true,
+                stepSortWeight: true,
+              },
+            },
+          },
+        },
+      },
     })
 
     const userAttempt = data[solutionType]
@@ -56,7 +77,19 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
           userId: context.currentUser.id,
         },
       })
-      return { success: true }
+
+      const finalStep = step.puzzle.steps.at(-1).id === stepId
+
+      if (finalStep) {
+        await createUserReward({
+          input: {
+            rewardableId: step.puzzle.rewardable.id,
+            userId: context.currentUser.id,
+          },
+        })
+      }
+
+      return { success: true, finalStep }
     }
   } catch (e) {
     console.log(e)
