@@ -11,4 +11,8 @@ export const schema = gql`
       count: Int
     ): RewardablesCollection @skipAuth
   }
+
+  type Mutation {
+    addNftReward(id: String!): UserReward! @requireAuth
+  }
 `

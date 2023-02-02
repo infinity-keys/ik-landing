@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { gql, useLazyQuery } from '@apollo/client'
 import {
   contractAddressLookup,
@@ -7,6 +9,7 @@ import {
 import { IKAchievementABI__factory } from '@infinity-keys/contracts'
 import { validChain } from '@infinity-keys/core'
 import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { AddNftRewardMutation } from 'types/graphql'
 import {
   useContractWrite,
   usePrepareContractWrite,
@@ -16,7 +19,9 @@ import {
 } from 'wagmi'
 
 import { useParams } from '@redwoodjs/router'
+import { useMutation } from '@redwoodjs/web'
 
+import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
 import Heading from 'src/components/Heading/Heading'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
@@ -33,6 +38,15 @@ const CHECK_CLAIM = gql`
     }
   }
 `
+
+const ADD_NFT_REWARD_MUTATION = gql`
+  mutation AddNftRewardMutation($id: String!) {
+    addNftReward(id: $id) {
+      id
+    }
+  }
+`
+
 const ClaimPage = () => {
   const { chain } = useNetwork()
   const { id: rewardableId } = useParams()
@@ -45,6 +59,10 @@ const ClaimPage = () => {
   const [claim, { loading: queryLoading, data }] = useLazyQuery(CHECK_CLAIM, {
     variables: { account: address, rewardableId, chainId: chain?.id },
   })
+
+  const [updateReward] = useMutation<AddNftRewardMutation>(
+    ADD_NFT_REWARD_MUTATION
+  )
 
   const {
     claimed = false,
@@ -76,6 +94,16 @@ const ClaimPage = () => {
     hash: writeData?.hash,
   })
 
+  useEffect(() => {
+    if (transactionSuccess) {
+      updateReward({
+        variables: {
+          id: rewardableId,
+        },
+      })
+    }
+  }, [transactionSuccess, rewardableId, updateReward])
+
   return (
     <div className="text-center">
       <Seo title="Claim" description="Claim page" />
@@ -87,6 +115,12 @@ const ClaimPage = () => {
       {(queryLoading || transactionPending) && (
         <div className="mb-4">
           <LoadingIcon />
+        </div>
+      )}
+
+      {transactionPending && (
+        <div className="mb-4 flex justify-center">
+          <Alert text="Transaction pending. Do not close page." />
         </div>
       )}
 
@@ -107,6 +141,7 @@ const ClaimPage = () => {
       {signature &&
         !claimed &&
         !transactionSuccess &&
+        !transactionPending &&
         isConnected &&
         isValidChain && (
           <>

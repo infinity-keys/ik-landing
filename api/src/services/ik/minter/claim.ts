@@ -38,7 +38,7 @@ export const claim: QueryResolvers['claim'] = async ({
     }
   }
 
-  const tokenId = rewardableData.nfts[0].tokenId
+  const { tokenId } = rewardableData.nfts[0]
 
   const {
     claimed,
