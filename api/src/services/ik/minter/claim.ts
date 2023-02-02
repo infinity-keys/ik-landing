@@ -10,15 +10,31 @@ export const claim: QueryResolvers['claim'] = async ({
   rewardableId,
   chainId,
 }) => {
-  // check cookie to see if puzzleId steps are greater than 0, but what about steps...
-  // check db to see if user can claim before hitting block chain
+  // check cookie to see if puzzleId steps are greater than 0, but what about packs...
 
   const rewardableData = await rewardableClaim({ id: rewardableId })
 
-  if (!rewardableData || !rewardableData.completed) {
+  // rewardable has not been solved
+  if (!rewardableData || rewardableData.userRewards.length < 1) {
     return {
       success: true,
-      message: 'You have not completed this',
+      message: 'Please solve to claim',
+    }
+  }
+
+  const isPack = rewardableData.asParent.length > 0
+
+  if (isPack) {
+    // all child rewardables need to be solved first
+    const solvedAllChildren = rewardableData.asParent.every(
+      ({ childRewardable }) => childRewardable.userRewards.length > 0
+    )
+
+    if (!solvedAllChildren) {
+      return {
+        success: true,
+        message: 'Must solve all associated puzzles before claiming',
+      }
     }
   }
 
@@ -47,7 +63,7 @@ export const claim: QueryResolvers['claim'] = async ({
   }
 
   const gatedIds =
-    rewardableData.asParent &&
+    isPack &&
     rewardableData.asParent.map(
       ({ childRewardable }) => childRewardable.nfts[0].tokenId
     )

@@ -43,11 +43,25 @@ export const rewardableClaim = ({ id }) => {
   return db.rewardable.findUnique({
     where: { id },
     select: {
-      nfts: true,
+      nfts: {
+        select: {
+          tokenId: true,
+        },
+      },
+      userRewards: {
+        select: {
+          id: true,
+        },
+      },
       asParent: {
         select: {
           childRewardable: {
             select: {
+              userRewards: {
+                select: {
+                  id: true,
+                },
+              },
               nfts: {
                 select: {
                   tokenId: true,
