@@ -108,7 +108,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     // Aight, what's did they guess?
     const { attempt } = JSON.parse(event.body)
 
-    const { success, finalStep } = await makeAttempt({
+    const { success, finalStep, message } = await makeAttempt({
       stepId,
       data: { simpleTextSolution: attempt },
     })
@@ -158,7 +158,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ success }),
+      body: JSON.stringify({ success, message }),
     }
   }
 
@@ -206,7 +206,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     const { attempt } = JSON.parse(event.body)
 
-    const { success, finalStep } = await makeAttempt({
+    const { success, finalStep, message } = await makeAttempt({
       stepId,
       data: { simpleTextSolution: attempt },
     })
@@ -215,7 +215,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
       return {
         statusCode: 200,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ success }),
+        body: JSON.stringify({ success, message }),
       }
     }
 

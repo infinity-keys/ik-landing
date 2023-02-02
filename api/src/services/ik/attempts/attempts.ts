@@ -51,6 +51,11 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
           select: {
             rewardable: {
               select: {
+                userRewards: {
+                  select: {
+                    id: true,
+                  },
+                },
                 id: true,
                 asChild: {
                   select: {
@@ -72,6 +77,10 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         },
       },
     })
+
+    if (step.puzzle.rewardable.userRewards.length > 0) {
+      return { success: false, message: 'You have already solved this puzzle' }
+    }
 
     const userAttempt = data[solutionType]
 

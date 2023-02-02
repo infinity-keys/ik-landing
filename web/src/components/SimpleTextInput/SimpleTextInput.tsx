@@ -26,6 +26,7 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
   const [loading, setLoading] = useState(false)
   const [failedAttempt, setFailedAttempt] = useState(false)
   const [text, setText] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   // This will use useMemo, possibly
   const handleMakeAttempt = async (e: FormEvent<HTMLFormElement>) => {
@@ -62,7 +63,7 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
       setLoading(false)
 
       if (response.ok) {
-        const { success, finalStep } = await response.json()
+        const { success, finalStep, message } = await response.json()
 
         // if user guesses correctly, move them to next step
         // or puzzle landing if it is the last step
@@ -76,6 +77,7 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
           }
         }
         setFailedAttempt(true)
+        setErrorMessage(message)
       }
     } catch (e) {
       console.log(e)
@@ -110,7 +112,7 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
               <div
                 className={clsx(
                   'relative flex justify-center pt-6 text-gray-150',
-                  failedAttempt ? 'opacity-1' : 'opacity-0'
+                  failedAttempt && !errorMessage ? 'opacity-1' : 'opacity-0'
                 )}
                 data-cy="fail_message_check"
               >
@@ -119,6 +121,8 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
                     'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
                 </Markdown>
               </div>
+
+              {errorMessage && <p className="">{errorMessage}</p>}
 
               <div className="pt-8" data-cy="submit">
                 <Button
