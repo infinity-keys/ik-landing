@@ -95,7 +95,6 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
       const finalStep = step.puzzle.steps.at(-1).id === stepId
 
       if (finalStep) {
-        // @TODO: handle user solving multiple
         // create puzzle reward when user solves last step
         await createUserReward({
           input: {
