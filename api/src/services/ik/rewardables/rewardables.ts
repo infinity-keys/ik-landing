@@ -45,12 +45,14 @@ export const rewardableClaim = ({ id }) => {
   return db.rewardable.findUnique({
     where: { id },
     select: {
+      type: true,
       nfts: {
         select: {
           tokenId: true,
         },
       },
       userRewards: {
+        where: { userId: context.currentUser.id },
         select: {
           id: true,
         },
@@ -60,6 +62,7 @@ export const rewardableClaim = ({ id }) => {
           childRewardable: {
             select: {
               userRewards: {
+                where: { userId: context.currentUser.id },
                 select: {
                   id: true,
                 },
@@ -82,6 +85,7 @@ export const addNftReward = async ({ id }) => {
     where: { id },
     select: {
       userRewards: {
+        where: { userId: context.currentUser.id },
         select: {
           id: true,
         },
@@ -91,6 +95,7 @@ export const addNftReward = async ({ id }) => {
           childRewardable: {
             select: {
               userRewards: {
+                where: { userId: context.currentUser.id },
                 select: {
                   id: true,
                 },

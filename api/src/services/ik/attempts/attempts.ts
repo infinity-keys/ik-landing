@@ -52,6 +52,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
             rewardable: {
               select: {
                 userRewards: {
+                  where: { userId: context.currentUser.id },
                   select: {
                     id: true,
                   },
@@ -108,11 +109,13 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
           const parentPack = await db.rewardable.findUnique({
             where: { id: step.puzzle.rewardable.asChild[0].parentId },
             select: {
+              id: true,
               asParent: {
                 select: {
                   childRewardable: {
                     select: {
                       userRewards: {
+                        where: { userId: context.currentUser.id },
                         select: {
                           id: true,
                         },
@@ -133,7 +136,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
           if (allPuzzlesSolved) {
             await createUserReward({
               input: {
-                rewardableId: step.puzzle.rewardable.asChild[0].parentId,
+                rewardableId: parentPack.id,
                 userId: context.currentUser.id,
               },
             })

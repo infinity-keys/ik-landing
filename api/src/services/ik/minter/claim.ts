@@ -15,14 +15,14 @@ export const claim: QueryResolvers['claim'] = async ({
   const rewardableData = await rewardableClaim({ id: rewardableId })
 
   // rewardable has not been solved
-  if (!rewardableData || rewardableData.userRewards.length < 1) {
+  if (!rewardableData || rewardableData.userRewards.length === 0) {
     return {
       success: true,
       message: 'Please solve to claim',
     }
   }
 
-  const isPack = rewardableData.asParent.length > 0
+  const isPack = rewardableData.type === 'PACK'
 
   if (isPack) {
     // all child rewardables need to be solved first
