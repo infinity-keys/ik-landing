@@ -48,6 +48,7 @@ export const claim: QueryResolvers['claim'] = async ({
     tokenId,
   })
 
+  // if an error occurs in checkClaimed, it will not return a "claimed" key
   if (
     typeof claimed === 'undefined' &&
     checkClaimedErrors &&
@@ -56,6 +57,7 @@ export const claim: QueryResolvers['claim'] = async ({
     return { errors: checkClaimedErrors }
   }
 
+  // the user has claimed this NFT before and is not eligible to claim again
   if (claimed) {
     return {
       claimed,
@@ -64,30 +66,23 @@ export const claim: QueryResolvers['claim'] = async ({
     }
   }
 
-  // generate gatedIds if claiming a pack
+  // generate gatedIds if claiming a pack, bundle, etc
   const gatedIds =
     isPack &&
     rewardableData.asParent.map(
       ({ childRewardable }) => childRewardable.nfts[0].tokenId
     )
 
-  const {
-    signature,
-    errors: verifyErrors,
-    message: verifyMessage,
-  } = await verify({
+  // check user owns other required NFTs (if any) then generate signature
+  const { signature, errors: verifyErrors } = await verify({
     account,
     tokenId,
     chainId,
     gatedIds,
   })
 
-  if (verifyErrors && verifyErrors.length > 0) {
+  if ((verifyErrors && verifyErrors.length > 0) || !signature) {
     return { errors: verifyErrors }
-  }
-
-  if (!signature) {
-    return { message: verifyMessage }
   }
 
   return {
