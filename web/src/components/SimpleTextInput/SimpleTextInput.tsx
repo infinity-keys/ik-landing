@@ -13,19 +13,14 @@ import Lock from 'src/svgs/Lock'
 
 interface SimpleTextInputProps {
   count: number
-  numberOfSteps: number
   step: FindStepQuery['step']
   puzzleId: string
 }
 
-const SimpleTextInput = ({
-  count,
-  step,
-  numberOfSteps,
-  puzzleId,
-}: SimpleTextInputProps) => {
+const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
   const { loading, failedAttempt, makeAttempt } = useMakeAttempt()
   const [text, setText] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   // This will use useMemo, possibly
   const handleMakeAttempt = async (e: FormEvent<HTMLFormElement>) => {
@@ -35,7 +30,6 @@ const SimpleTextInput = ({
     await makeAttempt({
       stepId: step.id,
       stepType: step.type,
-      numberOfSteps,
       puzzleId,
       reqBody: text,
     })
@@ -68,7 +62,7 @@ const SimpleTextInput = ({
               <div
                 className={clsx(
                   'relative flex justify-center pt-6 text-gray-150',
-                  failedAttempt ? 'opacity-1' : 'opacity-0'
+                  failedAttempt && !errorMessage ? 'opacity-1' : 'opacity-0'
                 )}
                 data-cy="fail_message_check"
               >
@@ -77,6 +71,8 @@ const SimpleTextInput = ({
                     'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
                 </Markdown>
               </div>
+
+              {errorMessage && <p className="">{errorMessage}</p>}
 
               <div className="pt-8" data-cy="submit">
                 <Button

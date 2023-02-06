@@ -10,5 +10,10 @@ export const schema = gql`
       page: Int
       count: Int
     ): RewardablesCollection @skipAuth
+    rewardableClaim(id: String!): Rewardable @requireAuth
+  }
+
+  type Mutation {
+    addNftReward(id: String!): UserReward! @requireAuth
   }
 `

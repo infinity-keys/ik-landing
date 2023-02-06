@@ -9,14 +9,13 @@ export const schema = gql`
     successMessage: String
     listPublicly: Boolean!
     type: RewardableType!
-    completed: Boolean!
-    claimed: Boolean!
     organization: Organization!
     orgId: String!
     nfts: [Nft]!
     puzzle: Puzzle
     pack: Pack
     bundle: Bundle
+    userRewards: [UserReward]!
     asParent: [RewardableConnection]!
     asChild: [RewardableConnection]!
     migrateId: String
@@ -40,8 +39,6 @@ export const schema = gql`
     successMessage: String
     listPublicly: Boolean!
     type: RewardableType!
-    completed: Boolean!
-    claimed: Boolean!
     orgId: String!
     migrateId: String
   }
@@ -53,8 +50,6 @@ export const schema = gql`
     successMessage: String
     listPublicly: Boolean
     type: RewardableType
-    completed: Boolean
-    claimed: Boolean
     orgId: String
     migrateId: String
   }

@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { gql, useLazyQuery } from '@apollo/client'
 import {
   contractAddressLookup,
@@ -7,6 +9,7 @@ import {
 import { IKAchievementABI__factory } from '@infinity-keys/contracts'
 import { validChain } from '@infinity-keys/core'
 import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { AddNftRewardMutation } from 'types/graphql'
 import {
   useContractWrite,
   usePrepareContractWrite,
@@ -16,23 +19,38 @@ import {
 } from 'wagmi'
 
 import { useParams } from '@redwoodjs/router'
+import { useMutation } from '@redwoodjs/web'
 
+import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
 import Heading from 'src/components/Heading/Heading'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Seo from 'src/components/Seo/Seo'
 
-const CHECK_CLAIM = gql`
-  query CheckClaim($account: String!, $rewardableId: String!, $chainId: Int!) {
+const CHECK_CLAIM_QUERY = gql`
+  query CheckClaimQuery(
+    $account: String!
+    $rewardableId: String!
+    $chainId: Int!
+  ) {
     claim(account: $account, rewardableId: $rewardableId, chainId: $chainId) {
       claimed
       chainClaimed
       signature
-      message
       tokenId
+      errors
     }
   }
 `
+
+const ADD_NFT_REWARD_MUTATION = gql`
+  mutation AddNftRewardMutation($id: String!) {
+    addNftReward(id: $id) {
+      id
+    }
+  }
+`
+
 const ClaimPage = () => {
   const { chain } = useNetwork()
   const { id: rewardableId } = useParams()
@@ -42,15 +60,24 @@ const ClaimPage = () => {
   const isValidChain = validChain(chain?.id || 0)
   const contractAddress = isValidChain && contractAddressLookup[chain?.id]
 
-  const [claim, { loading: queryLoading, data }] = useLazyQuery(CHECK_CLAIM, {
-    variables: { account: address, rewardableId, chainId: chain?.id },
-  })
+  // checks both db and blockchain to see if user is eligible to mint
+  // if successful, it returns all the data needed to mint nft
+  const [claim, { loading: queryLoading, data }] = useLazyQuery(
+    CHECK_CLAIM_QUERY,
+    {
+      variables: { account: address, rewardableId, chainId: chain?.id },
+    }
+  )
+
+  // add nft to userRewards table on successful transaction
+  const [updateReward] = useMutation<AddNftRewardMutation>(
+    ADD_NFT_REWARD_MUTATION
+  )
 
   const {
     claimed = false,
     chainClaimed = 0,
     signature = '',
-    message = '',
     tokenId = undefined,
   } = data?.claim || {}
 
@@ -59,6 +86,7 @@ const ClaimPage = () => {
     contractInterface: IKAchievementABI__factory.abi,
     functionName: 'claim',
     args: [tokenId, signature],
+    // keeps this hook from firing until we get a valid signature
     enabled: !!signature,
   })
 
@@ -76,6 +104,17 @@ const ClaimPage = () => {
     hash: writeData?.hash,
   })
 
+  useEffect(() => {
+    if (transactionSuccess) {
+      // once the transaction succeeds, add NFT to userReward
+      updateReward({
+        variables: {
+          id: rewardableId,
+        },
+      })
+    }
+  }, [transactionSuccess, rewardableId, updateReward])
+
   return (
     <div className="text-center">
       <Seo title="Claim" description="Claim page" />
@@ -90,7 +129,11 @@ const ClaimPage = () => {
         </div>
       )}
 
-      {message && <p className="mb-4">{message}</p>}
+      {transactionPending && (
+        <div className="mb-4 flex justify-center">
+          <Alert text="Transaction pending. Do not close page." />
+        </div>
+      )}
 
       {!isConnected && (
         <Button text="Connect Wallet" onClick={openConnectModal} />
@@ -107,6 +150,7 @@ const ClaimPage = () => {
       {signature &&
         !claimed &&
         !transactionSuccess &&
+        !transactionPending &&
         isConnected &&
         isValidChain && (
           <>
@@ -135,6 +179,12 @@ const ClaimPage = () => {
           Error processing transaction. Please try again.
         </p>
       )}
+
+      {data?.claim?.errors?.map((err, i) => (
+        <p className="mt-4 italic text-gray-200" key={i}>
+          {err}
+        </p>
+      ))}
     </div>
   )
 }

@@ -18,6 +18,8 @@ export const schema = gql`
 
   type MakeAttemptResponse {
     success: Boolean!
+    finalStep: Boolean
+    message: String
   }
 
   type Query {

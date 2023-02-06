@@ -109,10 +109,28 @@ const attemptHandler = async (event: APIGatewayEvent) => {
       return { statusCode: 403 }
     }
 
+    // Access our cookie raw cyphertext
+    const puzzlesCompletedCypherText = cookie.parse(event.headers.cookie)[
+      PUZZLE_COOKIE_NAME
+    ]
+
+    // @TODO: try/catch here
+    const puzzlesCompleted = decryptCookie(puzzlesCompletedCypherText)
+
+    // trying to solve step more than once
+    if (puzzlesCompleted?.puzzles[puzzleId]?.steps.includes(stepId)) {
+      return {
+        statusCode: 403,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: 'You have already completed this step',
+        }),
+      }
+    }
     // Aight, what's did they guess?
     const { attempt } = JSON.parse(event.body)
 
-    const { success } = await makeAttempt({
+    const { success, finalStep, message } = await makeAttempt({
       stepId,
       stepType,
       data: { [solutionType]: attempt },
@@ -120,14 +138,6 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     // @TODO: work out cookie headers required here
     if (success) {
-      // Access our cookie raw cyphertext
-      const puzzlesCompletedCypherText = cookie.parse(event.headers.cookie)[
-        PUZZLE_COOKIE_NAME
-      ]
-
-      // @TODO: try/catch here
-      const puzzlesCompleted = decryptCookie(puzzlesCompletedCypherText)
-
       if (puzzlesCompleted) {
         PuzzlesData.parse(puzzlesCompleted)
         if (puzzlesCompleted.authId !== context.currentUser.authId) {
@@ -156,14 +166,14 @@ const attemptHandler = async (event: APIGatewayEvent) => {
             sameSite: 'strict',
           }),
         },
-        body: JSON.stringify({ success }),
+        body: JSON.stringify({ success, finalStep }),
       }
     }
     // Womp womp
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ success }),
+      body: JSON.stringify({ success, message }),
     }
   }
 
@@ -209,9 +219,20 @@ const attemptHandler = async (event: APIGatewayEvent) => {
       return { statusCode: 400 }
     }
 
+    // trying to solve step more than once
+    if (puzzlesCompleted.puzzles[puzzleId].steps.includes(stepId)) {
+      return {
+        statusCode: 403,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: 'You have already completed this step',
+        }),
+      }
+    }
+
     const { attempt } = JSON.parse(event.body)
 
-    const { success } = await makeAttempt({
+    const { success, finalStep, message } = await makeAttempt({
       stepId,
       stepType,
       data: { [solutionType]: attempt },
@@ -221,7 +242,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
       return {
         statusCode: 200,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ success }),
+        body: JSON.stringify({ success, message }),
       }
     }
 
@@ -246,7 +267,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
           sameSite: 'strict',
         }),
       },
-      body: JSON.stringify({ success }),
+      body: JSON.stringify({ success, finalStep }),
     }
   }
 }

@@ -1,6 +1,8 @@
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import type { QueryResolvers } from 'types/graphql'
 
+import { ForbiddenError } from '@redwoodjs/graphql-server'
+
 import { db } from 'src/lib/db'
 
 export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
@@ -43,12 +45,28 @@ export const rewardableClaim = ({ id }) => {
   return db.rewardable.findUnique({
     where: { id },
     select: {
-      nfts: true,
-      completed: true,
+      type: true,
+      nfts: {
+        select: {
+          tokenId: true,
+        },
+      },
+      userRewards: {
+        where: { userId: context.currentUser.id },
+        select: {
+          id: true,
+        },
+      },
       asParent: {
         select: {
           childRewardable: {
             select: {
+              userRewards: {
+                where: { userId: context.currentUser.id },
+                select: {
+                  id: true,
+                },
+              },
               nfts: {
                 select: {
                   tokenId: true,
@@ -56,6 +74,68 @@ export const rewardableClaim = ({ id }) => {
               },
             },
           },
+        },
+      },
+    },
+  })
+}
+
+export const addNftReward: QueryResolvers['userReward'] = async ({ id }) => {
+  const rewardable = await db.rewardable.findUnique({
+    where: { id },
+    select: {
+      type: true,
+      userRewards: {
+        where: { userId: context.currentUser.id },
+        select: {
+          id: true,
+        },
+      },
+      asParent: {
+        select: {
+          childRewardable: {
+            select: {
+              userRewards: {
+                where: { userId: context.currentUser.id },
+                select: {
+                  id: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      nfts: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  })
+
+  const isPack = rewardable.type === 'PACK'
+
+  if (isPack) {
+    const allPuzzlesSolved = rewardable.asParent.every(
+      ({ childRewardable }) => childRewardable.userRewards.length > 0
+    )
+
+    if (!allPuzzlesSolved) {
+      throw new ForbiddenError('You have not solved all the associated puzzles')
+    }
+  }
+
+  return db.userReward.update({
+    where: {
+      userId_rewardableId: {
+        userId: context.currentUser.id,
+        rewardableId: id,
+      },
+    },
+    data: {
+      nfts: {
+        connect: {
+          id: rewardable.nfts[0].id,
         },
       },
     },

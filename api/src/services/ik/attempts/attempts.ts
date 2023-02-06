@@ -14,6 +14,7 @@ import { db } from 'src/lib/db'
 import { decryptCookie } from 'src/lib/encoding/encoding'
 import { createSolve } from 'src/services/solves/solves'
 import { step } from 'src/services/steps/steps'
+import { createUserReward } from 'src/services/userRewards/userRewards'
 
 import { checkNft } from '../minter/check-nft'
 
@@ -27,6 +28,54 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
     const type = stepTypeLookup[stepType]
     const solutionType = stepSolutionTypeLookup[stepType]
+    const attempt = await db.attempt.create({
+      data: {
+        userId: context?.currentUser.id,
+        stepId,
+        data,
+      },
+    })
+
+    const step = await db.step.findUnique({
+      where: { id: stepId },
+      select: {
+        [type]: true,
+        puzzle: {
+          select: {
+            rewardable: {
+              select: {
+                userRewards: {
+                  where: { userId: context.currentUser.id },
+                  select: {
+                    id: true,
+                  },
+                },
+                id: true,
+                asChild: {
+                  select: {
+                    parentId: true,
+                  },
+                },
+              },
+            },
+            steps: {
+              orderBy: {
+                stepSortWeight: 'asc',
+              },
+              select: {
+                id: true,
+                stepSortWeight: true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    if (step.puzzle.rewardable.userRewards.length > 0) {
+      return { success: false, message: 'You have already solved this puzzle' }
+    }
+
     const userAttempt = data[solutionType]
 
     if (stepType === 'SIMPLE_TEXT') {
@@ -36,11 +85,6 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
           stepId,
           data,
         },
-      })
-
-      const step = await db.step.findUnique({
-        where: { id: stepId },
-        select: { [type]: true },
       })
 
       if (step[type].solution === userAttempt) {
@@ -76,6 +120,60 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
       return { success: success && nftPass }
     }
+
+    // this needs to go into each step type
+    const finalStep = step.puzzle.steps.at(-1).id === stepId
+
+    if (finalStep) {
+      // create puzzle reward when user solves last step
+      await createUserReward({
+        input: {
+          rewardableId: step.puzzle.rewardable.id,
+          userId: context.currentUser.id,
+        },
+      })
+
+      // does this step's puzzle belong to a pack
+      if (step.puzzle.rewardable.asChild.length > 0) {
+        const parentPack = await db.rewardable.findUnique({
+          where: { id: step.puzzle.rewardable.asChild[0].parentId },
+          select: {
+            id: true,
+            asParent: {
+              select: {
+                childRewardable: {
+                  select: {
+                    userRewards: {
+                      where: { userId: context.currentUser.id },
+                      select: {
+                        id: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        })
+
+        // has this user now completed all puzzles in this pack
+        const allPuzzlesSolved = parentPack.asParent.every(
+          ({ childRewardable }) => childRewardable.userRewards.length > 0
+        )
+
+        // create reward for pack
+        if (allPuzzlesSolved) {
+          await createUserReward({
+            input: {
+              rewardableId: parentPack.id,
+              userId: context.currentUser.id,
+            },
+          })
+        }
+      }
+    }
+
+    return { success: true, finalStep }
   } catch (e) {
     console.log(e)
     return { success: false }

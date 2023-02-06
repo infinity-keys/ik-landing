@@ -1,75 +1,103 @@
 import { QueryResolvers } from 'types/graphql'
 
+import { getSignature } from 'src/lib/verifySignature'
 import { rewardableClaim } from 'src/services/ik/rewardables/rewardables'
 
+import { checkBalance } from './check-balance'
 import { checkClaimed } from './check-claimed'
-import { verify } from './verify'
 
 export const claim: QueryResolvers['claim'] = async ({
   account,
   rewardableId,
   chainId,
 }) => {
-  // check cookie to see if puzzleId steps are greater than 0, but what about steps...
-  // check db to see if user can claim before hitting block chain
+  // @TODO: can we check cookie to see if puzzleId steps are greater than 0, (but what about packs...)
 
   const rewardableData = await rewardableClaim({ id: rewardableId })
 
-  if (!rewardableData || !rewardableData.completed) {
+  // rewardable has not been solved
+  if (!rewardableData || rewardableData.userRewards.length === 0) {
     return {
-      success: true,
-      message: 'You have not completed this',
+      errors: ['Please solve to claim'],
     }
   }
 
-  const tokenId = rewardableData.nfts[0].tokenId
+  const isPack = rewardableData.type === 'PACK'
 
+  if (isPack) {
+    // all child rewardables need to be solved first
+    const solvedAllChildren = rewardableData.asParent.every(
+      ({ childRewardable }) => childRewardable.userRewards.length > 0
+    )
+
+    if (!solvedAllChildren) {
+      return {
+        errors: ['Must solve all associated puzzles before claiming'],
+      }
+    }
+  }
+
+  const { tokenId } = rewardableData.nfts[0]
+
+  // has this nft already been claimed on this account
   const {
     claimed,
     chainClaimed,
-    success: checkClaimedSuccess,
+    errors: checkClaimedErrors,
   } = await checkClaimed({
     account,
     tokenId,
   })
 
-  if (!checkClaimedSuccess) {
-    return { success: false, message: 'Error checking blockchain' }
+  // if an error occurs in checkClaimed, it will not return a "claimed" key
+  if (
+    typeof claimed === 'undefined' &&
+    checkClaimedErrors &&
+    checkClaimedErrors.length > 0
+  ) {
+    return { errors: checkClaimedErrors }
   }
 
+  // the user has claimed this NFT before and is not eligible to claim again
   if (claimed) {
     return {
-      success: true,
       claimed,
       chainClaimed,
-      message: 'You have already claimed this NFT',
+      errors: ['You have already claimed this NFT'],
     }
   }
 
-  const gatedIds =
-    rewardableData.asParent &&
-    rewardableData.asParent.map(
+  // if the rewardable has children NFTs that need to have been claimed
+  // ensure user has claimed them all before generating signature
+  if (isPack) {
+    // generate gatedIds if claiming a pack, bundle, etc
+    const requiredNftIds = rewardableData.asParent.map(
       ({ childRewardable }) => childRewardable.nfts[0].tokenId
     )
 
-  const {
-    signature,
-    success: verifySuccess,
-    message: verifyMessage,
-  } = await verify({
-    account,
-    tokenId,
-    chainId,
-    gatedIds,
-  })
+    const { claimed: hasRequiredNfts, errors: checkBalanceErrors } =
+      await checkBalance({
+        account,
+        chainId,
+        tokenIds: requiredNftIds,
+      })
 
-  if (!verifySuccess || !signature) {
-    return { success: false, message: verifyMessage }
+    if (checkBalanceErrors && checkBalanceErrors.length > 0) {
+      return { errors: checkBalanceErrors }
+    }
+
+    if (!hasRequiredNfts) {
+      return {
+        errors: [
+          'You do not have the required NFTs on this chain. Please ensure you have completed the above puzzles and are on the correct chain.',
+        ],
+      }
+    }
   }
 
+  const signature = await getSignature(chainId, account, tokenId)
+
   return {
-    success: true,
-    chainClaimed,
     signature,
     tokenId,
   }

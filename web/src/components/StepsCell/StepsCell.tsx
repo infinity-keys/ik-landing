@@ -1,12 +1,9 @@
-import { useEffect } from 'react'
-
 import { getThumbnailProgress } from '@infinity-keys/core'
 import loFindLastIndex from 'lodash/findLastIndex'
 import type { FindStepQuery, FindStepQueryVariables } from 'types/graphql'
 
 import { useAuth } from '@redwoodjs/auth'
 import { routes, useParams } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Button from 'src/components/Button/Button'
@@ -22,7 +19,9 @@ export const QUERY = gql`
       id
       rewardable {
         id
-        completed
+        userRewards {
+          id
+        }
       }
       steps {
         id
@@ -45,19 +44,6 @@ export const QUERY = gql`
         contractAddress
         poapEventId
       }
-    }
-  }
-`
-
-// @TODO: needs server side validation
-const UPDATE_REWARDABLE_COMPLETE = gql`
-  mutation UpdateRewardableCompleteMutation(
-    $id: String!
-    $input: UpdateRewardableInput!
-  ) {
-    updateRewardable(id: $id, input: $input) {
-      id
-      completed
     }
   }
 `
@@ -88,33 +74,9 @@ export const Success = ({
   const { slug } = useParams()
   const { isAuthenticated } = useAuth()
 
-  const [updateRewardable, { data }] = useMutation(UPDATE_REWARDABLE_COMPLETE, {
-    onCompleted: () => {},
-    onError: (error) => {
-      console.log(error)
-    },
-  })
-
   const currentStepIndex = isAuthenticated
     ? loFindLastIndex(puzzle.steps, (step) => step.hasUserCompletedStep) + 1
     : 0
-
-  const hasCompletedAllSteps = puzzle.steps.every(
-    ({ hasUserCompletedStep }) => hasUserCompletedStep
-  )
-
-  useEffect(() => {
-    if (!puzzle.rewardable.completed && hasCompletedAllSteps) {
-      updateRewardable({
-        variables: {
-          id: puzzle.rewardable.id,
-          input: {
-            completed: true,
-          },
-        },
-      })
-    }
-  }, [hasCompletedAllSteps, puzzle.rewardable, updateRewardable])
 
   return (
     <div>
@@ -124,7 +86,6 @@ export const Success = ({
             <SimpleTextInput
               count={step.stepSimpleText.solutionCharCount}
               step={step}
-              numberOfSteps={puzzle.steps.length}
               puzzleId={puzzle.id}
             />
           )}
@@ -149,7 +110,7 @@ export const Success = ({
         </>
       )}
 
-      {puzzle.rewardable.completed && (
+      {puzzle.rewardable.userRewards.length > 0 && (
         <Button to={routes.claim({ id: puzzle.rewardable.id })} text="Mint" />
       )}
 

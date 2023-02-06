@@ -1,11 +1,8 @@
-import { useEffect } from 'react'
-
 import { buildUrlString, cloudinaryUrl } from '@infinity-keys/core'
 import { LensShareButton } from '@infinity-keys/react-lens-share-button'
 import type { FindRewardablePackBySlug } from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
 
 import Button from 'src/components/Button'
 import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
@@ -19,47 +16,10 @@ interface Props {
   rewardable: NonNullable<FindRewardablePackBySlug['pack']>
 }
 
-// @TODO: needs server side validation
-const UPDATE_REWARDABLE_COMPLETE = gql`
-  mutation UpdateRewardableCompleteMutation(
-    $id: String!
-    $input: UpdateRewardableInput!
-  ) {
-    updateRewardable(id: $id, input: $input) {
-      id
-      completed
-    }
-  }
-`
-
 const LAYOUT_BREAKPOINT = 768
 
 const Rewardable = ({ rewardable }: Props) => {
   const width = useCurrentWidth()
-
-  const hasCompletedAllPuzzles = rewardable.asParent.every(
-    ({ childRewardable }) => childRewardable.completed
-  )
-
-  const [updateRewardable, { data }] = useMutation(UPDATE_REWARDABLE_COMPLETE, {
-    onCompleted: () => {},
-    onError: (error) => {
-      console.log(error)
-    },
-  })
-
-  useEffect(() => {
-    if (!rewardable.completed && hasCompletedAllPuzzles) {
-      updateRewardable({
-        variables: {
-          id: rewardable.id,
-          input: {
-            completed: true,
-          },
-        },
-      })
-    }
-  }, [hasCompletedAllPuzzles, rewardable, updateRewardable])
 
   return (
     <>
@@ -80,7 +40,7 @@ const Rewardable = ({ rewardable }: Props) => {
           cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
         />
 
-        {rewardable.completed && (
+        {rewardable.userRewards.length > 0 && (
           <Button to={routes.claim({ id: rewardable.id })} text="Mint" />
         )}
 
