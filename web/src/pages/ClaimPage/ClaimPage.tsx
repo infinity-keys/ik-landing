@@ -27,8 +27,12 @@ import Heading from 'src/components/Heading/Heading'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Seo from 'src/components/Seo/Seo'
 
-const CHECK_CLAIM = gql`
-  query CheckClaim($account: String!, $rewardableId: String!, $chainId: Int!) {
+const CHECK_CLAIM_QUERY = gql`
+  query CheckClaimQuery(
+    $account: String!
+    $rewardableId: String!
+    $chainId: Int!
+  ) {
     claim(account: $account, rewardableId: $rewardableId, chainId: $chainId) {
       claimed
       chainClaimed
@@ -58,9 +62,12 @@ const ClaimPage = () => {
 
   // checks both db and blockchain to see if user is eligible to mint
   // if successful, it returns all the data needed to mint nft
-  const [claim, { loading: queryLoading, data }] = useLazyQuery(CHECK_CLAIM, {
-    variables: { account: address, rewardableId, chainId: chain?.id },
-  })
+  const [claim, { loading: queryLoading, data }] = useLazyQuery(
+    CHECK_CLAIM_QUERY,
+    {
+      variables: { account: address, rewardableId, chainId: chain?.id },
+    }
+  )
 
   // add nft to userRewards table on successful transaction
   const [updateReward] = useMutation<AddNftRewardMutation>(
@@ -99,6 +106,7 @@ const ClaimPage = () => {
 
   useEffect(() => {
     if (transactionSuccess) {
+      // once the transaction succeeds, add NFT to userReward
       updateReward({
         variables: {
           id: rewardableId,
