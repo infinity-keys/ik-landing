@@ -80,7 +80,7 @@ export const rewardableClaim = ({ id }) => {
   })
 }
 
-export const addNftReward = async ({ id }) => {
+export const addNftReward: QueryResolvers['userReward'] = async ({ id }) => {
   const rewardable = await db.rewardable.findUnique({
     where: { id },
     select: {
