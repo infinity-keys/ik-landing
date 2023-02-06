@@ -3,14 +3,12 @@ export const schema = gql`
     errors: [String!]
     claimed: Boolean
     claimedTokens: [Boolean!]
-    message: String
   }
 
   type CheckClaimedResponse {
     errors: [String!]
     claimed: Boolean
     chainClaimed: Int
-    message: String
   }
 
   type ClaimResponse {
@@ -18,26 +16,17 @@ export const schema = gql`
     claimed: Boolean
     chainClaimed: Int
     signature: String
-    message: String
     tokenId: Int
   }
 
   type CheckNftResponse {
     errors: [String!]
     nftPass: Boolean
-    message: String
   }
 
   type CheckWalletAgeResponse {
     errors: [String!]
     approved: Boolean!
-  }
-
-  type VerifyResponse {
-    errors: [String!]
-    message: String
-    signature: String
-    claimedTokens: [Boolean!]
   }
 
   type Query {
@@ -75,13 +64,5 @@ export const schema = gql`
     # finds unique db entry by contract name and token id
     nftByContractAndTokenId(tokenId: Int!, contractName: String!): Nft
       @requireAuth
-
-    # checks if user has the NFTs required to claim a gated token
-    verify(
-      account: String!
-      tokenId: Int!
-      chainId: Int!
-      gatedIds: [Int!]
-    ): VerifyResponse! @requireAuth
   }
 `

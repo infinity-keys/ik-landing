@@ -33,7 +33,6 @@ const CHECK_CLAIM = gql`
       claimed
       chainClaimed
       signature
-      message
       tokenId
       errors
     }
@@ -72,7 +71,6 @@ const ClaimPage = () => {
     claimed = false,
     chainClaimed = 0,
     signature = '',
-    message = '',
     tokenId = undefined,
   } = data?.claim || {}
 
@@ -128,8 +126,6 @@ const ClaimPage = () => {
           <Alert text="Transaction pending. Do not close page." />
         </div>
       )}
-
-      {message && <p className="mb-4">{message}</p>}
 
       {!isConnected && (
         <Button text="Connect Wallet" onClick={openConnectModal} />
