@@ -28,10 +28,11 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
 
       // If no event or error return false
       // Have to move this return statement below to allow for cookies!
-      if (!data.event) return { success: true, nftPass: false }
-      return { success: true, nftPass: true }
+      if (!data.event) return { nftPass: false }
+
+      return { nftPass: true }
     } catch (e) {
-      return { success: false, nftPass: false }
+      return { errors: ['There was a problem checking your POAP'] }
     }
   }
 
@@ -41,15 +42,19 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
 
   const provider = providerLookup[chainId]
 
-  // @BLOOM: Using provider here- maybe a better way ?
-  // This contract is a generic one, thus can't use our contract instances
-  const contract = new ethers.Contract(contractAddress, abi, provider)
+  try {
+    // @BLOOM: Using provider here- maybe a better way ?
+    // This contract is a generic one, thus can't use our contract instances
+    const contract = new ethers.Contract(contractAddress, abi, provider)
 
-  const balance = parseInt(
-    typeof tokenId === 'number'
-      ? await contract.balanceOf(account, tokenId)
-      : await contract.balanceOf(account),
-    10
-  )
-  return { success: true, nftPass: balance > 0 }
+    const balance = parseInt(
+      typeof tokenId === 'number'
+        ? await contract.balanceOf(account, tokenId)
+        : await contract.balanceOf(account),
+      10
+    )
+    return { nftPass: balance > 0 }
+  } catch {
+    return { errors: ['There was a problem checking your NFT'] }
+  }
 }
