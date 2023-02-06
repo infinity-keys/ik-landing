@@ -40,6 +40,8 @@ export const Nft: NftRelationResolvers = {
     return db.nft.findUnique({ where: { id: root?.id } }).rewardables()
   },
   userRewards: (_obj, { root }) => {
-    return db.nft.findUnique({ where: { id: root?.id } }).userRewards()
+    return db.nft
+      .findUnique({ where: { id: root?.id } })
+      .userRewards({ where: { userId: context.currentUser.id } })
   },
 }

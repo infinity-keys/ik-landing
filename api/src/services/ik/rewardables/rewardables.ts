@@ -84,6 +84,7 @@ export const addNftReward = async ({ id }) => {
   const rewardable = await db.rewardable.findUnique({
     where: { id },
     select: {
+      type: true,
       userRewards: {
         where: { userId: context.currentUser.id },
         select: {
@@ -112,7 +113,7 @@ export const addNftReward = async ({ id }) => {
     },
   })
 
-  const isPack = rewardable.asParent.length > 0
+  const isPack = rewardable.type === 'PACK'
 
   if (isPack) {
     const allPuzzlesSolved = rewardable.asParent.every(

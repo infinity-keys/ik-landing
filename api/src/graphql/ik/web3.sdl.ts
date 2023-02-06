@@ -1,20 +1,20 @@
 export const schema = gql`
   type CheckBalanceResponse {
-    success: Boolean!
+    errors: [String!]
     claimed: Boolean
     claimedTokens: [Boolean!]
     message: String
   }
 
   type CheckClaimedResponse {
-    success: Boolean!
+    errors: [String!]
     claimed: Boolean
     chainClaimed: Int
     message: String
   }
 
-  type claimResponse {
-    success: Boolean!
+  type ClaimResponse {
+    errors: [String!]
     claimed: Boolean
     chainClaimed: Int
     signature: String
@@ -23,18 +23,18 @@ export const schema = gql`
   }
 
   type CheckNftResponse {
-    success: Boolean!
+    errors: [String!]
     nftPass: Boolean
     message: String
   }
 
   type CheckWalletAgeResponse {
-    success: Boolean!
+    errors: [String!]
     approved: Boolean!
   }
 
   type VerifyResponse {
-    success: Boolean!
+    errors: [String!]
     message: String
     signature: String
     claimedTokens: [Boolean!]
@@ -53,7 +53,7 @@ export const schema = gql`
       account: String!
       rewardableId: String!
       chainId: Int!
-    ): claimResponse! @requireAuth
+    ): ClaimResponse! @requireAuth
 
     # checks if user has NFT on any of the supported networks
     checkClaimed(account: String!, tokenId: Int!): CheckClaimedResponse!

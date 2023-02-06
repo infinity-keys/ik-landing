@@ -62,9 +62,9 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
       })
       setLoading(false)
 
-      if (response.ok) {
-        const { success, finalStep, message } = await response.json()
+      const { success, finalStep, message } = await response.json()
 
+      if (response.ok) {
         // if user guesses correctly, move them to next step
         // or puzzle landing if it is the last step
         if (success) {
@@ -77,8 +77,8 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
           }
         }
         setFailedAttempt(true)
-        message && setErrorMessage(message)
       }
+      message && setErrorMessage(message)
     } catch (e) {
       console.log(e)
       setLoading(false)

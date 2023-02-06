@@ -13,8 +13,7 @@ export const checkBalance: QueryResolvers['checkBalance'] = async ({
 
   if (!contract)
     return {
-      success: false,
-      message: 'Something went wrong. Please try again.',
+      errors: ['Error looking up contract.'],
     }
 
   // ADD CHECK TO MAKE SURE TOKEN IDS VALID => Will just catch here
@@ -34,11 +33,10 @@ export const checkBalance: QueryResolvers['checkBalance'] = async ({
     // checks if all nft are claimed, returns true if eligible to claim pack nft
     const claimed = claimedTokens?.every((b) => b)
 
-    return { success: true, claimed, claimedTokens }
+    return { claimed, claimedTokens }
   } catch (error) {
     return {
-      success: false,
-      message: error,
+      errors: ['Error checking balance'],
     }
   }
 }

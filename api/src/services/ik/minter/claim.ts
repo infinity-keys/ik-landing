@@ -17,8 +17,7 @@ export const claim: QueryResolvers['claim'] = async ({
   // rewardable has not been solved
   if (!rewardableData || rewardableData.userRewards.length === 0) {
     return {
-      success: true,
-      message: 'Please solve to claim',
+      errors: ['Please solve to claim'],
     }
   }
 
@@ -32,8 +31,7 @@ export const claim: QueryResolvers['claim'] = async ({
 
     if (!solvedAllChildren) {
       return {
-        success: true,
-        message: 'Must solve all associated puzzles before claiming',
+        errors: ['Must solve all associated puzzles before claiming'],
       }
     }
   }
@@ -44,19 +42,22 @@ export const claim: QueryResolvers['claim'] = async ({
   const {
     claimed,
     chainClaimed,
-    success: checkClaimedSuccess,
+    errors: checkClaimedErrors,
   } = await checkClaimed({
     account,
     tokenId,
   })
 
-  if (!checkClaimedSuccess) {
-    return { success: false, message: 'Error checking blockchain' }
+  if (
+    typeof claimed === 'undefined' &&
+    checkClaimedErrors &&
+    checkClaimedErrors.length > 0
+  ) {
+    return { errors: checkClaimedErrors }
   }
 
   if (claimed) {
     return {
-      success: true,
       claimed,
       chainClaimed,
       message: 'You have already claimed this NFT',
@@ -72,7 +73,7 @@ export const claim: QueryResolvers['claim'] = async ({
 
   const {
     signature,
-    success: verifySuccess,
+    errors: verifyErrors,
     message: verifyMessage,
   } = await verify({
     account,
@@ -81,12 +82,15 @@ export const claim: QueryResolvers['claim'] = async ({
     gatedIds,
   })
 
-  if (!verifySuccess || !signature) {
-    return { success: false, message: verifyMessage }
+  if (verifyErrors && verifyErrors.length > 0) {
+    return { errors: verifyErrors }
+  }
+
+  if (!signature) {
+    return { message: verifyMessage }
   }
 
   return {
-    success: true,
     chainClaimed,
     signature,
     tokenId,

@@ -35,6 +35,7 @@ const CHECK_CLAIM = gql`
       signature
       message
       tokenId
+      errors
     }
   }
 `
@@ -174,6 +175,12 @@ const ClaimPage = () => {
           Error processing transaction. Please try again.
         </p>
       )}
+
+      {data?.claim?.errors?.map((err, i) => (
+        <p className="mt-4 italic text-gray-200" key={i}>
+          {err}
+        </p>
+      ))}
     </div>
   )
 }

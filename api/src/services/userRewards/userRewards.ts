@@ -7,7 +7,7 @@ import type {
 import { db } from 'src/lib/db'
 
 export const userRewards: QueryResolvers['userRewards'] = () => {
-  return db.userReward.findMany()
+  return db.userReward.findMany({ where: { userId: context.currentUser.id } })
 }
 
 export const userReward: QueryResolvers['userReward'] = ({ id }) => {

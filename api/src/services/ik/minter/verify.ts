@@ -29,24 +29,24 @@ export const verify: QueryResolvers['verify'] = async ({
           chainId,
         })
 
+      // @TODO: I think claimedTokens was a progress hack. we might not need this
       claimedTokens = claimedTokensBalance
 
       if (!ownedStatus) {
         return {
-          success: true,
-          message:
+          errors: [
             'You do not have the required NFTS on this chain. Please ensure you have completed the above puzzles and are on the correct chain.',
+          ],
           claimedTokens,
         }
       }
     } catch (e) {
       return {
-        success: false,
-        message: 'Something went wrong verifying your claim',
+        errors: ['Something went wrong verifying your claim'],
       }
     }
   }
   const signature = await getSignature(chainId, account, tokenId.toString())
 
-  return { success: true, signature, claimedTokens }
+  return { signature, claimedTokens }
 }
