@@ -52,7 +52,6 @@ export default async function handler(
     nftPass = claimed ? true : false;
   } else {
     const type721 = tokenId ? false : true;
-
     const provider = providerLookup[parseInt(chainId, 10)];
 
     // Dealing with ERC721
