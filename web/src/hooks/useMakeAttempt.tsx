@@ -8,7 +8,6 @@ import { navigate, routes, useParams } from '@redwoodjs/router'
 interface SendAttemptProps {
   stepId: string
   stepType: StepType
-  numberOfSteps: number
   puzzleId: string
   reqBody: string | object
   redirectOnSuccess?: boolean
@@ -20,11 +19,11 @@ const useMakeAttempt = () => {
 
   const [loading, setLoading] = useState(false)
   const [failedAttempt, setFailedAttempt] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const makeAttempt = async ({
     stepId,
     stepType,
-    numberOfSteps,
     puzzleId,
     reqBody,
     redirectOnSuccess = true,
@@ -55,16 +54,16 @@ const useMakeAttempt = () => {
         },
         body,
       })
+      const data = await response.json()
+      const { success, finalStep, message } = data
 
       setLoading(false)
       if (response.ok) {
-        const data = await response.json()
-
         // if user guesses correctly, move them to next step
         // or puzzle landing if it is the last step
-        if (data.success) {
+        if (success) {
           if (redirectOnSuccess) {
-            if (parseInt(stepParam, 10) + 1 > numberOfSteps) {
+            if (finalStep) {
               return navigate(routes.puzzleLanding({ slug }))
             } else {
               return navigate(
@@ -76,6 +75,8 @@ const useMakeAttempt = () => {
         }
 
         setFailedAttempt(true)
+        message && setErrorMessage(message)
+        return data
       }
     } catch (e) {
       console.log(e)
@@ -85,9 +86,8 @@ const useMakeAttempt = () => {
 
   return {
     loading,
-    setLoading,
     failedAttempt,
-    setFailedAttempt,
+    errorMessage,
     makeAttempt,
   }
 }

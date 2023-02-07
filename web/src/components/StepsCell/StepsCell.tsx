@@ -91,11 +91,7 @@ export const Success = ({
           )}
 
           {step.type === 'NFT_CHECK' && (
-            <NftCheckButton
-              step={step}
-              puzzleId={puzzle.id}
-              numberOfSteps={puzzle.steps.length}
-            />
+            <NftCheckButton step={step} puzzleId={puzzle.id} />
           )}
 
           <div className="mx-auto mt-12 mb-12 max-w-prose p-4 md:mt-16 md:mb-20">

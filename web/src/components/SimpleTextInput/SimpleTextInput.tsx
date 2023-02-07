@@ -18,9 +18,8 @@ interface SimpleTextInputProps {
 }
 
 const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
-  const { loading, failedAttempt, makeAttempt } = useMakeAttempt()
+  const { loading, failedAttempt, makeAttempt, errorMessage } = useMakeAttempt()
   const [text, setText] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
 
   // This will use useMemo, possibly
   const handleMakeAttempt = async (e: FormEvent<HTMLFormElement>) => {

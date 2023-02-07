@@ -11,11 +11,9 @@ import Markdown from '../Markdown'
 const NftCheckButton = ({
   step,
   puzzleId,
-  numberOfSteps,
 }: {
   step: FindStepQuery['step']
   puzzleId: string
-  numberOfSteps: number
 }) => {
   const { address } = useAccount()
   const { loading, failedAttempt, makeAttempt } = useMakeAttempt()
@@ -35,7 +33,6 @@ const NftCheckButton = ({
     await makeAttempt({
       stepId: step.id,
       stepType: step.type,
-      numberOfSteps,
       puzzleId,
       reqBody,
     })

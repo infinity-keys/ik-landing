@@ -4,6 +4,7 @@ import {
 } from '@infinity-keys/constants'
 import type { APIGatewayEvent } from 'aws-lambda'
 import cookie from 'cookie'
+import { StepType } from 'types/graphql'
 import { z } from 'zod'
 
 import { context } from '@redwoodjs/graphql-server'
@@ -132,7 +133,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     const { success, finalStep, message } = await makeAttempt({
       stepId,
-      stepType,
+      stepType: stepType as StepType,
       data: { [solutionType]: attempt },
     })
 
@@ -234,7 +235,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     const { success, finalStep, message } = await makeAttempt({
       stepId,
-      stepType,
+      stepType: stepType as StepType,
       data: { [solutionType]: attempt },
     })
 
