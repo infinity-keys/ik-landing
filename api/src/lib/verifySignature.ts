@@ -8,7 +8,7 @@ const wallet = new ethers.Wallet(PRIVATE_KEY_VERIFY)
 export const getSignature = async (
   chainId: number,
   account: string,
-  tokenId: string
+  tokenId: number
 ) => {
   const contractAddress = contractAddressLookup[chainId]
 
@@ -16,7 +16,7 @@ export const getSignature = async (
 
   const hash = ethers.utils.solidityKeccak256(
     ['address', 'address', 'string', 'string'],
-    [contractAddress, account, tokenId, MINT_SECRET_VERIFY]
+    [contractAddress, account, tokenId.toString(), MINT_SECRET_VERIFY]
   )
 
   return await wallet.signMessage(ethers.utils.arrayify(hash))

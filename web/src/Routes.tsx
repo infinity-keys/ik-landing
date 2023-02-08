@@ -18,11 +18,8 @@ const Routes = () => {
   return (
     <Router useAuth={useAuth}>
       <Private unauthenticated="auth">
-        {/* <Set wrap={ScaffoldLayout} title="Puzzles" titleTo="puzzles" buttonLabel="New Puzzle" buttonTo="newPuzzle"> */}
         <Route path="/puzzle/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newPuzzle" />
         <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" />
-        {/* Handle both /puzzle and /puzzle/1 routes. Place shorter route last to allow url creation to work */}
-        {/* </Set> */}
 
         <Set wrap={[MainLayout, WrapperLayout]}>
           <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleStep" />
@@ -31,6 +28,7 @@ const Routes = () => {
 
       <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
         <Route path="/user/delete" page={DeletePage} name="delete" />
+        <Route path="/claim/{id}" page={ClaimPage} name="claim" />
         <Route path="/user" page={UserPage} name="user" />
 
         <Route path="/auth" page={AuthPage} name="auth" />

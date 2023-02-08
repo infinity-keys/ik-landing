@@ -36,13 +36,12 @@ export const deleteNft: MutationResolvers['deleteNft'] = ({ id }) => {
 }
 
 export const Nft: NftRelationResolvers = {
-  puzzles: (_obj, { root }) => {
-    return db.nft.findUnique({ where: { id: root?.id } }).puzzles()
+  rewardables: (_obj, { root }) => {
+    return db.nft.findUnique({ where: { id: root?.id } }).rewardables()
   },
-  packs: (_obj, { root }) => {
-    return db.nft.findUnique({ where: { id: root?.id } }).packs()
-  },
-  bundles: (_obj, { root }) => {
-    return db.nft.findUnique({ where: { id: root?.id } }).bundles()
+  userRewards: (_obj, { root }) => {
+    return db.nft
+      .findUnique({ where: { id: root?.id } })
+      .userRewards({ where: { userId: context.currentUser.id } })
   },
 }

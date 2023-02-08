@@ -107,6 +107,15 @@ export const marketplaceLookup: {
   [OPTIMISM_CHAIN_ID]: OPTIMISM_MARKETPLACE_LINK,
 }
 
+export const marketplaceNameLookup: {
+  [key: number]: string
+} = {
+  [ETH_CHAIN_ID]: 'OpenSea',
+  [POLYGON_CHAIN_ID]: 'OpenSea',
+  [AVAX_CHAIN_ID]: 'Joepegs',
+  [OPTIMISM_CHAIN_ID]: 'Quixotic',
+}
+
 // RAINBOW KIT PARAMS
 export const avalancheChain: Chain = {
   id: AVAX_CHAIN_ID,

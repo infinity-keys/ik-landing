@@ -16,6 +16,7 @@ export const schema = gql`
     submissions: [Submission]!
     attempts: [Attempt]!
     solved: [Solve]!
+    userRewards: [UserReward]!
   }
 
   enum SiteRole {

@@ -15,23 +15,18 @@ import Lock from 'src/svgs/Lock'
 
 interface SimpleTextInputProps {
   count: number
-  numberOfSteps: number
   step: FindStepQuery['step']
   puzzleId: string
 }
 
-const SimpleTextInput = ({
-  count,
-  step,
-  numberOfSteps,
-  puzzleId,
-}: SimpleTextInputProps) => {
+const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
   const { slug, step: stepParam } = useParams()
   const { getToken } = useAuth()
 
   const [loading, setLoading] = useState(false)
   const [failedAttempt, setFailedAttempt] = useState(false)
   const [text, setText] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   // This will use useMemo, possibly
   const handleMakeAttempt = async (e: FormEvent<HTMLFormElement>) => {
@@ -67,13 +62,13 @@ const SimpleTextInput = ({
       })
       setLoading(false)
 
-      if (response.ok) {
-        const data = await response.json()
+      const { success, finalStep, message } = await response.json()
 
+      if (response.ok) {
         // if user guesses correctly, move them to next step
         // or puzzle landing if it is the last step
-        if (data.success) {
-          if (parseInt(stepParam, 10) + 1 > numberOfSteps) {
+        if (success) {
+          if (finalStep) {
             return navigate(routes.puzzleLanding({ slug }))
           } else {
             return navigate(
@@ -83,6 +78,7 @@ const SimpleTextInput = ({
         }
         setFailedAttempt(true)
       }
+      message && setErrorMessage(message)
     } catch (e) {
       console.log(e)
       setLoading(false)
@@ -116,7 +112,7 @@ const SimpleTextInput = ({
               <div
                 className={clsx(
                   'relative flex justify-center pt-6 text-gray-150',
-                  failedAttempt ? 'opacity-1' : 'opacity-0'
+                  failedAttempt && !errorMessage ? 'opacity-1' : 'opacity-0'
                 )}
                 data-cy="fail_message_check"
               >
@@ -125,6 +121,8 @@ const SimpleTextInput = ({
                     'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
                 </Markdown>
               </div>
+
+              {errorMessage && <p className="">{errorMessage}</p>}
 
               <div className="pt-8" data-cy="submit">
                 <Button
