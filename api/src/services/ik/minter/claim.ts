@@ -37,6 +37,7 @@ export const claim: QueryResolvers['claim'] = async ({
     }
   }
 
+  // @TODO: claim logic breaks when we have more than 1 NFT per rewardable
   const { tokenId } = rewardableData.nfts[0]
 
   // has this nft already been claimed on this account
@@ -75,21 +76,28 @@ export const claim: QueryResolvers['claim'] = async ({
       ({ childRewardable }) => childRewardable.nfts[0].tokenId
     )
 
-    const { claimed: hasRequiredNfts, errors: checkBalanceErrors } =
-      await checkBalance({
-        account,
-        chainId,
-        tokenIds: requiredNftIds,
-      })
+    const {
+      claimed: hasRequiredNfts,
+      errors: checkBalanceErrors,
+      claimedTokens,
+    } = await checkBalance({
+      account,
+      chainId,
+      tokenIds: requiredNftIds,
+    })
 
     if (checkBalanceErrors && checkBalanceErrors.length > 0) {
       return { errors: checkBalanceErrors }
     }
 
     if (!hasRequiredNfts) {
+      const missingNfts = requiredNftIds
+        .filter((n, i) => !claimedTokens[i])
+        .join(', ')
+
       return {
         errors: [
-          'You do not have the required NFTs on this chain. Please ensure you have completed the above puzzles and are on the correct chain.',
+          `You are missing NFT ids: ${missingNfts}. Please ensure you have completed the above puzzles and are on the correct chain.`,
         ],
       }
     }

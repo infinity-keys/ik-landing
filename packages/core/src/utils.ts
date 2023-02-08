@@ -84,7 +84,10 @@ export const getThumbnailProgress = ({
   return ThumbnailProgress.Unknown
 }
 
-export const validChain = (chain: number) => chainIds.includes(chain)
+export const validChain = (chain: number | undefined) => {
+  if (typeof chain === 'undefined') return false
+  return chainIds.includes(chain)
+}
 
 export const buildTokenIdParams = (tokenIds: number[] | string[]) => {
   return tokenIds.map((id) => `tokenids=${id}`).join('&')
