@@ -9,22 +9,23 @@ import { LoaderIcon } from '@redwoodjs/web/dist/toast'
 // @TODO: update links urls to constants
 // import { PACK_COLLECTION_BASE, PUZZLE_LANDING_BASE } from '@lib/constants'
 import Button from 'src/components/Button/Button'
+import ProfileIcon from 'src/components/ProfileIcon/ProfileIcon'
 import WalletButton from 'src/components/WalletButton/WalletButton'
 import Logo from 'src/svgs/Logo'
 import LogoMobile from 'src/svgs/LogoMobile'
 
 export const navigation = [
   { name: 'Home', to: '/' },
-  { name: 'Collab', to: '/#collab' },
   {
     name: 'Thesis',
     href: 'https://blog.infinitykeys.io/what-is-infinity-keys',
   },
+  { name: 'Docs', href: 'https://docs.infinitykeys.io' },
   { name: 'Blog', href: 'https://blog.infinitykeys.io' },
 ]
 
 const Header = () => {
-  const { isAuthenticated, logOut, loading } = useAuth()
+  const { loading } = useAuth()
 
   return (
     <Disclosure as="header" className="header fixed top-0 z-50 w-full bg-blue">
@@ -83,23 +84,10 @@ const Header = () => {
               </div>
 
               <div data-cy="puzzle-link" className="flex items-center gap-2">
-                <Button text="Packs" to="/packs" variant="outline" responsive />
-                <Button
-                  text="Puzzles"
-                  to="/puzzles"
-                  variant="outline"
-                  responsive
-                />
+                <Button text="Play" to="/packs" variant="outline" responsive />
+
                 <WalletButton />
-                {!loading ? (
-                  isAuthenticated ? (
-                    <Button onClick={logOut} text="Log Out" />
-                  ) : (
-                    <Button to={routes.auth()} text="Log In" />
-                  )
-                ) : (
-                  <LoaderIcon />
-                )}
+                {loading ? <LoaderIcon /> : <ProfileIcon />}
               </div>
 
               {/* hamburger icon, visible mobile only */}

@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-
 import ShieldExclamationIcon from '@heroicons/react/24/outline/ShieldExclamationIcon'
 import WalletIcon from '@heroicons/react/24/outline/WalletIcon'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
@@ -8,19 +6,11 @@ import clsx from 'clsx'
 import Button from 'src/components/Button/Button'
 import useCurrentWidth from 'src/hooks/useCurrentWidth'
 
-const MAGIC_WIDTH = 768
+const BREAK_POINT = 1024
 
 export default function WalletButton() {
-  const [isSmall, setIsSmall] = useState<boolean>(false)
   const width = useCurrentWidth()
-
-  useEffect(() => {
-    if (width < MAGIC_WIDTH) {
-      setIsSmall(true)
-    } else {
-      setIsSmall(false)
-    }
-  }, [width, setIsSmall])
+  const isSmall = width < BREAK_POINT
 
   return (
     <ConnectButton.Custom>
@@ -67,6 +57,7 @@ export default function WalletButton() {
                     onClick={openChainModal}
                     type="button"
                     variant={isSmall ? 'faded' : 'solid'}
+                    border={false}
                   >
                     {isSmall && (
                       <ShieldExclamationIcon className="h-8 w-8 fill-transparent stroke-red-600" />
@@ -82,6 +73,7 @@ export default function WalletButton() {
                     variant="faded"
                     text={isSmall ? '' : chain.name || 'Unknown'}
                     responsive
+                    border={false}
                   >
                     {chain.hasIcon && (
                       <div
@@ -104,9 +96,10 @@ export default function WalletButton() {
                     type="button"
                     variant="faded"
                     responsive
+                    border={false}
                   >
                     {isSmall && (
-                      <WalletIcon className="h-7 w-7 fill-transparent" />
+                      <WalletIcon className="h-5 w-5 fill-transparent" />
                     )}
                   </Button>
                 </div>
