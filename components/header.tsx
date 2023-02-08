@@ -14,6 +14,7 @@ export const navigation = [
     name: "Thesis",
     href: "https://blog.infinitykeys.io/what-is-infinity-keys",
   },
+  { name: "Docs", href: "https://docs.infinitykeys.io" },
   { name: "Blog", href: "https://blog.infinitykeys.io" },
 ];
 
