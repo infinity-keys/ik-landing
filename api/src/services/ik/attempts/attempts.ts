@@ -93,6 +93,8 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         },
       })
 
+      // all the solving logic relies on this function
+      // ensure steps are ordered by sortWeight
       const finalStep = step.puzzle.steps.at(-1).id === stepId
 
       if (finalStep) {
@@ -103,6 +105,8 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
             userId: context.currentUser.id,
           },
         })
+
+        // @TODO: this 'asChild' logic will break if puzzle belongs to bundle
 
         // does this step's puzzle belong to a pack
         if (step.puzzle.rewardable.asChild.length > 0) {

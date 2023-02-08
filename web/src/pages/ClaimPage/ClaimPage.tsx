@@ -57,7 +57,7 @@ const ClaimPage = () => {
   const { isConnected, address } = useAccount()
   const { openConnectModal } = useConnectModal()
   const { openChainModal } = useChainModal()
-  const isValidChain = validChain(chain?.id || 0)
+  const isValidChain = validChain(chain?.id)
   const contractAddress = isValidChain && contractAddressLookup[chain?.id]
 
   // checks both db and blockchain to see if user is eligible to mint
@@ -115,6 +115,15 @@ const ClaimPage = () => {
     }
   }, [transactionSuccess, rewardableId, updateReward])
 
+  const canClaim = !signature && !claimed && isConnected && isValidChain
+  const canMint =
+    signature &&
+    !claimed &&
+    !transactionSuccess &&
+    !transactionPending &&
+    isConnected &&
+    isValidChain
+
   return (
     <div className="text-center">
       <Seo title="Claim" description="Claim page" />
@@ -143,21 +152,14 @@ const ClaimPage = () => {
         <Button text="Switch Chains" onClick={openChainModal} />
       )}
 
-      {!signature && !claimed && isConnected && isValidChain && (
-        <Button text="Check my NFTs" onClick={() => claim()} />
-      )}
+      {canClaim && <Button text="Check My NFTs" onClick={claim} />}
 
-      {signature &&
-        !claimed &&
-        !transactionSuccess &&
-        !transactionPending &&
-        isConnected &&
-        isValidChain && (
-          <>
-            <p className="mb-4">Claim Your Trophy on {chain.name}</p>
-            <Button text="Mint Treasure" onClick={mintNft} />
-          </>
-        )}
+      {canMint && (
+        <>
+          <p className="mb-4">Claim Your Trophy on {chain.name}</p>
+          <Button text="Mint Treasure" onClick={mintNft} />
+        </>
+      )}
 
       {transactionSuccess && (
         <p className="mb-4">Your trophy has been claimed!</p>

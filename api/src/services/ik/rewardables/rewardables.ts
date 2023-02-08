@@ -2,6 +2,7 @@ import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import type { QueryResolvers } from 'types/graphql'
 
 import { ForbiddenError } from '@redwoodjs/graphql-server'
+import { context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 

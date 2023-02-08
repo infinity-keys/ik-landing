@@ -33,7 +33,6 @@ export const checkBalance: QueryResolvers['checkBalance'] = async ({
     // checks if all nft are claimed, returns true if eligible to claim pack nft
     const claimed = claimedTokens?.every((b) => b)
 
-    // @TODO: I think returning claimedTokens was a progress hack. we might not need this anymore
     return { claimed, claimedTokens }
   } catch (error) {
     return {
