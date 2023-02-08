@@ -18,6 +18,7 @@ import { createUserReward } from 'src/services/userRewards/userRewards'
 
 import { checkNft } from '../minter/check-nft'
 
+// @TODO: this 'asChild' logic will break if puzzle belongs to bundle
 const createRewards = async (rewardable) => {
   // create puzzle reward when user solves last step
   await createUserReward({
@@ -116,7 +117,41 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     const type = stepTypeLookup[stepType]
     const solutionType = stepSolutionTypeLookup[stepType]
 
-    const step = await getStep(stepId, type)
+    const step = await db.step.findUnique({
+      where: { id: stepId },
+      select: {
+        [stepType]: true,
+        puzzle: {
+          select: {
+            rewardable: {
+              select: {
+                userRewards: {
+                  where: { userId: context.currentUser.id },
+                  select: {
+                    id: true,
+                  },
+                },
+                id: true,
+                asChild: {
+                  select: {
+                    parentId: true,
+                  },
+                },
+              },
+            },
+            steps: {
+              orderBy: {
+                stepSortWeight: 'asc',
+              },
+              select: {
+                id: true,
+                stepSortWeight: true,
+              },
+            },
+          },
+        },
+      },
+    })
 
     if (step.puzzle.rewardable.userRewards.length > 0) {
       return { success: false, message: 'You have already solved this puzzle' }
