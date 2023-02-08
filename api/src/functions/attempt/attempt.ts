@@ -2,9 +2,9 @@ import {
   PUZZLE_COOKIE_NAME,
   stepSolutionTypeLookup,
 } from '@infinity-keys/constants'
+import { StepType } from '@prisma/client'
 import type { APIGatewayEvent } from 'aws-lambda'
 import cookie from 'cookie'
-import { StepType } from 'types/graphql'
 import { z } from 'zod'
 
 import { context } from '@redwoodjs/graphql-server'
@@ -89,14 +89,18 @@ const attemptHandler = async (event: APIGatewayEvent) => {
   }
 
   const { puzzleId, stepParam, stepId, stepType } = event.queryStringParameters
-  const stepNum = parseInt(stepParam, 10)
-  const solutionType = stepSolutionTypeLookup[stepType]
 
   // Garbage request, bail
   if (!puzzleId || !stepParam || !stepId || !stepType) {
     logger.info('/attempt called without puzzle or step')
     return { statusCode: 400 }
   }
+
+  const StepTypeEnum = z.nativeEnum(StepType)
+  StepTypeEnum.parse(stepType)
+
+  const stepNum = parseInt(stepParam, 10)
+  const solutionType = stepSolutionTypeLookup[stepType]
 
   logger.info(
     `Invoked '/attempt' function for puzzle ${puzzleId} and step ${stepNum}`

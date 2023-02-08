@@ -117,48 +117,16 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     const type = stepTypeLookup[stepType]
     const solutionType = stepSolutionTypeLookup[stepType]
 
-    const step = await db.step.findUnique({
-      where: { id: stepId },
-      select: {
-        [stepType]: true,
-        puzzle: {
-          select: {
-            rewardable: {
-              select: {
-                userRewards: {
-                  where: { userId: context.currentUser.id },
-                  select: {
-                    id: true,
-                  },
-                },
-                id: true,
-                asChild: {
-                  select: {
-                    parentId: true,
-                  },
-                },
-              },
-            },
-            steps: {
-              orderBy: {
-                stepSortWeight: 'asc',
-              },
-              select: {
-                id: true,
-                stepSortWeight: true,
-              },
-            },
-          },
-        },
-      },
-    })
+    const step = await getStep(stepId, type)
 
     if (step.puzzle.rewardable.userRewards.length > 0) {
       return { success: false, message: 'You have already solved this puzzle' }
     }
 
-    const userAttempt = data[solutionType]
+    // all the solving logic relies on this function
+    // ensure steps are ordered by sortWeight
     const finalStep = step.puzzle.steps.at(-1).id === stepId
+    const userAttempt = data[solutionType]
 
     if (stepType === 'SIMPLE_TEXT') {
       const attempt = await db.attempt.create({
@@ -208,6 +176,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
             userId: context.currentUser.id,
           },
         })
+
         if (finalStep) {
           await createRewards(step.puzzle.rewardable)
         }
