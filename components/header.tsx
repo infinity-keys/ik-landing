@@ -5,7 +5,7 @@ import { Disclosure } from "@headlessui/react";
 import Bars3Icon from "@heroicons/react/24/outline/Bars3Icon";
 import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon";
 import WalletButton from "./wallet-button";
-import { PACK_COLLECTION_BASE, PUZZLE_LANDING_BASE } from "@lib/constants";
+import { PACK_COLLECTION_BASE } from "@lib/constants";
 import Button from "./button";
 
 export const navigation = [
@@ -60,13 +60,25 @@ export default function Header() {
 
               <div className="menu-items items-center justify-center sm:items-stretch sm:justify-start hidden lg:flex">
                 <nav className="flex space-x-4">
-                  {navigation.map((item) => (
-                    <Link href={item.href} key={item.name}>
-                      <a className="header-nav--link text-2xl font-medium text-white hover:text-turquoise">
-                        {item.name}
+                  {navigation.map(({ href, name }) =>
+                    href.startsWith("http") ? (
+                      <a
+                        className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={href}
+                        key={name}
+                      >
+                        {name}
                       </a>
-                    </Link>
-                  ))}
+                    ) : (
+                      <Link href={href} key={name}>
+                        <a className="header-nav--link text-2xl font-medium text-white hover:text-turquoise">
+                          {name}
+                        </a>
+                      </Link>
+                    )
+                  )}
                 </nav>
               </div>
 
