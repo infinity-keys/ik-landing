@@ -42,7 +42,6 @@ export const getCurrentUser = async (_decoded, { token }) => {
 }
 
 export const isAuthenticated = () => {
-  return true
   return !!context.currentUser
 }
 
