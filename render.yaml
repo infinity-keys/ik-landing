@@ -25,7 +25,7 @@ services:
   type: web
   env: node
   region: oregon
-  buildCommand: yarn && yarn workspaces foreach run build && yarn rw prisma migrate reset --force && yarn rw build api
+  buildCommand: yarn && yarn workspaces foreach run build && yarn rw build api
   startCommand: yarn rw deploy render api
   envVars:
   - key: NODE_VERSION
