@@ -109,15 +109,27 @@ export default function Header() {
 
           <Disclosure.Panel className="lg:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item) => (
+              {navigation.map(({ name, href }) => (
                 <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
+                  key={name}
+                  as="span"
                   className="text-white block px-3 py-2 rounded-md text-2xl font-medium"
-                  aria-current={item.name ? "page" : undefined}
+                  aria-current={name ? "page" : undefined}
                 >
-                  {item.name}
+                  {href.startsWith("http") ? (
+                    <a
+                      href={href}
+                      className="block"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {name}
+                    </a>
+                  ) : (
+                    <Link href={href}>
+                      <a className="block">{name}</a>
+                    </Link>
+                  )}
                 </Disclosure.Button>
               ))}
             </div>
