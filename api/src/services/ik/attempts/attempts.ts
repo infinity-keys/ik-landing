@@ -173,7 +173,8 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         },
       })
 
-      const correctAttempt = step.stepSimpleText.solution === userAttempt
+      const correctAttempt =
+        step.stepSimpleText.solution.toLowerCase() === userAttempt.toLowerCase()
 
       if (correctAttempt) {
         await createSolve({
