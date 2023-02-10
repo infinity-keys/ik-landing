@@ -151,7 +151,6 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 }) => {
   try {
     SolutionData.parse(data)
-    console.log('jello')
 
     const step = await getStep(stepId)
 
