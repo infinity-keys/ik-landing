@@ -9,6 +9,7 @@ interface ButtonProps {
   to?: string
   textColor?: 'dark' | 'light'
   fullWidth?: boolean
+  border?: boolean
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium'
   variant?: 'solid' | 'outline' | 'faded' | 'purple' | 'warn'
@@ -26,15 +27,19 @@ export default function Button({
   type = 'submit',
   size = 'medium',
   variant = 'solid',
+  border = true,
   onClick,
   disabled = false,
   responsive = false,
   children,
 }: ButtonProps) {
   const classes = clsx(
-    'ik-button inline-block border border-turquoise hover:border-white rounded-md font-medium text-center transition',
+    'ik-button inline-block border hover:border-white rounded-md font-medium text-center transition',
     // Sizing
     { 'block w-full': fullWidth },
+    // borders
+    { 'border-transparent': !border },
+    { 'border-turquoise': border },
     // Text color
     [
       textColor === 'light' && 'text-white hover:text-blue',
@@ -49,7 +54,7 @@ export default function Button({
       variant === 'outline' && 'text-white hover:bg-turquoise',
       variant === 'warn' &&
         'text-white bg-red-500 border-red-500 hover:bg-red-700 hover:text-white',
-      variant === 'faded' && 'bg-white/20 hover:text-turquoise',
+      variant === 'faded' && 'bg-white/10 hover:text-turquoise',
       variant === 'purple' &&
         'bg-indigo-500 border-indigo-500 hover:text-white hover:bg-indigo-600 ',
     ],

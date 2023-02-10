@@ -84,11 +84,6 @@ export const Success = ({
           <p className="ml-4 text-sm text-white/70">{user.email}</p>
         </div>
 
-        <div>
-          <p className="font-bold">Auth ID:</p>
-          <p className="text-sm text-white/70">{user.authId}</p>
-        </div>
-
         {user.twitterProfile && (
           <div className="flex items-center pb-4">
             <TwitterIcon width={20} height={20} />
