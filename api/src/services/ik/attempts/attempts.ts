@@ -1,6 +1,6 @@
 import { PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
 import cookie from 'cookie'
-import type { MutationResolvers, QueryResolvers } from 'types/graphql'
+import type { MutationResolvers, QueryResolvers, StepType } from 'types/graphql'
 import { z } from 'zod'
 
 import { context, ForbiddenError } from '@redwoodjs/graphql-server'
@@ -14,15 +14,44 @@ import { createUserReward } from 'src/services/userRewards/userRewards'
 
 import { checkNft } from '../minter/check-nft'
 
-// maybe infer from graphql type
-const SolutionData = z.union([
-  z.string(),
+export const stepSolutionTypeLookup: {
+  [key in StepType]: string
+} = {
+  SIMPLE_TEXT: 'simpleTextSolution',
+  NFT_CHECK: 'nftCheckSolution',
+}
+
+interface NftCheckSolution {
+  account: string
+  chainId?: number
+  contractAddress?: string
+  tokenId?: number
+  poapEventId?: string
+}
+
+interface SimpleText {
+  type: 'simple-text'
+  simpleTextSolution: string
+}
+
+interface NftCheck {
+  type: 'nft-check'
+  nftCheckSolution: NftCheckSolution
+}
+
+type AttemptData = SimpleText | NftCheck
+
+const SolutionData = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('simple-text'), simpleTextSolution: z.string() }),
   z.object({
-    account: z.string(),
-    chainId: z.optional(z.number()),
-    contractAddress: z.optional(z.string()),
-    tokenId: z.optional(z.number()),
-    poapEventId: z.optional(z.string()),
+    type: z.literal('nft-check'),
+    nftCheckSolution: z.object({
+      account: z.string(),
+      chainId: z.optional(z.number()),
+      contractAddress: z.optional(z.string()),
+      tokenId: z.optional(z.number()),
+      poapEventId: z.optional(z.string()),
+    }),
   }),
 ])
 
@@ -121,7 +150,8 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   data,
 }) => {
   try {
-    SolutionData.parse(data.attempt)
+    SolutionData.parse(data)
+    console.log('jello')
 
     const step = await getStep(stepId)
 
@@ -132,7 +162,8 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     // all the solving logic relies on this function
     // ensure steps are ordered by sortWeight
     const finalStep = step.puzzle.steps.at(-1).id === stepId
-    const userAttempt = data.attempt
+    const solutionType = stepSolutionTypeLookup[step.type]
+    const userAttempt = data[solutionType]
 
     if (step.type === 'SIMPLE_TEXT') {
       const attempt = await db.attempt.create({

@@ -2,12 +2,11 @@ import clsx from 'clsx'
 import { FindStepQuery } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
+import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import Markdown from 'src/components/Markdown/Markdown'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
-
-import Alert from '../Alert/Alert'
-import Markdown from '../Markdown'
 
 const NftCheckButton = ({
   step,
@@ -21,7 +20,7 @@ const NftCheckButton = ({
   const { chainId, tokenId, contractAddress, poapEventId } = step.stepNftCheck
 
   const handleClick = async () => {
-    const reqBody = {
+    const body = {
       account: address,
       ...(chainId && { chainId }),
       ...(typeof tokenId === 'number' && { tokenId }),
@@ -32,7 +31,10 @@ const NftCheckButton = ({
     await makeAttempt({
       stepId: step.id,
       puzzleId,
-      reqBody,
+      reqBody: {
+        type: 'nft-check',
+        nftCheckSolution: body,
+      },
     })
   }
 

@@ -130,7 +130,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     const { success, finalStep, message } = await makeAttempt({
       stepId,
-      data: event.body???????,
+      data: attempt,
     })
 
     // @TODO: work out cookie headers required here
@@ -231,7 +231,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     const { success, finalStep, message } = await makeAttempt({
       stepId,
-      data: event.body,
+      data: attempt,
     })
 
     if (!success) {
