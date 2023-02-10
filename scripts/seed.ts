@@ -62,7 +62,15 @@ const ApiPuzzle = z.object({
   list_publicly: z.boolean(),
   migration_puzzle: z.nullable(z.string()),
   migration_step: z.nullable(z.string()),
-  nft_check_parameters: z.nullable(z.any()),
+  nft_check_parameters: z.nullable(
+    z
+      .object({
+        nftChainId: z.string().or(z.number()),
+        nftTokenId: z.string(),
+        nftContractAddress: z.string(),
+      })
+      .partial()
+  ),
   nft: z.nullable(
     z.object({
       tokenId: z.number(),
