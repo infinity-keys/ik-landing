@@ -5,7 +5,7 @@ import { Disclosure } from "@headlessui/react";
 import Bars3Icon from "@heroicons/react/24/outline/Bars3Icon";
 import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon";
 import WalletButton from "./wallet-button";
-import { PACK_COLLECTION_BASE, PUZZLE_LANDING_BASE } from "@lib/constants";
+import { PACK_COLLECTION_BASE } from "@lib/constants";
 import Button from "./button";
 
 export const navigation = [
@@ -14,6 +14,7 @@ export const navigation = [
     name: "Thesis",
     href: "https://blog.infinitykeys.io/what-is-infinity-keys",
   },
+  { name: "Docs", href: "https://docs.infinitykeys.io" },
   { name: "Blog", href: "https://blog.infinitykeys.io" },
 ];
 
@@ -59,13 +60,25 @@ export default function Header() {
 
               <div className="menu-items items-center justify-center sm:items-stretch sm:justify-start hidden lg:flex">
                 <nav className="flex space-x-4">
-                  {navigation.map((item) => (
-                    <Link href={item.href} key={item.name}>
-                      <a className="header-nav--link text-2xl font-medium text-white hover:text-turquoise">
-                        {item.name}
+                  {navigation.map(({ href, name }) =>
+                    href.startsWith("http") ? (
+                      <a
+                        className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={href}
+                        key={name}
+                      >
+                        {name}
                       </a>
-                    </Link>
-                  ))}
+                    ) : (
+                      <Link href={href} key={name}>
+                        <a className="header-nav--link text-2xl font-medium text-white hover:text-turquoise">
+                          {name}
+                        </a>
+                      </Link>
+                    )
+                  )}
                 </nav>
               </div>
 
@@ -96,15 +109,27 @@ export default function Header() {
 
           <Disclosure.Panel className="lg:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item) => (
+              {navigation.map(({ name, href }) => (
                 <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
+                  key={name}
+                  as="span"
                   className="text-white block px-3 py-2 rounded-md text-2xl font-medium"
-                  aria-current={item.name ? "page" : undefined}
+                  aria-current={name ? "page" : undefined}
                 >
-                  {item.name}
+                  {href.startsWith("http") ? (
+                    <a
+                      href={href}
+                      className="block"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {name}
+                    </a>
+                  ) : (
+                    <Link href={href}>
+                      <a className="block">{name}</a>
+                    </Link>
+                  )}
                 </Disclosure.Button>
               ))}
             </div>
