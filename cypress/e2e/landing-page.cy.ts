@@ -55,14 +55,16 @@ describe("infinitykeys.io", () => {
     cy.url().should("include", Cypress.config().baseUrl + "/");
 
     cy.visit("/");
-    cy.get(".header").contains("Thesis").click();
+    // cypress can't access new window, so we're removing target _blank
+    cy.get(".header").contains("Thesis").invoke("removeAttr", "target").click();
     cy.url().should(
       "include",
       "https://blog.infinitykeys.io/what-is-infinity-keys"
     );
 
     cy.visit("/");
-    cy.get(".header").contains("Blog").click();
+    // cypress can't access new window, so we're removing target _blank
+    cy.get(".header").contains("Blog").invoke("removeAttr", "target").click();
     cy.url().should("include", "https://blog.infinitykeys.io");
 
     cy.visit("/");
