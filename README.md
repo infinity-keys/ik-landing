@@ -271,3 +271,9 @@ There can be a permissions error that happens in MacOS if project is in Document
 
 `watch-del-all`
 `watchman shutdown-server`
+
+## Contract Addresses
+avax:     0xB40fD6825a366081192d890d2760113C066761Ef
+ethereum: 0x54b743D6055e3BBBF13eb2C748A3783516156e5B
+polygon:  0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9
+optimism: 0x54b743D6055e3BBBF13eb2C748A3783516156e5B
