@@ -1,13 +1,10 @@
 import { useState } from 'react'
 
-import { StepType } from 'types/graphql'
-
 import { useAuth } from '@redwoodjs/auth'
 import { navigate, routes, useParams } from '@redwoodjs/router'
 
-interface SendAttemptProps {
+type SendAttemptProps = {
   stepId: string
-  stepType: StepType
   puzzleId: string
   reqBody: string | object
   redirectOnSuccess?: boolean
@@ -23,7 +20,6 @@ const useMakeAttempt = () => {
 
   const makeAttempt = async ({
     stepId,
-    stepType,
     puzzleId,
     reqBody,
     redirectOnSuccess = true,
@@ -40,7 +36,6 @@ const useMakeAttempt = () => {
     apiUrl.searchParams.set('stepId', stepId)
     apiUrl.searchParams.set('stepParam', stepParam)
     apiUrl.searchParams.set('puzzleId', puzzleId)
-    apiUrl.searchParams.set('stepType', stepType)
 
     const body = JSON.stringify({ attempt: reqBody })
 
@@ -73,13 +68,12 @@ const useMakeAttempt = () => {
           }
           return data
         }
-
-        setFailedAttempt(true)
-        message && setErrorMessage(message)
-        return data
       }
+      setFailedAttempt(true)
+      message && setErrorMessage(message)
+      return data
     } catch (e) {
-      console.log(e)
+      console.error(e)
       setLoading(false)
     }
   }

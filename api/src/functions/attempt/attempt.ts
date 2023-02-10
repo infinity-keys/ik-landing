@@ -1,8 +1,4 @@
-import {
-  PUZZLE_COOKIE_NAME,
-  stepSolutionTypeLookup,
-} from '@infinity-keys/constants'
-import { StepType } from '@prisma/client'
+import { PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
 import type { APIGatewayEvent } from 'aws-lambda'
 import cookie from 'cookie'
 import { z } from 'zod'
@@ -88,19 +84,15 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     return { statusCode: 403 }
   }
 
-  const { puzzleId, stepParam, stepId, stepType } = event.queryStringParameters
+  const { puzzleId, stepParam, stepId } = event.queryStringParameters
 
   // Garbage request, bail
-  if (!puzzleId || !stepParam || !stepId || !stepType) {
+  if (!puzzleId || !stepParam || !stepId) {
     logger.info('/attempt called without puzzle or step')
     return { statusCode: 400 }
   }
 
-  const StepTypeEnum = z.nativeEnum(StepType)
-  StepTypeEnum.parse(stepType)
-
   const stepNum = parseInt(stepParam, 10)
-  const solutionType = stepSolutionTypeLookup[stepType]
 
   logger.info(
     `Invoked '/attempt' function for puzzle ${puzzleId} and step ${stepNum}`
@@ -124,6 +116,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     // trying to solve step more than once
     if (puzzlesCompleted?.puzzles[puzzleId]?.steps.includes(stepId)) {
+      console.log('alread dun')
       return {
         statusCode: 403,
         headers: { 'Content-Type': 'application/json' },
@@ -137,8 +130,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     const { success, finalStep, message } = await makeAttempt({
       stepId,
-      stepType: stepType as StepType,
-      data: { [solutionType]: attempt },
+      data: event.body???????,
     })
 
     // @TODO: work out cookie headers required here
@@ -239,8 +231,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     const { success, finalStep, message } = await makeAttempt({
       stepId,
-      stepType: stepType as StepType,
-      data: { [solutionType]: attempt },
+      data: event.body,
     })
 
     if (!success) {

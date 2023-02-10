@@ -39,7 +39,6 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
   // No token Id for ERC721
   // @NOTE: tokenId can be zero, which is falsy. Can't just check for existence tokenId
   const abi = typeof tokenId === 'number' ? balanceOf1155 : balanceOf721
-
   const provider = providerLookup[chainId]
 
   try {
@@ -47,12 +46,11 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
     // This contract is a generic one, thus can't use our contract instances
     const contract = new ethers.Contract(contractAddress, abi, provider)
 
-    const balance = parseInt(
-      typeof tokenId === 'number'
-        ? await contract.balanceOf(account, tokenId)
-        : await contract.balanceOf(account),
-      10
-    )
+    // create args for contract, ERC721 only takes account, 1155 takes account and tokenId
+    const args = [account, tokenId ?? null].filter((n) => n === 0 || n)
+
+    const balance = parseInt(await contract.balanceOf(...args), 10)
+
     return { nftPass: balance > 0 }
   } catch {
     return { errors: ['There was a problem checking your NFT'] }

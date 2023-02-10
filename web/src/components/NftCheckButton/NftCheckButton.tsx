@@ -6,6 +6,7 @@ import Button from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
+import Alert from '../Alert/Alert'
 import Markdown from '../Markdown'
 
 const NftCheckButton = ({
@@ -16,23 +17,20 @@ const NftCheckButton = ({
   puzzleId: string
 }) => {
   const { address } = useAccount()
-  const { loading, failedAttempt, makeAttempt } = useMakeAttempt()
+  const { loading, failedAttempt, errorMessage, makeAttempt } = useMakeAttempt()
   const { chainId, tokenId, contractAddress, poapEventId } = step.stepNftCheck
 
   const handleClick = async () => {
-    if (!address) return
-
     const reqBody = {
       account: address,
       ...(chainId && { chainId }),
-      ...(tokenId && { tokenId }),
+      ...(typeof tokenId === 'number' && { tokenId }),
       ...(contractAddress && { contractAddress }),
       ...(poapEventId && { poapEventId }),
     }
 
     await makeAttempt({
       stepId: step.id,
-      stepType: step.type,
       puzzleId,
       reqBody,
     })
@@ -43,13 +41,23 @@ const NftCheckButton = ({
       {loading ? (
         <LoadingIcon />
       ) : (
-        <>
-          <Button text="Check NFTs" onClick={handleClick} />
+        <div>
+          {address ? (
+            <Button text="Check NFTs" onClick={handleClick} />
+          ) : (
+            <div className="flex justify-center">
+              <Alert text="Please connect your wallet to continue" />
+            </div>
+          )}
+
+          {errorMessage && (
+            <p className="mt-4 italic text-gray-200">{errorMessage}</p>
+          )}
 
           <div
             className={clsx(
               'relative flex justify-center pt-6 text-gray-150',
-              failedAttempt ? 'opacity-1' : 'opacity-0'
+              failedAttempt && !errorMessage ? 'opacity-1' : 'opacity-0'
             )}
             data-cy="fail_message_check"
           >
@@ -58,7 +66,7 @@ const NftCheckButton = ({
                 'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
             </Markdown>
           </div>
-        </>
+        </div>
       )}
     </div>
   )

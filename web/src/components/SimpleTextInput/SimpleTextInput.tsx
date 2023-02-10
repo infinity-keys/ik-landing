@@ -28,7 +28,6 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
 
     await makeAttempt({
       stepId: step.id,
-      stepType: step.type,
       puzzleId,
       reqBody: text,
     })

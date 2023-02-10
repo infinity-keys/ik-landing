@@ -1,11 +1,7 @@
-import {
-  PUZZLE_COOKIE_NAME,
-  stepSolutionTypeLookup,
-  stepTypeLookup,
-} from '@infinity-keys/constants'
-import { SolutionData } from '@infinity-keys/core'
+import { PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
 import cookie from 'cookie'
 import type { MutationResolvers, QueryResolvers } from 'types/graphql'
+import { z } from 'zod'
 
 import { context, ForbiddenError } from '@redwoodjs/graphql-server'
 
@@ -17,6 +13,18 @@ import { step } from 'src/services/steps/steps'
 import { createUserReward } from 'src/services/userRewards/userRewards'
 
 import { checkNft } from '../minter/check-nft'
+
+// maybe infer from graphql type
+const SolutionData = z.union([
+  z.string(),
+  z.object({
+    account: z.string(),
+    chainId: z.optional(z.number()),
+    contractAddress: z.optional(z.string()),
+    tokenId: z.optional(z.number()),
+    poapEventId: z.optional(z.string()),
+  }),
+])
 
 // @TODO: this 'asChild' logic will break if puzzle belongs to bundle
 const createRewards = async (rewardable) => {
@@ -68,11 +76,13 @@ const createRewards = async (rewardable) => {
   }
 }
 
-const getStep = async (id, type) => {
+const getStep = async (id) => {
   return db.step.findUnique({
     where: { id },
     select: {
-      [type]: true,
+      type: true,
+      stepNftCheck: true,
+      stepSimpleText: true,
       puzzle: {
         select: {
           rewardable: {
@@ -108,16 +118,12 @@ const getStep = async (id, type) => {
 
 export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   stepId,
-  stepType,
   data,
 }) => {
   try {
-    SolutionData.parse(data)
+    SolutionData.parse(data.attempt)
 
-    const type = stepTypeLookup[stepType]
-    const solutionType = stepSolutionTypeLookup[stepType]
-
-    const step = await getStep(stepId, type)
+    const step = await getStep(stepId)
 
     if (step.puzzle.rewardable.userRewards.length > 0) {
       return { success: false, message: 'You have already solved this puzzle' }
@@ -126,9 +132,9 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     // all the solving logic relies on this function
     // ensure steps are ordered by sortWeight
     const finalStep = step.puzzle.steps.at(-1).id === stepId
-    const userAttempt = data[solutionType]
+    const userAttempt = data.attempt
 
-    if (stepType === 'SIMPLE_TEXT') {
+    if (step.type === 'SIMPLE_TEXT') {
       const attempt = await db.attempt.create({
         data: {
           userId: context?.currentUser.id,
@@ -137,7 +143,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         },
       })
 
-      const correctAttempt = step[type].solution === userAttempt
+      const correctAttempt = step.stepSimpleText.solution === userAttempt
 
       if (correctAttempt) {
         await createSolve({
@@ -154,7 +160,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
       return { success: correctAttempt, finalStep }
     } // end of SIMPLE_TEXT
 
-    if (stepType === 'NFT_CHECK') {
+    if (step.type === 'NFT_CHECK') {
       const attempt = await db.attempt.create({
         data: {
           userId: context?.currentUser.id,
@@ -163,6 +169,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         },
       })
 
+      // @TODO:
       const { nftPass, errors } = await checkNft(userAttempt)
 
       if (errors && errors.length > 0) {

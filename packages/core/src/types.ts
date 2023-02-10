@@ -4,28 +4,6 @@ import { z } from 'zod'
 
 // import { GetAllPublicPacksQuery, PublicPuzzlesQuery } from './generated/graphql'
 
-export const SolutionData = z
-  .object({
-    simpleTextSolution: z.string(),
-    nftCheckSolution: z.object({
-      account: z.string(),
-      chainId: z.optional(z.number()),
-      contractAddress: z.optional(z.string()),
-      tokenId: z.optional(z.number()),
-      poapEventId: z.optional(z.string()),
-    }),
-    // add more types here
-  })
-  .partial()
-  .refine(
-    (data) =>
-      // add corresponding type here
-      data.simpleTextSolution || data.nftCheckSolution,
-    'Invalid solution type'
-  )
-
-export type SolutionDataType = z.TypeOf<typeof SolutionData>
-
 export const PuzzleApiResponseSchema = z.object({
   fail_route: z.string(),
   success_route: z.optional(z.string()),

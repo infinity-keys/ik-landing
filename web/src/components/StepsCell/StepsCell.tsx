@@ -81,7 +81,7 @@ export const Success = ({
   return (
     <div>
       {step && (
-        <>
+        <div>
           {step.type === 'SIMPLE_TEXT' && (
             <SimpleTextInput
               count={step.stepSimpleText.solutionCharCount}
@@ -103,7 +103,7 @@ export const Success = ({
               />
             )}
           </div>
-        </>
+        </div>
       )}
 
       {puzzle.rewardable.userRewards.length > 0 && (
