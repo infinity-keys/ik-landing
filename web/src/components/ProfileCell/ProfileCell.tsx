@@ -1,3 +1,5 @@
+import React, { useMemo } from 'react'
+
 import EnvelopeIcon from '@heroicons/react/20/solid/EnvelopeIcon'
 import Avatar from 'boring-avatars'
 import type { FindUserQuery, FindUserQueryVariables } from 'types/graphql'
@@ -5,8 +7,13 @@ import { useAccount } from 'wagmi'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
+import Button from 'src/components/Button'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
+
+const truncate = (text: string) => {
+  return `${text.substring(0, 5)}...${text.substring(text.length - 3)}`
+}
 
 export const QUERY = gql`
   query FindUserQuery {
@@ -35,9 +42,10 @@ export const Success = ({
   user,
 }: CellSuccessProps<FindUserQuery, FindUserQueryVariables>) => {
   const { address } = useAccount()
-  const truncate = (text: string) => {
-    return `${text.substring(0, 5)}...${text.substring(text.length - 3)}`
-  }
+
+  const handleReconcile = useMemo(() => {
+    return () => console.log(user)
+  }, [user])
 
   return (
     <div className="overflow-hidden rounded-lg bg-black/30">
@@ -48,11 +56,16 @@ export const Success = ({
           variant="marble"
           colors={['#101D42', '#E400FF', '#3FCCBB', '#8500AC', '#303B5B']}
         />
+
         <div className="ml-6">
           <p className="text-xl font-bold text-white">
             {user.username || user.email.split('@')[0]}
           </p>
           {address && <p className="text-turquoise">{truncate(address)}</p>}
+        </div>
+
+        <div className="ml-auto">
+          <Button text="Reconcile Progress" onClick={handleReconcile} />
         </div>
       </div>
 
