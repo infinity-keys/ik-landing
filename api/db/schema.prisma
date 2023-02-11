@@ -48,6 +48,8 @@ model Rewardable {
   pack   Pack?
   bundle Bundle?
 
+  userRewards UserReward[]
+
   // Rewardables that have children, ie a parent Pack that has Puzzle children
   asParent RewardableConnection[] @relation("ParentLink")
   // Rewardables that have a parent, ie a child Puzzle of a Pack
@@ -55,7 +57,23 @@ model Rewardable {
 
   // temp field to allow migrating old puzzles/packs to new system
   migrateId String? @unique
+
   @@unique([slug, type])
+}
+
+model UserReward {
+  id             String         @id @default(cuid())
+  createdAt      DateTime       @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
+  rewardableId String
+
+  nfts Nft[]
+
+  @@unique([userId, rewardableId])
 }
 
 /// Link Rewardables to each other, ie a Pack requires 3 Puzzles. Allows setting
@@ -201,10 +219,10 @@ model Solve {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
-  attempt Attempt   @relation(fields: [attemptId], references: [id])
-  attemptId String @unique
+  attempt   Attempt @relation(fields: [attemptId], references: [id])
+  attemptId String  @unique
 
-  data    Json? @default("{}")
+  data Json? @default("{}")
 }
 
 /// Information about NFTs. Only Rewardables can reward an NFT.
@@ -218,6 +236,8 @@ model Nft {
   cloudinaryId String
 
   rewardables Rewardable[]
+
+  userRewards UserReward[]
 
   @@unique([contractName, tokenId])
 }
@@ -245,7 +265,7 @@ model User {
   lensProfile    String?
 
   // User's role on the site, as a whole
-  roles          SiteRole[] @default([ANONYMOUS])
+  roles SiteRole[] @default([ANONYMOUS])
 
   /// User membership in an Organization.
   organizations OrganizationUser[]
@@ -255,6 +275,8 @@ model User {
   attempts      Attempt[]
 
   solved Solve[]
+
+  userRewards UserReward[]
 }
 
 /// A User's role specifically within the Organization they belong

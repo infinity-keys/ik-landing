@@ -15,8 +15,10 @@ export const schema = gql`
     puzzle: Puzzle
     pack: Pack
     bundle: Bundle
+    userRewards: [UserReward]!
     asParent: [RewardableConnection]!
     asChild: [RewardableConnection]!
+    migrateId: String
   }
 
   enum RewardableType {
@@ -38,6 +40,7 @@ export const schema = gql`
     listPublicly: Boolean!
     type: RewardableType!
     orgId: String!
+    migrateId: String
   }
 
   input UpdateRewardableInput {
@@ -48,6 +51,7 @@ export const schema = gql`
     listPublicly: Boolean
     type: RewardableType
     orgId: String
+    migrateId: String
   }
 
   type Mutation {

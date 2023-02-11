@@ -7,9 +7,8 @@ export const schema = gql`
     contractName: String!
     data: JSON!
     cloudinaryId: String!
-    puzzles: [Puzzle]!
-    packs: [Pack]!
-    bundles: [Bundle]!
+    rewardables: [Rewardable]!
+    userRewards: [UserReward]!
   }
 
   type Query {

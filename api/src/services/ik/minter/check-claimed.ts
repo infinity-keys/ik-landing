@@ -28,7 +28,6 @@ export const checkClaimed: QueryResolvers['checkClaimed'] = async ({
     const polygonClaim = await polygonContract.checkIfClaimed(tokenId, account)
     if (polygonClaim)
       return {
-        success: true,
         claimed: polygonClaim,
         chainClaimed: POLYGON_CHAIN_ID,
       }
@@ -36,27 +35,20 @@ export const checkClaimed: QueryResolvers['checkClaimed'] = async ({
     //AVAX
     const avaxContract = contractLookup[AVAX_CHAIN_ID]
     const avaxClaim = await avaxContract.checkIfClaimed(tokenId, account)
-    if (avaxClaim)
-      return { success: true, claimed: avaxClaim, chainClaimed: AVAX_CHAIN_ID }
+    if (avaxClaim) return { claimed: avaxClaim, chainClaimed: AVAX_CHAIN_ID }
 
     //ETH
     const ethContract = contractLookup[ETH_CHAIN_ID]
     const ethClaim = await ethContract.checkIfClaimed(tokenId, account)
-    if (ethClaim)
-      return { success: true, claimed: ethClaim, chainClaimed: ETH_CHAIN_ID }
+    if (ethClaim) return { claimed: ethClaim, chainClaimed: ETH_CHAIN_ID }
 
     //Optimism
     const optContract = contractLookup[OPTIMISM_CHAIN_ID]
     const optClaim = await optContract.checkIfClaimed(tokenId, account)
-    if (optClaim)
-      return {
-        success: true,
-        claimed: optClaim,
-        chainClaimed: OPTIMISM_CHAIN_ID,
-      }
+    if (optClaim) return { claimed: optClaim, chainClaimed: OPTIMISM_CHAIN_ID }
 
-    return { success: true, claimed: false }
-  } catch (error) {
-    return { success: false, message: error }
+    return { claimed: false }
+  } catch {
+    return { errors: ['Error checking claimed NFT'] }
   }
 }

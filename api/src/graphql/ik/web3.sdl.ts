@@ -1,34 +1,32 @@
 export const schema = gql`
   type CheckBalanceResponse {
-    success: Boolean!
+    errors: [String!]
     claimed: Boolean
     claimedTokens: [Boolean!]
-    message: String
   }
 
   type CheckClaimedResponse {
-    success: Boolean!
+    errors: [String!]
     claimed: Boolean
     chainClaimed: Int
-    message: String
+  }
+
+  type ClaimResponse {
+    errors: [String!]
+    claimed: Boolean
+    chainClaimed: Int
+    signature: String
+    tokenId: Int
   }
 
   type CheckNftResponse {
-    success: Boolean!
+    errors: [String!]
     nftPass: Boolean
-    message: String
   }
 
   type CheckWalletAgeResponse {
-    success: Boolean!
+    errors: [String!]
     approved: Boolean!
-  }
-
-  type VerifyResponse {
-    success: Boolean!
-    message: String
-    signature: String
-    claimedTokens: [Boolean!]
   }
 
   type Query {
@@ -37,11 +35,18 @@ export const schema = gql`
       account: String!
       tokenIds: [Int!]!
       chainId: Int!
-    ): CheckBalanceResponse! @skipAuth
+    ): CheckBalanceResponse! @requireAuth
+
+    # runs through entire nft claim flow
+    claim(
+      account: String!
+      rewardableId: String!
+      chainId: Int!
+    ): ClaimResponse! @requireAuth
 
     # checks if user has NFT on any of the supported networks
     checkClaimed(account: String!, tokenId: Int!): CheckClaimedResponse!
-      @skipAuth
+      @requireAuth
 
     # checks for NFT required for puzzle solution
     checkNft(
@@ -50,21 +55,14 @@ export const schema = gql`
       contractAddress: String
       tokenId: Int
       poapEventId: String
-    ): CheckNftResponse! @skipAuth
+    ): CheckNftResponse! @requireAuth
 
     # checks age of wallet on eth, checks number of transactions on others
     checkWalletAge(account: String!, chainId: Int!): CheckWalletAgeResponse!
-      @skipAuth
+      @requireAuth
 
     # finds unique db entry by contract name and token id
-    nftByContractAndTokenId(tokenId: Int!, contractName: String!): Nft @skipAuth
-
-    # checks if user has the NFTs required to claim a gated token
-    verify(
-      account: String!
-      tokenId: Int!
-      chainId: Int!
-      gatedIds: [Int!]
-    ): VerifyResponse! @skipAuth
+    nftByContractAndTokenId(tokenId: Int!, contractName: String!): Nft
+      @requireAuth
   }
 `

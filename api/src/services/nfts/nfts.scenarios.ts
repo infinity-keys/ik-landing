@@ -5,8 +5,8 @@ export const standard = defineScenario<Prisma.NftCreateArgs>({
   nft: {
     one: {
       data: {
-        updatedAt: '2022-10-24T16:57:45Z',
-        tokenId: 522497,
+        updatedAt: '2023-02-01T18:09:54.632Z',
+        tokenId: 9001367,
         contractName: 'String',
         data: { foo: 'bar' },
         cloudinaryId: 'String',
@@ -14,8 +14,8 @@ export const standard = defineScenario<Prisma.NftCreateArgs>({
     },
     two: {
       data: {
-        updatedAt: '2022-10-24T16:57:45Z',
-        tokenId: 8147892,
+        updatedAt: '2023-02-01T18:09:54.632Z',
+        tokenId: 548110,
         contractName: 'String',
         data: { foo: 'bar' },
         cloudinaryId: 'String',

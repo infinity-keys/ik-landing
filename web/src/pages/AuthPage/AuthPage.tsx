@@ -46,6 +46,12 @@ const AuthPage = () => {
 
   return (
     <>
+      {isAuthenticated && (
+        <div className="mx-auto w-full max-w-lg pb-12">
+          <ProfileCell />
+        </div>
+      )}
+
       {loading ? (
         <LoadingIcon />
       ) : (
@@ -63,12 +69,6 @@ const AuthPage = () => {
             text={isAuthenticated ? 'Log Out' : 'Log In'}
           />
           <p className="absolute -bottom-8 left-0">{errorMessage}</p>
-        </div>
-      )}
-
-      {isAuthenticated && (
-        <div className="pt-12">
-          <ProfileCell />
         </div>
       )}
     </>

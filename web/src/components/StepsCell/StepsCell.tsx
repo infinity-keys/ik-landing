@@ -16,6 +16,12 @@ export const QUERY = gql`
   query FindStepQuery($puzzleId: String!, $stepId: String, $stepNum: Int) {
     puzzle(id: $puzzleId) {
       id
+      rewardable {
+        id
+        userRewards {
+          id
+        }
+      }
       steps {
         id
         stepSortWeight
@@ -72,7 +78,6 @@ export const Success = ({
           <SimpleTextInput
             count={step.stepSimpleText.solutionCharCount}
             step={step}
-            numberOfSteps={puzzle.steps.length}
             puzzleId={puzzle.id}
           />
 
@@ -88,8 +93,12 @@ export const Success = ({
         </>
       )}
 
+      {puzzle.rewardable.userRewards.length > 0 && (
+        <Button to={routes.claim({ id: puzzle.rewardable.id })} text="Mint" />
+      )}
+
       {/* @TODO: should we forward if there's only one step? */}
-      <div className="md:flex-nowraps mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
+      <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
         {puzzle.steps.map(({ stepSortWeight }) => (
           <ThumbnailMini
             key={stepSortWeight}

@@ -2,6 +2,9 @@ import { buildUrlString, cloudinaryUrl } from '@infinity-keys/core'
 import { LensShareButton } from '@infinity-keys/react-lens-share-button'
 import type { FindRewardablePackBySlug } from 'types/graphql'
 
+import { routes } from '@redwoodjs/router'
+
+import Button from 'src/components/Button'
 import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
@@ -17,6 +20,7 @@ const LAYOUT_BREAKPOINT = 768
 
 const Rewardable = ({ rewardable }: Props) => {
   const width = useCurrentWidth()
+
   return (
     <>
       <Seo
@@ -35,6 +39,10 @@ const Rewardable = ({ rewardable }: Props) => {
           instructions={rewardable.explanation}
           cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
         />
+
+        {rewardable.userRewards.length > 0 && (
+          <Button to={routes.claim({ id: rewardable.id })} text="Mint" />
+        )}
 
         <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
           {rewardable.asParent.map(({ childRewardable }) => (

@@ -15,6 +15,9 @@ export const QUERY = gql`
       nfts {
         cloudinaryId
       }
+      userRewards {
+        id
+      }
       asParent {
         childRewardable {
           id
