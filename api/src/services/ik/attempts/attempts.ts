@@ -187,7 +187,6 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         },
       })
 
-      // @TODO:
       const { nftPass, errors } = await checkNft(userAttempt)
 
       if (errors && errors.length > 0) {
