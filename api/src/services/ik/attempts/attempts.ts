@@ -21,38 +21,25 @@ export const stepSolutionTypeLookup: {
   NFT_CHECK: 'nftCheckSolution',
 }
 
-interface NftCheckSolution {
-  account: string
-  chainId?: number
-  contractAddress?: string
-  tokenId?: number
-  poapEventId?: string
-}
+const SimpleTextSolutionData = z.object({
+  type: z.literal('simple-text'),
+  simpleTextSolution: z.string(),
+})
 
-interface SimpleText {
-  type: 'simple-text'
-  simpleTextSolution: string
-}
-
-interface NftCheck {
-  type: 'nft-check'
-  nftCheckSolution: NftCheckSolution
-}
-
-type AttemptData = SimpleText | NftCheck
+const NftCheckSolutionData = z.object({
+  type: z.literal('nft-check'),
+  nftCheckSolution: z.object({
+    account: z.string(),
+    chainId: z.optional(z.number()),
+    contractAddress: z.optional(z.string()),
+    tokenId: z.optional(z.number()),
+    poapEventId: z.optional(z.string()),
+  }),
+})
 
 const SolutionData = z.discriminatedUnion('type', [
-  z.object({ type: z.literal('simple-text'), simpleTextSolution: z.string() }),
-  z.object({
-    type: z.literal('nft-check'),
-    nftCheckSolution: z.object({
-      account: z.string(),
-      chainId: z.optional(z.number()),
-      contractAddress: z.optional(z.string()),
-      tokenId: z.optional(z.number()),
-      poapEventId: z.optional(z.string()),
-    }),
-  }),
+  SimpleTextSolutionData,
+  NftCheckSolutionData,
 ])
 
 // @TODO: this 'asChild' logic will break if puzzle belongs to bundle
