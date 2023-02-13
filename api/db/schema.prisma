@@ -223,6 +223,9 @@ model Solve {
   attemptId String  @unique
 
   data Json? @default("{}")
+
+  // There can only be a single solve for a given user + attempt
+  @@unique([userId, attemptId])
 }
 
 /// Information about NFTs. Only Rewardables can reward an NFT.
