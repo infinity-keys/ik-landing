@@ -17,6 +17,13 @@ enum RewardableType {
   PACK
   BUNDLE
 }
+// on which chains are the rewardable's NFT allowed to be claimed
+enum AvailableChains {
+  AVAX
+  ETH
+  POLY
+  OPT
+}
 
 /// A thing that can reward NFTs.
 model Rewardable {
@@ -42,6 +49,7 @@ model Rewardable {
 
   /// The reward for completion
   nfts Nft[]
+  availableChains AvailableChains[] @default([AVAX, ETH, POLY, OPT])
 
   // Connections to the gaming concepts
   puzzle Puzzle?
