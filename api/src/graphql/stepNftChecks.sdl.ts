@@ -3,10 +3,7 @@ export const schema = gql`
     id: String!
     step: Step!
     stepId: String!
-    contractAddress: String
-    tokenId: Int
-    chainId: Int
-    poapEventId: String
+    nftCheckData: [NftCheckDatum]!
   }
 
   type Query {
@@ -16,18 +13,10 @@ export const schema = gql`
 
   input CreateStepNftCheckInput {
     stepId: String!
-    contractAddress: String
-    tokenId: Int
-    chainId: Int
-    poapEventId: String
   }
 
   input UpdateStepNftCheckInput {
     stepId: String
-    contractAddress: String
-    tokenId: Int
-    chainId: Int
-    poapEventId: String
   }
 
   type Mutation {
