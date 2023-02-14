@@ -6,6 +6,7 @@ import { useRequireAuth } from '@redwoodjs/graphql-server'
 import { context } from '@redwoodjs/graphql-server'
 
 import { getCurrentUser } from 'src/lib/auth'
+import { compressAndEncryptText } from 'src/lib/encoding/encoding'
 import { logger } from 'src/lib/logger'
 import { userProgress } from 'src/services/ik/rewardables'
 
@@ -67,19 +68,17 @@ const progressCookiesHandler = async (
   // @WARNING:
   console.log(JSON.stringify(cookieData, null, 2))
 
+  const progressCookie = compressAndEncryptText(JSON.stringify(cookieData))
+
   return {
     statusCode: 200,
     headers: {
-      'Set-Cookie': cookie.serialize(
-        PUZZLE_COOKIE_NAME,
-        JSON.stringify(progress),
-        {
-          path: '/',
-          httpOnly: true,
-          secure: true,
-          sameSite: 'strict',
-        }
-      ),
+      'Set-Cookie': cookie.serialize(PUZZLE_COOKIE_NAME, progressCookie, {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+      }),
       //   'Content-Type': 'application/json',
     },
   }

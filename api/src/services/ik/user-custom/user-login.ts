@@ -1,9 +1,6 @@
 import type { MutationResolvers } from 'types/graphql'
 
-import { context } from '@redwoodjs/graphql-server'
-
 import { db } from 'src/lib/db'
-import { reconcileProgress } from 'src/services/ik/rewardables'
 
 export const upsertUser: MutationResolvers['upsertUser'] = ({
   authId,
