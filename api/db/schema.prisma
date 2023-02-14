@@ -156,7 +156,7 @@ model Step {
 
   // Every puzzle from IK v1 (Next/Hasura) was a single step, so we need to
   // migrate them; optional because only v1 puzzles will have this.
-  migrateLandingRoute String?
+  migrateLandingRoute String? @unique
 
   // A user's attempt at solving this Step
   attempts Attempt[]

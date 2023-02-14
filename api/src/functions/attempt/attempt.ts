@@ -23,9 +23,9 @@ const PuzzlesData = z.object({
   ),
 })
 
-type PuzzlesDataType = z.TypeOf<typeof PuzzlesData>
+export type PuzzlesDataType = z.TypeOf<typeof PuzzlesData>
 
-const buildCookieData = ({
+export const buildCookieData = ({
   completed,
   puzzleId,
   authId,

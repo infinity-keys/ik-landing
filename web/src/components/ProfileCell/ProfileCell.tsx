@@ -5,7 +5,8 @@ import Avatar from 'boring-avatars'
 import type { FindUserQuery, FindUserQueryVariables } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
-import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
+import { useAuth } from '@redwoodjs/auth'
+import { CellSuccessProps, CellFailureProps, useMutation } from '@redwoodjs/web'
 
 import Button from 'src/components/Button'
 import DiscordIcon from 'src/svgs/DiscordIcon'
@@ -28,6 +29,13 @@ export const QUERY = gql`
   }
 `
 
+// On login, reconcile v1, v2, anon cookies
+const MUTATION_RECONCILE = gql`
+  mutation ReconcileProgressQuery {
+    reconcileProgress
+  }
+`
+
 export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => <div>Empty</div>
@@ -42,10 +50,34 @@ export const Success = ({
   user,
 }: CellSuccessProps<FindUserQuery, FindUserQueryVariables>) => {
   const { address } = useAccount()
+  const { getToken } = useAuth()
 
-  const handleReconcile = useMemo(() => {
-    return () => console.log(user)
-  }, [user])
+  const [reconcilePuzzles, { data, error, loading }] = useMutation(
+    MUTATION_RECONCILE,
+    {
+      onCompleted: async () => {
+        // Now do fetch to progressCookies function to set local cookie with all
+        // progress
+        console.log(data)
+        // /.redwood/functions/attempt vs /attempt
+        const apiPath = `${
+          global.RWJS_API_URL.includes('.redwood') ? window.location.origin : ''
+        }${global.RWJS_API_URL}/progressCookies`
+        const apiUrl = new URL(apiPath)
+        // Get JWT from MagicLink
+        const token = await getToken()
+        // This sets progress cookie
+        await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'auth-provider': 'magicLink',
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      },
+      onError: (error) => {},
+    }
+  )
 
   return (
     <div className="overflow-hidden rounded-lg bg-black/30">
@@ -65,7 +97,12 @@ export const Success = ({
         </div>
 
         <div className="ml-auto">
-          <Button text="Reconcile Progress" onClick={handleReconcile} />
+          <h1>{loading && <Loading />}</h1>
+          <Button
+            text="Reconcile Progress"
+            onClick={reconcilePuzzles}
+            disabled={loading}
+          />
         </div>
       </div>
 

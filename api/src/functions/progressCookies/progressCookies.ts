@@ -1,8 +1,20 @@
+import { PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
 import type { APIGatewayEvent, Context } from 'aws-lambda'
+import cookie from 'cookie'
 
+import { useRequireAuth } from '@redwoodjs/graphql-server'
+import { context } from '@redwoodjs/graphql-server'
+
+import { getCurrentUser } from 'src/lib/auth'
 import { logger } from 'src/lib/logger'
+import { userProgress } from 'src/services/ik/rewardables'
+
+import { buildCookieData, PuzzlesDataType } from '../attempt/attempt'
 
 /**
+ * Successfully reconcile cookies from IKv1, Anonymous progress from IKv2, and
+ * Authenticated progress from IKv2.
+ *
  * The handler function is your code that processes http request events.
  * You can use return and throw to send a response or error, respectively.
  *
@@ -18,18 +30,62 @@ import { logger } from 'src/lib/logger'
  * @param { Context } context - contains information about the invocation,
  * function, and execution environment.
  */
-export const handler = async (event: APIGatewayEvent, context: Context) => {
+const progressCookiesHandler = async (
+  event: APIGatewayEvent
+  // context: Context
+) => {
+  // We only accept POST requests
+  const { httpMethod } = event
+  if (httpMethod !== 'POST') return { statusCode: 405 }
+
   logger.info(
     'Invoked progressCookies function. This will eventually write all progress to cookies'
   )
 
+  // console.log(context.currentUser)
+
+  // Get user's entire progress
+  const progress = await userProgress()
+  // Turn this progress into a cookie
+  const cookieData = progress.reduce(
+    (acc, item) => {
+      acc = buildCookieData({
+        completed: acc,
+        puzzleId: item.puzzleId,
+        authId: context.currentUser?.authId,
+        stepId: item.id,
+      })
+      return acc
+    },
+    {
+      version: 'v1',
+      authId: context.currentUser?.authId,
+      puzzles: {},
+    } as PuzzlesDataType
+  )
+
+  // @WARNING:
+  console.log(JSON.stringify(cookieData, null, 2))
+
   return {
     statusCode: 200,
     headers: {
-      'Content-Type': 'application/json',
+      'Set-Cookie': cookie.serialize(
+        PUZZLE_COOKIE_NAME,
+        JSON.stringify(progress),
+        {
+          path: '/',
+          httpOnly: true,
+          secure: true,
+          sameSite: 'strict',
+        }
+      ),
+      //   'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      data: 'progressCookies function',
-    }),
   }
 }
+
+export const handler = useRequireAuth({
+  handlerFn: progressCookiesHandler,
+  getCurrentUser,
+})
