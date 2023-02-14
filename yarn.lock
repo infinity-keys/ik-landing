@@ -14264,6 +14264,7 @@ __metadata:
   dependencies:
     discord-economy-super: ^1.7.4
     discord.js: ^14.7.1
+    dotenv: ^16.0.3
     eslint: ^8.32.0
     typescript: ^4.9.5
   languageName: unknown
@@ -14514,6 +14515,13 @@ __metadata:
   version: 14.3.2
   resolution: "dotenv@npm:14.3.2"
   checksum: cb428358aa3a8da735be727f8a9de56e148ddf97d84a75e528039dc90e55787688766e48204a50b8326ba1ebaa6e039584c1019dfc28fa144e68145d8cbe5946
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.0.3":
+  version: 16.0.3
+  resolution: "dotenv@npm:16.0.3"
+  checksum: 109457ac5f9e930ca8066ea33887b6f839ab24d647a7a8b49ddcd1f32662e2c35591c5e5b9819063e430148a664d0927f0cbe60cf9575d89bc524f47ff7e78f0
   languageName: node
   linkType: hard
 
