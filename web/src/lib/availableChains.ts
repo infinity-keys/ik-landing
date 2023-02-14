@@ -6,7 +6,7 @@ import {
 } from '@infinity-keys/constants'
 import { AvailableChains } from 'types/graphql'
 
-export const availableNetworkLookup: {
+export const availableChainLookup: {
   [key: number]: AvailableChains
 } = {
   [ETH_CHAIN_ID]: 'ETH',
@@ -15,11 +15,11 @@ export const availableNetworkLookup: {
   [OPTIMISM_CHAIN_ID]: 'OPT',
 }
 
-export const isValidAvailableNetwork = (
+export const isValidAvailableChain = (
   chain: number | undefined,
   availableChains: AvailableChains[]
 ) => {
   if (typeof chain === 'undefined') return false
-  const chainEnum = availableNetworkLookup[chain]
+  const chainEnum = availableChainLookup[chain]
   return availableChains.includes(chainEnum)
 }

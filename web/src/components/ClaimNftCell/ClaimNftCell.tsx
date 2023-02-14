@@ -28,7 +28,7 @@ import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
 import Heading from 'src/components/Heading/Heading'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-import { isValidAvailableNetwork } from 'src/lib/availableChains'
+import { isValidAvailableChain } from 'src/lib/availableChains'
 
 import CloudImage from '../CloudImage/CloudImage'
 
@@ -85,7 +85,7 @@ export const Success = ({
   const { isConnected, address } = useAccount()
   const { openConnectModal } = useConnectModal()
   const { openChainModal } = useChainModal()
-  const isValidChain = isValidAvailableNetwork(
+  const isValidChain = isValidAvailableChain(
     chain?.id,
     rewardable.availableChains
   )
