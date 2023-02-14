@@ -151,6 +151,15 @@ export const addNftReward: QueryResolvers['userReward'] = async ({ id }) => {
   })
 }
 
+/**
+ * Reads both:
+ *  1. The old v1 ik-id cookie
+ *  2. The new v2 ik-puzzles cookie
+ *
+ * In the v1 cookie, it finds old puzzle progress and converts it to v2 Step
+ * progress. In the v2 cookie, it finds ANONYMOUS Puzzles (Puzzles that do not
+ * require a user to be logged in) and converts them to Steps.
+ */
 export const reconcileProgress: MutationResolvers['reconcileProgress'] =
   async () => {
     // console.log(context.currentUser)
@@ -257,6 +266,9 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
     return true
   }
 
+/**
+ * All Steps solved by the current user
+ */
 export const userProgress = async () => {
   console.log(context.currentUser)
 
