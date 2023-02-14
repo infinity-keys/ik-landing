@@ -7,12 +7,12 @@ export const standard = defineScenario<Prisma.StepNftCheckCreateArgs>({
       data: {
         step: {
           create: {
-            updatedAt: '2023-02-14T18:10:50.931Z',
+            updatedAt: '2023-02-14T20:17:17.293Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2023-02-14T18:10:50.931Z',
+                    updatedAt: '2023-02-14T20:17:17.293Z',
                     name: 'String',
                     slug: 'String',
                     explanation: 'String',
@@ -20,8 +20,8 @@ export const standard = defineScenario<Prisma.StepNftCheckCreateArgs>({
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String4174002',
-                        updatedAt: '2023-02-14T18:10:50.931Z',
+                        slug: 'String2700962',
+                        updatedAt: '2023-02-14T20:17:17.293Z',
                       },
                     },
                   },
@@ -36,12 +36,12 @@ export const standard = defineScenario<Prisma.StepNftCheckCreateArgs>({
       data: {
         step: {
           create: {
-            updatedAt: '2023-02-14T18:10:50.931Z',
+            updatedAt: '2023-02-14T20:17:17.293Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2023-02-14T18:10:50.931Z',
+                    updatedAt: '2023-02-14T20:17:17.293Z',
                     name: 'String',
                     slug: 'String',
                     explanation: 'String',
@@ -49,8 +49,8 @@ export const standard = defineScenario<Prisma.StepNftCheckCreateArgs>({
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String9417847',
-                        updatedAt: '2023-02-14T18:10:50.931Z',
+                        slug: 'String3678450',
+                        updatedAt: '2023-02-14T20:17:17.293Z',
                       },
                     },
                   },

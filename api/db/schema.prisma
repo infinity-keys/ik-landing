@@ -186,6 +186,12 @@ model StepSimpleText {
   solutionCharCount Int    @default(0)
 }
 
+/// if checking for multiple NFTs, should the user have all the NFTs (AND) or at least one of the NFTs (OR)
+enum NftCheckLogic {
+  AND
+  OR
+}
+
 model NftCheckDatum {
   id String @id @default(cuid())
 
@@ -204,7 +210,8 @@ model StepNftCheck {
   step   Step   @relation(fields: [stepId], references: [id])
   stepId String @unique
 
-  nftCheckData NftCheckDatum[]
+  nftCheckData  NftCheckDatum[]
+  nftCheckLogic NftCheckLogic @default(AND)
 }
 
 /// User form submissions from post-Puzzle forms asking for email address etc
