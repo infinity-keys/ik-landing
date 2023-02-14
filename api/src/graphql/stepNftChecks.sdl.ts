@@ -4,12 +4,7 @@ export const schema = gql`
     step: Step!
     stepId: String!
     nftCheckData: [NftCheckDatum]!
-    nftCheckLogic: NftCheckLogic!
-  }
-
-  enum NftCheckLogic {
-    AND
-    OR
+    requireAllNfts: Boolean!
   }
 
   type Query {
@@ -19,12 +14,12 @@ export const schema = gql`
 
   input CreateStepNftCheckInput {
     stepId: String!
-    nftCheckLogic: NftCheckLogic!
+    requireAllNfts: Boolean!
   }
 
   input UpdateStepNftCheckInput {
     stepId: String
-    nftCheckLogic: NftCheckLogic
+    requireAllNfts: Boolean
   }
 
   type Mutation {

@@ -59,7 +59,7 @@ export const schema = gql`
     # checks for NFT required for puzzle solution
     checkNft(
       account: String!
-      checkLogic: NftCheckLogic!
+      requireAllNfts: Boolean!
       nftCheckData: [NftCheckDatumInput!]!
     ): CheckNftResponse! @requireAuth
 

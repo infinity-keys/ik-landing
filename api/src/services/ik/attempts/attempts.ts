@@ -95,7 +95,7 @@ const getStep = async (id) => {
       type: true,
       stepNftCheck: {
         select: {
-          nftCheckLogic: true,
+          requireAllNfts: true,
           nftCheckData: true,
         },
       },
@@ -191,7 +191,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
       const { nftPass, errors } = await checkNft({
         account: userAttempt.account,
         nftCheckData: step.stepNftCheck.nftCheckData,
-        checkLogic: step.stepNftCheck.nftCheckLogic,
+        requireAllNfts: step.stepNftCheck.requireAllNfts,
       })
 
       if (errors && errors.length > 0) {

@@ -58,7 +58,7 @@ const checkContract = async ({
 
 export const checkNft: QueryResolvers['checkNft'] = async ({
   account,
-  checkLogic,
+  requireAllNfts,
   nftCheckData,
 }) => {
   const gottaCheckEmAll = nftCheckData.map(
@@ -83,10 +83,9 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
     return { errors: [...resErrors] }
   }
 
-  const nftPass =
-    checkLogic === 'AND'
-      ? results.every((b) => b.nftPass)
-      : results.some((b) => b.nftPass)
+  const nftPass = requireAllNfts
+    ? results.every((b) => b.nftPass)
+    : results.some((b) => b.nftPass)
 
   return { nftPass }
 }
