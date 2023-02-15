@@ -133,9 +133,16 @@ const createStepData = (puzzle) => {
         type: 'NFT_CHECK' as StepType,
         stepNftCheck: {
           create: {
-            contractAddress: nftCheckData.nftContractAddress,
-            chainId: getNumber(nftCheckData.nftChainId),
-            tokenId: getNumber(nftCheckData.nftTokenId),
+            nftCheckData: {
+              create: [
+                {
+                  contractAddress: nftCheckData.nftContractAddress,
+                  chainId: getNumber(nftCheckData.nftChainId),
+                  tokenId: getNumber(nftCheckData.nftTokenId),
+                  poapEventId: null,
+                },
+              ],
+            },
           },
         },
       }
