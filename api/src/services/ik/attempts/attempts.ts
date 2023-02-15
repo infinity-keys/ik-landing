@@ -1,6 +1,6 @@
 import { PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
 import cookie from 'cookie'
-import type { MutationResolvers, QueryResolvers } from 'types/graphql'
+import type { MutationResolvers, QueryResolvers, StepType } from 'types/graphql'
 import { z } from 'zod'
 
 import { context, ForbiddenError } from '@redwoodjs/graphql-server'
@@ -12,18 +12,125 @@ import { createSolve } from 'src/services/solves/solves'
 import { step } from 'src/services/steps/steps'
 import { createUserReward } from 'src/services/userRewards/userRewards'
 
-const SolutionData = z
-  .object({
-    simpleTextSolution: z.string(),
-    // add more types here
+import { checkNft } from '../minter/check-nft'
+
+export const stepSolutionTypeLookup: {
+  [key in StepType]: string
+} = {
+  SIMPLE_TEXT: 'simpleTextSolution',
+  NFT_CHECK: 'nftCheckSolution',
+}
+
+const SimpleTextSolutionData = z.object({
+  type: z.literal('simple-text'),
+  simpleTextSolution: z.string(),
+})
+
+const NftCheckSolutionData = z.object({
+  type: z.literal('nft-check'),
+  nftCheckSolution: z.object({
+    account: z.string(),
+    chainId: z.optional(z.number()),
+    contractAddress: z.optional(z.string()),
+    tokenId: z.optional(z.number()),
+    poapEventId: z.optional(z.string()),
+  }),
+})
+
+const SolutionData = z.discriminatedUnion('type', [
+  SimpleTextSolutionData,
+  NftCheckSolutionData,
+])
+
+// @TODO: this 'asChild' logic will break if puzzle belongs to bundle
+const createRewards = async (rewardable) => {
+  // create puzzle reward when user solves last step
+  await createUserReward({
+    input: {
+      rewardableId: rewardable.id,
+      userId: context.currentUser.id,
+    },
   })
-  .partial()
-  .refine(
-    (data) =>
-      // add corresponding type here
-      data.simpleTextSolution,
-    'Invalid solution type'
-  )
+
+  // does this step's puzzle belong to a pack
+  if (rewardable.asChild.length > 0) {
+    const parentPack = await db.rewardable.findUnique({
+      where: { id: rewardable.asChild[0].parentId },
+      select: {
+        id: true,
+        asParent: {
+          select: {
+            childRewardable: {
+              select: {
+                userRewards: {
+                  where: { userId: context.currentUser.id },
+                  select: {
+                    id: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+
+    // has this user now completed all puzzles in this pack
+    const allPuzzlesSolved = parentPack.asParent.every(
+      ({ childRewardable }) => childRewardable.userRewards.length > 0
+    )
+
+    // create reward for pack
+    if (allPuzzlesSolved) {
+      await createUserReward({
+        input: {
+          rewardableId: parentPack.id,
+          userId: context.currentUser.id,
+        },
+      })
+    }
+  }
+}
+
+const getStep = async (id) => {
+  return db.step.findUnique({
+    where: { id },
+    select: {
+      type: true,
+      stepNftCheck: true,
+      stepSimpleText: true,
+      puzzle: {
+        select: {
+          rewardable: {
+            select: {
+              userRewards: {
+                where: { userId: context.currentUser.id },
+                select: {
+                  id: true,
+                },
+              },
+              id: true,
+              asChild: {
+                select: {
+                  parentId: true,
+                },
+              },
+            },
+          },
+          steps: {
+            orderBy: {
+              stepSortWeight: 'asc',
+            },
+            select: {
+              id: true,
+              stepSortWeight: true,
+            },
+          },
+        },
+      },
+    },
+  })
+}
 
 export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   stepId,
@@ -32,130 +139,81 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   try {
     SolutionData.parse(data)
 
-    const attempt = await db.attempt.create({
-      data: {
-        userId: context?.currentUser.id,
-        stepId,
-        data,
-      },
-    })
-
-    const stepType = 'stepSimpleText'
-    const solutionType = 'simpleTextSolution'
-
-    const step = await db.step.findUnique({
-      where: { id: stepId },
-      select: {
-        [stepType]: true,
-        puzzle: {
-          select: {
-            rewardable: {
-              select: {
-                userRewards: {
-                  where: { userId: context.currentUser.id },
-                  select: {
-                    id: true,
-                  },
-                },
-                id: true,
-                asChild: {
-                  select: {
-                    parentId: true,
-                  },
-                },
-              },
-            },
-            steps: {
-              orderBy: {
-                stepSortWeight: 'asc',
-              },
-              select: {
-                id: true,
-                stepSortWeight: true,
-              },
-            },
-          },
-        },
-      },
-    })
+    const step = await getStep(stepId)
 
     if (step.puzzle.rewardable.userRewards.length > 0) {
       return { success: false, message: 'You have already solved this puzzle' }
     }
 
+    // all the solving logic relies on this function
+    // ensure steps are ordered by sortWeight
+    const finalStep = step.puzzle.steps.at(-1).id === stepId
+    const solutionType = stepSolutionTypeLookup[step.type]
     const userAttempt = data[solutionType]
 
-    if (step[stepType].solution === userAttempt) {
-      await createSolve({
-        input: {
-          attemptId: attempt.id,
-          userId: context.currentUser.id,
+    if (step.type === 'SIMPLE_TEXT') {
+      const attempt = await db.attempt.create({
+        data: {
+          userId: context?.currentUser.id,
+          stepId,
+          data,
         },
       })
 
-      // all the solving logic relies on this function
-      // ensure steps are ordered by sortWeight
-      const finalStep = step.puzzle.steps.at(-1).id === stepId
+      const correctAttempt =
+        step.stepSimpleText.solution.toLowerCase() === userAttempt.toLowerCase()
 
-      if (finalStep) {
-        // create puzzle reward when user solves last step
-        await createUserReward({
+      if (correctAttempt) {
+        await createSolve({
           input: {
-            rewardableId: step.puzzle.rewardable.id,
+            attemptId: attempt.id,
             userId: context.currentUser.id,
           },
         })
 
-        // @TODO: this 'asChild' logic will break if puzzle belongs to bundle
+        if (finalStep) {
+          await createRewards(step.puzzle.rewardable)
+        }
+      }
+      return { success: correctAttempt, finalStep }
+    } // end of SIMPLE_TEXT
 
-        // does this step's puzzle belong to a pack
-        if (step.puzzle.rewardable.asChild.length > 0) {
-          const parentPack = await db.rewardable.findUnique({
-            where: { id: step.puzzle.rewardable.asChild[0].parentId },
-            select: {
-              id: true,
-              asParent: {
-                select: {
-                  childRewardable: {
-                    select: {
-                      userRewards: {
-                        where: { userId: context.currentUser.id },
-                        select: {
-                          id: true,
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          })
+    if (step.type === 'NFT_CHECK') {
+      const attempt = await db.attempt.create({
+        data: {
+          userId: context?.currentUser.id,
+          stepId,
+          data: {},
+        },
+      })
 
-          // has this user now completed all puzzles in this pack
-          const allPuzzlesSolved = parentPack.asParent.every(
-            ({ childRewardable }) => childRewardable.userRewards.length > 0
-          )
+      const { nftPass, errors } = await checkNft(userAttempt)
 
-          // create reward for pack
-          if (allPuzzlesSolved) {
-            await createUserReward({
-              input: {
-                rewardableId: parentPack.id,
-                userId: context.currentUser.id,
-              },
-            })
-          }
+      if (errors && errors.length > 0) {
+        return { success: false }
+      }
+
+      if (nftPass) {
+        await createSolve({
+          input: {
+            attemptId: attempt.id,
+            userId: context.currentUser.id,
+          },
+        })
+
+        if (finalStep) {
+          await createRewards(step.puzzle.rewardable)
         }
       }
 
-      return { success: true, finalStep }
-    }
+      return { success: nftPass, finalStep }
+    } // end of NFT_CHECK
+
+    return { success: false }
   } catch (e) {
     console.log(e)
     return { success: false }
   }
-
-  return { success: false }
 }
 
 export const optionalStep: QueryResolvers['optionalStep'] = async (

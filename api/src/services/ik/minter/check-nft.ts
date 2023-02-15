@@ -28,29 +28,31 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
 
       // If no event or error return false
       // Have to move this return statement below to allow for cookies!
-      if (!data.event) return { success: true, nftPass: false }
-      return { success: true, nftPass: true }
+      if (!data.event) return { nftPass: false }
+
+      return { nftPass: true }
     } catch (e) {
-      return { success: false, nftPass: false }
+      return { errors: ['There was a problem checking your POAP'] }
     }
   }
 
   // No token Id for ERC721
   // @NOTE: tokenId can be zero, which is falsy. Can't just check for existence tokenId
-  const abi =
-    typeof tokenId === 'number' && !poapEventId ? balanceOf1155 : balanceOf721
-
+  const abi = typeof tokenId === 'number' ? balanceOf1155 : balanceOf721
   const provider = providerLookup[chainId]
 
-  // @BLOOM: Using provider here- maybe a better way ?
-  // This contract is a generic one, thus can't use our contract instances
-  const contract = new ethers.Contract(contractAddress, abi, provider)
+  try {
+    // @BLOOM: Using provider here- maybe a better way ?
+    // This contract is a generic one, thus can't use our contract instances
+    const contract = new ethers.Contract(contractAddress, abi, provider)
 
-  const balance = parseInt(
-    typeof tokenId === 'number'
-      ? await contract.balanceOf(account, tokenId)
-      : await contract.balanceOf(account),
-    10
-  )
-  return { success: true, nftPass: balance > 0 }
+    // create args for contract, ERC721 only takes account, 1155 takes account and tokenId
+    const args = [account, tokenId ?? null].filter((n) => n === 0 || n)
+
+    const balance = parseInt(await contract.balanceOf(...args), 10)
+
+    return { nftPass: balance > 0 }
+  } catch {
+    return { errors: ['There was a problem checking your NFT'] }
+  }
 }
