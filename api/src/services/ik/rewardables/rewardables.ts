@@ -245,7 +245,7 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
     /**
      * Convert anonymous Rewardables to signed-in user progress cookie
      */
-    const reconcileAnonymousRewardables = async (ikV2Cookie: string) => {
+    const reconcileCookieRewardables = async (ikV2Cookie: string) => {
       // Parse ik-puzzles cookie
       const v2CookieClearText = decryptAndDecompressText(ikV2Cookie)
       const parsedIkV2Cookie = PuzzlesData.parse(JSON.parse(v2CookieClearText))
@@ -343,7 +343,7 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
         PUZZLE_COOKIE_NAME
       ]
       if (ikV2Cookie) {
-        await reconcileAnonymousRewardables(ikV2Cookie)
+        await reconcileCookieRewardables(ikV2Cookie)
       }
 
 
