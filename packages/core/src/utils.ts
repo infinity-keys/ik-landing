@@ -97,3 +97,7 @@ export const buildTokenIdParams = (tokenIds: number[] | string[]) => {
 // Strings
 export const isValidEmail = (email: string) =>
   z.string().email().safeParse(email).success
+
+export  const truncate = (text: string) => {
+    return `${text.substring(0, 5)}...${text.substring(text.length - 3)}`
+  }

@@ -1,10 +1,11 @@
 import {
   IK_CLAIMS_NAMESPACE,
   PAGINATION_COUNTS,
+  PUZZLE_COOKIE_NAME,
 } from '@infinity-keys/constants'
 import { IK_ID_COOKIE } from '@infinity-keys/constants'
 import { IkJwt } from '@infinity-keys/core'
-import cookie from 'cookie'
+import cookie, { parse } from 'cookie'
 import type { QueryResolvers, MutationResolvers } from 'types/graphql'
 
 import { ForbiddenError } from '@redwoodjs/graphql-server'
@@ -13,6 +14,8 @@ import { ForbiddenError } from '@redwoodjs/graphql-server'
 import { db } from 'src/lib/db'
 import { verifyToken } from 'src/lib/jwt'
 import { logger } from 'src/lib/logger'
+import { decryptAndDecompressText } from 'src/lib/encoding/encoding'
+import { PuzzlesData } from 'src/functions/attempt/attempt'
 
 export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
   slug,
@@ -239,7 +242,85 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       await Promise.all(newSolves)
     }
 
-    // Check ik-id cookie. Look for key that says this has been parsed already.
+    /**
+     * Convert anonymous Rewardables to signed-in user progress cookie
+     */
+    const reconcileAnonymousRewardables = async (ikV2Cookie: string) => {
+      // Parse ik-puzzles cookie
+      const v2CookieClearText = decryptAndDecompressText(ikV2Cookie)
+      const parsedIkV2Cookie = PuzzlesData.parse(JSON.parse(v2CookieClearText))
+
+      console.log(parsedIkV2Cookie)
+      console.log({ authId: context.currentUser.authId })
+
+      if (parsedIkV2Cookie.authId !== context.currentUser.authId) {
+        return logger.warn('User has ikV2 cookie, but authId does not match')
+      }
+
+      // Just loop through all records in the cookie and see if any are missing in db
+      const cookieSolvedSteps = Object.entries(
+        parsedIkV2Cookie.puzzles
+      ).flatMap(([puzzleId, puzzleData]) => puzzleData.steps)
+      console.log(cookieSolvedSteps)
+      const existingSolves = await db.step.findMany({
+        select: { id: true },
+        where: {
+          id: {
+            in: cookieSolvedSteps,
+          },
+          attempts: {
+            some: {
+              userId: context.currentUser.id,
+              solve: {
+                userId: context.currentUser.id,
+              },
+            },
+          },
+        },
+      })
+      // Steps we have NOT solved in db vs what exists in cookie
+      console.log({ existingSolves })
+      const stepsUnsolvedInDb = cookieSolvedSteps.filter((stepId) => {
+        return !existingSolves.find(({ id }) => id === stepId)
+      })
+      console.log({ stepsUnsolvedInDb })
+
+      // Add to db any that are missing
+      const newSolves = stepsUnsolvedInDb.map((stepId) => {
+        return db.solve.create({
+          data: {
+            user: {
+              connect: {
+                id: context.currentUser.id,
+              },
+            },
+            attempt: {
+              create: {
+                data: {
+                  // v2Reconciliation here means "cookie had info we didn't yet have in db"
+                  v2Reconciliation: true,
+                },
+                user: {
+                  connect: {
+                    id: context.currentUser.id,
+                  },
+                },
+                step: {
+                  connect: {
+                    id: stepId,
+                  },
+                },
+              },
+            },
+          },
+        })
+      })
+
+      // Do it
+      await Promise.all(newSolves)
+    }
+
+    // Check ik-id|ik-puzzles cookie.
     if (
       // All this just to ensure cookies are present
       typeof context.event === 'object' &&
@@ -248,20 +329,25 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       'cookie' in context.event.headers &&
       typeof context.event.headers.cookie === 'string'
     ) {
-      // If a user has an ikV1 cookie, grab it
+      // If user has an ikV1 cookie, grab it
       const ikV1Cookie = cookie.parse(context.event.headers.cookie)[
         IK_ID_COOKIE
       ]
       if (ikV1Cookie) {
         await reconcileV1PuzzlesToV2Steps(ikV1Cookie)
+        // @TODO: if this runs successfully, delete the old cookie
+        // @link https://www.guru99.com/cookies-in-javascript-ultimate-guide.html
+      }
+      // If user has ikV2 cookie, grab and process
+      const ikV2Cookie = cookie.parse(context.event.headers.cookie)[
+        PUZZLE_COOKIE_NAME
+      ]
+      if (ikV2Cookie) {
+        await reconcileAnonymousRewardables(ikV2Cookie)
       }
 
-      // @TODO: if this runs successfully, delete the old cookie
-      // @link https://www.guru99.com/cookies-in-javascript-ultimate-guide.html
-    }
 
-    // Now, check ik-puzzles cookie (new). Look for known anonymous cookies to
-    //  associate with the user.
+    }
 
     return true
   }
