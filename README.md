@@ -247,7 +247,7 @@ yarn rw prisma migrate reset --force
 Builds all custom workspaces packages and start Redwood dev. (You'll use this daily!)
 
 ```bash
-yarn workspaces foreach run build && yarn rw dev
+yarn build && yarn rw dev
 ```
 
 ## Publish a Package

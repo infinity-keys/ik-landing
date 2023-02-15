@@ -39,8 +39,8 @@ services:
   type: web
   env: node
   region: oregon
-  buildCommand: yarn && cd packages/discord-dust-game-bot
-  startCommand: node .
+  buildCommand: yarn
+  startCommand: yarn run:discord-bot
   envVars:
   - key: NODE_VERSION
     value: 16
