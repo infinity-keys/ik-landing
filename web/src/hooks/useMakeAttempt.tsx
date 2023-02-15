@@ -27,11 +27,10 @@ const useMakeAttempt = () => {
     setFailedAttempt(false)
     setLoading(true)
 
-    const apiPath = `${
-      global.RWJS_API_URL.includes('.redwood') ? window.location.origin : ''
-    }${global.RWJS_API_URL}/attempt`
-
-    const apiUrl = new URL(apiPath)
+    const apiUrl = new URL(
+      `${global.RWJS_API_URL}/attempt`,
+      window.location.origin
+    )
 
     apiUrl.searchParams.set('stepId', stepId)
     apiUrl.searchParams.set('stepParam', stepParam)
