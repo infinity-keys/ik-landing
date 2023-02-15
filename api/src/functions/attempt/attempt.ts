@@ -85,13 +85,14 @@ const attemptHandler = async (event: APIGatewayEvent) => {
   }
 
   const { puzzleId, stepParam, stepId } = event.queryStringParameters
-  const stepNum = parseInt(stepParam, 10)
 
   // Garbage request, bail
   if (!puzzleId || !stepParam || !stepId) {
     logger.info('/attempt called without puzzle or step')
     return { statusCode: 400 }
   }
+
+  const stepNum = parseInt(stepParam, 10)
 
   logger.info(
     `Invoked '/attempt' function for puzzle ${puzzleId} and step ${stepNum}`
@@ -128,7 +129,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     const { success, finalStep, message } = await makeAttempt({
       stepId,
-      data: { simpleTextSolution: attempt },
+      data: attempt,
     })
 
     // @TODO: work out cookie headers required here
@@ -229,7 +230,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     const { success, finalStep, message } = await makeAttempt({
       stepId,
-      data: { simpleTextSolution: attempt },
+      data: attempt,
     })
 
     if (!success) {

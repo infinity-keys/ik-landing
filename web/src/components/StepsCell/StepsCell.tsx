@@ -9,6 +9,7 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import Button from 'src/components/Button/Button'
 import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import NftCheckButton from 'src/components/NftCheckButton/NftCheckButton'
 import SimpleTextInput from 'src/components/SimpleTextInput/SimpleTextInput'
 import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
 
@@ -36,6 +37,12 @@ export const QUERY = gql`
       type
       stepSimpleText {
         solutionCharCount
+      }
+      stepNftCheck {
+        chainId
+        tokenId
+        contractAddress
+        poapEventId
       }
     }
   }
@@ -74,12 +81,18 @@ export const Success = ({
   return (
     <div>
       {step && (
-        <>
-          <SimpleTextInput
-            count={step.stepSimpleText.solutionCharCount}
-            step={step}
-            puzzleId={puzzle.id}
-          />
+        <div>
+          {step.type === 'SIMPLE_TEXT' && (
+            <SimpleTextInput
+              count={step.stepSimpleText.solutionCharCount}
+              step={step}
+              puzzleId={puzzle.id}
+            />
+          )}
+
+          {step.type === 'NFT_CHECK' && (
+            <NftCheckButton step={step} puzzleId={puzzle.id} />
+          )}
 
           <div className="mx-auto mt-12 mb-12 max-w-prose p-4 md:mt-16 md:mb-20">
             {step.challenge && (
@@ -90,7 +103,7 @@ export const Success = ({
               />
             )}
           </div>
-        </>
+        </div>
       )}
 
       {puzzle.rewardable.userRewards.length > 0 && (

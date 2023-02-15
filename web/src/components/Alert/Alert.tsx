@@ -4,7 +4,7 @@ import Markdown from 'src/components/Markdown/Markdown'
 
 export default function Alert({ text }: { text: string }) {
   return (
-    <div className="rounded-md bg-blue p-4">
+    <div className="rounded-md bg-white/10 p-4">
       <div className="flex">
         <div className="flex-shrink-0">
           <InformationCircleIcon

@@ -12,12 +12,14 @@ export const schema = gql`
     type: StepType!
     stepSimpleText: StepSimpleText
     migrateLandingRoute: String
+    stepNftCheck: StepNftCheck
     attempts: [Attempt]!
     hasUserCompletedStep: Boolean
   }
 
   enum StepType {
     SIMPLE_TEXT
+    NFT_CHECK
   }
 
   type Query {
