@@ -116,7 +116,6 @@ const attemptHandler = async (event: APIGatewayEvent) => {
 
     // trying to solve step more than once
     if (puzzlesCompleted?.puzzles[puzzleId]?.steps.includes(stepId)) {
-      console.log('alread dun')
       return {
         statusCode: 403,
         headers: { 'Content-Type': 'application/json' },
