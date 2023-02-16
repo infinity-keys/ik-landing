@@ -14,7 +14,7 @@ import {
 import { logger } from 'src/lib/logger'
 import { makeAttempt } from 'src/services/ik/attempts/attempts'
 
-const PuzzlesData = z.object({
+export const PuzzlesData = z.object({
   version: z.string().min(1),
   authId: z.string().min(1),
   puzzles: z.record(
@@ -23,9 +23,9 @@ const PuzzlesData = z.object({
   ),
 })
 
-type PuzzlesDataType = z.TypeOf<typeof PuzzlesData>
+export type PuzzlesDataType = z.TypeOf<typeof PuzzlesData>
 
-const buildCookieData = ({
+export const buildCookieData = ({
   completed,
   puzzleId,
   authId,
