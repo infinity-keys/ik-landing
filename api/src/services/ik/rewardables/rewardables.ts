@@ -11,11 +11,11 @@ import type { QueryResolvers, MutationResolvers } from 'types/graphql'
 import { ForbiddenError } from '@redwoodjs/graphql-server'
 // import { context } from '@redwoodjs/graphql-server'
 
+import { PuzzlesData } from 'src/lib/cookie'
 import { db } from 'src/lib/db'
+import { decryptAndDecompressText } from 'src/lib/encoding/encoding'
 import { verifyToken } from 'src/lib/jwt'
 import { logger } from 'src/lib/logger'
-import { decryptAndDecompressText } from 'src/lib/encoding/encoding'
-import { PuzzlesData } from 'src/functions/attempt/attempt'
 
 export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
   slug,
@@ -165,8 +165,7 @@ export const addNftReward: QueryResolvers['userReward'] = async ({ id }) => {
  */
 export const reconcileProgress: MutationResolvers['reconcileProgress'] =
   async () => {
-
-    logger.info('Reconciling progress', {context})
+    logger.info('Reconciling progress', { context })
 
     /**
      * Convert v1 Puzzles to v2 Steps
@@ -252,7 +251,9 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       const parsedIkV2Cookie = PuzzlesData.parse(JSON.parse(v2CookieClearText))
 
       if (parsedIkV2Cookie.authId !== context.currentUser.authId) {
-        return logger.warn(`User ${context.currentUser.id} has ikV2 cookie, but authId does not match`)
+        return logger.warn(
+          `User ${context.currentUser.id} has ikV2 cookie, but authId does not match`
+        )
       }
 
       // Just loop through all records in the cookie and see if any are missing in db
@@ -364,5 +365,4 @@ export const userProgress = async () => {
       },
     },
   })
-
 }
