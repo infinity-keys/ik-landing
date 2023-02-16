@@ -1,59 +1,18 @@
 import { PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
 import type { APIGatewayEvent } from 'aws-lambda'
 import cookie from 'cookie'
-import { z } from 'zod'
 
 import { context } from '@redwoodjs/graphql-server'
 import { useRequireAuth } from '@redwoodjs/graphql-server'
 
 import { getCurrentUser } from 'src/lib/auth'
+import { buildCookieData, PuzzlesData } from 'src/lib/cookie'
 import {
   compressAndEncryptText,
   decryptCookie,
 } from 'src/lib/encoding/encoding'
 import { logger } from 'src/lib/logger'
 import { makeAttempt } from 'src/services/ik/attempts/attempts'
-
-export const PuzzlesData = z.object({
-  version: z.string().min(1),
-  authId: z.string().min(1),
-  puzzles: z.record(
-    z.string().min(1),
-    z.object({ steps: z.array(z.string().min(1)).min(1) })
-  ),
-})
-
-export type PuzzlesDataType = z.TypeOf<typeof PuzzlesData>
-
-export const buildCookieData = ({
-  completed,
-  puzzleId,
-  authId,
-  stepId,
-}: {
-  completed: PuzzlesDataType
-  puzzleId: string
-  authId: string
-  stepId: string
-}) => {
-  const steps = new Set(
-    completed && completed.puzzles[puzzleId]
-      ? completed.puzzles[puzzleId].steps
-      : []
-  ).add(stepId)
-
-  return {
-    version: 'v1',
-    authId,
-    puzzles: {
-      ...(completed?.puzzles || {}),
-      [puzzleId]: {
-        ...(completed?.puzzles[puzzleId] || {}),
-        steps: [...steps],
-      },
-    },
-  }
-}
 
 /**
  * The handler function is your code that processes http request events.

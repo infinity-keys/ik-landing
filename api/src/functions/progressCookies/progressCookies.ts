@@ -6,11 +6,10 @@ import { useRequireAuth } from '@redwoodjs/graphql-server'
 import { context } from '@redwoodjs/graphql-server'
 
 import { getCurrentUser } from 'src/lib/auth'
+import { buildCookieData, PuzzlesDataType } from 'src/lib/cookie'
 import { compressAndEncryptText } from 'src/lib/encoding/encoding'
 import { logger } from 'src/lib/logger'
 import { userProgress } from 'src/services/ik/rewardables'
-
-import { buildCookieData, PuzzlesDataType } from '../attempt/attempt'
 
 /**
  * Successfully reconcile cookies from IKv1, Anonymous progress from IKv2, and
