@@ -15,5 +15,6 @@ export const schema = gql`
 
   type Mutation {
     addNftReward(id: String!): UserReward! @requireAuth
+    reconcileProgress: Boolean @requireAuth
   }
 `

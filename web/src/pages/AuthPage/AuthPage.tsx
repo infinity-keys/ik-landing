@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 
-import { z } from 'zod'
+import { isValidEmail } from '@infinity-keys/core'
 
 import { useAuth } from '@redwoodjs/auth'
 
@@ -18,8 +18,6 @@ import ProfileCell from 'src/components/ProfileCell'
   we ensure the user has a valid token and authId, and create a new user or
   update an existing user.
 */
-
-const isValidEmail = (email) => z.string().email().safeParse(email).success
 
 const AuthPage = () => {
   const { logIn, logOut, isAuthenticated, loading } = useAuth()

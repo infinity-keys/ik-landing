@@ -7,16 +7,16 @@ export const upsertUser: MutationResolvers['upsertUser'] = ({
   email,
 }) => {
   return db.user.upsert({
+    create: {
+      email,
+      authId,
+      siteRole: 'VERIFIED',
+    },
     where: {
       authId,
     },
     update: {
       lastLoggedIn: new Date().toISOString(),
-    },
-    create: {
-      email,
-      authId,
-      siteRole: 'VERIFIED',
     },
   })
 }
