@@ -165,13 +165,14 @@ export const addNftReward: QueryResolvers['userReward'] = async ({ id }) => {
  */
 export const reconcileProgress: MutationResolvers['reconcileProgress'] =
   async () => {
-    // console.log(context.currentUser)
+
+    logger.info('Reconciling progress', {context})
 
     /**
      * Convert v1 Puzzles to v2 Steps
      */
     const reconcileV1PuzzlesToV2Steps = async (ikV1Cookie: string) => {
-      logger.info('User has ikV1 cookie, reconciling')
+      logger.info(`User ${context.currentUser.id} has ikV1 cookie, reconciling`)
       // Parse and verify the old JWT to figure out what (old) puzzles a user solved
       const verifiedIkV1Jwt = await verifyToken(ikV1Cookie)
       const payload = verifiedIkV1Jwt.payload as unknown as IkJwt
@@ -250,18 +251,15 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       const v2CookieClearText = decryptAndDecompressText(ikV2Cookie)
       const parsedIkV2Cookie = PuzzlesData.parse(JSON.parse(v2CookieClearText))
 
-      console.log(parsedIkV2Cookie)
-      console.log({ authId: context.currentUser.authId })
-
       if (parsedIkV2Cookie.authId !== context.currentUser.authId) {
-        return logger.warn('User has ikV2 cookie, but authId does not match')
+        return logger.warn(`User ${context.currentUser.id} has ikV2 cookie, but authId does not match`)
       }
 
       // Just loop through all records in the cookie and see if any are missing in db
       const cookieSolvedSteps = Object.entries(
         parsedIkV2Cookie.puzzles
       ).flatMap(([puzzleId, puzzleData]) => puzzleData.steps)
-      console.log(cookieSolvedSteps)
+
       const existingSolves = await db.step.findMany({
         select: { id: true },
         where: {
@@ -279,11 +277,9 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
         },
       })
       // Steps we have NOT solved in db vs what exists in cookie
-      console.log({ existingSolves })
       const stepsUnsolvedInDb = cookieSolvedSteps.filter((stepId) => {
         return !existingSolves.find(({ id }) => id === stepId)
       })
-      console.log({ stepsUnsolvedInDb })
 
       // Add to db any that are missing
       const newSolves = stepsUnsolvedInDb.map((stepId) => {
@@ -345,8 +341,6 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       if (ikV2Cookie) {
         await reconcileCookieRewardables(ikV2Cookie)
       }
-
-
     }
 
     return true
@@ -356,9 +350,7 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
  * All Steps solved by the current user
  */
 export const userProgress = async () => {
-  console.log(context.currentUser)
-
-  const existingSolves = await db.step.findMany({
+  return await db.step.findMany({
     select: { id: true, puzzleId: true, stepSortWeight: true },
     orderBy: { stepSortWeight: 'asc' },
     where: {
@@ -373,5 +365,4 @@ export const userProgress = async () => {
     },
   })
 
-  return existingSolves
 }

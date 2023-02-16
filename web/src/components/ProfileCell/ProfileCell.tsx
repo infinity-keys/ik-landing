@@ -68,9 +68,8 @@ export const Success = ({
         </div>
 
         <div className="ml-auto">
-          <h1>{progressLoading && <Loading />}</h1>
           <Button
-            text="Reconcile Progress"
+            text={`Sync${progressLoading ? ' (Loading)' : ''}`}
             onClick={reconcilePuzzles}
             disabled={progressLoading}
           />

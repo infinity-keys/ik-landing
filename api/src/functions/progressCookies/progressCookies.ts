@@ -40,10 +40,9 @@ const progressCookiesHandler = async (
   if (httpMethod !== 'POST') return { statusCode: 405 }
 
   logger.info(
-    'Invoked progressCookies function. This will eventually write all progress to cookies'
+    'Invoked progressCookies function. This will eventually write all progress to cookies',
+    { context }
   )
-
-  // console.log(context.currentUser)
 
   // Get user's entire progress
   const progress = await userProgress()
@@ -65,9 +64,6 @@ const progressCookiesHandler = async (
     } as PuzzlesDataType
   )
 
-  // @WARNING:
-  console.log(JSON.stringify(cookieData, null, 2))
-
   const progressCookie = compressAndEncryptText(JSON.stringify(cookieData))
 
   return {
@@ -79,6 +75,7 @@ const progressCookiesHandler = async (
         secure: true,
         sameSite: 'strict',
       }),
+      // No JSON, just a response (with a cookie)
       //   'Content-Type': 'application/json',
     },
   }

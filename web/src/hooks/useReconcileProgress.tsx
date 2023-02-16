@@ -25,7 +25,7 @@ export default function useReconcileProgress() {
         setCookieFetching(true)
         // Now do fetch to progressCookies function to set local cookie with all
         // progress
-        console.log(data)
+
         // /.redwood/functions/attempt vs /attempt
         const apiPath = `${
           global.RWJS_API_URL.includes('.redwood') ? window.location.origin : ''
