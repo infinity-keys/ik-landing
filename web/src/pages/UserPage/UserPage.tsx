@@ -7,7 +7,7 @@ const UserPage = () => {
     <>
       <MetaTags title="User" description="User page" />
 
-      <ProfileCell userId="cl9fx1rkj0017w9l6cakq27kf" />
+      <ProfileCell />
     </>
   )
 }

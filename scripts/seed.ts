@@ -119,7 +119,7 @@ const createNftConnectionObject = (nfts, nftId) => {
     : {}
 }
 
-const createStepData = (puzzle) => {
+const createConditionalStepData = (puzzle) => {
   const nftCheckData = puzzle.nft_check_parameters
 
   const getNumber = (data) => {
@@ -271,7 +271,8 @@ export default async () => {
                           failMessage: puzzle.fail_message,
                           challenge: puzzle.challenge,
                           successMessage: puzzle.success_message,
-                          ...createStepData(puzzle),
+                          migrateLandingRoute: puzzle.landing_route,
+                          ...createConditionalStepData(puzzle),
                         },
                       ],
                     },
@@ -309,8 +310,9 @@ export default async () => {
                     failMessage: puzzle.fail_message,
                     challenge: puzzle.instructions,
                     successMessage: puzzle.success_message,
+                    migrateLandingRoute: puzzle.landing_route,
                     stepSortWeight: parseInt(puzzle.migration_step, 10),
-                    ...createStepData(puzzle),
+                    ...createConditionalStepData(puzzle),
                   })),
                 },
               },

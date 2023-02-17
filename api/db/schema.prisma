@@ -125,6 +125,9 @@ model Bundle {
 model Puzzle {
   id String @id @default(cuid())
 
+  /// Can this rewardable be played/accessed by anonymous/non-authed users?
+  isAnon       Boolean        @default(false)
+
   rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
   rewardableId String     @unique
 
@@ -166,6 +169,10 @@ model Step {
   type           StepType        @default(SIMPLE_TEXT)
   stepSimpleText StepSimpleText?
   stepNftCheck   StepNftCheck?
+
+  // Every puzzle from IK v1 (Next/Hasura) was a single step, so we need to
+  // migrate them; optional because only v1 puzzles will have this.
+  migrateLandingRoute String? @unique
 
   // A user's attempt at solving this Step
   attempts Attempt[]
@@ -254,6 +261,9 @@ model Solve {
   attemptId String  @unique
 
   data Json? @default("{}")
+
+  // There can only be a single solve for a given user + attempt
+  @@unique([userId, attemptId])
 }
 
 /// Information about NFTs. Only Rewardables can reward an NFT.

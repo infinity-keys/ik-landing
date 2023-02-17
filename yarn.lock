@@ -14262,7 +14262,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "discord-coin-bot@workspace:packages/discord-dust-game-bot"
   dependencies:
-    discord-economy-super: ^1.7.4
+    discord-economy-super: IvySwing/discord-economy-super
     discord.js: ^14.7.1
     dotenv: ^16.0.3
     eslint: ^8.32.0
@@ -14270,13 +14270,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"discord-economy-super@npm:^1.7.4":
+discord-economy-super@IvySwing/discord-economy-super:
   version: 1.7.4
-  resolution: "discord-economy-super@npm:1.7.4"
+  resolution: "discord-economy-super@https://github.com/IvySwing/discord-economy-super.git#commit=dc2ec07fbef340322a0089266c0b68f668e3d834"
   dependencies:
     node-fetch: ^2.6.7
     quick-mongo-super: ^1.0.10
-  checksum: e2dcbc01417deffd68faf78d799b8279c0234e633b7b55cbaf56cf8c5709bb12d93606f794afa82295e22553d441815ddc0021e4a1f65e2f36e6652e76aabfbe
+  checksum: 03cb46e0ed50eacce1ea53af99622e4baae737916e1b8ff0db9c5531106bdb8016b2cea4b47a28480dd9b1b849526d04e7ebc7092cd61a6860e4c1b5c19c25e3
   languageName: node
   linkType: hard
 

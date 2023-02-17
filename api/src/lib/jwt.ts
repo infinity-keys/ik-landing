@@ -73,7 +73,7 @@ export const verifyToken = (token: string) =>
   jwtVerify(token, new TextEncoder().encode(JWT_SECRET_KEY))
 
 /**
- * Given a JWT string, check that the users claims claim one or mroe puzzle
+ * Given a JWT string, check that the users claims claim one or more puzzle
  * namespaces
  */
 export const jwtHasClaim = async (jwt: string, puzzle: string[]) => {

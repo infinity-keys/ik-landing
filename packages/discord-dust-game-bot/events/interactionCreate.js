@@ -13,7 +13,7 @@ module.exports = {
 		}
 
 		try {
-			await command.execute(interaction);
+			return await command.execute(interaction);
 		}
 		catch (error) {
 			console.error(`Error executing ${interaction.commandName}`);
