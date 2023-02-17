@@ -61,7 +61,7 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
   requireAllNfts,
   nftCheckData,
 }) => {
-  const gottaCheckEmAll = nftCheckData.map(
+  const allChecks = nftCheckData.map(
     ({ chainId, tokenId, contractAddress, poapEventId }) => {
       if (poapEventId) {
         return checkPoap({ account, poapEventId })
@@ -71,7 +71,7 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
     }
   )
 
-  const results = await Promise.all(gottaCheckEmAll)
+  const results = await Promise.all(allChecks)
 
   const resErrors = new Set(
     results
