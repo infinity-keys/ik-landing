@@ -45,6 +45,11 @@ const Routes = () => {
 
       <Set wrap={[MainLayout, WrapperLayout]}>
         <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleLanding" />
+
+        // Anonymous Puzzles - landing and step pages
+        <Route path="/a/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="anonPuzzleLanding" />
+        <Route path="/a/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="anonPuzzleStep" />
+
         <Route path="/pack/{slug}" page={RewardablePackRewardablePackPage} name="packLanding" />
       </Set>
 

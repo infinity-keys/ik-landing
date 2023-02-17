@@ -11,6 +11,7 @@ export const schema = gql`
     puzzleId: String!
     type: StepType!
     stepSimpleText: StepSimpleText
+    migrateLandingRoute: String
     stepNftCheck: StepNftCheck
     attempts: [Attempt]!
     hasUserCompletedStep: Boolean

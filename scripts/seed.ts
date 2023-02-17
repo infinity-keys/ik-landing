@@ -225,6 +225,7 @@ export default async () => {
                           challenge: puzzle.challenge,
                           successMessage: puzzle.success_message,
                           type: 'SIMPLE_TEXT' as StepType,
+                          migrateLandingRoute: puzzle.landing_route,
                           stepSimpleText: {
                             create: {
                               solution: puzzle.solution,
@@ -268,6 +269,7 @@ export default async () => {
                     challenge: puzzle.instructions,
                     successMessage: puzzle.success_message,
                     type: 'SIMPLE_TEXT' as StepType,
+                    migrateLandingRoute: puzzle.landing_route,
                     stepSortWeight: parseInt(puzzle.migration_step, 10),
                     stepSimpleText: {
                       create: {

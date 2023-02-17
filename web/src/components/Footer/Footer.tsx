@@ -1,3 +1,5 @@
+import { LensIcon } from '@infinity-keys/react-lens-share-button'
+
 import { Link, routes } from '@redwoodjs/router'
 
 import Button from 'src/components/Button/Button'
@@ -8,6 +10,37 @@ import TwitterIcon from 'src/svgs/TwitterIcon'
 // @TODO: replace link urls with constants
 // import { PACK_COLLECTION_BASE } from "@lib/constants";
 
+const links = [
+  {
+    className: 'lensIcon',
+    href: 'https://lenster.xyz/u/infinitykeys',
+    testing: 'lens',
+    ariaLabel: 'visit IK Lenster.',
+    icon: <LensIcon height={32} width={32} />,
+  },
+  {
+    className: 'twitterIcon',
+    href: 'https://twitter.com/InfinityKeys',
+    testing: 'twitter',
+    ariaLabel: 'visit IK Twitter.',
+    icon: <TwitterIcon />,
+  },
+  {
+    className: 'discordIcon',
+    href: 'discord',
+    testing: 'https://discord.com/invite/infinitykeys',
+    ariaLabel: 'visit IK Discord.',
+    icon: <DiscordIcon />,
+  },
+  {
+    className: 'redditIcon',
+    href: 'https://www.reddit.com/r/infinitykeys/',
+    testing: 'reddit',
+    ariaLabel: 'visit the IK subreddit.',
+    icon: <RedditIcon />,
+  },
+]
+
 const Footer = () => {
   return (
     <footer className="ik-footer text-white">
@@ -15,42 +48,20 @@ const Footer = () => {
         <nav className="px-4 sm:px-6 lg:px-8" aria-label="Top">
           <div className="flex w-full flex-col items-center justify-center border-b border-indigo-500 py-6 sm:flex-row lg:border-none">
             <div className="mb-4 flex items-center space-x-4 sm:mb-0">
-              <div>
-                <a
-                  className="twitterIcon"
-                  data-cy="twitter"
-                  href="https://twitter.com/InfinityKeys"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="visit IK Twitter."
-                >
-                  <TwitterIcon />
-                </a>
-              </div>
-              <div>
-                <a
-                  className="discordIcon"
-                  data-cy="discord"
-                  href="https://discord.com/invite/infinitykeys"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="visit IK Discord."
-                >
-                  <DiscordIcon />
-                </a>
-              </div>
-              <div>
-                <a
-                  className="redditIcon"
-                  data-cy="reddit"
-                  href="https://www.reddit.com/r/infinitykeys/"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="visit the IK subreddit."
-                >
-                  <RedditIcon />
-                </a>
-              </div>
+              {links.map(({ className, href, testing, ariaLabel, icon }) => (
+                <div key={href}>
+                  <a
+                    className={className}
+                    data-cy={testing}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={ariaLabel}
+                  >
+                    {icon}
+                  </a>
+                </div>
+              ))}
             </div>
             {/* right */}
             <div className="mb-4 flex gap-4 sm:mb-0 sm:ml-6">
