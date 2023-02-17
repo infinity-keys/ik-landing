@@ -43,7 +43,7 @@ services:
   startCommand: yarn run:discord-bot
   envVars:
   - key: NODE_VERSION
-    value: 16
+    value: 18
 
 databases:
   - name: redwoodjs-db
