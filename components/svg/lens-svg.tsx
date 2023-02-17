@@ -2,12 +2,13 @@ const LensIcon = ({
   height = 16,
   width = 16,
 }: {
-  height: number;
-  width: number;
+  height?: number;
+  width?: number;
 }) => (
   <svg
     width={width}
     height={height}
+    viewBox="0 0 16 16"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -16,8 +17,8 @@ const LensIcon = ({
       maskUnits="userSpaceOnUse"
       x={0}
       y={0}
-      width={16}
-      height={16}
+      width={width}
+      height={height}
       fill="#000"
     >
       <path fill="currentColor" d="M0 0h16v16H0z" />

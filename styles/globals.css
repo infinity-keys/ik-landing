@@ -59,7 +59,11 @@
   }
 
   .redditIcon:hover {
-    color: #FF4500;
+    color: #ff4500;
+  }
+
+  .lensIcon:hover {
+    color: lime;
   }
 
   .markdown {
