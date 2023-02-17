@@ -1,6 +1,6 @@
 {
   "name": "@infinity-keys/react-lens-share-button",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "type": "module",
   "scripts": {
     "dev": "vite",
