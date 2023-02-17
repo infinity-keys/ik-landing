@@ -148,15 +148,12 @@ export async function getStaticProps({
   const { packName } = params;
   const gql = await gqlApiSdk();
   const { puzzles, pack } = await gql.GetPuzzlesByPack({ packName });
-  const puzzlesNftIds = puzzles.map(({ nft }) => nft?.tokenId);
+  const puzzlesNftIds = puzzles.flatMap(({ nft }) => nft?.tokenId || []);
 
-  if (!puzzlesNftIds.every(isNumber)) {
-    throw new Error("Either no NFTs or NFT IDs are not numbers");
-  }
   return {
     props: {
       puzzles,
-      puzzlesNftIds,
+      puzzlesNftIds: puzzlesNftIds,
       pack: {
         simpleName: packName,
         packSuccessMessage: pack[0].pack_success_message || "",

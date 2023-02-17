@@ -54,7 +54,8 @@ export default async function handler(
 
   // Actual success results (guessed correctly)
   if (success.length) {
-    const [{ final_step, success_route }] = success;
+    const [{ final_step, success_route, landing_route }] = success;
+    const isStepPuzzle = !final_step;
 
     guessResults.success_route = final_step
       ? routeSuccessUrl(success_route)
@@ -64,7 +65,9 @@ export default async function handler(
     const { puzzles } = payload.claims[IK_CLAIMS_NAMESPACE];
     payload.claims[IK_CLAIMS_NAMESPACE].puzzles = uniq([
       ...puzzles,
-      success_route,
+
+      // multistep puzzles their current route otherwise users will get a cookie for solving the next step in puzzle, not the one they just solved
+      isStepPuzzle ? landing_route : success_route,
     ]);
   }
 
