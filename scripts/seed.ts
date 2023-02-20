@@ -135,7 +135,8 @@ export default async () => {
 
     const userOrg: Prisma.UserCreateArgs['data'][] = [
       {
-        username: 'Herp',
+        username: 'Infinity Keys User',
+        authId: 'did:ethr:0xf19621f2Fb459B9954170bf5F2F7b15A2aA1E3f9',
         organizations: {
           create: [
             {
