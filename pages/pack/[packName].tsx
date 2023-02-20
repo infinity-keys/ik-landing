@@ -153,7 +153,7 @@ export async function getStaticProps({
   return {
     props: {
       puzzles,
-      puzzlesNftIds: puzzlesNftIds,
+      puzzlesNftIds,
       pack: {
         simpleName: packName,
         packSuccessMessage: pack[0].pack_success_message || "",
