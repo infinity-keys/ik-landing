@@ -66,7 +66,9 @@ export default async function handler(
     payload.claims[IK_CLAIMS_NAMESPACE].puzzles = uniq([
       ...puzzles,
 
-      // multistep puzzles their current route otherwise users will get a cookie for solving the next step in puzzle, not the one they just solved
+      // multistep puzzles need to add their current route otherwise users will
+      // get a cookie for solving the next step in puzzle, not the one they just
+      // solved
       isStepPuzzle ? landing_route : success_route,
     ]);
   }
