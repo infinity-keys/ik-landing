@@ -14,6 +14,7 @@ module.exports = {
 		const embedBalance = new EmbedBuilder()
 			.setDescription(`I’m sure you’ve been working hard. Let me collect those files… According to the records you’ve located \`${balance}\` pages. Is that all? Well then.`)
 			.setColor('c3b4f7');
-		await interaction.reply({ embeds: [embedBalance] });
+      await interaction.deferReply();
+    await interaction.editReply({ embeds: [embedBalance] });
 	},
 };
