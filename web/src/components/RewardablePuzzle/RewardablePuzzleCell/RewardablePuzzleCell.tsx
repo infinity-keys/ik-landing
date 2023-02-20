@@ -20,6 +20,7 @@ export const QUERY = gql`
         id
         steps {
           id
+          stepSortWeight
         }
       }
     }
