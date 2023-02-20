@@ -8,8 +8,7 @@
     ]
   },
   "scripts": {
-    "build": "yarn workspaces foreach run build",
-    "run:discord-bot": "cd packages/discord-dust-game-bot && node ."
+    "build": "yarn workspaces foreach run build"
   },
   "devDependencies": {
     "@redwoodjs/core": "^3.4.0",
