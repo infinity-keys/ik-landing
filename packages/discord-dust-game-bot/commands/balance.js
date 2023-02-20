@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { EmbedBuilder } = require('discord.js');
 const eco = require('../ecoDB');
-const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -15,8 +14,6 @@ module.exports = {
 		const embedBalance = new EmbedBuilder()
 			.setDescription(`I’m sure you’ve been working hard. Let me collect those files… According to the records you’ve located \`${balance}\` pages. Is that all? Well then.`)
 			.setColor('c3b4f7');
-      await interaction.deferReply();
-      await wait(4000);
-		return interaction.editReply({ embeds: [embedBalance] });
+		await interaction.reply({ embeds: [embedBalance] });
 	},
 };

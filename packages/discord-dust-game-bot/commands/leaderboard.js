@@ -2,7 +2,6 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { EmbedBuilder } = require('discord.js');
 const { options } = require('../ecoDB');
 const eco = require('../ecoDB');
-const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -18,9 +17,7 @@ module.exports = {
 			const embedNoLeader = new EmbedBuilder()
 				.setDescription(`${username}, there are no users on the leaderboard`)
 				.setColor('c3b4f7');
-        await interaction.deferReply();
-        await wait(4000);
-			return interaction.editReply({ embeds: [embedNoLeader] });
+			await interaction.reply({ embeds: [embedNoLeader] });
 		}
 
 		const embedLeader = new EmbedBuilder()
@@ -29,8 +26,6 @@ module.exports = {
 				.map((lb, index) => `${index + 1} - <@${lb.userID}> - **${lb.money}** coins`)
 				.join('\n')}`)
 			.setColor('c3b4f7');
-      await interaction.deferReply();
-      await wait(4000);
-		return interaction.editReply({ embeds: [embedLeader] });
+		await interaction.reply({ embeds: [embedLeader] });
 	},
 };
