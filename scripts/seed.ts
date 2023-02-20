@@ -82,7 +82,7 @@ const ApiPack = z.object({
     })
   ),
   nftId: z.number(),
-  cloudinary_id: z.string(),
+  cloudinary_id: z.string().nullable(),
   list_publicly: z.boolean(),
 })
 
@@ -161,18 +161,20 @@ export default async () => {
 
     // NFTs
     const nfts = await MigrateNfts()
-
     console.log(`created ${nfts.length} new NFTs`)
 
+    // Validate and type incoming data
+    const typedApiResponse = ApiResponse.parse(apiRaw);
+
     // Rewardables/Puzzles
 
-    // Validate and type incoming data
-    const puzzles = ApiResponse.parse(apiRaw).data.puzzles
+    // Pull off just puzzles from typed incoming data
+    const puzzles = typedApiResponse.data.puzzles
 
     // Rewardables/Puzzles
 
-    // Validate and type incoming data
-    const packs = ApiResponse.parse(apiRaw).data.packs
+    // Pull off just packs from typed incoming data
+    const packs = typedApiResponse.data.packs
 
     const migratePacks = packs.map((pack) => {
       const rewardable = {
