@@ -16,7 +16,7 @@ module.exports = {
 				.setDescription('Oh dear, all that time...for nothing. Well, there\'s always tomorrow.  In the meantime, why don’t you take a cup of tea...elsewhere.')
 				.setColor('c3b4f7');
         await interaction.deferReply();
-			await interaction.editReply({ embeds: [embedNoDaily] });
+			return interaction.editReply({ embeds: [embedNoDaily] });
 		}
 
 		const embedDaily = new EmbedBuilder()
@@ -24,6 +24,6 @@ module.exports = {
 			.setDescription(`Ah, one of my two favorite times of the day—when you return from a deep search of the library and bring back many pages.  Today you collected \`${daily.reward} pages 📜\`, splendid!  The other is of course, tea time. Cheers...`)
 			.setColor('c3b4f7');
       await interaction.deferReply();
-		await interaction.eitReply({ embeds: [embedDaily] });
+		return interaction.editReply({ embeds: [embedDaily] });
 	},
 };
