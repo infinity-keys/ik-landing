@@ -44,7 +44,8 @@ const progressCookiesHandler = async (
   )
 
   // Get user's entire progress
-  const progress = await userProgress()
+  const progress = await Promise.all(await userProgress())
+
   // Turn this progress into a cookie
   const cookieData = progress.reduce(
     (acc, item) => {

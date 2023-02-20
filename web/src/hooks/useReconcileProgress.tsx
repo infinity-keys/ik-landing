@@ -26,11 +26,11 @@ export default function useReconcileProgress() {
         // Now do fetch to progressCookies function to set local cookie with all
         // progress
 
-        // /.redwood/functions/attempt vs /attempt
-        const apiPath = `${
-          global.RWJS_API_URL.includes('.redwood') ? window.location.origin : ''
-        }${global.RWJS_API_URL}/progressCookies`
-        const apiUrl = new URL(apiPath)
+        const apiUrl = new URL(
+          `${global.RWJS_API_URL}/progressCookies`,
+          window.location.origin
+        )
+
         // Get JWT from MagicLink
         const token = await getToken()
         // This sets progress cookie
