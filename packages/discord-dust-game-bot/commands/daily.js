@@ -24,6 +24,6 @@ module.exports = {
 			.setDescription(`Ah, one of my two favorite times of the day—when you return from a deep search of the library and bring back many pages.  Today you collected \`${daily.reward} pages 📜\`, splendid!  The other is of course, tea time. Cheers...`)
 			.setColor('c3b4f7');
       await interaction.deferReply();
-		return interaction.editReply({ embeds: [embedDaily] });
+		await interaction.editReply({ embeds: [embedDaily] });
 	},
 };

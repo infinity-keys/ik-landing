@@ -18,7 +18,7 @@ module.exports = {
 				.setDescription(`${username}, there are no users on the leaderboard`)
 				.setColor('c3b4f7');
         await interaction.deferReply();
-			return interaction.editReply({ embeds: [embedNoLeader] });
+			await interaction.editReply({ embeds: [embedNoLeader] });
 		}
 
 		const embedLeader = new EmbedBuilder()
@@ -28,6 +28,6 @@ module.exports = {
 				.join('\n')}`)
 			.setColor('c3b4f7');
       await interaction.deferReply();
-		return interaction.editReply({ embeds: [embedLeader] });
+		await interaction.editReply({ embeds: [embedLeader] });
 	},
 };
