@@ -244,6 +244,8 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
 
     /**
      * Convert anonymous Rewardables to signed-in user progress cookie
+     * NOTE: Step IDs are reset during `migrate reset`, so we won't always have
+     * IDs from the cookie in the DB. Catch and log.
      */
     const reconcileCookieRewardables = async (ikV2Cookie: string) => {
       // Parse ik-puzzles cookie
@@ -261,11 +263,30 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
         parsedIkV2Cookie.puzzles
       ).flatMap(([puzzleId, puzzleData]) => puzzleData.steps)
 
-      const existingSolves = await db.step.findMany({
+      // Does the user's cookie steps actually exist in the DB?
+      const stepsExist = await db.step.findMany({
         select: { id: true },
         where: {
           id: {
             in: cookieSolvedSteps,
+          },
+        },
+      })
+
+      // Whoops, they have old steps from prior migration reset
+      if (!stepsExist.length) {
+        logger.info('User cookie has steps from prior migration reset', {
+          context,
+          cookieSolvedSteps,
+        })
+        return
+      }
+
+      const existingUserSolves = await db.step.findMany({
+        select: { id: true },
+        where: {
+          id: {
+            in: stepsExist.map(({ id }) => id),
           },
           attempts: {
             some: {
@@ -277,13 +298,14 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
           },
         },
       })
+
       // Steps we have NOT solved in db vs what exists in cookie
-      const stepsUnsolvedInDb = cookieSolvedSteps.filter((stepId) => {
-        return !existingSolves.find(({ id }) => id === stepId)
+      const stepsUnsolvedInDb = stepsExist.filter((step) => {
+        return !existingUserSolves.find(({ id }) => id === step.id)
       })
 
       // Add to db any that are missing
-      const newSolves = stepsUnsolvedInDb.map((stepId) => {
+      const newSolves = stepsUnsolvedInDb.map((step) => {
         return db.solve.create({
           data: {
             user: {
@@ -304,7 +326,7 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
                 },
                 step: {
                   connect: {
-                    id: stepId,
+                    id: step.id,
                   },
                 },
               },
@@ -350,8 +372,8 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
 /**
  * All Steps solved by the current user
  */
-export const userProgress = async () => {
-  return await db.step.findMany({
+export const userProgress: QueryResolvers['userProgress'] = () => {
+  return db.step.findMany({
     select: { id: true, puzzleId: true, stepSortWeight: true },
     orderBy: { stepSortWeight: 'asc' },
     where: {
