@@ -7,7 +7,7 @@ module.exports = {
 		.setName('balance')
 		.setDescription('Gracefully inquire whether Archivist Nebo has the records of your page collection efforts at hand.'),
 	async execute(interaction) {
-    await interaction.deferReply();
+    // await interaction.deferReply();
     const { guild, member } = interaction;
 		const balance = eco.balance.get(member.id, guild.id);
 		// const username = interaction.user.username;
