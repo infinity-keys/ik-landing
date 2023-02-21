@@ -15,12 +15,12 @@ module.exports = {
 			const embedNoWoeekly = new EmbedBuilder()
 				.setDescription('Back so soon? You know, these efforts can be challenging, especially for those not fit for...intellectual labors.Never mind. Return next week when you\'ve managed to rest your weary little mind.')
 				.setColor('c3b4f7');
-			return interaction.reply({ embeds: [embedNoWoeekly] });
+			await interaction.editReply({ embeds: [embedNoWoeekly] });
 		}
 
 		const embedWeekly = new EmbedBuilder()
 			.setDescription(`Welcome back, friend. Did you discover delights...or horrors? \`${weekly.reward} pages 📜\`? Well done indeed. Your efforts continue to play an integral role in the Society's research. I don't often indulge, but perhaps a bit of chocolate to celebrate this exemplary feat.`)
 			.setColor('c3b4f7');
-		return interaction.reply({ embeds: [embedWeekly] });
+		await interaction.editReply({ embeds: [embedWeekly] });
 	},
 };
