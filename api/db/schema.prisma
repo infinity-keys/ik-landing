@@ -49,6 +49,7 @@ model Rewardable {
 
   /// The reward for completion
   nfts Nft[]
+  /// Choose on which networks this Rewardable's NFTs can be minted
   availableChains AvailableChains[] @default([AVAX, ETH, POLY, OPT])
 
   // Connections to the gaming concepts
