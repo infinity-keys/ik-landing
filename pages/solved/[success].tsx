@@ -10,7 +10,11 @@ import Seo from "@components/seo";
 import Button from "@components/button";
 import TwitterShare from "@components/twitter-share";
 
-import { PACK_LANDING_BASE, PUZZLE_COLLECTION_BASE } from "@lib/constants";
+import {
+  PACK_COLLECTION_BASE,
+  PACK_LANDING_BASE,
+  PUZZLE_COLLECTION_BASE,
+} from "@lib/constants";
 import { buildUrlString } from "@lib/utils";
 
 interface SuccessPageProps {
@@ -73,12 +77,12 @@ const Dev: NextPage<SuccessPageProps> = ({
               href={
                 parentPackName
                   ? `/${PACK_LANDING_BASE}/${packRoute}`
-                  : `/${PUZZLE_COLLECTION_BASE}`
+                  : `/${PACK_COLLECTION_BASE}`
               }
               text={
                 parentPackName
                   ? buttonText || `Go to ${parentPackName}`
-                  : "Solve More Puzzles"
+                  : "Play More Puzzles"
               }
               variant="outline"
               fullWidth
