@@ -9,7 +9,7 @@ import StepsCell from 'src/components/StepsCell'
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface Props {
-  rewardable: NonNullable<FindRewardablePuzzleBySlug['puzzle']>
+  rewardable: NonNullable<FindRewardablePuzzleBySlug['rewardable']>
 }
 
 const Rewardable = ({ rewardable }: Props) => {

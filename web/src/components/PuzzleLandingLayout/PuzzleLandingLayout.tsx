@@ -1,5 +1,11 @@
+import { PropsWithChildren } from 'react'
+
 import { buildUrlString, cloudinaryUrl } from '@infinity-keys/core'
 import { LensShareButton } from '@infinity-keys/react-lens-share-button'
+import {
+  FindAnonRewardablePuzzleBySlug,
+  FindRewardablePuzzleBySlug,
+} from 'types/graphql'
 
 import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'
@@ -7,7 +13,18 @@ import TwitterShare from 'src/components/TwitterShare/TwitterShare'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
-const PuzzleLandingLayout = ({ rewardable, stepParam, children }) => {
+interface PuzzleLandingLayoutProps extends PropsWithChildren {
+  rewardable:
+    | NonNullable<FindAnonRewardablePuzzleBySlug['rewardable']>
+    | NonNullable<FindRewardablePuzzleBySlug['rewardable']>
+  stepParam: string
+}
+
+const PuzzleLandingLayout = ({
+  rewardable,
+  stepParam,
+  children,
+}: PuzzleLandingLayoutProps) => {
   return (
     <>
       <Seo

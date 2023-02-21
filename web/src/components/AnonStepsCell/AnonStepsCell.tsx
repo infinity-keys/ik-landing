@@ -1,4 +1,7 @@
-import type { FindStepQuery, FindStepQueryVariables } from 'types/graphql'
+import type {
+  FindAnonStepQuery,
+  FindAnonStepQueryVariables,
+} from 'types/graphql'
 
 import { routes, useParams } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
@@ -49,7 +52,7 @@ export const Empty = () => <div>Empty</div>
 
 export const Failure = ({
   error,
-}: CellFailureProps<FindStepQueryVariables>) => {
+}: CellFailureProps<FindAnonStepQueryVariables>) => {
   const { slug, step } = useParams()
   return (
     <div>
@@ -65,7 +68,7 @@ export const Failure = ({
 export const Success = ({
   step,
   puzzle,
-}: CellSuccessProps<FindStepQuery, FindStepQueryVariables>) => {
+}: CellSuccessProps<FindAnonStepQuery, FindAnonStepQueryVariables>) => {
   // @TODO: these need to change when we can track progress of anon players
   const hasBeenSolved = false
   const currentStepIndex = 0

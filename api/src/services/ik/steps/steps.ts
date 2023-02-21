@@ -3,11 +3,22 @@ import cookie from 'cookie'
 import type { QueryResolvers } from 'types/graphql'
 
 import { ForbiddenError } from '@redwoodjs/graphql-server'
+import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
 
 import { decryptCookie } from 'src/lib/encoding/encoding'
 import { step } from 'src/services/steps/steps'
 
-const getOptionalStep = ({ id, puzzleId, stepNum, context }) => {
+const getOptionalStep = ({
+  id,
+  puzzleId,
+  stepNum,
+  context,
+}: {
+  id: string
+  puzzleId: string
+  stepNum: number
+  context: RedwoodGraphQLContext
+}) => {
   // users don't need specific step data on the puzzle landing page
   if (!id) return
 

@@ -1,4 +1,4 @@
-import type { FindRewardablePuzzleBySlug } from 'types/graphql'
+import type { FindAnonRewardablePuzzleBySlug } from 'types/graphql'
 
 import { useParams } from '@redwoodjs/router'
 
@@ -8,7 +8,7 @@ import PuzzleLandingLayout from 'src/components/PuzzleLandingLayout/PuzzleLandin
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface Props {
-  rewardable: NonNullable<FindRewardablePuzzleBySlug['puzzle']>
+  rewardable: NonNullable<FindAnonRewardablePuzzleBySlug['rewardable']>
 }
 
 const AnonPuzzle = ({ rewardable }: Props) => {

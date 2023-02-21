@@ -1,4 +1,7 @@
+import { PropsWithChildren } from 'react'
+
 import { getThumbnailProgress } from '@infinity-keys/core'
+import { FindAnonStepQuery, FindStepQuery } from 'types/graphql'
 
 import { useAuth } from '@redwoodjs/auth'
 import { routes, useParams } from '@redwoodjs/router'
@@ -8,7 +11,18 @@ import NftCheckButton from 'src/components/NftCheckButton/NftCheckButton'
 import SimpleTextInput from 'src/components/SimpleTextInput/SimpleTextInput'
 import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
 
-const StepsLayout = ({ currentStepIndex, puzzle, step, children }) => {
+interface StepsLayoutProps extends PropsWithChildren {
+  currentStepIndex: number
+  puzzle: FindAnonStepQuery['puzzle'] | FindStepQuery['puzzle']
+  step: FindAnonStepQuery['step'] | FindStepQuery['step']
+}
+
+const StepsLayout = ({
+  currentStepIndex,
+  puzzle,
+  step,
+  children,
+}: StepsLayoutProps) => {
   const { slug } = useParams()
   const { isAuthenticated } = useAuth()
 
