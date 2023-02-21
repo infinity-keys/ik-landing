@@ -17,7 +17,7 @@ module.exports = {
 			const embedNoLeader = new EmbedBuilder()
 				.setDescription(`${username}, there are no users on the leaderboard`)
 				.setColor('c3b4f7');
-			await interaction.reply({ embeds: [embedNoLeader] });
+			await interaction.editReply({ embeds: [embedNoLeader] });
 		}
 
 		const embedLeader = new EmbedBuilder()
@@ -26,6 +26,6 @@ module.exports = {
 				.map((lb, index) => `${index + 1} - <@${lb.userID}> - **${lb.money}** coins`)
 				.join('\n')}`)
 			.setColor('c3b4f7');
-		await interaction.reply({ embeds: [embedLeader] });
+		await interaction.editReply({ embeds: [embedLeader] });
 	},
 };
