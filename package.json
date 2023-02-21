@@ -8,7 +8,8 @@
     ]
   },
   "scripts": {
-    "build": "yarn workspaces foreach run build"
+    "build": "yarn workspaces foreach run build",
+    "seed": "rw prisma migrate reset -f"
   },
   "devDependencies": {
     "@redwoodjs/core": "^3.4.0",
