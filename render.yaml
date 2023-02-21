@@ -36,12 +36,13 @@ services:
       property: connectionString
 
 - name: discord-dust-game-bot
-  type: web
+  type: worker
   env: node
   region: oregon
   rootDir: packages/discord-dust-game-bot
   buildCommand: yarn
   startCommand: node .
+  autoDeploy: true
   envVars:
   - key: NODE_VERSION
     value: 18
