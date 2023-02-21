@@ -148,7 +148,8 @@ export async function getStaticProps({
   const { packName } = params;
   const gql = await gqlApiSdk();
   const { puzzles, pack } = await gql.GetPuzzlesByPack({ packName });
-  const puzzlesNftIds = puzzles.flatMap(({ nft }) => nft?.tokenId || []);
+  const puzzlesNftIds = pack.pack_token_ids ? pack.pack_token_ids.map((token_id) => token_id) : puzzles.flatMap(({ nft }) => nft?.tokenId || []);
+  console.log(puzzlesNftIds)
 
   return {
     props: {
