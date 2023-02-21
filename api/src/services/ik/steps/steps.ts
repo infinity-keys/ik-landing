@@ -22,7 +22,8 @@ const getOptionalStep = ({
   // users don't need specific step data on the puzzle landing page
   if (!id) return
 
-  // authenticated users should be allowed to view first steps
+  // users should be allowed to view first steps if authenticated or if the
+  // puzzle is anonymous
   if (stepNum === 1) return step({ id })
 
   const puzzlesCompletedCypherText = cookie.parse(context.event.headers.cookie)[
