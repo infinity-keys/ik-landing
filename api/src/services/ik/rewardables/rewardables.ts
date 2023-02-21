@@ -5,7 +5,7 @@ import {
 } from '@infinity-keys/constants'
 import { IK_ID_COOKIE } from '@infinity-keys/constants'
 import { IkJwt } from '@infinity-keys/core'
-import cookie, { parse } from 'cookie'
+import cookie from 'cookie'
 import type { QueryResolvers, MutationResolvers } from 'types/graphql'
 
 import { ForbiddenError } from '@redwoodjs/graphql-server'
@@ -30,6 +30,22 @@ export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
     },
   })
 }
+
+export const rewardableBySlugWithAnonPuzzle: QueryResolvers['rewardableBySlugWithAnonPuzzle'] =
+  async ({ slug }) => {
+    return db.rewardable.findFirstOrThrow({
+      where: {
+        slug,
+        type: 'PUZZLE',
+        puzzle: {
+          isAnon: true,
+        },
+      },
+      include: {
+        puzzle: true,
+      },
+    })
+  }
 
 export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
   async ({ type, page = 1, count = 16 }) => {
