@@ -67,19 +67,8 @@ export const Success = ({
   step,
   puzzle,
 }: CellSuccessProps<FindStepQuery, FindStepQueryVariables>) => {
-  const { slug } = useParams()
   const { isAuthenticated } = useAuth()
   const hasBeenSolved = puzzle.rewardable.userRewards.length > 0
-
-  // @TODO: i don't like this
-  const getThumbnailRoute = (sortWeight) => {
-    return isAuthenticated
-      ? routes.puzzleStep({
-          slug,
-          step: sortWeight,
-        })
-      : null
-  }
 
   const currentStepIndex = isAuthenticated
     ? loFindLastIndex(puzzle.steps, (step) => step.hasUserCompletedStep) + 1
@@ -87,7 +76,6 @@ export const Success = ({
 
   return (
     <StepsLayout
-      getThumbnailRoute={getThumbnailRoute}
       currentStepIndex={currentStepIndex}
       puzzle={puzzle}
       step={step}

@@ -1,14 +1,10 @@
-import loFindLastIndex from 'lodash/findLastIndex'
 import type { FindStepQuery, FindStepQueryVariables } from 'types/graphql'
 
-import { useAuth } from '@redwoodjs/auth'
 import { routes, useParams } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Button from 'src/components/Button/Button'
-
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-
 import StepsLayout from 'src/components/StepsLayout/StepsLayout'
 
 export const QUERY = gql`
@@ -70,33 +66,17 @@ export const Success = ({
   step,
   puzzle,
 }: CellSuccessProps<FindStepQuery, FindStepQueryVariables>) => {
-  const { slug } = useParams()
-  const { isAuthenticated } = useAuth()
-
   // @TODO: these need to change when we can track progress of anon players
   const hasBeenSolved = false
-  const currentStepIndex = isAuthenticated
-    ? loFindLastIndex(puzzle.steps, (step) => step.hasUserCompletedStep) + 1
-    : 0
-
-  // @TODO: i don't like this
-  const getThumbnailRoute = (sortWeight) => {
-    return routes.anonPuzzleStep({
-      slug,
-      step: sortWeight,
-    })
-  }
+  const currentStepIndex = 0
 
   return (
     <StepsLayout
-      getThumbnailRoute={getThumbnailRoute}
       currentStepIndex={currentStepIndex}
       puzzle={puzzle}
       step={step}
     >
-      {hasBeenSolved && (
-        <Button to={routes.auth()} text="Sign in to Mint" />
-      )}
+      {hasBeenSolved && <Button to={routes.auth()} text="Sign in to Mint" />}
     </StepsLayout>
   )
 }
