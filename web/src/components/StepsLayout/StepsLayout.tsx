@@ -25,6 +25,7 @@ const StepsLayout = ({
 }: StepsLayoutProps) => {
   const { slug } = useParams()
   const { isAuthenticated } = useAuth()
+  console.log(puzzle)
 
   return (
     <div>
@@ -71,7 +72,7 @@ const StepsLayout = ({
                 puzzleStep: stepSortWeight,
               })}
               to={
-                isAuthenticated
+                isAuthenticated && !puzzle.isAnon
                   ? routes.puzzleStep(routeParams)
                   : routes.anonPuzzleStep(routeParams)
               }

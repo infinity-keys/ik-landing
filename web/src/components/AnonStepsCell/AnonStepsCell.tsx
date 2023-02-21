@@ -14,6 +14,7 @@ export const QUERY = gql`
   query FindAnonStepQuery($puzzleId: String!, $stepId: String, $stepNum: Int) {
     puzzle(id: $puzzleId) {
       id
+      isAnon
       rewardable {
         id
       }
