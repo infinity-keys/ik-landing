@@ -6,18 +6,17 @@ import { routes, useParams } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Button from 'src/components/Button/Button'
+
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+
 import StepsLayout from 'src/components/StepsLayout/StepsLayout'
 
 export const QUERY = gql`
-  query FindStepQuery($puzzleId: String!, $stepId: String, $stepNum: Int) {
+  query FindAnonStepQuery($puzzleId: String!, $stepId: String, $stepNum: Int) {
     puzzle(id: $puzzleId) {
       id
       rewardable {
         id
-        userRewards {
-          id
-        }
       }
       steps {
         id
@@ -25,7 +24,11 @@ export const QUERY = gql`
         hasUserCompletedStep
       }
     }
-    step: optionalStep(id: $stepId, puzzleId: $puzzleId, stepNum: $stepNum) {
+    step: anonOptionalStep(
+      id: $stepId
+      puzzleId: $puzzleId
+      stepNum: $stepNum
+    ) {
       id
       challenge
       failMessage
@@ -69,21 +72,20 @@ export const Success = ({
 }: CellSuccessProps<FindStepQuery, FindStepQueryVariables>) => {
   const { slug } = useParams()
   const { isAuthenticated } = useAuth()
-  const hasBeenSolved = puzzle.rewardable.userRewards.length > 0
 
-  // @TODO: i don't like this
-  const getThumbnailRoute = (sortWeight) => {
-    return isAuthenticated
-      ? routes.puzzleStep({
-          slug,
-          step: sortWeight,
-        })
-      : null
-  }
-
+  // @TODO: these need to change when we can track progress of anon players
+  const hasBeenSolved = false
   const currentStepIndex = isAuthenticated
     ? loFindLastIndex(puzzle.steps, (step) => step.hasUserCompletedStep) + 1
     : 0
+
+  // @TODO: i don't like this
+  const getThumbnailRoute = (sortWeight) => {
+    return routes.anonPuzzleStep({
+      slug,
+      step: sortWeight,
+    })
+  }
 
   return (
     <StepsLayout
@@ -93,7 +95,7 @@ export const Success = ({
       step={step}
     >
       {hasBeenSolved && (
-        <Button to={routes.claim({ id: puzzle.rewardable.id })} text="Mint" />
+        <Button to={routes.auth()} text="Sign in to Mint" />
       )}
     </StepsLayout>
   )
