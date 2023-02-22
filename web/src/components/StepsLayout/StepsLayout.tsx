@@ -25,7 +25,6 @@ const StepsLayout = ({
 }: StepsLayoutProps) => {
   const { slug } = useParams()
   const { isAuthenticated } = useAuth()
-  console.log(puzzle)
 
   return (
     <div>
