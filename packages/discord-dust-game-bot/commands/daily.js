@@ -9,6 +9,7 @@ module.exports = {
 	async execute(interaction) {
 		const { guild, member } = interaction;
 		const daily = eco.rewards.getDaily(member.id, guild.id);
+    // set up to countdown time
 		// const time = eco.rewards.getDaily(member.id, guild.id).cooldown.pretty;
 
 		if (!daily.status) {

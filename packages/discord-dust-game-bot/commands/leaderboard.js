@@ -11,6 +11,7 @@ module.exports = {
 		const { guild } = interaction;
 		const leaderboard = eco.balance.leaderboard(guild.id, options);
 		const username = interaction.user.username;
+    // set up to show server's name
 		// const name = interaction.member.guild.name;
 
 		if (!leaderboard.length) {
