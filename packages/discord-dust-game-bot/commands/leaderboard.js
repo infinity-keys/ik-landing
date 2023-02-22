@@ -11,13 +11,14 @@ module.exports = {
 		const { guild } = interaction;
 		const leaderboard = eco.balance.leaderboard(guild.id, options);
 		const username = interaction.user.username;
+    // set up to show server's name
 		// const name = interaction.member.guild.name;
 
 		if (!leaderboard.length) {
 			const embedNoLeader = new EmbedBuilder()
 				.setDescription(`${username}, there are no users on the leaderboard`)
 				.setColor('c3b4f7');
-			await interaction.editReply({ embeds: [embedNoLeader] });
+			await interaction.reply({ embeds: [embedNoLeader] });
 		}
 
 		const embedLeader = new EmbedBuilder()
@@ -26,6 +27,6 @@ module.exports = {
 				.map((lb, index) => `${index + 1} - <@${lb.userID}> - **${lb.money}** coins`)
 				.join('\n')}`)
 			.setColor('c3b4f7');
-		await interaction.editReply({ embeds: [embedLeader] });
+		await interaction.reply({ embeds: [embedLeader] });
 	},
 };

@@ -2,6 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
+// set up to use config file, if needed
 // const { token } = require('./config.json');
 require('dotenv').config()
 
