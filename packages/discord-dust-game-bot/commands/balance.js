@@ -12,6 +12,7 @@ module.exports = {
   async execute(interaction) {
 		const { guild, member } = interaction
     const balance = eco.balance.get(member.id, guild.id)
+    // set up to display username
     // const username = interaction.user.username;
 
     const embedBalance = new EmbedBuilder()
