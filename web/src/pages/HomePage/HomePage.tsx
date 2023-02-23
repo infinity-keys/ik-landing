@@ -136,22 +136,25 @@ const HomePage = () => {
               <span className="block text-turquoise">Infinity Keys?</span>
             </Heading>
             <Text>
-              Infinity Keys is a no-code creator tools platform for brands and
-              fans to build engaging metaverse treasure hunt experiences.
+              Everyone should be able to use games and rewards to encourage others to complete tasks.
             </Text>
             <Text>
-              The IK team and community are building a series of demo hunts and
-              puzzles to show the power of engagement using scalable games with
-              opt-in Web3 NFTs as an alternative to passive, impression-based
-              marketing.
+              Infinity Keys was created to provide these tools and help creators build game experiences for their communities. The platform allows anyone to create game experiences that require players to solve puzzles, watch video content, complete real-world objectives, or collect digital items.
             </Text>
             <Text>
-              If you&apos;re a player, find clues, decipher keys, and claim
-              treasure. Join our online communities on Twitter and Discord to
-              connect with other players and builders - and click on the Puzzles
-              button up top to see the variety of hunts, clues, puzzles, and
-              treasure live now.
+              Build your own adventure.
             </Text>
+            <ul className="list-disc mt-2 ml-6 space-y-4 md:space-y-0 text-indigo-200">
+              <li>Gamified community education</li>
+              <li>Proof-of-spin Music NFT mining</li>
+              <li>Cross-community competitions</li>
+              <li>Anti-sybil whitelisting</li>
+              <li>Proof-of-play for gaming rewards</li>
+              <li>Physical location check-in</li>
+              <li>Silly fun</li>
+              <li>Incentivized testnet tracking (coming soon)</li>
+              <li>Social sharing games (coming soon)</li>
+            </ul>
           </div>
         </Section>
       </div>
