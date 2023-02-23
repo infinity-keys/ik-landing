@@ -143,18 +143,18 @@ const HomePage = () => {
             </Text>
             <Text>
               Build your own adventure.
-              <ul className="list-disc ml-6 space-y-4 md:space-y-0 text-indigo-200 ">
-                <li>Gamified community education</li>
-                <li>Proof-of-spin Music NFT mining</li>
-                <li>Cross-community competitions</li>
-                <li>Anti-sybil whitelisting</li>
-                <li>Proof-of-play for gaming rewards</li>
-                <li>Physical location check-in</li>
-                <li>Silly fun</li>
-                <li>Incentivized testnet tracking (coming soon)</li>
-                <li>Social sharing games (coming soon)</li>
-              </ul>
             </Text>
+            <ul className="list-disc mt-2 ml-6 space-y-4 md:space-y-0 text-indigo-200">
+              <li>Gamified community education</li>
+              <li>Proof-of-spin Music NFT mining</li>
+              <li>Cross-community competitions</li>
+              <li>Anti-sybil whitelisting</li>
+              <li>Proof-of-play for gaming rewards</li>
+              <li>Physical location check-in</li>
+              <li>Silly fun</li>
+              <li>Incentivized testnet tracking (coming soon)</li>
+              <li>Social sharing games (coming soon)</li>
+            </ul>
           </div>
         </Section>
       </div>
