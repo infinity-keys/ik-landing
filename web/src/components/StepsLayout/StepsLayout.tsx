@@ -35,6 +35,7 @@ const StepsLayout = ({
               count={step.stepSimpleText.solutionCharCount}
               step={step}
               puzzleId={puzzle.id}
+              isAnon={puzzle.isAnon}
             />
           )}
 

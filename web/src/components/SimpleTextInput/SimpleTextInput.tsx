@@ -15,9 +15,15 @@ interface SimpleTextInputProps {
   count: number
   step: FindStepQuery['step']
   puzzleId: string
+  isAnon?: boolean
 }
 
-const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
+const SimpleTextInput = ({
+  count,
+  step,
+  puzzleId,
+  isAnon = false,
+}: SimpleTextInputProps) => {
   const { loading, failedAttempt, makeAttempt, errorMessage } = useMakeAttempt()
   const [text, setText] = useState('')
 
@@ -29,6 +35,7 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
     await makeAttempt({
       stepId: step.id,
       puzzleId,
+      isAnon,
       reqBody: {
         type: 'simple-text',
         simpleTextSolution: text,

@@ -1,8 +1,10 @@
+import loFindLastIndex from 'lodash/findLastIndex'
 import type {
   FindAnonStepQuery,
   FindAnonStepQueryVariables,
 } from 'types/graphql'
 
+import { useAuth } from '@redwoodjs/auth'
 import { routes, useParams } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
@@ -34,6 +36,7 @@ export const QUERY = gql`
       failMessage
       successMessage
       type
+      hasUserCompletedStep
       stepSimpleText {
         solutionCharCount
       }
@@ -59,7 +62,7 @@ export const Failure = ({
     <div>
       <p className="pb-6 text-gray-150">{error?.message}</p>
       <Button
-        to={routes.puzzleStep({ slug, step: parseInt(step, 10) - 1 })}
+        to={routes.anonPuzzleStep({ slug, step: parseInt(step, 10) - 1 })}
         text="Go to Puzzle Page"
       />
     </div>
@@ -70,9 +73,13 @@ export const Success = ({
   step,
   puzzle,
 }: CellSuccessProps<FindAnonStepQuery, FindAnonStepQueryVariables>) => {
+  const { isAuthenticated } = useAuth()
+
   // @TODO: these need to change when we can track progress of anon players
   const hasBeenSolved = false
-  const currentStepIndex = 0
+  const currentStepIndex = isAuthenticated
+    ? loFindLastIndex(puzzle.steps, (step) => step.hasUserCompletedStep) + 1
+    : 0
 
   return (
     <StepsLayout
