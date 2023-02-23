@@ -122,8 +122,8 @@ const HomePage = () => {
       </div>
 
       {/* Build Section: we want a link to this in Header.tsx */}
-      <Section className="my-20" id="build">
-        <div className="mx-auto max-w-xl">
+      <Section className="mx-auto max-w-md sm:max-w-2xl my-20" id="build">
+        <div>
           <Heading>Build Your Own Gamified Treasure Hunts</Heading>
           <Text>
             Use Infinity Keys to create incentivized games for any community.
