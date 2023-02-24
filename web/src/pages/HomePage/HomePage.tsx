@@ -15,7 +15,7 @@ import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import Text from 'src/components/Text/Text'
 import Wrapper from 'src/components/Wrapper/Wrapper'
-import { Link } from '@redwoodjs/router'
+import { Link, routes } from '@redwoodjs/router'
 import { heroStars } from 'src/lib/animations/hero-stars'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
@@ -106,7 +106,7 @@ const HomePage = () => {
             <Text>
               Build your own adventure.
             </Text>
-            <ul className="list-disc mt-2 ml-6 space-y-4 md:space-y-0 text-indigo-200">
+            <ul className="list-disc mt-6 ml-6 space-y-4 md:space-y-0 text-indigo-200">
               <li>Gamified community education</li>
               <li>Proof-of-spin Music NFT mining</li>
               <li>Cross-community competitions</li>
@@ -122,20 +122,20 @@ const HomePage = () => {
       </div>
 
       {/* Build Section: we want a link to this in Header.tsx */}
-      <Section className="mx-auto max-w-md sm:max-w-2xl my-20" id="build">
+      <Section className="mx-auto max-w-md my-20 sm:max-w-2xl" id="build">
         <div>
           <Heading>Build Your Own Gamified Treasure Hunts</Heading>
           <Text>
             Use Infinity Keys to create incentivized games for any community.
             Build experiences with the IK no-code platform:
           </Text>
-            <ul className="list-disc ml-6 space-y-4 md:space-y-0 text-indigo-200 ">
+            <ul className="text-indigo-200 list-disc m-6 space-y-4 md:space-y-0">
               <li>Embeddable videos, images, or games</li>
               <li>Secret passcodes</li>
               <li>Gated access using digital collectibles</li>
             </ul>
           <div className="flicker-container mt-4 text-2xl">
-            <Link to="/packs">
+            <Link to={routes.packs()}>
               <Flicker delay=".6s">See Demo Games</Flicker>
             </Link>
           </div>

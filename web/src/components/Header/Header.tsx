@@ -22,6 +22,7 @@ export const navigation = [
   },
   { name: 'Docs', href: 'https://docs.infinitykeys.io' },
   { name: 'Blog', href: 'https://blog.infinitykeys.io' },
+  { name: 'Build', fragment: '#build' },
 ]
 
 const Header = () => {
@@ -60,31 +61,66 @@ const Header = () => {
               <div className="menu-items hidden items-center justify-center sm:items-stretch sm:justify-start lg:flex">
                 <nav className="flex space-x-4">
                   {navigation.map((item) => {
-                    return item.to ? (
-                      <Link
-                        to={item.to}
-                        key={item.name}
-                        className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
-                      >
-                        {item.name}
-                      </Link>
-                    ) : (
-                      <a
-                        href={item.href}
-                        key={item.name}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
-                      >
-                        {item.name}
-                      </a>
-                    )
+                    if (item.to) {
+                      return (
+                        <Link
+                          to={item.to}
+                          key={item.name}
+                          className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                        >
+                          {item.name}
+                        </Link>
+                      )
+                    }
+                    if (item.href) {
+                      return (
+                        <a
+                          href={item.href}
+                          key={item.name}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                        >
+                          {item.name}
+                        </a>
+                      )
+                    }
+                    if (item.fragment) {
+                      return (
+                        <a
+                          href={item.fragment}
+                          key={item.name}
+                          className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            const element = document.getElementById(
+                              item.fragment.replace('#', '')
+                            )
+                            if (element) {
+                              window.history.pushState({}, null, item.fragment)
+                              // element.scrollIntoView({ behavior: 'smooth' })
+                              window.scrollTo({
+                                behavior: 'smooth',
+                                top: element.offsetTop-100,
+                              })
+                            }
+                          }}
+                        >
+                          {item.name}
+                        </a>
+                      )
+                    }
                   })}
                 </nav>
               </div>
 
               <div data-cy="puzzle-link" className="flex items-center gap-2">
-                <Button text="Play" to="/packs" variant="outline" responsive />
+                <Button
+                  text="Play"
+                  to={routes.packs()}
+                  variant="outline"
+                  responsive
+                />
 
                 <WalletButton />
                 {loading ? <LoaderIcon /> : <ProfileIcon />}
@@ -128,8 +164,8 @@ const Header = () => {
                   >
                     {item.name}
                   </Disclosure.Button>
-                )}
-              )}
+                )
+              })}
             </div>
           </Disclosure.Panel>
         </>

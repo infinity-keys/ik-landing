@@ -33,9 +33,9 @@ const Routes = () => {
 
         <Route path="/auth" page={AuthPage} name="auth" />
         <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
-        <Route path="/puzzles/{count:Int}/{page:Int}" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
+        <Route path="/puzzles/{count:Int}/{page:Int}" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzlesPagination" />
         <Route path="/packs" page={RewardablePackRewardablePacksPage} name="packs" />
-        <Route path="/packs/{count:Int}/{page:Int}" page={RewardablePackRewardablePacksPage} name="packs" />
+        <Route path="/packs/{count:Int}/{page:Int}" page={RewardablePackRewardablePacksPage} name="packsPagination" />
       </Set>
 
       <Set wrap={[HeaderFooterLayout, MainLayout]}>
