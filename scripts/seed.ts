@@ -27,6 +27,7 @@ const query = `query AllData {
     list_publicly
     migration_puzzle
     migration_step
+    nft_check_parameters
     nft {
       tokenId
     }
@@ -61,6 +62,15 @@ const ApiPuzzle = z.object({
   list_publicly: z.boolean(),
   migration_puzzle: z.nullable(z.string()),
   migration_step: z.nullable(z.string()),
+  nft_check_parameters: z.nullable(
+    z
+      .object({
+        nftChainId: z.string().or(z.number()),
+        nftTokenId: z.string(),
+        nftContractAddress: z.string(),
+      })
+      .partial()
+  ),
   nft: z.nullable(
     z.object({
       tokenId: z.number(),
@@ -107,6 +117,43 @@ const createNftConnectionObject = (nfts, nftId) => {
         },
       }
     : {}
+}
+
+const createConditionalStepData = (puzzle) => {
+  const nftCheckData = puzzle.nft_check_parameters
+
+  const getNumber = (data) => {
+    if (typeof data === 'number') return data
+    if (typeof data === 'string') return parseInt(data, 10)
+    return null
+  }
+
+  return nftCheckData
+    ? {
+        type: 'NFT_CHECK' as StepType,
+        stepNftCheck: {
+          create: {
+            nftCheckData: {
+              create: [
+                {
+                  contractAddress: nftCheckData.nftContractAddress,
+                  chainId: getNumber(nftCheckData.nftChainId),
+                  tokenId: getNumber(nftCheckData.nftTokenId),
+                  poapEventId: null,
+                },
+              ],
+            },
+          },
+        },
+      }
+    : {
+        type: 'SIMPLE_TEXT' as StepType,
+        stepSimpleText: {
+          create: {
+            solution: puzzle.solution,
+          },
+        },
+      }
 }
 
 export default async () => {
@@ -227,13 +274,8 @@ export default async () => {
                           failMessage: puzzle.fail_message,
                           challenge: puzzle.challenge,
                           successMessage: puzzle.success_message,
-                          type: 'SIMPLE_TEXT' as StepType,
                           migrateLandingRoute: puzzle.landing_route,
-                          stepSimpleText: {
-                            create: {
-                              solution: puzzle.solution,
-                            },
-                          },
+                          ...createConditionalStepData(puzzle),
                         },
                       ],
                     },
@@ -271,14 +313,9 @@ export default async () => {
                     failMessage: puzzle.fail_message,
                     challenge: puzzle.instructions,
                     successMessage: puzzle.success_message,
-                    type: 'SIMPLE_TEXT' as StepType,
                     migrateLandingRoute: puzzle.landing_route,
                     stepSortWeight: parseInt(puzzle.migration_step, 10),
-                    stepSimpleText: {
-                      create: {
-                        solution: puzzle.solution,
-                      },
-                    },
+                    ...createConditionalStepData(puzzle),
                   })),
                 },
               },
@@ -345,14 +382,14 @@ export default async () => {
     // If using dbAuth and seeding users, you'll need to add a `hashedPassword`
     // and associated `salt` to their record. Here's how to create them using
     // the same algorithm that dbAuth uses internally:
-    //
+
     //   import { hashPassword } from '@redwoodjs/api'
-    //
+
     //   const users = [
     //     { name: 'john', email: 'john@example.com', password: 'secret1' },
     //     { name: 'jane', email: 'jane@example.com', password: 'secret2' }
     //   ]
-    //
+
     //   for (user of users) {
     //     const [hashedPassword, salt] = hashPassword(user.password)
     //     await db.user.create({
