@@ -16,7 +16,6 @@ const getAnonPuzzles = async () => {
         },
         include: {
           stepSimpleText: true,
-          stepNftCheck: true,
         },
       },
     },

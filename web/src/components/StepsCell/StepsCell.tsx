@@ -1,7 +1,5 @@
-import loFindLastIndex from 'lodash/findLastIndex'
 import type { FindStepQuery, FindStepQueryVariables } from 'types/graphql'
 
-import { useAuth } from '@redwoodjs/auth'
 import { routes, useParams } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
@@ -68,16 +66,16 @@ export const Success = ({
   step,
   puzzle,
 }: CellSuccessProps<FindStepQuery, FindStepQueryVariables>) => {
-  const { isAuthenticated } = useAuth()
   const hasBeenSolved = puzzle.rewardable.userRewards.length > 0
 
-  const currentStepIndex = isAuthenticated
-    ? loFindLastIndex(puzzle.steps, (step) => step.hasUserCompletedStep) + 1
-    : 0
+  const currentStepId = puzzle.steps.find(
+    (step) => !step.hasUserCompletedStep
+  )?.id
 
   return (
     <StepsLayout
-      currentStepIndex={currentStepIndex}
+      currentStepId={currentStepId}
+      hasBeenSolved={hasBeenSolved}
       puzzle={puzzle}
       step={step}
     >

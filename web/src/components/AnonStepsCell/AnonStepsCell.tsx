@@ -1,4 +1,3 @@
-import loFindLastIndex from 'lodash/findLastIndex'
 import type {
   FindAnonStepQuery,
   FindAnonStepQueryVariables,
@@ -19,11 +18,15 @@ export const QUERY = gql`
       isAnon
       rewardable {
         id
+        userRewards {
+          id
+        }
       }
       steps {
         id
         stepSortWeight
         hasUserCompletedStep
+        hasAnonUserCompletedStep
       }
     }
     step: anonOptionalStep(
@@ -39,12 +42,6 @@ export const QUERY = gql`
       hasUserCompletedStep
       stepSimpleText {
         solutionCharCount
-      }
-      stepNftCheck {
-        chainId
-        tokenId
-        contractAddress
-        poapEventId
       }
     }
   }
@@ -75,19 +72,33 @@ export const Success = ({
 }: CellSuccessProps<FindAnonStepQuery, FindAnonStepQueryVariables>) => {
   const { isAuthenticated } = useAuth()
 
-  // @TODO: these need to change when we can track progress of anon players
-  const hasBeenSolved = false
-  const currentStepIndex = isAuthenticated
-    ? loFindLastIndex(puzzle.steps, (step) => step.hasUserCompletedStep) + 1
-    : 0
+  // logged in users will have a userReward
+  // anonymous users will have all steps completed
+  const hasBeenSolved = isAuthenticated
+    ? puzzle.rewardable.userRewards.length > 0
+    : puzzle.steps.every((step) => step.hasAnonUserCompletedStep)
+
+  // find the first step that has not been solved
+  // returns undefined if all have been solved
+  const currentStepId = puzzle.steps.find((step) =>
+    isAuthenticated
+      ? !step.hasUserCompletedStep
+      : !step.hasAnonUserCompletedStep
+  )?.id
 
   return (
     <StepsLayout
-      currentStepIndex={currentStepIndex}
+      currentStepId={currentStepId}
+      hasBeenSolved={hasBeenSolved}
       puzzle={puzzle}
       step={step}
     >
-      {hasBeenSolved && <Button to={routes.auth()} text="Sign in to Mint" />}
+      {hasBeenSolved &&
+        (isAuthenticated ? (
+          <Button to={routes.claim({ id: puzzle.rewardable.id })} text="Mint" />
+        ) : (
+          <Button to={routes.auth()} text="Sign in to Mint" />
+        ))}
     </StepsLayout>
   )
 }
