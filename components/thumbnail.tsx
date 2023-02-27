@@ -6,13 +6,10 @@ import CheckIcon from "@heroicons/react/24/solid/CheckIcon";
 import MinimalKeyLogo from "@components/svg/minimal-key-logo-svg";
 import CloudImage from "./cloud-image";
 import { ThumbnailProgress } from "@lib/types";
+import { FormattedThumbnailType } from "@lib/utils";
 
-interface ThumbnailProps {
-  id: string;
-  name: string;
-  url: string;
+interface ThumbnailProps extends FormattedThumbnailType {
   isGrid: boolean;
-  cloudinary_id?: string;
   progress?: ThumbnailProgress;
 }
 

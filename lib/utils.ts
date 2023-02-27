@@ -57,20 +57,62 @@ export const isTypePack = (
   return (data as ThumbnailPack).pack_name !== undefined;
 };
 
+export const gridLayoutPuzzle = z.object({
+  __typename: z.literal("puzzles"),
+  puzzle_id: z.string(),
+  landing_route: z.string(),
+  simple_name: z.string(),
+  nft: z
+    .object({
+      nft_metadatum: z
+        .object({
+          cloudinary_id: z.string().nullable().optional(),
+        })
+        .optional()
+        .nullable(),
+    })
+    .nullable()
+    .optional(),
+});
+
+export const gridLayoutPack = z.object({
+  __typename: z.literal("packs"),
+  pack_name: z.string(),
+  simple_name: z.string(),
+  pack_id: z.string(),
+  cloudinary_id: z.string().optional().nullable(),
+});
+
+const gridLayoutUnion = z.discriminatedUnion("__typename", [
+  gridLayoutPuzzle,
+  gridLayoutPack,
+]);
+
+type GridThumbnailType = z.infer<typeof gridLayoutUnion>;
+
+export type FormattedThumbnailType = {
+  id: string;
+  name: string;
+  url: string;
+  cloudinary_id?: string;
+};
+
 // normalize pack and puzzle data for Thumbnail
 export const thumbnailData = (
-  data: ThumbnailPack | ThumbnailPuzzle
-): Thumbnail => {
-  const pack = isTypePack(data);
+  data: GridThumbnailType
+): FormattedThumbnailType => {
+  gridLayoutUnion.parse(data);
 
-  const cloudinary_id = pack
+  const isPack = data.__typename === "packs";
+
+  const cloudinary_id = isPack
     ? data.cloudinary_id
     : data.nft?.nft_metadatum?.cloudinary_id;
 
   return {
-    id: pack ? data.pack_id : data.puzzle_id,
-    name: pack ? data.pack_name : data.simple_name,
-    url: pack
+    id: isPack ? data.pack_id : data.puzzle_id,
+    name: isPack ? data.pack_name : data.simple_name,
+    url: isPack
       ? packsLandingUrl(data.simple_name)
       : routeLandingUrl(data.landing_route),
     cloudinary_id: cloudinary_id || undefined,

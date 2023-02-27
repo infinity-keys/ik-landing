@@ -195,6 +195,7 @@ query PublicPuzzles($limit: Int = 10, $offset: Int = 0) {
     where: { list_publicly: { _eq: true } }
     order_by: { sort_weight: asc, simple_name: asc }
   ) {
+    __typename
     puzzle_id
     landing_route
     simple_name
@@ -255,6 +256,7 @@ query GetAllPublicPacks($limit: Int = 10, $offset: Int = 0) {
     limit: $limit
     offset: $offset
   ) {
+    __typename
     pack_name
     simple_name
     pack_id
@@ -272,6 +274,7 @@ query GetPuzzlesByPack($packName: String!) {
     where: { pack_puzzles: { pack: { simple_name: { _eq: $packName } } } }
     order_by: { sort_weight: asc, simple_name: asc }
   ) {
+    __typename
     simple_name
     landing_route
     puzzle_id
@@ -330,5 +333,44 @@ query GetGatedIdsByNftId($nftIdNum: numeric, $nftIdInt: Int) {
     simple_name
     puzzle_id
     success_route
+  }
+}
+
+query GetEthDenver {
+  packs(
+    where: {
+      _or: [
+        { simple_name: { _eq: "horn-polish" } }
+        { simple_name: { _eq: "raid-brood" } }
+        { simple_name: { _eq: "spookey-gotchi" } }
+        { simple_name: { _eq: "heroes-of-evermore" } }
+        { simple_name: { _eq: "texture-punx-pack" } }
+        { simple_name: { _eq: "texture-mission-2" } }
+      ]
+    }
+  ) {
+    __typename
+    pack_name
+    simple_name
+    pack_id
+    cloudinary_id
+  }
+  puzzles(
+    where: {
+      _or: [
+        { landing_route: { _eq: "the-society" } }
+        { landing_route: { _eq: "piano-kamilla" } }
+      ]
+    }
+  ) {
+    __typename
+    puzzle_id
+    landing_route
+    simple_name
+    nft {
+      nft_metadatum {
+        cloudinary_id
+      }
+    }
   }
 }
