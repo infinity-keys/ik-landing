@@ -1,11 +1,32 @@
 import { balanceOf1155, balanceOf721 } from '@infinity-keys/contracts'
 import { ethers } from 'ethers'
+import { RequestInfo, RequestInit } from 'node-fetch'
 import { QueryResolvers } from 'types/graphql'
+import { z } from 'zod'
 
 import { providerLookup } from 'src/lib/lookups'
 
+const fetch = (url: RequestInfo, init?: RequestInit) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(url, init))
+
+const poapResData = z
+  .object({
+    error: z.string(),
+    tokenId: z.string(),
+  })
+  .partial()
+  .refine(
+    (data) => !!data.error || !!data.tokenId,
+    'Should either return error or tokenId.'
+  )
+
+type PoapResData = z.infer<typeof poapResData>
+
 const checkPoap = async ({ account, poapEventId }) => {
-  const url = `https://api.poap.tech/actions/scan/${account}/${poapEventId}`
+  const url = new URL(
+    `/actions/scan/${account}/${poapEventId}`,
+    'https://api.poap.tech'
+  )
 
   const options = {
     method: 'GET',
@@ -16,12 +37,11 @@ const checkPoap = async ({ account, poapEventId }) => {
   }
 
   try {
-    const res = await fetch(url, options)
-    const data = await res.json()
+    const res = await fetch(url.toString(), options)
+    const data: PoapResData = await res.json()
+    poapResData.parse(data)
 
-    // If no event or error return false
-    // Have to move this return statement below to allow for cookies!
-    if (!data.event) return { nftPass: false }
+    if (data.error) return { nftPass: false }
 
     return { nftPass: true }
   } catch (e) {
