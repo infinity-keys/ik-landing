@@ -8,7 +8,7 @@ module.exports = {
 		.setDescription('Conduct a daily delve for pages within the deeper mysteries of the Infinite Library'),
 	async execute(interaction) {
 		const { guild, member } = interaction;
-		const daily = eco.rewards.getDaily(member.id, guild.id);
+		const daily = await eco.rewards.getDaily(member.id, guild.id);
 		// const time = eco.rewards.getDaily(member.id, guild.id).cooldown.pretty;
 
 		if (!daily.status) {

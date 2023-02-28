@@ -8,7 +8,7 @@ module.exports = {
 		.setDescription('Engage in a brief search within the library stacks for lost pages.'),
 	async execute(interaction) {
 		const { guild, member } = interaction;
-		const work = eco.rewards.getWork(member.id, guild.id);
+		const work = await eco.rewards.getWork(member.id, guild.id);
 		// const time = eco.rewards.getWork(member.id, guild.id).cooldown.pretty;
 
 		if (!work.status) {

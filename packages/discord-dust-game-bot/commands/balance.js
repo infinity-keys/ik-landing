@@ -11,7 +11,7 @@ module.exports = {
     ),
   async execute(interaction) {
 		const { guild, member } = interaction
-    const balance = eco.balance.get(member.id, guild.id)
+    const balance = await eco.balance.get(member.id, guild.id)
     // const username = interaction.user.username;
 
     const embedBalance = new EmbedBuilder()

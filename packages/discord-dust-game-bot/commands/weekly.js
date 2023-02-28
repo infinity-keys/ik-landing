@@ -8,7 +8,7 @@ module.exports = {
 		.setDescription('Embark on a weekly exploration for pages far into the Infinite Library\'s deepest & darkest sections.'),
 	async execute(interaction) {
 		const { guild, member } = interaction;
-		const weekly = eco.rewards.getWeekly(member.id, guild.id);
+		const weekly = await eco.rewards.getWeekly(member.id, guild.id);
 		// const time = eco.rewards.getWeekly(member.id, guild.id).cooldown.pretty;
 
 		if (!weekly.status) {
