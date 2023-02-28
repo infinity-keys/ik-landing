@@ -8,7 +8,7 @@
     ]
   },
   "scripts": {
-    "build": "yarn workspaces foreach run build",
+    "build": "yarn workspaces foreach run build && yarn rw exec generateAnonPuzzleData",
     "seed": "rw prisma migrate reset -f"
   },
   "devDependencies": {
