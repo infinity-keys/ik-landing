@@ -1,4 +1,3 @@
-import { getThumbnailProgress } from '@infinity-keys/core'
 import loFindLastIndex from 'lodash/findLastIndex'
 import type { FindStepQuery, FindStepQueryVariables } from 'types/graphql'
 
@@ -7,16 +6,14 @@ import { routes, useParams } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Button from 'src/components/Button/Button'
-import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-import NftCheckButton from 'src/components/NftCheckButton/NftCheckButton'
-import SimpleTextInput from 'src/components/SimpleTextInput/SimpleTextInput'
-import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
+import StepsLayout from 'src/components/StepsLayout/StepsLayout'
 
 export const QUERY = gql`
   query FindStepQuery($puzzleId: String!, $stepId: String, $stepNum: Int) {
     puzzle(id: $puzzleId) {
       id
+      isAnon
       rewardable {
         id
         userRewards {
@@ -37,12 +34,6 @@ export const QUERY = gql`
       type
       stepSimpleText {
         solutionCharCount
-      }
-      stepNftCheck {
-        chainId
-        tokenId
-        contractAddress
-        poapEventId
       }
     }
   }
@@ -71,66 +62,22 @@ export const Success = ({
   step,
   puzzle,
 }: CellSuccessProps<FindStepQuery, FindStepQueryVariables>) => {
-  const { slug } = useParams()
   const { isAuthenticated } = useAuth()
+  const hasBeenSolved = puzzle.rewardable.userRewards.length > 0
 
   const currentStepIndex = isAuthenticated
     ? loFindLastIndex(puzzle.steps, (step) => step.hasUserCompletedStep) + 1
     : 0
 
   return (
-    <div>
-      {step && (
-        <div>
-          {step.type === 'SIMPLE_TEXT' && (
-            <SimpleTextInput
-              count={step.stepSimpleText.solutionCharCount}
-              step={step}
-              puzzleId={puzzle.id}
-            />
-          )}
-
-          {step.type === 'NFT_CHECK' && (
-            <NftCheckButton step={step} puzzleId={puzzle.id} />
-          )}
-
-          <div className="mx-auto mt-12 mb-12 max-w-prose p-4 md:mt-16 md:mb-20">
-            {step.challenge && (
-              <CollapsibleMarkdown
-                title="Challenge"
-                content={step.challenge}
-                defaultOpen
-              />
-            )}
-          </div>
-        </div>
-      )}
-
-      {puzzle.rewardable.userRewards.length > 0 && (
+    <StepsLayout
+      currentStepIndex={currentStepIndex}
+      puzzle={puzzle}
+      step={step}
+    >
+      {hasBeenSolved && (
         <Button to={routes.claim({ id: puzzle.rewardable.id })} text="Mint" />
       )}
-
-      {/* @TODO: should we forward if there's only one step? */}
-      <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
-        {puzzle.steps.map(({ stepSortWeight }) => (
-          <ThumbnailMini
-            key={stepSortWeight}
-            name={`Step ${stepSortWeight.toString()}`}
-            progress={getThumbnailProgress({
-              currentStep: currentStepIndex + 1,
-              puzzleStep: stepSortWeight,
-            })}
-            to={
-              isAuthenticated
-                ? routes.puzzleStep({
-                    slug,
-                    step: stepSortWeight,
-                  })
-                : null
-            }
-          />
-        ))}
-      </div>
-    </div>
+    </StepsLayout>
   )
 }

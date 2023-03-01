@@ -6,7 +6,8 @@
     "source.fixAll.eslint": true
   },
   "[prisma]": {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "Prisma.prisma"
   },
   "cSpell.words": [
     "cloudinary",

@@ -46,4 +46,9 @@ export const StepNftCheck: StepNftCheckRelationResolvers = {
   step: (_obj, { root }) => {
     return db.stepNftCheck.findUnique({ where: { id: root?.id } }).step()
   },
+  nftCheckData: (_obj, { root }) => {
+    return db.stepNftCheck
+      .findUnique({ where: { id: root?.id } })
+      .nftCheckData()
+  },
 }

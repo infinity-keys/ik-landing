@@ -47,8 +47,8 @@ const Routes = () => {
         <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleLanding" />
         <Route path="/pack/{slug}" page={RewardablePackRewardablePackPage} name="packLanding" />
         {/* Anonymous Puzzles - landing and step pages */}
-        <Route path="/a/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="anonPuzzleLanding" />
-        <Route path="/a/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="anonPuzzleStep" />
+        <Route path="/a/puzzle/{slug}" page={AnonPuzzlePage} name="anonPuzzleLanding" />
+        <Route path="/a/puzzle/{slug}/{step:Int}" page={AnonPuzzlePage} name="anonPuzzleStep" />
       </Set>
 
       {/* NotFoundPage can't be in a set */}

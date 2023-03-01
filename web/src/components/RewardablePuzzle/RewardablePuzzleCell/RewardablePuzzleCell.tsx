@@ -7,7 +7,7 @@ import RewardablePuzzle from 'src/components/RewardablePuzzle/RewardablePuzzle'
 
 export const QUERY = gql`
   query FindRewardablePuzzleBySlug($slug: String!) {
-    puzzle: rewardableBySlug(slug: $slug, type: PUZZLE) {
+    rewardable: rewardableBySlug(slug: $slug, type: PUZZLE) {
       id
       name
       slug
@@ -36,7 +36,7 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({
-  puzzle,
+  rewardable,
 }: CellSuccessProps<FindRewardablePuzzleBySlug>) => {
-  return <RewardablePuzzle rewardable={puzzle} />
+  return <RewardablePuzzle rewardable={rewardable} />
 }
