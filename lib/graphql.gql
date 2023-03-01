@@ -348,6 +348,7 @@ query GetEthDenver {
         { simple_name: { _eq: "texture-mission-2" } }
       ]
     }
+    order_by: { sort_weight: asc, simple_name: asc }
   ) {
     __typename
     pack_name
@@ -362,6 +363,7 @@ query GetEthDenver {
         { landing_route: { _eq: "piano-kamilla" } }
       ]
     }
+    order_by: { sort_weight: asc, simple_name: asc }
   ) {
     __typename
     puzzle_id
