@@ -1,7 +1,8 @@
-import loFindLastIndex from 'lodash/findLastIndex'
-import type { FindStepQuery, FindStepQueryVariables } from 'types/graphql'
+import type {
+  FindAnonStepQuery,
+  FindAnonStepQueryVariables,
+} from 'types/graphql'
 
-import { useAuth } from '@redwoodjs/auth'
 import { routes, useParams } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
@@ -10,15 +11,12 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import StepsLayout from 'src/components/StepsLayout/StepsLayout'
 
 export const QUERY = gql`
-  query FindStepQuery($puzzleId: String!, $stepId: String, $stepNum: Int) {
+  query FindAnonStepQuery($puzzleId: String!, $stepId: String, $stepNum: Int) {
     puzzle(id: $puzzleId) {
       id
       isAnon
       rewardable {
         id
-        userRewards {
-          id
-        }
       }
       steps {
         id
@@ -26,7 +24,11 @@ export const QUERY = gql`
         hasUserCompletedStep
       }
     }
-    step: optionalStep(id: $stepId, puzzleId: $puzzleId, stepNum: $stepNum) {
+    step: anonOptionalStep(
+      id: $stepId
+      puzzleId: $puzzleId
+      stepNum: $stepNum
+    ) {
       id
       challenge
       failMessage
@@ -34,6 +36,12 @@ export const QUERY = gql`
       type
       stepSimpleText {
         solutionCharCount
+      }
+      stepNftCheck {
+        chainId
+        tokenId
+        contractAddress
+        poapEventId
       }
     }
   }
@@ -45,7 +53,7 @@ export const Empty = () => <div>Empty</div>
 
 export const Failure = ({
   error,
-}: CellFailureProps<FindStepQueryVariables>) => {
+}: CellFailureProps<FindAnonStepQueryVariables>) => {
   const { slug, step } = useParams()
   return (
     <div>
@@ -61,13 +69,10 @@ export const Failure = ({
 export const Success = ({
   step,
   puzzle,
-}: CellSuccessProps<FindStepQuery, FindStepQueryVariables>) => {
-  const { isAuthenticated } = useAuth()
-  const hasBeenSolved = puzzle.rewardable.userRewards.length > 0
-
-  const currentStepIndex = isAuthenticated
-    ? loFindLastIndex(puzzle.steps, (step) => step.hasUserCompletedStep) + 1
-    : 0
+}: CellSuccessProps<FindAnonStepQuery, FindAnonStepQueryVariables>) => {
+  // @TODO: these need to change when we can track progress of anon players
+  const hasBeenSolved = false
+  const currentStepIndex = 0
 
   return (
     <StepsLayout
@@ -75,9 +80,7 @@ export const Success = ({
       puzzle={puzzle}
       step={step}
     >
-      {hasBeenSolved && (
-        <Button to={routes.claim({ id: puzzle.rewardable.id })} text="Mint" />
-      )}
+      {hasBeenSolved && <Button to={routes.auth()} text="Sign in to Mint" />}
     </StepsLayout>
   )
 }
