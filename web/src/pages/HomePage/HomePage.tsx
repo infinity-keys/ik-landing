@@ -33,13 +33,10 @@ const HomePage = () => {
 
   const buildSection = useRef<HTMLDivElement | null >(null)
 
-  const { pathname, search, hash } = useLocation()
+  const { hash } = useLocation()
 
-  // console.log({ pathname, search, hash })
-  console.log(buildSection.current)
-  // const { current: { scrollIntoView } } = buildSection
+
   useEffect(() => {
-    // console.log(typeof buildSection?.current?.scrollIntoView === 'function')
     if (buildSection?.current && hash === '#build') {
       setTimeout(() => {
         console.log("we're at line 42 right here")
