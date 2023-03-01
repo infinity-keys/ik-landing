@@ -18,6 +18,14 @@ enum RewardableType {
   BUNDLE
 }
 
+// on which chains are the rewardable's NFT allowed to be claimed
+enum AvailableChains {
+  AVAX
+  ETH
+  POLY
+  OPT
+}
+
 /// A thing that can reward NFTs.
 model Rewardable {
   id             String         @id @default(cuid())
@@ -41,7 +49,9 @@ model Rewardable {
   orgId        String
 
   /// The reward for completion
-  nfts Nft[]
+  nfts            Nft[]
+  /// Choose on which networks this Rewardable's NFTs can be minted
+  availableChains AvailableChains[] @default([AVAX, ETH, POLY, OPT])
 
   // Connections to the gaming concepts
   puzzle Puzzle?
@@ -62,8 +72,8 @@ model Rewardable {
 }
 
 model UserReward {
-  id             String         @id @default(cuid())
-  createdAt      DateTime       @default(now())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
@@ -117,7 +127,7 @@ model Puzzle {
   id String @id @default(cuid())
 
   /// Can this rewardable be played/accessed by anonymous/non-authed users?
-  isAnon       Boolean        @default(false)
+  isAnon Boolean @default(false)
 
   rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
   rewardableId String     @unique
@@ -184,16 +194,29 @@ model StepSimpleText {
   solutionCharCount Int    @default(0)
 }
 
+// Data for the step type that checks a user's wallet for an NFT or POAP
+model NftCheckDatum {
+  id String @id @default(cuid())
+
+  contractAddress String?
+  tokenId         Int?
+  chainId         Int?
+  poapEventId     String?
+
+  StepNftCheck   StepNftCheck? @relation(fields: [stepNftCheckId], references: [id])
+  stepNftCheckId String?
+}
+
+/// Require the user to have one or many NFTs or POAPs for a step
 model StepNftCheck {
   id String @id @default(cuid())
 
   step   Step   @relation(fields: [stepId], references: [id])
   stepId String @unique
 
-  contractAddress String?
-  tokenId         Int?
-  chainId         Int?
-  poapEventId     String?
+  nftCheckData   NftCheckDatum[]
+  /// require user to have all listed NFTs, otherwise they only need one of them
+  requireAllNfts Boolean         @default(true)
 }
 
 /// User form submissions from post-Puzzle forms asking for email address etc
