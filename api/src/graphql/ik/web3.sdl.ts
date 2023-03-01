@@ -29,6 +29,14 @@ export const schema = gql`
     approved: Boolean!
   }
 
+  input NftCheckDatumInput {
+    id: String!
+    contractAddress: String
+    tokenId: Int
+    chainId: Int
+    poapEventId: String
+  }
+
   type Query {
     # checks user's balance of token ids
     checkBalance(
@@ -51,10 +59,8 @@ export const schema = gql`
     # checks for NFT required for puzzle solution
     checkNft(
       account: String!
-      chainId: Int
-      contractAddress: String
-      tokenId: Int
-      poapEventId: String
+      requireAllNfts: Boolean!
+      nftCheckData: [NftCheckDatumInput!]!
     ): CheckNftResponse! @requireAuth
 
     # checks age of wallet on eth, checks number of transactions on others
