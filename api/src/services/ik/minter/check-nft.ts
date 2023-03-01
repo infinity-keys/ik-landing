@@ -1,41 +1,60 @@
 import { balanceOf1155, balanceOf721 } from '@infinity-keys/contracts'
 import { ethers } from 'ethers'
+import { RequestInfo, RequestInit } from 'node-fetch'
 import { QueryResolvers } from 'types/graphql'
+import { z } from 'zod'
 
 import { providerLookup } from 'src/lib/lookups'
 
-export const checkNft: QueryResolvers['checkNft'] = async ({
-  account,
-  chainId,
-  contractAddress,
-  tokenId,
-  poapEventId,
-}) => {
-  if (poapEventId) {
-    const url = `https://api.poap.tech/actions/scan/${account}/${poapEventId}`
+const fetch = (url: RequestInfo, init?: RequestInit) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(url, init))
 
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        'X-API-Key': process.env.POAP_API_KEY,
-      },
-    }
+const poapResData = z
+  .object({
+    error: z.string(),
+    tokenId: z.string(),
+  })
+  .partial()
+  .refine(
+    (data) => !!data.error || !!data.tokenId,
+    'Should either return error or tokenId.'
+  )
 
-    try {
-      const res = await fetch(url, options)
-      const data = await res.json()
+type PoapResData = z.infer<typeof poapResData>
 
-      // If no event or error return false
-      // Have to move this return statement below to allow for cookies!
-      if (!data.event) return { nftPass: false }
+const checkPoap = async ({ account, poapEventId }) => {
+  const url = new URL(
+    `/actions/scan/${account}/${poapEventId}`,
+    'https://api.poap.tech'
+  )
 
-      return { nftPass: true }
-    } catch (e) {
-      return { errors: ['There was a problem checking your POAP'] }
-    }
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      'X-API-Key': process.env.POAP_API_KEY,
+    },
   }
 
+  try {
+    const res = await fetch(url.toString(), options)
+    const data: PoapResData = await res.json()
+    poapResData.parse(data)
+
+    if (data.error) return { nftPass: false }
+
+    return { nftPass: true }
+  } catch (e) {
+    return { errors: ['There was a problem checking your POAP'] }
+  }
+}
+
+const checkContract = async ({
+  account,
+  chainId,
+  tokenId,
+  contractAddress,
+}) => {
   // No token Id for ERC721
   // @NOTE: tokenId can be zero, which is falsy. Can't just check for existence tokenId
   const abi = typeof tokenId === 'number' ? balanceOf1155 : balanceOf721
@@ -55,4 +74,38 @@ export const checkNft: QueryResolvers['checkNft'] = async ({
   } catch {
     return { errors: ['There was a problem checking your NFT'] }
   }
+}
+
+export const checkNft: QueryResolvers['checkNft'] = async ({
+  account,
+  requireAllNfts,
+  nftCheckData,
+}) => {
+  const allChecks = nftCheckData.map(
+    ({ chainId, tokenId, contractAddress, poapEventId }) => {
+      if (poapEventId) {
+        return checkPoap({ account, poapEventId })
+      }
+
+      return checkContract({ account, chainId, tokenId, contractAddress })
+    }
+  )
+
+  const results = await Promise.all(allChecks)
+
+  const resErrors = new Set(
+    results
+      .filter((res) => res.errors?.length > 0)
+      .flatMap(({ errors }) => errors)
+  )
+
+  if ([...resErrors].length > 0) {
+    return { errors: [...resErrors] }
+  }
+
+  const nftPass = requireAllNfts
+    ? results.every((b) => b.nftPass)
+    : results.some((b) => b.nftPass)
+
+  return { nftPass }
 }
