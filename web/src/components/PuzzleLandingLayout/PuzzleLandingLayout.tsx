@@ -15,8 +15,8 @@ import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface PuzzleLandingLayoutProps extends PropsWithChildren {
   rewardable:
-    | NonNullable<FindAnonRewardablePuzzleBySlug['rewardable']>
-    | NonNullable<FindRewardablePuzzleBySlug['rewardable']>
+    | FindAnonRewardablePuzzleBySlug['rewardable']
+    | FindRewardablePuzzleBySlug['rewardable']
   stepParam: string
 }
 

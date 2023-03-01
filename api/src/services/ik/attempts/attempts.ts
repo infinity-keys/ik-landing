@@ -25,10 +25,6 @@ export const NftCheckSolutionData = z.object({
   type: z.literal('nft-check'),
   nftCheckSolution: z.object({
     account: z.string(),
-    chainId: z.optional(z.number()),
-    contractAddress: z.optional(z.string()),
-    tokenId: z.optional(z.number()),
-    poapEventId: z.optional(z.string()),
   }),
 })
 
@@ -92,7 +88,12 @@ const getStep = async (id) => {
     where: { id },
     select: {
       type: true,
-      stepNftCheck: true,
+      stepNftCheck: {
+        select: {
+          requireAllNfts: true,
+          nftCheckData: true,
+        },
+      },
       stepSimpleText: true,
       puzzle: {
         select: {
@@ -182,10 +183,14 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         },
       })
 
-      const { nftPass, errors } = await checkNft(userAttempt)
+      const { nftPass, errors } = await checkNft({
+        account: userAttempt.account,
+        nftCheckData: step.stepNftCheck.nftCheckData,
+        requireAllNfts: step.stepNftCheck.requireAllNfts,
+      })
 
       if (errors && errors.length > 0) {
-        return { success: false }
+        return { success: false, message: 'Error checking NFT' }
       }
 
       if (nftPass) {

@@ -5,7 +5,7 @@ export const standard = defineScenario<Prisma.RewardableCreateArgs>({
   rewardable: {
     one: {
       data: {
-        updatedAt: '2023-02-01T18:11:39.771Z',
+        updatedAt: '2023-02-13T21:25:09.412Z',
         name: 'String',
         slug: 'String',
         explanation: 'String',
@@ -13,15 +13,15 @@ export const standard = defineScenario<Prisma.RewardableCreateArgs>({
         organization: {
           create: {
             name: 'String',
-            slug: 'String8343568',
-            updatedAt: '2023-02-01T18:11:39.771Z',
+            slug: 'String6482122',
+            updatedAt: '2023-02-13T21:25:09.412Z',
           },
         },
       },
     },
     two: {
       data: {
-        updatedAt: '2023-02-01T18:11:39.771Z',
+        updatedAt: '2023-02-13T21:25:09.412Z',
         name: 'String',
         slug: 'String',
         explanation: 'String',
@@ -29,8 +29,8 @@ export const standard = defineScenario<Prisma.RewardableCreateArgs>({
         organization: {
           create: {
             name: 'String',
-            slug: 'String3561642',
-            updatedAt: '2023-02-01T18:11:39.771Z',
+            slug: 'String6809316',
+            updatedAt: '2023-02-13T21:25:09.412Z',
           },
         },
       },
