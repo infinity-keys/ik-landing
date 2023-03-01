@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { NextPage } from "next";
 import clsx from "clsx";
-import isNumber from "lodash/isNumber";
 import { useRouter } from "next/router";
 
 import Wrapper from "@components/wrapper";
@@ -50,6 +49,8 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
   const layout =
     width < 640 ? ThumbnailGridLayoutType.List : ThumbnailGridLayoutType.Grid;
 
+  const listData = puzzles.map((item) => thumbnailData(item));
+
   return (
     <Wrapper customClasses={["pack", `pack--${pack.simpleName}`]}>
       <Seo
@@ -79,16 +80,15 @@ const PacksPage: NextPage<PageProps> = ({ puzzles, puzzlesNftIds, pack }) => {
                 : "sm:max-w-none sm:grid-cols-3"
             )}
           >
-            {puzzles.map((puzzle, index) => {
-              const data = thumbnailData(puzzle);
+            {listData.map((puzzle, index) => {
               return (
-                <li key={data.id}>
+                <li key={puzzle.id}>
                   <Thumbnail
                     isGrid={layout === ThumbnailGridLayoutType.Grid}
-                    id={data.id}
-                    name={data.name}
-                    url={data.url}
-                    cloudinary_id={data.cloudinary_id}
+                    id={puzzle.id}
+                    name={puzzle.name}
+                    url={puzzle.url}
+                    cloudinary_id={puzzle.cloudinary_id}
                     progress={
                       hasChecked && completed[index]
                         ? ThumbnailProgress.Completed

@@ -2,15 +2,17 @@ import { NextPage } from "next";
 
 import { gqlApiSdk } from "@lib/server";
 import { PublicPuzzlesQuery } from "@lib/generated/graphql";
-import { PAGINATION_COUNTS } from "@lib/constants";
+import { PAGINATION_COUNTS, PUZZLE_COLLECTION_BASE } from "@lib/constants";
+import { thumbnailData } from "@lib/utils";
+
 import GridLayout from "@components/thumbnail-grid/grid-layout";
 import Wrapper from "@components/wrapper";
 import Seo from "@components/seo";
 
 export interface PageProps {
   puzzles: PublicPuzzlesQuery["puzzles"];
-  isFirstPage: Boolean;
-  isLastPage: Boolean;
+  isFirstPage: boolean;
+  isLastPage: boolean;
 }
 
 interface PageParams {
@@ -20,14 +22,17 @@ interface PageParams {
 }
 
 const Puzzles: NextPage<PageProps> = ({ puzzles, isFirstPage, isLastPage }) => {
+  const listData = puzzles.map((item) => thumbnailData(item));
+
   return (
     <Wrapper>
       <Seo title="Infinity Keys Puzzles" url="puzzles" />
 
       <GridLayout
-        thumbnailList={puzzles}
+        thumbnailList={listData}
         isFirstPage={isFirstPage}
         isLastPage={isLastPage}
+        urlBase={`/${PUZZLE_COLLECTION_BASE}`}
       />
     </Wrapper>
   );
