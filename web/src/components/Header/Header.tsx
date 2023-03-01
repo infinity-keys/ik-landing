@@ -57,18 +57,24 @@ const Header = () => {
                   </Link>
                   <a
                     href="https://blog.infinitykeys.io/what-is-infinity-keys"
+                    target="_blank"
+                    rel="noopener"
                     className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
                   >
                     Thesis
                   </a>
                   <a
                     href="https://docs.infinitykeys.io"
+                    target="_blank"
+                    rel="noopener"
                     className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
                   >
                     Docs
                   </a>
                   <a
                     href="https://blog.infinitykeys.io"
+                    target="_blank"
+                    rel="noopener"
                     className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
                   >
                     Blog
@@ -120,18 +126,24 @@ const Header = () => {
               </Link>
               <a
                 href="https://blog.infinitykeys.io/what-is-infinity-keys"
+                target="_blank"
+                rel="noopener"
                 className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
               >
                 Thesis
               </a>
               <a
                 href="https://docs.infinitykeys.io"
+                target="_blank"
+                rel="noopener"
                 className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
               >
                 Docs
               </a>
               <a
                 href="https://blog.infinitykeys.io"
+                target="_blank"
+                rel="noopener"
                 className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
               >
                 Blog

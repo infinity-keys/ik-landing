@@ -19,7 +19,6 @@ import { Link, routes, useLocation } from '@redwoodjs/router'
 import { heroStars } from 'src/lib/animations/hero-stars'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
-import CollapsibleMarkdownStories from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown.stories'
 
 /*
 @TODO:
@@ -39,7 +38,6 @@ const HomePage = () => {
   useEffect(() => {
     if (buildSection?.current && hash === '#build') {
       setTimeout(() => {
-        console.log("we're at line 42 right here")
         buildSection.current.scrollIntoView({ behavior: 'smooth'})
       }, 1)
     }
