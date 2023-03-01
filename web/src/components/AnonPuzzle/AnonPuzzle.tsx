@@ -8,7 +8,7 @@ import PuzzleLandingLayout from 'src/components/PuzzleLandingLayout/PuzzleLandin
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface Props {
-  rewardable: NonNullable<FindAnonRewardablePuzzleBySlug['rewardable']>
+  rewardable: FindAnonRewardablePuzzleBySlug['rewardable']
 }
 
 const AnonPuzzle = ({ rewardable }: Props) => {
