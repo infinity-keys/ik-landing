@@ -3,8 +3,8 @@ const Economy = require('discord-economy-super/mongodb');
 let eco = new Economy({
 	connection: {
 		connectionURI: 'mongodb://root:rootpassword@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2',
-		collectionName: '',
-		dbName: '',
+		collectionName: 'database',
+		dbName: 'test',
 	},
 	// needed to set up json db
 	// storagePath: './storage.json',

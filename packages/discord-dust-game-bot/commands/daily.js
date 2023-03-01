@@ -10,7 +10,7 @@ module.exports = {
 		const { guild, member } = interaction;
 		const daily = await eco.rewards.getDaily(member.id, guild.id);
 		// const time = eco.rewards.getDaily(member.id, guild.id).cooldown.pretty;
-
+    console.log(daily);
 		if (!daily.status) {
 			const embedNoDaily = new EmbedBuilder()
 				.setDescription('Oh dear, all that time...for nothing. Well, there\'s always tomorrow.  In the meantime, why don’t you take a cup of tea...elsewhere.')
