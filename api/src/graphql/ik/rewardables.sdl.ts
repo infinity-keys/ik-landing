@@ -11,6 +11,7 @@ export const schema = gql`
   }
   type Query {
     rewardableBySlug(slug: String!, type: RewardableType!): Rewardable @skipAuth
+    rewardableBySlugWithAnonPuzzle(slug: String!): Rewardable @skipAuth
     rewardablesCollection(
       type: RewardableType
       page: Int
