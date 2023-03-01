@@ -1,12 +1,11 @@
 // import Alert from 'src/components/Alert/Alert'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import Particles from 'react-particles'
 import { loadFull } from 'tsparticles'
 import type { Engine } from 'tsparticles-engine'
 
 import Button from 'src/components/Button/Button'
-import CloudImage from 'src/components/CloudImage/CloudImage'
 import EmailNewsletter from 'src/components/EmailNewsletter/EmailNewsletter'
 import EmailPartner from 'src/components/EmailPartner/EmailPartner'
 import Flicker from 'src/components/Flicker/Flicker'
@@ -16,6 +15,7 @@ import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import Text from 'src/components/Text/Text'
 import Wrapper from 'src/components/Wrapper/Wrapper'
+import { Link, routes, useLocation } from '@redwoodjs/router'
 import { heroStars } from 'src/lib/animations/hero-stars'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
@@ -24,49 +24,25 @@ import '@infinity-keys/react-lens-share-button/dist/style.css'
 @TODO:
   Puzzle
 */
-export const logoinfo = [
-  {
-    href: 'https://www.infinitykeys.io/pack/lens-bogota-pack',
-    id: 'website-assets/lens-logo_ducu7a',
-    name: 'Lens',
-    alt: 'Lens Logo',
-  },
-  {
-    href: 'https://www.infinitykeys.io/pack/saga-wormhole-pack',
-    id: 'website-assets/saga_logo_ifk2az',
-    name: 'Saga',
-    alt: 'Saga Logo',
-  },
-  {
-    href: 'https://www.infinitykeys.io/pack/san-creator-pack',
-    id: 'website-assets/san_logo_dijhbm',
-    name: 'San',
-    alt: 'San Logo',
-  },
-  {
-    href: 'https://www.infinitykeys.io/pack/p0-pack',
-    id: 'website-assets/pn_symbol_clean_lcvuu6',
-    name: 'Probably Nothing',
-    alt: 'PN Logo',
-  },
-  {
-    href: 'https://www.infinitykeys.io/puzzle/finkel-islanders',
-    id: 'website-assets/finkel_logo_nriuwc',
-    name: 'Finkel',
-    alt: 'Finkel Logo',
-  },
-  {
-    href: 'https://www.infinitykeys.io/puzzle/second-season-rehash',
-    id: 'website-assets/rehash_logo_zwqhhw',
-    name: 'Rehash',
-    alt: 'Rehash Logo',
-  },
-]
 
 const HomePage = () => {
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine)
   }, [])
+
+  const buildSection = useRef<HTMLDivElement | null >(null)
+
+  const { hash } = useLocation()
+
+
+  useEffect(() => {
+    if (buildSection?.current && hash === '#build') {
+      setTimeout(() => {
+        buildSection.current.scrollIntoView({ behavior: 'smooth'})
+      }, 1)
+    }
+  }, [buildSection?.current, hash])
+
 
   const SuccessComponent = () => (
     <div
@@ -136,15 +112,18 @@ const HomePage = () => {
               <span className="block text-turquoise">Infinity Keys?</span>
             </Heading>
             <Text>
-              Everyone should be able to use games and rewards to encourage others to complete tasks.
+              Everyone should be able to use games and rewards to encourage
+              others to complete tasks.
             </Text>
             <Text>
-              Infinity Keys was created to provide these tools and help creators build game experiences for their communities. The platform allows anyone to create game experiences that require players to solve puzzles, watch video content, complete real-world objectives, or collect digital items.
+              Infinity Keys was created to provide these tools and help creators
+              build game experiences for their communities. The platform allows
+              anyone to create game experiences that require players to solve
+              puzzles, watch video content, complete real-world objectives, or
+              collect digital items.
             </Text>
-            <Text>
-              Build your own adventure.
-            </Text>
-            <ul className="list-disc mt-2 ml-6 space-y-4 md:space-y-0 text-indigo-200">
+            <Text>Build your own adventure.</Text>
+            <ul className="mt-6 ml-6 list-disc space-y-4 text-indigo-200 md:space-y-0">
               <li>Gamified community education</li>
               <li>Proof-of-spin Music NFT mining</li>
               <li>Cross-community competitions</li>
@@ -159,50 +138,31 @@ const HomePage = () => {
         </Section>
       </div>
 
-      {/* Collab */}
-      <Section id="collab">
-        <div className="items-center md:grid md:grid-flow-col-dense md:grid-cols-2 md:gap-24">
-          <div className="mx-auto max-w-sm">
-            <Heading visual="m">Collabs</Heading>
-            <div className="grid grid-cols-3 items-center gap-6 pt-4 ">
-              {logoinfo.map((item) => (
-                <a
-                  href={item.href}
-                  key={item.name}
-                  target="_blank"
-                  rel="noopener nonreferrer noreferrer"
-                >
-                  <CloudImage
-                    id={item.id}
-                    alt={item.alt}
-                    width={150}
-                    height={150}
-                  />
-                </a>
-              ))}
+      {/* Build Section: we want a link to this in Header.tsx */}
+      <div ref={buildSection}>
+        <Section className="mx-auto my-40 max-w-md sm:max-w-2xl">
+          <div>
+            <Heading>Build Your Own Gamified Treasure Hunts</Heading>
+            <Text>
+              Use Infinity Keys to create incentivized games for any community.
+              Build experiences with the IK no-code platform:
+            </Text>
+            <ul className="m-6 list-disc space-y-4 text-indigo-200 md:space-y-0">
+              <li>Embeddable videos, images, or games</li>
+              <li>Secret passcodes</li>
+              <li>Gated access using digital collectibles</li>
+            </ul>
+            <div className="flicker-container mt-4 text-2xl">
+              <Link to={routes.packs()}>
+                <Flicker delay=".6s">See Demo Games</Flicker>
+              </Link>
             </div>
-          </div>
-          <div className="mx-auto max-w-xl">
-            <p className="mt-4 mb-4 text-lg text-turquoise">
-              Engagement &gt; Impressions.
-            </p>
-
-            <Heading>Create Infinity Keys Challenges for your Project</Heading>
-            <Text>
-              We work with projects to build new types of digital keys for
-              engaging hunts and puzzles.
-            </Text>
-            <Text>
-              If you would like to use IK to increase engagement with your
-              community, users, players, or fans, please reach out, and we will
-              contact you directly.
-            </Text>
             <div className="mt-10 flex justify-center sm:mt-12">
               <EmailPartner />
             </div>
           </div>
-        </div>
-      </Section>
+        </Section>
+      </div>
 
       {/* Newsletter*/}
       <div className="w-full bg-blue-800">
