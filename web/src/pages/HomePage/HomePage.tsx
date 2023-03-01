@@ -1,5 +1,5 @@
 // import Alert from 'src/components/Alert/Alert'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import Particles from 'react-particles'
 import { loadFull } from 'tsparticles'
@@ -15,10 +15,11 @@ import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import Text from 'src/components/Text/Text'
 import Wrapper from 'src/components/Wrapper/Wrapper'
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes, useLocation } from '@redwoodjs/router'
 import { heroStars } from 'src/lib/animations/hero-stars'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
+import CollapsibleMarkdownStories from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown.stories'
 
 /*
 @TODO:
@@ -29,6 +30,24 @@ const HomePage = () => {
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine)
   }, [])
+
+  const buildSection = useRef<HTMLDivElement | null >(null)
+
+  const { pathname, search, hash } = useLocation()
+
+  // console.log({ pathname, search, hash })
+  console.log(buildSection.current)
+  // const { current: { scrollIntoView } } = buildSection
+  useEffect(() => {
+    // console.log(typeof buildSection?.current?.scrollIntoView === 'function')
+    if (buildSection?.current && hash === '#build') {
+      setTimeout(() => {
+        console.log("we're at line 42 right here")
+        buildSection.current.scrollIntoView({ behavior: 'smooth'})
+      }, 1)
+    }
+  }, [buildSection?.current, hash])
+
 
   const SuccessComponent = () => (
     <div
@@ -98,15 +117,18 @@ const HomePage = () => {
               <span className="block text-turquoise">Infinity Keys?</span>
             </Heading>
             <Text>
-              Everyone should be able to use games and rewards to encourage others to complete tasks.
+              Everyone should be able to use games and rewards to encourage
+              others to complete tasks.
             </Text>
             <Text>
-              Infinity Keys was created to provide these tools and help creators build game experiences for their communities. The platform allows anyone to create game experiences that require players to solve puzzles, watch video content, complete real-world objectives, or collect digital items.
+              Infinity Keys was created to provide these tools and help creators
+              build game experiences for their communities. The platform allows
+              anyone to create game experiences that require players to solve
+              puzzles, watch video content, complete real-world objectives, or
+              collect digital items.
             </Text>
-            <Text>
-              Build your own adventure.
-            </Text>
-            <ul className="list-disc mt-6 ml-6 space-y-4 md:space-y-0 text-indigo-200">
+            <Text>Build your own adventure.</Text>
+            <ul className="mt-6 ml-6 list-disc space-y-4 text-indigo-200 md:space-y-0">
               <li>Gamified community education</li>
               <li>Proof-of-spin Music NFT mining</li>
               <li>Cross-community competitions</li>
@@ -122,28 +144,30 @@ const HomePage = () => {
       </div>
 
       {/* Build Section: we want a link to this in Header.tsx */}
-      <Section className="mx-auto max-w-md my-20 sm:max-w-2xl" id="build">
-        <div>
-          <Heading>Build Your Own Gamified Treasure Hunts</Heading>
-          <Text>
-            Use Infinity Keys to create incentivized games for any community.
-            Build experiences with the IK no-code platform:
-          </Text>
-            <ul className="text-indigo-200 list-disc m-6 space-y-4 md:space-y-0">
+      <div ref={buildSection}>
+        <Section className="mx-auto my-40 max-w-md sm:max-w-2xl">
+          <div>
+            <Heading>Build Your Own Gamified Treasure Hunts</Heading>
+            <Text>
+              Use Infinity Keys to create incentivized games for any community.
+              Build experiences with the IK no-code platform:
+            </Text>
+            <ul className="m-6 list-disc space-y-4 text-indigo-200 md:space-y-0">
               <li>Embeddable videos, images, or games</li>
               <li>Secret passcodes</li>
               <li>Gated access using digital collectibles</li>
             </ul>
-          <div className="flicker-container mt-4 text-2xl">
-            <Link to={routes.packs()}>
-              <Flicker delay=".6s">See Demo Games</Flicker>
-            </Link>
+            <div className="flicker-container mt-4 text-2xl">
+              <Link to={routes.packs()}>
+                <Flicker delay=".6s">See Demo Games</Flicker>
+              </Link>
+            </div>
+            <div className="mt-10 flex justify-center sm:mt-12">
+              <EmailPartner />
+            </div>
           </div>
-          <div className="mt-10 flex justify-center sm:mt-12">
-            <EmailPartner />
-          </div>
-        </div>
-      </Section>
+        </Section>
+      </div>
 
       {/* Newsletter*/}
       <div className="w-full bg-blue-800">

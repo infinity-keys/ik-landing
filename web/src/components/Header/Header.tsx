@@ -14,17 +14,6 @@ import WalletButton from 'src/components/WalletButton/WalletButton'
 import Logo from 'src/svgs/Logo'
 import LogoMobile from 'src/svgs/LogoMobile'
 
-export const navigation = [
-  { name: 'Home', to: '/' },
-  {
-    name: 'Thesis',
-    href: 'https://blog.infinitykeys.io/what-is-infinity-keys',
-  },
-  { name: 'Docs', href: 'https://docs.infinitykeys.io' },
-  { name: 'Blog', href: 'https://blog.infinitykeys.io' },
-  { name: 'Build', fragment: '#build' },
-]
-
 const Header = () => {
   const { loading } = useAuth()
 
@@ -60,57 +49,36 @@ const Header = () => {
 
               <div className="menu-items hidden items-center justify-center sm:items-stretch sm:justify-start lg:flex">
                 <nav className="flex space-x-4">
-                  {navigation.map((item) => {
-                    if (item.to) {
-                      return (
-                        <Link
-                          to={item.to}
-                          key={item.name}
-                          className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
-                        >
-                          {item.name}
-                        </Link>
-                      )
-                    }
-                    if (item.href) {
-                      return (
-                        <a
-                          href={item.href}
-                          key={item.name}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
-                        >
-                          {item.name}
-                        </a>
-                      )
-                    }
-                    if (item.fragment) {
-                      return (
-                        <a
-                          href={item.fragment}
-                          key={item.name}
-                          className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            const element = document.getElementById(
-                              item.fragment.replace('#', '')
-                            )
-                            if (element) {
-                              window.history.pushState({}, null, item.fragment)
-                              // element.scrollIntoView({ behavior: 'smooth' })
-                              window.scrollTo({
-                                behavior: 'smooth',
-                                top: element.offsetTop-100,
-                              })
-                            }
-                          }}
-                        >
-                          {item.name}
-                        </a>
-                      )
-                    }
-                  })}
+                  <Link
+                    to={routes.home()}
+                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                  >
+                    Home
+                  </Link>
+                  <a
+                    href="https://blog.infinitykeys.io/what-is-infinity-keys"
+                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                  >
+                    Thesis
+                  </a>
+                  <a
+                    href="https://docs.infinitykeys.io"
+                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                  >
+                    Docs
+                  </a>
+                  <a
+                    href="https://blog.infinitykeys.io"
+                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                  >
+                    Blog
+                  </a>
+                  <Link
+                    to="/#build"
+                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                  >
+                    Build
+                  </Link>
                 </nav>
               </div>
 
@@ -144,28 +112,36 @@ const Header = () => {
           {/* mobile menu */}
           <Disclosure.Panel className="absolute top-20 left-0 w-full bg-blue lg:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map((item) => {
-                return item.to ? (
-                  <Link
-                    key={item.name}
-                    to={item.to}
-                    className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
-                    aria-current={item.name ? 'page' : undefined}
-                  >
-                    {item.name}
-                  </Link>
-                ) : (
-                  <Disclosure.Button
-                    key={item.name}
-                    as="a"
-                    href={item.href}
-                    className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
-                    aria-current={item.name ? 'page' : undefined}
-                  >
-                    {item.name}
-                  </Disclosure.Button>
-                )
-              })}
+              <Link
+                to={routes.home()}
+                className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
+              >
+                Home
+              </Link>
+              <a
+                href="https://blog.infinitykeys.io/what-is-infinity-keys"
+                className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
+              >
+                Thesis
+              </a>
+              <a
+                href="https://docs.infinitykeys.io"
+                className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
+              >
+                Docs
+              </a>
+              <a
+                href="https://blog.infinitykeys.io"
+                className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
+              >
+                Blog
+              </a>
+              <Link
+                to="/#build"
+                className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
+              >
+                Build
+              </Link>
             </div>
           </Disclosure.Panel>
         </>
