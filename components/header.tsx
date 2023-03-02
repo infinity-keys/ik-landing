@@ -83,13 +83,25 @@ export default function Header() {
               </div>
 
               <div data-cy="puzzle-link" className="flex items-center gap-2">
-                <Button
-                  text="Play"
-                  href={`/${PACK_COLLECTION_BASE}`}
-                  variant="outline"
-                  responsive
-                />
-                <WalletButton />
+                <div className="order-1 lg:order-2">
+                  <Button
+                    text="Play"
+                    href={`/${PACK_COLLECTION_BASE}`}
+                    variant="outline"
+                    responsive
+                  />
+                </div>
+                <div className="order-2 lg:order-3">
+                  <WalletButton />
+                </div>
+                <div className="order-3 lg:order-1">
+                  <Button
+                    text="EthDenver"
+                    href={`/ethdenver`}
+                    variant="denver"
+                    responsive
+                  />
+                </div>
               </div>
 
               {/* hamburger icon, visible mobile only */}
