@@ -9,7 +9,7 @@ interface ButtonProps {
   fullWidth?: boolean;
   type?: "button" | "submit" | "reset";
   size?: "small" | "medium";
-  variant?: "solid" | "outline" | "faded" | "purple" | "warn";
+  variant?: "solid" | "outline" | "faded" | "purple" | "warn" | "denver";
   onClick?: any;
   disabled?: boolean;
   responsive?: boolean;
@@ -50,6 +50,8 @@ export default function Button({
       variant === "faded" && "bg-white/20 hover:text-turquoise",
       variant === "purple" &&
         "bg-indigo-500 border-indigo-500 hover:text-white hover:bg-indigo-600 ",
+      variant === "denver" &&
+        "bg-[#f9548e] border-[#f9548e] hover:bg-turquoise",
     ],
     // Sizes and responsive sizes
     [
