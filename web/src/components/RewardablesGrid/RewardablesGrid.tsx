@@ -86,7 +86,7 @@ const RewardablesList = ({
 
           <ul
             className={clsx(
-              'grid grid-cols-1 gap-6 py-8 sm:grid-cols-2',
+              'align-center grid grid-cols-1 gap-6 py-8 sm:grid-cols-2',
               layout === ThumbnailGridLayoutType.Grid
                 ? 'md:grid-cols-3 lg:grid-cols-4'
                 : 'lg:grid-cols-3 xl:grid-cols-4'
@@ -94,7 +94,10 @@ const RewardablesList = ({
           >
             {rewardables.map((rewardable) => {
               return (
-                <li key={rewardable.id}>
+                <li
+                  key={rewardable.id}
+                  className="flex justify-center sm:block"
+                >
                   <Thumbnail
                     isGrid={layout === ThumbnailGridLayoutType.Grid}
                     id={rewardable.id}
