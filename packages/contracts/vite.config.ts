@@ -18,7 +18,7 @@ export default defineConfig({
     port: 3000,
   },
   build: {
-    manifest: process.env.NODE_ENV !== 'development',
+    manifest: false,
     minify: process.env.NODE_ENV !== 'development',
     reportCompressedSize: process.env.NODE_ENV !== 'development',
 

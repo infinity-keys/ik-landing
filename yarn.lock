@@ -4572,7 +4572,6 @@ __metadata:
     "@rainbow-me/rainbowkit": ^0.8.0
     "@rollup/plugin-typescript": ^9.0.2
     "@types/node": ^18.11.9
-    cross-env: ^7.0.3
     rollup-plugin-typescript-paths: ^1.4.0
     tslib: ^2.4.1
     typescript: ^4.6.4
@@ -4589,7 +4588,6 @@ __metadata:
     "@rollup/plugin-typescript": ^9.0.2
     "@typechain/ethers-v5": ^10.1.0
     "@types/node": ^18.11.9
-    cross-env: ^7.0.3
     ethers: ^5.7.2
     rollup-plugin-typescript-paths: ^1.4.0
     tslib: ^2.4.1
@@ -4607,7 +4605,6 @@ __metadata:
     "@rollup/plugin-typescript": ^9.0.2
     "@types/node": ^18.11.9
     cloudinary-build-url: ^0.2.4
-    cross-env: ^7.0.3
     jose: ^4.11.0
     nanoid: ^4.0.0
     rollup-plugin-typescript-paths: ^1.4.0
@@ -13287,7 +13284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-env@npm:7.0.3, cross-env@npm:^7.0.3":
+"cross-env@npm:7.0.3":
   version: 7.0.3
   resolution: "cross-env@npm:7.0.3"
   dependencies:
