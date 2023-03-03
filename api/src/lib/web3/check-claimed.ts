@@ -4,13 +4,15 @@ import {
   POLYGON_CHAIN_ID,
   AVAX_CHAIN_ID,
 } from '@infinity-keys/constants'
-import { QueryResolvers } from 'types/graphql'
 
 import { contractLookup } from 'src/lib/lookups'
 
-export const checkClaimed: QueryResolvers['checkClaimed'] = async ({
+export const checkClaimed = async ({
   account,
   tokenId,
+}: {
+  account: string
+  tokenId: number
 }) => {
   // @TODO: Had check to see if tokenId exists => will now revert in try catch.
   // Could also move to constant from DB NFT metadata table or something

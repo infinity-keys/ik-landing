@@ -18,6 +18,7 @@
   "scripts": {
     "dev": "vite",
     "build": "typechain --target ethers-v5 src/contracts/**/*.json --out-dir src/generated/ && tsc && vite build",
+    "build-dev": "typechain --target ethers-v5 src/contracts/**/*.json --out-dir src/generated/ && tsc && NODE_ENV=development vite build",
     "preview": "vite preview"
   },
   "devDependencies": {

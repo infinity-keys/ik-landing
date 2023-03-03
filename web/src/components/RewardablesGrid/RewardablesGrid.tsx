@@ -94,7 +94,10 @@ const RewardablesList = ({
           >
             {rewardables.map((rewardable) => {
               return (
-                <li key={rewardable.id}>
+                <li
+                  key={rewardable.id}
+                  className="flex justify-center sm:block"
+                >
                   <Thumbnail
                     isGrid={layout === ThumbnailGridLayoutType.Grid}
                     id={rewardable.id}

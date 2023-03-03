@@ -18,6 +18,9 @@ export default defineConfig(() => ({
     }),
   ],
   build: {
+    manifest: false,
+    minify: process.env.NODE_ENV !== 'development',
+    reportCompressedSize: process.env.NODE_ENV !== 'development',
     lib: {
       entry: resolve('src', 'components/index.ts'),
       name: 'LensShareButton',

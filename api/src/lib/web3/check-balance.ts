@@ -1,12 +1,15 @@
 import { ethers } from 'ethers'
-import { QueryResolvers } from 'types/graphql'
 
 import { contractLookup } from 'src/lib/lookups'
 
-export const checkBalance: QueryResolvers['checkBalance'] = async ({
+export const checkBalance = async ({
   account,
   tokenIds,
   chainId,
+}: {
+  account: string
+  tokenIds: number[]
+  chainId: number
 }) => {
   // Again, this whole API could be migrated to Moralis
   const contract = contractLookup[chainId]
