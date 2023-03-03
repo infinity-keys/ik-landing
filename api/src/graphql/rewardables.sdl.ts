@@ -9,7 +9,7 @@ export const schema = gql`
     successMessage: String
     listPublicly: Boolean!
     type: RewardableType!
-    organization: Organization!
+    organization: Organization! @requireAuth(roles: ["ADMIN"])
     orgId: String!
     nfts: [Nft]!
     availableChains: [AvailableChains]!
@@ -65,9 +65,10 @@ export const schema = gql`
   }
 
   type Mutation {
-    createRewardable(input: CreateRewardableInput!): Rewardable! @requireAuth
+    createRewardable(input: CreateRewardableInput!): Rewardable!
+      @requireAuth(roles: ["ADMIN"])
     updateRewardable(id: String!, input: UpdateRewardableInput!): Rewardable!
-      @requireAuth
-    deleteRewardable(id: String!): Rewardable! @requireAuth
+      @requireAuth(roles: ["ADMIN"])
+    deleteRewardable(id: String!): Rewardable! @requireAuth(roles: ["ADMIN"])
   }
 `

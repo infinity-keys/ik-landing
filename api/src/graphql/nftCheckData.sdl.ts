@@ -10,8 +10,8 @@ export const schema = gql`
   }
 
   type Query {
-    nftCheckData: [NftCheckDatum!]! @requireAuth
-    nftCheckDatum(id: String!): NftCheckDatum @requireAuth
+    nftCheckData: [NftCheckDatum!]! @requireAuth(roles: ["ADMIN"])
+    nftCheckDatum(id: String!): NftCheckDatum @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateNftCheckDatumInput {
@@ -32,11 +32,12 @@ export const schema = gql`
 
   type Mutation {
     createNftCheckDatum(input: CreateNftCheckDatumInput!): NftCheckDatum!
-      @requireAuth
+      @requireAuth(roles: ["ADMIN"])
     updateNftCheckDatum(
       id: String!
       input: UpdateNftCheckDatumInput!
-    ): NftCheckDatum! @requireAuth
-    deleteNftCheckDatum(id: String!): NftCheckDatum! @requireAuth
+    ): NftCheckDatum! @requireAuth(roles: ["ADMIN"])
+    deleteNftCheckDatum(id: String!): NftCheckDatum!
+      @requireAuth(roles: ["ADMIN"])
   }
 `

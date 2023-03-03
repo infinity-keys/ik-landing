@@ -9,8 +9,8 @@ export const schema = gql`
   }
 
   type Query {
-    stepSimpleTexts: [StepSimpleText!]! @requireAuth
-    stepSimpleText(id: String!): StepSimpleText @requireAuth
+    stepSimpleTexts: [StepSimpleText!]! @requireAuth(roles: ["ADMIN"])
+    stepSimpleText(id: String!): StepSimpleText @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateStepSimpleTextInput {
@@ -27,11 +27,12 @@ export const schema = gql`
 
   type Mutation {
     createStepSimpleText(input: CreateStepSimpleTextInput!): StepSimpleText!
-      @requireAuth
+      @requireAuth(roles: ["ADMIN"])
     updateStepSimpleText(
       id: String!
       input: UpdateStepSimpleTextInput!
-    ): StepSimpleText! @requireAuth
-    deleteStepSimpleText(id: String!): StepSimpleText! @requireAuth
+    ): StepSimpleText! @requireAuth(roles: ["ADMIN"])
+    deleteStepSimpleText(id: String!): StepSimpleText!
+      @requireAuth(roles: ["ADMIN"])
   }
 `

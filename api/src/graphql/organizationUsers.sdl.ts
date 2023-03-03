@@ -16,8 +16,9 @@ export const schema = gql`
   }
 
   type Query {
-    organizationUsers: [OrganizationUser!]! @requireAuth
-    organizationUser(id: String!): OrganizationUser @requireAuth
+    organizationUsers: [OrganizationUser!]! @requireAuth(roles: ["ADMIN"])
+    organizationUser(id: String!): OrganizationUser
+      @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateOrganizationUserInput {
@@ -35,11 +36,12 @@ export const schema = gql`
   type Mutation {
     createOrganizationUser(
       input: CreateOrganizationUserInput!
-    ): OrganizationUser! @requireAuth
+    ): OrganizationUser! @requireAuth(roles: ["ADMIN"])
     updateOrganizationUser(
       id: String!
       input: UpdateOrganizationUserInput!
-    ): OrganizationUser! @requireAuth
-    deleteOrganizationUser(id: String!): OrganizationUser! @requireAuth
+    ): OrganizationUser! @requireAuth(roles: ["ADMIN"])
+    deleteOrganizationUser(id: String!): OrganizationUser!
+      @requireAuth(roles: ["ADMIN"])
   }
 `

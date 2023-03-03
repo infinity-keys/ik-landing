@@ -8,8 +8,8 @@ export const schema = gql`
   }
 
   type Query {
-    stepNftChecks: [StepNftCheck!]! @requireAuth
-    stepNftCheck(id: String!): StepNftCheck @requireAuth
+    stepNftChecks: [StepNftCheck!]! @requireAuth(roles: ["ADMIN"])
+    stepNftCheck(id: String!): StepNftCheck @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateStepNftCheckInput {
@@ -24,11 +24,12 @@ export const schema = gql`
 
   type Mutation {
     createStepNftCheck(input: CreateStepNftCheckInput!): StepNftCheck!
-      @requireAuth
+      @requireAuth(roles: ["ADMIN"])
     updateStepNftCheck(
       id: String!
       input: UpdateStepNftCheckInput!
-    ): StepNftCheck! @requireAuth
-    deleteStepNftCheck(id: String!): StepNftCheck! @requireAuth
+    ): StepNftCheck! @requireAuth(roles: ["ADMIN"])
+    deleteStepNftCheck(id: String!): StepNftCheck!
+      @requireAuth(roles: ["ADMIN"])
   }
 `

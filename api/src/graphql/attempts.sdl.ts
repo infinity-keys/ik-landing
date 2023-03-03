@@ -10,8 +10,8 @@ export const schema = gql`
   }
 
   type Query {
-    attempts: [Attempt!]! @requireAuth
-    attempt(id: String!): Attempt @requireAuth
+    attempts: [Attempt!]! @requireAuth(roles: ["ADMIN"])
+    attempt(id: String!): Attempt @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateAttemptInput {
@@ -29,9 +29,10 @@ export const schema = gql`
   }
 
   type Mutation {
-    createAttempt(input: CreateAttemptInput!): Attempt! @requireAuth
+    createAttempt(input: CreateAttemptInput!): Attempt!
+      @requireAuth(roles: ["ADMIN"])
     updateAttempt(id: String!, input: UpdateAttemptInput!): Attempt!
-      @requireAuth
-    deleteAttempt(id: String!): Attempt! @requireAuth
+      @requireAuth(roles: ["ADMIN"])
+    deleteAttempt(id: String!): Attempt! @requireAuth(roles: ["ADMIN"])
   }
 `

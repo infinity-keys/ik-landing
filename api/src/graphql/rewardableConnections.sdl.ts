@@ -11,8 +11,10 @@ export const schema = gql`
   }
 
   type Query {
-    rewardableConnections: [RewardableConnection!]! @requireAuth
-    rewardableConnection(id: String!): RewardableConnection @requireAuth
+    rewardableConnections: [RewardableConnection!]!
+      @requireAuth(roles: ["ADMIN"])
+    rewardableConnection(id: String!): RewardableConnection
+      @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateRewardableConnectionInput {
@@ -30,11 +32,12 @@ export const schema = gql`
   type Mutation {
     createRewardableConnection(
       input: CreateRewardableConnectionInput!
-    ): RewardableConnection! @requireAuth
+    ): RewardableConnection! @requireAuth(roles: ["ADMIN"])
     updateRewardableConnection(
       id: String!
       input: UpdateRewardableConnectionInput!
-    ): RewardableConnection! @requireAuth
-    deleteRewardableConnection(id: String!): RewardableConnection! @requireAuth
+    ): RewardableConnection! @requireAuth(roles: ["ADMIN"])
+    deleteRewardableConnection(id: String!): RewardableConnection!
+      @requireAuth(roles: ["ADMIN"])
   }
 `
