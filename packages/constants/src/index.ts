@@ -3,6 +3,7 @@ import { Chain } from '@rainbow-me/rainbowkit'
 // JWT stuff
 export const IK_ID_COOKIE = 'ik-id'
 export const IK_CLAIMS_NAMESPACE = 'https://infinitykeys.io'
+export const PUZZLE_COOKIE_NAME = `ik-puzzles`
 
 // Crypto stuff
 export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
@@ -24,7 +25,7 @@ export const PUZZLE_SUCCESS_BASE = 'solved'
 export const PUZZLE_FAILED_BASE = 'puzzle' // back to landing
 
 // Puzzles per page
-export const PAGINATION_COUNTS = [16, 32, 64]
+export const PAGINATION_COUNTS = [32, 64, 128]
 
 // Cloudinary
 export const CLOUDINARY_CLOUD_NAME = 'infinity-keys'
@@ -40,6 +41,9 @@ export const AVAX_MARKETPLACE_LINK = `https://joepegs.com/item/${CONTRACT_ADDRES
 export const ETH_CHAIN_ID = 1
 export const CONTRACT_ADDRESS_ETH = '0x54b743D6055e3BBBF13eb2C748A3783516156e5B'
 export const ETH_MARKETPLACE_LINK = `https://opensea.io/assets/ethereum/${CONTRACT_ADDRESS_ETH}/`
+
+// GNOSIS PARAMS
+export const GNOSIS_CHAIN_ID = 100
 
 // POLYGON PARAMS
 export const POLYGON_CHAIN_ID = 137
@@ -88,6 +92,15 @@ export const chainRPCNameLookup: {
   [OPTIMISM_CHAIN_ID]: 'optimism',
 }
 
+export const chainIdLookup: {
+  [key: number]: string
+} = {
+  [ETH_CHAIN_ID]: 'Ethereum',
+  [POLYGON_CHAIN_ID]: 'Polygon',
+  [AVAX_CHAIN_ID]: 'Avalanche',
+  [OPTIMISM_CHAIN_ID]: 'Optimism',
+}
+
 export const marketplaceLookup: {
   [key: number]: string
 } = {
@@ -95,6 +108,15 @@ export const marketplaceLookup: {
   [POLYGON_CHAIN_ID]: POLYGON_MARKETPLACE_LINK,
   [AVAX_CHAIN_ID]: AVAX_MARKETPLACE_LINK,
   [OPTIMISM_CHAIN_ID]: OPTIMISM_MARKETPLACE_LINK,
+}
+
+export const marketplaceNameLookup: {
+  [key: number]: string
+} = {
+  [ETH_CHAIN_ID]: 'OpenSea',
+  [POLYGON_CHAIN_ID]: 'OpenSea',
+  [AVAX_CHAIN_ID]: 'Joepegs',
+  [OPTIMISM_CHAIN_ID]: 'Quixotic',
 }
 
 // RAINBOW KIT PARAMS

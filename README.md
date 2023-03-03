@@ -122,36 +122,69 @@ The best way to learn Redwood is by going through the comprehensive [tutorial](h
 
 # IK Team Notes
 
-## DB
+Download [Docker Desktop](https://www.docker.com/products/docker-desktop/) and get the latest `.env` file from an IK team member.
 
-[Install postgres](https://redwoodjs.com/docs/local-postgres-setup).
+# Local Env (Windows)
 
-## On Mac
-```bash
+## Installing Linux on Windows with WSL2
 
-```
-## On Linux
-```bash
-sudo apt update && sudo apt upgrade && sudo apt install postgresql
-sudo service postgresql start
-createdb $(whoami)
-sudo --login --user=postgres psql
-```
+Follow [these instructions](https://learn.microsoft.com/en-us/windows/wsl/install) in PowerShell to install WSL2.
 
-Once on the postgres command line:
+**NOTE: your user account must be an administrator on your machine** -you cannot run PowerShell *'as an administrator'* from a non admin user account because doing so will prevent installs. To install WSL2, run:
 
-```base
-create database ikdb_dev;
-create database ikdb_test;
-ALTER USER postgres PASSWORD 'postgres'; ALTER ROLE
-```
+`$ wsl --install`
 
-Now add to `.env`:
+Use version 2:
 
-```
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/ikdb_dev?connection_limit=1"
-TEST_DATABASE_URL="postgresql://postgres:postgres@localhost:5432/ikdb_test?connection_limit=1"
-```
+`$ wsl --set-default-version 2`
+
+## Installing Ubuntu on WSL2
+
+In PowerShell run:
+
+`$ wsl --install -d Ubuntu`
+
+(If the command above is failing, you may not have admin privileges)
+
+Update to the latest version:
+
+`$ wsl --update`
+
+## Using Windows Terminal
+
+Go to the Windows App store and install Terminal to access Ubuntu.
+
+Fetch the latest version of the package list from your distro's software repository.
+
+`$ sudo apt update`
+
+Download and install updates for each outdated package and dependency on your system.
+
+`$ sudo apt upgrade`
+
+Install Node Version Manager, ask Bloom why we use v18? (latest?)
+
+`$ nvm install v18`
+
+## Installing Yarn
+
+Follow these instruction [here](https://yarnpkg.com/getting-started/install).
+
+Enable `corepack`, a zero-runtime-dependency Node script that acts a bridge between Node projects and package managers like Yarn.  It is included with Node.js:
+
+`$ corepack enable`
+
+Updating the global Yarn version
+
+`$ corepack prepare yarn@stable --activate`
+
+Ensure you have yarn v.3 and not v.4; Redwood.js will not run on v.4:
+
+`$ yarn --version`
+
+## Connecting to GitHub
+
+Follow [these instructions](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/GitHub-SSH-Key-Setup-Config-Ubuntu-Linux) after an IK team member has authorized you access to the KI repo.
 
 # IK Instructions
 
@@ -214,7 +247,7 @@ yarn rw prisma migrate reset --force
 Builds all custom workspaces packages and start Redwood dev. (You'll use this daily!)
 
 ```bash
-yarn workspaces foreach run build && yarn rw dev
+yarn build && yarn rw dev
 ```
 
 ## Publish a Package
@@ -226,3 +259,21 @@ npm version patch
 ```bash
 yarn npm publish --access public
 ```
+
+## Tests
+`yarn rw test api <filename>`
+
+### For Mac Users
+
+`homebrew install watchman`
+
+There can be a permissions error that happens in MacOS if project is in Documents. [Fix is here.](https://github.com/facebook/watchman/issues/977#issuecomment-1189903929)
+
+`watch-del-all`
+`watchman shutdown-server`
+
+## Contract Addresses
+avax:     0xB40fD6825a366081192d890d2760113C066761Ef
+ethereum: 0x54b743D6055e3BBBF13eb2C748A3783516156e5B
+polygon:  0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9
+optimism: 0x54b743D6055e3BBBF13eb2C748A3783516156e5B

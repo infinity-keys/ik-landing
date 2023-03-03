@@ -35,6 +35,18 @@ services:
       name: redwoodjs-db
       property: connectionString
 
+- name: discord-dust-game-bot
+  type: worker
+  env: node
+  region: oregon
+  rootDir: packages/discord-dust-game-bot
+  buildCommand: yarn
+  startCommand: node .
+  autoDeploy: true
+  envVars:
+  - key: NODE_VERSION
+    value: 18
+
 databases:
   - name: redwoodjs-db
     region: oregon

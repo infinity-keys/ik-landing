@@ -1,22 +1,29 @@
+import React, { useEffect, useMemo } from 'react'
+
 import EnvelopeIcon from '@heroicons/react/20/solid/EnvelopeIcon'
 import Avatar from 'boring-avatars'
 import type { FindUserQuery, FindUserQueryVariables } from 'types/graphql'
+import { useAccount } from 'wagmi'
+import {truncate} from '@infinity-keys/core'
 
-import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
+import { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
+import useReconcileProgress from 'src/hooks/useReconcileProgress'
+
+import Button from 'src/components/Button'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
+
 export const QUERY = gql`
-  query FindUserQuery($id: String!) {
-    user: user(id: $id) {
-      id
+  query FindUserQuery {
+    user {
       username
-      publicAddress
       email
       twitterProfile
       discordProfile
       lensProfile
+      authId
     }
   }
 `
@@ -34,18 +41,38 @@ export const Failure = ({
 export const Success = ({
   user,
 }: CellSuccessProps<FindUserQuery, FindUserQueryVariables>) => {
+  const { address } = useAccount()
+
+  // Immediately upon mount, reconcile progress, but also provide function to
+  // use on button click
+  const {reconcilePuzzles, data, error, progressLoading} = useReconcileProgress()
+  useEffect(() => {
+    reconcilePuzzles()
+  }, [reconcilePuzzles])
+
   return (
     <div className="overflow-hidden rounded-lg bg-black/30">
       <div className="flex items-center bg-black/20 py-8 px-10">
         <Avatar
           size={56}
-          name={user.publicAddress}
+          name={user.email}
           variant="marble"
           colors={['#101D42', '#E400FF', '#3FCCBB', '#8500AC', '#303B5B']}
         />
+
         <div className="ml-6">
-          <p className="text-xl font-bold text-white">{user.username}</p>
-          <p className="text-turquoise">{user.publicAddress}</p>
+          <p className="text-xl font-bold text-white">
+            {user.username || user.email.split('@')[0]}
+          </p>
+          {address && <p className="text-turquoise">{truncate(address)}</p>}
+        </div>
+
+        <div className="ml-auto">
+          <Button
+            text={`Sync${progressLoading ? ' (Loading)' : ''}`}
+            onClick={reconcilePuzzles}
+            disabled={progressLoading}
+          />
         </div>
       </div>
 
@@ -72,12 +99,10 @@ export const Success = ({
       </div>
 
       <div className="px-10 pb-10 text-white">
-        {user.email && (
-          <div className="flex items-center pb-4">
-            <EnvelopeIcon className="h-5 w-5 text-white" />
-            <p className="ml-4 text-sm text-white/70">{user.email}</p>
-          </div>
-        )}
+        <div className="flex items-center pb-4">
+          <EnvelopeIcon className="h-5 w-5 text-white" />
+          <p className="ml-4 text-sm text-white/70">{user.email}</p>
+        </div>
 
         {user.twitterProfile && (
           <div className="flex items-center pb-4">

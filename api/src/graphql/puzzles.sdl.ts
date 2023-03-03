@@ -1,6 +1,7 @@
 export const schema = gql`
   type Puzzle {
     id: String!
+    isAnon: Boolean!
     rewardable: Rewardable!
     rewardableId: String!
     submissions: [Submission]!
@@ -9,14 +10,16 @@ export const schema = gql`
 
   type Query {
     puzzles: [Puzzle!]! @requireAuth
-    puzzle(id: String!): Puzzle @requireAuth
+    puzzle(id: String!): Puzzle @skipAuth
   }
 
   input CreatePuzzleInput {
+    isAnon: Boolean!
     rewardableId: String!
   }
 
   input UpdatePuzzleInput {
+    isAnon: Boolean
     rewardableId: String
   }
 

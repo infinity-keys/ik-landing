@@ -5,21 +5,23 @@ import clsx from 'clsx'
 type WrapperProps = {
   full?: boolean
   radialBg?: boolean
+  customClasses?: string[]
 }
 
 const Wrapper: FC<PropsWithChildren<WrapperProps>> = ({
   children,
   full = false,
   radialBg = true,
+  customClasses = [],
 }) => (
   <div
-    className={clsx('relative z-0 bg-blue text-gray-100', {
+    className={clsx(customClasses, 'relative z-0 bg-blue text-gray-100', {
       'radial-bg': radialBg,
     })}
   >
     <div
       className={clsx(
-        'flex min-h-[calc(100vh-80px)] flex-col items-center justify-center',
+        'flex min-h-screen flex-col items-center justify-center',
         {
           'container px-4': !full,
         }

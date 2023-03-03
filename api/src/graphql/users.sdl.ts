@@ -3,17 +3,20 @@ export const schema = gql`
     id: String!
     createdAt: DateTime!
     updatedAt: DateTime!
+    lastLoggedIn: DateTime!
     nonce: String!
+    authId: String
     username: String
-    publicAddress: String
     email: String
     twitterProfile: String
     discordProfile: String
     lensProfile: String
-    siteRole: SiteRole!
+    roles: [SiteRole]!
     organizations: [OrganizationUser]!
     submissions: [Submission]!
     attempts: [Attempt]!
+    solved: [Solve]!
+    userRewards: [UserReward]!
   }
 
   enum SiteRole {
@@ -23,30 +26,30 @@ export const schema = gql`
   }
 
   type Query {
-    users: [User!]! @requireAuth
-    user(id: String!): User @requireAuth
+    users: [User!]! @requireAuth(roles: ["ADMIN"])
+    user: User @requireAuth
   }
 
   input CreateUserInput {
+    lastLoggedIn: DateTime!
     nonce: String!
+    authId: String
     username: String
-    publicAddress: String
     email: String
     twitterProfile: String
     discordProfile: String
     lensProfile: String
-    siteRole: SiteRole!
   }
 
   input UpdateUserInput {
+    lastLoggedIn: DateTime
     nonce: String
+    authId: String
     username: String
-    publicAddress: String
     email: String
     twitterProfile: String
     discordProfile: String
     lensProfile: String
-    siteRole: SiteRole
   }
 
   type Mutation {

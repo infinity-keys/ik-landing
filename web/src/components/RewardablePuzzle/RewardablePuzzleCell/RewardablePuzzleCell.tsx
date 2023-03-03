@@ -2,40 +2,32 @@ import type { FindRewardablePuzzleBySlug } from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import Rewardable from 'src/components/RewardablePuzzle/RewardablePuzzle'
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import RewardablePuzzle from 'src/components/RewardablePuzzle/RewardablePuzzle'
 
 export const QUERY = gql`
   query FindRewardablePuzzleBySlug($slug: String!) {
-    puzzle: rewardableBySlug(slug: $slug) {
+    rewardable: rewardableBySlug(slug: $slug, type: PUZZLE) {
       id
-      createdAt
-      updatedAt
       name
       slug
       explanation
       successMessage
-      listPublicly
-      type
-      orgId
+      nfts {
+        cloudinaryId
+      }
       puzzle {
         id
         steps {
           id
           stepSortWeight
-          challenge
-          successMessage
-          type
-          stepSimpleText {
-            stepId
-            solutionCharCount
-          }
         }
       }
     }
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <LoadingIcon />
 
 export const Empty = () => <div>Rewardable not found</div>
 
@@ -44,7 +36,7 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({
-  puzzle,
+  rewardable,
 }: CellSuccessProps<FindRewardablePuzzleBySlug>) => {
-  return <Rewardable rewardable={puzzle} />
+  return <RewardablePuzzle rewardable={rewardable} />
 }

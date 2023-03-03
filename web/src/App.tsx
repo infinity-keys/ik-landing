@@ -2,12 +2,14 @@ import { avalancheChain } from '@infinity-keys/constants'
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { getDefaultWallets } from '@rainbow-me/rainbowkit'
 import loMerge from 'lodash/merge'
+import { Magic } from 'magic-sdk'
 import { WagmiConfig } from 'wagmi'
 import { chain, configureChains, createClient } from 'wagmi'
 import { infuraProvider } from 'wagmi/providers/infura'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { publicProvider } from 'wagmi/providers/public'
 
+import { useAuth, AuthProvider } from '@redwoodjs/auth'
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
@@ -19,6 +21,13 @@ import './scaffold.css'
 import './index.css'
 import 'loaders.css/loaders.min.css'
 import '@rainbow-me/rainbowkit/styles.css'
+
+// Custom per-path, but we'll load for all pages right now
+// @TODO: make this load dynamically based on url
+import './styles/customer/p0.css'
+import './styles/customer/lens.css'
+import './styles/customer/saga.css'
+import './styles/customer/lens_collector.css'
 
 export const IKTheme = loMerge(darkTheme(), {
   colors: {
@@ -39,7 +48,7 @@ export const IKTheme = loMerge(darkTheme(), {
 })
 
 export const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, avalancheChain, chain.optimism, chain.rinkeby],
+  [chain.mainnet, chain.polygon, avalancheChain, chain.optimism],
   [
     infuraProvider(),
     publicProvider(),
@@ -58,19 +67,25 @@ export const wagmiClient = createClient({
   provider,
 })
 
-const App = () => (
-  <WagmiConfig client={wagmiClient}>
-    <RainbowKitProvider chains={chains} theme={IKTheme}>
-      <FatalErrorBoundary page={FatalErrorPage}>
-        <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
-          <RedwoodApolloProvider>
-            <Routes />
-            <CookieConsentBanner />
-          </RedwoodApolloProvider>
-        </RedwoodProvider>
-      </FatalErrorBoundary>
-    </RainbowKitProvider>
-  </WagmiConfig>
-)
+const magic = new Magic(process.env.MAGIC_LINK_PUBLIC)
+
+const App = () => {
+  return (
+    <FatalErrorBoundary page={FatalErrorPage}>
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider chains={chains} theme={IKTheme}>
+          <AuthProvider client={magic} type="magicLink">
+            <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
+              <RedwoodApolloProvider useAuth={useAuth}>
+                <Routes />
+                <CookieConsentBanner />
+              </RedwoodApolloProvider>
+            </RedwoodProvider>
+          </AuthProvider>
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </FatalErrorBoundary>
+  )
+}
 
 export default App

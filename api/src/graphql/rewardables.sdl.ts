@@ -12,17 +12,27 @@ export const schema = gql`
     organization: Organization!
     orgId: String!
     nfts: [Nft]!
+    availableChains: [AvailableChains]!
     puzzle: Puzzle
     pack: Pack
     bundle: Bundle
+    userRewards: [UserReward]!
     asParent: [RewardableConnection]!
     asChild: [RewardableConnection]!
+    migrateId: String
   }
 
   enum RewardableType {
     PUZZLE
     PACK
     BUNDLE
+  }
+
+  enum AvailableChains {
+    AVAX
+    ETH
+    POLY
+    OPT
   }
 
   type Query {
@@ -38,6 +48,8 @@ export const schema = gql`
     listPublicly: Boolean!
     type: RewardableType!
     orgId: String!
+    availableChains: [AvailableChains]!
+    migrateId: String
   }
 
   input UpdateRewardableInput {
@@ -48,6 +60,8 @@ export const schema = gql`
     listPublicly: Boolean
     type: RewardableType
     orgId: String
+    availableChains: [AvailableChains]!
+    migrateId: String
   }
 
   type Mutation {

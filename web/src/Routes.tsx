@@ -6,30 +6,49 @@
 //
 // 'src/pages/HomePage/HomePage.js'         -> HomePage
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
+import { useAuth } from '@redwoodjs/auth'
+import { Router, Route, Set, Private } from '@redwoodjs/router'
 
-import { Router, Route, Set } from '@redwoodjs/router'
-
-import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
-import SiteLayout from 'src/layouts/SiteLayout'
+// import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
+import HeaderFooterLayout from 'src/layouts/HeaderFooterLayout'
+import MainLayout from 'src/layouts/MainLayout/MainLayout'
+import WrapperLayout from 'src/layouts/WrapperLayout'
 
 const Routes = () => {
   return (
-    <Router>
-      <Set wrap={ScaffoldLayout} title="Puzzles" titleTo="puzzles" buttonLabel="New Puzzle" buttonTo="newPuzzle">
+    <Router useAuth={useAuth}>
+      <Private unauthenticated="auth">
         <Route path="/puzzle/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newPuzzle" />
         <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" />
-        <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
-        {/* Handle both /puzzle and /puzzle/1 routes. Place shorter route last to allow url creation to work */}
-        <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzle" />
-        <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzle" />
-      </Set>
-      <Set wrap={SiteLayout}>
-        <Route path="/" page={HomePage} name="home" />
-        <Route path="/puzzleTest" page={PuzzleTestPage} name="puzzleTest" />
-        <Route path="/step" page={StepPage} name="step" />
+
+        <Set wrap={[MainLayout, WrapperLayout]}>
+          <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleStep" />
+        </Set>
+      </Private>
+
+      <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
         <Route path="/user/delete" page={DeletePage} name="delete" />
+        <Route path="/claim/{id}" page={ClaimPage} name="claim" />
         <Route path="/user" page={UserPage} name="user" />
+
+        <Route path="/auth" page={AuthPage} name="auth" />
+        <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
+        <Route path="/puzzles/{count:Int}/{page:Int}" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzlesPagination" />
+        <Route path="/packs" page={RewardablePackRewardablePacksPage} name="packs" />
+        <Route path="/packs/{count:Int}/{page:Int}" page={RewardablePackRewardablePacksPage} name="packsPagination" />
+      </Set>
+
+      <Set wrap={[HeaderFooterLayout, MainLayout]}>
+        <Route path="/" page={HomePage} name="home" />
         <Route path="/privacy-policy" page={PrivacyPolicyPage} name="privacyPolicy" />
+      </Set>
+
+      <Set wrap={[MainLayout, WrapperLayout]}>
+        <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleLanding" />
+        <Route path="/pack/{slug}" page={RewardablePackRewardablePackPage} name="packLanding" />
+        {/* Anonymous Puzzles - landing and step pages */}
+        <Route path="/a/puzzle/{slug}" page={AnonPuzzlePage} name="anonPuzzleLanding" />
+        <Route path="/a/puzzle/{slug}/{step:Int}" page={AnonPuzzlePage} name="anonPuzzleStep" />
       </Set>
 
       {/* NotFoundPage can't be in a set */}

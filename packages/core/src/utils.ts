@@ -9,6 +9,7 @@ import {
   welcome,
   chainIds,
 } from '@infinity-keys/constants'
+import z from 'zod'
 
 import { ThumbnailProgress } from './types'
 
@@ -84,8 +85,19 @@ export const getThumbnailProgress = ({
   return ThumbnailProgress.Unknown
 }
 
-export const validChain = (chain: number) => chainIds.includes(chain)
+export const validChain = (chain: number | undefined) => {
+  if (typeof chain === 'undefined') return false
+  return chainIds.includes(chain)
+}
 
 export const buildTokenIdParams = (tokenIds: number[] | string[]) => {
   return tokenIds.map((id) => `tokenids=${id}`).join('&')
 }
+
+// Strings
+export const isValidEmail = (email: string) =>
+  z.string().email().safeParse(email).success
+
+export  const truncate = (text: string) => {
+    return `${text.substring(0, 5)}...${text.substring(text.length - 3)}`
+  }

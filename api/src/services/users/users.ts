@@ -10,28 +10,22 @@ export const users: QueryResolvers['users'] = () => {
   return db.user.findMany()
 }
 
-export const user: QueryResolvers['user'] = ({ id }) => {
+export const user: QueryResolvers['user'] = () => {
   return db.user.findUnique({
-    where: { id },
+    where: { authId: context.currentUser.authId },
   })
 }
 
-export const createUser: MutationResolvers['createUser'] = ({ input }) => {
-  return db.user.create({
-    data: input,
-  })
-}
-
-export const updateUser: MutationResolvers['updateUser'] = ({ id, input }) => {
+export const updateUser: MutationResolvers['updateUser'] = ({ input }) => {
   return db.user.update({
     data: input,
-    where: { id },
+    where: { authId: context.currentUser.authId },
   })
 }
 
-export const deleteUser: MutationResolvers['deleteUser'] = ({ id }) => {
+export const deleteUser: MutationResolvers['deleteUser'] = () => {
   return db.user.delete({
-    where: { id },
+    where: { authId: context.currentUser.authId },
   })
 }
 
@@ -44,5 +38,15 @@ export const User: UserRelationResolvers = {
   },
   attempts: (_obj, { root }) => {
     return db.user.findUnique({ where: { id: root?.id } }).attempts()
+  },
+  solved: (_obj, { root }) => {
+    return db.user.findUnique({ where: { id: root?.id } }).solved()
+  },
+  userRewards: (_obj, { root }) => {
+    if (!context.currentUser) return []
+
+    return db.user
+      .findUnique({ where: { id: root?.id } })
+      .userRewards({ where: { userId: context.currentUser.id } })
   },
 }

@@ -2,28 +2,23 @@ import { Disclosure } from '@headlessui/react'
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon'
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 
+import { useAuth } from '@redwoodjs/auth'
 import { Link, routes } from '@redwoodjs/router'
+import { LoaderIcon } from '@redwoodjs/web/dist/toast'
 
 // @TODO: update links urls to constants
 // import { PACK_COLLECTION_BASE, PUZZLE_LANDING_BASE } from '@lib/constants'
 import Button from 'src/components/Button/Button'
+import ProfileIcon from 'src/components/ProfileIcon/ProfileIcon'
 import WalletButton from 'src/components/WalletButton/WalletButton'
 import Logo from 'src/svgs/Logo'
 import LogoMobile from 'src/svgs/LogoMobile'
 
-export const navigation = [
-  { name: 'Home', to: '/' },
-  { name: 'Collab', to: '/#collab' },
-  {
-    name: 'Thesis',
-    href: 'https://blog.infinitykeys.io/what-is-infinity-keys',
-  },
-  { name: 'Blog', href: 'https://blog.infinitykeys.io' },
-]
-
 const Header = () => {
+  const { loading } = useAuth()
+
   return (
-    <Disclosure as="header" className="header sticky top-0 z-50 w-full bg-blue">
+    <Disclosure as="header" className="header fixed top-0 z-50 w-full bg-blue">
       {({ open }) => (
         <>
           <div
@@ -54,40 +49,55 @@ const Header = () => {
 
               <div className="menu-items hidden items-center justify-center sm:items-stretch sm:justify-start lg:flex">
                 <nav className="flex space-x-4">
-                  {navigation.map((item) => {
-                    return item.to ? (
-                      <Link
-                        to={item.to}
-                        key={item.name}
-                        className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
-                      >
-                        {item.name}
-                      </Link>
-                    ) : (
-                      <a
-                        href={item.href}
-                        key={item.name}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
-                      >
-                        {item.name}
-                      </a>
-                    )
-                  })}
+                  <Link
+                    to={routes.home()}
+                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                  >
+                    Home
+                  </Link>
+                  <a
+                    href="https://blog.infinitykeys.io/what-is-infinity-keys"
+                    target="_blank"
+                    rel="noopener"
+                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                  >
+                    Thesis
+                  </a>
+                  <a
+                    href="https://docs.infinitykeys.io"
+                    target="_blank"
+                    rel="noopener"
+                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                  >
+                    Docs
+                  </a>
+                  <a
+                    href="https://blog.infinitykeys.io"
+                    target="_blank"
+                    rel="noopener"
+                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                  >
+                    Blog
+                  </a>
+                  <Link
+                    to="/#build"
+                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                  >
+                    Build
+                  </Link>
                 </nav>
               </div>
 
               <div data-cy="puzzle-link" className="flex items-center gap-2">
-                <Button text="Packs" to="/packs" variant="outline" responsive />
                 <Button
-                  text="Puzzles"
-                  to="/puzzles"
+                  text="Play"
+                  to={routes.packs()}
                   variant="outline"
                   responsive
                 />
 
                 <WalletButton />
+                {loading ? <LoaderIcon /> : <ProfileIcon />}
               </div>
 
               {/* hamburger icon, visible mobile only */}
@@ -105,19 +115,45 @@ const Header = () => {
             </div>
           </div>
 
+          {/* mobile menu */}
           <Disclosure.Panel className="absolute top-20 left-0 w-full bg-blue lg:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
-                  aria-current={item.name ? 'page' : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
+              <Link
+                to={routes.home()}
+                className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
+              >
+                Home
+              </Link>
+              <a
+                href="https://blog.infinitykeys.io/what-is-infinity-keys"
+                target="_blank"
+                rel="noopener"
+                className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
+              >
+                Thesis
+              </a>
+              <a
+                href="https://docs.infinitykeys.io"
+                target="_blank"
+                rel="noopener"
+                className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
+              >
+                Docs
+              </a>
+              <a
+                href="https://blog.infinitykeys.io"
+                target="_blank"
+                rel="noopener"
+                className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
+              >
+                Blog
+              </a>
+              <Link
+                to="/#build"
+                className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
+              >
+                Build
+              </Link>
             </div>
           </Disclosure.Panel>
         </>
