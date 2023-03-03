@@ -1,5 +1,4 @@
 import { ethers } from 'ethers'
-import { QueryResolvers } from 'types/graphql'
 
 import { providerLookup } from 'src/lib/lookups'
 
@@ -8,9 +7,12 @@ const etherscanProvider = new ethers.providers.EtherscanProvider(
   process.env.ETHERSCAN_API_KEY
 )
 
-export const checkWalletAge: QueryResolvers['checkWalletAge'] = async ({
+export const checkWalletAge = async ({
   account,
   chainId,
+}: {
+  account: string
+  chainId: number
 }) => {
   // TODO: Move this to Moralis. Can check true wallet age for all chains there.
   const provider = providerLookup[chainId]

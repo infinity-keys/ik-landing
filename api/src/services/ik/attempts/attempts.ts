@@ -4,10 +4,9 @@ import { z } from 'zod'
 import { context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
+import { checkNft } from 'src/lib/web3/check-nft'
 import { createSolve } from 'src/services/solves/solves'
 import { createUserReward } from 'src/services/userRewards/userRewards'
-
-import { checkNft } from '../minter/check-nft'
 
 export const stepSolutionTypeLookup: {
   [key in StepType]: string
@@ -16,19 +15,19 @@ export const stepSolutionTypeLookup: {
   NFT_CHECK: 'nftCheckSolution',
 }
 
-const SimpleTextSolutionData = z.object({
+export const SimpleTextSolutionData = z.object({
   type: z.literal('simple-text'),
   simpleTextSolution: z.string(),
 })
 
-const NftCheckSolutionData = z.object({
+export const NftCheckSolutionData = z.object({
   type: z.literal('nft-check'),
   nftCheckSolution: z.object({
     account: z.string(),
   }),
 })
 
-const SolutionData = z.discriminatedUnion('type', [
+export const SolutionData = z.discriminatedUnion('type', [
   SimpleTextSolutionData,
   NftCheckSolutionData,
 ])

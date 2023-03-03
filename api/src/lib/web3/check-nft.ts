@@ -1,7 +1,7 @@
 import { balanceOf1155, balanceOf721 } from '@infinity-keys/contracts'
 import { ethers } from 'ethers'
 import { RequestInfo, RequestInit } from 'node-fetch'
-import { QueryResolvers } from 'types/graphql'
+import { NftCheckDatum } from 'types/graphql'
 import { z } from 'zod'
 
 import { providerLookup } from 'src/lib/lookups'
@@ -22,7 +22,13 @@ const poapResData = z
 
 type PoapResData = z.infer<typeof poapResData>
 
-const checkPoap = async ({ account, poapEventId }) => {
+const checkPoap = async ({
+  account,
+  poapEventId,
+}: {
+  account: string
+  poapEventId: string
+}) => {
   const url = new URL(
     `/actions/scan/${account}/${poapEventId}`,
     'https://api.poap.tech'
@@ -54,6 +60,11 @@ const checkContract = async ({
   chainId,
   tokenId,
   contractAddress,
+}: {
+  account: string
+  chainId: number
+  tokenId: number
+  contractAddress: string
 }) => {
   // No token Id for ERC721
   // @NOTE: tokenId can be zero, which is falsy. Can't just check for existence tokenId
@@ -76,10 +87,14 @@ const checkContract = async ({
   }
 }
 
-export const checkNft: QueryResolvers['checkNft'] = async ({
+export const checkNft = async ({
   account,
   requireAllNfts,
   nftCheckData,
+}: {
+  account: string
+  requireAllNfts: boolean
+  nftCheckData: NftCheckDatum[]
 }) => {
   const allChecks = nftCheckData.map(
     ({ chainId, tokenId, contractAddress, poapEventId }) => {

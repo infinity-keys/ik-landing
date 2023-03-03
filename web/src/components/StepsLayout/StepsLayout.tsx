@@ -1,6 +1,6 @@
 import { PropsWithChildren, lazy, Suspense } from 'react'
 
-import { getThumbnailProgress } from '@infinity-keys/core'
+import { ThumbnailProgress } from '@infinity-keys/core'
 import { FindAnonStepQuery, FindStepQuery } from 'types/graphql'
 
 import { useAuth } from '@redwoodjs/auth'
@@ -11,7 +11,8 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
 
 interface StepsLayoutProps extends PropsWithChildren {
-  currentStepIndex: number
+  currentStepId: string
+  hasBeenSolved: boolean
   puzzle: FindAnonStepQuery['puzzle'] | FindStepQuery['puzzle']
   step: FindAnonStepQuery['step'] | FindStepQuery['step']
 }
@@ -24,7 +25,8 @@ const NftCheckButton = lazy(
 )
 
 const StepsLayout = ({
-  currentStepIndex,
+  currentStepId,
+  hasBeenSolved,
   puzzle,
   step,
   children,
@@ -42,6 +44,7 @@ const StepsLayout = ({
                 count={step.stepSimpleText.solutionCharCount}
                 step={step}
                 puzzleId={puzzle.id}
+                isAnon={puzzle.isAnon}
               />
             )}
 
@@ -65,27 +68,42 @@ const StepsLayout = ({
       {children}
 
       <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
-        {puzzle.steps.map(({ stepSortWeight }) => {
-          const routeParams = {
-            slug,
-            step: stepSortWeight,
+        {puzzle.steps.map(
+          ({
+            id,
+            stepSortWeight,
+            hasUserCompletedStep,
+            hasAnonUserCompletedStep,
+          }) => {
+            const routeParams = {
+              slug,
+              step: stepSortWeight,
+            }
+            const completed = isAuthenticated
+              ? hasUserCompletedStep
+              : hasAnonUserCompletedStep
+            return (
+              <ThumbnailMini
+                key={stepSortWeight}
+                name={`Step ${stepSortWeight.toString()}`}
+                progress={
+                  hasBeenSolved
+                    ? ThumbnailProgress.Completed
+                    : currentStepId === id
+                    ? ThumbnailProgress.Current
+                    : completed
+                    ? ThumbnailProgress.Completed
+                    : ThumbnailProgress.NotCompleted
+                }
+                to={
+                  isAuthenticated && !puzzle.isAnon
+                    ? routes.puzzleStep(routeParams)
+                    : routes.anonPuzzleStep(routeParams)
+                }
+              />
+            )
           }
-          return (
-            <ThumbnailMini
-              key={stepSortWeight}
-              name={`Step ${stepSortWeight.toString()}`}
-              progress={getThumbnailProgress({
-                currentStep: currentStepIndex + 1,
-                puzzleStep: stepSortWeight,
-              })}
-              to={
-                isAuthenticated && !puzzle.isAnon
-                  ? routes.puzzleStep(routeParams)
-                  : routes.anonPuzzleStep(routeParams)
-              }
-            />
-          )
-        })}
+        )}
       </div>
     </div>
   )

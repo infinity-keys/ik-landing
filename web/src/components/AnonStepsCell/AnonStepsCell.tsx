@@ -3,6 +3,7 @@ import type {
   FindAnonStepQueryVariables,
 } from 'types/graphql'
 
+import { useAuth } from '@redwoodjs/auth'
 import { routes, useParams } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
@@ -17,11 +18,15 @@ export const QUERY = gql`
       isAnon
       rewardable {
         id
+        userRewards {
+          id
+        }
       }
       steps {
         id
         stepSortWeight
         hasUserCompletedStep
+        hasAnonUserCompletedStep
       }
     }
     step: anonOptionalStep(
@@ -34,14 +39,9 @@ export const QUERY = gql`
       failMessage
       successMessage
       type
+      hasUserCompletedStep
       stepSimpleText {
         solutionCharCount
-      }
-      stepNftCheck {
-        chainId
-        tokenId
-        contractAddress
-        poapEventId
       }
     }
   }
@@ -59,7 +59,7 @@ export const Failure = ({
     <div>
       <p className="pb-6 text-gray-150">{error?.message}</p>
       <Button
-        to={routes.puzzleStep({ slug, step: parseInt(step, 10) - 1 })}
+        to={routes.anonPuzzleStep({ slug, step: parseInt(step, 10) - 1 })}
         text="Go to Puzzle Page"
       />
     </div>
@@ -70,17 +70,35 @@ export const Success = ({
   step,
   puzzle,
 }: CellSuccessProps<FindAnonStepQuery, FindAnonStepQueryVariables>) => {
-  // @TODO: these need to change when we can track progress of anon players
-  const hasBeenSolved = false
-  const currentStepIndex = 0
+  const { isAuthenticated } = useAuth()
+
+  // logged in users will have a userReward
+  // anonymous users will have all steps completed
+  const hasBeenSolved = isAuthenticated
+    ? puzzle.rewardable.userRewards.length > 0
+    : puzzle.steps.every((step) => step.hasAnonUserCompletedStep)
+
+  // find the first step that has not been solved
+  // returns undefined if all have been solved
+  const currentStepId = puzzle.steps.find((step) =>
+    isAuthenticated
+      ? !step.hasUserCompletedStep
+      : !step.hasAnonUserCompletedStep
+  )?.id
 
   return (
     <StepsLayout
-      currentStepIndex={currentStepIndex}
+      currentStepId={currentStepId}
+      hasBeenSolved={hasBeenSolved}
       puzzle={puzzle}
       step={step}
     >
-      {hasBeenSolved && <Button to={routes.auth()} text="Sign in to Mint" />}
+      {hasBeenSolved &&
+        (isAuthenticated ? (
+          <Button to={routes.claim({ id: puzzle.rewardable.id })} text="Mint" />
+        ) : (
+          <Button to={routes.auth()} text="Sign in to Mint" />
+        ))}
     </StepsLayout>
   )
 }

@@ -15,6 +15,7 @@ export const schema = gql`
     stepNftCheck: StepNftCheck
     attempts: [Attempt]!
     hasUserCompletedStep: Boolean
+    hasAnonUserCompletedStep: Boolean
   }
 
   enum StepType {
