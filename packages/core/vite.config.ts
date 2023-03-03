@@ -18,9 +18,10 @@ export default defineConfig({
     port: 3000,
   },
   build: {
-    manifest: true,
-    minify: true,
-    reportCompressedSize: true,
+    manifest: false,
+    minify: process.env.NODE_ENV !== 'development',
+    reportCompressedSize: process.env.NODE_ENV !== 'development',
+
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       formats: ['es', 'cjs'],
