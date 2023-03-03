@@ -11,7 +11,6 @@ export const isAnonPuzzle = async ({ puzzleId }) => {
 
 export const checkAnonSolution = async ({ puzzleId, stepId, attempt }) => {
   SolutionData.parse(attempt)
-
   const puzzle = anonPuzzles.find(({ id }) => id === puzzleId)
   const step = puzzle.steps.find(({ id }) => id === stepId)
 
