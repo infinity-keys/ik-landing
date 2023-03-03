@@ -1,10 +1,9 @@
 import { QueryResolvers } from 'types/graphql'
 
 import { getSignature } from 'src/lib/verifySignature'
+import { checkBalance } from 'src/lib/web3/check-balance'
+import { checkClaimed } from 'src/lib/web3/check-claimed'
 import { rewardableClaim } from 'src/services/ik/rewardables/rewardables'
-
-import { checkBalance } from './check-balance'
-import { checkClaimed } from './check-claimed'
 
 export const claim: QueryResolvers['claim'] = async ({
   account,
