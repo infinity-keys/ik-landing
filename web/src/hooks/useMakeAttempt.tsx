@@ -8,10 +8,11 @@ type SendAttemptProps = {
   puzzleId: string
   reqBody: string | object
   redirectOnSuccess?: boolean
+  isAnon?: boolean
 }
 
 const useMakeAttempt = () => {
-  const { getToken } = useAuth()
+  const { getToken, isAuthenticated } = useAuth()
   const { slug, step: stepParam } = useParams()
 
   const [loading, setLoading] = useState(false)
@@ -23,12 +24,15 @@ const useMakeAttempt = () => {
     puzzleId,
     reqBody,
     redirectOnSuccess = true,
+    isAnon = false,
   }: SendAttemptProps) => {
     setFailedAttempt(false)
     setLoading(true)
 
     const apiUrl = new URL(
-      `${global.RWJS_API_URL}/attempt`,
+      `${global.RWJS_API_URL}/${
+        isAnon && !isAuthenticated ? 'anonAttempt' : 'attempt'
+      }`,
       window.location.origin
     )
 
@@ -58,11 +62,23 @@ const useMakeAttempt = () => {
         if (success) {
           if (redirectOnSuccess) {
             if (finalStep) {
-              return navigate(routes.puzzleLanding({ slug }))
+              return isAnon
+                ? navigate(routes.anonPuzzleLanding({ slug }))
+                : navigate(routes.puzzleLanding({ slug }))
             } else {
-              return navigate(
-                routes.puzzleStep({ slug, step: parseInt(stepParam, 10) + 1 })
-              )
+              return isAnon
+                ? navigate(
+                    routes.anonPuzzleStep({
+                      slug,
+                      step: parseInt(stepParam, 10) + 1,
+                    })
+                  )
+                : navigate(
+                    routes.puzzleStep({
+                      slug,
+                      step: parseInt(stepParam, 10) + 1,
+                    })
+                  )
             }
           }
           return data
