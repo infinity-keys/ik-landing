@@ -1,8 +1,7 @@
 import { writeFile } from 'node:fs'
+import path from 'node:path'
 
 import { db } from 'api/src/lib/db'
-
-const path = require('node:path')
 
 const getAnonPuzzles = async () => {
   return db.puzzle.findMany({
@@ -28,7 +27,7 @@ export default async () => {
 
     const directory = path.join(__dirname, '..', 'api')
 
-    writeFile(
+    await writeFile(
       `${directory}/anonPuzzleData.json`,
       JSON.stringify(anonData),
       'utf8',
