@@ -10,25 +10,22 @@ import Pagination from "@components/thumbnail-grid/pagination";
 import LayoutButtons from "@components/thumbnail-grid/layout-buttons";
 import { PAGINATION_COUNTS } from "@lib/constants";
 import { ThumbnailGridLayoutType } from "@lib/types";
-import { collectionBaseUrl, isTypePack, thumbnailData } from "@lib/utils";
-
-import {
-  GetAllPublicPacksQuery,
-  PublicPuzzlesQuery,
-} from "@lib/generated/graphql";
+import { FormattedThumbnailType } from "@lib/utils";
 
 export interface PageProps {
-  thumbnailList:
-    | PublicPuzzlesQuery["puzzles"]
-    | GetAllPublicPacksQuery["packs"];
-  isFirstPage: Boolean;
-  isLastPage: Boolean;
+  thumbnailList: FormattedThumbnailType[];
+  isFirstPage: boolean;
+  isLastPage: boolean;
+  noDropdown?: boolean;
+  urlBase?: string;
 }
 
 const GridLayout: NextPage<PageProps> = ({
   thumbnailList,
   isFirstPage,
   isLastPage,
+  urlBase,
+  noDropdown = false,
 }) => {
   const [layout, setLayout] = useState<ThumbnailGridLayoutType>(
     ThumbnailGridLayoutType.Unknown
@@ -39,7 +36,6 @@ const GridLayout: NextPage<PageProps> = ({
     query.puzzlesArgs || [smallestThumbnailCount, "1"];
   const thumbnailCount = toNumber(count);
   const pageNum = toNumber(page);
-  const isPack = isTypePack(thumbnailList[0]);
 
   useEffect(() => {
     const thumbnailGridLayout = window.localStorage.getItem(
@@ -68,7 +64,8 @@ const GridLayout: NextPage<PageProps> = ({
             isGrid={layout === ThumbnailGridLayoutType.Grid}
             thumbnailCount={thumbnailCount}
             setView={setView}
-            urlBase={collectionBaseUrl(isPack)}
+            urlBase={urlBase}
+            noDropdown={noDropdown}
           />
 
           <ul
@@ -81,28 +78,29 @@ const GridLayout: NextPage<PageProps> = ({
             )}
           >
             {thumbnailList.map((thumbnail) => {
-              const data = thumbnailData(thumbnail);
               return (
-                <li key={data.id}>
+                <li key={thumbnail.id}>
                   <Thumbnail
                     isGrid={layout === ThumbnailGridLayoutType.Grid}
-                    id={data.id}
-                    name={data.name}
-                    url={data.url}
-                    cloudinary_id={data.cloudinary_id}
+                    id={thumbnail.id}
+                    name={thumbnail.name}
+                    url={thumbnail.url}
+                    cloudinary_id={thumbnail.cloudinary_id}
                   />
                 </li>
               );
             })}
           </ul>
 
-          <Pagination
-            isFirstPage={isFirstPage}
-            isLastPage={isLastPage}
-            pageNum={pageNum}
-            thumbnailCount={thumbnailCount}
-            urlBase={collectionBaseUrl(isPack)}
-          />
+          {!noDropdown && urlBase && (
+            <Pagination
+              isFirstPage={isFirstPage}
+              isLastPage={isLastPage}
+              pageNum={pageNum}
+              thumbnailCount={thumbnailCount}
+              urlBase={urlBase}
+            />
+          )}
         </div>
       )}
     </>

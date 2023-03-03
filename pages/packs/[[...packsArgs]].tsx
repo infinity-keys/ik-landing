@@ -2,15 +2,17 @@ import { NextPage } from "next";
 
 import { gqlApiSdk } from "@lib/server";
 import { GetAllPublicPacksQuery } from "@lib/generated/graphql";
-import { PAGINATION_COUNTS } from "@lib/constants";
+import { PACK_COLLECTION_BASE, PAGINATION_COUNTS } from "@lib/constants";
+import { thumbnailData } from "@lib/utils";
+
 import GridLayout from "@components/thumbnail-grid/grid-layout";
 import Wrapper from "@components/wrapper";
 import Seo from "@components/seo";
 
 export interface PageProps {
   packs: GetAllPublicPacksQuery["packs"];
-  isFirstPage: Boolean;
-  isLastPage: Boolean;
+  isFirstPage: boolean;
+  isLastPage: boolean;
 }
 
 interface PageParams {
@@ -20,14 +22,17 @@ interface PageParams {
 }
 
 const Packs: NextPage<PageProps> = ({ packs, isFirstPage, isLastPage }) => {
+  const listData = packs.map((item) => thumbnailData(item));
+
   return (
     <Wrapper>
       <Seo title="Infinity Keys Packs" url="packs" />
 
       <GridLayout
-        thumbnailList={packs}
+        thumbnailList={listData}
         isFirstPage={isFirstPage}
         isLastPage={isLastPage}
+        urlBase={`/${PACK_COLLECTION_BASE}`}
       />
     </Wrapper>
   );

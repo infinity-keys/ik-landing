@@ -11,7 +11,8 @@ import { PAGINATION_COUNTS } from "@lib/constants";
 export interface LayoutButtonsProps {
   isGrid: boolean;
   thumbnailCount: number;
-  urlBase: string;
+  urlBase?: string;
+  noDropdown?: boolean;
   setView: (gridLayout: ThumbnailGridLayoutType) => void;
 }
 
@@ -20,6 +21,7 @@ const LayoutButtons = ({
   thumbnailCount,
   urlBase,
   setView,
+  noDropdown,
 }: LayoutButtonsProps) => {
   const [smallestThumbnailCount] = PAGINATION_COUNTS;
 
@@ -45,10 +47,12 @@ const LayoutButtons = ({
       >
         <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
       </button>
-      <Dropdown
-        urlBase={urlBase}
-        currentCount={thumbnailCount || smallestThumbnailCount}
-      />
+      {!noDropdown && urlBase && (
+        <Dropdown
+          urlBase={urlBase}
+          currentCount={thumbnailCount || smallestThumbnailCount}
+        />
+      )}
     </div>
   );
 };
