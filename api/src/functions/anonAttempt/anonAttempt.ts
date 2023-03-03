@@ -40,6 +40,11 @@ export const handler = async (event: APIGatewayEvent) => {
     return { statusCode: 403 }
   }
 
+  if (context.currentUser) {
+    logger.info('This route is for unauthenticated users.')
+    return { statusCode: 403 }
+  }
+
   const { puzzleId, stepParam, stepId } = event.queryStringParameters
 
   // Garbage request, bail
@@ -123,6 +128,7 @@ export const handler = async (event: APIGatewayEvent) => {
     }
   }
 
+  // @TODO: how to write anon cookie with no authId
   const stepsCompleted = buildCookieData({
     completed: puzzlesCompleted,
     puzzleId,
