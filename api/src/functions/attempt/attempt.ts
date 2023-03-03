@@ -66,7 +66,7 @@ const attemptHandler = async (event: APIGatewayEvent) => {
     }
 
     // Access our cookie raw cyphertext
-    const puzzlesCompletedCypherText = cookie.parse(event.headers.cookie)[
+    const puzzlesCompletedCypherText = cookie.parse(event.headers.cookie || '')[
       PUZZLE_COOKIE_NAME
     ]
 

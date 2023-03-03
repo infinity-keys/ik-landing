@@ -15,19 +15,19 @@ export const stepSolutionTypeLookup: {
   NFT_CHECK: 'nftCheckSolution',
 }
 
-const SimpleTextSolutionData = z.object({
+export const SimpleTextSolutionData = z.object({
   type: z.literal('simple-text'),
   simpleTextSolution: z.string(),
 })
 
-const NftCheckSolutionData = z.object({
+export const NftCheckSolutionData = z.object({
   type: z.literal('nft-check'),
   nftCheckSolution: z.object({
     account: z.string(),
   }),
 })
 
-const SolutionData = z.discriminatedUnion('type', [
+export const SolutionData = z.discriminatedUnion('type', [
   SimpleTextSolutionData,
   NftCheckSolutionData,
 ])
