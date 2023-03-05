@@ -1,153 +1,117 @@
-/**
- * @file
- *
- * The embedded puzzle form used to attmpt solution.
- */
-import {
-  ComponentType,
-  FormEvent,
-  //  useEffect,
-  useRef,
-  //useState
-} from 'react'
-
-//import { useMachine } from '@xstate/react'
-import clsx from 'clsx'
-import loRange from 'lodash/range'
-//import { useRouter } from 'next/router'
+// Styling and logic for the boxes used to answer the puzzle
 import RICIBs from 'react-individual-character-input-boxes'
+import loRange from 'lodash/range'
 
 import Button from 'src/components/Button'
-//import LoadingIcon from 'src/components/LoadingIcon'
-import Markdown from 'src/components/Markdown'
-//import useCurrentWidth from 'src/hooks/useCurrentWidth'
+
+// small padlock icon
 import Lock from 'src/svgs/Lock'
 
-//import { puzzleMachine } from './puzzle.xstate'
+// markdown makes it easy to add links to text
+import Markdown from 'src/components/Markdown'
 
-interface PuzzleProps {
-  count: number
-  puzzleId: string
-  boxes?: boolean
-  failMessage?: string
-  SuccessComponent?: ComponentType<{}>
-  forwardOnFail?: boolean
-}
+// React libraries for managing state of user's answer
+import React, { useState } from 'react'
+import { FormEvent } from 'react'
 
-const Puzzle = ({
-  // Used to show number of boxes/remaining characters. Usually pulled in via
-  // GrqphQL query.
-  count,
-  // Unique uuid of the puzzle
-  puzzleId,
-  // Show the "boxes" version of the puzzle? "false" shows textbox
-  boxes = true,
-  // What should be said when the guess is wrong?
-  failMessage,
-}: // If success component exists, then Puzzle **will not route to success page**.
-// Use this for entirely inline/embedded Puzzles.
-//SuccessComponent,
-// Enable/disable forwarding to fail_route
-//forwardOnFail = true,
-PuzzleProps) => {
-  //const router = useRouter()
-  //const [{ context, matches }, send] = useMachine(puzzleMachine, {
-  //   context: { count, puzzleId, redirect: !SuccessComponent },
-  //   // Use the router hook from within react to fire the action within xstate
-  //   actions: {
-  //     // The TS error below is a bug in xstate, https://xstate.js.org/docs/guides/typescript.html#typegen
-  //     // @TODO: remove @ts-ignore when fixed
-  //     goToSuccessRoute: (context, event) =>
-  //       // @ts-ignore
-  //       router.push(event.data?.success_route || '/'),
-  //     goToFailRoute: (context, event) =>
-  //       forwardOnFail && router.push(event.data.fail_route),
-  //   },
-  //   devTools: process.env.NODE_ENV === 'development',
-  // })
+const Puzzle = () => {
+  // The correct answer to the puzzle
+  const puzzleAnswer: string = 'unlock'
 
-  // const [height, setHeight] = useState(0)
-  // const width = useCurrentWidth()
-  const ref = useRef<HTMLDivElement>(null)
+  // The state of our user's answer
+  const [showFail, setShowFail] = useState(false)
 
-  // useEffect(() => {
-  //   send({ type: 'PUZZLE_INFO', puzzleInfo: { puzzleId, count } })
-  // }, [send, puzzleId, count])
+  // The state of the "Play More" button (show or no-show)
+  const [showPlayMoreButton, setShowPlayMoreButton] = useState(false)
 
-  // useEffect(() => {
-  //   if (ref.current) setHeight(ref.current.clientHeight)
-  // }, [width])
-
+  // The function that handles the user's click of the 'Submit' button
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    //if (context.count === context.text.length) send('GUESS')
+
+    // defining the user's answer as a string mapped from the RICIBs, which
+    // create <input> elements in the DOM via the RICIBs library
+    const inputText = Array.from(e.currentTarget.getElementsByTagName('input'))
+      .map((input: HTMLInputElement) => input.value)
+      .join('')
+
+    // What happens when the user fills out all 6 RICIBs,
+    // but their answer is wrong nontheless:
+    if (
+      inputText.length === puzzleAnswer.length &&
+      inputText.toLowerCase() !== puzzleAnswer
+    ) {
+      setShowFail(true)
+
+      // The RIICBs are cleared after the user submits an incorrect answer
+      const inputFields = e.currentTarget.getElementsByTagName('input')
+      for (let i = 0; i < inputFields.length; i++) {
+        inputFields[i].value = ''
+      }
+    }
+
+    // What happens when the user fills out all 6 RICIBs correctly,
+    // regardless of whether they use upper or lower case letters:
+    if (inputText.length === 6 && inputText.toLowerCase() === puzzleAnswer) {
+      setShowPlayMoreButton(true)
+    }
+  }
+
+  if (showPlayMoreButton) {
+    return (
+      <>
+        {/* Play More Button */}
+        <div className="play-more-button-container container flex max-w-[12rem] justify-center">
+          <Button text="Play More" fullWidth to={'/packs'} />
+        </div>
+      </>
+    )
   }
 
   return (
     <>
-      {/* {(matches('guessing') || matches('guessCorrect.go')) && (
-        <div style={{ height }} className="flex items-center justify-center">
-          <LoadingIcon />
+      {/* Lock icon & "solve puzzle" caption*/}
+      <div className="flex py-5">
+        <div className="w-6">
+          <Lock />
         </div>
-      )} */}
-
-      {/* {(matches('idle') ||
-        matches('guessIncorrect') ||
-        matches('readyToGuess')) && ( */}
-      <div className="z-10 flex justify-center" ref={ref}>
-        <div>
-          <div className="flex py-5">
-            <div className="w-6">
-              <Lock />
-            </div>
-            <h1 className="pt-2 pl-4 text-base font-bold">Solve Puzzle</h1>
-          </div>
-
-          <form onSubmit={handleSubmit}>
-            <div className="magic-input font-bold text-turquoise">
-              {boxes && (
-                <RICIBs
-                  //amount={context.count}
-                  amount={6}
-                  //handleOutputString={(text) => send({ type: 'INPUT', text })}
-                  handleOutputString={(text) => console.log(text)}
-                  inputRegExp={/^\S*$/}
-                  //autoFocus={true}
-                  // inputProps={loRange(context.count).map(() => ({
-                  //   className: 'ik-code-input',
-                  // }))}
-                  inputProps={loRange(6).map(() => ({
-                    className: 'ik-code-input',
-                  }))}
-                />
-              )}
-            </div>
-            <div
-              className={clsx('mb-2', {
-                //invisible: !matches('guessIncorrect'),
-              })}
-            >
-              <div data-cy="fail_message_check" className="opacity-50">
-                <Markdown>
-                  {failMessage ||
-                    'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
-                </Markdown>
-              </div>
-            </div>
-
-            <div data-cy="submit" className="flex justify-center">
-              <Button
-                text="Submit"
-                type="submit"
-                //disabled={!matches('readyToGuess')}
-              />
-            </div>
-          </form>
-        </div>
+        <h1 className="pt-2 pl-4 text-base font-bold">Solve Puzzle</h1>
       </div>
-      {/* )} */}
 
-      {/* {matches('guessCorrect.stay') && SuccessComponent && <SuccessComponent />} */}
+      <form onSubmit={handleSubmit}>
+        {/* Input Boxes */}
+        <div className="magic-input font-bold text-turquoise">
+          <RICIBs
+            amount={6}
+            handleOutputString={(text) => console.log(text)}
+            inputRegExp={/^\S*$/}
+            inputProps={loRange(6).map(() => ({
+              className: 'ik-code-input',
+            }))}
+          />
+        </div>
+
+        {/* Wrong answer & Discord invitation */}
+        <div data-cy="fail_message_check" className="opacity-50">
+          {showFail ? (
+            <Markdown>
+              {
+                'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'
+              }
+            </Markdown>
+          ) : (
+            <div className="invisible-message opacity-0">
+              {
+                'this is placeholder text that is the same height as the markdown text above'
+              }
+            </div>
+          )}
+        </div>
+
+        {/* Submit Button */}
+        <div data-cy="submit" className="flex justify-center">
+          <Button text="Submit" type="submit" />
+        </div>
+      </form>
     </>
   )
 }
