@@ -40,9 +40,9 @@ const Puzzle = () => {
       inputText.length === puzzleAnswer.length &&
       inputText.toLowerCase() !== puzzleAnswer
     ) {
-      setShowFail(true)
+      setShowFail(true) // show the "wrong answer" message
 
-      // The RIICBs are cleared after the user submits an incorrect answer
+      // The RICIBs are cleared after the user submits an incorrect answer
       const inputFields = e.currentTarget.getElementsByTagName('input')
       for (let i = 0; i < inputFields.length; i++) {
         inputFields[i].value = ''
@@ -51,7 +51,10 @@ const Puzzle = () => {
 
     // What happens when the user fills out all 6 RICIBs correctly,
     // regardless of whether they use upper or lower case letters:
-    if (inputText.length === 6 && inputText.toLowerCase() === puzzleAnswer) {
+    if (
+      inputText.length === puzzleAnswer.length &&
+      inputText.toLowerCase() === puzzleAnswer
+    ) {
       setShowPlayMoreButton(true)
     }
   }
