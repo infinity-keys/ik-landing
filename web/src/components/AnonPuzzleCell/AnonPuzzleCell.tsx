@@ -9,6 +9,7 @@ export const QUERY = gql`
   query FindAnonRewardablePuzzleBySlug($slug: String!) {
     rewardable: rewardableBySlugWithAnonPuzzle(slug: $slug) {
       id
+      type
       name
       slug
       explanation
@@ -16,8 +17,16 @@ export const QUERY = gql`
       nfts {
         cloudinaryId
       }
+      asChildPublicParentRewardables {
+        parentRewardable {
+          slug
+          name
+          type
+        }
+      }
       puzzle {
         id
+        isAnon
         steps {
           id
           stepSortWeight

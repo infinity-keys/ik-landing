@@ -1,15 +1,19 @@
-import { PropsWithChildren } from 'react'
+import { Fragment, PropsWithChildren } from 'react'
 
 import { buildUrlString, cloudinaryUrl } from '@infinity-keys/core'
 import { LensShareButton } from '@infinity-keys/react-lens-share-button'
+import capitalize from 'lodash/capitalize'
 import {
   FindAnonRewardablePuzzleBySlug,
   FindRewardablePuzzleBySlug,
 } from 'types/graphql'
 
+import { Link } from '@redwoodjs/router'
+
 import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'
 import TwitterShare from 'src/components/TwitterShare/TwitterShare'
+import { rewardableLandingRoute } from 'src/lib/urls'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
@@ -34,7 +38,13 @@ const PuzzleLandingLayout = ({
           rewardable.nfts[0]?.cloudinaryId &&
           cloudinaryUrl(rewardable.nfts[0]?.cloudinaryId, 500, 500, false, 1)
         }
-        url={buildUrlString(`/puzzle/${rewardable.slug}`)}
+        url={buildUrlString(
+          rewardableLandingRoute({
+            slug: rewardable.slug,
+            type: rewardable.type,
+            anonPuzzle: rewardable.puzzle.isAnon,
+          })
+        )}
       />
 
       <div className="puzzle__main w-full px-4 text-center">
@@ -48,17 +58,50 @@ const PuzzleLandingLayout = ({
         {children}
       </div>
 
+      {/* Allows user to navigate to every parent of this puzzle */}
+      {rewardable.asChildPublicParentRewardables.length > 0 && (
+        <div className="text-center text-gray-200">
+          <p>
+            Return to:
+            {rewardable.asChildPublicParentRewardables.map(
+              ({ parentRewardable: { slug, name, type } }, index) => (
+                <Fragment key={slug + type}>
+                  {/* prepend a comma to all but the first item */}
+                  {index ? ', ' : ''}
+                  <Link
+                    to={rewardableLandingRoute({ slug, type })}
+                    className="ml-2 mt-2 inline-block italic transition-colors hover:text-turquoise"
+                  >
+                    {name} {capitalize(type)}
+                  </Link>
+                </Fragment>
+              )
+            )}
+          </p>
+        </div>
+      )}
+
       <div className="flex justify-center gap-4 px-4 pb-9 pt-8">
         <LensShareButton
           postBody={`Can you unlock the ${rewardable.name} puzzle?`}
-          url={buildUrlString(`/puzzle/${rewardable.slug}`)}
+          url={buildUrlString(
+            rewardableLandingRoute({
+              slug: rewardable.slug,
+              type: rewardable.type,
+              anonPuzzle: rewardable.puzzle.isAnon,
+            })
+          )}
           className="text-sm font-medium"
         />
         <TwitterShare
           tweetBody={`Can you unlock the ${
             rewardable.name
           } puzzle? @InfinityKeys\n\n${buildUrlString(
-            `/puzzle/${rewardable.slug}`
+            rewardableLandingRoute({
+              slug: rewardable.slug,
+              type: rewardable.type,
+              anonPuzzle: rewardable.puzzle.isAnon,
+            })
           )}`}
         />
       </div>
