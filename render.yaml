@@ -21,15 +21,6 @@ services:
     source: /*
     destination: /index.html
 
-# - name: mongodb
-#   type: pserv
-#   env: docker
-#   autoDeploy: false
-#   disk:
-#     name: data
-#     mountPath: /data/db
-#     sizeGB: 10
-
 - name: redwoodjs-api
   type: web
   env: node
@@ -44,6 +35,15 @@ services:
       name: redwoodjs-db
       property: connectionString
 
+- name: discord-dust-game-bot-mongodb
+  type: pserv
+  env: docker
+  autoDeploy: false
+  disk:
+    name: data
+    mountPath: /data/db
+    sizeGB: 10
+
 - name: discord-dust-game-bot
   type: worker
   env: node
@@ -55,6 +55,10 @@ services:
   envVars:
   - key: NODE_VERSION
     value: 18
+  - key: MONGO_URL
+    fromService:
+      name: discord-dust-game-bot-mongodb
+      property: connectionString
 
 databases:
   - name: redwoodjs-db
