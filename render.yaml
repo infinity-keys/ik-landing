@@ -21,6 +21,15 @@ services:
     source: /*
     destination: /index.html
 
+# - name: mongodb
+#   type: pserv
+#   env: docker
+#   autoDeploy: false
+#   disk:
+#     name: data
+#     mountPath: /data/db
+#     sizeGB: 10
+
 - name: redwoodjs-api
   type: web
   env: node
@@ -51,3 +60,5 @@ databases:
   - name: redwoodjs-db
     region: oregon
     postgresMajorVersion: 15
+
+

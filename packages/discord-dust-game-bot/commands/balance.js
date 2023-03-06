@@ -12,6 +12,7 @@ module.exports = {
   async execute(interaction) {
 		const { guild, member } = interaction
     const balance = await eco.balance.get(member.id, guild.id)
+    // instance to show the name of user
     // const username = interaction.user.username;
 
     const embedBalance = new EmbedBuilder()
@@ -19,6 +20,6 @@ module.exports = {
         `I’m sure you’ve been working hard. Let me collect those files… According to the records you’ve located \`${balance}\` pages. Is that all? Well then.`
 			)
 			.setColor('c3b4f7');
-		await interaction.reply({ embeds: [embedBalance] })
+		return interaction.reply({ embeds: [embedBalance] })
   },
 }

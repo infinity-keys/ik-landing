@@ -14262,7 +14262,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "discord-coin-bot@workspace:packages/discord-dust-game-bot"
   dependencies:
-    discord-economy-super: ^1.7.5
+    discord-economy-super: latest
     discord.js: ^14.7.1
     dotenv: ^16.0.3
     eslint: ^8.32.0
@@ -14270,7 +14270,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"discord-economy-super@npm:^1.7.5":
+"discord-economy-super@npm:latest":
   version: 1.7.5
   resolution: "discord-economy-super@npm:1.7.5"
   dependencies:
