@@ -1,6 +1,7 @@
+// React libraries for managing state of user's answer
+import React, { useState, FormEvent } from 'react'
 // Styling and logic for the boxes used to answer the puzzle
 import RICIBs from 'react-individual-character-input-boxes'
-import loRange from 'lodash/range'
 
 import Button from 'src/components/Button'
 
@@ -10,13 +11,12 @@ import Lock from 'src/svgs/Lock'
 // markdown makes it easy to add links to text
 import Markdown from 'src/components/Markdown'
 
-// React libraries for managing state of user's answer
-import React, { useState } from 'react'
-import { FormEvent } from 'react'
-
-const Puzzle = () => {
-  // The correct answer to the puzzle
-  const puzzleAnswer: string = 'unlock'
+type PuzzleProps = {
+  answer: string
+}
+const Puzzle = ({ answer = '' }: PuzzleProps) => {
+  const [canSubmit, setCanSubmit] = useState(false)
+  const [guess, setGuess] = useState('')
 
   // The state of our user's answer
   const [showFail, setShowFail] = useState(false)
@@ -24,39 +24,50 @@ const Puzzle = () => {
   // The state of the "Play More" button (show or no-show)
   const [showPlayMoreButton, setShowPlayMoreButton] = useState(false)
 
+  const count = answer.length
+
   // The function that handles the user's click of the 'Submit' button
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // defining the user's answer as a string mapped from the RICIBs, which
-    // create <input> elements in the DOM via the RICIBs library
-    const inputText = Array.from(e.currentTarget.getElementsByTagName('input'))
-      .map((input: HTMLInputElement) => input.value)
-      .join('')
-
-    // What happens when the user fills out all 6 RICIBs,
-    // but their answer is wrong nontheless:
-    if (
-      inputText.length === puzzleAnswer.length &&
-      inputText.toLowerCase() !== puzzleAnswer
-    ) {
-      setShowFail(true) // show the "wrong answer" message
-
-      // The RICIBs are cleared after the user submits an incorrect answer
-      const inputFields = e.currentTarget.getElementsByTagName('input')
-      for (let i = 0; i < inputFields.length; i++) {
-        inputFields[i].value = ''
-      }
+    if (guess.toLowerCase === answer.toLowerCase) {
+      // Yay we solved it!
+      console.log('solved!')
+    } else {
+      console.log('fail')
     }
 
-    // What happens when the user fills out all 6 RICIBs correctly,
-    // regardless of whether they use upper or lower case letters:
-    if (
-      inputText.length === puzzleAnswer.length &&
-      inputText.toLowerCase() === puzzleAnswer
-    ) {
-      setShowPlayMoreButton(true)
-    }
+    setGuess('')
+
+    // // defining the user's answer as a string mapped from the RICIBs, which
+    // // create <input> elements in the DOM via the RICIBs library
+    // const inputText = Array.from(e.currentTarget.getElementsByTagName('input'))
+    //   .map((input: HTMLInputElement) => input.value)
+    //   .join('')
+
+    // // What happens when the user fills out all 6 RICIBs,
+    // // but their answer is wrong nontheless:
+    // if (
+    //   inputText.length === answer.length &&
+    //   inputText.toLowerCase() !== answer
+    // ) {
+    //   setShowFail(true) // show the "wrong answer" message
+
+    //   // The RICIBs are cleared after the user submits an incorrect answer
+    //   const inputFields = e.currentTarget.getElementsByTagName('input')
+    //   for (let i = 0; i < inputFields.length; i++) {
+    //     inputFields[i].value = ''
+    //   }
+    // }
+
+    // // What happens when the user fills out all 6 RICIBs correctly,
+    // // regardless of whether they use upper or lower case letters:
+    // if (
+    //   inputText.length === answer.length &&
+    //   inputText.toLowerCase() === answer
+    // ) {
+    //   setShowPlayMoreButton(true)
+    // }
   }
 
   if (showPlayMoreButton) {
@@ -84,10 +95,31 @@ const Puzzle = () => {
         {/* Input Boxes */}
         <div className="magic-input font-bold text-turquoise">
           <RICIBs
-            amount={6}
-            handleOutputString={(text) => console.log(text)}
+            amount={count}
+            handleOutputString={(text) => {
+              setGuess(text)
+
+              const didSolve = text.toLowerCase() === answer
+              console.log(didSolve)
+
+              if (count === text.length) {
+                setCanSubmit(true)
+              } else {
+                setCanSubmit(false)
+              }
+
+              // if (didSolve) {
+              //   setShowPlayMoreButton(true)
+              // }
+
+              // if (!didSolve && text.length === count) {
+              //   setShowFail(true)
+              // }
+
+              console.log(text)
+            }}
             inputRegExp={/^\S*$/}
-            inputProps={loRange(6).map(() => ({
+            inputProps={Array.from(answer).map(() => ({
               className: 'ik-code-input',
             }))}
           />
@@ -112,7 +144,7 @@ const Puzzle = () => {
 
         {/* Submit Button */}
         <div data-cy="submit" className="flex justify-center">
-          <Button text="Submit" type="submit" />
+          <Button text="Submit" type="submit" disabled={!canSubmit} />
         </div>
       </form>
     </>

@@ -79,7 +79,7 @@ const HomePage = () => {
               </Heading>
             </div>
             {/* Top of puzzle */}
-            <Puzzle /> {/* hard-coded; doesn't need any props */}
+            <Puzzle answer='unlock'/> {/* hard-coded; doesn't need any props */}
 
             <div className="flicker-container mt-10 text-center text-white sm:text-xl md:text-2xl">
               <p className="leading-normal">
