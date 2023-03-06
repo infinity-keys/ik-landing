@@ -15,8 +15,12 @@ export const schema = gql`
     organizations: [OrganizationUser]!
     submissions: [Submission]!
     attempts: [Attempt]!
-    solved: [Solve]!
+    solves: [Solve]!
     userRewards: [UserReward]!
+    stepsSolvedCount: Int!
+    puzzlesSolvedCount: Int!
+    packsSolvedCount: Int!
+    nftsSolvedCount: Int!
   }
 
   enum SiteRole {

@@ -4,6 +4,8 @@ import type {
   UserRelationResolvers,
 } from 'types/graphql'
 
+import { context } from '@redwoodjs/graphql-server'
+
 import { db } from 'src/lib/db'
 
 export const users: QueryResolvers['users'] = () => {
@@ -39,14 +41,48 @@ export const User: UserRelationResolvers = {
   attempts: (_obj, { root }) => {
     return db.user.findUnique({ where: { id: root?.id } }).attempts()
   },
-  solved: (_obj, { root }) => {
-    return db.user.findUnique({ where: { id: root?.id } }).solved()
+  solves: (_obj, { root }) => {
+    return db.user.findUnique({ where: { id: root?.id } }).solves()
   },
   userRewards: (_obj, { root }) => {
     if (!context.currentUser) return []
 
-    return db.user
-      .findUnique({ where: { id: root?.id } })
-      .userRewards({ where: { userId: context.currentUser.id } })
+    // @TODO: can I skip the `user` query or does that make it faster
+    return db.user.findUnique({ where: { id: root?.id } }).userRewards()
+  },
+  stepsSolvedCount: () => {
+    return db.solve.count({
+      where: { userId: context.currentUser.id },
+    })
+  },
+  puzzlesSolvedCount: () => {
+    return db.userReward.count({
+      where: {
+        userId: context.currentUser.id,
+        rewardable: { type: 'PUZZLE' },
+      },
+    })
+  },
+  packsSolvedCount: () => {
+    return db.userReward.count({
+      where: {
+        userId: context.currentUser.id,
+        rewardable: { type: 'PACK' },
+      },
+    })
+  },
+  nftsSolvedCount: () => {
+    return db.userReward.count({
+      where: {
+        userId: context.currentUser.id,
+        nfts: {
+          some: {
+            id: {
+              not: undefined,
+            },
+          },
+        },
+      },
+    })
   },
 }

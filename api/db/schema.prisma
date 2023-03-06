@@ -319,7 +319,7 @@ model User {
   /// Attempts at solving a Step on a Puzzle for this user
   attempts      Attempt[]
 
-  solved Solve[]
+  solves Solve[]
 
   userRewards UserReward[]
 }
