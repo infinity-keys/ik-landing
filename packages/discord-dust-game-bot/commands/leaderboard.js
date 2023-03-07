@@ -24,7 +24,7 @@ module.exports = {
 		const embedLeader = new EmbedBuilder()
 			.setTitle('Records? Yes of course.')
 			.setDescription(`${leaderboard
-				.map((lb, index) => `${index + 1} - <@${lb.userID}> - **${lb.money}** coins`)
+				.map((lb, index) => `${index + 1} - <@${lb.userID}> - **${lb.money}** pages`)
 				.join('\n')}`)
 			.setColor('c3b4f7');
 		return interaction.reply({ embeds: [embedLeader] });
