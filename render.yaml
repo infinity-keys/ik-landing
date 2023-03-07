@@ -57,8 +57,9 @@ services:
     value: 18
   - key: MONGO_URL
     fromService:
+      type: pserv
       name: discord-dust-game-bot-mongodb
-      property: connectionString
+      envVarKey: MONGO_URL
 
 databases:
   - name: redwoodjs-db
