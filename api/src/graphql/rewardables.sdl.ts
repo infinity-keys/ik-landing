@@ -19,6 +19,7 @@ export const schema = gql`
     userRewards: [UserReward]!
     asParent: [RewardableConnection]!
     asChild: [RewardableConnection]!
+    asChildPublicParentRewardables: [RewardableConnection]!
     migrateId: String
   }
 

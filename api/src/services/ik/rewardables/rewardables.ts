@@ -41,9 +41,6 @@ export const rewardableBySlugWithAnonPuzzle: QueryResolvers['rewardableBySlugWit
           isAnon: true,
         },
       },
-      include: {
-        puzzle: true,
-      },
     })
   }
 
