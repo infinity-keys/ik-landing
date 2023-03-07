@@ -227,11 +227,12 @@ export const Success = ({
         </p>
       )}
 
-      {data?.claim?.errors?.map((err, i) => (
-        <p className="mt-4 italic text-gray-200" key={i}>
-          {err}
-        </p>
-      ))}
+      {!queryLoading &&
+        data?.claim?.errors?.map((err, i) => (
+          <p className="mt-4 italic text-gray-200" key={i}>
+            {err}
+          </p>
+        ))}
     </div>
   )
 }
