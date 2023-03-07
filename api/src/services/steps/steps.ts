@@ -6,7 +6,7 @@ import type {
   StepRelationResolvers,
 } from 'types/graphql'
 
-// import { context } from '@redwoodjs/graphql-server'
+import { context } from '@redwoodjs/graphql-server'
 
 import { PuzzlesData } from 'src/lib/cookie'
 import { db } from 'src/lib/db'
@@ -62,7 +62,14 @@ export const Step: StepRelationResolvers = {
       },
     })
   },
+  /*
+   * These `completedStep` resolvers allow us to check via graphQL whether a
+   * user has solved any given step. For authenticated users, there will be a
+   * `solve` entry in the db, and for anonymous users, the step id will be in
+   * their cookie.
+   */
   hasUserCompletedStep: async (_obj, { root }) => {
+    // Only authenticated users can hit the db
     if (!context.currentUser) {
       return false
     }
@@ -81,6 +88,8 @@ export const Step: StepRelationResolvers = {
     return solve.length > 0
   },
   hasAnonUserCompletedStep: async (_obj, { root, context: resolverCtx }) => {
+    // If a user is logged in, the `hasUserCompletedStep` resolver should be run
+    // instead
     if (context.currentUser) {
       return false
     }
