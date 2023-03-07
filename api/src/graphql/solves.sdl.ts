@@ -10,8 +10,8 @@ export const schema = gql`
   }
 
   type Query {
-    solves: [Solve!]! @requireAuth
-    solve(id: String!): Solve @requireAuth
+    solves: [Solve!]! @requireAuth(roles: ["ADMIN"])
+    solve(id: String!): Solve @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateSolveInput {
@@ -29,8 +29,9 @@ export const schema = gql`
   }
 
   type Mutation {
-    createSolve(input: CreateSolveInput!): Solve! @requireAuth
-    updateSolve(id: String!, input: UpdateSolveInput!): Solve! @requireAuth
-    deleteSolve(id: String!): Solve! @requireAuth
+    createSolve(input: CreateSolveInput!): Solve! @requireAuth(roles: ["ADMIN"])
+    updateSolve(id: String!, input: UpdateSolveInput!): Solve!
+      @requireAuth(roles: ["ADMIN"])
+    deleteSolve(id: String!): Solve! @requireAuth(roles: ["ADMIN"])
   }
 `

@@ -10,8 +10,8 @@ export const schema = gql`
   }
 
   type Query {
-    userRewards: [UserReward!]! @requireAuth
-    userReward(id: String!): UserReward @requireAuth
+    userRewards: [UserReward!]! @requireAuth(roles: ["ADMIN"])
+    userReward(id: String!): UserReward @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateUserRewardInput {
@@ -25,9 +25,10 @@ export const schema = gql`
   }
 
   type Mutation {
-    createUserReward(input: CreateUserRewardInput!): UserReward! @requireAuth
+    createUserReward(input: CreateUserRewardInput!): UserReward!
+      @requireAuth(roles: ["ADMIN"])
     updateUserReward(id: String!, input: UpdateUserRewardInput!): UserReward!
-      @requireAuth
-    deleteUserReward(id: String!): UserReward! @requireAuth
+      @requireAuth(roles: ["ADMIN"])
+    deleteUserReward(id: String!): UserReward! @requireAuth(roles: ["ADMIN"])
   }
 `

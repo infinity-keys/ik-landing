@@ -19,8 +19,9 @@ export const schema = gql`
   }
 
   type Mutation {
-    createPack(input: CreatePackInput!): Pack! @requireAuth
-    updatePack(id: String!, input: UpdatePackInput!): Pack! @requireAuth
-    deletePack(id: String!): Pack! @requireAuth
+    createPack(input: CreatePackInput!): Pack! @requireAuth(roles: ["ADMIN"])
+    updatePack(id: String!, input: UpdatePackInput!): Pack!
+      @requireAuth(roles: ["ADMIN"])
+    deletePack(id: String!): Pack! @requireAuth(roles: ["ADMIN"])
   }
 `

@@ -19,8 +19,10 @@ export const schema = gql`
   }
 
   type Mutation {
-    createBundle(input: CreateBundleInput!): Bundle! @requireAuth
-    updateBundle(id: String!, input: UpdateBundleInput!): Bundle! @requireAuth
-    deleteBundle(id: String!): Bundle! @requireAuth
+    createBundle(input: CreateBundleInput!): Bundle!
+      @requireAuth(roles: ["ADMIN"])
+    updateBundle(id: String!, input: UpdateBundleInput!): Bundle!
+      @requireAuth(roles: ["ADMIN"])
+    deleteBundle(id: String!): Bundle! @requireAuth(roles: ["ADMIN"])
   }
 `

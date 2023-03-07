@@ -10,8 +10,8 @@ export const schema = gql`
   }
 
   type Query {
-    submissions: [Submission!]! @requireAuth
-    submission(id: String!): Submission @requireAuth
+    submissions: [Submission!]! @requireAuth(roles: ["ADMIN"])
+    submission(id: String!): Submission @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateSubmissionInput {
@@ -27,9 +27,10 @@ export const schema = gql`
   }
 
   type Mutation {
-    createSubmission(input: CreateSubmissionInput!): Submission! @requireAuth
+    createSubmission(input: CreateSubmissionInput!): Submission!
+      @requireAuth(roles: ["ADMIN"])
     updateSubmission(id: String!, input: UpdateSubmissionInput!): Submission!
-      @requireAuth
-    deleteSubmission(id: String!): Submission! @requireAuth
+      @requireAuth(roles: ["ADMIN"])
+    deleteSubmission(id: String!): Submission! @requireAuth(roles: ["ADMIN"])
   }
 `
