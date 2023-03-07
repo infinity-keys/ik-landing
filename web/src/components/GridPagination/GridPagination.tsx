@@ -2,15 +2,18 @@ import ArrowLeftIcon from '@heroicons/react/20/solid/ArrowLeftIcon'
 import ArrowRightIcon from '@heroicons/react/20/solid/ArrowRightIcon'
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import clsx from 'clsx'
+import { RewardableType } from 'types/graphql'
 
 import { Link } from '@redwoodjs/router'
+
+import { rewardableGridRoute } from 'src/lib/urlBuilders'
 
 export interface GridPaginationProps {
   isFirstPage: boolean
   isLastPage: boolean
   thumbnailCount: number
   pageNum: number
-  urlBase: string
+  rewardableType: RewardableType
 }
 
 const GridPagination = ({
@@ -18,7 +21,7 @@ const GridPagination = ({
   isLastPage,
   thumbnailCount,
   pageNum,
-  urlBase,
+  rewardableType,
 }: GridPaginationProps) => {
   const [smallestThumbnailCount] = PAGINATION_COUNTS
   const toDefaultPage =
@@ -35,8 +38,12 @@ const GridPagination = ({
         <Link
           to={
             toDefaultPage
-              ? urlBase
-              : `${urlBase}/${thumbnailCount}/${pageNum - 1}`
+              ? rewardableGridRoute({ type: rewardableType })
+              : rewardableGridRoute({
+                  type: rewardableType,
+                  perPageCount: thumbnailCount,
+                  pageNum: pageNum - 1,
+                })
           }
           className="previous flex items-center rounded-md bg-white/10 p-2 px-4 py-2 transition hover:bg-white/20"
         >
@@ -46,7 +53,11 @@ const GridPagination = ({
 
       {!isLastPage && (
         <Link
-          to={`${urlBase}/${thumbnailCount}/${pageNum + 1}`}
+          to={rewardableGridRoute({
+            type: rewardableType,
+            perPageCount: thumbnailCount,
+            pageNum: pageNum + 1,
+          })}
           className="next flex items-center rounded-md bg-white/10 p-2 px-4 py-2 transition hover:bg-white/20"
         >
           Next

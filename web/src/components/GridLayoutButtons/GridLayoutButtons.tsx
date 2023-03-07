@@ -3,20 +3,21 @@ import Squares2X2Icon from '@heroicons/react/20/solid/Squares2X2Icon'
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import { ThumbnailGridLayoutType } from '@infinity-keys/core'
 import clsx from 'clsx'
+import { RewardableType } from 'types/graphql'
 
 import Dropdown from 'src/components/GridDropdown/GridDropdown'
 
 export interface GridLayoutButtonsProps {
   isGrid: boolean
   thumbnailCount: number
-  urlBase: string
+  rewardableType: RewardableType
   setView: (gridLayout: ThumbnailGridLayoutType) => void
 }
 
 const GridLayoutButtons = ({
   isGrid,
   thumbnailCount,
-  urlBase,
+  rewardableType,
   setView,
 }: GridLayoutButtonsProps) => {
   const [smallestThumbnailCount] = PAGINATION_COUNTS
@@ -44,7 +45,7 @@ const GridLayoutButtons = ({
         <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
       </button>
       <Dropdown
-        urlBase={urlBase}
+        rewardableType={rewardableType}
         currentCount={thumbnailCount || smallestThumbnailCount}
       />
     </div>
