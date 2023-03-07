@@ -1,19 +1,17 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 
 import EnvelopeIcon from '@heroicons/react/20/solid/EnvelopeIcon'
+import { truncate } from '@infinity-keys/core'
 import Avatar from 'boring-avatars'
 import type { FindUserQuery, FindUserQueryVariables } from 'types/graphql'
 import { useAccount } from 'wagmi'
-import {truncate} from '@infinity-keys/core'
 
 import { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import useReconcileProgress from 'src/hooks/useReconcileProgress'
-
 import Button from 'src/components/Button'
+import useReconcileProgress from 'src/hooks/useReconcileProgress'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
-
 
 export const QUERY = gql`
   query FindUserQuery {
@@ -24,6 +22,13 @@ export const QUERY = gql`
       discordProfile
       lensProfile
       authId
+      stepsSolvedCount
+      puzzlesSolvedCount
+      packsSolvedCount
+      nftsSolvedCount
+      userRewards {
+        id
+      }
     }
   }
 `
@@ -45,7 +50,7 @@ export const Success = ({
 
   // Immediately upon mount, reconcile progress, but also provide function to
   // use on button click
-  const {reconcilePuzzles, data, error, progressLoading} = useReconcileProgress()
+  const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   useEffect(() => {
     reconcilePuzzles()
   }, [reconcilePuzzles])
@@ -78,22 +83,30 @@ export const Success = ({
 
       <div className="flex gap-10 p-10">
         <div>
-          <p className="text-xl font-bold text-turquoise">14</p>
+          <p className="text-xl font-bold text-turquoise">
+            {user.stepsSolvedCount}
+          </p>
+          <p>Steps</p>
+        </div>
+
+        <div>
+          <p className="text-xl font-bold text-turquoise">
+            {user.puzzlesSolvedCount}
+          </p>
           <p>Puzzles</p>
         </div>
 
         <div>
-          <p className="text-xl font-bold text-turquoise">5</p>
-          <p>Series</p>
+          <p className="text-xl font-bold text-turquoise">
+            {user.packsSolvedCount}
+          </p>
+          <p>Packs</p>
         </div>
 
         <div>
-          <p className="text-xl font-bold text-turquoise">1</p>
-          <p>Bundles</p>
-        </div>
-
-        <div>
-          <p className="text-xl font-bold text-turquoise">36</p>
+          <p className="text-xl font-bold text-turquoise">
+            {user.nftsSolvedCount}
+          </p>
           <p>NFTs</p>
         </div>
       </div>
