@@ -1,8 +1,8 @@
 /**
-* @file
-*
-* The embedded puzzle form used to attmpt solution.
-*/
+ * @file
+ *
+ * The embedded puzzle form used to attmpt solution.
+ */
 
 // React libraries for managing state of user's answer
 import React, { useState, useEffect, FormEvent } from 'react'
@@ -14,6 +14,9 @@ import Button from 'src/components/Button'
 
 // small padlock icon
 import Lock from 'src/svgs/Lock'
+
+// we need the loading icon for when the user types in the wrong answer
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 
 type PuzzleProps = {
   answer: string
@@ -28,6 +31,12 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
   // The state of the "Play More" button (show or no-show)
   const [showPlayMoreButton, setShowPlayMoreButton] = useState(false)
 
+  // The RICIBs must rerender when setShowFail(true)
+  const [showRICIBs, setShowRICIBs] = useState(true)
+
+  // The fake database verification of the correct answer
+  const [showSuccess, setShowSuccess] = useState(false)
+
   const count = answer.length
 
   // The function that handles the user's click of the 'Submit' button
@@ -38,30 +47,34 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
     if (guess.toLowerCase() === answer.toLowerCase()) {
       // console.log('solved!')
       setShowPlayMoreButton(true)
+      setTimeout(() => {
+        setShowSuccess(true)
+      }, 1000)
     } else {
       // console.log('fail')
       setShowFail(true)
-      // ChatGPT...put something here to reset the puzzle
-      // this is where the puzzle will be reset:
-      if (guess.length === answer.length) {
-        setGuess('')
-        setTimeout(() => {
-          console.log("I'm firing, but not doing much")
-          console.log(guess)
-        }, 5000)
-      }
+
+      // This should clear the input boxes, but it doesn't
+      // setGuess('')
+      setShowRICIBs(false)
+      setTimeout(() => {
+        setShowRICIBs(true)
+        setCanSubmit(false)
+      }, 1000)
     }
-    // not sure where this would go
-    // setGuess('')
   }
 
   if (showPlayMoreButton) {
     return (
       <>
         {/* Play More Button */}
-        <div className="play-more-button-container container flex max-w-[12rem] justify-center">
-          <Button text="Play More" fullWidth to={'/packs'} />
-        </div>
+        {showSuccess ? (
+          <div className="play-more-button-container container flex max-w-[12rem] justify-center">
+            <Button text="Play More" fullWidth to={'/packs'} />
+          </div>
+        ) : (
+          <LoadingIcon />
+        )}
       </>
     )
   }
@@ -78,28 +91,28 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
 
       <form onSubmit={handleSubmit}>
         {/* Input Boxes */}
-        <div className="magic-input font-bold text-turquoise">
-          <RICIBs
-            amount={count}
-            handleOutputString={(text) => {
-              setGuess(text)
-
-              const didSolve = text.toLowerCase() === answer
-              console.log(didSolve)
-
-              if (count === text.length) {
-                setCanSubmit(true)
-              } else {
-                setCanSubmit(false)
-              }
-              // console.log(text)
-            }}
-            inputRegExp={/^\S*$/}
-            inputProps={Array.from(answer).map(() => ({
-              className: 'ik-code-input',
-            }))}
-          />
-        </div>
+        {showRICIBs ? (
+          <div className="magic-input font-bold text-turquoise">
+            <RICIBs
+              amount={count}
+              handleOutputString={(text) => {
+                setGuess(text)
+                if (count === text.length) {
+                  setCanSubmit(true)
+                } else {
+                  setCanSubmit(false)
+                }
+                // console.log(text)
+              }}
+              inputRegExp={/^\S*$/}
+              inputProps={Array.from(answer).map(() => ({
+                className: 'ik-code-input',
+              }))}
+            />
+          </div>
+        ) : (
+          <LoadingIcon />
+        )}
 
         {/* Wrong answer & Discord invitation */}
         <div data-cy="fail_message_check" className="opacity-50">
