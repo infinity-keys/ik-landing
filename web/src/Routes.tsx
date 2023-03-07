@@ -17,21 +17,26 @@ import WrapperLayout from 'src/layouts/WrapperLayout'
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
-      <Private unauthenticated="auth">
-        <Route path="/puzzle/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newPuzzle" />
-        <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" />
+      {/* <Private unauthenticated="profile" roles={'ADMIN'}>
+        <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
+          <Route path="/puzzle/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newPuzzle" />
+          <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" />
+        </Set>
+      </Private> */}
 
+      <Private unauthenticated="profile">
         <Set wrap={[MainLayout, WrapperLayout]}>
           <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleStep" />
+          <Route path="/user/delete" page={DeletePage} name="delete" />
+        </Set>
+
+        <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
+          <Route path="/claim/{id}" page={ClaimPage} name="claim" />
         </Set>
       </Private>
 
       <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
-        <Route path="/user/delete" page={DeletePage} name="delete" />
-        <Route path="/claim/{id}" page={ClaimPage} name="claim" />
-        <Route path="/user" page={UserPage} name="user" />
-
-        <Route path="/auth" page={AuthPage} name="auth" />
+        <Route path="/profile" page={ProfilePage} name="profile" />
         <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
         <Route path="/puzzles/{count:Int}/{page:Int}" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzlesPagination" />
         <Route path="/packs" page={RewardablePackRewardablePacksPage} name="packs" />

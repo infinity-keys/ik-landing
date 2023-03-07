@@ -19,7 +19,7 @@ import ProfileCell from 'src/components/ProfileCell'
   update an existing user.
 */
 
-const AuthPage = () => {
+const ProfilePage = () => {
   const { logIn, logOut, isAuthenticated, loading } = useAuth()
   const [errorMessage, setErrorMessage] = useState('')
   const emailRef = useRef(null)
@@ -73,4 +73,4 @@ const AuthPage = () => {
   )
 }
 
-export default AuthPage
+export default ProfilePage
