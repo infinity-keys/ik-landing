@@ -2,7 +2,6 @@ const Economy = require('discord-economy-super/mongodb');
 
 const eco = new Economy({
 	connection: {
-		// connectionURI: 'mongodb://root:rootpassword@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2',
 		connectionURI: process.env.MONGO_URL,
 		collectionName: 'database',
 		dbName: 'test',
@@ -41,8 +40,7 @@ const eco = new Economy({
 });
 
 
-eco.on('ready', async (economy) => {
-	// eco = economy;
+eco.on('ready', async () => {
 	console.log('Economy is ready!');
 });
 module.exports = eco;
