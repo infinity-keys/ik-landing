@@ -1,5 +1,12 @@
+/**
+* @file
+*
+* The embedded puzzle form used to attmpt solution.
+*/
+
 // React libraries for managing state of user's answer
-import React, { useState, FormEvent } from 'react'
+import React, { useState, useEffect, FormEvent } from 'react'
+
 // Styling and logic for the boxes used to answer the puzzle
 import RICIBs from 'react-individual-character-input-boxes'
 
@@ -7,9 +14,6 @@ import Button from 'src/components/Button'
 
 // small padlock icon
 import Lock from 'src/svgs/Lock'
-
-// markdown makes it easy to add links to text
-import Markdown from 'src/components/Markdown'
 
 type PuzzleProps = {
   answer: string
@@ -29,45 +33,26 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
   // The function that handles the user's click of the 'Submit' button
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
-    if (guess.toLowerCase === answer.toLowerCase) {
-      // Yay we solved it!
-      console.log('solved!')
-    } else {
-      console.log('fail')
-    }
-
     setGuess('')
 
-    // // defining the user's answer as a string mapped from the RICIBs, which
-    // // create <input> elements in the DOM via the RICIBs library
-    // const inputText = Array.from(e.currentTarget.getElementsByTagName('input'))
-    //   .map((input: HTMLInputElement) => input.value)
-    //   .join('')
-
-    // // What happens when the user fills out all 6 RICIBs,
-    // // but their answer is wrong nontheless:
-    // if (
-    //   inputText.length === answer.length &&
-    //   inputText.toLowerCase() !== answer
-    // ) {
-    //   setShowFail(true) // show the "wrong answer" message
-
-    //   // The RICIBs are cleared after the user submits an incorrect answer
-    //   const inputFields = e.currentTarget.getElementsByTagName('input')
-    //   for (let i = 0; i < inputFields.length; i++) {
-    //     inputFields[i].value = ''
-    //   }
-    // }
-
-    // // What happens when the user fills out all 6 RICIBs correctly,
-    // // regardless of whether they use upper or lower case letters:
-    // if (
-    //   inputText.length === answer.length &&
-    //   inputText.toLowerCase() === answer
-    // ) {
-    //   setShowPlayMoreButton(true)
-    // }
+    if (guess.toLowerCase() === answer.toLowerCase()) {
+      // console.log('solved!')
+      setShowPlayMoreButton(true)
+    } else {
+      // console.log('fail')
+      setShowFail(true)
+      // ChatGPT...put something here to reset the puzzle
+      // this is where the puzzle will be reset:
+      if (guess.length === answer.length) {
+        setGuess('')
+        setTimeout(() => {
+          console.log("I'm firing, but not doing much")
+          console.log(guess)
+        }, 5000)
+      }
+    }
+    // not sure where this would go
+    // setGuess('')
   }
 
   if (showPlayMoreButton) {
@@ -107,16 +92,7 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
               } else {
                 setCanSubmit(false)
               }
-
-              // if (didSolve) {
-              //   setShowPlayMoreButton(true)
-              // }
-
-              // if (!didSolve && text.length === count) {
-              //   setShowFail(true)
-              // }
-
-              console.log(text)
+              // console.log(text)
             }}
             inputRegExp={/^\S*$/}
             inputProps={Array.from(answer).map(() => ({
@@ -128,16 +104,20 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
         {/* Wrong answer & Discord invitation */}
         <div data-cy="fail_message_check" className="opacity-50">
           {showFail ? (
-            <Markdown>
-              {
-                'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'
-              }
-            </Markdown>
+            <div className="visible-message">
+              <p>
+                Thats not it. Need help?{' '}
+                <a href="https://discord.gg/infinitykeys" target="_blank">
+                  <u>Join our discord</u>
+                </a>
+              </p>
+            </div>
           ) : (
             <div className="invisible-message opacity-0">
-              {
-                'this is placeholder text that is the same height as the markdown text above'
-              }
+              <p>
+                'this is placeholder text that is the same height as the
+                markdown text above'
+              </p>
             </div>
           )}
         </div>
