@@ -1,14 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import AuthPage from './AuthPage'
+import ProfilePage from './ProfilePage'
 
 //   Improve this test with help from the Redwood Testing Doc:
 //   https://redwoodjs.com/docs/testing#testing-pages-layouts
 
-describe('AuthPage', () => {
+describe('ProfilePage', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<AuthPage />)
+      render(<ProfilePage />)
     }).not.toThrow()
   })
 })
