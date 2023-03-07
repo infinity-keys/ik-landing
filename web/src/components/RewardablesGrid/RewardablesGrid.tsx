@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import loCapitalize from 'lodash/capitalize'
 import type { FindRewardables } from 'types/graphql'
 
-import { routes, useParams } from '@redwoodjs/router'
+import { useParams } from '@redwoodjs/router'
 
 import GridLayoutButtons from 'src/components/GridLayoutButtons/GridLayoutButtons'
 import GridPagination from 'src/components/GridPagination/GridPagination'
