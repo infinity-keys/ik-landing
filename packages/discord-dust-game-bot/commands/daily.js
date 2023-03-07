@@ -8,6 +8,8 @@ module.exports = {
 		.setDescription('Conduct a daily delve for pages within the deeper mysteries of the Infinite Library'),
 	async execute(interaction) {
 		const { guild, member } = interaction;
+    console.log("guildID", guild.id);
+    console.log("memberID", member.id);
     const daily = await eco.rewards.getDaily(member.id, guild.id);
     // instance to show cooldown time
 		// const time = eco.rewards.getDaily(member.id, guild.id).cooldown.pretty;
