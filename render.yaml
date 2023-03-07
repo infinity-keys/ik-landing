@@ -35,6 +35,15 @@ services:
       name: redwoodjs-db
       property: connectionString
 
+- name: discord-dust-game-bot-mongodb
+  type: pserv
+  env: docker
+  autoDeploy: false
+  disk:
+    name: data
+    mountPath: /data/db
+    sizeGB: 10
+
 - name: discord-dust-game-bot
   type: worker
   env: node
@@ -51,3 +60,5 @@ databases:
   - name: redwoodjs-db
     region: oregon
     postgresMajorVersion: 15
+
+
