@@ -25,7 +25,8 @@ const Routes = () => {
       </Private> */}
 
       <Private unauthenticated="profile">
-        <Set wrap={[MainLayout, WrapperLayout]}>
+        {/* @TODO: Replace HeaderFooterLayout once we get a minimal header */}
+        <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
           <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleStep" />
           <Route path="/user/delete" page={DeletePage} name="delete" />
         </Set>
@@ -48,7 +49,8 @@ const Routes = () => {
         <Route path="/privacy-policy" page={PrivacyPolicyPage} name="privacyPolicy" />
       </Set>
 
-      <Set wrap={[MainLayout, WrapperLayout]}>
+      {/* @TODO: Replace HeaderFooterLayout once we get a minimal header */}
+      <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
         <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleLanding" />
         <Route path="/pack/{slug}" page={RewardablePackRewardablePackPage} name="packLanding" />
         {/* Anonymous Puzzles - landing and step pages */}
