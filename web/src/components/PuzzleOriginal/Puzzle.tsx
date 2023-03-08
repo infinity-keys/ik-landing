@@ -45,19 +45,19 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
     setGuess('')
 
     if (guess.toLowerCase() === answer.toLowerCase()) {
-      // console.log('solved!')
-      setShowPlayMoreButton(true)
       setTimeout(() => {
         setShowSuccess(true)
       }, 1000)
+      // console.log('solved!')
+      setShowPlayMoreButton(true)
     } else {
       // console.log('fail')
-      setShowFail(true)
 
       // This should clear the input boxes, but it doesn't
       // setGuess('')
       setShowRICIBs(false)
       setTimeout(() => {
+        setShowFail(true)
         setShowRICIBs(true)
         setCanSubmit(false)
       }, 1000)
@@ -66,7 +66,7 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
 
   if (showPlayMoreButton) {
     return (
-      <>
+      <div>
         {/* Play More Button */}
         {showSuccess ? (
           <div className="play-more-button-container container flex max-w-[12rem] justify-center">
@@ -75,12 +75,12 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
         ) : (
           <LoadingIcon />
         )}
-      </>
+      </div>
     )
   }
 
   return (
-    <>
+    <div>
       {/* Lock icon & "solve puzzle" caption*/}
       <div className="flex py-5">
         <div className="w-6">
@@ -140,7 +140,7 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
           <Button text="Submit" type="submit" disabled={!canSubmit} />
         </div>
       </form>
-    </>
+    </div>
   )
 }
 
