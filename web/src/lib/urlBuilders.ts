@@ -27,3 +27,34 @@ export const rewardableLandingRoute = ({
       throw new Error(`rewardableLandingRoute type '${type}' not supported`)
   }
 }
+export const rewardableGridRoute = ({
+  type,
+  perPageCount,
+  pageNum,
+}: {
+  type: RewardableType
+  perPageCount?: number
+  pageNum?: number
+}) => {
+  const paginated = perPageCount && pageNum
+
+  switch (type) {
+    case 'PUZZLE':
+      return paginated
+        ? routes.puzzlesPagination({ count: perPageCount, page: pageNum })
+        : routes.puzzles()
+    case 'PACK':
+      return paginated
+        ? routes.packsPagination({ count: perPageCount, page: pageNum })
+        : routes.packs()
+
+    // @TODO: enable this when we support bundles
+    // case 'BUNDLE':
+    //   return paginated
+    //     ? routes.bundlesPagination({ count: perPageCount, page: pageNum })
+    //     : routes.bundles()
+
+    default:
+      throw new Error(`rewardableGridRoute type '${type}' not supported`)
+  }
+}

@@ -13,6 +13,9 @@ export const QUERY = gql`
         name
         slug
         type
+        puzzle {
+          isAnon
+        }
         nfts {
           cloudinaryId
         }

@@ -9,6 +9,7 @@ export const QUERY = gql`
   query FindRewardablePackBySlug($slug: String!) {
     pack: rewardableBySlug(slug: $slug, type: PACK) {
       id
+      type
       name
       explanation
       slug
@@ -21,8 +22,12 @@ export const QUERY = gql`
       asParent {
         childRewardable {
           id
+          type
           name
           slug
+          puzzle {
+            isAnon
+          }
           nfts {
             cloudinaryId
           }

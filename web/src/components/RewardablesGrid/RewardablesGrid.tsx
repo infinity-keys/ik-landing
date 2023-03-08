@@ -12,21 +12,7 @@ import GridLayoutButtons from 'src/components/GridLayoutButtons/GridLayoutButton
 import GridPagination from 'src/components/GridPagination/GridPagination'
 import Seo from 'src/components/Seo/Seo'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
-
-const buildUrl = (type) => {
-  if (type === 'PUZZLE') {
-    return {
-      collection: '/puzzles',
-      single: routes.puzzleLanding,
-    }
-  }
-  if (type === 'PACK') {
-    return {
-      collection: '/packs',
-      single: routes.packLanding,
-    }
-  }
-}
+import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 
 const RewardablesList = ({
   rewardables,
@@ -47,7 +33,7 @@ const RewardablesList = ({
   const isLastPage = pageNum * thumbnailCount >= totalCount
 
   const isFirstPage = !pageNum || pageNum === 1
-  const collectionType = rewardables[0].type
+  const rewardableType = rewardables[0].type
 
   useEffect(() => {
     const thumbnailGridLayout = window.localStorage.getItem(
@@ -81,7 +67,7 @@ const RewardablesList = ({
             isGrid={layout === ThumbnailGridLayoutType.Grid}
             thumbnailCount={thumbnailCount}
             setView={setView}
-            urlBase={buildUrl(collectionType).collection}
+            rewardableType={rewardableType}
           />
 
           <ul
@@ -102,8 +88,10 @@ const RewardablesList = ({
                     isGrid={layout === ThumbnailGridLayoutType.Grid}
                     id={rewardable.id}
                     name={rewardable.name}
-                    href={buildUrl(collectionType).single({
+                    href={rewardableLandingRoute({
+                      type: rewardable.type,
                       slug: rewardable.slug,
+                      anonPuzzle: rewardable.puzzle?.isAnon,
                     })}
                     cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
                   />
@@ -117,7 +105,7 @@ const RewardablesList = ({
             isLastPage={isLastPage}
             pageNum={pageNum || 1}
             thumbnailCount={thumbnailCount}
-            urlBase={buildUrl(collectionType).collection}
+            rewardableType={rewardableType}
           />
         </>
       )}

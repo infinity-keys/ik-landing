@@ -11,6 +11,7 @@ import Thumbnail from 'src/components/Thumbnail/Thumbnail'
 import TwitterShare from 'src/components/TwitterShare/TwitterShare'
 import useCurrentWidth from 'src/hooks/useCurrentWidth'
 import '@infinity-keys/react-lens-share-button/dist/style.css'
+import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 
 interface Props {
   rewardable: NonNullable<FindRewardablePackBySlug['pack']>
@@ -21,6 +22,14 @@ const LAYOUT_BREAKPOINT = 768
 const Rewardable = ({ rewardable }: Props) => {
   const width = useCurrentWidth()
 
+  // the full https url to this page
+  const url = buildUrlString(
+    rewardableLandingRoute({
+      slug: rewardable.slug,
+      type: rewardable.type,
+    })
+  )
+
   return (
     <>
       <Seo
@@ -30,7 +39,7 @@ const Rewardable = ({ rewardable }: Props) => {
           rewardable.nfts[0]?.cloudinaryId &&
           cloudinaryUrl(rewardable.nfts[0]?.cloudinaryId, 500, 500, false, 1)
         }
-        url={buildUrlString(`/pack/${rewardable.slug}`)}
+        url={url}
       />
 
       <div className="pack__main w-full px-4 text-center">
@@ -50,7 +59,11 @@ const Rewardable = ({ rewardable }: Props) => {
               key={childRewardable.id}
               id={childRewardable.id}
               name={childRewardable.name}
-              href={`/puzzle/${childRewardable.slug}`}
+              href={rewardableLandingRoute({
+                type: childRewardable.type,
+                slug: childRewardable.slug,
+                anonPuzzle: childRewardable.puzzle?.isAnon,
+              })}
               isGrid={width >= LAYOUT_BREAKPOINT}
               cloudinaryId={childRewardable.nfts[0]?.cloudinaryId}
             />
@@ -61,13 +74,11 @@ const Rewardable = ({ rewardable }: Props) => {
       <div className="flex justify-center gap-4 px-4 pb-9 pt-8">
         <LensShareButton
           postBody={`Can you unlock the ${rewardable.name}?`}
-          url={buildUrlString(`/pack/${rewardable.slug}`)}
+          url={url}
           className="text-sm font-medium"
         />
         <TwitterShare
-          tweetBody={`Can you unlock the ${
-            rewardable.name
-          }? @InfinityKeys\n\n${buildUrlString(`/pack/${rewardable.slug}`)}`}
+          tweetBody={`Can you unlock the ${rewardable.name}? @InfinityKeys\n\n${url}`}
         />
       </div>
     </>

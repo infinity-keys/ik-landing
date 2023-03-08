@@ -4,12 +4,15 @@ import { Menu, Transition } from '@headlessui/react'
 import ChevronDownIcon from '@heroicons/react/20/solid/ChevronDownIcon'
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import clsx from 'clsx'
+import { RewardableType } from 'types/graphql'
 
 import { Link } from '@redwoodjs/router'
 
+import { rewardableGridRoute } from 'src/lib/urlBuilders'
+
 interface GridDropdownProps {
   currentCount: number
-  urlBase: string
+  rewardableType: RewardableType
 }
 
 interface GridDropdownLinkProps extends HTMLProps<HTMLAnchorElement> {
@@ -32,7 +35,9 @@ const DropdownLink = forwardRef<HTMLAnchorElement, GridDropdownLinkProps>(
 
 DropdownLink.displayName = 'DropdownLink'
 
-const GridDropdown = ({ currentCount, urlBase }: GridDropdownProps) => {
+const GridDropdown = ({ currentCount, rewardableType }: GridDropdownProps) => {
+  const [smallestThumbnailCount] = PAGINATION_COUNTS
+
   return (
     <Menu as="div" className="relative z-10 ml-5 inline-block text-left">
       <div>
@@ -55,7 +60,6 @@ const GridDropdown = ({ currentCount, urlBase }: GridDropdownProps) => {
           <div className="">
             {PAGINATION_COUNTS.map((count) => {
               const selectedCount = currentCount === count
-              const [smallestThumbnailCount] = PAGINATION_COUNTS
 
               return (
                 <Menu.Item key={count} disabled={selectedCount}>
@@ -63,8 +67,12 @@ const GridDropdown = ({ currentCount, urlBase }: GridDropdownProps) => {
                     <Link
                       to={
                         count === smallestThumbnailCount
-                          ? urlBase
-                          : `${urlBase}/${count}/1`
+                          ? rewardableGridRoute({ type: rewardableType })
+                          : rewardableGridRoute({
+                              type: rewardableType,
+                              perPageCount: count,
+                              pageNum: 1,
+                            })
                       }
                       style={{
                         pointerEvents: selectedCount ? 'none' : 'auto',
