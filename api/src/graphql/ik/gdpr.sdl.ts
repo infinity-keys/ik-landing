@@ -10,21 +10,21 @@ export const schema = gql`
   }
 
   type Mutation {
-    # adds submission to database, then calls sendEmail service if
-    # email address was provided
-    createSubmissionWithOptionalEmail(
-      input: CreateSubmissionInput!
-    ): Submission! @requireAuth
+    # # adds submission to database, then calls sendEmail service if
+    # # email address was provided
+    # createSubmissionWithOptionalEmail(
+    #   input: CreateSubmissionInput!
+    # ): Submission! @requireAuth
 
     # deletes a user by user id and all connected submissions
-    # deletes remaining submissions where email adresses match
-    deleteAllUserInfo(jwt: String!): DeleteAllUserInfoResponse! @skipAuth
+    # deletes remaining submissions where email addresses match
+    deleteAllUserInfo(jwt: String!): DeleteAllUserInfoResponse! @requireAuth
 
-    # sends congrats email to user's email address
-    sendEmail(
-      email: String!
-      puzzleId: String!
-      userId: String!
-    ): EmailSubmissionResponse! @skipAuth
+    # # sends congrats email to user's email address
+    # sendEmail(
+    #   email: String!
+    #   puzzleId: String!
+    #   userId: String!
+    # ): EmailSubmissionResponse! @skipAuth
   }
 `

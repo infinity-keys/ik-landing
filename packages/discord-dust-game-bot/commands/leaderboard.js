@@ -9,7 +9,7 @@ module.exports = {
 		.setDescription('Politely request that Archivist Nebo retrieve the records of The Society’s top archival researchers.'),
 	async execute(interaction) {
 		const { guild } = interaction;
-		const leaderboard = eco.balance.leaderboard(guild.id, options);
+		const leaderboard = await eco.balance.leaderboard(guild.id, options);
 		const username = interaction.user.username;
     // set up to show server's name
 		// const name = interaction.member.guild.name;
@@ -18,15 +18,15 @@ module.exports = {
 			const embedNoLeader = new EmbedBuilder()
 				.setDescription(`${username}, there are no users on the leaderboard`)
 				.setColor('c3b4f7');
-			await interaction.reply({ embeds: [embedNoLeader] });
+			return interaction.reply({ embeds: [embedNoLeader] });
 		}
 
 		const embedLeader = new EmbedBuilder()
 			.setTitle('Records? Yes of course.')
 			.setDescription(`${leaderboard
-				.map((lb, index) => `${index + 1} - <@${lb.userID}> - **${lb.money}** coins`)
+				.map((lb, index) => `${index + 1} - <@${lb.userID}> - **${lb.money}** pages`)
 				.join('\n')}`)
 			.setColor('c3b4f7');
-		await interaction.reply({ embeds: [embedLeader] });
+		return interaction.reply({ embeds: [embedLeader] });
 	},
 };

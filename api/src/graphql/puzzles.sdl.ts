@@ -24,8 +24,10 @@ export const schema = gql`
   }
 
   type Mutation {
-    createPuzzle(input: CreatePuzzleInput!): Puzzle! @requireAuth
-    updatePuzzle(id: String!, input: UpdatePuzzleInput!): Puzzle! @requireAuth
-    deletePuzzle(id: String!): Puzzle! @requireAuth
+    createPuzzle(input: CreatePuzzleInput!): Puzzle!
+      @requireAuth(roles: ["ADMIN"])
+    updatePuzzle(id: String!, input: UpdatePuzzleInput!): Puzzle!
+      @requireAuth(roles: ["ADMIN"])
+    deletePuzzle(id: String!): Puzzle! @requireAuth(roles: ["ADMIN"])
   }
 `

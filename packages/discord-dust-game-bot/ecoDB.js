@@ -1,9 +1,15 @@
-const Economy = require('discord-economy-super');
+const Economy = require('discord-economy-super/mongodb');
 
-let eco = new Economy({
-	storagePath: './storage.json',
-	updateCountdown: 1000,
-	checkStorage: true,
+const eco = new Economy({
+	connection: {
+		connectionURI: process.env.MONGO_URL,
+		collectionName: 'database',
+		dbName: 'test',
+	},
+	// needed to set up json db
+	// storagePath: './storage.json',
+	// updateCountdown: 1000,
+	// checkStorage: true,
 	deprecationWarnings: true,
 	sellingItemPercent: 75,
 	savePurchasesHistory: true,
@@ -34,8 +40,7 @@ let eco = new Economy({
 });
 
 
-eco.on('ready', economy => {
-	eco = economy;
+eco.on('ready', async () => {
 	console.log('Economy is ready!');
 });
 module.exports = eco;

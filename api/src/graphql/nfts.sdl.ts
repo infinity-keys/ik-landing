@@ -31,8 +31,9 @@ export const schema = gql`
   }
 
   type Mutation {
-    createNft(input: CreateNftInput!): Nft! @requireAuth
-    updateNft(id: String!, input: UpdateNftInput!): Nft! @requireAuth
-    deleteNft(id: String!): Nft! @requireAuth
+    createNft(input: CreateNftInput!): Nft! @requireAuth(roles: ["ADMIN"])
+    updateNft(id: String!, input: UpdateNftInput!): Nft!
+      @requireAuth(roles: ["ADMIN"])
+    deleteNft(id: String!): Nft! @requireAuth(roles: ["ADMIN"])
   }
 `

@@ -40,7 +40,7 @@ const ProfileIcon = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <Link
-                        to={routes.auth()}
+                        to={routes.profile()}
                         className={clsx(
                           'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                           active ? 'bg-indigo-500 text-white' : 'text-gray-100'
@@ -68,7 +68,7 @@ const ProfileIcon = () => {
                 <Menu.Item>
                   {({ active }) => (
                     <Link
-                      to={routes.auth()}
+                      to={routes.profile()}
                       className={clsx(
                         'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                         active ? 'bg-indigo-500 text-white' : 'text-gray-100'

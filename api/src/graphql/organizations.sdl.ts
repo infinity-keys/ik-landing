@@ -5,13 +5,13 @@ export const schema = gql`
     slug: String!
     createdAt: DateTime!
     updatedAt: DateTime!
-    users: [OrganizationUser]!
+    users: [OrganizationUser]! @requireAuth(roles: ["ADMIN"])
     rewardables: [Rewardable]!
   }
 
   type Query {
-    organizations: [Organization!]! @requireAuth
-    organization(id: String!): Organization @requireAuth
+    organizations: [Organization!]! @requireAuth(roles: ["ADMIN"])
+    organization(id: String!): Organization @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateOrganizationInput {
@@ -26,11 +26,12 @@ export const schema = gql`
 
   type Mutation {
     createOrganization(input: CreateOrganizationInput!): Organization!
-      @requireAuth
+      @requireAuth(roles: ["ADMIN"])
     updateOrganization(
       id: String!
       input: UpdateOrganizationInput!
-    ): Organization! @requireAuth
-    deleteOrganization(id: String!): Organization! @requireAuth
+    ): Organization! @requireAuth(roles: ["ADMIN"])
+    deleteOrganization(id: String!): Organization!
+      @requireAuth(roles: ["ADMIN"])
   }
 `

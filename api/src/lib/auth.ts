@@ -50,7 +50,7 @@ export const hasRole = (roles: SiteRole | SiteRole[]): boolean => {
 
   const userRoles = context.currentUser?.roles
 
-  if (!userRoles) throw new AuthenticationError('Not authenticated')
+  if (!userRoles) throw new ForbiddenError('Not authorized')
 
   if (typeof roles === 'string') return userRoles.includes(roles)
 

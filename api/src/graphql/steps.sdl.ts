@@ -47,8 +47,9 @@ export const schema = gql`
   }
 
   type Mutation {
-    createStep(input: CreateStepInput!): Step! @requireAuth
-    updateStep(id: String!, input: UpdateStepInput!): Step! @requireAuth
-    deleteStep(id: String!): Step! @requireAuth
+    createStep(input: CreateStepInput!): Step! @requireAuth(roles: ["ADMIN"])
+    updateStep(id: String!, input: UpdateStepInput!): Step!
+      @requireAuth(roles: ["ADMIN"])
+    deleteStep(id: String!): Step! @requireAuth(roles: ["ADMIN"])
   }
 `

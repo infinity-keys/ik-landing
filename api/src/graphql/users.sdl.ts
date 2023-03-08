@@ -15,8 +15,12 @@ export const schema = gql`
     organizations: [OrganizationUser]!
     submissions: [Submission]!
     attempts: [Attempt]!
-    solved: [Solve]!
+    solves: [Solve]!
     userRewards: [UserReward]!
+    stepsSolvedCount: Int!
+    puzzlesSolvedCount: Int!
+    packsSolvedCount: Int!
+    nftsSolvedCount: Int!
   }
 
   enum SiteRole {
@@ -53,8 +57,9 @@ export const schema = gql`
   }
 
   type Mutation {
-    createUser(input: CreateUserInput!): User! @requireAuth
-    updateUser(id: String!, input: UpdateUserInput!): User! @requireAuth
-    deleteUser(id: String!): User! @requireAuth
+    createUser(input: CreateUserInput!): User! @requireAuth(roles: ["ADMIN"])
+    updateUser(id: String!, input: UpdateUserInput!): User!
+      @requireAuth(roles: ["ADMIN"])
+    deleteUser(id: String!): User! @requireAuth(roles: ["ADMIN"])
   }
 `

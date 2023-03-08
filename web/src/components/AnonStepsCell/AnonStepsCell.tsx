@@ -97,7 +97,7 @@ export const Success = ({
         (isAuthenticated ? (
           <Button to={routes.claim({ id: puzzle.rewardable.id })} text="Mint" />
         ) : (
-          <Button to={routes.auth()} text="Sign in to Mint" />
+          <Button to={routes.profile()} text="Sign in to Mint" />
         ))}
     </StepsLayout>
   )
