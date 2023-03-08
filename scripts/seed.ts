@@ -294,6 +294,13 @@ export default async () => {
             return acc
           }
 
+          const lastPuzzle = puzzles
+            .sort(
+              (a, b) =>
+                parseInt(a.migration_step, 10) - parseInt(b.migration_step, 10)
+            )
+            .at(-1)
+
           // These are puzzles that are being combined into multi-step in new system
           const rewardable = {
             migrateId: puzzles[0].puzzle_id,
@@ -302,7 +309,7 @@ export default async () => {
             type: 'PUZZLE' as RewardableType,
             explanation: puzzles[0].instructions || '',
             // just dupe what's in step 1 for now
-            successMessage: puzzles[puzzles.length - 1].success_message,
+            successMessage: lastPuzzle.success_message,
             listPublicly: puzzles[0].list_publicly,
             organization: {
               connect: {
@@ -329,7 +336,7 @@ export default async () => {
             ...acc,
             {
               ...rewardable,
-              ...createNftConnectionObject(nfts, puzzles[0].nft?.tokenId),
+              ...createNftConnectionObject(nfts, lastPuzzle.nft?.tokenId),
             },
           ]
           return acc

@@ -8,6 +8,7 @@ import {
 } from '@infinity-keys/constants'
 import { IKAchievementABI__factory } from '@infinity-keys/contracts'
 import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import capitalize from 'lodash/capitalize'
 import type {
   FindClaimNftQuery,
   FindClaimNftQueryVariables,
@@ -26,16 +27,16 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
+import CloudImage from 'src/components/CloudImage/CloudImage'
 import Heading from 'src/components/Heading/Heading'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import { isValidAvailableChain } from 'src/lib/availableChains'
-
-import CloudImage from '../CloudImage/CloudImage'
 
 export const QUERY = gql`
   query FindClaimNftQuery($id: String!) {
     rewardable(id: $id) {
       id
+      type
       availableChains
       nfts {
         cloudinaryId
@@ -158,6 +159,11 @@ export const Success = ({
     !transactionPending &&
     isConnected &&
     isValidChain
+
+  if (rewardable.nfts.length === 0) {
+    return <div>No NFT found for this {capitalize(rewardable.type)}</div>
+  }
+
   return (
     <div>
       <div className="mb-8 flex flex-col items-center">
