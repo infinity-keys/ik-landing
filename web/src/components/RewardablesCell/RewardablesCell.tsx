@@ -28,7 +28,11 @@ export const QUERY = gql`
 export const Loading = () => <LoadingIcon />
 
 export const Empty = () => {
-  return <div className="rw-text-center">No rewardables yet.</div>
+  return (
+    <div className="rw-text-center">
+      We couldn&apos;t find anything matching your request.
+    </div>
+  )
 }
 
 export const Failure = ({ error }: CellFailureProps) => (

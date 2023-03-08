@@ -51,6 +51,12 @@ export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
     const take = PAGINATION_COUNTS.includes(count)
       ? count
       : smallestPaginationCount
+    const totalCount = await db.rewardable.count({
+      where: { type, listPublicly: true },
+    })
+
+    // Signals to Redwood to render the `Empty` component
+    if (totalCount === 0) return null
 
     return {
       rewardables: await db.rewardable.findMany({
@@ -59,9 +65,7 @@ export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
         skip,
         orderBy: { createdAt: 'desc' },
       }),
-      totalCount: await db.rewardable.count({
-        where: { type, listPublicly: true },
-      }),
+      totalCount,
     }
   }
 

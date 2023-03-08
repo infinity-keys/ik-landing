@@ -212,7 +212,7 @@ export default async () => {
     console.log(`created ${nfts.length} new NFTs`)
 
     // Validate and type incoming data
-    const typedApiResponse = ApiResponse.parse(apiRaw);
+    const typedApiResponse = ApiResponse.parse(apiRaw)
 
     // Rewardables/Puzzles
 
@@ -232,6 +232,7 @@ export default async () => {
         type: 'PACK' as RewardableType,
         explanation: pack.pack_name,
         successMessage: 'Success!',
+        listPublicly: pack.list_publicly,
         organization: {
           connect: {
             id: ikCuid,
@@ -261,6 +262,7 @@ export default async () => {
                 type: 'PUZZLE' as RewardableType,
                 explanation: puzzle.instructions || '',
                 successMessage: puzzle.success_message, // just dupe what's in step for now
+                listPublicly: puzzle.list_publicly,
                 organization: {
                   connect: {
                     id: ikCuid,
@@ -301,6 +303,7 @@ export default async () => {
             explanation: puzzles[0].instructions || '',
             // just dupe what's in step 1 for now
             successMessage: puzzles[puzzles.length - 1].success_message,
+            listPublicly: puzzles[0].list_publicly,
             organization: {
               connect: {
                 id: ikCuid,
