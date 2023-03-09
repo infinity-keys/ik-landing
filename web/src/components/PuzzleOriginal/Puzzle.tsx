@@ -5,9 +5,9 @@
  */
 
 // React libraries for managing state of user's answer
-import React, { useState, useEffect, FormEvent } from 'react'
+import React, { useState, FormEvent } from 'react'
 
-// Styling and logic for the boxes used to answer the puzzle
+// Styling and logic for the input boxes used to answer the puzzle
 import RICIBs from 'react-individual-character-input-boxes'
 
 import Button from 'src/components/Button'
@@ -22,20 +22,31 @@ type PuzzleProps = {
   answer: string
 }
 const Puzzle = ({ answer = '' }: PuzzleProps) => {
-  const [canSubmit, setCanSubmit] = useState(false)
+
+  // This is what the user enters into the RICIBs
   const [guess, setGuess] = useState('')
 
-  // The state of our user's answer
-  const [showFail, setShowFail] = useState(false)
+  // The submit button is disabled unless all RICIBs are filled
+  // This determines whether or not the user can submit a guess
+  const [canSubmit, setCanSubmit] = useState(false)
 
-  // The state of the "Play More" button (show or no-show)
-  const [showPlayMoreButton, setShowPlayMoreButton] = useState(false)
+  // This determines whether or not the user has answered correctly
+  // ...it happens as soon as the user enters the correct answer
+  // ...therefore it is not the same as the 'showSuccess' state
+  const [correctAnswer, setCorrectAnswer] = useState(false)
 
-  // The RICIBs must rerender when setShowFail(true)
+  // This determines whether or not the user can go on to play more puzzles
+  // ...it is delayed by a setTimeout that mimics a server call
+  // ...therefore it is not the same as the 'correctAnswer' state
+  const [showSuccess, setShowSuccess] = useState(false)
+
+  // This controls the visibility of the RICIBs (input boxes)
+  // ...they are delayed by a setTimeout that mimics a server call
   const [showRICIBs, setShowRICIBs] = useState(true)
 
-  // The fake database verification of the correct answer
-  const [showSuccess, setShowSuccess] = useState(false)
+  // This controls the visibility of the "Wrong answer" message
+  // ...it is delayed by a setTimeout that mimics a server call
+  const [showFail, setShowFail] = useState(false)
 
   const count = answer.length
 
@@ -45,17 +56,25 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
     setGuess('')
 
     if (guess.toLowerCase() === answer.toLowerCase()) {
+
+      // the correct answer was entered
+      // ...but the setShowSuccess is still false
+      // ...which means the loading icon will be displayed
+      setCorrectAnswer(true)
+
+      // we are now minicing a server call
       setTimeout(() => {
+
+        // after a delay, the user can proceed to play more puzzles
         setShowSuccess(true)
       }, 1000)
-      // console.log('solved!')
-      setShowPlayMoreButton(true)
     } else {
-      // console.log('fail')
 
-      // This should clear the input boxes, but it doesn't
-      // setGuess('')
+      // delete the RICIB (input boxes)
+      // ...display the loading icon instead to mimic a server call
       setShowRICIBs(false)
+
+      // these actions are delayed to mimic a server call
       setTimeout(() => {
         setShowFail(true)
         setShowRICIBs(true)
@@ -64,7 +83,10 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
     }
   }
 
-  if (showPlayMoreButton) {
+  {
+    /* If the answer is correct, go ahead and display just this stuff */
+  }
+  if (correctAnswer) {
     return (
       <div>
         {/* Play More Button */}
@@ -79,6 +101,9 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
     )
   }
 
+  {
+    /* Otherwise, as long as the answer is incorrect, return the rest of this stuff */
+  }
   return (
     <div>
       {/* Lock icon & "solve puzzle" caption*/}
