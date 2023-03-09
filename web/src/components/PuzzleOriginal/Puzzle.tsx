@@ -61,7 +61,7 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
       // ...which means the loading icon will be displayed
       setCorrectAnswer(true)
 
-      // we are now minicing a server call
+      // we are now mimicing a server call
       setTimeout(() => {
 
         // after a delay, the user can proceed to play more puzzles
