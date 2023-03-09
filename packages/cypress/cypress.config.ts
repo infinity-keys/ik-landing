@@ -1,10 +1,7 @@
-const { defineConfig } = require("cypress");
+import { defineConfig } from 'cypress'
 
-module.exports = defineConfig({
+export default defineConfig({
   e2e: {
-    setupNodeEvents(on, config) {
-      // implement node event listeners here
-    },
     projectId: "18end6",
     baseUrl: "http://localhost:8910",
     chromeWebSecurity: false,
@@ -12,4 +9,5 @@ module.exports = defineConfig({
     viewportWidth: 1920,
     defaultCommandTimeout: 6000,
   },
-});
+})
+
