@@ -53,7 +53,6 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
   // The function that handles the user's click of the 'Submit' button
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setGuess('')
 
     if (guess.toLowerCase() === answer.toLowerCase()) {
 
