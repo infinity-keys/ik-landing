@@ -160,7 +160,7 @@ export const Success = ({
     isConnected &&
     isValidChain
 
-  if (rewardable.nfts.length === 0) {
+  if (!rewardable.nfts.length) {
     return <div>No NFT found for this {capitalize(rewardable.type)}</div>
   }
 
