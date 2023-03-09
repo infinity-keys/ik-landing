@@ -27,8 +27,8 @@ const links = [
   },
   {
     className: 'discordIcon',
-    href: 'discord',
-    testing: 'https://discord.com/invite/infinitykeys',
+    href: 'https://discord.com/invite/infinitykeys',
+    testing: 'discord',
     ariaLabel: 'visit IK Discord.',
     icon: <DiscordIcon />,
   },

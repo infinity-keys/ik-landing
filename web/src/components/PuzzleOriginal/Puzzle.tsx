@@ -90,7 +90,7 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
       <div>
         {/* Play More Button */}
         {showSuccess ? (
-          <div className="play-more-button-container container flex max-w-[12rem] justify-center">
+          <div className="play-more-button-container container flex max-w-[12rem] justify-center" data-cy="success_message_check">
             <Button text="Play More" fullWidth to={'/packs'} />
           </div>
         ) : (
