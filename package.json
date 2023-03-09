@@ -9,11 +9,14 @@
   },
   "scripts": {
     "build": "yarn workspaces foreach run build & yarn rw exec generateAnonPuzzleData",
-    "dev": "(yarn workspaces foreach run build-dev & yarn rw exec generateAnonPuzzleData) && rw dev",
-    "seed": "rw prisma migrate reset -f"
+    "dev": "(yarn workspaces foreach run build-dev & yarn workspace @infinity-keys/react-lens-share-button build & yarn rw exec generateAnonPuzzleData) && rw dev",
+    "seed": "rw prisma migrate reset -f",
+    "cypress:open": "start-server-and-test dev http://localhost:8910 \"yarn workspace cypress cypress:open\"",
+    "cypress:run": "yarn workspace cypress cypress run --headless --browser chrome"
   },
   "devDependencies": {
     "@redwoodjs/core": "^3.4.0",
+    "start-server-and-test": "^2.0.0",
     "zod": "^3.19.1"
   },
   "eslintConfig": {
