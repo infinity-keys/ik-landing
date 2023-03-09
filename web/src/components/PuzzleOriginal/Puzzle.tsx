@@ -3,152 +3,168 @@
  *
  * The embedded puzzle form used to attmpt solution.
  */
-import {
-  ComponentType,
-  FormEvent,
-  //  useEffect,
-  useRef,
-  //useState
-} from 'react'
 
-//import { useMachine } from '@xstate/react'
-import clsx from 'clsx'
-import loRange from 'lodash/range'
-//import { useRouter } from 'next/router'
+// React libraries for managing state of user's answer
+import React, { useState, FormEvent } from 'react'
+
+// Styling and logic for the input boxes used to answer the puzzle
 import RICIBs from 'react-individual-character-input-boxes'
 
 import Button from 'src/components/Button'
-//import LoadingIcon from 'src/components/LoadingIcon'
-import Markdown from 'src/components/Markdown'
-//import useCurrentWidth from 'src/hooks/useCurrentWidth'
+
+// small padlock icon
 import Lock from 'src/svgs/Lock'
 
-//import { puzzleMachine } from './puzzle.xstate'
+// we need the loading icon for when the user types in the wrong answer
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 
-interface PuzzleProps {
-  count: number
-  puzzleId: string
-  boxes?: boolean
-  failMessage?: string
-  SuccessComponent?: ComponentType<{}>
-  forwardOnFail?: boolean
+type PuzzleProps = {
+  answer: string
 }
+const Puzzle = ({ answer = '' }: PuzzleProps) => {
 
-const Puzzle = ({
-  // Used to show number of boxes/remaining characters. Usually pulled in via
-  // GrqphQL query.
-  count,
-  // Unique uuid of the puzzle
-  puzzleId,
-  // Show the "boxes" version of the puzzle? "false" shows textbox
-  boxes = true,
-  // What should be said when the guess is wrong?
-  failMessage,
-}: // If success component exists, then Puzzle **will not route to success page**.
-// Use this for entirely inline/embedded Puzzles.
-//SuccessComponent,
-// Enable/disable forwarding to fail_route
-//forwardOnFail = true,
-PuzzleProps) => {
-  //const router = useRouter()
-  //const [{ context, matches }, send] = useMachine(puzzleMachine, {
-  //   context: { count, puzzleId, redirect: !SuccessComponent },
-  //   // Use the router hook from within react to fire the action within xstate
-  //   actions: {
-  //     // The TS error below is a bug in xstate, https://xstate.js.org/docs/guides/typescript.html#typegen
-  //     // @TODO: remove @ts-ignore when fixed
-  //     goToSuccessRoute: (context, event) =>
-  //       // @ts-ignore
-  //       router.push(event.data?.success_route || '/'),
-  //     goToFailRoute: (context, event) =>
-  //       forwardOnFail && router.push(event.data.fail_route),
-  //   },
-  //   devTools: process.env.NODE_ENV === 'development',
-  // })
+  // This is what the user enters into the RICIBs
+  const [guess, setGuess] = useState('')
 
-  // const [height, setHeight] = useState(0)
-  // const width = useCurrentWidth()
-  const ref = useRef<HTMLDivElement>(null)
+  // The submit button is disabled unless all RICIBs are filled
+  // This determines whether or not the user can submit a guess
+  const [canSubmit, setCanSubmit] = useState(false)
 
-  // useEffect(() => {
-  //   send({ type: 'PUZZLE_INFO', puzzleInfo: { puzzleId, count } })
-  // }, [send, puzzleId, count])
+  // This determines whether or not the user has answered correctly
+  // ...it happens as soon as the user enters the correct answer
+  // ...therefore it is not the same as the 'showSuccess' state
+  const [correctAnswer, setCorrectAnswer] = useState(false)
 
-  // useEffect(() => {
-  //   if (ref.current) setHeight(ref.current.clientHeight)
-  // }, [width])
+  // This determines whether or not the user can go on to play more puzzles
+  // ...it is delayed by a setTimeout that mimics a server call
+  // ...therefore it is not the same as the 'correctAnswer' state
+  const [showSuccess, setShowSuccess] = useState(false)
 
+  // This controls the visibility of the RICIBs (input boxes)
+  // ...they are delayed by a setTimeout that mimics a server call
+  const [showRICIBs, setShowRICIBs] = useState(true)
+
+  // This controls the visibility of the "Wrong answer" message
+  // ...it is delayed by a setTimeout that mimics a server call
+  const [showFail, setShowFail] = useState(false)
+
+  const count = answer.length
+
+  // The function that handles the user's click of the 'Submit' button
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    //if (context.count === context.text.length) send('GUESS')
+
+    if (guess.toLowerCase() === answer.toLowerCase()) {
+
+      // the correct answer was entered
+      // ...but the setShowSuccess is still false
+      // ...which means the loading icon will be displayed
+      setCorrectAnswer(true)
+
+      // we are now mimicing a server call
+      setTimeout(() => {
+
+        // after a delay, the user can proceed to play more puzzles
+        setShowSuccess(true)
+      }, 1000)
+    } else {
+
+      // delete the RICIB (input boxes)
+      // ...display the loading icon instead to mimic a server call
+      setShowRICIBs(false)
+
+      // these actions are delayed to mimic a server call
+      setTimeout(() => {
+        setShowFail(true)
+        setShowRICIBs(true)
+        setCanSubmit(false)
+      }, 1000)
+    }
   }
 
-  return (
-    <>
-      {/* {(matches('guessing') || matches('guessCorrect.go')) && (
-        <div style={{ height }} className="flex items-center justify-center">
-          <LoadingIcon />
-        </div>
-      )} */}
-
-      {/* {(matches('idle') ||
-        matches('guessIncorrect') ||
-        matches('readyToGuess')) && ( */}
-      <div className="z-10 flex justify-center" ref={ref}>
-        <div>
-          <div className="flex py-5">
-            <div className="w-6">
-              <Lock />
-            </div>
-            <h1 className="pt-2 pl-4 text-base font-bold">Solve Puzzle</h1>
+  {
+    /* If the answer is correct, go ahead and display just this stuff */
+  }
+  if (correctAnswer) {
+    return (
+      <div>
+        {/* Play More Button */}
+        {showSuccess ? (
+          <div className="play-more-button-container container flex max-w-[12rem] justify-center">
+            <Button text="Play More" fullWidth to={'/packs'} />
           </div>
-
-          <form onSubmit={handleSubmit}>
-            <div className="magic-input font-bold text-turquoise">
-              {boxes && (
-                <RICIBs
-                  //amount={context.count}
-                  amount={6}
-                  //handleOutputString={(text) => send({ type: 'INPUT', text })}
-                  handleOutputString={(text) => console.log(text)}
-                  inputRegExp={/^\S*$/}
-                  //autoFocus={true}
-                  // inputProps={loRange(context.count).map(() => ({
-                  //   className: 'ik-code-input',
-                  // }))}
-                  inputProps={loRange(6).map(() => ({
-                    className: 'ik-code-input',
-                  }))}
-                />
-              )}
-            </div>
-            <div
-              className={clsx('mb-2', {
-                //invisible: !matches('guessIncorrect'),
-              })}
-            >
-              <div data-cy="fail_message_check" className="opacity-50">
-                <Markdown>
-                  {failMessage ||
-                    'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
-                </Markdown>
-              </div>
-            </div>
-
-            <div data-cy="submit" className="flex justify-center">
-              <Button
-                text="Submit"
-                type="submit"
-                //disabled={!matches('readyToGuess')}
-              />
-            </div>
-          </form>
-        </div>
+        ) : (
+          <LoadingIcon />
+        )}
       </div>
-      {/* )} */}
+    )
+  }
 
-      {/* {matches('guessCorrect.stay') && SuccessComponent && <SuccessComponent />} */}
-    </>
+  {
+    /* Otherwise, as long as the answer is incorrect, return the rest of this stuff */
+  }
+  return (
+    <div>
+      {/* Lock icon & "solve puzzle" caption*/}
+      <div className="flex py-5">
+        <div className="w-6">
+          <Lock />
+        </div>
+        <h1 className="pt-2 pl-4 text-base font-bold">Solve Puzzle</h1>
+      </div>
+
+      <form onSubmit={handleSubmit}>
+        {/* Input Boxes */}
+        {showRICIBs ? (
+          <div className="magic-input font-bold text-turquoise">
+            <RICIBs
+              amount={count}
+              handleOutputString={(text) => {
+                setGuess(text)
+                if (count === text.length) {
+                  setCanSubmit(true)
+                } else {
+                  setCanSubmit(false)
+                }
+                // console.log(text)
+              }}
+              inputRegExp={/^\S*$/}
+              inputProps={Array.from(answer).map(() => ({
+                className: 'ik-code-input',
+              }))}
+            />
+          </div>
+        ) : (
+          <LoadingIcon />
+        )}
+
+        {/* Wrong answer & Discord invitation */}
+        <div data-cy="fail_message_check" className="opacity-50">
+          {showFail ? (
+            <div className="visible-message">
+              <p>
+                Thats not it. Need help?{' '}
+                <a href="https://discord.gg/infinitykeys" target="_blank">
+                  <u>Join our discord</u>
+                </a>
+              </p>
+            </div>
+          ) : (
+            <div className="invisible-message opacity-0">
+              <p>
+                'this is placeholder text that is the same height as the
+                markdown text above'
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Submit Button */}
+        <div data-cy="submit" className="flex justify-center">
+          <Button text="Submit" type="submit" disabled={!canSubmit} />
+        </div>
+      </form>
+    </div>
   )
 }
 

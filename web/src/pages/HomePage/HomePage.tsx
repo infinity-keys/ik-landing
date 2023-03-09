@@ -78,13 +78,9 @@ const HomePage = () => {
                 t.
               </Heading>
             </div>
+            {/* Top of puzzle */}
+            <Puzzle answer='unlock'/> {/* hard-coded; doesn't need any props */}
 
-            <Puzzle
-              puzzleId={'puzzleId'}
-              count={6}
-              SuccessComponent={SuccessComponent}
-              forwardOnFail={false}
-            />
             <div className="flicker-container mt-10 text-center text-white sm:text-xl md:text-2xl">
               <p className="leading-normal">
                 Find the c<Flicker delay=".6s">l</Flicker>
