@@ -294,6 +294,9 @@ export default async () => {
             return acc
           }
 
+          // Since we removed NFTs from all multi-step puzzles EXCEPT the final puzzle
+          // (due to hax), we need to get the last puzzle to determine the NFT associated
+          // with the overall multi-step series of puzzles.
           const lastPuzzle = puzzles
             .sort(
               (a, b) =>
