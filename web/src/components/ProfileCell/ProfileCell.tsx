@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import EnvelopeIcon from '@heroicons/react/20/solid/EnvelopeIcon'
 import { truncate } from '@infinity-keys/core'
@@ -51,9 +51,6 @@ export const Success = ({
   // Immediately upon mount, reconcile progress, but also provide function to
   // use on button click
   const { reconcilePuzzles, progressLoading } = useReconcileProgress()
-  useEffect(() => {
-    reconcilePuzzles()
-  }, [reconcilePuzzles])
 
   return (
     <div className="overflow-hidden rounded-lg bg-black/30">

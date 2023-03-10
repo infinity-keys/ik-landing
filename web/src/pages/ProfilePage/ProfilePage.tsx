@@ -7,6 +7,7 @@ import { useAuth } from '@redwoodjs/auth'
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
+import useReconcileProgress from 'src/hooks/useReconcileProgress'
 
 /*
   IMPORTANT: This page needs to run a GraphQL function to create a new user in
@@ -21,6 +22,7 @@ import ProfileCell from 'src/components/ProfileCell'
 
 const ProfilePage = () => {
   const { logIn, logOut, isAuthenticated, loading } = useAuth()
+  const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
   const emailRef = useRef(null)
 
@@ -37,6 +39,7 @@ const ProfilePage = () => {
       // @NOTE: redirectURI not working with built-in logIn function
       await logIn({ email })
       // function -> reconcile cookies
+      reconcilePuzzles()
     } catch (e) {
       setErrorMessage('Problem sending email')
     }
@@ -44,7 +47,7 @@ const ProfilePage = () => {
 
   return (
     <>
-      {isAuthenticated && (
+      {isAuthenticated && !progressLoading && (
         <div className="mx-auto w-full max-w-lg pb-12">
           <ProfileCell />
         </div>
