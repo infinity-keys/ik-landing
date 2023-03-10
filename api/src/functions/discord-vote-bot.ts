@@ -19,9 +19,6 @@ export const handler = async (event) => {
   const { body, headers } = event
   const parsedBody = await JSON.parse(body)
 
-  // console.log(parsedBody);
-  // console.log(headers["x-signature"]);
-
   try {
     await Moralis.Streams.verifySignature({
       body: parsedBody,
@@ -33,9 +30,8 @@ export const handler = async (event) => {
           }
 
     const from = parsedBody.txs[0].fromAddress
-    const rawVote = parsedBody.logs[0].data
-    // const vote = rawVote === 1? "True" : "False"
-    // const hash = parsedBody.logs[0].transactionHash
+    const voteHex = parsedBody.logs[0].data.slice(0,65)
+    const vote = parseInt(voteHex, 16) === 1 ? "True" : "False"
 
     const voteAlert = new EmbedBuilder()
       .setColor('101d42')
@@ -49,7 +45,7 @@ export const handler = async (event) => {
       .setDescription('New Curve Vote Has Been Cast!!')
       .addFields(
         { name: 'From', value: `${from}`, inline: true },
-        // { name: 'Vote', value: `${vote}`, inline: true },
+        { name: 'Vote', value: `${vote}`, inline: true },
       )
 
       .setTimestamp()
@@ -69,5 +65,3 @@ export const handler = async (event) => {
     return { statusCode: 400 };
   }
 };
-
-
