@@ -1,57 +1,43 @@
-//import { chainIdLookup } from '@infinity-keys/constants'
-// import { cloudinaryUrl } from '@infinity-keys/core'
-// import { RequestInfo, RequestInit } from 'node-fetch'
-
-// const fetch = (url: RequestInfo, init?: RequestInit) =>
-  // import('node-fetch').then(({ default: fetch }) => fetch(url, init))
-const discord = require('discord.js')
+const Moralis = require("moralis").default;
+const discord = require("discord.js");
+require("dotenv").config();
 const { EmbedBuilder } = require('discord.js')
-const Moralis = require('moralis').default
 
 const client = new discord.Client({
-  intents: [],
-})
+    intents: [],
+});
 
-client.login(process.env.DISCORD_MINT_BOT_KEY)
+client.login(process.env.DISCORD_VOTE_BOT_KEY);
 
-Moralis.start({
-  apiKey: process.env.MORALIS_API_KEY,
-})
-
-// interface MetadataResponse {
-//   image: string
-// }
+if (!Moralis.Core.isStarted){
+  Moralis.start({
+    apiKey: process.env.MORALIS_API_KEY,
+  })
+}
 
 export const handler = async (event) => {
   const { body, headers } = event
   const parsedBody = await JSON.parse(body)
 
+  // console.log(parsedBody);
+  // console.log(headers["x-signature"]);
+
   try {
     await Moralis.Streams.verifySignature({
       body: parsedBody,
-      signature: headers['x-signature'],
-    })
-console.log(parsedBody);
-    // if (parsedBody.txs.length === 0 || !parsedBody.confirmed) {
-    //   return { statusCode: 200 }
-    // }
+      signature: headers["x-signature"],
+    });
 
-    // const from = parsedBody.txs[0].fromAddress
-    // const tokenId = parseInt(parsedBody.logs[0].topic1, 16)
-    // const chainId = parseInt(parsedBody.chainId, 16)
-    // const chain = chainIdLookup[chainId]
+    if (parsedBody.txs.length === 0 || !parsedBody.confirmed) {
+            return { statusCode: 200 }
+          }
 
-    // const response = await fetch(
-    //   `https://www.infinitykeys.io/api/metadata/achievement?tokenid=${tokenId}`
-    // )
-    // const nftMetadata = (await response.json()) as MetadataResponse
-    // const image = nftMetadata.image
+    const from = parsedBody.txs[0].fromAddress
+    const rawVote = parsedBody.logs[0].data
+    // const vote = rawVote === 1? "True" : "False"
+    // const hash = parsedBody.logs[0].transactionHash
 
-    // const url = new URL(image)
-    // const pathName = url.pathname
-    // const cloudImage = pathName.split('/').slice(-2).join('/')
-
-    const vote = new EmbedBuilder()
+    const voteAlert = new EmbedBuilder()
       .setColor('101d42')
       .setTitle('Infinity Keys')
       .setAuthor({
@@ -60,33 +46,28 @@ console.log(parsedBody);
           'https://res.cloudinary.com/infinity-keys/image/upload/v1671162913/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
         url: 'https://infinitykeys.io',
       })
-      .setDescription('Vote')
-      // .setThumbnail(cloudinaryUrl(cloudImage, 50, 50, false, 1))
-      // .addFields(
-      //   { name: 'Token', value: `${tokenId}`, inline: true },
-      //   { name: 'Mint Address', value: `${from}`, inline: true },
-      //   { name: 'Chain', value: `${chain}`, inline: true }
-      // )
-      .addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
+      .setDescription('New Curve Vote Has Been Cast!!')
+      .addFields(
+        { name: 'From', value: `${from}`, inline: true },
+        // { name: 'Vote', value: `${vote}`, inline: true },
+      )
 
       .setTimestamp()
       .setFooter({
-        text: 'Vote',
+        text: 'Vote Casted',
         iconURL:
           'https://res.cloudinary.com/infinity-keys/image/upload/v1671162913/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
       })
 
     const channel = await client.channels.fetch(process.env.MINT_CHANNEL)
-    channel.send({ embeds: [vote] })
+    channel.send({ embeds: [voteAlert] })
 
-    return {
-      statusCode: 200,
-    }
+    return { statusCode: 200 };
   } catch (e) {
-    console.log(e)
-    console.log('Not Moralis')
-    return {
-      statusCode: 400,
-    }
+    console.log(e);
+    console.log("Not Moralis");
+    return { statusCode: 400 };
   }
-}
+};
+
+
