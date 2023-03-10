@@ -83,6 +83,27 @@ PuzzleProps) => {
     //if (context.count === context.text.length) send('GUESS')
   }
 
+  {
+    /* If the answer is correct, go ahead and display just this stuff */
+  }
+  if (correctAnswer) {
+    return (
+      <div>
+        {/* Play More Button */}
+        {showSuccess ? (
+          <div className="play-more-button-container container flex max-w-[12rem] justify-center" data-cy="success_message_check">
+            <Button text="Play More" fullWidth to={'/packs'} />
+          </div>
+        ) : (
+          <LoadingIcon />
+        )}
+      </div>
+    )
+  }
+
+  {
+    /* Otherwise, as long as the answer is incorrect, return the rest of this stuff */
+  }
   return (
     <>
       {/* {(matches('guessing') || matches('guessCorrect.go')) && (

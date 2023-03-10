@@ -49,7 +49,8 @@ export default function Button({
     [
       variant === 'solid' && {
         'bg-turquoise': true,
-        'bg-turquoise/50': disabled,
+        'bg-turquoise/50 border-turquoise hover:border-turquoise text-white/50 hover:text-white/50':
+          disabled,
       },
       variant === 'outline' && 'text-white hover:bg-turquoise',
       variant === 'warn' &&
