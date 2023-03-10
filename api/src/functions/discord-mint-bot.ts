@@ -14,9 +14,11 @@ const client = new discord.Client({
 
 client.login(process.env.DISCORD_MINT_BOT_KEY)
 
-Moralis.start({
-  apiKey: process.env.MORALIS_API_KEY,
-})
+if (!Moralis.Core.isStarted){
+  Moralis.start({
+    apiKey: process.env.MORALIS_API_KEY,
+  })
+}
 
 interface MetadataResponse {
   image: string
