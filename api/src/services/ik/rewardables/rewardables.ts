@@ -1,4 +1,5 @@
 import {
+  ANONYMOUS_USER_ID,
   IK_CLAIMS_NAMESPACE,
   PAGINATION_COUNTS,
   PUZZLE_COOKIE_NAME,
@@ -269,7 +270,10 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       const v2CookieClearText = decryptAndDecompressText(ikV2Cookie)
       const parsedIkV2Cookie = PuzzlesData.parse(JSON.parse(v2CookieClearText))
 
-      if (parsedIkV2Cookie.authId !== context.currentUser.authId) {
+      if (
+        parsedIkV2Cookie.authId !== context.currentUser.authId &&
+        parsedIkV2Cookie.authId !== ANONYMOUS_USER_ID
+      ) {
         return logger.warn(
           `User ${context.currentUser.id} has ikV2 cookie, but authId does not match`
         )
