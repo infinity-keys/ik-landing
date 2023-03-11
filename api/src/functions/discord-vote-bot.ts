@@ -30,7 +30,7 @@ export const handler = async (event) => {
     }
 
     const from = parsedBody.txs[0].fromAddress
-    const voteHex = parsedBody.logs[0].data.slice(0, 65)
+    const voteHex = parsedBody.logs[0].data.slice(0, 66)
     const vote = parseInt(voteHex, 16) === 1 ? 'True' : 'False'
 
     const voteAlert = new EmbedBuilder()
