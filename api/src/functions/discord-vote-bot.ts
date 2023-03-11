@@ -35,14 +35,14 @@ export const handler = async (event) => {
 
     const voteAlert = new EmbedBuilder()
       .setColor('101d42')
-      .setTitle('Infinity Keys')
+      .setTitle('Aavegotchi DAO Vote')
       .setAuthor({
         name: 'Infinity Keys',
         iconURL:
           'https://res.cloudinary.com/infinity-keys/image/upload/v1671162913/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
         url: 'https://infinitykeys.io',
       })
-      .setDescription('New Curve Vote Has Been Cast!!')
+      .setDescription('New Curve Vote Has Been Cast! 👻')
       .addFields(
         { name: 'From', value: `${from}`, inline: true },
         { name: 'Vote', value: `${vote}`, inline: true }
@@ -55,7 +55,7 @@ export const handler = async (event) => {
           'https://res.cloudinary.com/infinity-keys/image/upload/v1671162913/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
       })
 
-    const channel = await client.channels.fetch(process.env.MINT_CHANNEL)
+    const channel = await client.channels.fetch(process.env.VOTE_ALERT_CHANNEL)
     channel.send({ embeds: [voteAlert] })
 
     return { statusCode: 200 }
