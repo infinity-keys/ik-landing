@@ -33,12 +33,12 @@ export const SolutionData = z.discriminatedUnion('type', [
 ])
 
 // @TODO: this 'asChild' logic will break if puzzle belongs to bundle
-const createRewards = async (rewardable) => {
+export const createRewards = async ({ rewardable, currentUser }) => {
   // create puzzle reward when user solves last step
   await createUserReward({
     input: {
       rewardableId: rewardable.id,
-      userId: context.currentUser.id,
+      userId: currentUser.id,
     },
   })
 
@@ -48,12 +48,15 @@ const createRewards = async (rewardable) => {
       where: { id: rewardable.asChild[0].parentId },
       select: {
         id: true,
+        userRewards: {
+          where: { userId: currentUser.id },
+        },
         asParent: {
           select: {
             childRewardable: {
               select: {
                 userRewards: {
-                  where: { userId: context.currentUser.id },
+                  where: { userId: currentUser.id },
                   select: {
                     id: true,
                   },
@@ -65,6 +68,8 @@ const createRewards = async (rewardable) => {
       },
     })
 
+    console.log(parentPack)
+
     // has this user now completed all puzzles in this pack
     const allPuzzlesSolved = parentPack.asParent.every(
       ({ childRewardable }) => childRewardable.userRewards.length > 0
@@ -75,7 +80,7 @@ const createRewards = async (rewardable) => {
       await createUserReward({
         input: {
           rewardableId: parentPack.id,
-          userId: context.currentUser.id,
+          userId: currentUser.id,
         },
       })
     }
@@ -167,7 +172,10 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         })
 
         if (finalStep) {
-          await createRewards(step.puzzle.rewardable)
+          await createRewards({
+            rewardable: step.puzzle.rewardable,
+            currentUser: context.currentUser,
+          })
         }
       }
       return { success: correctAttempt, finalStep }
@@ -201,7 +209,10 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         })
 
         if (finalStep) {
-          await createRewards(step.puzzle.rewardable)
+          await createRewards({
+            rewardable: step.puzzle.rewardable,
+            currentUser: context.currentUser,
+          })
         }
       }
 

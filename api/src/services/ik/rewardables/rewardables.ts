@@ -8,6 +8,7 @@ import { IK_ID_COOKIE } from '@infinity-keys/constants'
 import { IkJwt } from '@infinity-keys/core'
 import cookie from 'cookie'
 import type { QueryResolvers, MutationResolvers } from 'types/graphql'
+import { context } from '@redwoodjs/graphql-server'
 
 import { ForbiddenError } from '@redwoodjs/graphql-server'
 // import { context } from '@redwoodjs/graphql-server'
@@ -17,6 +18,10 @@ import { db } from 'src/lib/db'
 import { decryptAndDecompressText } from 'src/lib/encoding/encoding'
 import { verifyToken } from 'src/lib/jwt'
 import { logger } from 'src/lib/logger'
+
+import anonPuzzles from '../../../../anonPuzzleData.json'
+import { createRewards } from '../attempts/attempts'
+import { createUserReward } from 'src/services/userRewards/userRewards'
 
 export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
   slug,
@@ -269,6 +274,7 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       // Parse ik-puzzles cookie
       const v2CookieClearText = decryptAndDecompressText(ikV2Cookie)
       const parsedIkV2Cookie = PuzzlesData.parse(JSON.parse(v2CookieClearText))
+      console.log(JSON.stringify(parsedIkV2Cookie, null, 2))
 
       if (
         parsedIkV2Cookie.authId !== context.currentUser.authId &&
@@ -358,6 +364,42 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
 
       // Do it
       await Promise.all(newSolves)
+
+      // get all puzzle ids off cookie
+      const cookiePuzzles = Object.keys(parsedIkV2Cookie.puzzles) // array of puzzle ids
+      // get the ones that are anonymous
+      const cookieAnonPuzzles = anonPuzzles.filter(({ id }) =>
+        cookiePuzzles.includes(id)
+      )
+      // get all steps from anon puzzles
+
+      // check if user has all steps
+      const solvedAnonPuzzles = cookieAnonPuzzles.filter(({ steps }) =>
+        steps.every((anonStep) => cookieSolvedSteps.includes(anonStep.id))
+      ) // array of claimable rewardables
+
+      console.log(context.currentUser)
+
+      const puzzleSolves = solvedAnonPuzzles.map((puzzle) =>
+        createRewards({
+          rewardable: { ...puzzle.rewardable, id: puzzle.rewardableId },
+          currentUser: context.currentUser,
+        })
+      )
+      await Promise.all(puzzleSolves)
+
+      // await createRewards({
+      //   rewardable: solvedAnonPuzzles[0],
+      //   currentUser: context.currentUser,
+      // })
+
+      // console.log(solves)
+      // await Promise.all(solves)
+      // if so, create solves
+
+      // if puzzle solved, is it the last one of a pack
+
+      // if so create pack
     }
 
     // Check ik-id|ik-puzzles cookie.

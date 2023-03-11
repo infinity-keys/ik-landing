@@ -270,6 +270,7 @@ export default async () => {
                 },
                 puzzle: {
                   create: {
+                    isAnon: puzzle.landing_route === 'notright',
                     steps: {
                       create: [
                         {
@@ -321,6 +322,7 @@ export default async () => {
             },
             puzzle: {
               create: {
+                isAnon: puzzleGroup === 'firstgate',
                 steps: {
                   create: puzzles.map((puzzle) => ({
                     failMessage: puzzle.fail_message,
