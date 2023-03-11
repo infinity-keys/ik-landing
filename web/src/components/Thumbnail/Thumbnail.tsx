@@ -32,7 +32,7 @@ const Thumbnail = ({
     <Link
       to={href}
       className={clsx(
-        'puzzle-thumb break-word relative block w-full max-w-[18rem] cursor-pointer rounded-lg border border-transparent bg-blue-800 shadow transition hover:border-turquoise',
+        'puzzle-thumb relative block w-full max-w-[18rem] cursor-pointer break-words rounded-lg border border-transparent bg-blue-800 shadow transition hover:border-turquoise',
         // progress === ThumbnailProgress.Current
         //   ? 'border-turquoise'
         //   : 'border-transparent',
