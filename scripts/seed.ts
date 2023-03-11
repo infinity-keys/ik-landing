@@ -270,7 +270,10 @@ export default async () => {
                 },
                 puzzle: {
                   create: {
-                    isAnon: puzzle.landing_route === 'notright',
+                    isAnon:
+                      puzzle.landing_route === 'notright' ||
+                      puzzle.landing_route === 'thesis' ||
+                      puzzle.landing_route === 'communitycode',
                     steps: {
                       create: [
                         {

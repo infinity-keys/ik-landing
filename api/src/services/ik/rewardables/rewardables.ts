@@ -376,16 +376,38 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       // check if user has all steps
       const solvedAnonPuzzles = cookieAnonPuzzles.filter(({ steps }) =>
         steps.every((anonStep) => cookieSolvedSteps.includes(anonStep.id))
-      ) // array of claimable rewardables
+      ) // array of anonymous puzzle rewardables
 
-      console.log(context.currentUser)
+      const rewardableUserRewards = await db.rewardable.findMany({
+        select: { id: true, asChild: true },
+        where: {
+          id: {
+            in: solvedAnonPuzzles.map(({ rewardableId }) => rewardableId),
+          },
+          NOT: {
+            userRewards: {
+              some: {
+                userId: context.currentUser.id,
+              },
+            },
+          },
+        },
+      })
 
-      const puzzleSolves = solvedAnonPuzzles.map((puzzle) =>
+      // const stepsUnsolvedInDb = stepsExist.filter((step) => {
+      //   return !existingUserSolves.find(({ id }) => id === step.id)
+      // })
+
+      // create all puzzles rewards
+      // create pack rewards
+
+      const puzzleSolves = rewardableUserRewards.map((rewardable) =>
         createRewards({
-          rewardable: { ...puzzle.rewardable, id: puzzle.rewardableId },
+          rewardable,
           currentUser: context.currentUser,
         })
       )
+
       await Promise.all(puzzleSolves)
 
       // await createRewards({

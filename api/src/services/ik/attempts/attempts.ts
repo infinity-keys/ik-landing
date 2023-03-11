@@ -34,6 +34,7 @@ export const SolutionData = z.discriminatedUnion('type', [
 
 // @TODO: this 'asChild' logic will break if puzzle belongs to bundle
 export const createRewards = async ({ rewardable, currentUser }) => {
+  console.log(JSON.stringify(rewardable, null, 2))
   // create puzzle reward when user solves last step
   await createUserReward({
     input: {
@@ -68,13 +69,11 @@ export const createRewards = async ({ rewardable, currentUser }) => {
       },
     })
 
-    console.log(parentPack)
-
     // has this user now completed all puzzles in this pack
     const allPuzzlesSolved = parentPack.asParent.every(
       ({ childRewardable }) => childRewardable.userRewards.length > 0
     )
-
+    console.log(JSON.stringify(parentPack.asParent, null, 2))
     // create reward for pack
     if (allPuzzlesSolved) {
       await createUserReward({

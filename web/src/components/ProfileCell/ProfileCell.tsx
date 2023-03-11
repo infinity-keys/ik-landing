@@ -50,7 +50,6 @@ export const Success = ({
 
   // Immediately upon mount, reconcile progress, but also provide function to
   // use on button click
-  const { reconcilePuzzles, progressLoading } = useReconcileProgress()
 
   return (
     <div className="overflow-hidden rounded-lg bg-black/30">
@@ -67,14 +66,6 @@ export const Success = ({
             {user.username || user.email.split('@')[0]}
           </p>
           {address && <p className="text-turquoise">{truncate(address)}</p>}
-        </div>
-
-        <div className="ml-auto">
-          <Button
-            text={`Sync${progressLoading ? ' (Loading)' : ''}`}
-            onClick={reconcilePuzzles}
-            disabled={progressLoading}
-          />
         </div>
       </div>
 

@@ -9,6 +9,7 @@ const getAnonPuzzles = async () => {
     include: {
       rewardable: {
         select: {
+          id: true,
           asChild: true,
         },
       },

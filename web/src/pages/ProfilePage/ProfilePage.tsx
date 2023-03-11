@@ -70,6 +70,14 @@ const ProfilePage = () => {
             text={isAuthenticated ? 'Log Out' : 'Log In'}
           />
           <p className="absolute -bottom-8 left-0">{errorMessage}</p>
+
+          <div className="ml-auto">
+            <Button
+              text={`Sync${progressLoading ? ' (Loading)' : ''}`}
+              onClick={reconcilePuzzles}
+              disabled={progressLoading}
+            />
+          </div>
         </div>
       )}
     </>
