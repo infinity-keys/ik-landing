@@ -7,12 +7,6 @@ const getAnonPuzzles = async () => {
   return db.puzzle.findMany({
     where: { isAnon: true },
     include: {
-      rewardable: {
-        select: {
-          id: true,
-          asChild: true,
-        },
-      },
       steps: {
         orderBy: {
           stepSortWeight: 'asc',

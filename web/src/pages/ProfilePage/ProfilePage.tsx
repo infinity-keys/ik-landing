@@ -49,6 +49,13 @@ const ProfilePage = () => {
     <>
       {isAuthenticated && !progressLoading && (
         <div className="mx-auto w-full max-w-lg pb-12">
+          <div className="mx-auto">
+            <Button
+              text={`Sync${progressLoading ? ' (Loading)' : ''}`}
+              onClick={reconcilePuzzles}
+              disabled={progressLoading}
+            />
+          </div>
           <ProfileCell />
         </div>
       )}
@@ -70,14 +77,6 @@ const ProfilePage = () => {
             text={isAuthenticated ? 'Log Out' : 'Log In'}
           />
           <p className="absolute -bottom-8 left-0">{errorMessage}</p>
-
-          <div className="ml-auto">
-            <Button
-              text={`Sync${progressLoading ? ' (Loading)' : ''}`}
-              onClick={reconcilePuzzles}
-              disabled={progressLoading}
-            />
-          </div>
         </div>
       )}
     </>

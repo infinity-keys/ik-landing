@@ -20,7 +20,6 @@ import { verifyToken } from 'src/lib/jwt'
 import { logger } from 'src/lib/logger'
 
 import anonPuzzles from '../../../../anonPuzzleData.json'
-import { createRewards } from '../attempts/attempts'
 import { createUserReward } from 'src/services/userRewards/userRewards'
 
 export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
@@ -274,7 +273,6 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       // Parse ik-puzzles cookie
       const v2CookieClearText = decryptAndDecompressText(ikV2Cookie)
       const parsedIkV2Cookie = PuzzlesData.parse(JSON.parse(v2CookieClearText))
-      console.log(JSON.stringify(parsedIkV2Cookie, null, 2))
 
       if (
         parsedIkV2Cookie.authId !== context.currentUser.authId &&
@@ -368,21 +366,18 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       // get all puzzle ids off cookie
       const cookiePuzzles = Object.keys(parsedIkV2Cookie.puzzles) // array of puzzle ids
       // get the ones that are anonymous
-      const cookieAnonPuzzles = anonPuzzles.filter(({ id }) =>
+      const anonPuzzlesDataThatMatchCookie = anonPuzzles.filter(({ id }) =>
         cookiePuzzles.includes(id)
       )
-      // get all steps from anon puzzles
+      // get rewardable puzzle ids where all steps are in cookie
+      const solvedPuzzles = anonPuzzlesDataThatMatchCookie.filter(({ steps }) =>
+        steps.every((step) => cookieSolvedSteps.includes(step.id))
+      )
 
-      // check if user has all steps
-      const solvedAnonPuzzles = cookieAnonPuzzles.filter(({ steps }) =>
-        steps.every((anonStep) => cookieSolvedSteps.includes(anonStep.id))
-      ) // array of anonymous puzzle rewardables
-
-      const rewardableUserRewards = await db.rewardable.findMany({
-        select: { id: true, asChild: true },
+      const unRewardedRewardables = await db.rewardable.findMany({
         where: {
           id: {
-            in: solvedAnonPuzzles.map(({ rewardableId }) => rewardableId),
+            in: solvedPuzzles.map(({ rewardableId }) => rewardableId),
           },
           NOT: {
             userRewards: {
@@ -392,36 +387,72 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
             },
           },
         },
+        include: {
+          asChild: true,
+        },
       })
 
-      // const stepsUnsolvedInDb = stepsExist.filter((step) => {
-      //   return !existingUserSolves.find(({ id }) => id === step.id)
-      // })
+      if (unRewardedRewardables.length) {
+        // create user reward for solved anonymous puzzles
+        const puzzleUserRewards = unRewardedRewardables.map(({ id }) =>
+          createUserReward({
+            input: {
+              rewardableId: id,
+              userId: context.currentUser.id,
+            },
+          })
+        )
 
-      // create all puzzles rewards
-      // create pack rewards
+        // at this point, all of the solved puzzles without a user reward will be
+        // given a new user reward
+        await Promise.all(puzzleUserRewards)
 
-      const puzzleSolves = rewardableUserRewards.map((rewardable) =>
-        createRewards({
-          rewardable,
-          currentUser: context.currentUser,
+        // get all unique parentIds from solvedpuzzleswith asChild
+        const parentIds = new Set(
+          unRewardedRewardables.flatMap(({ asChild }) =>
+            asChild.map(({ parentId }) => parentId)
+          )
+        )
+
+        const packRewardables = await db.rewardable.findMany({
+          where: {
+            id: {
+              in: Array.from(parentIds),
+            },
+          },
+          select: {
+            id: true,
+            asParent: {
+              select: {
+                childRewardable: {
+                  select: {
+                    userRewards: true,
+                  },
+                },
+              },
+            },
+          },
         })
-      )
 
-      await Promise.all(puzzleSolves)
+        const unrewardedPackRewardables = packRewardables
+          .filter(({ asParent }) =>
+            asParent.every(
+              ({ childRewardable }) => childRewardable.userRewards.length
+            )
+          )
+          .map(({ id }) => id)
 
-      // await createRewards({
-      //   rewardable: solvedAnonPuzzles[0],
-      //   currentUser: context.currentUser,
-      // })
-
-      // console.log(solves)
-      // await Promise.all(solves)
-      // if so, create solves
-
-      // if puzzle solved, is it the last one of a pack
-
-      // if so create pack
+        await Promise.all(
+          unrewardedPackRewardables.map((id) =>
+            createUserReward({
+              input: {
+                rewardableId: id,
+                userId: context.currentUser.id,
+              },
+            })
+          )
+        )
+      }
     }
 
     // Check ik-id|ik-puzzles cookie.
