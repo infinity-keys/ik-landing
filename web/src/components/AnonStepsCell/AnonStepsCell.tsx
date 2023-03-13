@@ -95,9 +95,12 @@ export const Success = ({
     >
       {hasBeenSolved &&
         (isAuthenticated ? (
-          <Button to={routes.claim({ id: puzzle.rewardable.id })} text="Mint" />
+          <Button
+            to={routes.claim({ id: puzzle.rewardable.id })}
+            text="Claim Your Treasure"
+          />
         ) : (
-          <Button to={routes.profile()} text="Sign in to Mint" />
+          <Button to={routes.profile()} text="Sign in to Claim Your Treasure" />
         ))}
     </StepsLayout>
   )
