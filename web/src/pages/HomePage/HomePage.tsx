@@ -20,29 +20,22 @@ import { heroStars } from 'src/lib/animations/hero-stars'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
-/*
-@TODO:
-  Puzzle
-*/
-
 const HomePage = () => {
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine)
   }, [])
 
-  const buildSection = useRef<HTMLDivElement | null >(null)
+  const buildSection = useRef<HTMLDivElement | null>(null)
 
   const { hash } = useLocation()
-
 
   useEffect(() => {
     if (buildSection?.current && hash === '#build') {
       setTimeout(() => {
-        buildSection.current.scrollIntoView({ behavior: 'smooth'})
+        buildSection.current.scrollIntoView({ behavior: 'smooth' })
       }, 1)
     }
   }, [buildSection?.current, hash])
-
 
   const SuccessComponent = () => (
     <div
@@ -55,7 +48,7 @@ const HomePage = () => {
 
   return (
     <Wrapper full radialBg={false}>
-      <Seo />
+      <Seo title="Home" />
 
       <div className="slice--top radial-bg relative z-0 flex min-h-screen w-full items-center justify-center overflow-hidden pt-20">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black opacity-40" />
@@ -79,7 +72,7 @@ const HomePage = () => {
               </Heading>
             </div>
             {/* Top of puzzle */}
-            <Puzzle answer='unlock'/> {/* hard-coded; doesn't need any props */}
+            <Puzzle answer="unlock" />
 
             <div className="flicker-container mt-10 text-center text-white sm:text-xl md:text-2xl">
               <p className="leading-normal">
