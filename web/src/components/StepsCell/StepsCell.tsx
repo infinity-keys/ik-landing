@@ -76,7 +76,7 @@ export const Success = ({
       {hasBeenSolved && (
         <Button
           to={routes.claim({ id: puzzle.rewardable.id })}
-          text="Claim Your Treasure"
+          text="Claim Treasure"
         />
       )}
     </StepsLayout>

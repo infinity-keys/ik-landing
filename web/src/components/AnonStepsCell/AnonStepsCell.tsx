@@ -97,10 +97,10 @@ export const Success = ({
         (isAuthenticated ? (
           <Button
             to={routes.claim({ id: puzzle.rewardable.id })}
-            text="Claim Your Treasure"
+            text="Claim Treasure"
           />
         ) : (
-          <Button to={routes.profile()} text="Sign in to Claim Your Treasure" />
+          <Button to={routes.profile()} text="Sign in to Claim Treasure" />
         ))}
     </StepsLayout>
   )
