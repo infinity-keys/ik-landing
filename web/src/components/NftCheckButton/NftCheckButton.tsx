@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { FindStepQuery } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
@@ -49,18 +48,17 @@ const NftCheckButton = ({
             <p className="mt-4 italic text-gray-200">{errorMessage}</p>
           )}
 
-          <div
-            className={clsx(
-              'relative flex justify-center pt-6 text-gray-150',
-              failedAttempt && !errorMessage ? 'opacity-1' : 'opacity-0'
-            )}
-            data-cy="fail_message_check"
-          >
-            <Markdown>
-              {step.failMessage ||
-                'This wallet address does not hold the required NFT. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
-            </Markdown>
-          </div>
+          {failedAttempt && !errorMessage && (
+            <div
+              className={'relative flex justify-center pt-6 text-gray-150'}
+              data-cy="fail_message_check"
+            >
+              <Markdown>
+                {step.failMessage ||
+                  'This wallet address does not hold the required NFT. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
+              </Markdown>
+            </div>
+          )}
         </div>
       )}
     </div>
