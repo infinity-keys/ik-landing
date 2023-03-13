@@ -65,20 +65,20 @@ const SimpleTextInput = ({
                 inputProps={loRange(count).map(() => ({
                   className: 'ik-code-input',
                 }))}
+                autoFocus
               />
 
-              <div
-                className={clsx(
-                  'relative flex justify-center pt-6 text-gray-150',
-                  failedAttempt && !errorMessage ? 'opacity-1' : 'opacity-0'
-                )}
-                data-cy="fail_message_check"
-              >
-                <Markdown>
-                  {step.failMessage ||
-                    'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
-                </Markdown>
-              </div>
+              {failedAttempt && !errorMessage && (
+                <div
+                  className={'relative flex justify-center pt-6 text-gray-150'}
+                  data-cy="fail_message_check"
+                >
+                  <Markdown>
+                    {step.failMessage ||
+                      'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
+                  </Markdown>
+                </div>
+              )}
 
               {errorMessage && <p className="">{errorMessage}</p>}
 
