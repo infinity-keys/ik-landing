@@ -30,19 +30,19 @@ export const handler = async (event) => {
     }
 
     const from = parsedBody.txs[0].fromAddress
-    const voteHex = parsedBody.logs[0].data.slice(0, 65)
+    const voteHex = parsedBody.logs[0].data.slice(0, 66)
     const vote = parseInt(voteHex, 16) === 1 ? 'True' : 'False'
 
     const voteAlert = new EmbedBuilder()
       .setColor('101d42')
-      .setTitle('Infinity Keys')
+      .setTitle('Aavegotchi DAO Vote')
       .setAuthor({
         name: 'Infinity Keys',
         iconURL:
-          'https://res.cloudinary.com/infinity-keys/image/upload/v1671162913/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
+          'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/website-assets/hold-your-gotchi-embed_a2y1pq.jpg',
         url: 'https://infinitykeys.io',
       })
-      .setDescription('New Curve Vote Has Been Cast!!')
+      .setDescription('New Curve Vote Has Been Cast! 👻')
       .addFields(
         { name: 'From', value: `${from}`, inline: true },
         { name: 'Vote', value: `${vote}`, inline: true }
@@ -50,12 +50,12 @@ export const handler = async (event) => {
 
       .setTimestamp()
       .setFooter({
-        text: 'Vote Casted',
+        text: 'Voted',
         iconURL:
-          'https://res.cloudinary.com/infinity-keys/image/upload/v1671162913/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
+          'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/website-assets/hold-your-gotchi-embed_a2y1pq.jpg',
       })
 
-    const channel = await client.channels.fetch(process.env.MINT_CHANNEL)
+    const channel = await client.channels.fetch(process.env.VOTE_ALERT_CHANNEL)
     channel.send({ embeds: [voteAlert] })
 
     return { statusCode: 200 }
