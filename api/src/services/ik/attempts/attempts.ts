@@ -48,9 +48,6 @@ const createRewards = async (rewardable) => {
       where: { id: rewardable.asChild[0].parentId },
       select: {
         id: true,
-        userRewards: {
-          where: { userId: context.currentUser.id },
-        },
         asParent: {
           select: {
             childRewardable: {
