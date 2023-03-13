@@ -31,6 +31,7 @@ import CloudImage from 'src/components/CloudImage/CloudImage'
 import Heading from 'src/components/Heading/Heading'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import { isValidAvailableChain } from 'src/lib/availableChains'
+import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 
 export const QUERY = gql`
   query FindClaimNftQuery($id: String!) {
@@ -38,6 +39,11 @@ export const QUERY = gql`
       id
       type
       availableChains
+      slug
+      name
+      puzzle {
+        isAnon
+      }
       nfts {
         cloudinaryId
       }
@@ -217,14 +223,28 @@ export const Success = ({
       )}
 
       {(claimed || transactionSuccess) && (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={`${marketplaceLookup[chainClaimed || chain?.id]}${tokenId}`}
-          className="mt-6 text-gray-200 underline"
-        >
-          View NFT On {marketplaceNameLookup[chainClaimed || chain?.id]}
-        </a>
+        <div>
+          <div className="pb-6">
+            <Button
+              to={rewardableLandingRoute({
+                type: rewardable.type,
+                slug: rewardable.slug,
+                anonPuzzle: rewardable.puzzle?.isAnon,
+              })}
+              text={`Return to ${rewardable.name} ${capitalize(
+                rewardable.type
+              )}`}
+            />
+          </div>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`${marketplaceLookup[chainClaimed || chain?.id]}${tokenId}`}
+            className="text-gray-200 underline transition-colors hover:text-turquoise"
+          >
+            View NFT On {marketplaceNameLookup[chainClaimed || chain?.id]}
+          </a>
+        </div>
       )}
 
       {(writeError || transactionError) && (
