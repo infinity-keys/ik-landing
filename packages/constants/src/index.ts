@@ -4,6 +4,7 @@ import { Chain } from '@rainbow-me/rainbowkit'
 export const IK_ID_COOKIE = 'ik-id'
 export const IK_CLAIMS_NAMESPACE = 'https://infinitykeys.io'
 export const PUZZLE_COOKIE_NAME = `ik-puzzles`
+export const ANONYMOUS_USER_ID = 'ANON'
 
 // Crypto stuff
 export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
@@ -16,7 +17,7 @@ export const SENDGRID_SENDER_ACCOUNT = 'noreply@infinitykeys.io'
 export const URL_ORIGIN =
   typeof window !== 'undefined'
     ? window.location.origin
-    : 'http://localhost:3000'
+    : 'http://localhost:8910'
 export const PACK_COLLECTION_BASE = 'packs'
 export const PACK_LANDING_BASE = 'pack'
 export const PUZZLE_COLLECTION_BASE = 'puzzles'

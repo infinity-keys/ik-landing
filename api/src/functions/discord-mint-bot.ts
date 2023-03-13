@@ -14,9 +14,11 @@ const client = new discord.Client({
 
 client.login(process.env.DISCORD_MINT_BOT_KEY)
 
-Moralis.start({
-  apiKey: process.env.MORALIS_API_KEY,
-})
+if (!Moralis.Core.isStarted) {
+  Moralis.start({
+    apiKey: process.env.MORALIS_API_KEY,
+  })
+}
 
 interface MetadataResponse {
   image: string
@@ -53,11 +55,11 @@ export const handler = async (event) => {
 
     const claimedNFT = new EmbedBuilder()
       .setColor('101d42')
-      .setTitle('Infinity Keys')
+      .setTitle("There's treasure everywhere...")
       .setAuthor({
         name: 'Infinity Keys',
         iconURL:
-          'https://res.cloudinary.com/infinity-keys/image/upload/v1671162913/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
+          'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
         url: 'https://infinitykeys.io',
       })
       .setDescription('New Mint!!')
@@ -72,7 +74,7 @@ export const handler = async (event) => {
       .setFooter({
         text: 'Claimed',
         iconURL:
-          'https://res.cloudinary.com/infinity-keys/image/upload/v1671162913/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
+          'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
       })
 
     const channel = await client.channels.fetch(process.env.MINT_CHANNEL)

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import EnvelopeIcon from '@heroicons/react/20/solid/EnvelopeIcon'
 import { truncate } from '@infinity-keys/core'
@@ -8,10 +8,9 @@ import { useAccount } from 'wagmi'
 
 import { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import Button from 'src/components/Button'
-import useReconcileProgress from 'src/hooks/useReconcileProgress'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 
 export const QUERY = gql`
   query FindUserQuery {
@@ -33,7 +32,7 @@ export const QUERY = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <LoadingIcon />
 
 export const Empty = () => <div>Empty</div>
 
@@ -50,10 +49,6 @@ export const Success = ({
 
   // Immediately upon mount, reconcile progress, but also provide function to
   // use on button click
-  const { reconcilePuzzles, progressLoading } = useReconcileProgress()
-  useEffect(() => {
-    reconcilePuzzles()
-  }, [reconcilePuzzles])
 
   return (
     <div className="overflow-hidden rounded-lg bg-black/30">
@@ -70,14 +65,6 @@ export const Success = ({
             {user.username || user.email.split('@')[0]}
           </p>
           {address && <p className="text-turquoise">{truncate(address)}</p>}
-        </div>
-
-        <div className="ml-auto">
-          <Button
-            text={`Sync${progressLoading ? ' (Loading)' : ''}`}
-            onClick={reconcilePuzzles}
-            disabled={progressLoading}
-          />
         </div>
       </div>
 

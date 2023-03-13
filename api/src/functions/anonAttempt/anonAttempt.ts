@@ -1,4 +1,4 @@
-import { PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
+import { ANONYMOUS_USER_ID, PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
 import type { APIGatewayEvent } from 'aws-lambda'
 import cookie from 'cookie'
 
@@ -126,7 +126,7 @@ export const handler = async (event: APIGatewayEvent) => {
   const stepsCompleted = buildCookieData({
     completed: puzzlesCompleted,
     puzzleId,
-    authId: 'ANON',
+    authId: ANONYMOUS_USER_ID,
     stepId,
   })
 
