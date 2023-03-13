@@ -7,6 +7,7 @@ import DummyThumbnail from 'src/components/DummyThumbnail/DummyThumbnail'
 import PuzzleLandingLayout from 'src/components/PuzzleLandingLayout/PuzzleLandingLayout'
 import StepsCell from 'src/components/StepsCell'
 import '@infinity-keys/react-lens-share-button/dist/style.css'
+import Alert from 'src/components/Alert/Alert'
 
 interface Props {
   rewardable: FindRewardablePuzzleBySlug['rewardable']
@@ -27,13 +28,18 @@ const Rewardable = ({ rewardable }: Props) => {
           stepNum={stepNum && stepNum}
         />
       ) : (
-        <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
-          {rewardable.puzzle.steps.map(({ stepSortWeight }) => (
-            <DummyThumbnail
-              key={stepSortWeight}
-              name={`Step ${stepSortWeight.toString()}`}
-            />
-          ))}
+        <div>
+          <div className="flex justify-center">
+            <Alert text="Must be logged in to play." />
+          </div>
+          <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
+            {rewardable.puzzle.steps.map(({ stepSortWeight }) => (
+              <DummyThumbnail
+                key={stepSortWeight}
+                name={`Step ${stepSortWeight.toString()}`}
+              />
+            ))}
+          </div>
         </div>
       )}
     </PuzzleLandingLayout>
