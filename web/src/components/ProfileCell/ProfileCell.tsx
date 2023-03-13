@@ -8,10 +8,9 @@ import { useAccount } from 'wagmi'
 
 import { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import Button from 'src/components/Button'
-import useReconcileProgress from 'src/hooks/useReconcileProgress'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 
 export const QUERY = gql`
   query FindUserQuery {
@@ -33,7 +32,7 @@ export const QUERY = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <LoadingIcon />
 
 export const Empty = () => <div>Empty</div>
 

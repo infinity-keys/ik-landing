@@ -369,7 +369,7 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
        */
 
       // Get all puzzle ids off cookie
-      const cookiePuzzles = Object.keys(parsedIkV2Cookie.puzzles) // array of puzzle ids
+      const cookiePuzzles = Object.keys(parsedIkV2Cookie.puzzles)
       // Get anonymous puzzle data for the ids in user's cookie
       const anonPuzzleDataByCookieId = anonPuzzles.filter(({ id }) =>
         cookiePuzzles.includes(id)
@@ -400,17 +400,16 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
 
       if (puzzlesWithoutRewards.length) {
         // Create user reward for solved anonymous puzzles
-        const puzzleUserRewards = puzzlesWithoutRewards.map(({ id }) =>
-          createUserReward({
-            input: {
-              rewardableId: id,
-              userId: context.currentUser.id,
-            },
-          })
-        )
+        const puzzleUserRewards = puzzlesWithoutRewards.map(({ id }) => ({
+          rewardableId: id,
+          userId: context.currentUser.id,
+        }))
 
         // Now anonymously solved puzzles will have a userReward
-        await Promise.all(puzzleUserRewards)
+        await db.userReward.createMany({
+          data: puzzleUserRewards,
+          skipDuplicates: true,
+        })
 
         // Get all unique parentIds from the solved puzzles
         const parentIds = new Set(
@@ -450,18 +449,18 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
           )
           .map(({ id }) => id)
 
-        const packUserRewards = unrewardedPackRewardables.map((id) =>
-          createUserReward({
-            input: {
-              rewardableId: id,
-              userId: context.currentUser.id,
-            },
-          })
-        )
+        const packUserRewards = unrewardedPackRewardables.map((id) => ({
+          rewardableId: id,
+          userId: context.currentUser.id,
+        }))
 
         // Now packs will have a userReward if solving an anon puzzle results
         // in solving a pack
-        await Promise.all(packUserRewards)
+
+        await db.userReward.createMany({
+          data: packUserRewards,
+          skipDuplicates: true,
+        })
       }
     }
 

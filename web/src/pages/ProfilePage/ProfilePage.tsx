@@ -49,18 +49,18 @@ const ProfilePage = () => {
     <>
       {isAuthenticated && !progressLoading && (
         <div className="mx-auto w-full max-w-lg pb-12">
-          <div className="mx-auto">
-            <Button
-              text={`Sync${progressLoading ? ' (Loading)' : ''}`}
-              onClick={reconcilePuzzles}
-              disabled={progressLoading}
-            />
-          </div>
           <ProfileCell />
+
+          <button
+            className="mx-auto mt-2 block italic text-gray-200 underline transition-colors hover:text-turquoise"
+            onClick={() => reconcilePuzzles()}
+          >
+            Sync your progress
+          </button>
         </div>
       )}
 
-      {loading ? (
+      {loading || progressLoading ? (
         <LoadingIcon />
       ) : (
         <div className="relative text-center">
