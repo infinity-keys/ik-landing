@@ -1,6 +1,5 @@
 import { FormEvent, useState } from 'react'
 
-import clsx from 'clsx'
 import loRange from 'lodash/range'
 import RICIBs from 'react-individual-character-input-boxes'
 import { FindStepQuery } from 'types/graphql'
