@@ -67,7 +67,9 @@ export const wagmiClient = createClient({
   provider,
 })
 
-const magic = new Magic(process.env.MAGIC_LINK_PUBLIC)
+const magic = new Magic(process.env.MAGIC_LINK_PUBLIC, {
+  testMode: true,
+})
 
 const App = () => {
   return (

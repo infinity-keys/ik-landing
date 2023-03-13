@@ -198,6 +198,12 @@ export default async () => {
           ],
         },
       },
+      {
+        id: 'clf1mz3g00003t07zwrbr7oq6',
+        username: 'cypressUser',
+        authId: 'did:ethr:0x1e9FF803fFA22209A10A087cc8361d4aa3528c45',
+        email: 'test+success@magic.link'
+      }
     ]
 
     // @see: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
@@ -206,6 +212,7 @@ export default async () => {
         return await db.user.create({ data })
       })
     )
+
 
     // NFTs
     const nfts = await MigrateNfts()

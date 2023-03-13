@@ -63,13 +63,14 @@ const ProfilePage = () => {
       {loading || progressLoading ? (
         <LoadingIcon />
       ) : (
-        <div className="relative text-center">
+        <div className="relative text-center" data-cy="magic-login-parent">
           {!isAuthenticated && (
             <input
               type="email"
               placeholder="Your Email"
               ref={emailRef}
               className="mr-4 rounded border border-turquoise bg-transparent text-lg text-white placeholder:text-gray-150"
+              data-cy="magic-login-input"
             />
           )}
           <Button
