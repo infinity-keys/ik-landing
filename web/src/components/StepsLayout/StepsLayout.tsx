@@ -37,7 +37,7 @@ const StepsLayout = ({
   return (
     <div>
       <Suspense fallback={<LoadingIcon />}>
-        {step && (
+        {step && !hasBeenSolved && (
           <div>
             {step.type === 'SIMPLE_TEXT' && (
               <SimpleTextInput
@@ -65,46 +65,48 @@ const StepsLayout = ({
         )}
       </Suspense>
 
-      {children}
+      <div className="mb-4">{children}</div>
 
-      <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
-        {puzzle.steps.map(
-          ({
-            id,
-            stepSortWeight,
-            hasUserCompletedStep,
-            hasAnonUserCompletedStep,
-          }) => {
-            const routeParams = {
-              slug,
-              step: stepSortWeight,
+      {(!step || !hasBeenSolved) && (
+        <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
+          {puzzle.steps.map(
+            ({
+              id,
+              stepSortWeight,
+              hasUserCompletedStep,
+              hasAnonUserCompletedStep,
+            }) => {
+              const routeParams = {
+                slug,
+                step: stepSortWeight,
+              }
+              const completed = isAuthenticated
+                ? hasUserCompletedStep
+                : hasAnonUserCompletedStep
+              return (
+                <ThumbnailMini
+                  key={stepSortWeight}
+                  name={`Step ${stepSortWeight.toString()}`}
+                  progress={
+                    hasBeenSolved
+                      ? ThumbnailProgress.Completed
+                      : currentStepId === id
+                      ? ThumbnailProgress.Current
+                      : completed
+                      ? ThumbnailProgress.Completed
+                      : ThumbnailProgress.NotCompleted
+                  }
+                  to={
+                    isAuthenticated && !puzzle.isAnon
+                      ? routes.puzzleStep(routeParams)
+                      : routes.anonPuzzleStep(routeParams)
+                  }
+                />
+              )
             }
-            const completed = isAuthenticated
-              ? hasUserCompletedStep
-              : hasAnonUserCompletedStep
-            return (
-              <ThumbnailMini
-                key={stepSortWeight}
-                name={`Step ${stepSortWeight.toString()}`}
-                progress={
-                  hasBeenSolved
-                    ? ThumbnailProgress.Completed
-                    : currentStepId === id
-                    ? ThumbnailProgress.Current
-                    : completed
-                    ? ThumbnailProgress.Completed
-                    : ThumbnailProgress.NotCompleted
-                }
-                to={
-                  isAuthenticated && !puzzle.isAnon
-                    ? routes.puzzleStep(routeParams)
-                    : routes.anonPuzzleStep(routeParams)
-                }
-              />
-            )
-          }
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
