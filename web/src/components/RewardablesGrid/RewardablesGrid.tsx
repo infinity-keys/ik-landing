@@ -57,7 +57,7 @@ const RewardablesList = ({
   return (
     <>
       <Seo
-        title={`Infinity Keys ${loCapitalize(rewardables[0].type)}s`}
+        title={`${loCapitalize(rewardables[0].type)}s`}
         url={buildUrlString(`/puzzles`)}
       />
 
