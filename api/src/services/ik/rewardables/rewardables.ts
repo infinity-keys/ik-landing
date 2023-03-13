@@ -363,18 +363,24 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       // Do it
       await Promise.all(newSolves)
 
-      // get all puzzle ids off cookie
+      /**
+       * Create userRewards for puzzles solved anonymously and for packs where
+       * solving an anonymous puzzle results in a solved pack
+       */
+
+      // Get all puzzle ids off cookie
       const cookiePuzzles = Object.keys(parsedIkV2Cookie.puzzles) // array of puzzle ids
-      // get the ones that are anonymous
-      const anonPuzzlesDataThatMatchCookie = anonPuzzles.filter(({ id }) =>
+      // Get anonymous puzzle data for the ids in user's cookie
+      const anonPuzzleDataByCookieId = anonPuzzles.filter(({ id }) =>
         cookiePuzzles.includes(id)
       )
-      // get rewardable puzzle ids where all steps are in cookie
-      const solvedPuzzles = anonPuzzlesDataThatMatchCookie.filter(({ steps }) =>
+      // Get rewardable puzzle ids where all steps are in cookie
+      const solvedPuzzles = anonPuzzleDataByCookieId.filter(({ steps }) =>
         steps.every((step) => cookieSolvedSteps.includes(step.id))
       )
 
-      const unRewardedRewardables = await db.rewardable.findMany({
+      // Use solved puzzle ids to get rewardables that do not have a userReward
+      const puzzlesWithoutRewards = await db.rewardable.findMany({
         where: {
           id: {
             in: solvedPuzzles.map(({ rewardableId }) => rewardableId),
@@ -392,9 +398,9 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
         },
       })
 
-      if (unRewardedRewardables.length) {
-        // create user reward for solved anonymous puzzles
-        const puzzleUserRewards = unRewardedRewardables.map(({ id }) =>
+      if (puzzlesWithoutRewards.length) {
+        // Create user reward for solved anonymous puzzles
+        const puzzleUserRewards = puzzlesWithoutRewards.map(({ id }) =>
           createUserReward({
             input: {
               rewardableId: id,
@@ -403,22 +409,23 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
           })
         )
 
-        // at this point, all of the solved puzzles without a user reward will be
-        // given a new user reward
+        // Now anonymously solved puzzles will have a userReward
         await Promise.all(puzzleUserRewards)
 
-        // get all unique parentIds from solvedpuzzleswith asChild
+        // Get all unique parentIds from the solved puzzles
         const parentIds = new Set(
-          unRewardedRewardables.flatMap(({ asChild }) =>
+          puzzlesWithoutRewards.flatMap(({ asChild }) =>
             asChild.map(({ parentId }) => parentId)
           )
         )
 
+        // Get all parent packs for the newly solved puzzles
         const packRewardables = await db.rewardable.findMany({
           where: {
             id: {
               in: Array.from(parentIds),
             },
+            type: 'PACK',
           },
           select: {
             id: true,
@@ -434,6 +441,7 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
           },
         })
 
+        // Get the rewardable id for every pack whose children have been solved
         const unrewardedPackRewardables = packRewardables
           .filter(({ asParent }) =>
             asParent.every(
@@ -442,16 +450,18 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
           )
           .map(({ id }) => id)
 
-        await Promise.all(
-          unrewardedPackRewardables.map((id) =>
-            createUserReward({
-              input: {
-                rewardableId: id,
-                userId: context.currentUser.id,
-              },
-            })
-          )
+        const packUserRewards = unrewardedPackRewardables.map((id) =>
+          createUserReward({
+            input: {
+              rewardableId: id,
+              userId: context.currentUser.id,
+            },
+          })
         )
+
+        // Now packs will have a userReward if solving an anon puzzle results
+        // in solving a pack
+        await Promise.all(packUserRewards)
       }
     }
 
