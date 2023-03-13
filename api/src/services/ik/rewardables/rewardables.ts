@@ -68,7 +68,7 @@ export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
         where: { type, listPublicly: true },
         take,
         skip,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { sortWeight: 'asc' },
       }),
       totalCount,
     }
