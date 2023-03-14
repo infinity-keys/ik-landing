@@ -16,6 +16,7 @@ import TwitterShare from 'src/components/TwitterShare/TwitterShare'
 import useCurrentWidth from 'src/hooks/useCurrentWidth'
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
+import { useAuth } from '@redwoodjs/auth'
 
 interface Props {
   rewardable: NonNullable<FindRewardablePackBySlug['pack']>
@@ -24,6 +25,7 @@ interface Props {
 const LAYOUT_BREAKPOINT = 768
 
 const Rewardable = ({ rewardable }: Props) => {
+  const { isAuthenticated } = useAuth()
   const width = useCurrentWidth()
 
   // the full https url to this page
@@ -59,6 +61,9 @@ const Rewardable = ({ rewardable }: Props) => {
 
         <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
           {rewardable.asParent.map(({ childRewardable }) => {
+            const solvedArray = childRewardable.puzzle.steps.map(
+              ({ hasUserCompletedStep }) => hasUserCompletedStep
+            )
             return (
               <Thumbnail
                 key={childRewardable.id}
@@ -76,6 +81,7 @@ const Rewardable = ({ rewardable }: Props) => {
                 }
                 isGrid={width >= LAYOUT_BREAKPOINT}
                 cloudinaryId={childRewardable.nfts[0]?.cloudinaryId}
+                solvedArray={isAuthenticated ? solvedArray : []}
               />
             )
           })}
