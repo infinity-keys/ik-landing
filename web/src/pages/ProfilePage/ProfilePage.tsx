@@ -49,7 +49,7 @@ const ProfilePage = () => {
   return (
     <div>
       <Seo title="Profile" />
-      {isAuthenticated && !progressLoading && (
+      {isAuthenticated && !progressLoading && !loading && (
         <div className="mx-auto w-full max-w-lg pb-12">
           <ProfileCell />
 
