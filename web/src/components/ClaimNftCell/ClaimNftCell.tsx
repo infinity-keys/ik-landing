@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { Fragment, useEffect } from 'react'
+import { Link } from '@redwoodjs/router'
 
 import { gql, useLazyQuery } from '@apollo/client'
 import {
@@ -41,6 +42,13 @@ export const QUERY = gql`
       availableChains
       slug
       name
+      asChildPublicParentRewardables {
+        parentRewardable {
+          slug
+          name
+          type
+        }
+      }
       puzzle {
         isAnon
       }
@@ -183,8 +191,15 @@ export const Success = ({
         <Heading>Claim Your Treasure</Heading>
       </div>
 
+      {!queryLoading &&
+        data?.claim?.errors?.map((err, i) => (
+          <p className="mb-4 italic text-gray-200" key={i}>
+            {err}
+          </p>
+        ))}
+
       {(queryLoading || transactionPending) && (
-        <div className="mb-4">
+        <div className="my-4">
           <LoadingIcon />
         </div>
       )}
@@ -224,7 +239,7 @@ export const Success = ({
 
       {(claimed || transactionSuccess) && (
         <div>
-          <div className="pb-6">
+          <div className="pb-8">
             <Button
               to={rewardableLandingRoute({
                 type: rewardable.type,
@@ -253,12 +268,28 @@ export const Success = ({
         </p>
       )}
 
-      {!queryLoading &&
-        data?.claim?.errors?.map((err, i) => (
-          <p className="mt-4 italic text-gray-200" key={i}>
-            {err}
+      {/* Allows user to navigate to every public parent of this puzzle */}
+      {rewardable.asChildPublicParentRewardables.length > 0 && (
+        <div className="pt-6 text-center text-gray-200">
+          <p>
+            Return to:
+            {rewardable.asChildPublicParentRewardables.map(
+              ({ parentRewardable: { slug, name, type } }, index) => (
+                <Fragment key={slug + type}>
+                  {/* prepend a comma to all but the first item */}
+                  {index ? ', ' : ''}
+                  <Link
+                    to={rewardableLandingRoute({ slug, type })}
+                    className="ml-2 mt-2 inline-block italic transition-colors hover:text-turquoise"
+                  >
+                    {name} {capitalize(type)}
+                  </Link>
+                </Fragment>
+              )
+            )}
           </p>
-        ))}
+        </div>
+      )}
     </div>
   )
 }
