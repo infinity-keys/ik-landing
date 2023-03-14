@@ -41,17 +41,10 @@ export const QUERY = gql`
       availableChains
       slug
       name
-      userRewards {
-        id
-        nfts {
-          id
-        }
-      }
       puzzle {
         isAnon
       }
       nfts {
-        id
         cloudinaryId
       }
     }
@@ -104,10 +97,6 @@ export const Success = ({
     rewardable.availableChains
   )
   const contractAddress = isValidChain && contractAddressLookup[chain?.id]
-  const usersNfts = rewardable.userRewards[0].nfts?.map(({ id }) => id)
-  const claimedByUser = rewardable.nfts.every(({ id }) =>
-    usersNfts.includes(id)
-  )
 
   // checks both db and blockchain to see if user is eligible to mint
   // if successful, it returns all the data needed to mint nft
@@ -168,8 +157,7 @@ export const Success = ({
     }
   }, [transactionSuccess, rewardable.id, updateReward])
 
-  const canClaim =
-    !signature && !claimed && isConnected && isValidChain && !claimedByUser
+  const canClaim = !signature && !claimed && isConnected && isValidChain
 
   const canMint =
     signature &&
@@ -235,13 +223,7 @@ export const Success = ({
         <p className="mb-4">Your trophy has been claimed!</p>
       )}
 
-      {claimedByUser && (
-        <p className="mb-4">
-          This NFT has already been claimed on this account.
-        </p>
-      )}
-
-      {(claimed || transactionSuccess || claimedByUser) && (
+      {(claimed || transactionSuccess) && (
         <div>
           <div className="pb-6">
             <Button

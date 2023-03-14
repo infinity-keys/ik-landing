@@ -13,15 +13,23 @@ export const claim: QueryResolvers['claim'] = async ({
   // @TODO: can we check cookie to see if puzzleId steps are greater than 0, (but what about packs...)
 
   const rewardableData = await rewardableClaim({ id: rewardableId })
-  console.log(JSON.stringify(rewardableData, null, 2))
-  return {
-    errors: ['Please solve to claim'],
-  }
 
   // rewardable has not been solved
   if (!rewardableData || rewardableData.userRewards.length === 0) {
     return {
       errors: ['Please solve to claim'],
+    }
+  }
+
+  // Has this rewardable's NFT been claimed by this user account
+  const usersNfts = rewardableData.userRewards[0].nfts?.map(({ id }) => id)
+  const claimedByUser = rewardableData.nfts.every(({ id }) =>
+    usersNfts.includes(id)
+  )
+
+  if (claimedByUser) {
+    return {
+      errors: ['This NFT has already been claimed on this user account.'],
     }
   }
 
