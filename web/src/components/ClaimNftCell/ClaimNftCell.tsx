@@ -158,7 +158,6 @@ export const Success = ({
   }, [transactionSuccess, rewardable.id, updateReward])
 
   const canClaim = !signature && !claimed && isConnected && isValidChain
-
   const canMint =
     signature &&
     !claimed &&
