@@ -39,26 +39,30 @@ const StepsLayout = ({
       <Suspense fallback={<LoadingIcon />}>
         {step && !hasBeenSolved && (
           <div>
-            {step.type === 'SIMPLE_TEXT' && (
-              <SimpleTextInput
-                count={step.stepSimpleText.solutionCharCount}
-                step={step}
-                puzzleId={puzzle.id}
-                isAnon={puzzle.isAnon}
-              />
-            )}
-
-            {step.type === 'NFT_CHECK' && (
-              <NftCheckButton step={step} puzzleId={puzzle.id} />
-            )}
-
             {step.challenge && (
-              <div className="mx-auto mt-12 mb-12 max-w-prose p-4 md:mt-16 md:mb-20">
+              <div className="mx-auto max-w-prose p-4">
                 <CollapsibleMarkdown
                   title="Challenge"
                   content={step.challenge}
                   defaultOpen
                 />
+              </div>
+            )}
+
+            {step.type === 'SIMPLE_TEXT' && (
+              <div className="pt-8">
+                <SimpleTextInput
+                  count={step.stepSimpleText.solutionCharCount}
+                  step={step}
+                  puzzleId={puzzle.id}
+                  isAnon={puzzle.isAnon}
+                />
+              </div>
+            )}
+
+            {step.type === 'NFT_CHECK' && (
+              <div className="pt-8">
+                <NftCheckButton step={step} puzzleId={puzzle.id} />
               </div>
             )}
           </div>
@@ -68,7 +72,7 @@ const StepsLayout = ({
       <div className="mb-4">{children}</div>
 
       {(!step || !hasBeenSolved) && (
-        <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
+        <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-4 sm:flex-row">
           {puzzle.steps.map(
             ({
               id,
