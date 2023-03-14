@@ -43,6 +43,8 @@ model Rewardable {
   listPublicly   Boolean        @default(true)
   /// Categorize Rewardables into different buckets
   type           RewardableType
+  /// The order this rewardable will show in the grid
+  sortWeight     Int?           @default(1)
 
   /// Assign management of a Rewardable to an Organization
   organization Organization @relation(fields: [orgId], references: [id])

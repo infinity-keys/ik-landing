@@ -9,6 +9,7 @@ export const schema = gql`
     successMessage: String
     listPublicly: Boolean!
     type: RewardableType!
+    sortWeight: Int
     organization: Organization! @requireAuth(roles: ["ADMIN"])
     orgId: String!
     nfts: [Nft]!
@@ -48,6 +49,7 @@ export const schema = gql`
     successMessage: String
     listPublicly: Boolean!
     type: RewardableType!
+    sortWeight: Int
     orgId: String!
     availableChains: [AvailableChains]!
     migrateId: String
@@ -60,6 +62,7 @@ export const schema = gql`
     successMessage: String
     listPublicly: Boolean
     type: RewardableType
+    sortWeight: Int
     orgId: String
     availableChains: [AvailableChains]!
     migrateId: String

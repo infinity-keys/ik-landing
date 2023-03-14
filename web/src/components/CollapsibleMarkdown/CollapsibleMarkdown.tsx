@@ -39,7 +39,7 @@ const CollapsibleMarkdown = ({
               />
             </Disclosure.Button>
             <Disclosure.Panel className="border-t border-t-white/10 px-2">
-              <div className="markdown px-4 pb-4 text-left text-white/80">
+              <div className="markdown landing-md px-4 pb-4 text-left text-white/80">
                 <Markdown>{content}</Markdown>
               </div>
             </Disclosure.Panel>
