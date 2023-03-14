@@ -39,7 +39,7 @@ const PuzzleLandingLayout = ({
   )
 
   return (
-    <>
+    <div className="pt-10">
       <Seo
         title={rewardable.name}
         description={`Can you unlock the ${rewardable.name} puzzle?`}
@@ -94,7 +94,7 @@ const PuzzleLandingLayout = ({
           tweetBody={`Can you unlock the ${rewardable.name} puzzle? @InfinityKeys\n\n${url}`}
         />
       </div>
-    </>
+    </div>
   )
 }
 
