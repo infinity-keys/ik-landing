@@ -6,13 +6,13 @@ Note: Make sure you navigate to `/packages/discord-dust-game-bot` to make any ch
 
 ## How to Run Local from a Test Discord Server
 
-if you need to create test server:
+if you need to create a test server and test bot:
 
 ```shell
-Follow the instructions [here] to create your own server
+Follow the instructions [here](https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server-) to create your own server and [here](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot) to create you test bot
 ```
 
-otherwise
+then follow the instructions below:
 
 1. copy `.env.default` values to `.env` file
 2. update `.env` with the correct secrets (tokens, guildIDs, etc.)
@@ -20,22 +20,24 @@ otherwise
 4. run `node deploy-commands.js` to register (if editing slash commands)
 5. run `node .` to start
 
-## how to add a new/update commands:
+## How to Add a New/Update Slash Command(s):
 
--to create new command
-create new file in commands folder
-run deploy commands script locally to update commands on server
+to create new command:
 
-- to update existing commands
-  open command file that you want to edit
-  run run deploy commands script locally to update commands on server
+1. create new file in commands folder
+2. run `node deploy-commands.js` to register command(s) on server
 
-when deploying to productions:
+to update existing commands
+
+1. open command file that you want to edit
+2. run `node deploy-commands.js` to update command(s) on server
+
+## Deploy to Production:
 
 1. verify that env variables are in the production and point to prod discord server/channel
 2. verify that render yaml is set up for start up and connected to database
 3. verify that dockerfile has lastest version of mongodb
 
-to backup database
+## How to Create Local Database with MongoDB
 
-how to create local database with mongo
+to backup database
