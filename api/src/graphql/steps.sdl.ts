@@ -35,15 +35,18 @@ export const schema = gql`
     stepSortWeight: Int!
     puzzleId: String!
     type: StepType!
+    migrateLandingRoute: String
   }
 
   input UpdateStepInput {
     failMessage: String
     successMessage: String
     challenge: String
+    resourceLinks: String
     stepSortWeight: Int
     puzzleId: String
     type: StepType
+    migrateLandingRoute: String
   }
 
   type Mutation {
