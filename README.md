@@ -27,9 +27,11 @@ Your browser should automatically open to http://localhost:8910 where you'll see
 > Congratulations on running your first Redwood CLI command!
 > From dev to deploy, the CLI is with you the whole way.
 > And there's quite a few commands at your disposal:
+>
 > ```
 > yarn redwood --help
 > ```
+>
 > For all the details, see the [CLI reference](https://redwoodjs.com/docs/cli-commands).
 
 ## Prisma and the database
@@ -94,7 +96,7 @@ Redwood fully integrates Jest with the front and the backends and makes it easy 
 yarn rw test
 ```
 
-To make the integration even more seamless, Redwood augments Jest with database [scenarios](https://redwoodjs.com/docs/testing.md#scenarios)  and [GraphQL mocking](https://redwoodjs.com/docs/testing.md#mocking-graphql-calls).
+To make the integration even more seamless, Redwood augments Jest with database [scenarios](https://redwoodjs.com/docs/testing.md#scenarios) and [GraphQL mocking](https://redwoodjs.com/docs/testing.md#mocking-graphql-calls).
 
 ## Ship it
 
@@ -130,7 +132,7 @@ Download [Docker Desktop](https://www.docker.com/products/docker-desktop/) and g
 
 Follow [these instructions](https://learn.microsoft.com/en-us/windows/wsl/install) in PowerShell to install WSL2.
 
-**NOTE: your user account must be an administrator on your machine** -you cannot run PowerShell *'as an administrator'* from a non admin user account because doing so will prevent installs. To install WSL2, run:
+**NOTE: your user account must be an administrator on your machine** -you cannot run PowerShell _'as an administrator'_ from a non admin user account because doing so will prevent installs. To install WSL2, run:
 
 `$ wsl --install`
 
@@ -170,7 +172,7 @@ Install Node Version Manager, ask Bloom why we use v18? (latest?)
 
 Follow these instruction [here](https://yarnpkg.com/getting-started/install).
 
-Enable `corepack`, a zero-runtime-dependency Node script that acts a bridge between Node projects and package managers like Yarn.  It is included with Node.js:
+Enable `corepack`, a zero-runtime-dependency Node script that acts a bridge between Node projects and package managers like Yarn. It is included with Node.js:
 
 `$ corepack enable`
 
@@ -194,26 +196,32 @@ Follow [these instructions](https://www.theserverside.com/blog/Coffee-Talk-Java-
 
 1. Install Docker for Mac/Windows
 2. Run:
-  ```bash
-  docker-compose up -d
-  ```
+
+```bash
+docker-compose up -d
+```
+
 3. Ensure root `.env` contains the line:
-  ```env
-  DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres?connection_limit=1"
-  ```
+
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres?connection_limit=1"
+```
+
 4. Install [Beekeeper Studio Community Edition](https://github.com/beekeeper-studio/beekeeper-studio/releases)
 5. Within Beekeeper Studio, connect to this database with the following settings:
-  ```
-  Connection type: Postgres
-  Connection mode: Host and Port
-  Host: localhost
-  Port: 5432
-  Enable SSL: disabled
-  User: postgres
-  Password: postgres
-  Default Database: postgres
-  SSH Tunnel: disabled
-  ```
+
+```
+Connection type: Postgres
+Connection mode: Host and Port
+Host: localhost
+Port: 5432
+Enable SSL: disabled
+User: postgres
+Password: postgres
+Default Database: postgres
+SSH Tunnel: disabled
+```
+
 6. Click "Connect" and note there are no tables yet.
 
 ### Daily db interaction
@@ -236,6 +244,7 @@ Migrate all database tables and columns (but NOT actual data):
 
 yarn rw prisma migrate dev
 ```
+
 Migrate all database tables and clumns WITH data pulled from v1.0 IK:
 
 ```bash
@@ -261,6 +270,7 @@ yarn npm publish --access public
 ```
 
 ## Tests
+
 `yarn rw test api <filename>`
 
 ### For Mac Users
@@ -273,7 +283,18 @@ There can be a permissions error that happens in MacOS if project is in Document
 `watchman shutdown-server`
 
 ## Contract Addresses
-avax:     0xB40fD6825a366081192d890d2760113C066761Ef
+
+avax: 0xB40fD6825a366081192d890d2760113C066761Ef
 ethereum: 0x54b743D6055e3BBBF13eb2C748A3783516156e5B
-polygon:  0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9
+polygon: 0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9
 optimism: 0x54b743D6055e3BBBF13eb2C748A3783516156e5B
+
+## Discord Bots
+
+A customizable discord bot to display alerts when users mints NFTs and vote on blockchain
+
+You can follow the instructions[here](https://docs.moralis.io/example-dapps/evm/blockchain-discord-bot) to use as a template to create.
+
+### discord-mint-bot
+
+### discord-vote-bot
