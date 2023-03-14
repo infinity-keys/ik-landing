@@ -1,4 +1,8 @@
-import { buildUrlString, cloudinaryUrl } from '@infinity-keys/core'
+import {
+  buildUrlString,
+  cloudinaryUrl,
+  ThumbnailProgress,
+} from '@infinity-keys/core'
 import { LensShareButton } from '@infinity-keys/react-lens-share-button'
 import type { FindRewardablePackBySlug } from 'types/graphql'
 
@@ -54,20 +58,27 @@ const Rewardable = ({ rewardable }: Props) => {
         )}
 
         <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
-          {rewardable.asParent.map(({ childRewardable }) => (
-            <Thumbnail
-              key={childRewardable.id}
-              id={childRewardable.id}
-              name={childRewardable.name}
-              href={rewardableLandingRoute({
-                type: childRewardable.type,
-                slug: childRewardable.slug,
-                anonPuzzle: childRewardable.puzzle?.isAnon,
-              })}
-              isGrid={width >= LAYOUT_BREAKPOINT}
-              cloudinaryId={childRewardable.nfts[0]?.cloudinaryId}
-            />
-          ))}
+          {rewardable.asParent.map(({ childRewardable }) => {
+            return (
+              <Thumbnail
+                key={childRewardable.id}
+                id={childRewardable.id}
+                name={childRewardable.name}
+                href={rewardableLandingRoute({
+                  type: childRewardable.type,
+                  slug: childRewardable.slug,
+                  anonPuzzle: childRewardable.puzzle?.isAnon,
+                })}
+                progress={
+                  childRewardable.userRewards.length
+                    ? ThumbnailProgress.Completed
+                    : ThumbnailProgress.Unknown
+                }
+                isGrid={width >= LAYOUT_BREAKPOINT}
+                cloudinaryId={childRewardable.nfts[0]?.cloudinaryId}
+              />
+            )
+          })}
         </div>
       </div>
 
