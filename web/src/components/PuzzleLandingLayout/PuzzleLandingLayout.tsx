@@ -84,7 +84,7 @@ const PuzzleLandingLayout = ({
         </div>
       )}
 
-      <div className="flex justify-center gap-4 px-4 pb-9 pt-8">
+      <div className="flex justify-center gap-4 px-4 pb-9 pt-16">
         <LensShareButton
           postBody={`Can you unlock the ${rewardable.name} puzzle?`}
           url={url}

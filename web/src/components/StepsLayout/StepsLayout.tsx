@@ -72,7 +72,7 @@ const StepsLayout = ({
       <div className="mb-4">{children}</div>
 
       {(!step || !hasBeenSolved) && (
-        <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
+        <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-4 sm:flex-row">
           {puzzle.steps.map(
             ({
               id,
