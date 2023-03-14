@@ -82,6 +82,7 @@ export const rewardableClaim = ({ id }) => {
       type: true,
       nfts: {
         select: {
+          id: true,
           tokenId: true,
         },
       },
@@ -89,6 +90,7 @@ export const rewardableClaim = ({ id }) => {
         where: { userId: context.currentUser.id },
         select: {
           id: true,
+          nfts: true,
         },
       },
       asParent: {

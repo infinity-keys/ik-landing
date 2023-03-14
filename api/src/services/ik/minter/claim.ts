@@ -13,6 +13,10 @@ export const claim: QueryResolvers['claim'] = async ({
   // @TODO: can we check cookie to see if puzzleId steps are greater than 0, (but what about packs...)
 
   const rewardableData = await rewardableClaim({ id: rewardableId })
+  console.log(JSON.stringify(rewardableData, null, 2))
+  return {
+    errors: ['Please solve to claim'],
+  }
 
   // rewardable has not been solved
   if (!rewardableData || rewardableData.userRewards.length === 0) {
