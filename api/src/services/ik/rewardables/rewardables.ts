@@ -266,6 +266,125 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
 
       // 4. Fire off all the Solve + Attempt creations
       await Promise.all(newSolves)
+
+      /**
+       * Create userRewards for puzzles and packs solved in the v1
+       */
+
+      // Get all rewardables without a userReward whose puzzle's steps are in
+      // the v1 cookie
+      const puzzlesWithoutRewards = await db.rewardable.findMany({
+        where: {
+          puzzle: {
+            steps: {
+              some: {
+                migrateLandingRoute: {
+                  in: oldPuzzlesUnsolvedInV2,
+                },
+                attempts: {
+                  some: {
+                    solve: {
+                      isNot: null,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          NOT: {
+            userRewards: {
+              some: {
+                userId: context.currentUser.id,
+              },
+            },
+          },
+        },
+        include: {
+          asChild: true,
+          puzzle: {
+            include: {
+              steps: {
+                include: {
+                  attempts: {
+                    include: {
+                      solve: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      })
+
+      if (puzzlesWithoutRewards.length) {
+        // Get rewardables that have solves on every step
+        const solvedPuzzles = puzzlesWithoutRewards.filter(({ puzzle }) =>
+          puzzle.steps.every(({ attempts }) =>
+            attempts.some(({ solve }) => !!solve.id)
+          )
+        )
+
+        // Create user rewards for solved puzzles
+        const puzzleUserRewards = solvedPuzzles.map(({ id }) => ({
+          rewardableId: id,
+          userId: context.currentUser.id,
+        }))
+
+        await db.userReward.createMany({
+          data: puzzleUserRewards,
+          skipDuplicates: true,
+        })
+
+        // Get pack ids for solved puzzles
+        const parentIds = new Set(
+          solvedPuzzles.flatMap(({ asChild }) =>
+            asChild.map(({ parentId }) => parentId)
+          )
+        )
+
+        // Get pack rewardables
+        const packRewardables = await db.rewardable.findMany({
+          where: {
+            id: {
+              in: Array.from(parentIds),
+            },
+            type: 'PACK',
+          },
+          select: {
+            id: true,
+            asParent: {
+              select: {
+                childRewardable: {
+                  select: {
+                    userRewards: true,
+                  },
+                },
+              },
+            },
+          },
+        })
+
+        // Get pack rewardable ids for packs without userRewards
+        const unrewardedPackRewardables = packRewardables
+          .filter(({ asParent }) =>
+            asParent.every(
+              ({ childRewardable }) => childRewardable.userRewards.length
+            )
+          )
+          .map(({ id }) => id)
+
+        // Create userRewards for solved packs
+        const packUserRewards = unrewardedPackRewardables.map((id) => ({
+          rewardableId: id,
+          userId: context.currentUser.id,
+        }))
+
+        await db.userReward.createMany({
+          data: packUserRewards,
+          skipDuplicates: true,
+        })
+      }
     }
 
     /**
