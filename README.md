@@ -301,6 +301,8 @@ Note: Make sure you navigate to `api/src/functions` to make any changes/updates 
 
 ### How to Run Local from a Test Discord Server
 
+Note: You need to have `ngrok` installed and running in order to test locally
+
 if you need to create a test server and test bot:
 
 Follow the instructions [here](https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server-) to create your own server and [here](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot) to create your test bot.
@@ -309,8 +311,9 @@ and then follow the instructions below:
 
 1. update `.env` with the correct values (api key, bot token, discord channel id, etc.)
 2. run `yarn` to install/update packages
-3. make sure moralis stream is set to `Activate Stream` to start receiving post to discord channel
+3. run `ngrok http [port-number]` to boot up your server
+4. copy the webhook url starting with `https`
+5. login into [moralis.io](http://www.moralis.io) to update the webhook url tothe associated Moralis stream by selecting `Edit Stream`
+6. make sure moralis stream is set to `Activate Stream` to start receiving post to discord channel
 
-### discord-mint-bot
-
-### discord-vote-bot
+** Once testing is complete, make sure to update all .env variables to the production Discord server and the webhook url in Moralis to the appropiate api url `http:"//api.infinitykeys.io/[name of discord bot file]` **
