@@ -289,11 +289,25 @@ ethereum: 0x54b743D6055e3BBBF13eb2C748A3783516156e5B
 polygon: 0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9
 optimism: 0x54b743D6055e3BBBF13eb2C748A3783516156e5B
 
-## Discord Bots
+## Discord Bots (Mint and Vote-Alert)
 
-A customizable discord bot to display alerts when users mints NFTs and vote on blockchain
+A customizable discord bot to display alerts when users mints NFTs and votes are casted on blockchain
 
 You can follow the instructions[here](https://docs.moralis.io/example-dapps/evm/blockchain-discord-bot) to use as a template to create.
+
+Note: Make sure you navigate to `api/src/functions` to make any changes/updates to the bots.
+
+### How to Run Local from a Test Discord Server
+
+if you need to create a test server and test bot:
+
+Follow the instructions [here](https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server-) to create your own server and [here](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot) to create your test bot.
+
+and then follow the instructions below:
+
+1. update `.env` with the correct values (api key, bot token, discord channel id, etc.)
+2. run `yarn` to install/update packages
+3. make sure moralis stream is set to `activate stream` to start receiving post to discord channel
 
 ### discord-mint-bot
 
