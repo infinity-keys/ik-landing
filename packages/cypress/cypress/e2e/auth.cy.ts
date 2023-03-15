@@ -23,7 +23,6 @@ describe('Magic Link Flow', () => {
 
   // navigate to profile page
   it('navigates to profile page', () => {
-    cy.visit('/')
     cy.intercept(
       'GET',
       'https://api.magic.link/v1/core/magic_client/config'
