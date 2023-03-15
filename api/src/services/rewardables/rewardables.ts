@@ -66,9 +66,12 @@ export const Rewardable: RewardableRelationResolvers = {
       .userRewards({ where: { userId: context.currentUser.id } })
   },
   asParent: (_obj, { root }) => {
-    return db.rewardable
-      .findUnique({ where: { id: root?.id } })
-      .asParent({ orderBy: { childSortWeight: 'asc' } })
+    return db.rewardable.findUnique({ where: { id: root?.id } }).asParent({
+      orderBy: [
+        { childSortWeight: 'asc' },
+        { childRewardable: { name: 'asc' } },
+      ],
+    })
   },
   asChild: (_obj, { root }) => {
     return db.rewardable.findUnique({ where: { id: root?.id } }).asChild()
