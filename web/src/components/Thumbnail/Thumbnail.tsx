@@ -1,5 +1,4 @@
-// import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon'
-// import LockOpenIcon from '@heroicons/react/24/solid/LockOpenIcon'
+import CheckIcon from '@heroicons/react/24/solid/CheckIcon'
 import { ThumbnailProgress } from '@infinity-keys/core'
 import Avatar from 'boring-avatars'
 import clsx from 'clsx'
@@ -15,6 +14,7 @@ interface ThumbnailProps {
   href: string
   isGrid: boolean
   cloudinaryId?: string
+  solvedArray?: boolean[]
   progress?: ThumbnailProgress
 }
 
@@ -25,7 +25,8 @@ const Thumbnail = ({
   id,
   isGrid,
   href,
-  // progress = ThumbnailProgress.Unknown,
+  solvedArray = [],
+  progress = ThumbnailProgress.Unknown,
   cloudinaryId,
 }: ThumbnailProps) => {
   return (
@@ -33,26 +34,22 @@ const Thumbnail = ({
       to={href}
       className={clsx(
         'puzzle-thumb relative block w-full max-w-[18rem] cursor-pointer break-words rounded-lg border border-transparent bg-blue-800 shadow transition hover:border-turquoise',
-        // progress === ThumbnailProgress.Current
-        //   ? 'border-turquoise'
-        //   : 'border-transparent',
+        progress === ThumbnailProgress.Current
+          ? 'border-turquoise'
+          : 'border-transparent',
         {
           'flex flex-col text-center': isGrid,
-          // 'cursor-pointer transition hover:border-turquoise':
-          //   progress === ThumbnailProgress.Completed,
-          // 'opacity-60 grayscale':
-          //   progress === ThumbnailProgress.NotCompleted ||
-          //   progress === ThumbnailProgress.Unknown,
+          'cursor-pointer transition hover:border-turquoise':
+            progress === ThumbnailProgress.Completed,
+          'opacity-60 grayscale': progress === ThumbnailProgress.NotCompleted,
         }
       )}
     >
-      {/* <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full ">
-        {progress === ThumbnailProgress.Completed ? (
-          <LockOpenIcon className="h-3 w-3 text-turquoise" />
-        ) : (
-          <LockClosedIcon className="h-3 w-3 text-turquoise" />
-        )}
-      </span> */}
+      {progress === ThumbnailProgress.Completed && (
+        <span className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-turquoise/30 ">
+          <CheckIcon className="h-3 w-3 text-turquoise" />
+        </span>
+      )}
 
       <span
         className={clsx(
@@ -81,30 +78,40 @@ const Thumbnail = ({
             />
           )}
         </span>
-        <h3
-          className={clsx('text-sm font-medium text-gray-200', {
-            'mt-6': isGrid,
-          })}
-        >
-          {name}
-        </h3>
-        <dl
-          className={clsx('flex-grow', {
-            ' mt-1 flex flex-col justify-between': isGrid,
-          })}
-        >
-          <dt className="sr-only">Logo</dt>
-          <dd
-            className={clsx(
-              'flex',
-              isGrid ? 'mt-4 justify-center' : 'justify-end'
-            )}
+        <span>
+          <h3
+            className={clsx('text-sm font-medium text-gray-200', {
+              'mt-6': isGrid,
+            })}
           >
-            <span className="h-8 w-8 text-turquoise">
-              <MinimalKeyLogo />
-            </span>
-          </dd>
-        </dl>
+            {name}
+          </h3>
+          <dl
+            className={clsx('flex-grow', {
+              'flex flex-col justify-between': isGrid,
+            })}
+          >
+            <dt className="sr-only">Logo</dt>
+            <dd
+              className={clsx(
+                'flex',
+                isGrid ? 'mt-4 justify-center' : 'justify-start'
+              )}
+            >
+              {solvedArray.map((solved, i) => (
+                <span
+                  key={i}
+                  className={clsx(
+                    'h-5 w-5 pt-2',
+                    solved ? 'text-turquoise' : 'text-gray-300'
+                  )}
+                >
+                  <MinimalKeyLogo />
+                </span>
+              ))}
+            </dd>
+          </dl>
+        </span>
       </span>
     </Link>
   )
