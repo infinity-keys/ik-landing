@@ -44,7 +44,7 @@ export const handler = async (event) => {
     const chain = chainIdLookup[chainId]
 
     const response = await fetch(
-      `https://www.infinitykeys.io/api/metadata/achievement?tokenid=${tokenId}`
+      `https://api.infinitykeys.io/metadata?contractName=achievement&tokenId={tokenId}`
     )
     const nftMetadata = (await response.json()) as MetadataResponse
     const image = nftMetadata.image
