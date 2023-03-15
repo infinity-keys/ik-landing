@@ -21,6 +21,18 @@ export const claim: QueryResolvers['claim'] = async ({
     }
   }
 
+  // Has this rewardable's NFT been claimed by this user account
+  const usersNfts = rewardableData.userRewards[0].nfts?.map(({ id }) => id)
+  const claimedByUser = rewardableData.nfts.every(({ id }) =>
+    usersNfts.includes(id)
+  )
+
+  if (claimedByUser) {
+    return {
+      errors: ['This NFT has already been claimed on this user account.'],
+    }
+  }
+
   const isPack = rewardableData.type === 'PACK'
 
   if (isPack) {
