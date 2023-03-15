@@ -6,5 +6,8 @@
   },
   "devDependencies": {
     "cypress": "^12.7.0"
+  },
+  "dependencies": {
+    "@this-dot/cypress-indexeddb": "^2.0.0"
   }
 }
