@@ -40,6 +40,7 @@ export const QUERY = gql`
       successMessage
       type
       hasUserCompletedStep
+      resourceLinks
       stepSimpleText {
         solutionCharCount
       }
