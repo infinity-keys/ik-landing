@@ -39,7 +39,7 @@ const PuzzleLandingLayout = ({
   )
 
   return (
-    <>
+    <div className="pt-10">
       <Seo
         title={rewardable.name}
         description={`Can you unlock the ${rewardable.name} puzzle?`}
@@ -84,7 +84,7 @@ const PuzzleLandingLayout = ({
         </div>
       )}
 
-      <div className="flex justify-center gap-4 px-4 pb-9 pt-8">
+      <div className="flex justify-center gap-4 px-4 pb-9 pt-16">
         <LensShareButton
           postBody={`Can you unlock the ${rewardable.name} puzzle?`}
           url={url}
@@ -94,7 +94,7 @@ const PuzzleLandingLayout = ({
           tweetBody={`Can you unlock the ${rewardable.name} puzzle? @InfinityKeys\n\n${url}`}
         />
       </div>
-    </>
+    </div>
   )
 }
 

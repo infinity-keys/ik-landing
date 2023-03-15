@@ -8,6 +8,7 @@ import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
 import useReconcileProgress from 'src/hooks/useReconcileProgress'
+import Seo from 'src/components/Seo/Seo'
 
 /*
   IMPORTANT: This page needs to run a GraphQL function to create a new user in
@@ -46,8 +47,9 @@ const ProfilePage = () => {
   }
 
   return (
-    <>
-      {isAuthenticated && !progressLoading && (
+    <div>
+      <Seo title="Profile" />
+      {isAuthenticated && !progressLoading && !loading && (
         <div className="mx-auto w-full max-w-lg pb-12">
           <ProfileCell />
 
@@ -80,7 +82,7 @@ const ProfilePage = () => {
           <p className="absolute -bottom-8 left-0">{errorMessage}</p>
         </div>
       )}
-    </>
+    </div>
   )
 }
 

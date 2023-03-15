@@ -43,6 +43,8 @@ model Rewardable {
   listPublicly   Boolean        @default(true)
   /// Categorize Rewardables into different buckets
   type           RewardableType
+  /// The order this rewardable will show in the grid
+  sortWeight     Int?           @default(1)
 
   /// Assign management of a Rewardable to an Organization
   organization Organization @relation(fields: [orgId], references: [id])
@@ -158,6 +160,8 @@ model Step {
   successMessage String?
   /// Often the hint/clue
   challenge      String?
+  /// List of links to additional resources. Use "\n\n" for new lines
+  resourceLinks  String?
 
   // Order shown on the puzzle
   stepSortWeight Int @default(1)

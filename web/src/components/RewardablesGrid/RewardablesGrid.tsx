@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react'
+import { useAuth } from '@redwoodjs/auth'
 
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
-import { buildUrlString, ThumbnailGridLayoutType } from '@infinity-keys/core'
+import {
+  buildUrlString,
+  ThumbnailGridLayoutType,
+  ThumbnailProgress,
+} from '@infinity-keys/core'
 import clsx from 'clsx'
 import loCapitalize from 'lodash/capitalize'
 import type { FindRewardables } from 'types/graphql'
@@ -18,6 +23,7 @@ const RewardablesList = ({
   rewardables,
   totalCount,
 }: FindRewardables['rewardablesCollection']) => {
+  const { isAuthenticated } = useAuth()
   const { page, count } = useParams()
   const [layout, setLayout] = useState<ThumbnailGridLayoutType>(
     ThumbnailGridLayoutType.Unknown
@@ -57,7 +63,7 @@ const RewardablesList = ({
   return (
     <>
       <Seo
-        title={`Infinity Keys ${loCapitalize(rewardables[0].type)}s`}
+        title={`${loCapitalize(rewardables[0].type)}s`}
         url={buildUrlString(`/puzzles`)}
       />
 
@@ -79,6 +85,10 @@ const RewardablesList = ({
             )}
           >
             {rewardables.map((rewardable) => {
+              const solvedArray = rewardable.asParent.map(
+                ({ childRewardable }) => !!childRewardable.userRewards.length
+              )
+
               return (
                 <li
                   key={rewardable.id}
@@ -94,6 +104,12 @@ const RewardablesList = ({
                       anonPuzzle: rewardable.puzzle?.isAnon,
                     })}
                     cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
+                    progress={
+                      rewardable.userRewards.length
+                        ? ThumbnailProgress.Completed
+                        : ThumbnailProgress.Unknown
+                    }
+                    solvedArray={isAuthenticated ? solvedArray : []}
                   />
                 </li>
               )

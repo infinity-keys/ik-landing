@@ -9,6 +9,7 @@ import { routes, useParams } from '@redwoodjs/router'
 import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
+import clsx from 'clsx'
 
 interface StepsLayoutProps extends PropsWithChildren {
   currentStepId: string
@@ -37,74 +38,91 @@ const StepsLayout = ({
   return (
     <div>
       <Suspense fallback={<LoadingIcon />}>
-        {step && (
+        {step && !hasBeenSolved && (
           <div>
+            <div className="mx-auto max-w-prose rounded-md bg-black/10">
+              {step.challenge && (
+                <div className="p-4">
+                  <CollapsibleMarkdown
+                    title="Challenge"
+                    content={step.challenge}
+                    defaultOpen
+                  />
+                </div>
+              )}
+
+              {step.resourceLinks && (
+                <div className={clsx('p-4', { 'pt-0': step.challenge })}>
+                  <CollapsibleMarkdown
+                    title="Links"
+                    content={`${step.resourceLinks}`}
+                  />
+                </div>
+              )}
+            </div>
+
             {step.type === 'SIMPLE_TEXT' && (
-              <SimpleTextInput
-                count={step.stepSimpleText.solutionCharCount}
-                step={step}
-                puzzleId={puzzle.id}
-                isAnon={puzzle.isAnon}
-              />
+              <div className="pt-8">
+                <SimpleTextInput
+                  count={step.stepSimpleText.solutionCharCount}
+                  step={step}
+                  puzzleId={puzzle.id}
+                  isAnon={puzzle.isAnon}
+                />
+              </div>
             )}
 
             {step.type === 'NFT_CHECK' && (
-              <NftCheckButton step={step} puzzleId={puzzle.id} />
-            )}
-
-            {step.challenge && (
-              <div className="mx-auto mt-12 mb-12 max-w-prose p-4 md:mt-16 md:mb-20">
-                <CollapsibleMarkdown
-                  title="Challenge"
-                  content={step.challenge}
-                  defaultOpen
-                />
+              <div className="pt-8">
+                <NftCheckButton step={step} puzzleId={puzzle.id} />
               </div>
             )}
           </div>
         )}
       </Suspense>
 
-      {children}
+      <div className="mb-4">{children}</div>
 
-      <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
-        {puzzle.steps.map(
-          ({
-            id,
-            stepSortWeight,
-            hasUserCompletedStep,
-            hasAnonUserCompletedStep,
-          }) => {
-            const routeParams = {
-              slug,
-              step: stepSortWeight,
+      {(!step || !hasBeenSolved) && (
+        <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-4 sm:flex-row">
+          {puzzle.steps.map(
+            ({
+              id,
+              stepSortWeight,
+              hasUserCompletedStep,
+              hasAnonUserCompletedStep,
+            }) => {
+              const routeParams = {
+                slug,
+                step: stepSortWeight,
+              }
+              const completed = isAuthenticated
+                ? hasUserCompletedStep
+                : hasAnonUserCompletedStep
+              return (
+                <ThumbnailMini
+                  key={stepSortWeight}
+                  name={`Step ${stepSortWeight.toString()}`}
+                  progress={
+                    hasBeenSolved
+                      ? ThumbnailProgress.Completed
+                      : currentStepId === id
+                      ? ThumbnailProgress.Current
+                      : completed
+                      ? ThumbnailProgress.Completed
+                      : ThumbnailProgress.NotCompleted
+                  }
+                  to={
+                    isAuthenticated && !puzzle.isAnon
+                      ? routes.puzzleStep(routeParams)
+                      : routes.anonPuzzleStep(routeParams)
+                  }
+                />
+              )
             }
-            const completed = isAuthenticated
-              ? hasUserCompletedStep
-              : hasAnonUserCompletedStep
-            return (
-              <ThumbnailMini
-                key={stepSortWeight}
-                name={`Step ${stepSortWeight.toString()}`}
-                progress={
-                  hasBeenSolved
-                    ? ThumbnailProgress.Completed
-                    : currentStepId === id
-                    ? ThumbnailProgress.Current
-                    : completed
-                    ? ThumbnailProgress.Completed
-                    : ThumbnailProgress.NotCompleted
-                }
-                to={
-                  isAuthenticated && !puzzle.isAnon
-                    ? routes.puzzleStep(routeParams)
-                    : routes.anonPuzzleStep(routeParams)
-                }
-              />
-            )
-          }
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

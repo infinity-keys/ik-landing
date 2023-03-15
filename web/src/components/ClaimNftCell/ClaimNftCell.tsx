@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { Fragment, useEffect } from 'react'
+import { Link } from '@redwoodjs/router'
 
 import { gql, useLazyQuery } from '@apollo/client'
 import {
@@ -31,6 +32,7 @@ import CloudImage from 'src/components/CloudImage/CloudImage'
 import Heading from 'src/components/Heading/Heading'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import { isValidAvailableChain } from 'src/lib/availableChains'
+import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 
 export const QUERY = gql`
   query FindClaimNftQuery($id: String!) {
@@ -38,6 +40,18 @@ export const QUERY = gql`
       id
       type
       availableChains
+      slug
+      name
+      asChildPublicParentRewardables {
+        parentRewardable {
+          slug
+          name
+          type
+        }
+      }
+      puzzle {
+        isAnon
+      }
       nfts {
         cloudinaryId
       }
@@ -177,8 +191,15 @@ export const Success = ({
         <Heading>Claim Your Treasure</Heading>
       </div>
 
+      {!queryLoading &&
+        data?.claim?.errors?.map((err, i) => (
+          <p className="mb-4 italic text-gray-200" key={i}>
+            {err}
+          </p>
+        ))}
+
       {(queryLoading || transactionPending) && (
-        <div className="mb-4">
+        <div className="my-4">
           <LoadingIcon />
         </div>
       )}
@@ -217,14 +238,28 @@ export const Success = ({
       )}
 
       {(claimed || transactionSuccess) && (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={`${marketplaceLookup[chainClaimed || chain?.id]}${tokenId}`}
-          className="mt-6 text-gray-200 underline"
-        >
-          View NFT On {marketplaceNameLookup[chainClaimed || chain?.id]}
-        </a>
+        <div>
+          <div className="pb-8">
+            <Button
+              to={rewardableLandingRoute({
+                type: rewardable.type,
+                slug: rewardable.slug,
+                anonPuzzle: rewardable.puzzle?.isAnon,
+              })}
+              text={`Return to ${rewardable.name} ${capitalize(
+                rewardable.type
+              )}`}
+            />
+          </div>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`${marketplaceLookup[chainClaimed || chain?.id]}${tokenId}`}
+            className="text-gray-200 underline transition-colors hover:text-turquoise"
+          >
+            View NFT On {marketplaceNameLookup[chainClaimed || chain?.id]}
+          </a>
+        </div>
       )}
 
       {(writeError || transactionError) && (
@@ -233,12 +268,28 @@ export const Success = ({
         </p>
       )}
 
-      {!queryLoading &&
-        data?.claim?.errors?.map((err, i) => (
-          <p className="mt-4 italic text-gray-200" key={i}>
-            {err}
+      {/* Allows user to navigate to every public parent of this puzzle */}
+      {rewardable.asChildPublicParentRewardables.length > 0 && (
+        <div className="pt-6 text-center text-gray-200">
+          <p>
+            Return to:
+            {rewardable.asChildPublicParentRewardables.map(
+              ({ parentRewardable: { slug, name, type } }, index) => (
+                <Fragment key={slug + type}>
+                  {/* prepend a comma to all but the first item */}
+                  {index ? ', ' : ''}
+                  <Link
+                    to={rewardableLandingRoute({ slug, type })}
+                    className="ml-2 mt-2 inline-block italic transition-colors hover:text-turquoise"
+                  >
+                    {name} {capitalize(type)}
+                  </Link>
+                </Fragment>
+              )
+            )}
           </p>
-        ))}
+        </div>
+      )}
     </div>
   )
 }

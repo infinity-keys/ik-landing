@@ -40,6 +40,7 @@ export const QUERY = gql`
       successMessage
       type
       hasUserCompletedStep
+      resourceLinks
       stepSimpleText {
         solutionCharCount
       }
@@ -95,9 +96,12 @@ export const Success = ({
     >
       {hasBeenSolved &&
         (isAuthenticated ? (
-          <Button to={routes.claim({ id: puzzle.rewardable.id })} text="Mint" />
+          <Button
+            to={routes.claim({ id: puzzle.rewardable.id })}
+            text="Claim Treasure"
+          />
         ) : (
-          <Button to={routes.profile()} text="Sign in to Mint" />
+          <Button to={routes.profile()} text="Sign in to Claim Treasure" />
         ))}
     </StepsLayout>
   )

@@ -25,6 +25,7 @@ const query = `query AllData {
     instructions
     challenge
     list_publicly
+    sort_weight
     migration_puzzle
     migration_step
     nft_check_parameters
@@ -37,6 +38,7 @@ const query = `query AllData {
     pack_id
     pack_name
     simple_name
+    sort_weight
     pack_puzzles {
       puzzle {
         sort_weight
@@ -56,6 +58,7 @@ const ApiPuzzle = z.object({
   landing_route: z.string(),
   solution: z.string(),
   success_message: z.nullable(z.string()),
+  sort_weight: z.number(),
   fail_message: z.nullable(z.string()),
   instructions: z.nullable(z.string()),
   challenge: z.nullable(z.string()),
@@ -82,6 +85,7 @@ const ApiPack = z.object({
   pack_id: z.string(),
   pack_name: z.string(),
   simple_name: z.string(),
+  sort_weight: z.number(),
   pack_puzzles: z.array(
     z.object({
       puzzle: z.object({
@@ -240,6 +244,7 @@ export default async () => {
         explanation: pack.pack_name,
         successMessage: 'Success!',
         listPublicly: pack.list_publicly,
+        sortWeight: pack.sort_weight,
         organization: {
           connect: {
             id: ikCuid,
@@ -270,6 +275,7 @@ export default async () => {
                 explanation: puzzle.instructions || '',
                 successMessage: puzzle.success_message, // just dupe what's in step for now
                 listPublicly: puzzle.list_publicly,
+                sortWeight: puzzle.sort_weight,
                 organization: {
                   connect: {
                     id: ikCuid,
@@ -321,6 +327,7 @@ export default async () => {
             // just dupe what's in step 1 for now
             successMessage: lastPuzzle.success_message,
             listPublicly: puzzles[0].list_publicly,
+            sortWeight: puzzles[0].sort_weight,
             organization: {
               connect: {
                 id: ikCuid,

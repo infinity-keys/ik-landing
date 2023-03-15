@@ -30,6 +30,7 @@ export const QUERY = gql`
       failMessage
       successMessage
       type
+      resourceLinks
       stepSimpleText {
         solutionCharCount
       }
@@ -74,7 +75,10 @@ export const Success = ({
       step={step}
     >
       {hasBeenSolved && (
-        <Button to={routes.claim({ id: puzzle.rewardable.id })} text="Mint" />
+        <Button
+          to={routes.claim({ id: puzzle.rewardable.id })}
+          text="Claim Treasure"
+        />
       )}
     </StepsLayout>
   )
