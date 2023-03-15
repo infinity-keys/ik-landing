@@ -9,6 +9,7 @@ import { routes, useParams } from '@redwoodjs/router'
 import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
+import clsx from 'clsx'
 
 interface StepsLayoutProps extends PropsWithChildren {
   currentStepId: string
@@ -39,15 +40,26 @@ const StepsLayout = ({
       <Suspense fallback={<LoadingIcon />}>
         {step && !hasBeenSolved && (
           <div>
-            {step.challenge && (
-              <div className="mx-auto max-w-prose p-4">
-                <CollapsibleMarkdown
-                  title="Challenge"
-                  content={step.challenge}
-                  defaultOpen
-                />
-              </div>
-            )}
+            <div className="mx-auto max-w-prose rounded-md bg-black/10">
+              {step.challenge && (
+                <div className="p-4">
+                  <CollapsibleMarkdown
+                    title="Challenge"
+                    content={step.challenge}
+                    defaultOpen
+                  />
+                </div>
+              )}
+
+              {step.resourceLinks && (
+                <div className={clsx('p-4', { 'pt-0': step.challenge })}>
+                  <CollapsibleMarkdown
+                    title="Links"
+                    content={`${step.resourceLinks}`}
+                  />
+                </div>
+              )}
+            </div>
 
             {step.type === 'SIMPLE_TEXT' && (
               <div className="pt-8">

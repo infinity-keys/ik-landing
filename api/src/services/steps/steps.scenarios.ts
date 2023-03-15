@@ -5,21 +5,21 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
   step: {
     one: {
       data: {
-        updatedAt: '2022-11-21T02:50:48.041Z',
+        updatedAt: '2023-03-14T22:09:24.273Z',
         puzzle: {
           create: {
             rewardable: {
               create: {
-                updatedAt: '2022-11-21T02:50:48.041Z',
+                updatedAt: '2023-03-14T22:09:24.273Z',
                 name: 'String',
-                slug: 'String6009042',
+                slug: 'String',
                 explanation: 'String',
                 type: 'PUZZLE',
                 organization: {
                   create: {
                     name: 'String',
-                    slug: 'String6435289',
-                    updatedAt: '2022-11-21T02:50:48.041Z',
+                    slug: 'String1587506',
+                    updatedAt: '2023-03-14T22:09:24.273Z',
                   },
                 },
               },
@@ -30,21 +30,21 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
     },
     two: {
       data: {
-        updatedAt: '2022-11-21T02:50:48.041Z',
+        updatedAt: '2023-03-14T22:09:24.273Z',
         puzzle: {
           create: {
             rewardable: {
               create: {
-                updatedAt: '2022-11-21T02:50:48.042Z',
+                updatedAt: '2023-03-14T22:09:24.273Z',
                 name: 'String',
-                slug: 'String6752564',
+                slug: 'String',
                 explanation: 'String',
                 type: 'PUZZLE',
                 organization: {
                   create: {
                     name: 'String',
-                    slug: 'String3807932',
-                    updatedAt: '2022-11-21T02:50:48.042Z',
+                    slug: 'String2574428',
+                    updatedAt: '2023-03-14T22:09:24.273Z',
                   },
                 },
               },
