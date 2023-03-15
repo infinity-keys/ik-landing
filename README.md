@@ -293,7 +293,9 @@ optimism: 0x54b743D6055e3BBBF13eb2C748A3783516156e5B
 
 A customizable discord bot to display alerts when users mints NFTs and votes are casted on blockchain
 
-You can follow the instructions[here](https://docs.moralis.io/example-dapps/evm/blockchain-discord-bot) to use as a template to create.
+You can follow the instructions [here](https://docs.moralis.io/example-dapps/evm/blockchain-discord-bot) to use as a template to create.
+
+Both bots use discord.js `EmbedBuilder` feature found [here](https://discordjs.guide/popular-topics/embeds.html#embed-preview) to style the post received.
 
 Note: Make sure you navigate to `api/src/functions` to make any changes/updates to the bots.
 
@@ -307,7 +309,7 @@ and then follow the instructions below:
 
 1. update `.env` with the correct values (api key, bot token, discord channel id, etc.)
 2. run `yarn` to install/update packages
-3. make sure moralis stream is set to `activate stream` to start receiving post to discord channel
+3. make sure moralis stream is set to `Activate Stream` to start receiving post to discord channel
 
 ### discord-mint-bot
 
