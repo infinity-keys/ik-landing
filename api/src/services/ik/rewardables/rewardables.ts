@@ -11,7 +11,6 @@ import type { QueryResolvers, MutationResolvers } from 'types/graphql'
 import { context } from '@redwoodjs/graphql-server'
 
 import { ForbiddenError } from '@redwoodjs/graphql-server'
-// import { context } from '@redwoodjs/graphql-server'
 
 import { PuzzlesData } from 'src/lib/cookie'
 import { db } from 'src/lib/db'
@@ -20,7 +19,6 @@ import { verifyToken } from 'src/lib/jwt'
 import { logger } from 'src/lib/logger'
 
 import anonPuzzles from '../../../../anonPuzzleData.json'
-import { createUserReward } from 'src/services/userRewards/userRewards'
 
 export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
   slug,
@@ -82,6 +80,7 @@ export const rewardableClaim = ({ id }) => {
       type: true,
       nfts: {
         select: {
+          id: true,
           tokenId: true,
         },
       },
@@ -89,6 +88,11 @@ export const rewardableClaim = ({ id }) => {
         where: { userId: context.currentUser.id },
         select: {
           id: true,
+          nfts: {
+            select: {
+              id: true,
+            },
+          },
         },
       },
       asParent: {
