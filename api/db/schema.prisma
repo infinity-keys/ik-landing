@@ -160,6 +160,8 @@ model Step {
   successMessage String?
   /// Often the hint/clue
   challenge      String?
+  /// List of links to additional resources. Use "\n\n" for new lines
+  resourceLinks  String?
 
   // Order shown on the puzzle
   stepSortWeight Int @default(1)
