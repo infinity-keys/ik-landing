@@ -51,7 +51,7 @@ const GridPagination = ({
         </Link>
       )}
 
-      {isLastPage && (
+      {!isLastPage && (
         <Link
           to={rewardableGridRoute({
             type: rewardableType,
