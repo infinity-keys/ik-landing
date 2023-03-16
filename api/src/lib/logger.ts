@@ -18,11 +18,14 @@ import datadog from 'pino-datadog'
 
 export const stream = datadog.createWriteStreamSync({
   apiKey: process.env.DATADOG_API_KEY,
+  ddsource: 'ik-redwood',
   service: 'ik-redwood',
   size: 1,
 })
 
 export const logger = createLogger({
-  options: {},
-  ...(process.env.NODE_ENV === 'production' && { destination: stream }),
+  ...(process.env.NODE_ENV === 'production' && {
+    destination: stream,
+    options: { level: 'info' },
+  }),
 })
