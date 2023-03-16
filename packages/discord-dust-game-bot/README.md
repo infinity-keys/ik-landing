@@ -13,7 +13,7 @@ Follow the instructions [here](https://support.discord.com/hc/en-us/articles/204
 and then follow the instructions below:
 
 1. copy `.env.default` variables to `.env` file
-2. update `.env` with the correct values (tokens, guildIDs, etc.)
+2. update `.env` with the correct values (tokens, clientId, guildId, mongo url)
 3. run `yarn` to install/update packages
 4. run `node deploy-commands.js` to register commands to server (if editing slash commands)
    otherwise
@@ -49,9 +49,10 @@ You can follow the instruction [here](https://medium.com/@szpytfire/setting-up-m
 if you have an existing set-up:
 
 1. start up Docker Dektop
-2. run `docker compose up -d` in your terminal
-3. run `docker ps` to list running databases
-4. run `docker exec -it [name_of_your_mongodb_container] bash` to boot up mongo
-5. run `mongosh -u root -p rootpassword` to connect
+2. navigate to `docker-compose.yml` file and uncomment the `mongodb_container` section so the database will boot
+3. run `docker compose up -d` in your terminal
+4. run `docker ps` to list running databases
+5. run `docker exec -it [name_of_your_mongodb_container] bash` to boot up mongo
+6. run `mongosh -u root -p rootpassword` to connect
 
 ## How to Run Backup to Database
