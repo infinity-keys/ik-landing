@@ -295,13 +295,13 @@ A customizable discord bot to display alerts when users mints NFTs and votes are
 
 You can follow the instructions [here](https://docs.moralis.io/example-dapps/evm/blockchain-discord-bot) to use as a template to create.
 
-Both bots use discord.js `EmbedBuilder` feature found [here](https://discordjs.guide/popular-topics/embeds.html#embed-preview) to style the post received.
+Both bots use discord.js `EmbedBuilder` feature found [here](https://discordjs.guide/popular-topics/embeds.html#embed-preview) to style the posts/alerts.
 
 Note: Make sure you navigate to `api/src/functions` to make any changes/updates to the bots.
 
 ### How to Run Local from a Test Discord Server
 
-Note: You need to have `ngrok` installed and running in order to test locally
+Note: You need to have `ngrok` installed and running in order to test locally. You can follow the setup instructions [here](https://dashboard.ngrok.com/get-started/setup)
 
 if you need to create a test server and test bot:
 
@@ -312,8 +312,8 @@ and then follow the instructions below:
 1. update `.env` with the correct values (api key, bot token, discord channel id, etc.)
 2. run `yarn` to install/update packages
 3. run `ngrok http [port-number]` to boot up your server
-4. copy the webhook url starting with `https`
-5. login into [moralis.io](http://www.moralis.io) to update the webhook url tothe associated Moralis stream by selecting `Edit Stream`
-6. make sure moralis stream is set to `Activate Stream` to start receiving post to discord channel
+4. copy the webhook url starting with `https` from the ngrok startup screen
+5. login into [moralis.io](http://www.moralis.io) to update the webhook url to the Moralis stream by selecting `Edit Stream`
+6. make sure moralis stream is set to `Activate Stream` to start receiving post to the discord channel
 
-** Once testing is complete, make sure to update all .env variables to the production Discord server and the webhook url in Moralis to the appropiate api url `http:"//api.infinitykeys.io/[name of discord bot file]` **
+** Once testing is complete, make sure to update all .env variables to point to the production Discord server and the webhook url in Moralis to the appropiate api url i.e.: `http:"//api.infinitykeys.io/[name of discord bot file]` **
