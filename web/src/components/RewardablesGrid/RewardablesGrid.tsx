@@ -19,10 +19,17 @@ import Seo from 'src/components/Seo/Seo'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 
+import { GridLandingRouteType } from 'src/lib/urlBuilders'
+
+type RewardablesListProps = FindRewardables['rewardablesCollection'] & {
+  landingRoute?: GridLandingRouteType
+}
+
 const RewardablesList = ({
   rewardables,
   totalCount,
-}: FindRewardables['rewardablesCollection']) => {
+  landingRoute,
+}: RewardablesListProps) => {
   const { isAuthenticated } = useAuth()
   const { page, count } = useParams()
   const [layout, setLayout] = useState<ThumbnailGridLayoutType>(
@@ -73,7 +80,7 @@ const RewardablesList = ({
             isGrid={layout === ThumbnailGridLayoutType.Grid}
             thumbnailCount={thumbnailCount}
             setView={setView}
-            rewardableType={rewardableType}
+            rewardableType={landingRoute || rewardableType}
           />
 
           <ul
@@ -85,9 +92,15 @@ const RewardablesList = ({
             )}
           >
             {rewardables.map((rewardable) => {
-              const solvedArray = rewardable.asParent.map(
-                ({ childRewardable }) => !!childRewardable.userRewards.length
-              )
+              const solvedArray =
+                rewardable.type === 'PACK'
+                  ? rewardable.asParent.map(
+                      ({ childRewardable }) =>
+                        !!childRewardable.userRewards.length
+                    )
+                  : rewardable.puzzle.steps.map(
+                      ({ hasUserCompletedStep }) => hasUserCompletedStep
+                    )
 
               return (
                 <li
@@ -121,7 +134,7 @@ const RewardablesList = ({
             isLastPage={isLastPage}
             pageNum={pageNum || 1}
             thumbnailCount={thumbnailCount}
-            rewardableType={rewardableType}
+            rewardableType={landingRoute || rewardableType}
           />
         </>
       )}
