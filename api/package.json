@@ -19,6 +19,7 @@
     "moralis": "^2.10.4",
     "nanoid": "^3.0.0",
     "node-fetch": "^3.3.0",
+    "pino-datadog": "^2.0.2",
     "qfs-compression": "^0.2.1",
     "uuid": "^9.0.0",
     "zod": "^3.19.1"

@@ -1,4 +1,5 @@
 import { createLogger } from '@redwoodjs/api/logger'
+import datadog from 'pino-datadog'
 
 /**
  * Creates a logger with RedwoodLoggerOptions
@@ -14,4 +15,14 @@ import { createLogger } from '@redwoodjs/api/logger'
  * @param {string | DestinationStream} destination - defines where to log, such as a transport stream or file
  * @param {boolean} showConfig - whether to display logger configuration on initialization
  */
-export const logger = createLogger({})
+
+export const stream = datadog.createWriteStreamSync({
+  apiKey: process.env.DATADOG_API_KEY,
+  service: 'ik-redwood',
+  size: 1,
+})
+
+export const logger = createLogger({
+  options: {},
+  ...(process.env.NODE_ENV === 'production' && { destination: stream }),
+})
