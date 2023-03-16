@@ -52,7 +52,7 @@
     @apply flex flex-wrap justify-center;
   }
   .ik-code-input {
-    @apply m-0 mx-1 mb-2 border-gray-200 bg-gray-500 text-2xl font-bold text-turquoise shadow-md !important;
+    @apply text-turquoise m-0 mx-1 mb-2 border-gray-200 bg-gray-500 text-2xl font-bold shadow-md !important;
     text-shadow: -2px 0px 7px #3fccbb;
     width: 45px !important;
     height: 45px !important;
@@ -61,24 +61,22 @@
     /* 640+ */
     @screen sm {
       @apply text-4xl !important;
-      width: 65px !important;
-      height: 65px !important;
+      width: 90px !important;
+      height: 90px !important;
     }
     /* 768+ */
     @screen md {
-      width: 80px !important;
-      height: 80px !important;
+      width: 90px !important;
+      height: 90px !important;
     }
     /* 1024+ */
     @screen lg {
-      width: 110px !important;
-      height: 110px !important;
+      @apply mx-4 !important;
+      width: 125px !important;
+      height: 125px !important;
     }
     /* 1280+ */
     @screen xl {
-      @apply mx-3 !important;
-      width: 125px !important;
-      height: 125px !important;
     }
     /* 1536+ */
     @screen 2xl {
@@ -99,7 +97,7 @@
   }
 
   .redditIcon:hover {
-    color: #ff4500;
+    color: #FF4500;
   }
 
   .lensIcon:hover {
@@ -163,7 +161,10 @@
     a {
       @apply text-turquoise transition hover:text-turquoiseDark;
     }
+  }
 
+  /* TODO: Remove when we switch to left-aligned puzzle markdown */
+  .landing-md {
     p > img {
       @apply mx-auto;
     }
