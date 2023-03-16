@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { FormEvent, useRef, useState } from 'react'
 
 import { isValidEmail } from '@infinity-keys/core'
 
@@ -27,9 +27,14 @@ const ProfilePage = () => {
   const [errorMessage, setErrorMessage] = useState('')
   const emailRef = useRef(null)
 
-  const handleClick = async () => {
+  const handleLogOut = () => {
     setErrorMessage('')
-    if (isAuthenticated) return logOut()
+    logOut()
+  }
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    setErrorMessage('')
 
     const email = emailRef.current.value
     if (!isValidEmail(email)) {
@@ -66,18 +71,29 @@ const ProfilePage = () => {
         <LoadingIcon />
       ) : (
         <div className="relative text-center">
-          {!isAuthenticated && (
-            <input
-              type="email"
-              placeholder="Your Email"
-              ref={emailRef}
-              className="mr-4 rounded border border-turquoise bg-transparent text-lg text-white placeholder:text-gray-150"
+          {!isAuthenticated ? (
+            <div className="flex flex-col items-center">
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="email"
+                  placeholder="Your Email"
+                  ref={emailRef}
+                  className="mr-4 rounded border border-turquoise bg-transparent text-lg text-white placeholder:text-gray-150"
+                />
+                <Button type="submit" text="Log In" />
+              </form>
+              <p className="mt-8 max-w-prose">
+                Infinity Keys takes your privacy seriously and will never store
+                or associate your wallet address with your email.
+              </p>
+            </div>
+          ) : (
+            <Button
+              onClick={handleLogOut}
+              text={isAuthenticated ? 'Log Out' : 'Log In'}
             />
           )}
-          <Button
-            onClick={handleClick}
-            text={isAuthenticated ? 'Log Out' : 'Log In'}
-          />
+
           <p className="absolute -bottom-8 left-0">{errorMessage}</p>
         </div>
       )}
