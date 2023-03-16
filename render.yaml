@@ -1,25 +1,64 @@
+#####
+# Documentation
+# Redwood: https://render.com/docs/deploy-redwood
+# YAML (all config values): https://render.com/docs/yaml-spec
+#####
+
 services:
-  - type: web
-    name: hasura
-    env: docker
-    autoDeploy: false
-    healthCheckPath: /healthz
-    envVars:
-      - key: HASURA_GRAPHQL_DATABASE_URL
-        fromDatabase:
-          name: hasura
-          property: connectionString
-      - key: HASURA_GRAPHQL_ENABLE_CONSOLE
-        value: true
-      - key: PORT
-        value: 10000
-      - key: HASURA_GRAPHQL_ADMIN_SECRET
-        generateValue: true
-      - key: HASURA_GRAPHQL_JWT_SECRET
-        value: |
-          {
-            "type": "HS256",
-            "key": "69a2cd79fcf74024aa1f9a9b3dacb404ff9888aec6bf44348378467311fbed74"
-          }
+- name: redwoodjs-web
+  type: web
+  env: static
+  buildCommand: yarn && yarn workspaces foreach run build && yarn rw deploy render web
+  staticPublishPath: ./web/dist
+  envVars:
+  - key: NODE_VERSION
+    value: 16
+  routes:
+  - type: rewrite
+    source: /.redwood/functions/*
+    destination: https://api.infinitykeys.io/*
+  - type: rewrite
+    source: /*
+    destination: /index.html
+
+- name: redwoodjs-api
+  type: web
+  env: node
+  region: oregon
+  buildCommand: yarn && yarn build && yarn rw build api
+  startCommand: yarn rw deploy render api
+  envVars:
+  - key: NODE_VERSION
+    value: 16
+  - key: DATABASE_URL
+    fromDatabase:
+      name: redwoodjs-db
+      property: connectionString
+
+- name: discord-dust-game-bot-mongodb
+  type: pserv
+  env: docker
+  autoDeploy: false
+  disk:
+    name: data
+    mountPath: /data/db
+    sizeGB: 10
+
+- name: discord-dust-game-bot
+  type: worker
+  env: node
+  region: oregon
+  rootDir: packages/discord-dust-game-bot
+  buildCommand: yarn
+  startCommand: node .
+  autoDeploy: true
+  envVars:
+  - key: NODE_VERSION
+    value: 18
+
 databases:
-  - name: hasura
+  - name: redwoodjs-db
+    region: oregon
+    postgresMajorVersion: 15
+
+

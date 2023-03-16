@@ -1,16 +1,24 @@
 {
+  "editor.tabSize": 2,
+  "files.trimTrailingWhitespace": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "[prisma]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
   "cSpell.words": [
     "cloudinary",
-    "clsx",
-    "leaderboard",
-    "submiitted",
-    "tailwindforms",
-    "tokenid",
-    "xstate"
+    "cyphertext",
+    "fastify",
+    "infinitykeys",
+    "MAGICLINK",
+    "redwoodjs",
+    "rewardables",
+    "RWJS",
+    "sdls"
   ],
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": true,
   "editor.rulers": [80]
 }

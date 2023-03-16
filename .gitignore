@@ -1,45 +1,22 @@
-lib/generated
-!lib/generated/.gitkeep
-graphql.schema.json
-cypress/videos/
-cypress/screenshots/
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
+.idea
 .DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# local env files
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-
+.netlify
 .redwood
-.yarn
+dev.db*
+dist
+dist-babel
+node_modules
+yarn-error.log
+web/public/mockServiceWorker.js
+web/types/graphql.d.ts
+api/types/graphql.d.ts
+api/src/lib/generateGraphiQLHeader.*
+api/anonPuzzleData.json
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
