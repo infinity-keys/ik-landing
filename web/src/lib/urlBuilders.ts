@@ -2,6 +2,8 @@ import { RewardableType } from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
 
+export type GridLandingRouteType = RewardableType | 'PLAY'
+
 // Creates the landing page routes for our rewardables. Does not handle steps
 export const rewardableLandingRoute = ({
   slug,
@@ -27,12 +29,13 @@ export const rewardableLandingRoute = ({
       throw new Error(`rewardableLandingRoute type '${type}' not supported`)
   }
 }
+
 export const rewardableGridRoute = ({
   type,
   perPageCount,
   pageNum,
 }: {
-  type: RewardableType
+  type: GridLandingRouteType
   perPageCount?: number
   pageNum?: number
 }) => {
@@ -47,6 +50,10 @@ export const rewardableGridRoute = ({
       return paginated
         ? routes.packsPagination({ count: perPageCount, page: pageNum })
         : routes.packs()
+    case 'PLAY':
+      return paginated
+        ? routes.playPagination({ count: perPageCount, page: pageNum })
+        : routes.play()
 
     // @TODO: enable this when we support bundles
     // case 'BUNDLE':

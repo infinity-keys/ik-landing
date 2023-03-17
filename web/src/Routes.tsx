@@ -42,6 +42,8 @@ const Routes = () => {
         <Route path="/puzzles/{count:Int}/{page:Int}" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzlesPagination" />
         <Route path="/packs" page={RewardablePackRewardablePacksPage} name="packs" />
         <Route path="/packs/{count:Int}/{page:Int}" page={RewardablePackRewardablePacksPage} name="packsPagination" />
+        <Route path="/play" page={PlayPage} name="play" />
+        <Route path="/play/{count:Int}/{page:Int}" page={PlayPage} name="playPagination" />
       </Set>
 
       <Set wrap={[HeaderFooterLayout, MainLayout]}>

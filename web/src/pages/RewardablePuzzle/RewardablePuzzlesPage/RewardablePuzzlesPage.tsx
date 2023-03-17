@@ -8,7 +8,7 @@ const RewardablesPage = ({ count, page }) => {
   const perPage = parseInt(count, 10) || smallestThumbnailCount
   const pageNum = parseInt(page, 10) || 1
 
-  return <RewardablesCell count={perPage} page={pageNum} type="PUZZLE" />
+  return <RewardablesCell count={perPage} page={pageNum} types={['PUZZLE']} />
 }
 
 export default RewardablesPage

@@ -5,9 +5,11 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import RewardablesGrid from 'src/components/RewardablesGrid'
 
+import { GridLandingRouteType } from 'src/lib/urlBuilders'
+
 export const QUERY = gql`
-  query FindRewardables($count: Int, $page: Int, $type: RewardableType) {
-    rewardablesCollection(type: $type, page: $page, count: $count) {
+  query FindRewardables($count: Int, $page: Int, $types: [RewardableType!]!) {
+    rewardablesCollection(types: $types, page: $page, count: $count) {
       rewardables {
         id
         name
@@ -15,6 +17,11 @@ export const QUERY = gql`
         type
         puzzle {
           isAnon
+          steps {
+            id
+            stepSortWeight
+            hasUserCompletedStep
+          }
         }
         nfts {
           cloudinaryId
@@ -52,11 +59,15 @@ export const Failure = ({ error }: CellFailureProps) => (
 
 export const Success = ({
   rewardablesCollection,
-}: CellSuccessProps<FindRewardables>) => {
+  landingRoute,
+}: CellSuccessProps<FindRewardables> & {
+  landingRoute?: GridLandingRouteType
+}) => {
   return (
     <RewardablesGrid
       rewardables={rewardablesCollection.rewardables}
       totalCount={rewardablesCollection.totalCount}
+      landingRoute={landingRoute}
     />
   )
 }
