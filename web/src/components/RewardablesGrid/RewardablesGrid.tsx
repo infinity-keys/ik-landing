@@ -21,15 +21,13 @@ import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 
 import { GridLandingRouteType } from 'src/lib/urlBuilders'
 
-type RewardablesListProps = FindRewardables['rewardablesCollection'] & {
-  landingRoute?: GridLandingRouteType
-}
-
 const RewardablesList = ({
   rewardables,
   totalCount,
   landingRoute,
-}: RewardablesListProps) => {
+}: FindRewardables['rewardablesCollection'] & {
+  landingRoute?: GridLandingRouteType
+}) => {
   const { isAuthenticated } = useAuth()
   const { page, count } = useParams()
   const [layout, setLayout] = useState<ThumbnailGridLayoutType>(
