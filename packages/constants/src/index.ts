@@ -36,7 +36,7 @@ export const CLOUDINARY_CLOUD_NAME = 'infinity-keys'
 export const AVAX_CHAIN_ID = 43114
 export const CONTRACT_ADDRESS_AVAX =
   '0xB40fD6825a366081192d890d2760113C066761Ef'
-export const AVAX_MARKETPLACE_LINK = `https://joepegs.com/item/${CONTRACT_ADDRESS_AVAX}/`
+export const AVAX_MARKETPLACE_LINK = `https://joepegs.com/item/avalanche/${CONTRACT_ADDRESS_AVAX}/`
 
 // ETH PARAMS
 export const ETH_CHAIN_ID = 1
