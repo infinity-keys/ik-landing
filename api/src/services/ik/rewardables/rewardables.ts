@@ -359,7 +359,9 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
               select: {
                 childRewardable: {
                   select: {
-                    userRewards: true,
+                    userRewards: {
+                      where: { userId: context.currentUser.id },
+                    },
                   },
                 },
               },
@@ -557,7 +559,11 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
               select: {
                 childRewardable: {
                   select: {
-                    userRewards: true,
+                    userRewards: {
+                      where: {
+                        userId: context.currentUser.id,
+                      },
+                    },
                   },
                 },
               },
