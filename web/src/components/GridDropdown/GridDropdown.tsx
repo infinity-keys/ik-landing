@@ -10,9 +10,11 @@ import { Link } from '@redwoodjs/router'
 
 import { rewardableGridRoute } from 'src/lib/urlBuilders'
 
+import { GridLandingRouteType } from 'src/lib/urlBuilders'
+
 interface GridDropdownProps {
   currentCount: number
-  rewardableType: RewardableType
+  rewardableType: GridLandingRouteType
 }
 
 interface GridDropdownLinkProps extends HTMLProps<HTMLAnchorElement> {

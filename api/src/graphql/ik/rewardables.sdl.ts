@@ -13,7 +13,7 @@ export const schema = gql`
     rewardableBySlug(slug: String!, type: RewardableType!): Rewardable @skipAuth
     rewardableBySlugWithAnonPuzzle(slug: String!): Rewardable @skipAuth
     rewardablesCollection(
-      type: RewardableType
+      types: [RewardableType!]!
       page: Int
       count: Int
     ): RewardablesCollection @skipAuth

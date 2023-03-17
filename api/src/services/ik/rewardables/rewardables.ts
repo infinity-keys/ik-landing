@@ -48,14 +48,16 @@ export const rewardableBySlugWithAnonPuzzle: QueryResolvers['rewardableBySlugWit
   }
 
 export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
-  async ({ type, page = 1, count = 16 }) => {
+  async ({ types, page = 1, count = 16 }) => {
     const skip = (page - 1) * count
     const [smallestPaginationCount] = PAGINATION_COUNTS
     const take = PAGINATION_COUNTS.includes(count)
       ? count
       : smallestPaginationCount
+
+    const typesFilter = types.map((type) => ({ type, listPublicly: true }))
     const totalCount = await db.rewardable.count({
-      where: { type, listPublicly: true },
+      where: { OR: typesFilter },
     })
 
     // Signals to Redwood to render the `Empty` component
@@ -63,7 +65,7 @@ export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
 
     return {
       rewardables: await db.rewardable.findMany({
-        where: { type, listPublicly: true },
+        where: { OR: typesFilter },
         take,
         skip,
         orderBy: { sortWeight: 'asc' },

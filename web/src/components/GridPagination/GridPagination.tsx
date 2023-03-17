@@ -6,14 +6,14 @@ import { RewardableType } from 'types/graphql'
 
 import { Link } from '@redwoodjs/router'
 
-import { rewardableGridRoute } from 'src/lib/urlBuilders'
+import { rewardableGridRoute, GridLandingRouteType } from 'src/lib/urlBuilders'
 
 export interface GridPaginationProps {
   isFirstPage: boolean
   isLastPage: boolean
   thumbnailCount: number
   pageNum: number
-  rewardableType: RewardableType
+  rewardableType: GridLandingRouteType
 }
 
 const GridPagination = ({

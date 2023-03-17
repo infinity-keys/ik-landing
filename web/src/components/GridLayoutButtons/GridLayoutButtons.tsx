@@ -3,14 +3,15 @@ import Squares2X2Icon from '@heroicons/react/20/solid/Squares2X2Icon'
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import { ThumbnailGridLayoutType } from '@infinity-keys/core'
 import clsx from 'clsx'
-import { RewardableType } from 'types/graphql'
 
 import Dropdown from 'src/components/GridDropdown/GridDropdown'
+
+import { GridLandingRouteType } from 'src/lib/urlBuilders'
 
 export interface GridLayoutButtonsProps {
   isGrid: boolean
   thumbnailCount: number
-  rewardableType: RewardableType
+  rewardableType: GridLandingRouteType
   setView: (gridLayout: ThumbnailGridLayoutType) => void
 }
 
