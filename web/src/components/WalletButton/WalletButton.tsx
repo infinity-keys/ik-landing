@@ -45,8 +45,14 @@ export default function WalletButton() {
                   <Button
                     text={isSmall ? 'Connect' : 'Connect Wallet'}
                     onClick={() => {
-                      window.Buffer = window.Buffer || require('buffer').Buffer
-                      openConnectModal()
+                      if (window.Buffer) {
+                        openConnectModal()
+                      } else {
+                        import('buffer').then((buffer) => {
+                          window.Buffer = buffer.Buffer
+                          openConnectModal()
+                        })
+                      }
                     }}
                     type="button"
                     responsive
