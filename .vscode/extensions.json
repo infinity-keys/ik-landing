@@ -1,12 +1,16 @@
 {
   "recommendations": [
-    "editorconfig.editorconfig",
-    "bradlc.vscode-tailwindcss",
-    "apollographql.vscode-apollo",
-    "irongeek.vscode-env",
     "dbaeumer.vscode-eslint",
-    "statelyai.stately-vscode",
-    "esbenp.prettier-vscode",
-    "eamodio.gitlens"
-  ]
+    "eamodio.gitlens",
+    "ofhumanbondage.react-proptypes-intellisense",
+    "mgmcdermott.vscode-language-babel",
+    "wix.vscode-import-cost",
+    "pflannery.vscode-versionlens",
+    "editorconfig.editorconfig",
+    "prisma.prisma",
+    "graphql.vscode-graphql",
+    "csstools.postcss",
+    "bradlc.vscode-tailwindcss"
+  ],
+  "unwantedRecommendations": []
 }

@@ -1,0 +1,365 @@
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = "native"
+}
+
+// Define your own datamodels here and run `yarn rw prisma migrate dev` to create
+// migrations for them and apply to your dev DB. Run `yarn rw prisma format` to
+// format this file elegantly and autocorrect easy erorrs.
+
+enum RewardableType {
+  PUZZLE
+  PACK
+  BUNDLE
+}
+
+// on which chains are the rewardable's NFT allowed to be claimed
+enum AvailableChains {
+  AVAX
+  ETH
+  POLY
+  OPT
+}
+
+/// A thing that can reward NFTs.
+model Rewardable {
+  id             String         @id @default(cuid())
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  /// Full name, with spaces, ie Not Right
+  name           String
+  /// Short name used in URLs, lowercase and dashes, no spaces/caps, ie not-right
+  slug           String
+  /// Shown at the overall page for this Rewardable
+  explanation    String
+  /// When this is successfully completed/rewarded, what should be shown
+  successMessage String?
+  /// Show in public listings
+  listPublicly   Boolean        @default(true)
+  /// Categorize Rewardables into different buckets
+  type           RewardableType
+  /// The order this rewardable will show in the grid
+  sortWeight     Int?           @default(1)
+
+  /// Assign management of a Rewardable to an Organization
+  organization Organization @relation(fields: [orgId], references: [id])
+  orgId        String
+
+  /// The reward for completion
+  nfts            Nft[]
+  /// Choose on which networks this Rewardable's NFTs can be minted
+  availableChains AvailableChains[] @default([AVAX, ETH, POLY, OPT])
+
+  // Connections to the gaming concepts
+  puzzle Puzzle?
+  pack   Pack?
+  bundle Bundle?
+
+  userRewards UserReward[]
+
+  // Rewardables that have children, ie a parent Pack that has Puzzle children
+  asParent RewardableConnection[] @relation("ParentLink")
+  // Rewardables that have a parent, ie a child Puzzle of a Pack
+  asChild  RewardableConnection[] @relation("ChildLink")
+
+  // temp field to allow migrating old puzzles/packs to new system
+  migrateId String? @unique
+
+  @@unique([slug, type])
+}
+
+model UserReward {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
+  rewardableId String
+
+  nfts Nft[]
+
+  @@unique([userId, rewardableId])
+}
+
+/// Link Rewardables to each other, ie a Pack requires 3 Puzzles. Allows setting
+// sort order on child Rewardables.
+model RewardableConnection {
+  id String @id @default(cuid())
+
+  parentRewardable Rewardable @relation("ParentLink", fields: [parentId], references: [id])
+  parentId         String
+  childRewardable  Rewardable @relation("ChildLink", fields: [childId], references: [id])
+  childId          String
+
+  childSortWeight Int? @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([parentId, childId])
+  @@index([parentId, childId, childSortWeight(sort: Asc)])
+}
+
+/// A Pack is made up of a collection of Puzzles.
+model Pack {
+  id String @id @default(cuid())
+
+  rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
+  rewardableId String     @unique
+}
+
+/// A Bundle is made up of a collection of Packs
+model Bundle {
+  id String @id @default(cuid())
+
+  rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
+  rewardableId String     @unique
+}
+
+/// A collection of one or more Steps makes up a Puzzle. A Puzzle is solved when
+/// all Steps are completed
+model Puzzle {
+  id String @id @default(cuid())
+
+  /// Can this rewardable be played/accessed by anonymous/non-authed users?
+  isAnon Boolean @default(false)
+
+  rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
+  rewardableId String     @unique
+
+  // Users can fill out a form and submit answers when completing a puzzle
+  submissions Submission[]
+
+  steps Step[]
+}
+
+// All the types of Steps. Currently supports simple text guesses, but can
+// eventually handle things like retweet checks, wallet connects, etc
+enum StepType {
+  /// corresponds to the StepSimpleText model
+  SIMPLE_TEXT
+  /// corresponds to the StepNftCheck model
+  NFT_CHECK
+}
+
+/// Steps are whate players actually solve. One or more steps make up a Puzzle.
+model Step {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  /// Shown every time the User fails the Step
+  failMessage    String?
+  /// Shown when a User passes the Step
+  successMessage String?
+  /// Often the hint/clue
+  challenge      String?
+  /// List of links to additional resources. Use "\n\n" for new lines
+  resourceLinks  String?
+
+  // Order shown on the puzzle
+  stepSortWeight Int @default(1)
+
+  // Connect this step to exactly 1 Puzzle
+  puzzle   Puzzle @relation(fields: [puzzleId], references: [id])
+  puzzleId String
+
+  // Step types
+  type           StepType        @default(SIMPLE_TEXT)
+  stepSimpleText StepSimpleText?
+  stepNftCheck   StepNftCheck?
+
+  // Every puzzle from IK v1 (Next/Hasura) was a single step, so we need to
+  // migrate them; optional because only v1 puzzles will have this.
+  migrateLandingRoute String? @unique
+
+  // A user's attempt at solving this Step
+  attempts Attempt[]
+
+  @@unique([puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
+}
+
+/// Simple guess of a text string
+model StepSimpleText {
+  id String @id @default(cuid())
+
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @unique
+
+  /// The answer. Make sure this is NOT publicly query-able
+  solution          String
+  /// Database will show 0, but the GraphQL resolver for this will provide a char count
+  solutionCharCount Int    @default(0)
+}
+
+// Data for the step type that checks a user's wallet for an NFT or POAP
+model NftCheckDatum {
+  id String @id @default(cuid())
+
+  contractAddress String?
+  tokenId         Int?
+  chainId         Int?
+  poapEventId     String?
+
+  StepNftCheck   StepNftCheck? @relation(fields: [stepNftCheckId], references: [id])
+  stepNftCheckId String?
+}
+
+/// Require the user to have one or many NFTs or POAPs for a step
+model StepNftCheck {
+  id String @id @default(cuid())
+
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @unique
+
+  nftCheckData   NftCheckDatum[]
+  /// require user to have all listed NFTs, otherwise they only need one of them
+  requireAllNfts Boolean         @default(true)
+}
+
+/// User form submissions from post-Puzzle forms asking for email address etc
+model Submission {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  data Json
+
+  puzzle   Puzzle @relation(fields: [puzzleId], references: [rewardableId])
+  puzzleId String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId   String
+
+  @@unique([puzzleId, userId])
+}
+
+/// Users guesses at Steps
+model Attempt {
+  id          String   @id @default(cuid())
+  attemptedAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  // Connect to each of the types of steps here
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String
+
+  solve Solve?
+
+  // What did they guess/input/confirm/connect?
+  data Json
+
+  @@unique([stepId, userId, attemptedAt])
+}
+
+model Solve {
+  id       String   @id @default(cuid())
+  solvedAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  attempt   Attempt @relation(fields: [attemptId], references: [id])
+  attemptId String  @unique
+
+  data Json? @default("{}")
+
+  // There can only be a single solve for a given user + attempt
+  @@unique([userId, attemptId])
+}
+
+/// Information about NFTs. Only Rewardables can reward an NFT.
+model Nft {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  tokenId      Int
+  contractName String
+  data         Json
+  cloudinaryId String
+
+  rewardables Rewardable[]
+
+  userRewards UserReward[]
+
+  @@unique([contractName, tokenId])
+}
+
+/// A User's role within the overall site
+enum SiteRole {
+  ADMIN
+  VERIFIED
+  ANONYMOUS
+}
+
+/// Identifiable player
+model User {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  lastLoggedIn   DateTime @default(now())
+  nonce          String   @default(cuid())
+  authId         String?  @unique
+  username       String?
+  /// Unique string used to cryptographically identify this person. NEVER MAKE PUBLIC
+  email          String?  @unique
+  twitterProfile String?
+  discordProfile String?
+  lensProfile    String?
+
+  // User's role on the site, as a whole
+  roles SiteRole[] @default([ANONYMOUS])
+
+  /// User membership in an Organization.
+  organizations OrganizationUser[]
+  /// All Submissions a user has submitted
+  submissions   Submission[]
+  /// Attempts at solving a Step on a Puzzle for this user
+  attempts      Attempt[]
+
+  solves Solve[]
+
+  userRewards UserReward[]
+}
+
+/// A User's role specifically within the Organization they belong
+enum OrgRole {
+  MANAGER
+  MEMBER
+}
+
+/// Organizations allow groups of Users to manage Rewardables
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  /// Members of the Organization
+  users       OrganizationUser[]
+  /// Only organizations can own Rewardables (Puzzles, Packs, Bundles)
+  rewardables Rewardable[]
+}
+
+/// Connect Users to Organizations
+model OrganizationUser {
+  id String @id @default(cuid())
+
+  organization Organization @relation(fields: [orgId], references: [id])
+  orgId        String
+  user         User         @relation(fields: [userId], references: [id])
+  userId       String
+  userOrgRole  OrgRole      @default(MEMBER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([orgId, userId])
+}
