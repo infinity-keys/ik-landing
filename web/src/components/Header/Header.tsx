@@ -91,7 +91,7 @@ const Header = () => {
               <div data-cy="puzzle-link" className="flex items-center gap-2">
                 <Button
                   text="Play"
-                  to={routes.packs()}
+                  to={routes.play()}
                   variant="outline"
                   responsive
                 />
