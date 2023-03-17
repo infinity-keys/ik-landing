@@ -1,6 +1,7 @@
 import type { Prisma } from '@prisma/client'
 import { db } from 'api/src/lib/db'
-import type { RewardableType, StepType } from 'api/types/graphql'
+import type { RewardableType, SiteRole, StepType } from 'api/types/graphql'
+
 import { groupBy } from 'lodash'
 import fetch from 'node-fetch'
 import { z } from 'zod'
@@ -108,7 +109,7 @@ const ApiResponse = z.object({
 })
 
 // Stable IK org ID
-const ikCuid = 'cla9yay7y003k08la2z4j2xrv'
+export const ikCuid = 'cla9yay7y003k08la2z4j2xrv'
 
 const createNftConnectionObject = (nfts, nftId) => {
   const nft = nfts.find(({ tokenId }) => tokenId === nftId)
@@ -210,6 +211,136 @@ export default async () => {
         return await db.user.create({ data })
       })
     )
+
+    const ikUsersData: Prisma.UserCreateArgs['data'][] = [
+      {
+        id: 'clfbb0aw70095me24zy00lago',
+        email: 'bloomcb@gmail.com',
+        authId: 'did:ethr:0x71F832147375264368Dfb39cbceE8aeF39e6d50C',
+        roles: ['ADMIN'] as SiteRole[],
+        organizations: {
+          create: [
+            {
+              organization: {
+                connect: {
+                  id: ikCuid,
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        id: 'clfbb0mix009tme24zjb3ty7z',
+        email: 'itsmekori@infinitykeys.io',
+        authId: 'did:ethr:0xdbf8A4E65F0ef649797f7554ED6D03A32E67bD6D',
+        roles: ['ADMIN'] as SiteRole[],
+        organizations: {
+          create: [
+            {
+              organization: {
+                connect: {
+                  id: ikCuid,
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        id: 'clfbb35mj00adme24m0mpx5w2',
+        email: 'andyboyan@gmail.com',
+        authId: 'did:ethr:0x1F4d944219b078B2A66C63962FD2E99e2132e319',
+        roles: ['ADMIN'] as SiteRole[],
+        organizations: {
+          create: [
+            {
+              organization: {
+                connect: {
+                  id: ikCuid,
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        id: 'clfbeh0x90000l6z61p1dix7g',
+        email: 'tawnee.la@gmail.com',
+        authId: 'did:ethr:0xF252C8aF80C637030Bb9691eDFa62042156315D7',
+        roles: ['ADMIN'] as SiteRole[],
+        organizations: {
+          create: [
+            {
+              organization: {
+                connect: {
+                  id: ikCuid,
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        id: 'clfboa6v70009id24jvb4jps9',
+        email: 'tawnee@infinitykeys.io',
+        authId: 'did:ethr:0xFA52F4fEd899EB4a2c70100D83FfD5e9a5169f19',
+        roles: ['ADMIN'] as SiteRole[],
+        organizations: {
+          create: [
+            {
+              organization: {
+                connect: {
+                  id: ikCuid,
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        id: 'clfbpp4kf000d08mmg3pdatx9',
+        email: 'skeleton@infinitykeys.io',
+        authId: 'did:ethr:0x73ccc0F5A6059603570BB2bA48d84afdEd4E8593',
+        roles: ['ADMIN'] as SiteRole[],
+        organizations: {
+          create: [
+            {
+              organization: {
+                connect: {
+                  id: ikCuid,
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        id: 'clfbqfryd000008i8dlmn3elb',
+        email: 'rick.a.burd@gmail.com',
+        authId: 'did:ethr:0xF09818A04FF3fEB2705AA0cC235901b0fC363dec',
+        roles: ['ADMIN'] as SiteRole[],
+        organizations: {
+          create: [
+            {
+              organization: {
+                connect: {
+                  id: ikCuid,
+                },
+              },
+            },
+          ],
+        },
+      },
+    ]
+
+    const users = await Promise.all(
+      ikUsersData.map(async (data: Prisma.UserCreateArgs['data']) => {
+        return db.user.create({ data })
+      })
+    )
+
+    console.log(`created ${users.length} users`)
 
     // NFTs
     const nfts = await MigrateNfts()
