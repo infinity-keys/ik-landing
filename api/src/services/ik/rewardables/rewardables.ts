@@ -19,6 +19,7 @@ import { verifyToken } from 'src/lib/jwt'
 import { logger } from 'src/lib/logger'
 
 import anonPuzzles from '../../../../anonPuzzleData.json'
+import supersecretRoutes from './supersecretRoutes'
 
 export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
   slug,
@@ -205,39 +206,75 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       const payload = verifiedIkV1Jwt.payload as unknown as IkJwt
       const oldPuzzleNames = payload.claims[IK_CLAIMS_NAMESPACE].puzzles || []
 
+      // some landing routes were changed to be hidden from people (bots) from
+      // targeting them directly. Users who had solved the puzzles before that
+      // point have the old url (without supersecret prefix). This is to ensure
+      // users get credit for having solved supersecret puzzles before the urls
+      // were hidden
+      const puzzlesToCheck = oldPuzzleNames.map((puzzleName) =>
+        supersecretRoutes.includes(`supersecret-${puzzleName}`)
+          ? `supersecret-${puzzleName}`
+          : puzzleName
+      )
+
       // Now, loop through old puzzles, and write to DB that user has solved them
       // in the v2 equivalent. Puzzles in v1 are Steps in v2.
 
-      // 1. Find Solves, through Attempts, to Steps that match the old puzzle names.
-      // This determines if we already have record of the user's v1 puzzles in
-      // the v2 DB.
-      const existingSolves = await db.step.findMany({
-        select: { id: true, migrateLandingRoute: true },
+      // 1. Cookies may contain urls that were changed or deleted and were not
+      // brought over in the migration. This gets landing routes that exist
+      // in the current db based on routes in the user's cookie
+      const goodStepsInRedwoodDb = await db.step.findMany({
+        select: {
+          id: true,
+          migrateLandingRoute: true,
+        },
         where: {
           migrateLandingRoute: {
-            in: oldPuzzleNames,
+            in: puzzlesToCheck,
           },
+        },
+      })
+
+      // 2. Get a user's solved steps
+      const userProgress = await db.user.findUnique({
+        where: { id: context.currentUser.id },
+        select: {
           attempts: {
-            some: {
-              userId: context.currentUser.id,
+            where: {
               solve: {
-                userId: context.currentUser.id,
+                isNot: null,
+              },
+            },
+            select: {
+              id: true,
+              step: {
+                select: {
+                  id: true,
+                  migrateLandingRoute: true,
+                },
               },
             },
           },
         },
       })
 
-      // 2. Steps we have NOT solved in the new system, these need to be reconciled
-      const oldPuzzlesUnsolvedInV2 = oldPuzzleNames.filter((oldPuzzleName) => {
-        return !existingSolves.find(
-          ({ migrateLandingRoute }) => migrateLandingRoute === oldPuzzleName
-        )
-      })
+      // 3. Get all the routes they've already solved
+      const migrateRoutesCompleted = userProgress.attempts.map(
+        (attempt) => attempt.step.migrateLandingRoute
+      )
 
-      // 3. Create new Attempts + Solves for each of the old puzzles that we
+      // 4. Check all the routes that are in the cookie and exist in the DB
+      // Filter out the ones that are already solved
+      const filteredRoutes = goodStepsInRedwoodDb
+        .filter(
+          (goodRoute) =>
+            !migrateRoutesCompleted.includes(goodRoute.migrateLandingRoute)
+        )
+        .map(({ migrateLandingRoute }) => migrateLandingRoute)
+
+      // 5. Create new Attempts + Solves for each of the old puzzles that we
       // haven't solved yet
-      const newSolves = oldPuzzlesUnsolvedInV2.map((puzzlePath) => {
+      const newSolves = filteredRoutes.map((puzzlePath) => {
         return db.solve.create({
           data: {
             user: {
@@ -266,8 +303,11 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
         })
       })
 
-      // 4. Fire off all the Solve + Attempt creations
-      await Promise.all(newSolves)
+      // 6. Fire off all the Solve + Attempt creations. Some people solve a lot
+      // of puzzles and that crashes when using Promise.all()
+      for (const solve of newSolves) {
+        await solve
+      }
 
       /**
        * Create userRewards for puzzles and packs solved in the v1
@@ -281,7 +321,9 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
             steps: {
               some: {
                 migrateLandingRoute: {
-                  in: oldPuzzlesUnsolvedInV2,
+                  in: goodStepsInRedwoodDb.map(
+                    ({ migrateLandingRoute }) => migrateLandingRoute
+                  ),
                 },
                 attempts: {
                   some: {
@@ -323,7 +365,7 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
         // Get rewardables that have solves on every step
         const solvedPuzzles = puzzlesWithoutRewards.filter(({ puzzle }) =>
           puzzle.steps.every(({ attempts }) =>
-            attempts.some(({ solve }) => !!solve.id)
+            attempts.some(({ solve }) => !!solve?.id)
           )
         )
 
