@@ -31458,6 +31458,7 @@ __metadata:
     "@types/gtag.js": ^0.0.11
     autoprefixer: ^10.4.12
     boring-avatars: ^1.7.0
+    buffer: ^6.0.3
     cloudinary-build-url: ^0.2.4
     clsx: ^1.2.1
     ethers: ^5.7.1

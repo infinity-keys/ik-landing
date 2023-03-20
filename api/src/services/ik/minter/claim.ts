@@ -75,6 +75,7 @@ export const claim: QueryResolvers['claim'] = async ({
     return {
       claimed,
       chainClaimed,
+      tokenId,
       errors: ['You have already claimed this NFT'],
     }
   }
