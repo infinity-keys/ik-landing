@@ -1,3 +1,4 @@
+# uncomment the mongodb_container section only when testing
 version: '3.7'
 services:
   postgres:
@@ -15,13 +16,13 @@ services:
     volumes:
       - /tmp/postgres-data:/var/lib/postgresql/data
   # mongodb_container:
-  #     image: mongo:latest
-  #     environment:
-  #       MONGO_INITDB_ROOT_USERNAME: root
-  #       MONGO_INITDB_ROOT_PASSWORD: rootpassword
-  #     ports:
-  #       - 27017:27017
-  #     volumes:
-  #       - mongodb_data_container:/data/db
+  #   image: mongo:latest
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: rootpassword
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - mongodb_data_container:/data/db
 volumes:
   mongodb_data_container:
