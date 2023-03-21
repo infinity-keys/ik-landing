@@ -1,6 +1,6 @@
 import { chainIdLookup } from '@infinity-keys/constants'
 import { cloudinaryUrl } from '@infinity-keys/core'
-import { RequestInfo, RequestInit } from 'node-fetch'
+// import { RequestInfo, RequestInit } from 'node-fetch'
 import { db } from 'src/lib/db'
 
 // const fetch = (url: RequestInfo, init?: RequestInit) =>
