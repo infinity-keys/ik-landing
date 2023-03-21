@@ -57,7 +57,7 @@ services:
         value: 18
 
   - name: function-stream
-    type: worker
+    type: web
     env: node
     region: oregon
     rootDir: packages/function-stream
