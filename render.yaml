@@ -5,60 +5,70 @@
 #####
 
 services:
-- name: redwoodjs-web
-  type: web
-  env: static
-  buildCommand: yarn && yarn workspaces foreach run build && yarn rw deploy render web
-  staticPublishPath: ./web/dist
-  envVars:
-  - key: NODE_VERSION
-    value: 16
-  routes:
-  - type: rewrite
-    source: /.redwood/functions/*
-    destination: https://api.infinitykeys.io/*
-  - type: rewrite
-    source: /*
-    destination: /index.html
+  - name: redwoodjs-web
+    type: web
+    env: static
+    buildCommand: yarn && yarn workspaces foreach run build && yarn rw deploy render web
+    staticPublishPath: ./web/dist
+    envVars:
+      - key: NODE_VERSION
+        value: 16
+    routes:
+      - type: rewrite
+        source: /.redwood/functions/*
+        destination: https://api.infinitykeys.io/*
+      - type: rewrite
+        source: /*
+        destination: /index.html
 
-- name: redwoodjs-api
-  type: web
-  env: node
-  region: oregon
-  buildCommand: yarn && yarn build && yarn rw build api
-  startCommand: yarn rw deploy render api
-  envVars:
-  - key: NODE_VERSION
-    value: 16
-  - key: DATABASE_URL
-    fromDatabase:
-      name: redwoodjs-db
-      property: connectionString
+  - name: redwoodjs-api
+    type: web
+    env: node
+    region: oregon
+    buildCommand: yarn && yarn build && yarn rw build api
+    startCommand: yarn rw deploy render api
+    envVars:
+      - key: NODE_VERSION
+        value: 16
+      - key: DATABASE_URL
+        fromDatabase:
+          name: redwoodjs-db
+          property: connectionString
 
-- name: discord-dust-game-bot-mongodb
-  type: pserv
-  env: docker
-  autoDeploy: false
-  disk:
-    name: data
-    mountPath: /data/db
-    sizeGB: 10
+  - name: discord-dust-game-bot-mongodb
+    type: pserv
+    env: docker
+    autoDeploy: false
+    disk:
+      name: data
+      mountPath: /data/db
+      sizeGB: 10
 
-- name: discord-dust-game-bot
-  type: worker
-  env: node
-  region: oregon
-  rootDir: packages/discord-dust-game-bot
-  buildCommand: yarn
-  startCommand: node .
-  autoDeploy: true
-  envVars:
-  - key: NODE_VERSION
-    value: 18
+  - name: discord-dust-game-bot
+    type: worker
+    env: node
+    region: oregon
+    rootDir: packages/discord-dust-game-bot
+    buildCommand: yarn
+    startCommand: node .
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+
+  - name: function-stream
+    type: worker
+    env: node
+    region: oregon
+    rootDir: packages/function-stream
+    buildCommand: yarn && yarn build
+    startCommand: yarn start
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 18
 
 databases:
   - name: redwoodjs-db
     region: oregon
     postgresMajorVersion: 15
-
-
