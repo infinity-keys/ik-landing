@@ -54,6 +54,7 @@ export default async () => {
   })
 
   // A rewardable, with an instance of a puzzle
+  // rewardables and puzzles have a one-to-one relationship
   const secondRewardablePuzzle = await db.rewardable.create({
     data: {
       name: 'Capital of Japan',
@@ -83,7 +84,7 @@ export default async () => {
     },
   })
 
-  // Create a new Pack called "Europe"
+  // Create a new Pack called "Big-Cities"
   const bigCitiesPack = await db.rewardable.create({
     data: {
       name: 'Big Cities',
@@ -97,7 +98,7 @@ export default async () => {
     },
   })
 
-  // Associate the firstRewardablePuzzle with the Europe Pack
+  // Associate the firstRewardablePuzzle with the Big-Cities Pack
   await db.rewardableConnection.create({
     data: {
       parentRewardable: { connect: { id: bigCitiesPack.id } },
@@ -106,7 +107,7 @@ export default async () => {
     },
   })
 
-  // Associate the secondRewardablePuzzle with the Europe Pack
+  // Associate the secondRewardablePuzzle with the Big-Cities Pack
   await db.rewardableConnection.create({
     data: {
       parentRewardable: { connect: { id: bigCitiesPack.id } },
@@ -115,3 +116,14 @@ export default async () => {
     },
   })
 }
+
+// Create a non-admin user with (with no org?)
+// Couple this user with the Magic-Link API key
+// Magic-Link API key goes in the .env file?
+// This is the user that will automatically sign in when thier name is
+// entered in by anybody on the IK dev team.
+
+// Create two steps for the Tokyo Japan puzzle
+// make the rewardable only available after finishing the final puzzle
+
+// Couple both puzzles with NFT rewards
