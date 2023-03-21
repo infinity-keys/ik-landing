@@ -1,16 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import Moralis from 'moralis';
 import { IWebhook } from '@moralisweb3/streams-typings';
+
 @Injectable()
 export class AppService {
   async streamListener(
     streamListenerDto: IWebhook,
     headers: Record<string, string>[],
   ) {
-    Moralis.Streams.verifySignature({
-      body: streamListenerDto,
-      signature: headers['x-signature'],
-    });
+    try {
+      Moralis.Streams.verifySignature({
+        body: streamListenerDto,
+        signature: headers['x-signature'],
+      });
+    } catch {
+      // TODO: log via data dog
+      console.error('Invalid Moralis signature');
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
 
     const { txs } = streamListenerDto;
 

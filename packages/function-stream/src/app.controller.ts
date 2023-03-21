@@ -7,7 +7,7 @@ import { IWebhook } from '@moralisweb3/streams-typings';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Post()
+  @Post('/moralis')
   streamListener(
     @Body() streamListenerDto: IWebhook,
     @Headers() headers: Record<string, string>[],
