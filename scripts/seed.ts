@@ -165,4 +165,12 @@ export default async () => {
   })
 
   console.log('Packs created')
+
+  // TODO: migrate these test cases
+  // 1. Rewardable -> Puzzle -> Anon Steps 1-3 -> Step 4 requires sign in -> Reward at the end
+  // 2. Rewardable -> Puzzle -> No anonymous steps (1-3) -> Reward at the end
+  // 3. Rewardable -> Puzzle -> 12 goddamn steps -> sign in for all, all steps are nft check, passcode, function call, API check
+  // 4. The above, but anon for all steps.
+  // 5. All of these under 1 pack?
+  // 6. A bunch more random pack of simple puzzles to help fill out the /play page
 }
