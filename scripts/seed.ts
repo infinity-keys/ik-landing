@@ -1,9 +1,4 @@
-import type { Prisma } from '@prisma/client'
 import { db } from 'api/src/lib/db'
-import type { RewardableType, SiteRole, StepType } from 'api/types/graphql'
-
-// Stable IK org ID
-const ikCuid = 'cla9yay7y003k08la2z4j2xrv'
 
 export default async () => {
   // The starting IK org that all of team and Rewardables belong to
@@ -17,6 +12,7 @@ export default async () => {
   console.log(`created ${ikOrg.name} organization`)
 
   const ikUsersData = [
+    // TODO: create non-admin users
     {
       username: 'Infinity Keys User',
       email: 'infinitykeys_devs@protonmail.com',
@@ -59,11 +55,11 @@ export default async () => {
     },
   ]
   const users = await Promise.all(
-    ikUsersData.map((data: Prisma.UserCreateArgs['data']) => {
+    ikUsersData.map((data) => {
       return db.user.create({
         data: {
           ...data,
-          roles: ['ADMIN'] as SiteRole[],
+          roles: ['ADMIN'],
           organizations: {
             // This is actually OrganizationUser
             create: {
@@ -88,7 +84,7 @@ export default async () => {
       slug: 'puzzle-1',
       explanation: 'This is the first puzzle',
       type: 'PUZZLE',
-      orgId: ikCuid,
+      orgId: ikOrg.id,
       puzzle: {
         create: {
           isAnon: false,
