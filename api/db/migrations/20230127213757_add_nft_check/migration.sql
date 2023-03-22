@@ -1,4 +1,0 @@
--- AlterTable
-ALTER TABLE "StepNftCheck" ALTER COLUMN "contractAddress" DROP NOT NULL,
-ALTER COLUMN "tokenId" DROP NOT NULL,
-ALTER COLUMN "chainId" DROP NOT NULL;
