@@ -165,8 +165,6 @@ export default async () => {
       },
     },
   })
-<<<<<<< HEAD
-=======
+
   console.log('Packs created')
->>>>>>> Puzzles to pack creation
 }
