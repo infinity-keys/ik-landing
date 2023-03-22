@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseArrayPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { Headers } from '@nestjs/common';
 import { IWebhook } from '@moralisweb3/streams-typings';
@@ -7,16 +15,35 @@ import { IWebhook } from '@moralisweb3/streams-typings';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Post('/moralis')
+  @Post('/moralis/:contract')
   streamListener(
-    @Body() streamListenerDto: IWebhook,
+    @Query('methodIds', new ParseArrayPipe({ items: String, separator: ',' }))
+    methodIds: string[],
+    @Param('contract') contract: string,
+    @Body()
+    streamListenerDto: IWebhook,
     @Headers() headers: Record<string, string>[],
   ) {
-    return this.appService.streamListener(streamListenerDto, headers);
+    return this.appService.streamListener(
+      streamListenerDto,
+      headers,
+      contract,
+      methodIds,
+    );
   }
 
-  @Get()
-  hasUserCalledFunction(): Promise<boolean> {
-    return this.appService.hasUserCalledFunction();
+  @Get('/hasUserCalledFunction')
+  async hasUserCalledFunction(
+    @Query('contractAddress') contractAddress: string,
+    @Query('methodIds', new ParseArrayPipe({ items: String, separator: ',' }))
+    methodIds: string[],
+    @Query('walletAddress') walletAddress: string,
+  ): Promise<{ hasUserCalledFunction: boolean[] }> {
+    const hasCalled = await this.appService.hasUserCalledFunction(
+      contractAddress,
+      methodIds,
+      walletAddress,
+    );
+    return { hasUserCalledFunction: hasCalled };
   }
 }
