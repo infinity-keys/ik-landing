@@ -183,7 +183,7 @@ export default async () => {
                 type: 'SIMPLE_TEXT',
                 stepSimpleText: {
                   create: {
-                    solution: 'Tokyo',
+                    solution: 'Paris',
                   },
                 },
               },
@@ -224,53 +224,45 @@ export default async () => {
     },
   })
 
-  // Chris and U will make a pack tomorrow...
-
   const puzzles = await Promise.all([
     firstRewardablePuzzle,
     secondRewardablePuzzle,
   ])
+
+  // Create a new Pack called "Big-Cities"
+  const bigCitiesPack = await db.rewardable.create({
+    data: {
+      name: 'Big Cities',
+      slug: 'big-cities',
+      explanation: 'These are major cities you may someday visit!',
+      type: 'PACK',
+      orgId: ikCuid,
+      pack: {
+        create: {
+          id: 'a unique ID that makes this rewardable an actual pack',
+        },
+      },
+    },
+  })
+
+  // Associate the firstRewardablePuzzle with the Big-Cities Pack
+  await db.rewardableConnection.create({
+    data: {
+      parentRewardable: { connect: { id: bigCitiesPack.id } },
+      childRewardable: { connect: { id: firstRewardablePuzzle.id } },
+      childSortWeight: 1,
+    },
+  })
+
+  // Associate the secondRewardablePuzzle with the Big-Cities Pack
+  await db.rewardableConnection.create({
+    data: {
+      parentRewardable: { connect: { id: bigCitiesPack.id } },
+      childRewardable: { connect: { id: secondRewardablePuzzle.id } },
+      childSortWeight: 2,
+    },
+  })
 }
-
-// Create a new Pack called "Big-Cities"
-// const bigCitiesPack = await db.rewardable.create({
-//   data: {
-//     name: 'Big Cities',
-//     slug: 'big-cities',
-//     explanation: 'These are major cities you may someday visit!',
-//     type: 'PACK',
-//     orgId: ikCuid,
-//     organization: {
-//       connect: {
-//         // id: ikCuid,
-//       },
-//     },
-//     // pack: {
-//     //   create: {
-
-//     //   },
-//     // },
-//   },
-// })
-
-// Associate the firstRewardablePuzzle with the Big-Cities Pack
-//   await db.rewardableConnection.create({
-//     data: {
-//       parentRewardable: { connect: { id: bigCitiesPack.id } },
-//       childRewardable: { connect: { id: firstRewardablePuzzle.id } },
-//       childSortWeight: 1,
-//     },
-//   })
-
-//   // Associate the secondRewardablePuzzle with the Big-Cities Pack
-//   await db.rewardableConnection.create({
-//     data: {
-//       parentRewardable: { connect: { id: bigCitiesPack.id } },
-//       childRewardable: { connect: { id: secondRewardablePuzzle.id } },
-//       childSortWeight: 2,
-//     },
-//   })
-// }
 
 // Create a non-admin user with (with no org?)
 // Couple this user with the Magic-Link API key
