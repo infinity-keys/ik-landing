@@ -5,8 +5,6 @@ import type { RewardableType, SiteRole, StepType } from 'api/types/graphql'
 // Stable IK org ID
 const ikCuid = 'cla9yay7y003k08la2z4j2xrv'
 
-// @see: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
-
 export default async () => {
   // The starting IK org that all of team and Rewardables belong to
   const ikOrg = await db.organization.create({
@@ -67,8 +65,13 @@ export default async () => {
           ...data,
           roles: ['ADMIN'] as SiteRole[],
           organizations: {
-            connect: {
-              id: ikOrg.id,
+            // This is actually OrganizationUser
+            create: {
+              organization: {
+                connect: {
+                  id: ikOrg.id,
+                },
+              },
             },
           },
         },
@@ -79,9 +82,9 @@ export default async () => {
 
   const puzzle1 = await db.rewardable.create({
     data: {
-      name: 'Capital of France',
-      slug: 'capital-of-france',
-      explanation: 'You smell cigarette smoke and baguettes here.',
+      name: 'puzzle-1',
+      slug: 'puzzle-1',
+      explanation: 'This is the first puzzle',
       type: 'PUZZLE',
       orgId: ikCuid,
       puzzle: {
@@ -107,9 +110,9 @@ export default async () => {
   })
   const puzzle2 = await db.rewardable.create({
     data: {
-      name: 'puzzle 1',
-      slug: 'puzzle-1',
-      explanation: 'This is the first puzzle',
+      name: 'puzzle 2',
+      slug: 'puzzle-2',
+      explanation: 'This is the second puzzle',
       type: 'PUZZLE',
       organization: {
         connect: {
@@ -137,6 +140,7 @@ export default async () => {
       },
     },
   })
+  console.log('Puzzles created')
 
   const pack1 = await db.rewardable.create({
     data: {
@@ -161,4 +165,8 @@ export default async () => {
       },
     },
   })
+<<<<<<< HEAD
+=======
+  console.log('Packs created')
+>>>>>>> Puzzles to pack creation
 }
