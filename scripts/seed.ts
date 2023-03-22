@@ -80,6 +80,8 @@ export default async () => {
   )
   console.log(`created ${users.length} users`)
 
+  // Note we cannot use .createMany for puzzles due to the need to create deeply
+  // nested objects like Steps. There is no nested .createMany!
   const puzzle1 = await db.rewardable.create({
     data: {
       name: 'puzzle-1',
