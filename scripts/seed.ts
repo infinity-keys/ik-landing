@@ -15,48 +15,40 @@ export default async () => {
   // siteRole { ADMIN } user data
   const ikUsersData = [
     {
-      username: 'Infinity Keys User',
       email: 'infinitykeys_devs@protonmail.com',
       authId: 'did:ethr:0xf19621f2Fb459B9954170bf5F2F7b15A2aA1E3f9',
     },
     {
-      username: 'Chris',
       id: 'clfbb0aw70095me24zy00lago',
       email: 'bloomcb@gmail.com',
       authId: 'did:ethr:0x71F832147375264368Dfb39cbceE8aeF39e6d50C',
     },
     {
-      username: 'Kori',
       id: 'clfbb0mix009tme24zjb3ty7z',
       email: 'itsmekori@infinitykeys.io',
       authId: 'did:ethr:0xdbf8A4E65F0ef649797f7554ED6D03A32E67bD6D',
     },
     {
-      username: 'Magic',
       id: 'clfbb35mj00adme24m0mpx5w2',
       email: 'andyboyan@gmail.com',
       authId: 'did:ethr:0x1F4d944219b078B2A66C63962FD2E99e2132e319',
     },
     {
-      username: 'Storm Cloud',
       id: 'clfbeh0x90000l6z61p1dix7g',
       email: 'tawnee.la@gmail.com',
       authId: 'did:ethr:0xF252C8aF80C637030Bb9691eDFa62042156315D7',
     },
     {
-      username: 'Tawnee',
       id: 'clfboa6v70009id24jvb4jps9',
       email: 'tawnee@infinitykeys.io',
       authId: 'did:ethr:0xFA52F4fEd899EB4a2c70100D83FfD5e9a5169f19',
     },
     {
-      username: 'Chair',
       id: 'clfbpp4kf000d08mmg3pdatx9',
       email: 'skeleton@infinitykeys.io',
       authId: 'did:ethr:0x73ccc0F5A6059603570BB2bA48d84afdEd4E8593',
     },
     {
-      username: 'Rick',
       id: 'clfbqfryd000008i8dlmn3elb',
       email: 'rick.a.burd@gmail.com',
       authId: 'did:ethr:0xF09818A04FF3fEB2705AA0cC235901b0fC363dec',
@@ -89,70 +81,30 @@ export default async () => {
 
   console.log(`created ${adminUsers.length} IK admin users`)
 
-  // siteRole { ANONYMOUS } user data
-  const anonymousUsersData = [
-    {
-      username: 'John Doe',
-    },
-    {
-      username: 'Jane Doe',
-    },
-  ]
-
-  // create the siteRole { ANONYMOUS } users
-  const anonymousUsers = await Promise.all(
-    anonymousUsersData.map((data) => {
-      return db.user.create({
-        data: {
-          ...data,
-          roles: ['ANONYMOUS'],
-        },
-      })
-    })
-  )
-
-  // outside org for a VERIFEID user to belong to
-  const yahooOrg = await db.organization.create({
-    data: {
-      name: 'Yahoo Inc.',
-      slug: 'yahoo-inc',
-    },
-  })
-
+  // we don't track ANONYMOUS users, but we track VERIFIED ones
   // siteRole { VERIFIED } user data
-  const verifiedUsersData = [
-    {
-      username: 'R. Burd Yahoo Sales',
-      email: 'richardburd@yahoo.com',
-      organizations: {
-        // This is actually OrganizationUser
-        create: {
-          organization: {
-            connect: {
-              id: yahooOrg.id,
-            },
-          },
-        },
-      },
-    },
-    {
-      username: 'Mrs. Verified', // no other info
-    },
-  ]
+
+  // const verifiedUsersData = [
+  //   {
+  //     email: 'bloom-will-get-this',
+  //     authId: 'bloom-will-get-this',
+  //   },
+  // ]
 
   // create the siteRole { VERIFIED } users
-  const verifiedUsers = await Promise.all(
-    verifiedUsersData.map((data) => {
-      return db.user.create({
-        data: {
-          ...data,
-          roles: ['VERIFIED'],
-        },
-      })
-    })
-  )
 
-  console.log(`created ${verifiedUsers.length} verified users`)
+  // const verifiedUsers = await Promise.all(
+  //   verifiedUsersData.map((data) => {
+  //     return db.user.create({
+  //       data: {
+  //         ...data,
+  //         roles: ['VERIFIED'],
+  //       },
+  //     })
+  //   })
+  // )
+
+  // console.log(`created ${verifiedUsers.length} verified users`)
 
   // Note we cannot use .createMany for puzzles due to the need to create deeply
   // nested objects like Steps. There is no nested .createMany!
@@ -244,7 +196,7 @@ export default async () => {
 
   console.log('Packs created')
 
-  // TODO: migrate these test cases
+  // TODOs:
   // 1. Rewardable -> Puzzle -> Anon Steps 1-3 -> Step 4 requires sign in -> Reward at the end
   // 2. Rewardable -> Puzzle -> No anonymous steps (1-3) -> Reward at the end
   // 3. Rewardable -> Puzzle -> 12 goddamn steps -> sign in for all, all steps are nft check, passcode, function call, API check
