@@ -9,7 +9,7 @@ export class AppService {
   private readonly collection: mongo.Collection;
 
   constructor(@InjectDb() private readonly db: mongo.Db) {
-    this.collection = this.db.collection('demo');
+    this.collection = this.db.collection('contracts');
   }
 
   async streamListener(
