@@ -1,9 +1,7 @@
 import { chainIdLookup } from '@infinity-keys/constants'
 import { cloudinaryUrl } from '@infinity-keys/core'
-import { RequestInfo, RequestInit } from 'node-fetch'
+import { db } from 'src/lib/db'
 
-const fetch = (url: RequestInfo, init?: RequestInit) =>
-  import('node-fetch').then(({ default: fetch }) => fetch(url, init))
 const discord = require('discord.js')
 const { EmbedBuilder } = require('discord.js')
 const Moralis = require('moralis').default
@@ -18,10 +16,6 @@ if (!Moralis.Core.isStarted) {
   Moralis.start({
     apiKey: process.env.MORALIS_API_KEY,
   })
-}
-
-interface MetadataResponse {
-  image: string
 }
 
 export const handler = async (event) => {
@@ -43,15 +37,15 @@ export const handler = async (event) => {
     const chainId = parseInt(parsedBody.chainId, 16)
     const chain = chainIdLookup[chainId]
 
-    const response = await fetch(
-      `https://api.infinitykeys.io/metadata?contractName=achievement&tokenId=${tokenId}`
-    )
-    const nftMetadata = (await response.json()) as MetadataResponse
-    const image = nftMetadata.image
-
-    const url = new URL(image)
-    const pathName = url.pathname
-    const cloudImage = pathName.split('/').slice(-2).join('/')
+    const image = await db.nft.findUnique({
+      where: {
+        contractName_tokenId: {
+          contractName: 'achievement',
+          tokenId,
+        },
+      },
+      select: { cloudinaryId: true },
+    })
 
     const claimedNFT = new EmbedBuilder()
       .setColor('101d42')
@@ -63,7 +57,7 @@ export const handler = async (event) => {
         url: 'https://infinitykeys.io',
       })
       .setDescription('New Mint!!')
-      .setThumbnail(cloudinaryUrl(cloudImage, 50, 50, false, 1))
+      .setThumbnail(cloudinaryUrl(image.cloudinaryId, 50, 50, false, 1))
       .addFields(
         { name: 'Token', value: `${tokenId}`, inline: true },
         { name: 'Mint Address', value: `${from}`, inline: true },
