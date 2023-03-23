@@ -3,7 +3,7 @@ import Moralis from 'moralis';
 import { IWebhook } from '@moralisweb3/streams-typings';
 import * as mongo from 'mongodb';
 import { InjectDb } from 'nest-mongodb';
-
+import { Response } from 'express';
 @Injectable()
 export class AppService {
   private readonly collection: mongo.Collection;
@@ -17,6 +17,7 @@ export class AppService {
     headers: Record<string, string>[],
     contract: string,
     methodIds: string[],
+    response: Response,
   ) {
     // Ensures the request is coming from Moralis
     try {
@@ -34,36 +35,52 @@ export class AppService {
     // it has been confirmed on the blockchain. We only care about confirmed
     const { txs, confirmed } = streamListenerDto;
 
-    if (!confirmed || !txs.length) return;
+    if (!confirmed || !txs.length)
+      return response
+        .status(HttpStatus.OK)
+        .send({ message: 'No valid transactions present' });
 
-    // Does this request
+    // Does this request contain any transactions with the methodId we're
+    // looking for
     const filteredTransactions = txs.filter(({ input }) =>
       methodIds.includes(input?.slice(0, 10)),
     );
 
-    if (!filteredTransactions.length) return;
+    // Return if there are no valid transactions
+    if (!filteredTransactions.length)
+      return response
+        .status(HttpStatus.OK)
+        .send({ message: 'Transaction does not contain monitored methodId' });
 
-    const [firstTransaction] = filteredTransactions;
+    // Get the user's wallet address
+    const [{ fromAddress }] = filteredTransactions;
+    // Get all the unique methodIds from the list of valid transactions
+    const uniqueMethodIds = new Set(
+      filteredTransactions.map(({ input }) => input?.slice(0, 10)),
+    );
+
+    // Creates the MongoDB query for one or many matching methodIds
+    const result = Array.from(uniqueMethodIds).reduce((acc, methodId) => {
+      const mongoParams = [contract, methodId, fromAddress].join('.');
+      return {
+        ...acc,
+        [mongoParams]: streamListenerDto,
+      };
+    }, {});
 
     try {
-      // @TODO: Handle cases where we are monitoring two methodIds and one object
-      // comes in with multiple matching transactions. We'll have to write to
-      // both methodIds in the DB
-      const mongoParams = [
-        contract,
-        firstTransaction.input.slice(0, 10),
-        firstTransaction.fromAddress,
-      ].join('.');
-
+      // We only have one document with dynamic fields
       await this.collection.updateOne(
         {},
         {
-          $addToSet: {
-            [mongoParams]: streamListenerDto,
-          },
+          $addToSet: result,
         },
         { upsert: true },
       );
+
+      return response
+        .status(HttpStatus.CREATED)
+        .send({ message: 'Created new field' });
     } catch (e) {
       console.log(e);
       console.error('Problem adding transaction to DB');

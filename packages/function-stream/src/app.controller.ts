@@ -6,10 +6,12 @@ import {
   ParseArrayPipe,
   Post,
   Query,
+  Res,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Headers } from '@nestjs/common';
 import { IWebhook } from '@moralisweb3/streams-typings';
+import { Response } from 'express';
 
 @Controller()
 export class AppController {
@@ -23,12 +25,14 @@ export class AppController {
     @Body()
     streamListenerDto: IWebhook,
     @Headers() headers: Record<string, string>[],
-  ) {
+    @Res() response: Response,
+  ): Promise<Response> {
     return this.appService.streamListener(
       streamListenerDto,
       headers,
       contract,
       methodIds,
+      response,
     );
   }
 
