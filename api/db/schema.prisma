@@ -213,9 +213,6 @@ model StepFunctionCall {
   methodIds       String[]
   /// Address for the contract that has our functions
   contractAddress String?
-
-  /// require user to have all listed NFTs, otherwise they only need one of them
-  requireAllNfts Boolean @default(true)
 }
 
 // Data for the step type that checks a user's wallet for an NFT or POAP

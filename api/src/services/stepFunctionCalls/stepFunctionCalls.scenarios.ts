@@ -8,12 +8,12 @@ export const standard = defineScenario<Prisma.StepFunctionCallCreateArgs>({
         methodIds: 'String',
         step: {
           create: {
-            updatedAt: '2023-03-23T18:03:39.989Z',
+            updatedAt: '2023-03-23T18:20:06.476Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2023-03-23T18:03:39.989Z',
+                    updatedAt: '2023-03-23T18:20:06.476Z',
                     name: 'String',
                     slug: 'String',
                     explanation: 'String',
@@ -21,8 +21,8 @@ export const standard = defineScenario<Prisma.StepFunctionCallCreateArgs>({
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String9537608',
-                        updatedAt: '2023-03-23T18:03:39.989Z',
+                        slug: 'String2441103',
+                        updatedAt: '2023-03-23T18:20:06.476Z',
                       },
                     },
                   },
@@ -38,12 +38,12 @@ export const standard = defineScenario<Prisma.StepFunctionCallCreateArgs>({
         methodIds: 'String',
         step: {
           create: {
-            updatedAt: '2023-03-23T18:03:39.989Z',
+            updatedAt: '2023-03-23T18:20:06.476Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2023-03-23T18:03:39.989Z',
+                    updatedAt: '2023-03-23T18:20:06.476Z',
                     name: 'String',
                     slug: 'String',
                     explanation: 'String',
@@ -51,8 +51,8 @@ export const standard = defineScenario<Prisma.StepFunctionCallCreateArgs>({
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String7994191',
-                        updatedAt: '2023-03-23T18:03:39.989Z',
+                        slug: 'String5609739',
+                        updatedAt: '2023-03-23T18:20:06.476Z',
                       },
                     },
                   },

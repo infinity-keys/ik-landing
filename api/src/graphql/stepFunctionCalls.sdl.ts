@@ -5,7 +5,6 @@ export const schema = gql`
     stepId: String!
     methodIds: [String]!
     contractAddress: String
-    requireAllNfts: Boolean!
   }
 
   type Query {
@@ -18,14 +17,12 @@ export const schema = gql`
     stepId: String!
     methodIds: [String]!
     contractAddress: String
-    requireAllNfts: Boolean!
   }
 
   input UpdateStepFunctionCallInput {
     stepId: String
     methodIds: [String]!
     contractAddress: String
-    requireAllNfts: Boolean
   }
 
   type Mutation {

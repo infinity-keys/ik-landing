@@ -1,4 +1,5 @@
 import { PropsWithChildren, lazy, Suspense } from 'react'
+import clsx from 'clsx'
 
 import { ThumbnailProgress } from '@infinity-keys/core'
 import { FindAnonStepQuery, FindStepQuery } from 'types/graphql'
@@ -9,7 +10,6 @@ import { routes, useParams } from '@redwoodjs/router'
 import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
-import clsx from 'clsx'
 
 interface StepsLayoutProps extends PropsWithChildren {
   currentStepId: string
@@ -23,6 +23,10 @@ const SimpleTextInput = lazy(
 )
 const NftCheckButton = lazy(
   () => import('src/components/NftCheckButton/NftCheckButton')
+)
+
+const StepFunctionCallButton = lazy(
+  () => import('src/components/StepFunctionCallButton/StepFunctionCallButton')
 )
 
 const StepsLayout = ({
@@ -75,6 +79,12 @@ const StepsLayout = ({
             {step.type === 'NFT_CHECK' && (
               <div className="pt-8">
                 <NftCheckButton step={step} puzzleId={puzzle.id} />
+              </div>
+            )}
+
+            {step.type === 'FUNCTION_CALL' && (
+              <div className="pt-8">
+                <StepFunctionCallButton step={step} puzzleId={puzzle.id} />
               </div>
             )}
           </div>
