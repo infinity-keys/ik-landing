@@ -4,7 +4,8 @@ import { z } from 'zod'
 import { context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
-import { checkFunctionCall, checkNft } from 'src/lib/web3/check-nft'
+import { checkNft } from 'src/lib/web3/check-nft'
+import { checkFunctionCall } from 'src/lib/web3/check-function-call'
 import { createSolve } from 'src/services/solves/solves'
 import { createUserReward } from 'src/services/userRewards/userRewards'
 
