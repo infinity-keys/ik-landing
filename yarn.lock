@@ -9673,6 +9673,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/validator@npm:^13.7.10":
+  version: 13.7.14
+  resolution: "@types/validator@npm:13.7.14"
+  checksum: fd9baf51e1d3d5e75250878109554caa1dcdd57f6f3875a99806eb97c40b1db740807fc9e48b5ff4d744d5abe64d7d4fccdeac5b42c6e07d45c1ee89dab23ab7
+  languageName: node
+  linkType: hard
+
 "@types/webidl-conversions@npm:*":
   version: 7.0.0
   resolution: "@types/webidl-conversions@npm:7.0.0"
@@ -12922,6 +12929,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bson@npm:^5.0.1":
+  version: 5.1.0
+  resolution: "bson@npm:5.1.0"
+  checksum: 03376bde255f30dd0edf77c1d6f63eaf6fef1ef3843a3da00f65c138abf44801a3ed5ffb7dd124428c318e0d93219cbc5da887148eb9ab9e2a355ee22a0eb432
+  languageName: node
+  linkType: hard
+
 "btoa@npm:^1.2.1":
   version: 1.2.1
   resolution: "btoa@npm:1.2.1"
@@ -13633,6 +13647,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"class-transformer@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "class-transformer@npm:0.5.1"
+  checksum: 19809914e51c6db42c036166839906420bb60367df14e15f49c45c8c1231bf25ae661ebe94736ee29cc688b77101ef851a8acca299375cc52fc141b64acde18a
+  languageName: node
+  linkType: hard
+
 "class-utils@npm:^0.3.5":
   version: 0.3.6
   resolution: "class-utils@npm:0.3.6"
@@ -13642,6 +13663,17 @@ __metadata:
     isobject: ^3.0.0
     static-extend: ^0.1.1
   checksum: d44f4afc7a3e48dba4c2d3fada5f781a1adeeff371b875c3b578bc33815c6c29d5d06483c2abfd43a32d35b104b27b67bfa39c2e8a422fa858068bd756cfbd42
+  languageName: node
+  linkType: hard
+
+"class-validator@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "class-validator@npm:0.14.0"
+  dependencies:
+    "@types/validator": ^13.7.10
+    libphonenumber-js: ^1.10.14
+    validator: ^13.7.0
+  checksum: 1f7c34052f0c342b1d27c5aec7c42b646bb77a56874acc0d8003e2ad8f0294e7da18b43e9caaac8e8817cbb309cf9f14bcebe4611994390ca4818f3b393783dc
   languageName: node
   linkType: hard
 
@@ -18670,11 +18702,15 @@ __metadata:
     "@types/supertest": ^2.0.11
     "@typescript-eslint/eslint-plugin": ^5.0.0
     "@typescript-eslint/parser": ^5.0.0
+    class-transformer: ^0.5.1
+    class-validator: ^0.14.0
     eslint: ^8.0.1
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.0.0
     jest: 29.3.1
+    mongodb: ^5.1.0
     moralis: ^2.16.1
+    nest-mongodb: ^6.4.0
     prettier: ^2.3.2
     reflect-metadata: ^0.1.13
     rxjs: ^7.2.0
@@ -22667,6 +22703,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"libphonenumber-js@npm:^1.10.14":
+  version: 1.10.24
+  resolution: "libphonenumber-js@npm:1.10.24"
+  checksum: 706b6b0e98fb74076bf068fac254ee272bd1fc249bd6341597a93d0415a6072cfa7e6f35fd868632ed21514d7c72a2a27cf83a5f32da574493af28dc673eeb1b
+  languageName: node
+  linkType: hard
+
 "lie@npm:3.1.1":
   version: 3.1.1
   resolution: "lie@npm:3.1.1"
@@ -24223,7 +24266,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb-connection-string-url@npm:^2.5.4":
+"mongodb-connection-string-url@npm:^2.5.4, mongodb-connection-string-url@npm:^2.6.0":
   version: 2.6.0
   resolution: "mongodb-connection-string-url@npm:2.6.0"
   dependencies:
@@ -24248,6 +24291,32 @@ __metadata:
     saslprep:
       optional: true
   checksum: 47a51d7f7ff47c4b15d573fc4b7cbc76b2058666932909437c92f9da398473e29b33b7c1c06096da84fc47ec15712e5e376a06ea0a01d3c48087bfc4f94f053a
+  languageName: node
+  linkType: hard
+
+"mongodb@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "mongodb@npm:5.1.0"
+  dependencies:
+    bson: ^5.0.1
+    mongodb-connection-string-url: ^2.6.0
+    saslprep: ^1.0.3
+    socks: ^2.7.1
+  peerDependencies:
+    "@aws-sdk/credential-providers": ^3.201.0
+    mongodb-client-encryption: ^2.3.0
+    snappy: ^7.2.2
+  dependenciesMeta:
+    saslprep:
+      optional: true
+  peerDependenciesMeta:
+    "@aws-sdk/credential-providers":
+      optional: true
+    mongodb-client-encryption:
+      optional: true
+    snappy:
+      optional: true
+  checksum: 5ff8342445a2d7d8dd25323e7f3264d935f65cbcd2c7ddc97be9e14da2da10c4a537867ab452259e04d8641784b0fb006eabc8f811cfeb50ca41d0d13a68caf2
   languageName: node
   linkType: hard
 
@@ -24510,6 +24579,19 @@ __metadata:
   version: 2.6.2
   resolution: "neo-async@npm:2.6.2"
   checksum: c2f5a604a54a8ec5438a342e1f356dff4bc33ccccdb6dc668d94fe8e5eccfc9d2c2eea6064b0967a767ba63b33763f51ccf2cd2441b461a7322656c1f06b3f5d
+  languageName: node
+  linkType: hard
+
+"nest-mongodb@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "nest-mongodb@npm:6.4.0"
+  peerDependencies:
+    "@nestjs/common": ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
+    "@nestjs/core": ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
+    mongodb: ^3.1.0 || ^4.0.0
+    reflect-metadata: ^0.1.13
+    rxjs: ^6.0.0 || ^7.0.0
+  checksum: 3a9354235d2f4995f9e86dc33314334106e8def720eb7f607ec0a577704ebec3e61cd3cd3b111cf4b9f8f791de5721aed1c5e01356a7eba6c28bb80455988d45
   languageName: node
   linkType: hard
 
