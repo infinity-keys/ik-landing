@@ -69,7 +69,8 @@ export class AppService {
     }, {});
 
     try {
-      // We only have one document with dynamic fields
+      // We only have one document per contract address, so we need to update
+      // one or more fields on only one document
       await this.collection.updateOne(
         {},
         {
@@ -101,6 +102,8 @@ export class AppService {
       [contractAddress, methodId, walletAddress].join('.'),
     );
 
+    // We have only one document per contract address, so this will return 0 if
+    // there is no match, or 1 if there is a match
     const results = await Promise.all(
       mongoParams.map((params) =>
         this.collection.countDocuments({
