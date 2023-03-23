@@ -60,7 +60,7 @@ export class AppService {
     );
 
     // Creates the MongoDB query for one or many matching methodIds
-    const result = Array.from(uniqueMethodIds).reduce((acc, methodId) => {
+    const mutationData = Array.from(uniqueMethodIds).reduce((acc, methodId) => {
       const mongoParams = [contract, methodId, fromAddress].join('.');
       return {
         ...acc,
@@ -74,7 +74,7 @@ export class AppService {
       await this.collection.updateOne(
         {},
         {
-          $addToSet: result,
+          $addToSet: mutationData,
         },
         { upsert: true },
       );
