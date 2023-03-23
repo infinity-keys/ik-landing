@@ -147,6 +147,8 @@ enum StepType {
   SIMPLE_TEXT
   /// corresponds to the StepNftCheck model
   NFT_CHECK
+  /// corresponds to the StepFunctionCall model
+  FUNCTION_CALL
 }
 
 /// Steps are whate players actually solve. One or more steps make up a Puzzle.
@@ -171,9 +173,10 @@ model Step {
   puzzleId String
 
   // Step types
-  type           StepType        @default(SIMPLE_TEXT)
-  stepSimpleText StepSimpleText?
-  stepNftCheck   StepNftCheck?
+  type             StepType          @default(SIMPLE_TEXT)
+  stepSimpleText   StepSimpleText?
+  stepNftCheck     StepNftCheck?
+  stepFunctionCall StepFunctionCall?
 
   // Every puzzle from IK v1 (Next/Hasura) was a single step, so we need to
   // migrate them; optional because only v1 puzzles will have this.
@@ -196,6 +199,23 @@ model StepSimpleText {
   solution          String
   /// Database will show 0, but the GraphQL resolver for this will provide a char count
   solutionCharCount Int    @default(0)
+}
+
+/// Checks whether a wallet address has called specific functions (methodIds) on
+/// a contract
+model StepFunctionCall {
+  id String @id @default(cuid())
+
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @unique
+
+  /// MethodIds for the functions we want to check
+  methodIds       String[]
+  /// Address for the contract that has our functions
+  contractAddress String?
+
+  /// require user to have all listed NFTs, otherwise they only need one of them
+  requireAllNfts Boolean @default(true)
 }
 
 // Data for the step type that checks a user's wallet for an NFT or POAP
