@@ -1,34 +1,41 @@
 /**
  * @file
  *
- * The "Saga" pack and puzzle pages
+ * The "Raid Brood" pack and puzzle pages
  */
 
-.pack--saga-wormhole-pack,
-.puzzle--saga-home,
-.puzzle--saga-lite {
+.pack--raid-brood,
+.puzzle--greet-the-brood,
+.puzzle--demons-flesh,
+.puzzle--most-sour {
   /* Scoped vars */
-  --saga-button-color: #9b5320;
-  --saga-pack-button-color: #330605;
-  --saga-text-color: #ffffff;
-  --saga-button-text: #56130c;
+  --raid-button-color: #932777;
+  --raid-pack-button-color: #1c0029;
+  --raid-text-color: #21012e;
+  --raid-button-text: #180021;
 
   @apply bg-cover bg-center bg-no-repeat;
-  background-image: linear-gradient(0.25turn, #460016, #56130c, #d2306a);
+  background-image: linear-gradient(
+    0.25turn,
+    #1d0029,
+    #f9f05a,
+    #932777,
+    #fd3864
+  );
 
   /* This is a div that's usually hidden in the page*/
   .pack__image-anchor {
     @apply mt-20 inline-block h-56 w-52 bg-center bg-no-repeat;
-    background-image: url('web/public/customer/saga/saga_logo.png');
+    background-image: ;
   }
 
   /* Text right below logo from above */
   .pack__text {
-    color: var(--saga-text-color);
+    color: var(--raid-text-color);
   }
   /* On the pack page, the blocks representing each puzzle */
   .puzzle-thumb {
-    background-color: var(--saga-pack-button-color);
+    background-color: var(--raid-pack-button-color);
   }
 
   /* Scope to main area so we can override JUST this button */
@@ -36,16 +43,16 @@
   .puzzle__main {
     .ik-button {
       @apply h-20 min-w-0 rounded-full px-10 text-2xl;
-      color: var(--saga-button-text);
-      background: var(--saga-button-color);
-      border-color: var(--saga-button-text);
+      color: var(--raid-button-text);
+      background: var(--raid-button-color);
+      border-color: var(--raid-button-text);
     }
   }
 
   /* You know what this is */
   .social-share {
     @apply rounded-full border-2 border-solid bg-transparent px-6 py-2 text-lg uppercase;
-    color: var(--saga-button-color);
-    border-color: var(--saga-button-color);
+    color: var(--raid-button-text);
+    border-color: var(--raid-button-text);
   }
 }
