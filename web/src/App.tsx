@@ -28,6 +28,10 @@ import './styles/customer/p0.css'
 import './styles/customer/lens.css'
 import './styles/customer/saga.css'
 import './styles/customer/lens_collector.css'
+import './styles/customer/spookey_gotchi.css'
+import './styles/customer/raid_brood.css'
+import './styles/customer/bufficorn.css'
+import './styles/customer/evermore.css'
 
 export const IKTheme = loMerge(darkTheme(), {
   colors: {

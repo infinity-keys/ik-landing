@@ -1,0 +1,51 @@
+/**
+ * @file
+ *
+ * The "Spookey Gotchi" pack and puzzle pages
+ */
+
+.pack--spookey-gotchi,
+.puzzle--hold-your-gotchi,
+.puzzle--ghostly-unlock {
+  /* Scoped vars */
+  --spookey-button-color: #c260ff;
+  --spookey-pack-button-color: #9b00fb;
+  --spookey-text-color: #ffffff;
+  --spookey-button-text: #9b00fb;
+
+  @apply bg-cover bg-center bg-no-repeat;
+  background-image: url('web/public/customer/spookey_gotchi/Aavegotchi-background.svg');
+
+  /* This is a div that's usually hidden in the page*/
+  .pack__image-anchor {
+    @apply mt-20 inline-block h-56 w-52 bg-center bg-no-repeat;
+    background-image: url('web/public/customer/spookey_gotchi/Aavegotchi.svg');
+  }
+
+  /* Text right below logo from above */
+  .pack__text {
+    color: var(--spookey-text-color);
+  }
+  /* On the pack page, the blocks representing each puzzle */
+  .puzzle-thumb {
+    background-color: var(--spookey-pack-button-color);
+  }
+
+  /* Scope to main area so we can override JUST this button */
+  .pack__main,
+  .puzzle__main {
+    .ik-button {
+      @apply h-20 min-w-0 rounded-full px-10 text-2xl;
+      color: var(--spookey-button-text);
+      background: var(--spookey-button-color);
+      border-color: var(--spookey-button-text);
+    }
+  }
+
+  /* You know what this is */
+  .social-share {
+    @apply rounded-full border-2 border-solid bg-transparent px-6 py-2 text-lg uppercase;
+    color: var(--spookey-button-text);
+    border-color: var(--spookey-button-text);
+  }
+}
