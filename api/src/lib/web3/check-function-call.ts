@@ -12,8 +12,6 @@ const functionCallResData = z
     'Should either return error or hasUserCalledFunction.'
   )
 
-type FunctionCallResData = z.infer<typeof functionCallResData>
-
 export const checkFunctionCall = async ({
   account,
   contractAddress,

@@ -1,13 +1,10 @@
 import { balanceOf1155, balanceOf721 } from '@infinity-keys/contracts'
 import { ethers } from 'ethers'
-import { RequestInfo, RequestInit } from 'node-fetch'
 import { NftCheckDatum } from 'types/graphql'
 import { z } from 'zod'
+import fetch from 'node-fetch'
 
 import { providerLookup } from 'src/lib/lookups'
-
-const fetch = (url: RequestInfo, init?: RequestInit) =>
-  import('node-fetch').then(({ default: fetch }) => fetch(url, init))
 
 const poapResData = z
   .object({
@@ -19,8 +16,6 @@ const poapResData = z
     (data) => !!data.error || !!data.tokenId,
     'Should either return error or tokenId.'
   )
-
-type PoapResData = z.infer<typeof poapResData>
 
 const checkPoap = async ({
   account,
@@ -43,8 +38,8 @@ const checkPoap = async ({
   }
 
   try {
-    const res = await fetch(url.toString(), options)
-    const data: PoapResData = await res.json()
+    const res = await fetch(url, options)
+    const data = await res.json()
     poapResData.parse(data)
 
     if (data.error) return { nftPass: false }
