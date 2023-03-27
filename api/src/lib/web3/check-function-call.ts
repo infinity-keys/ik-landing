@@ -1,8 +1,5 @@
 import { z } from 'zod'
-import { RequestInfo, RequestInit } from 'node-fetch'
-
-const fetch = (url: RequestInfo, init?: RequestInit) =>
-  import('node-fetch').then(({ default: fetch }) => fetch(url, init))
+import fetch from 'node-fetch'
 
 const functionCallResData = z
   .object({
@@ -44,8 +41,8 @@ export const checkFunctionCall = async ({
   // }
 
   try {
-    const res = await fetch(url.toString())
-    const data: FunctionCallResData = await res.json()
+    const res = await fetch(url)
+    const data = await res.json()
     functionCallResData.parse(data)
 
     return { hasUserCalledFunction: data.hasUserCalledFunction.every((b) => b) }
