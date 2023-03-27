@@ -35,7 +35,7 @@ const Rewardable = ({ rewardable }: Props) => {
             <Alert text="Must be logged in to play." />
           </div>
           <div className="mt-4 flex justify-center">
-            <Button text="Login to play" to={routes.profile()} />
+            <Button text="Login to Play" to={routes.profile()} />
           </div>
           <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
             {rewardable.puzzle.steps.map(({ stepSortWeight }) => (

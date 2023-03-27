@@ -1,0 +1,63 @@
+/**
+ * @file
+ *
+ * The "Bufficorn" pack and puzzle pages
+ */
+
+.pack--horn-polish,
+.puzzle--get-buff,
+.puzzle--horn-care {
+  /* Scoped vars */
+  --horn-button-color: #067584;
+  --horn-pack-button-color: #5b6a56;
+  --horn-text-color: #290e0a;
+  --horn-button-text: #290e0a;
+
+  @apply bg-cover bg-center bg-no-repeat;
+  background-image: linear-gradient(
+    0.25turn,
+    #e0ceb7,
+    #7cc5c3,
+    #92dad8,
+    #067584,
+    #5ec1c1,
+    #d4b88e,
+    #290e0a,
+    #ddb122,
+    #60a7a8,
+    #d75c36
+  );
+
+  /* This is a div that's usually hidden in the page*/
+  .pack__image-anchor {
+    @apply mt-20 inline-block h-56 w-52 bg-center bg-no-repeat;
+    background-image: ;
+  }
+
+  /* Text right below logo from above */
+  .pack__text {
+    color: var(--horn-text-color);
+  }
+  /* On the pack page, the blocks representing each puzzle */
+  .puzzle-thumb {
+    background-color: var(--horn-pack-button-color);
+  }
+
+  /* Scope to main area so we can override JUST this button */
+  .pack__main,
+  .puzzle__main {
+    .ik-button {
+      @apply h-20 min-w-0 rounded-full px-10 text-2xl;
+      color: var(--horn-button-text);
+      background: var(--horn-button-color);
+      border-color: var(--horn-button-text);
+    }
+  }
+
+  /* You know what this is */
+  .social-share {
+    @apply rounded-full border-2 border-solid bg-transparent px-6 py-2 text-lg uppercase;
+    color: var(--horn-button-text);
+    border-color: var(--horn-button-text);
+  }
+}
