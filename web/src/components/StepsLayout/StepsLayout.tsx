@@ -58,7 +58,7 @@ const StepsLayout = ({
               {step.resourceLinks && (
                 <div className={clsx('p-4', { 'pt-0': step.challenge })}>
                   <CollapsibleMarkdown
-                    title="Links"
+                    title="Hint"
                     content={`${step.resourceLinks}`}
                   />
                 </div>
