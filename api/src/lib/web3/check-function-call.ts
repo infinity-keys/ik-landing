@@ -29,7 +29,9 @@ export const checkFunctionCall = async ({
   const url = new URL('/hasUserCalledFunction', process.env.FUNCTION_STREAM_URL)
 
   url.searchParams.set('contractAddress', contractAddress)
-  url.searchParams.set('methodIds', methodIds.join(','))
+  methodIds.forEach((methodId) => {
+    url.searchParams.set('methodId', methodId)
+  })
   url.searchParams.set('walletAddress', account)
 
   // @TODO: Do we need a security header here?

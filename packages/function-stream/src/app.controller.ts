@@ -19,19 +19,18 @@ export class AppController {
 
   @Post('/moralis/:contract')
   streamListener(
-    @Query('methodIds', new ParseArrayPipe({ items: String, separator: ',' }))
-    methodIds: string[],
+    @Query('methodId') methodId: string | string[],
     @Param('contract') contract: string,
     @Body()
     streamListenerDto: IWebhook,
     @Headers() headers: Record<string, string>[],
     @Res() response: Response,
-  ): Promise<Response> {
+  ) {
     return this.appService.streamListener(
       streamListenerDto,
       headers,
       contract,
-      methodIds,
+      methodId,
       response,
     );
   }
@@ -39,13 +38,12 @@ export class AppController {
   @Get('/hasUserCalledFunction')
   async hasUserCalledFunction(
     @Query('contractAddress') contractAddress: string,
-    @Query('methodIds', new ParseArrayPipe({ items: String, separator: ',' }))
-    methodIds: string[],
+    @Query('methodId') methodId: string | string[],
     @Query('walletAddress') walletAddress: string,
   ): Promise<{ hasUserCalledFunction: boolean[] }> {
     const hasCalled = await this.appService.hasUserCalledFunction(
       contractAddress,
-      methodIds,
+      methodId,
       walletAddress,
     );
     return { hasUserCalledFunction: hasCalled };
