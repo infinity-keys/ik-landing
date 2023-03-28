@@ -75,10 +75,12 @@ export const Success = ({
       step={step}
     >
       {hasBeenSolved && (
-        <Button
-          to={routes.claim({ id: puzzle.rewardable.id })}
-          text="Claim Treasure"
-        />
+        <div className="flex justify-center">
+          <Button
+            to={routes.claim({ id: puzzle.rewardable.id })}
+            text="Claim Treasure"
+          />
+        </div>
       )}
     </StepsLayout>
   )

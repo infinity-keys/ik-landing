@@ -37,7 +37,9 @@ const NftCheckButton = ({
       ) : (
         <div>
           {address ? (
-            <Button text="Check NFTs" onClick={handleClick} />
+            <div className="flex justify-center">
+              <Button text="Check NFTs" onClick={handleClick} />
+            </div>
           ) : (
             <div className="flex justify-center">
               <Alert text="Please connect your wallet to continue" />
