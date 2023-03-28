@@ -6,6 +6,7 @@
 
 // React libraries for managing state of user's answer
 import React, { useState, FormEvent } from 'react'
+import { routes } from '@redwoodjs/router'
 
 // Styling and logic for the input boxes used to answer the puzzle
 import RICIBs from 'react-individual-character-input-boxes'
@@ -22,7 +23,6 @@ type PuzzleProps = {
   answer: string
 }
 const Puzzle = ({ answer = '' }: PuzzleProps) => {
-
   // This is what the user enters into the RICIBs
   const [guess, setGuess] = useState('')
 
@@ -55,7 +55,6 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
     e.preventDefault()
 
     if (guess.toLowerCase() === answer.toLowerCase()) {
-
       // the correct answer was entered
       // ...but the setShowSuccess is still false
       // ...which means the loading icon will be displayed
@@ -63,12 +62,10 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
 
       // we are now mimicing a server call
       setTimeout(() => {
-
         // after a delay, the user can proceed to play more puzzles
         setShowSuccess(true)
       }, 1000)
     } else {
-
       // delete the RICIB (input boxes)
       // ...display the loading icon instead to mimic a server call
       setShowRICIBs(false)
@@ -90,8 +87,11 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
       <div>
         {/* Play More Button */}
         {showSuccess ? (
-          <div className="play-more-button-container container flex max-w-[12rem] justify-center" data-cy="success_message_check">
-            <Button text="Play More" fullWidth to={'/packs'} />
+          <div
+            className="play-more-button-container container flex max-w-[12rem] justify-center"
+            data-cy="success_message_check"
+          >
+            <Button text="Play" fullWidth to={routes.play()} />
           </div>
         ) : (
           <LoadingIcon />
