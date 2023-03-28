@@ -6,8 +6,6 @@ import { useAuth } from '@redwoodjs/auth'
 import { Link, routes } from '@redwoodjs/router'
 import { LoaderIcon } from '@redwoodjs/web/dist/toast'
 
-// @TODO: update links urls to constants
-// import { PACK_COLLECTION_BASE, PUZZLE_LANDING_BASE } from '@lib/constants'
 import Button from 'src/components/Button/Button'
 import ProfileIcon from 'src/components/ProfileIcon/ProfileIcon'
 import WalletButton from 'src/components/WalletButton/WalletButton'
@@ -79,12 +77,6 @@ const Header = () => {
                   >
                     Blog
                   </a>
-                  <Link
-                    to="/#build"
-                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
-                  >
-                    Build
-                  </Link>
                 </nav>
               </div>
 
@@ -148,12 +140,6 @@ const Header = () => {
               >
                 Blog
               </a>
-              <Link
-                to="/#build"
-                className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
-              >
-                Build
-              </Link>
             </div>
           </Disclosure.Panel>
         </>
