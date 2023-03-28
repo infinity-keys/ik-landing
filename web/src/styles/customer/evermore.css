@@ -1,0 +1,64 @@
+/**
+ * @file
+ *
+ * The "Heroes of Evermore" pack and puzzle pages
+ */
+
+.pack--heroes-of-evermore,
+.puzzle--evermore-surface-dwellers,
+.puzzle--evermore-underneath,
+.puzzle--portal-to-evermore,
+.puzzle--evermore-classes-first,
+.puzzle--evermore-classes-second,
+.puzzle--evermore-messiah,
+.puzzle--high-priest,
+.puzzle--achieve-victory {
+  /* Scoped vars */
+  --evermore-button-color: #9f7c45;
+  --evermore-pack-button-color: #5b6a56;
+  --evermore-text-color: #0e080f;
+  --evermore-button-text: #290e0a;
+
+  @apply bg-cover bg-center bg-no-repeat;
+  background-image: linear-gradient(
+    0.25turn,
+    #797070,
+    #12142b,
+    #d78e35,
+    #e3d4b1,
+    #935b34
+  );
+
+  /* This is a div that's usually hidden in the page*/
+  .pack__image-anchor {
+    @apply mt-20 inline-block h-56 w-52 bg-center bg-no-repeat;
+    background-image: ;
+  }
+
+  /* Text right below logo from above */
+  .pack__text {
+    color: var(--evermore-text-color);
+  }
+  /* On the pack page, the blocks representing each puzzle */
+  .puzzle-thumb {
+    background-color: var(--evermore-pack-button-color);
+  }
+
+  /* Scope to main area so we can override JUST this button */
+  .pack__main,
+  .puzzle__main {
+    .ik-button {
+      @apply h-20 min-w-0 rounded-full px-10 text-2xl;
+      color: var(--evermore-button-text);
+      background: var(--evermore-button-color);
+      border-color: var(--evermore-button-text);
+    }
+  }
+
+  /* You know what this is */
+  .social-share {
+    @apply rounded-full border-2 border-solid bg-transparent px-6 py-2 text-lg uppercase;
+    color: var(--evermore-button-text);
+    border-color: var(--evermore-button-text);
+  }
+}
