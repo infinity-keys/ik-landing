@@ -56,7 +56,9 @@ const Rewardable = ({ rewardable }: Props) => {
         />
 
         {rewardable.userRewards.length > 0 && (
-          <Button to={routes.claim({ id: rewardable.id })} text="Mint" />
+          <div className="flex justify-center">
+            <Button to={routes.claim({ id: rewardable.id })} text="Mint" />
+          </div>
         )}
 
         <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
