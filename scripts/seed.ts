@@ -81,33 +81,6 @@ export default async () => {
 
   console.log(`created ${adminUsers.length} IK admin users`)
 
-  // we don't track ANONYMOUS users, but we track VERIFIED ones
-  // siteRole { VERIFIED } user data
-
-  // const verifiedUsersData = [
-  //   {
-  //     email: 'bloom-will-get-this',
-  //     authId: 'bloom-will-get-this',
-  //   },
-  // ]
-
-  // create the siteRole { VERIFIED } users
-
-  // const verifiedUsers = await Promise.all(
-  //   verifiedUsersData.map((data) => {
-  //     return db.user.create({
-  //       data: {
-  //         ...data,
-  //         roles: ['VERIFIED'],
-  //       },
-  //     })
-  //   })
-  // )
-
-  // console.log(`created ${verifiedUsers.length} verified users`)
-
-  // Note we cannot use .createMany for puzzles due to the need to create deeply
-  // nested objects like Steps. There is no nested .createMany!
   const puzzle1 = await db.rewardable.create({
     data: {
       name: 'Puzzle 1',
@@ -185,10 +158,28 @@ export default async () => {
         create: {},
       },
       asParent: {
+        // createMany: {
+        //   data: [puzzle1, puzzle2].map((puzzle) => ({
+        //     childId: puzzle.id,
+        //   })),
+        // },
         createMany: {
-          data: [puzzle1, puzzle2].map((puzzle) => ({
-            childId: puzzle.id,
-          })),
+          data: [
+            {
+              childId: puzzle1.id,
+
+              // order of puzzles in the pack,
+              // Defaults to alphabetical order
+              childSortWeight: 1,
+            },
+            {
+              childId: puzzle2.id,
+
+              // order of puzzles in the pack,
+              // Defaults to alphabetical order
+              childSortWeight: 2,
+            },
+          ],
         },
       },
     },
