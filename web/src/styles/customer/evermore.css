@@ -48,7 +48,7 @@
   .pack__main,
   .puzzle__main {
     .ik-button {
-      @apply h-20 min-w-0 rounded-full px-10 text-2xl;
+      @apply flex h-20 min-w-0 items-center justify-center rounded-full px-10 text-2xl;
       color: var(--evermore-button-text);
       background: var(--evermore-button-color);
       border-color: var(--evermore-button-text);

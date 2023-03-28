@@ -4,7 +4,7 @@
  * The "Probably Nothing" pack and puzzle pages
  */
 
- .pack--probably-nothing-pack,
+.pack--probably-nothing-pack,
 .puzzle--p0-limited-supply,
 .puzzle--p0-genesis-inspection,
 .puzzle--p0-live-the-dream,
@@ -24,13 +24,13 @@
   --p0-orange: #e4a23a;
   --p0-dark: #1e1e1e;
 
-  @apply bg-no-repeat bg-cover bg-center;
-  background-image: url("web/public/customer/p0/pn_pattern.jpg");
+  @apply bg-cover bg-center bg-no-repeat;
+  background-image: url('web/public/customer/p0/pn_pattern.jpg');
 
   /* This is a div that's usually hidden in the page*/
   .pack__image-anchor {
-    @apply mt-20 inline-block w-72 h-20 bg-no-repeat bg-center;
-    background-image: url("web/public/customer/p0/pn_logo_w.svg");
+    @apply mt-20 inline-block h-20 w-72 bg-center bg-no-repeat;
+    background-image: url('web/public/customer/p0/pn_logo_w.svg');
   }
 
   /* Text right below logo from above */
@@ -47,7 +47,7 @@
   .pack__main,
   .puzzle__main {
     .ik-button {
-      @apply h-20 text-2xl px-10 text-black rounded-full min-w-0;
+      @apply flex h-20 min-w-0 items-center justify-center rounded-full px-10 text-2xl;
       background: var(--p0-orange);
       border-color: var(--p0-orange);
     }
@@ -55,6 +55,6 @@
 
   /* You know what this is */
   .social-share {
-    @apply px-6 py-2 uppercase text-lg bg-none rounded-full bg-transparent border-2 border-solid border-white hover:text-inherit;
+    @apply rounded-full border-2 border-solid border-white bg-transparent bg-none px-6 py-2 text-lg uppercase hover:text-inherit;
   }
 }

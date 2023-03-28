@@ -94,15 +94,18 @@ export const Success = ({
       puzzle={puzzle}
       step={step}
     >
-      {hasBeenSolved &&
-        (isAuthenticated ? (
+      {hasBeenSolved && (
+        <div className="flex justify-center">
+          (isAuthenticated ? (
           <Button
             to={routes.claim({ id: puzzle.rewardable.id })}
             text="Claim Treasure"
           />
-        ) : (
+          ) : (
           <Button to={routes.profile()} text="Sign in to Claim Treasure" />
-        ))}
+          ))
+        </div>
+      )}
     </StepsLayout>
   )
 }

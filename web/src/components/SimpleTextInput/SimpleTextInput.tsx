@@ -81,7 +81,7 @@ const SimpleTextInput = ({
 
               {errorMessage && <p className="">{errorMessage}</p>}
 
-              <div className="pt-8" data-cy="submit">
+              <div className="flex justify-center pt-8" data-cy="submit">
                 <Button
                   text="Submit"
                   type="submit"
