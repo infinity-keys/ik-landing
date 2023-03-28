@@ -5,6 +5,7 @@ import { context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 import { checkNft } from 'src/lib/web3/check-nft'
+import { checkFunctionCall } from 'src/lib/web3/check-function-call'
 import { createSolve } from 'src/services/solves/solves'
 import { createUserReward } from 'src/services/userRewards/userRewards'
 
@@ -13,6 +14,7 @@ export const stepSolutionTypeLookup: {
 } = {
   SIMPLE_TEXT: 'simpleTextSolution',
   NFT_CHECK: 'nftCheckSolution',
+  FUNCTION_CALL: 'functionCallSolution',
 }
 
 export const SimpleTextSolutionData = z.object({
@@ -27,9 +29,17 @@ export const NftCheckSolutionData = z.object({
   }),
 })
 
+export const FunctionCallSolutionData = z.object({
+  type: z.literal('function-call'),
+  functionCallSolution: z.object({
+    account: z.string(),
+  }),
+})
+
 export const SolutionData = z.discriminatedUnion('type', [
   SimpleTextSolutionData,
   NftCheckSolutionData,
+  FunctionCallSolutionData,
 ])
 
 // @TODO: this 'asChild' logic will break if puzzle belongs to bundle
@@ -91,6 +101,12 @@ const getStep = async (id) => {
         select: {
           requireAllNfts: true,
           nftCheckData: true,
+        },
+      },
+      stepFunctionCall: {
+        select: {
+          contractAddress: true,
+          methodIds: true,
         },
       },
       stepSimpleText: true,
@@ -207,6 +223,41 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
       return { success: nftPass, finalStep }
     } // end of NFT_CHECK
+
+    if (step.type === 'FUNCTION_CALL') {
+      const attempt = await db.attempt.create({
+        data: {
+          userId: context?.currentUser.id,
+          stepId,
+          data: {},
+        },
+      })
+
+      const { hasUserCalledFunction, errors } = await checkFunctionCall({
+        account: userAttempt.account,
+        contractAddress: step.stepFunctionCall.contractAddress,
+        methodIds: step.stepFunctionCall.methodIds,
+      })
+
+      if (errors && errors.length > 0) {
+        return { success: false, message: 'Error checking for function call' }
+      }
+
+      if (hasUserCalledFunction) {
+        await createSolve({
+          input: {
+            attemptId: attempt.id,
+            userId: context.currentUser.id,
+          },
+        })
+
+        if (finalStep) {
+          await createRewards(step.puzzle.rewardable)
+        }
+      }
+
+      return { success: hasUserCalledFunction, finalStep }
+    } // end of FUNCTION_CALL
 
     return { success: false }
   } catch (e) {

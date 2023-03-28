@@ -55,6 +55,9 @@ export const Step: StepRelationResolvers = {
   stepNftCheck: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).stepNftCheck()
   },
+  stepFunctionCall: (_obj, { root }) => {
+    return db.step.findUnique({ where: { id: root?.id } }).stepFunctionCall()
+  },
   attempts: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).attempts({
       where: {

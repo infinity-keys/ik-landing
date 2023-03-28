@@ -16,7 +16,7 @@ export class AppService {
     streamListenerDto: IWebhook,
     headers: Record<string, string>[],
     contract: string,
-    methodIds: string[],
+    methodId: string | string[],
     response: Response,
   ) {
     // Ensures the request is coming from Moralis
@@ -42,15 +42,13 @@ export class AppService {
 
     // Does this request contain any transactions with the methodId we're
     // looking for
-    const filteredTransactions = txs.filter(({ input }) =>
-      methodIds.includes(input?.slice(0, 10)),
-    );
+    const filteredTransactions = txs.filter(({ input }) => {
+      const currentMethodId = input?.slice(0, 10);
 
-    // Return if there are no valid transactions
-    if (!filteredTransactions.length)
-      return response
-        .status(HttpStatus.OK)
-        .send({ message: 'Transaction does not contain monitored methodId' });
+      return typeof methodId === 'string'
+        ? methodId === currentMethodId
+        : methodId.includes(currentMethodId);
+    });
 
     // Get the user's wallet address
     const [{ fromAddress }] = filteredTransactions;
@@ -94,11 +92,14 @@ export class AppService {
 
   async hasUserCalledFunction(
     contractAddress: string,
-    methodIds: string[],
+    methodId: string | string[],
     walletAddress: string,
   ) {
     // @TODO: implement auth header
-    const mongoParams = methodIds.map((methodId) =>
+
+    const methodIdArray = typeof methodId === 'string' ? [methodId] : methodId;
+
+    const mongoParams = methodIdArray.map((methodId) =>
       [contractAddress, methodId, walletAddress].join('.'),
     );
 

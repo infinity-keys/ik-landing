@@ -5,12 +5,12 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
   step: {
     one: {
       data: {
-        updatedAt: '2023-03-14T22:09:24.273Z',
+        updatedAt: '2023-03-23T18:04:10.055Z',
         puzzle: {
           create: {
             rewardable: {
               create: {
-                updatedAt: '2023-03-14T22:09:24.273Z',
+                updatedAt: '2023-03-23T18:04:10.055Z',
                 name: 'String',
                 slug: 'String',
                 explanation: 'String',
@@ -18,8 +18,8 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
                 organization: {
                   create: {
                     name: 'String',
-                    slug: 'String1587506',
-                    updatedAt: '2023-03-14T22:09:24.273Z',
+                    slug: 'String474894',
+                    updatedAt: '2023-03-23T18:04:10.055Z',
                   },
                 },
               },
@@ -30,12 +30,12 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
     },
     two: {
       data: {
-        updatedAt: '2023-03-14T22:09:24.273Z',
+        updatedAt: '2023-03-23T18:04:10.055Z',
         puzzle: {
           create: {
             rewardable: {
               create: {
-                updatedAt: '2023-03-14T22:09:24.273Z',
+                updatedAt: '2023-03-23T18:04:10.056Z',
                 name: 'String',
                 slug: 'String',
                 explanation: 'String',
@@ -43,8 +43,8 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
                 organization: {
                   create: {
                     name: 'String',
-                    slug: 'String2574428',
-                    updatedAt: '2023-03-14T22:09:24.273Z',
+                    slug: 'String9065079',
+                    updatedAt: '2023-03-23T18:04:10.056Z',
                   },
                 },
               },

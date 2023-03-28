@@ -12,8 +12,9 @@ export const schema = gql`
     puzzleId: String!
     type: StepType!
     stepSimpleText: StepSimpleText
-    migrateLandingRoute: String
     stepNftCheck: StepNftCheck
+    stepFunctionCall: StepFunctionCall
+    migrateLandingRoute: String
     attempts: [Attempt]!
     hasUserCompletedStep: Boolean
     hasAnonUserCompletedStep: Boolean
@@ -22,6 +23,7 @@ export const schema = gql`
   enum StepType {
     SIMPLE_TEXT
     NFT_CHECK
+    FUNCTION_CALL
   }
 
   type Query {
