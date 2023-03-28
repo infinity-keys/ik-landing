@@ -7,9 +7,6 @@ import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
-// @TODO: replace link urls with constants
-// import { PACK_COLLECTION_BASE } from "@lib/constants";
-
 const links = [
   {
     className: 'lensIcon',
@@ -65,13 +62,13 @@ const Footer = () => {
             </div>
             {/* right */}
             <div className="mb-4 flex gap-4 sm:mb-0 sm:ml-6">
-              <Button text="Packs" to="/packs" variant="outline" />
-              <Button text="Puzzles" to="/puzzles" variant="outline" />
+              <Button text="Play" to={routes.play()} variant="outline" />
             </div>
           </div>
         </nav>
         <p className="mt-8 text-center text-base text-white/50">
-          &copy; 2022 Infinity Keys. All rights reserved. |{' '}
+          &copy; 2022 - {new Date().getFullYear()} Infinity Keys. All rights
+          reserved. |{' '}
           <Link
             to={routes.privacyPolicy()}
             className="transition hover:text-turquoise"
