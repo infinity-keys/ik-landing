@@ -50,6 +50,12 @@ export class AppService {
         : methodId.includes(currentMethodId);
     });
 
+    if (!filteredTransactions.length) {
+      return response
+        .status(HttpStatus.OK)
+        .send({ message: 'No valid transactions present' });
+    }
+
     // Get the user's wallet address
     const [{ fromAddress }] = filteredTransactions;
     // Get all the unique methodIds from the list of valid transactions
