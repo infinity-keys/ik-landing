@@ -50,7 +50,9 @@ const getOptionalStep = async ({
   const puzzlesCompleted = decryptCookie(puzzlesCompletedCypherText)
 
   if (!puzzlesCompleted) {
-    throw new ForbiddenError('Step currently not viewable.')
+    throw new ForbiddenError(
+      'Step currently not viewable. Please solve previous steps or sync your progress in the profile page.'
+    )
   }
 
   // at this point users should have a valid cookie
@@ -60,7 +62,7 @@ const getOptionalStep = async ({
   const cookieSteps = puzzlesCompleted?.puzzles[puzzleId]?.steps
 
   // users should have at least one step at this point
-  if (cookieSteps.length === 0) {
+  if (!cookieSteps || cookieSteps?.length === 0) {
     throw new ForbiddenError('Must solve all previous steps.')
   }
 
@@ -84,7 +86,9 @@ const getOptionalStep = async ({
 
   // users should only be able to look at current step and steps they've solved
   if (id !== currentStep.id && !cookieSteps.includes(id)) {
-    throw new ForbiddenError('Step currently not viewable.')
+    throw new ForbiddenError(
+      'Step currently not viewable. Please solve previous steps or sync your progress in the profile page.'
+    )
   }
 
   return step({ id })

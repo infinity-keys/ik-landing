@@ -46,11 +46,13 @@ export const Failure = ({
   error,
 }: CellFailureProps<FindStepQueryVariables>) => {
   const { slug, step } = useParams()
+  const stepNum = parseInt(step, 10)
+
   return (
     <div>
       <p className="pb-6 text-gray-150">{error?.message}</p>
       <Button
-        to={routes.puzzleStep({ slug, step: parseInt(step, 10) - 1 })}
+        to={routes.puzzleStep({ slug, step: stepNum <= 1 ? 1 : stepNum - 1 })}
         text="Go to Puzzle Page"
       />
     </div>

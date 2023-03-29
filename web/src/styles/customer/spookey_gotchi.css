@@ -9,17 +9,18 @@
 .puzzle--ghostly-unlock {
   /* Scoped vars */
   --spookey-button-color: #1a033d;
-  --spookey-pack-button-color: #9b00fb;
+  --spookey-pack-button-color: #0e2325;
   --spookey-text-color: #ffffff;
-  --spookey-button-text: #9b00fb;
+  --spookey-button-text: #0e2325;
+  --spookey-background-color: #47238d;
 
   @apply bg-cover bg-center bg-no-repeat;
-  background-image: url('web/public/customer/spookey_gotchi/Aavegotchi-background.svg');
+  background-color: var(--spookey-background-color);
 
   /* This is a div that's usually hidden in the page*/
   .pack__image-anchor {
     @apply mt-20 inline-block h-56 w-52 bg-center bg-no-repeat;
-    background-image: url('web/public/customer/spookey_gotchi/Aavegotchi.svg');
+    /* background-image: url(); */
   }
 
   /* Text right below logo from above */
