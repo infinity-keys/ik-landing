@@ -9,12 +9,12 @@ export default async () => {
       slug: 'ik',
     },
   })
+
   console.log(`created ${ikOrg.name} organization`)
 
+  // siteRole { ADMIN } user data
   const ikUsersData = [
-    // TODO: create non-admin users
     {
-      username: 'Infinity Keys User',
       email: 'infinitykeys_devs@protonmail.com',
       authId: 'did:ethr:0xf19621f2Fb459B9954170bf5F2F7b15A2aA1E3f9',
     },
@@ -52,9 +52,13 @@ export default async () => {
       id: 'clfbqfryd000008i8dlmn3elb',
       email: 'rick.a.burd@gmail.com',
       authId: 'did:ethr:0xF09818A04FF3fEB2705AA0cC235901b0fC363dec',
+      twitterProfile: 'Richard_A_Burd',
+      discordProfile: 'Richard Burd#6701',
     },
   ]
-  const users = await Promise.all(
+
+  // create the siteRole { ADMIN } users
+  const adminUsers = await Promise.all(
     ikUsersData.map((data) => {
       return db.user.create({
         data: {
@@ -74,20 +78,51 @@ export default async () => {
       })
     })
   )
-  console.log(`created ${users.length} users`)
 
-  // Note we cannot use .createMany for puzzles due to the need to create deeply
-  // nested objects like Steps. There is no nested .createMany!
+  console.log(`created ${adminUsers.length} IK admin users`)
+
+  // Create an NFT for a puzzle
+  const nft1 = await db.nft.create({
+    data: {
+      tokenId: 12345,
+      contractName: 'YourContractName',
+      data: {
+        key: 'value',
+      },
+      cloudinaryId: 'ik-alpha-trophies/starter-pack-achievment_cdbvlv',
+    },
+  })
+
+  // Create an NFT for a pack
+  const pack1Nft = await db.nft.create({
+    data: {
+      tokenId: 6789,
+      contractName: 'YourContractName',
+      data: {
+        key: 'value',
+      },
+      cloudinaryId: 'ik-alpha-trophies/starter-pack-achievment_cdbvlv',
+    },
+  })
+
   const puzzle1 = await db.rewardable.create({
     data: {
-      name: 'puzzle-1',
+      name: 'Puzzle 1',
       slug: 'puzzle-1',
-      explanation: 'This is the first puzzle',
+      explanation:
+        'This is the first puzzle, it is anonymous so you can solve it without logging in',
       type: 'PUZZLE',
       orgId: ikOrg.id,
+
+      // Connect the NFT to 'puzzle1' in this rewardable
+      nfts: {
+        connect: {
+          id: nft1.id,
+        },
+      },
       puzzle: {
         create: {
-          isAnon: false,
+          isAnon: true,
           steps: {
             create: [
               {
@@ -106,11 +141,13 @@ export default async () => {
       },
     },
   })
+
   const puzzle2 = await db.rewardable.create({
     data: {
-      name: 'puzzle 2',
+      name: 'Puzzle 2',
       slug: 'puzzle-2',
-      explanation: 'This is the second puzzle',
+      explanation:
+        'This is the second puzzle, you must be logged in to solve it',
       type: 'PUZZLE',
       organization: {
         connect: {
@@ -151,22 +188,55 @@ export default async () => {
           id: ikOrg.id,
         },
       },
+      // Connect the NFT to 'puzzle1' in this rewardable
+      nfts: {
+        connect: {
+          id: pack1Nft.id,
+        },
+      },
       pack: {
         create: {},
       },
       asParent: {
+        // createMany: {
+        //   data: [puzzle1, puzzle2].map((puzzle) => ({
+        //     childId: puzzle.id,
+        //   })),
+        // },
         createMany: {
-          data: [puzzle1, puzzle2].map((puzzle) => ({
-            childId: puzzle.id,
-          })),
+          data: [
+            {
+              childId: puzzle1.id,
+
+              // order of puzzles in the pack,
+              // Defaults to alphabetical order
+              childSortWeight: 1,
+            },
+            {
+              childId: puzzle2.id,
+
+              // order of puzzles in the pack,
+              // Defaults to alphabetical order
+              childSortWeight: 2,
+            },
+          ],
         },
       },
     },
   })
 
-  console.log('Packs created')
+  // Create a submission for the user and puzzle1
+  const submission = await db.submission.create({
+    data: {
+      puzzleId: puzzle1.id,
+      userId: ikUsersData[ikUsersData.length - 1].id,
+      data: {
+        // You can store any additional information related to the submission here as JSON
+      },
+    },
+  })
 
-  // TODO: migrate these test cases
+  // TODOs:
   // 1. Rewardable -> Puzzle -> Anon Steps 1-3 -> Step 4 requires sign in -> Reward at the end
   // 2. Rewardable -> Puzzle -> No anonymous steps (1-3) -> Reward at the end
   // 3. Rewardable -> Puzzle -> 12 goddamn steps -> sign in for all, all steps are nft check, passcode, function call, API check
