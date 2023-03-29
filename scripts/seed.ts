@@ -231,7 +231,7 @@ export default async () => {
       puzzleId: puzzle1.id,
       userId: ikUsersData[ikUsersData.length - 1].id,
       data: {
-        // You can store any additional information related to the submission here as JSON
+        // do we need anything here!?
       },
     },
   })
@@ -243,4 +243,8 @@ export default async () => {
   // 4. The above, but anon for all steps.
   // 5. All of these under 1 pack?
   // 6. A bunch more random pack of simple puzzles to help fill out the /play page
+
+  // 3.28.2023 Burd & Bloom Notes:
+  // Seed data should include an `Attempt` for each `Step` and then a `Solve` on final `Step` followed by a `UserReward`
+  // `Submission` is outdated and will eventually be deleted; currently we use `Attempt` instead
 }
