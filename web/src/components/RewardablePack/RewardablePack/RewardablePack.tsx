@@ -48,7 +48,7 @@ const Rewardable = ({ rewardable }: Props) => {
         url={url}
       />
 
-      <div className="pack__main w-full px-4 text-center">
+      <div className="pack__main mt-10 w-full px-4 text-center">
         <RewardableHeader
           name={rewardable.name}
           instructions={rewardable.explanation}
