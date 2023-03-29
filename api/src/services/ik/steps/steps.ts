@@ -62,7 +62,7 @@ const getOptionalStep = async ({
   const cookieSteps = puzzlesCompleted?.puzzles[puzzleId]?.steps
 
   // users should have at least one step at this point
-  if (cookieSteps?.length === 0) {
+  if (!cookieSteps || cookieSteps?.length === 0) {
     throw new ForbiddenError('Must solve all previous steps.')
   }
 
