@@ -106,7 +106,7 @@ export class AppService {
     const methodIdArray = typeof methodId === 'string' ? [methodId] : methodId;
 
     const mongoParams = methodIdArray.map((methodId) =>
-      [contractAddress, methodId, walletAddress].join('.'),
+      [contractAddress, methodId, walletAddress].join('.').toLowerCase(),
     );
 
     // We have only one document per contract address, so this will return 0 if
