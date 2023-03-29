@@ -65,7 +65,9 @@ export class AppService {
 
     // Creates the MongoDB query for one or many matching methodIds
     const mutationData = Array.from(uniqueMethodIds).reduce((acc, methodId) => {
-      const mongoParams = [contract, methodId, fromAddress].join('.');
+      const mongoParams = [contract, methodId, fromAddress]
+        .join('.')
+        .toLowerCase();
       return {
         ...acc,
         [mongoParams]: streamListenerDto,
