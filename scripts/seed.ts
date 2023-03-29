@@ -140,6 +140,14 @@ export default async () => {
         },
       },
     },
+    // required for user rick.a.burd to attempt this puzzle
+    include: {
+      puzzle: {
+        include: {
+          steps: true,
+        },
+      },
+    },
   })
 
   const puzzle2 = await db.rewardable.create({
@@ -176,6 +184,40 @@ export default async () => {
     },
   })
   console.log('Puzzles created')
+
+  // user rick.a.burd@gmail.com attempts step in Puzzle 1
+  const attempt1 = await db.attempt.create({
+    data: {
+      data: ['some Json data goes here'],
+      user: {
+        connect: {
+          id: ikUsersData[ikUsersData.length - 1].id,
+        },
+      },
+      step: {
+        connect: {
+          id: puzzle1.puzzle.steps[0].id,
+        },
+      },
+    },
+  })
+
+  // user rick.a.burd@gmail.com solves step in Puzzle 1
+  const solve1 = await db.solve.create({
+    data: {
+      user: {
+        connect: {
+          id: ikUsersData[ikUsersData.length - 1].id,
+        },
+      },
+      attempt: {
+        connect: {
+          id: attempt1.id,
+        },
+      },
+      data: {}, // Optional additional data, you can provide an object here if needed
+    },
+  })
 
   const pack1 = await db.rewardable.create({
     data: {
@@ -221,17 +263,6 @@ export default async () => {
             },
           ],
         },
-      },
-    },
-  })
-
-  // Create a submission for the user and puzzle1
-  const submission = await db.submission.create({
-    data: {
-      puzzleId: puzzle1.id,
-      userId: ikUsersData[ikUsersData.length - 1].id,
-      data: {
-        // do we need anything here!?
       },
     },
   })
