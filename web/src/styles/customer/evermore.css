@@ -57,7 +57,7 @@
 
   /* You know what this is */
   .social-share {
-    @apply rounded-full border-2 border-solid bg-transparent px-6 py-2 text-lg uppercase;
+    @apply rounded-full border-2 border-solid bg-transparent px-6 py-2 text-lg uppercase hover:bg-twitterBlue;
     color: var(--evermore-button-text);
     border-color: var(--evermore-button-text);
   }

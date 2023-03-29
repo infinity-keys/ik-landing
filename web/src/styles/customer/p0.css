@@ -55,6 +55,6 @@
 
   /* You know what this is */
   .social-share {
-    @apply rounded-full border-2 border-solid border-white bg-transparent bg-none px-6 py-2 text-lg uppercase hover:text-inherit;
+    @apply rounded-full border-2 border-solid border-white bg-transparent bg-none px-6 py-2 text-lg uppercase hover:bg-twitterBlue;
   }
 }
