@@ -1,3 +1,4 @@
+// this function will be replaced with a service called "erc-721".
 import Moralis from 'moralis'
 
 if (!Moralis.Core.isStarted) {
