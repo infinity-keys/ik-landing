@@ -2,6 +2,12 @@ import { useState } from 'react'
 
 import { useAuth } from '@redwoodjs/auth'
 import { navigate, routes, useParams } from '@redwoodjs/router'
+import { useMutation } from '@redwoodjs/web'
+
+import {
+  MakeAttemptMutation,
+  MakeAttemptMutationVariables,
+} from 'types/graphql'
 
 type SendAttemptProps = {
   stepId: string
@@ -11,13 +17,64 @@ type SendAttemptProps = {
   isAnon?: boolean
 }
 
+const MAKE_ATTEMPT = gql`
+  mutation MakeAttemptMutation($stepId: String!, $data: JSON!) {
+    makeAttempt(stepId: $stepId, data: $data) {
+      success
+      finalStep
+      message
+    }
+  }
+`
+
 const useMakeAttempt = () => {
   const { getToken, isAuthenticated } = useAuth()
   const { slug, step: stepParam } = useParams()
 
-  const [loading, setLoading] = useState(false)
   const [failedAttempt, setFailedAttempt] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [isAnonPuzzle, setIsAnonPuzzle] = useState(false)
+  const [shouldRedirect, setShouldRedirect] = useState(true)
+
+  const [createAttempt, { data, loading }] = useMutation<
+    MakeAttemptMutation,
+    MakeAttemptMutationVariables
+  >(MAKE_ATTEMPT, {
+    onError: ({ message: err }) => {
+      err && setErrorMessage(err)
+    },
+    onCompleted: () => {
+      const { success, finalStep, message } = data.makeAttempt
+
+      if (success) {
+        if (shouldRedirect) {
+          if (finalStep) {
+            return isAnonPuzzle
+              ? navigate(routes.anonPuzzleLanding({ slug }))
+              : navigate(routes.puzzleLanding({ slug }))
+          } else {
+            return isAnonPuzzle
+              ? navigate(
+                  routes.anonPuzzleStep({
+                    slug,
+                    step: parseInt(stepParam, 10) + 1,
+                  })
+                )
+              : navigate(
+                  routes.puzzleStep({
+                    slug,
+                    step: parseInt(stepParam, 10) + 1,
+                  })
+                )
+          }
+        }
+        return data
+      } else {
+        setFailedAttempt(true)
+        message && setErrorMessage(message)
+      }
+    },
+  })
 
   const makeAttempt = async ({
     stepId,
@@ -27,70 +84,13 @@ const useMakeAttempt = () => {
     isAnon = false,
   }: SendAttemptProps) => {
     setFailedAttempt(false)
-    setLoading(true)
+    setIsAnonPuzzle(isAnon)
+    setShouldRedirect(redirectOnSuccess)
 
-    const apiUrl = new URL(
-      `${global.RWJS_API_URL}/${
-        isAnon && !isAuthenticated ? 'anonAttempt' : 'attempt'
-      }`,
-      window.location.origin
-    )
+    // authenticated users hit the service directly
+    createAttempt({ variables: { stepId, data: reqBody } })
 
-    apiUrl.searchParams.set('stepId', stepId)
-    apiUrl.searchParams.set('stepParam', stepParam)
-    apiUrl.searchParams.set('puzzleId', puzzleId)
-
-    const body = JSON.stringify({ attempt: reqBody })
-
-    try {
-      const token = await getToken()
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'auth-provider': 'magicLink',
-          Authorization: `Bearer ${token}`,
-        },
-        body,
-      })
-      const data = await response.json()
-      const { success, finalStep, message } = data
-
-      setLoading(false)
-      if (response.ok) {
-        // if user guesses correctly, move them to next step
-        // or puzzle landing if it is the last step
-        if (success) {
-          if (redirectOnSuccess) {
-            if (finalStep) {
-              return isAnon
-                ? navigate(routes.anonPuzzleLanding({ slug }))
-                : navigate(routes.puzzleLanding({ slug }))
-            } else {
-              return isAnon
-                ? navigate(
-                    routes.anonPuzzleStep({
-                      slug,
-                      step: parseInt(stepParam, 10) + 1,
-                    })
-                  )
-                : navigate(
-                    routes.puzzleStep({
-                      slug,
-                      step: parseInt(stepParam, 10) + 1,
-                    })
-                  )
-            }
-          }
-          return data
-        }
-      }
-      setFailedAttempt(true)
-      message && setErrorMessage(message)
-      return data
-    } catch (e) {
-      console.error(e)
-      setLoading(false)
-    }
+    // unauthenticated users hit the function to get cookies
   }
 
   return {
