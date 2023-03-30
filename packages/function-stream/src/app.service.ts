@@ -55,10 +55,11 @@ export class AppService {
         .status(HttpStatus.OK)
         .send({ message: 'No valid transactions present' });
     }
-    console.log(`valid tx from ${txs[0].fromAddress}`);
-
     // Get the user's wallet address
     const [{ fromAddress }] = filteredTransactions;
+
+    console.log(`valid tx from ${fromAddress}`);
+
     // Get all the unique methodIds from the list of valid transactions
     const uniqueMethodIds = new Set(
       filteredTransactions.map(({ input }) => input?.slice(0, 10)),
@@ -86,7 +87,7 @@ export class AppService {
         { upsert: true },
       );
 
-      console.log(`created entry for ${txs[0].fromAddress}`);
+      console.log(`created entry for ${fromAddress}`);
 
       return response
         .status(HttpStatus.CREATED)
