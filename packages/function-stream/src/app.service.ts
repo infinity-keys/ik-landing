@@ -55,6 +55,7 @@ export class AppService {
         .status(HttpStatus.OK)
         .send({ message: 'No valid transactions present' });
     }
+    console.log(`valid tx from ${txs[0].fromAddress}`);
 
     // Get the user's wallet address
     const [{ fromAddress }] = filteredTransactions;
@@ -84,6 +85,8 @@ export class AppService {
         },
         { upsert: true },
       );
+
+      console.log(`created entry for ${txs[0].fromAddress}`);
 
       return response
         .status(HttpStatus.CREATED)
