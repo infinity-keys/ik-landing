@@ -3,9 +3,7 @@
  * anon progress.
  */
 
-import { useAuth } from '@redwoodjs/auth'
 import { useMutation } from '@redwoodjs/web'
-import { useState } from 'react'
 
 // On login, reconcile v1, v2, anon cookies
 const MUTATION_RECONCILE = gql`
@@ -15,39 +13,10 @@ const MUTATION_RECONCILE = gql`
 `
 
 export default function useReconcileProgress() {
-  const { getToken } = useAuth()
-  const [cookieFetching, setCookieFetching] = useState(false)
+  const [reconcilePuzzles, { data, error, loading }] =
+    useMutation(MUTATION_RECONCILE)
 
-  const [reconcilePuzzles, { data, error, loading }] = useMutation(
-    MUTATION_RECONCILE,
-    {
-      onCompleted: async () => {
-        setCookieFetching(true)
-        // Now do fetch to progressCookies function to set local cookie with all
-        // progress
-
-        const apiUrl = new URL(
-          `${global.RWJS_API_URL}/progressCookies`,
-          window.location.origin
-        )
-
-        // Get JWT from MagicLink
-        const token = await getToken()
-        // This sets progress cookie
-        await fetch(apiUrl, {
-          method: 'POST',
-          headers: {
-            'auth-provider': 'magicLink',
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        setCookieFetching(false)
-      },
-      onError: (error) => {},
-    }
-  )
-
-  const progressLoading = loading || cookieFetching
+  const progressLoading = loading
 
   return { reconcilePuzzles, data, error, progressLoading }
 }
