@@ -7,33 +7,26 @@ if (!Moralis.Core.isStarted) {
   })
 }
 
-// these four variables are going to eventually be dynamic
+// these three variables are going to eventually be dynamic
 // for now they are hard coded here to test out this service function
 const address: string = '0xc13eC844Eb19D6A72DDD5F2779484BA35279A817'
 const contractAddress: string = '0xa4e3513c98b30d4d7cc578d2c328bd550725d1d0'
 const chain: string = '0x89' // polygon
-const tokenIds: string[] = ['2906', '0000', '6254'] // 2906 & 6254 exist in the data
-const rangeOfTokenIds: string[] = ['1000', '3000'] // only 2906 & is between 2000 & 3000
+const rangeOfTokenIds: string[] = ['8946', '8946'] // we want all ids in this range
 
-function findMatchingTokenIds(data: any, tokenIds: string[]): string[] {
-  const matchingTokenIds: string[] = []
-
-  // checking if the token id's we specify exist in the data we get from Moralis
+function tokenIdsExist(data: any, rangeOfTokenIds: string[]): boolean {
   if (data && data.result) {
-    data.result.forEach((nft: any) => {
-      const tokenId = nft.token_id
-      if (
-        tokenIds.includes(tokenId) &&
-        // does the token id fall within the specified range of token ids
-        parseInt(tokenId) >= parseInt(rangeOfTokenIds[0]) &&
-        parseInt(tokenId) <= parseInt(rangeOfTokenIds[1])
-      ) {
-        matchingTokenIds.push(tokenId)
-      }
-    })
+    return (
+      data.result.find((nft: any) => {
+        const tokenId = nft.token_id
+        return (
+          parseInt(tokenId) >= parseInt(rangeOfTokenIds[0]) &&
+          parseInt(tokenId) <= parseInt(rangeOfTokenIds[1])
+        )
+      }) !== undefined
+    )
   }
-
-  return matchingTokenIds
+  return false
 }
 
 export const getErc721TokenIds: QueryResolvers['getErc721TokenIds'] =
@@ -45,28 +38,13 @@ export const getErc721TokenIds: QueryResolvers['getErc721TokenIds'] =
     })
 
     // checking that the data can be accessed via Moralis
-    console.log(response.toJSON())
+    // console.log(response.toJSON())
 
-    // finding the matching token ids
-    const matchingTokenIds = findMatchingTokenIds(response.toJSON(), tokenIds)
-
-    // checking to see if we have matches or not (boolean)
-    const hasMatches = matchingTokenIds.length > 0
-
-    // defining the data as an array of objects
-    const data = matchingTokenIds.map((tokenId: string) => ({
-      address,
-      chain,
-      tokenAddress: contractAddress,
-      tokenId,
-    }))
-
-    // checking that the function works as expected
-    console.log('Matching Token IDs:', matchingTokenIds)
+    // checking if any token ids fall within the specified range
+    const hasMatches = tokenIdsExist(response.toJSON(), rangeOfTokenIds)
 
     return {
       success: true,
-      data, // returning an array of objects containing the matching token ids
-      hasMatches, // do provided token ids exist in the data (boolean)
+      hasMatches, // do any token ids fall within the specified range (boolean)
     }
   }
