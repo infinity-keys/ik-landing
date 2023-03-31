@@ -13,14 +13,21 @@ const address: string = '0xc13eC844Eb19D6A72DDD5F2779484BA35279A817'
 const contractAddress: string = '0xa4e3513c98b30d4d7cc578d2c328bd550725d1d0'
 const chain: string = '0x89' // polygon
 const tokenIds: string[] = ['2906', '0000', '6254'] // 2906 & 6254 exist in the data
+const rangeOfTokenIds: string[] = ['1000', '3000'] // only 2906 & is between 2000 & 3000
 
 function findMatchingTokenIds(data: any, tokenIds: string[]): string[] {
   const matchingTokenIds: string[] = []
 
+  // checking if the token id's we specify exist in the data we get from Moralis
   if (data && data.result) {
     data.result.forEach((nft: any) => {
-      const tokenId = nft.token_id.toString()
-      if (tokenIds.includes(tokenId)) {
+      const tokenId = nft.token_id
+      if (
+        tokenIds.includes(tokenId) &&
+        // does the token id fall within the specified range of token ids
+        parseInt(tokenId) >= parseInt(rangeOfTokenIds[0]) &&
+        parseInt(tokenId) <= parseInt(rangeOfTokenIds[1])
+      ) {
         matchingTokenIds.push(tokenId)
       }
     })
