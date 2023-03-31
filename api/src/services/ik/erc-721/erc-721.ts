@@ -1,32 +1,3 @@
-// export const handler ... becomes exporting a function instead
-
-// the name of the service is what is queried from the frontend...
-// ...so name it a verb like "getErc721TokenIds"
-
-// Copy example form "user-custom"
-// "MutationResolvers['upsertUser'] = ({" becomes queryresolver instead
-// "upsertUser" becomes "getErc721TokenIds"
-
-// http://localhost:8911/graphql
-
-// here is chair's wallet address that has the tokens were looking for (the ones from the contract address in the linear ticket)
-// 0xc13eC844Eb19D6A72DDD5F2779484BA35279A817
-
-// import type { QueryResolvers } from 'types/graphql'
-// import Moralis from 'moralis'
-
-// if (!Moralis.Core.isStarted) {
-//   Moralis.start({
-//     apiKey: process.env.MORALIS_API_KEY,
-//   })
-// }
-
-// export const getErc721TokenIds: QueryResolvers['getErc721TokenIds'] = () => {
-//   return {
-//     success: true,
-//   }
-// }
-
 import type { QueryResolvers } from 'types/graphql'
 import Moralis from 'moralis'
 
@@ -36,30 +7,59 @@ if (!Moralis.Core.isStarted) {
   })
 }
 
-export const handler = async () => {
-  const address = '0xc13eC844Eb19D6A72DDD5F2779484BA35279A817'
-  const contractAddress = '0xa4e3513c98b30d4d7cc578d2c328bd550725d1d0'
+// these four variables are going to eventually be dynamic
+// for now they are hard coded here to test out this service function
+const address: string = '0xc13eC844Eb19D6A72DDD5F2779484BA35279A817'
+const contractAddress: string = '0xa4e3513c98b30d4d7cc578d2c328bd550725d1d0'
+const chain: string = '0x89' // polygon
+const tokenIds: string[] = ['2906', '0000', '6254'] // 2906 & 6254 exist in the data
 
-  const chain = '0x89'
+function findMatchingTokenIds(data: any, tokenIds: string[]): string[] {
+  const matchingTokenIds: string[] = []
 
-  const response = await Moralis.EvmApi.nft.getWalletNFTs({
-    address,
-    chain,
-    tokenAddresses: [contractAddress],
-  })
-
-  console.log(response.toJSON())
-
-  return {
-    statusCode: 200,
+  if (data && data.result) {
+    data.result.forEach((nft: any) => {
+      const tokenId = nft.token_id.toString()
+      if (tokenIds.includes(tokenId)) {
+        matchingTokenIds.push(tokenId)
+      }
+    })
   }
+
+  return matchingTokenIds
 }
 
 export const getErc721TokenIds: QueryResolvers['getErc721TokenIds'] =
   async () => {
-    const response = handler()
+    const response = await Moralis.EvmApi.nft.getWalletNFTs({
+      address,
+      chain,
+      tokenAddresses: [contractAddress],
+    })
+
+    // checking that the data can be accessed via Moralis
+    console.log(response.toJSON())
+
+    // finding the matching token ids
+    const matchingTokenIds = findMatchingTokenIds(response.toJSON(), tokenIds)
+
+    // checking to see if we have matches or not (boolean)
+    const hasMatches = matchingTokenIds.length > 0
+
+    // defining the data as an array of objects
+    const data = matchingTokenIds.map((tokenId: string) => ({
+      address,
+      chain,
+      tokenAddress: contractAddress,
+      tokenId,
+    }))
+
+    // checking that the function works as expected
+    console.log('Matching Token IDs:', matchingTokenIds)
+
     return {
       success: true,
-      data: response.data,
+      data, // returning an array of objects containing the matching token ids
+      hasMatches, // do provided token ids exist in the data (boolean)
     }
   }
