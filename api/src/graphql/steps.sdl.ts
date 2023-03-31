@@ -14,6 +14,7 @@ export const schema = gql`
     stepSimpleText: StepSimpleText
     stepNftCheck: StepNftCheck
     stepFunctionCall: StepFunctionCall
+    stepComethApi: StepComethApi
     migrateLandingRoute: String
     attempts: [Attempt]!
     hasUserCompletedStep: Boolean
@@ -24,6 +25,7 @@ export const schema = gql`
     SIMPLE_TEXT
     NFT_CHECK
     FUNCTION_CALL
+    COMETH_API
   }
 
   type Query {
