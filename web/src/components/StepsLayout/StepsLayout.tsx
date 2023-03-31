@@ -21,12 +21,17 @@ interface StepsLayoutProps extends PropsWithChildren {
 const SimpleTextInput = lazy(
   () => import('src/components/SimpleTextInput/SimpleTextInput')
 )
+
 const NftCheckButton = lazy(
   () => import('src/components/NftCheckButton/NftCheckButton')
 )
 
 const StepFunctionCallButton = lazy(
   () => import('src/components/StepFunctionCallButton/StepFunctionCallButton')
+)
+
+const StepComethApiButton = lazy(
+  () => import('src/components/StepComethApiButton/StepComethApiButton')
 )
 
 const StepsLayout = ({
@@ -85,6 +90,12 @@ const StepsLayout = ({
             {step.type === 'FUNCTION_CALL' && (
               <div className="pt-8">
                 <StepFunctionCallButton step={step} puzzleId={puzzle.id} />
+              </div>
+            )}
+
+            {step.type === 'COMETH_API' && (
+              <div className="pt-8">
+                <StepComethApiButton step={step} puzzleId={puzzle.id} />
               </div>
             )}
           </div>
