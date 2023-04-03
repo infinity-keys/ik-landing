@@ -149,6 +149,8 @@ enum StepType {
   NFT_CHECK
   /// corresponds to the StepFunctionCall model
   FUNCTION_CALL
+  /// corresponds to the StepComethApi model
+  COMETH_API
 }
 
 /// Steps are whate players actually solve. One or more steps make up a Puzzle.
@@ -177,6 +179,7 @@ model Step {
   stepSimpleText   StepSimpleText?
   stepNftCheck     StepNftCheck?
   stepFunctionCall StepFunctionCall?
+  stepComethApi    StepComethApi?
 
   // Every puzzle from IK v1 (Next/Hasura) was a single step, so we need to
   // migrate them; optional because only v1 puzzles will have this.
@@ -238,6 +241,14 @@ model StepNftCheck {
   nftCheckData   NftCheckDatum[]
   /// require user to have all listed NFTs, otherwise they only need one of them
   requireAllNfts Boolean         @default(true)
+}
+
+/// Require the user to pass the Cometh api call
+model StepComethApi {
+  id String @id @default(cuid())
+
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @unique
 }
 
 /// User form submissions from post-Puzzle forms asking for email address etc

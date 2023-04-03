@@ -8,6 +8,7 @@ import { checkNft } from 'src/lib/web3/check-nft'
 import { checkFunctionCall } from 'src/lib/web3/check-function-call'
 import { createSolve } from 'src/services/solves/solves'
 import { createUserReward } from 'src/services/userRewards/userRewards'
+import { checkComethApi } from 'src/lib/api/cometh'
 
 export const stepSolutionTypeLookup: {
   [key in StepType]: string
@@ -15,6 +16,7 @@ export const stepSolutionTypeLookup: {
   SIMPLE_TEXT: 'simpleTextSolution',
   NFT_CHECK: 'nftCheckSolution',
   FUNCTION_CALL: 'functionCallSolution',
+  COMETH_API: 'comethApiSolution',
 }
 
 export const SimpleTextSolutionData = z.object({
@@ -36,10 +38,18 @@ export const FunctionCallSolutionData = z.object({
   }),
 })
 
+export const ComethApiSolutionData = z.object({
+  type: z.literal('cometh-api'),
+  comethApiSolution: z.object({
+    account: z.string(),
+  }),
+})
+
 export const SolutionData = z.discriminatedUnion('type', [
   SimpleTextSolutionData,
   NftCheckSolutionData,
   FunctionCallSolutionData,
+  ComethApiSolutionData,
 ])
 
 // @TODO: this 'asChild' logic will break if puzzle belongs to bundle
@@ -258,6 +268,37 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
       return { success: hasUserCalledFunction, finalStep }
     } // end of FUNCTION_CALL
+
+    if (step.type === 'COMETH_API') {
+      const attempt = await db.attempt.create({
+        data: {
+          userId: context?.currentUser.id,
+          stepId,
+          data: {},
+        },
+      })
+
+      const { success, errors } = await checkComethApi(userAttempt.account)
+
+      if (errors && errors.length > 0) {
+        return { success: false, message: errors[0] }
+      }
+
+      if (success) {
+        await createSolve({
+          input: {
+            attemptId: attempt.id,
+            userId: context.currentUser.id,
+          },
+        })
+
+        if (finalStep) {
+          await createRewards(step.puzzle.rewardable)
+        }
+      }
+
+      return { success, finalStep }
+    } // end of COMETH_API
 
     return { success: false }
   } catch (e) {

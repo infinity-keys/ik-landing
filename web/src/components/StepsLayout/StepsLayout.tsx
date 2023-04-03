@@ -21,12 +21,17 @@ interface StepsLayoutProps extends PropsWithChildren {
 const SimpleTextInput = lazy(
   () => import('src/components/SimpleTextInput/SimpleTextInput')
 )
+
 const NftCheckButton = lazy(
   () => import('src/components/NftCheckButton/NftCheckButton')
 )
 
 const StepFunctionCallButton = lazy(
   () => import('src/components/StepFunctionCallButton/StepFunctionCallButton')
+)
+
+const StepComethApiButton = lazy(
+  () => import('src/components/StepComethApiButton/StepComethApiButton')
 )
 
 const StepsLayout = ({
@@ -42,7 +47,7 @@ const StepsLayout = ({
   return (
     <div>
       <Suspense fallback={<LoadingIcon />}>
-        {step && !hasBeenSolved && (
+        {step && (
           <div>
             <div className="mx-auto max-w-prose rounded-md bg-black/10">
               {step.challenge && (
@@ -65,33 +70,43 @@ const StepsLayout = ({
               )}
             </div>
 
-            {step.type === 'SIMPLE_TEXT' && (
-              <div className="pt-8">
-                <SimpleTextInput
-                  count={step.stepSimpleText.solutionCharCount}
-                  step={step}
-                  puzzleId={puzzle.id}
-                  isAnon={puzzle.isAnon}
-                />
-              </div>
-            )}
+            {!hasBeenSolved && (
+              <>
+                {step.type === 'SIMPLE_TEXT' && (
+                  <div className="pt-8">
+                    <SimpleTextInput
+                      count={step.stepSimpleText.solutionCharCount}
+                      step={step}
+                      puzzleId={puzzle.id}
+                      isAnon={puzzle.isAnon}
+                    />
+                  </div>
+                )}
 
-            {step.type === 'NFT_CHECK' && (
-              <div className="pt-8">
-                <NftCheckButton step={step} puzzleId={puzzle.id} />
-              </div>
-            )}
+                {step.type === 'NFT_CHECK' && (
+                  <div className="pt-8">
+                    <NftCheckButton step={step} puzzleId={puzzle.id} />
+                  </div>
+                )}
 
-            {step.type === 'FUNCTION_CALL' && (
-              <div className="pt-8">
-                <StepFunctionCallButton step={step} puzzleId={puzzle.id} />
-              </div>
+                {step.type === 'FUNCTION_CALL' && (
+                  <div className="pt-8">
+                    <StepFunctionCallButton step={step} puzzleId={puzzle.id} />
+                  </div>
+                )}
+
+                {step.type === 'COMETH_API' && (
+                  <div className="pt-8">
+                    <StepComethApiButton step={step} puzzleId={puzzle.id} />
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}
       </Suspense>
 
-      <div className="mb-4">{children}</div>
+      <div className="my-4">{children}</div>
 
       {(!step || !hasBeenSolved) && (
         <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-4 sm:flex-row">

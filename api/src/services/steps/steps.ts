@@ -58,6 +58,9 @@ export const Step: StepRelationResolvers = {
   stepFunctionCall: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).stepFunctionCall()
   },
+  stepComethApi: (_obj, { root }) => {
+    return db.step.findUnique({ where: { id: root?.id } }).stepComethApi()
+  },
   attempts: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).attempts({
       where: {
