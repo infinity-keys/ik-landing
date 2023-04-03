@@ -55,9 +55,11 @@ export class AppService {
         .status(HttpStatus.OK)
         .send({ message: 'No valid transactions present' });
     }
-
     // Get the user's wallet address
     const [{ fromAddress }] = filteredTransactions;
+
+    console.log(`valid tx from ${fromAddress}`);
+
     // Get all the unique methodIds from the list of valid transactions
     const uniqueMethodIds = new Set(
       filteredTransactions.map(({ input }) => input?.slice(0, 10)),
@@ -77,13 +79,20 @@ export class AppService {
     try {
       // We only have one document per contract address, so we need to update
       // one or more fields on only one document
+      // @TODO: Gross hack until I can figure out the right way to do this
+      /*
+        ObjectId("641dcd9835d0ea136c515274") -> first round
+        ObjectId("642b483e015e024f5322f616") -> second round
+      */
       await this.collection.updateOne(
-        {},
+        { _id: new mongo.ObjectId('642b483e015e024f5322f616') },
         {
           $addToSet: mutationData,
         },
         { upsert: true },
       );
+
+      console.log(`created entry for ${fromAddress}`);
 
       return response
         .status(HttpStatus.CREATED)
