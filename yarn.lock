@@ -14548,6 +14548,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cron@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "cron@npm:2.3.0"
+  dependencies:
+    luxon: ^3.2.1
+  checksum: 81ab26610cee7c773fcd62ff4286c9f73f8b65a50c27196956f30d38003fc36a689bf55ae2553e089346c861a65f220bc83a32d0ec3fa8d84aab74465da2cb46
+  languageName: node
+  linkType: hard
+
 "cross-env@npm:7.0.3":
   version: 7.0.3
   resolution: "cross-env@npm:7.0.3"
@@ -15612,7 +15621,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "discord-coin-bot@workspace:packages/discord-dust-game-bot"
   dependencies:
-    discord-economy-super: latest
+    cron: ^2.3.0
+    discord-economy-super: ^1.7.6
     discord.js: ^14.7.1
     dotenv: ^16.0.3
     eslint: ^8.36.0
@@ -15620,12 +15630,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"discord-economy-super@npm:latest":
-  version: 1.7.5
-  resolution: "discord-economy-super@npm:1.7.5"
+"discord-economy-super@npm:^1.7.6":
+  version: 1.7.6
+  resolution: "discord-economy-super@npm:1.7.6"
   dependencies:
-    quick-mongo-super: ^1.0.11
-  checksum: 6358716e338e18f8d12e390acc470efd468e585b55b0edeecfec51053a624993f5f1f075883f4456a5dac9a39701301cf2f26691ff69173edbd9a848838d911d
+    quick-mongo-super: ^1.0.12
+  checksum: d88606c2d785c792e4ff43e50892b5607161a120d61c63bd000f897961d90d99580b9c91b200f08d2ffddf68df8cebfdedf2671d9e196919f14f7d2442fe4848
   languageName: node
   linkType: hard
 
@@ -23229,6 +23239,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"luxon@npm:^3.2.1":
+  version: 3.3.0
+  resolution: "luxon@npm:3.3.0"
+  checksum: 47f8e1e96b25441c799b8aa833b3f007fb1854713bcffc8c3384eda8e61fc9af1f038474d137274d2d386492f341c8a8c992fc78c213adfb3143780feba2776c
+  languageName: node
+  linkType: hard
+
 "lz-string@npm:^1.4.4":
   version: 1.4.4
   resolution: "lz-string@npm:1.4.4"
@@ -27536,13 +27553,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"quick-mongo-super@npm:^1.0.11":
-  version: 1.0.11
-  resolution: "quick-mongo-super@npm:1.0.11"
+"quick-mongo-super@npm:^1.0.12":
+  version: 1.0.12
+  resolution: "quick-mongo-super@npm:1.0.12"
   dependencies:
     mongodb: ^4.3.1
     node-fetch: ^2.6.7
-  checksum: dee60f5721232bbfa974f7380133a62e8a8d7947b878882583c97066cf0aed9621d732790bef6fba7819cf7f83c84c73a503b5deaf62b9dcea89e35b94345dda
+  checksum: 1575468491030201453bcbc8358014c3e606cdc7ae3813b0586963e30dd729e5039d39d8db61ddc85abccf71c827e2cc1629ae31a78460497be78cc7182e627e
   languageName: node
   linkType: hard
 
