@@ -79,8 +79,13 @@ export class AppService {
     try {
       // We only have one document per contract address, so we need to update
       // one or more fields on only one document
+      // @TODO: Gross hack until I can figure out the right way to do this
+      /*
+        ObjectId("641dcd9835d0ea136c515274") -> first round
+        ObjectId("642b483e015e024f5322f616") -> second round
+      */
       await this.collection.updateOne(
-        {},
+        { _id: new mongo.ObjectId('642b483e015e024f5322f616') },
         {
           $addToSet: mutationData,
         },
