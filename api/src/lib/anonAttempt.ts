@@ -1,7 +1,4 @@
-import {
-  SolutionData,
-  stepSolutionTypeLookup,
-} from 'src/services/ik/attempts/attempts'
+import { SolutionData, stepSolutionTypeLookup } from 'src/lib/makeAttempt'
 
 import anonPuzzles from '../../anonPuzzleData.json'
 
