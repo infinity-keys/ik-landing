@@ -16,7 +16,7 @@ export class AppService {
     streamListenerDto: IWebhook,
     headers: Record<string, string>[],
     contract: string,
-    methodId: string | string[],
+    methodId: string[],
     response: Response,
   ) {
     // Ensures the request is coming from Moralis
@@ -40,14 +40,12 @@ export class AppService {
         .status(HttpStatus.OK)
         .send({ message: 'No valid transactions present' });
 
+    const formattedMethodId = (id) => id.slice(0, 10).toLowerCase();
     // Does this request contain any transactions with the methodId we're
     // looking for
     const filteredTransactions = txs.filter(({ input }) => {
-      const currentMethodId = input?.slice(0, 10);
-
-      return typeof methodId === 'string'
-        ? methodId === currentMethodId
-        : methodId.includes(currentMethodId);
+      const currentMethodId = formattedMethodId(input);
+      return methodId.includes(currentMethodId);
     });
 
     if (!filteredTransactions.length) {
@@ -57,42 +55,30 @@ export class AppService {
     }
     // Get the user's wallet address
     const [{ fromAddress }] = filteredTransactions;
+    const userAddress = fromAddress.toLowerCase();
 
-    console.log(`valid tx from ${fromAddress}`);
+    console.log(`valid tx from ${userAddress}`);
 
     // Get all the unique methodIds from the list of valid transactions
     const uniqueMethodIds = new Set(
-      filteredTransactions.map(({ input }) => input?.slice(0, 10)),
+      filteredTransactions.map(({ input }) => formattedMethodId(input)),
     );
 
     // Creates the MongoDB query for one or many matching methodIds
-    const mutationData = Array.from(uniqueMethodIds).reduce((acc, methodId) => {
-      const mongoParams = [contract, methodId, fromAddress]
-        .join('.')
-        .toLowerCase();
+    const mutationData = Array.from(uniqueMethodIds).map((currentMethodId) => {
       return {
-        ...acc,
-        [mongoParams]: streamListenerDto,
+        [contract]: {
+          [currentMethodId]: {
+            [userAddress]: [streamListenerDto],
+          },
+        },
       };
-    }, {});
+    });
 
     try {
-      // We only have one document per contract address, so we need to update
-      // one or more fields on only one document
-      // @TODO: Gross hack until I can figure out the right way to do this
-      /*
-        ObjectId("641dcd9835d0ea136c515274") -> first round
-        ObjectId("642b483e015e024f5322f616") -> second round
-      */
-      await this.collection.updateOne(
-        { _id: new mongo.ObjectId('642b483e015e024f5322f616') },
-        {
-          $addToSet: mutationData,
-        },
-        { upsert: true },
-      );
+      await this.collection.insertMany(mutationData);
 
-      console.log(`created entry for ${fromAddress}`);
+      console.log(`created entry for ${userAddress}`);
 
       return response
         .status(HttpStatus.CREATED)
@@ -120,8 +106,7 @@ export class AppService {
       [contractAddress, methodId, walletAddress].join('.').toLowerCase(),
     );
 
-    // We have only one document per contract address, so this will return 0 if
-    // there is no match, or 1 if there is a match
+    // Checks if we have at least one document that matches
     const results = await Promise.all(
       mongoParams.map((params) =>
         this.collection.countDocuments({
