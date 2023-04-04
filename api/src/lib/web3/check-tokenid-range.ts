@@ -8,8 +8,6 @@ if (!Moralis.Core.isStarted) {
   })
 }
 
-const rangeOfTokenIds: number[] = [13230, 13233] // we want all ids in this range
-
 function tokenIdsExist(
   data: GetWalletNFTsJSONResponse,
   startId: number,
@@ -62,7 +60,7 @@ export const getErc721TokenIds = async ({
       hasMatches, // do any token ids fall within the specified range (boolean)
     }
   } catch (e) {
-    logger.error(e)
+    logger.error('Error checking token id range.', e)
     return {
       hasMatches: false,
       errors: ['Error checking token id ranges.'],
