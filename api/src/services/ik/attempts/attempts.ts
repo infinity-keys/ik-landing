@@ -9,6 +9,7 @@ import { checkFunctionCall } from 'src/lib/web3/check-function-call'
 import { createSolve } from 'src/services/solves/solves'
 import { createUserReward } from 'src/services/userRewards/userRewards'
 import { checkComethApi } from 'src/lib/api/cometh'
+import { getErc721TokenIds } from 'src/lib/web3/check-tokenid-range'
 
 export const stepSolutionTypeLookup: {
   [key in StepType]: string
@@ -17,6 +18,7 @@ export const stepSolutionTypeLookup: {
   NFT_CHECK: 'nftCheckSolution',
   FUNCTION_CALL: 'functionCallSolution',
   COMETH_API: 'comethApiSolution',
+  TOKEN_ID_RANGE: 'tokenIdRangeSolution',
 }
 
 export const SimpleTextSolutionData = z.object({
@@ -27,6 +29,13 @@ export const SimpleTextSolutionData = z.object({
 export const NftCheckSolutionData = z.object({
   type: z.literal('nft-check'),
   nftCheckSolution: z.object({
+    account: z.string(),
+  }),
+})
+
+export const TokenIdRangeSolutionData = z.object({
+  type: z.literal('token-id-range'),
+  tokenIdRangeSolution: z.object({
     account: z.string(),
   }),
 })
@@ -50,6 +59,7 @@ export const SolutionData = z.discriminatedUnion('type', [
   NftCheckSolutionData,
   FunctionCallSolutionData,
   ComethApiSolutionData,
+  TokenIdRangeSolutionData,
 ])
 
 // @TODO: this 'asChild' logic will break if puzzle belongs to bundle
@@ -117,6 +127,14 @@ const getStep = async (id) => {
         select: {
           contractAddress: true,
           methodIds: true,
+        },
+      },
+      stepTokenIdRange: {
+        select: {
+          contractAddress: true,
+          chainId: true,
+          startId: true,
+          endId: true,
         },
       },
       stepSimpleText: true,
@@ -299,6 +317,42 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
       return { success, finalStep }
     } // end of COMETH_API
+
+    if (step.type === 'TOKEN_ID_RANGE') {
+      const attempt = await db.attempt.create({
+        data: {
+          userId: context?.currentUser.id,
+          stepId,
+          data: {},
+        },
+      })
+
+      const { hasMatches, errors } = await getErc721TokenIds({
+        contractAddress: step.stepTokenIdRange.contractAddress,
+        address: userAttempt.account,
+        chainId: step.stepTokenIdRange.chainId,
+        startId: step.stepTokenIdRange.startId,
+        endId: step.stepTokenIdRange.endId,
+      })
+
+      if (errors && errors.length > 0) {
+        return { success: false, message: errors[0] }
+      }
+
+      if (hasMatches) {
+        await createSolve({
+          input: {
+            attemptId: attempt.id,
+            userId: context.currentUser.id,
+          },
+        })
+
+        if (finalStep) {
+          await createRewards(step.puzzle.rewardable)
+        }
+      }
+      return { success: hasMatches, finalStep }
+    } // end of TOKEN_ID_RANGE
 
     return { success: false }
   } catch (e) {
