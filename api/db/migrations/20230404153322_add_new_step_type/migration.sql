@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "StepType" ADD VALUE 'TOKEN_ID_RANGE';

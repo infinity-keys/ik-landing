@@ -151,6 +151,8 @@ enum StepType {
   FUNCTION_CALL
   /// corresponds to the StepComethApi model
   COMETH_API
+  /// corresponds to the StepTokenIdRange model
+  TOKEN_ID_RANGE
 }
 
 /// Steps are whate players actually solve. One or more steps make up a Puzzle.

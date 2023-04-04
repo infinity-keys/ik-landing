@@ -8,32 +8,37 @@ if (!Moralis.Core.isStarted) {
   })
 }
 
-// these three variables are going to eventually be dynamic
-// for now they are hard coded here to test out this service function
-const address: string = '0xc13eC844Eb19D6A72DDD5F2779484BA35279A817'
-const contractAddress: string = '0xa4e3513c98b30d4d7cc578d2c328bd550725d1d0'
-const chain: string = '0x89' // polygon
 const rangeOfTokenIds: number[] = [13230, 13233] // we want all ids in this range
 
 function tokenIdsExist(
   data: GetWalletNFTsJSONResponse,
-  rangeOfTokenIds: number[]
+  startId: number,
+  endId: number
 ): boolean {
   if (data && data.result) {
     return (
       data.result.find((nft) => {
         const tokenId = nft.token_id
-        return (
-          parseInt(tokenId) >= rangeOfTokenIds[0] &&
-          parseInt(tokenId) <= rangeOfTokenIds[1]
-        )
+        return parseInt(tokenId) >= startId && parseInt(tokenId) <= endId
       }) !== undefined
     )
   }
   return false
 }
 
-export const getErc721TokenIds = async () => {
+export const getErc721TokenIds = async ({
+  address,
+  contractAddress,
+  chainId,
+  startId,
+  endId,
+}: {
+  address: string
+  contractAddress: string
+  chainId: string
+  startId: number
+  endId: number
+}) => {
   try {
     let hasMatches = false
     let cursor = null
@@ -43,13 +48,13 @@ export const getErc721TokenIds = async () => {
     do {
       const response = await Moralis.EvmApi.nft.getWalletNFTs({
         address,
-        chain,
+        chain: chainId,
         tokenAddresses: [contractAddress],
         cursor,
       })
 
       // checking if any token ids fall within the specified range
-      hasMatches = tokenIdsExist(response.toJSON(), rangeOfTokenIds)
+      hasMatches = tokenIdsExist(response.toJSON(), startId, endId)
       cursor = response.pagination.cursor
     } while (cursor !== '' && cursor !== null && !hasMatches)
 

@@ -27,6 +27,7 @@ export const schema = gql`
     NFT_CHECK
     FUNCTION_CALL
     COMETH_API
+    TOKEN_ID_RANGE
   }
 
   type Query {
