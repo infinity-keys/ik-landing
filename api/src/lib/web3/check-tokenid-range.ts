@@ -1,4 +1,3 @@
-import type { QueryResolvers } from 'types/graphql'
 import Moralis from 'moralis'
 import { GetWalletNFTsJSONResponse } from '@moralisweb3/common-evm-utils'
 import { logger } from 'src/lib/logger'
@@ -34,35 +33,34 @@ function tokenIdsExist(
   return false
 }
 
-export const getErc721TokenIds: QueryResolvers['getErc721TokenIds'] =
-  async () => {
-    try {
-      let hasMatches = false
-      let cursor = null
+export const getErc721TokenIds = async () => {
+  try {
+    let hasMatches = false
+    let cursor = null
 
-      // Moralis limits the return data to 100 nfts, so we keep running the
-      // function until we either have a match or we run out of nfts.
-      do {
-        const response = await Moralis.EvmApi.nft.getWalletNFTs({
-          address,
-          chain,
-          tokenAddresses: [contractAddress],
-          cursor,
-        })
+    // Moralis limits the return data to 100 nfts, so we keep running the
+    // function until we either have a match or we run out of nfts.
+    do {
+      const response = await Moralis.EvmApi.nft.getWalletNFTs({
+        address,
+        chain,
+        tokenAddresses: [contractAddress],
+        cursor,
+      })
 
-        // checking if any token ids fall within the specified range
-        hasMatches = tokenIdsExist(response.toJSON(), rangeOfTokenIds)
-        cursor = response.pagination.cursor
-      } while (cursor !== '' && cursor !== null && !hasMatches)
+      // checking if any token ids fall within the specified range
+      hasMatches = tokenIdsExist(response.toJSON(), rangeOfTokenIds)
+      cursor = response.pagination.cursor
+    } while (cursor !== '' && cursor !== null && !hasMatches)
 
-      return {
-        hasMatches, // do any token ids fall within the specified range (boolean)
-      }
-    } catch (e) {
-      logger.error(e)
-      return {
-        hasMatches: false,
-        errors: ['Error checking token id ranges.'],
-      }
+    return {
+      hasMatches, // do any token ids fall within the specified range (boolean)
+    }
+  } catch (e) {
+    logger.error(e)
+    return {
+      hasMatches: false,
+      errors: ['Error checking token id ranges.'],
     }
   }
+}

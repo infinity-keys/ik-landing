@@ -180,6 +180,7 @@ model Step {
   stepNftCheck     StepNftCheck?
   stepFunctionCall StepFunctionCall?
   stepComethApi    StepComethApi?
+  stepTokenIdRange StepTokenIdRange?
 
   // Every puzzle from IK v1 (Next/Hasura) was a single step, so we need to
   // migrate them; optional because only v1 puzzles will have this.
@@ -249,6 +250,18 @@ model StepComethApi {
 
   step   Step   @relation(fields: [stepId], references: [id])
   stepId String @unique
+}
+
+/// Require a user to havve at least 1 NFT within a given range
+model StepTokenIdRange {
+  id String @id @default(cuid())
+
+  step            Step   @relation(fields: [stepId], references: [id])
+  stepId          String @unique
+  contractAddress String
+  chainId         String
+  startId         Int
+  endId           Int
 }
 
 /// User form submissions from post-Puzzle forms asking for email address etc
