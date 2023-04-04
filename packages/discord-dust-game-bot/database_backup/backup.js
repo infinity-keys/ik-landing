@@ -4,7 +4,9 @@ const exec = require('child_process').exec
 const path = require('path')
 
 // Concatenate root directory path with our backup folder.
-const backupDirPath = path.join(__dirname, 'database_backup')
+const backupDirPath = path.join(__dirname)
+console.log('backupdirpath', backupDirPath)
+console.log('dirname', __dirname)
 
 const dbOptions = {
   user: 'root',
@@ -43,6 +45,8 @@ exports.empty = (mixedVar) => {
 
 // Auto backup function
 exports.dbAutoBackUp = () => {
+  console.log('dbauto')
+
   // check for auto backup is enabled or disabled
   if (dbOptions.autoBackup == true) {
     let date = new Date()
@@ -57,9 +61,14 @@ exports.dbAutoBackUp = () => {
       '-' +
       currentDate.getDate()
 
+    console.log('newbackupdir', newBackupDir)
+
     // New backup path for current backup process
     let newBackupPath = dbOptions.autoBackupPath + '-mongodump-' + newBackupDir
     // check for remove old backup after keeping # of days given in configuration
+
+    console.log('newbackuppath', newBackupPath)
+
     if (dbOptions.removeOldBackup == true) {
       beforeDate = _.clone(currentDate)
       // Substract number of days to keep backup and remove old backup
@@ -72,26 +81,33 @@ exports.dbAutoBackUp = () => {
         beforeDate.getDate()
       // old backup(after keeping # of days)
       oldBackupPath = dbOptions.autoBackupPath + 'mongodump-' + oldBackupDir
+
+      console.log('oldbackupdir', oldBackupDir)
+      console.log('oldbackuppath', oldBackupPath)
     }
 
     // Command for mongodb dump process
     let cmd =
-      'mongodump --host ' +
+      'mongodump --host=' +
       dbOptions.host +
-      ' --port ' +
+      ' --port=' +
       dbOptions.port +
-      ' --db ' +
+      ' --db=' +
       dbOptions.database +
-      ' --username ' +
+      ' --username=' +
       dbOptions.user +
-      ' --password ' +
+      ' --password=' +
       dbOptions.pass +
-      ' --out ' +
+      ' --out=' +
       newBackupPath
 
+    console.log('cmd', cmd)
+
     exec(cmd, (error, stdout, stderr) => {
+      console.log('exec')
       if (this.empty(error)) {
         // check for remove old backup after keeping # of days given in configuration.
+        console.log('error', error)
         if (dbOptions.removeOldBackup == true) {
           if (fs.existsSync(oldBackupPath)) {
             exec('rm -rf ' + oldBackupPath, (err) => {})

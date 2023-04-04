@@ -1,5 +1,6 @@
 // Require the necessary discord.js classes
 global.CronJob = require('./database_backup/cron.js')
+
 const fs = require('node:fs')
 const path = require('node:path')
 const { Client, Collection, GatewayIntentBits } = require('discord.js')

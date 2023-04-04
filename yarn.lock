@@ -15617,9 +15617,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord-coin-bot@workspace:packages/discord-dust-game-bot":
+"discord-dust-game-bot@workspace:packages/discord-dust-game-bot":
   version: 0.0.0-use.local
-  resolution: "discord-coin-bot@workspace:packages/discord-dust-game-bot"
+  resolution: "discord-dust-game-bot@workspace:packages/discord-dust-game-bot"
   dependencies:
     cron: ^2.3.0
     discord-economy-super: ^1.7.6
