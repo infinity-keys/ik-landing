@@ -323,7 +323,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         data: {
           userId: context?.currentUser.id,
           stepId,
-          data,
+          data: {},
         },
       })
 
