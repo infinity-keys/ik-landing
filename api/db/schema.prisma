@@ -258,11 +258,16 @@ model StepComethApi {
 model StepTokenIdRange {
   id String @id @default(cuid())
 
-  step            Step   @relation(fields: [stepId], references: [id])
-  stepId          String @unique
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @unique
+
   contractAddress String
+  /// Must be a supported Moralis chain
+  /// https://docs.moralis.io/web3-data-api/evm/resolve-api#supported-chains
   chainId         String
+  /// The start of the range (inclusive)
   startId         Int
+  /// The end of the range (inclusive)
   endId           Int
 }
 
