@@ -9,6 +9,7 @@ import {
   CheckboxField,
   RadioField,
   Submit,
+  useForm,
 } from '@redwoodjs/forms'
 import type { RWGqlError } from '@redwoodjs/forms'
 import { useState } from 'react'
@@ -18,17 +19,24 @@ type FormRewardable = NonNullable<EditRewardableById['rewardable']>
 
 interface RewardableFormProps {
   rewardable?: EditRewardableById['rewardable']
-  onSave: (data: UpdateRewardableInput, id?: FormRewardable['id']) => void
+  onSave: (data: any) => void
   error: RWGqlError
   loading: boolean
 }
 
 const RewardableForm = (props: RewardableFormProps) => {
   const [steps, setSteps] = useState([])
-  console.log('steps: ', steps)
+  const formMethods = useForm()
 
-  const onSubmit = (data: FormRewardable) => {
-    // props.onSave(data, props?.rewardable?.id)
+  const onSubmit = (data) => {
+    const withSteps = { ...data, steps }
+    console.log('data: ', withSteps)
+
+    // add steps
+    // call mutation -> from page?
+    props.onSave(data)
+    setSteps([])
+    formMethods.reset()
   }
 
   const addStep = (data) => {
@@ -78,9 +86,10 @@ const RewardableForm = (props: RewardableFormProps) => {
         </div>
       </div>
 
-      {/* <div className="max-w-lg">
+      <div className="max-w-lg">
         <h2 className="my-8 text-4xl font-bold">Create Puzzle</h2>
-        <Form<FormRewardable> onSubmit={onSubmit} error={props.error}>
+
+        <Form onSubmit={onSubmit} error={props.error} formMethods={formMethods}>
           <FormError
             error={props.error}
             wrapperClassName="rw-form-error-wrapper"
@@ -222,24 +231,6 @@ const RewardableForm = (props: RewardableFormProps) => {
 
           <FieldError name="type" className="rw-field-error" />
 
-          <Label
-            name="orgId"
-            className="rw-label"
-            errorClassName="rw-label rw-label-error"
-          >
-            Org id
-          </Label>
-
-          <TextField
-            name="orgId"
-            defaultValue={props.rewardable?.orgId}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
-
-          <FieldError name="orgId" className="rw-field-error" />
-
           <div className="rw-button-group">
             <Submit
               disabled={props.loading}
@@ -249,7 +240,7 @@ const RewardableForm = (props: RewardableFormProps) => {
             </Submit>
           </div>
         </Form>
-      </div> */}
+      </div>
     </div>
   )
 }
