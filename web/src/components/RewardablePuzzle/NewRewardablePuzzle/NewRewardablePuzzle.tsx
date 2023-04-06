@@ -37,7 +37,7 @@ const NewRewardable = () => {
       <header className="rw-segment-header">
         <h2 className="rw-heading rw-heading-secondary">New Rewardable</h2>
       </header>
-      <div className="rw-segment-main">
+      <div className="rw-segment-main text-gray-500">
         <RewardableForm onSave={onSave} loading={loading} error={error} />
       </div>
     </div>

@@ -17,12 +17,12 @@ import WrapperLayout from 'src/layouts/WrapperLayout'
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
-      {/* <Private unauthenticated="profile" roles={'ADMIN'}>
+      <Private unauthenticated="profile" roles={'ADMIN'}>
         <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
           <Route path="/puzzle/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newPuzzle" />
-          <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" />
+          {/* <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" /> */}
         </Set>
-      </Private> */}
+      </Private>
 
       <Private unauthenticated="profile">
         {/* @TODO: Replace HeaderFooterLayout once we get a minimal header */}
