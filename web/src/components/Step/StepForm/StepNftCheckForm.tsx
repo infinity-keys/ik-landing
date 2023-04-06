@@ -10,72 +10,94 @@ import {
 
 import type { UpdateStepNftCheckInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
+import { useRef } from 'react'
 
 type FormStepNftCheck = NonNullable<EditStepNftCheckById['stepNftCheck']>
 
 interface StepNftCheckFormProps {
   stepNftCheck?: EditStepNftCheckById['stepNftCheck']
-  onSave: (data: UpdateStepNftCheckInput, id?: FormStepNftCheck['id']) => void
-  error: RWGqlError
-  loading: boolean
+  onSave?: (data: UpdateStepNftCheckInput, id?: FormStepNftCheck['id']) => void
+  error?: RWGqlError
+  loading?: boolean
+  handleSetNftCheckData: (data: {
+    tempId: number
+    contractAddress?: string
+    tokenId?: number
+    poapEventId?: string
+    chainId?: number
+  }) => void
 }
 
 const StepNftCheckForm = (props: StepNftCheckFormProps) => {
-  const onSubmit = (data: FormStepNftCheck) => {
-    props.onSave(data, props?.stepNftCheck?.id)
+  const contractRef = useRef<HTMLInputElement>(null)
+  const chainRef = useRef<HTMLInputElement>(null)
+  const poapRef = useRef<HTMLInputElement>(null)
+  const tokenIdRef = useRef<HTMLInputElement>(null)
+
+  const handleOnClick = (e) => {
+    e.preventDefault()
+
+    props.handleSetNftCheckData({
+      tempId: new Date().getTime(),
+      contractAddress: contractRef.current.value || null,
+      chainId: chainRef.current.value ? parseInt(chainRef.current.value) : null,
+      tokenId: tokenIdRef.current.value
+        ? parseInt(tokenIdRef.current.value)
+        : null,
+      poapEventId: poapRef.current.value || null,
+    })
+
+    contractRef.current.value = ''
+    chainRef.current.value = ''
+    tokenIdRef.current.value = ''
+    poapRef.current.value = ''
   }
 
   return (
     <div className="rw-form-wrapper">
-      <Form<FormStepNftCheck> onSubmit={onSubmit} error={props.error}>
-        <FormError
-          error={props.error}
-          wrapperClassName="rw-form-error-wrapper"
-          titleClassName="rw-form-error-title"
-          listClassName="rw-form-error-list"
-        />
+      <Label
+        name="stepTypeData.requireAllNfts"
+        className="rw-label"
+        errorClassName="rw-label rw-label-error"
+      >
+        Require all nfts
+      </Label>
 
-        <Label
-          name="stepId"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Step id
-        </Label>
+      <CheckboxField
+        name="stepTypeData.requireAllNfts"
+        defaultChecked={true}
+        className="rw-input"
+        errorClassName="rw-input rw-input-error"
+      />
 
-        <TextField
-          name="stepId"
-          defaultValue={props.stepNftCheck?.stepId}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
-        />
+      <FieldError name="requireAllNfts" className="rw-field-error" />
 
-        <FieldError name="stepId" className="rw-field-error" />
+      <div className="mt-4 flex flex-col">
+        <label htmlFor="contractAddress">Contract Address</label>
+        <input type="text" id="contractAddress" ref={contractRef} />
+      </div>
 
-        <Label
-          name="requireAllNfts"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Require all nfts
-        </Label>
+      <div className="mt-4 flex flex-col">
+        <label htmlFor="chainId">Chain Id</label>
+        <input type="number" id="chainId" min={0} ref={chainRef} />
+      </div>
 
-        <CheckboxField
-          name="requireAllNfts"
-          defaultChecked={props.stepNftCheck?.requireAllNfts}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-        />
+      <div className="mt-4 flex flex-col">
+        <label htmlFor="tokenId">Token Id</label>
+        <input type="number" id="tokenId" min={0} ref={tokenIdRef} />
+      </div>
 
-        <FieldError name="requireAllNfts" className="rw-field-error" />
+      <div className="mt-4 flex flex-col">
+        <label htmlFor="poapId">Poap Event Id</label>
+        <input type="text" id="poapId" ref={poapRef} />
+      </div>
 
-        <div className="rw-button-group">
-          <Submit disabled={props.loading} className="rw-button rw-button-blue">
-            Save
-          </Submit>
-        </div>
-      </Form>
+      <button
+        className="mt-4 border bg-slate-300 py-1 px-3"
+        onClick={handleOnClick}
+      >
+        Add NFT Check
+      </button>
     </div>
   )
 }

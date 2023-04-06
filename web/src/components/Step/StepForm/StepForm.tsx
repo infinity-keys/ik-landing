@@ -27,19 +27,31 @@ interface StepFormProps {
   loading?: boolean
 }
 
+function removeEmpty(obj) {
+  if (typeof obj !== 'object') return obj
+
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, v]) => v !== null && v !== '')
+  )
+}
+
 const StepForm = (props: StepFormProps) => {
-  const [stepType, setStepType] = useState()
+  const [stepType, setStepType] = useState('')
   const [stepTypeData, setStepTypeData] = useState()
+  const [nftCheckData, setNftCheckData] = useState([])
+
   const formMethods = useForm()
 
   const onSubmit = (data: FormStep) => {
-    const stepTypeDataNoEmptyFields = Object.fromEntries(
-      Object.entries(data.stepTypeData).filter(
-        ([_, v]) => v !== null && v !== ''
-      )
-    )
+    const stepTypeDataNoEmptyFields = removeEmpty(data.stepTypeData)
 
-    let formattedData = { ...data, stepTypeData: stepTypeDataNoEmptyFields }
+    const { requireAllNfts, ...rest } = stepTypeDataNoEmptyFields
+
+    let formattedData = {
+      ...data,
+      stepTypeData:
+        data.type !== 'NFT_CHECK' ? rest : stepTypeDataNoEmptyFields,
+    }
 
     if (data.type === 'FUNCTION_CALL') {
       const methodIds = formattedData.stepTypeData.methodIds
@@ -52,22 +64,36 @@ const StepForm = (props: StepFormProps) => {
       }
     }
 
-    console.log(formattedData)
+    if (data.type === 'NFT_CHECK') {
+      const formattedNftCheckData = nftCheckData.map(({ tempId, ...rest }) =>
+        removeEmpty(rest)
+      )
+
+      formattedData = { ...formattedData, stepTypeData: formattedNftCheckData }
+    }
 
     props.onSave(formattedData, props?.step?.id)
     formMethods.reset()
+    setStepType('')
+    setNftCheckData([])
   }
 
   const handleSetStepType = (event) => {
     setStepType(event.target.value)
   }
 
-  const addStepTypeData = (data) => {
-    if (data.type === 'FUNCTION_CALL') {
-      const methodIds = data.methodIds.split(',').trim()
-      console.log('methodIds: ', methodIds)
+  const handleSetNftCheckData = (data) => {
+    const { tempId, ...rest } = data
+    const isEmpty = Object.values(rest).every((key) => !key)
+    if (isEmpty) {
+      alert('NFT check data needs at least one field')
+    } else {
+      setNftCheckData((prevState) => [...prevState, data])
     }
-    setStepTypeData(data)
+  }
+
+  const removeNftCheckData = (tempId) => {
+    setNftCheckData(nftCheckData.filter((data) => data.tempId !== tempId))
   }
 
   return (
@@ -166,6 +192,7 @@ const StepForm = (props: StepFormProps) => {
           className="rw-input"
           errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
+          min={1}
         />
 
         <FieldError name="stepSortWeight" className="rw-field-error" />
@@ -246,9 +273,27 @@ const StepForm = (props: StepFormProps) => {
         <FieldError name="type" className="rw-field-error" />
 
         <div className="pt-4">
-          {/* {stepType === "NFT_CHECK" && (
-            <StepNftCheckForm onSave={} />
-          )} */}
+          {stepType === 'NFT_CHECK' && (
+            <div className="pt-2">
+              <StepNftCheckForm handleSetNftCheckData={handleSetNftCheckData} />
+              <div className="">
+                {nftCheckData.map(({ tempId, ...rest }) => {
+                  return (
+                    <div className="mt-4 flex items-start gap-2" key={tempId}>
+                      <button
+                        className="block bg-red-300 px-2 py-1 leading-[1] hover:bg-red-500"
+                        onClick={() => removeNftCheckData(tempId)}
+                      >
+                        X
+                      </button>
+
+                      <pre>{JSON.stringify(rest, null, 2)}</pre>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
 
           {stepType === 'SIMPLE_TEXT' && <StepSimpleTextForm />}
 
