@@ -14,6 +14,7 @@ import {
 import type { RWGqlError } from '@redwoodjs/forms'
 import { useState } from 'react'
 import StepForm from 'src/components/Step/StepForm/StepForm'
+import NftForm from 'src/components/Nft/NftForm/NftForm'
 
 type FormRewardable = NonNullable<EditRewardableById['rewardable']>
 
@@ -24,17 +25,35 @@ interface RewardableFormProps {
   loading: boolean
 }
 
+/*
+ * @TODO
+ * nft field should be required and the nft form itself should be optional
+ * connect pack and puzzle
+ */
+
 const RewardableForm = (props: RewardableFormProps) => {
   const [steps, setSteps] = useState([])
   const formMethods = useForm()
 
   const onSubmit = (data) => {
     const withSteps = { ...data, steps }
-    console.log('data: ', withSteps)
+    console.log('withSteps: ', withSteps)
+
+    if (data.type === 'PUZZLE' && steps.length === 0) {
+      alert('Puzzles need at least one step')
+      return
+    }
+
+    if (data.type === 'PACK' && steps.length > 0) {
+      alert(
+        'Pack is selected but steps are present. Please remove steps or select Puzzle'
+      )
+      return
+    }
 
     // add steps
     // call mutation -> from page?
-    props.onSave(data)
+    props.onSave(withSteps)
     setSteps([])
     formMethods.reset()
   }
@@ -56,11 +75,11 @@ const RewardableForm = (props: RewardableFormProps) => {
 
   return (
     <div>
-      <div className="">
+      <div className="text-sm">
         <h2 className="mb-8 text-4xl font-bold">Add Steps</h2>
 
         <div className="flex items-start gap-8">
-          <div className="rw-form-wrapper flex-1">
+          <div className="rw-form-wrapper max-w-lg flex-1">
             <StepForm onSave={addStep} />
           </div>
           <div className="grid flex-1 grid-cols-1 gap-8">
@@ -86,151 +105,158 @@ const RewardableForm = (props: RewardableFormProps) => {
         </div>
       </div>
 
-      <div className="max-w-lg">
-        <h2 className="my-8 text-4xl font-bold">Create Puzzle</h2>
-
+      <div className="rw-form-wrapper">
         <Form onSubmit={onSubmit} error={props.error} formMethods={formMethods}>
-          <FormError
-            error={props.error}
-            wrapperClassName="rw-form-error-wrapper"
-            titleClassName="rw-form-error-title"
-            listClassName="rw-form-error-list"
-          />
+          <div className="flex gap-12">
+            <div className="flex-1">
+              <h2 className="my-8 text-4xl font-bold">Add Rewardable</h2>
 
-          <Label
-            name="name"
-            className="rw-label"
-            errorClassName="rw-label rw-label-error"
-          >
-            Name
-          </Label>
+              <FormError
+                error={props.error}
+                wrapperClassName="rw-form-error-wrapper"
+                titleClassName="rw-form-error-title"
+                listClassName="rw-form-error-list"
+              />
+              <Label
+                name="name"
+                className="rw-label"
+                errorClassName="rw-label rw-label-error"
+              >
+                Name
+              </Label>
 
-          <TextField
-            name="name"
-            defaultValue={props.rewardable?.name}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
+              <TextField
+                name="name"
+                defaultValue={props.rewardable?.name}
+                className="rw-input"
+                errorClassName="rw-input rw-input-error"
+                validation={{ required: true }}
+              />
 
-          <FieldError name="name" className="rw-field-error" />
+              <FieldError name="name" className="rw-field-error" />
 
-          <Label
-            name="slug"
-            className="rw-label"
-            errorClassName="rw-label rw-label-error"
-          >
-            Slug
-          </Label>
+              <Label
+                name="slug"
+                className="rw-label"
+                errorClassName="rw-label rw-label-error"
+              >
+                Slug
+              </Label>
 
-          <TextField
-            name="slug"
-            defaultValue={props.rewardable?.slug}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
+              <TextField
+                name="slug"
+                defaultValue={props.rewardable?.slug}
+                className="rw-input"
+                errorClassName="rw-input rw-input-error"
+                validation={{ required: true }}
+              />
 
-          <FieldError name="slug" className="rw-field-error" />
+              <FieldError name="slug" className="rw-field-error" />
 
-          <Label
-            name="explanation"
-            className="rw-label"
-            errorClassName="rw-label rw-label-error"
-          >
-            Explanation
-          </Label>
+              <Label
+                name="explanation"
+                className="rw-label"
+                errorClassName="rw-label rw-label-error"
+              >
+                Explanation
+              </Label>
 
-          <TextField
-            name="explanation"
-            defaultValue={props.rewardable?.explanation}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
+              <TextField
+                name="explanation"
+                defaultValue={props.rewardable?.explanation}
+                className="rw-input"
+                errorClassName="rw-input rw-input-error"
+                validation={{ required: true }}
+              />
 
-          <FieldError name="explanation" className="rw-field-error" />
+              <FieldError name="explanation" className="rw-field-error" />
 
-          <Label
-            name="successMessage"
-            className="rw-label"
-            errorClassName="rw-label rw-label-error"
-          >
-            Success message
-          </Label>
+              <Label
+                name="successMessage"
+                className="rw-label"
+                errorClassName="rw-label rw-label-error"
+              >
+                Success message
+              </Label>
 
-          <TextField
-            name="successMessage"
-            defaultValue={props.rewardable?.successMessage}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-          />
+              <TextField
+                name="successMessage"
+                defaultValue={props.rewardable?.successMessage}
+                className="rw-input"
+                errorClassName="rw-input rw-input-error"
+              />
 
-          <FieldError name="successMessage" className="rw-field-error" />
+              <FieldError name="successMessage" className="rw-field-error" />
 
-          <Label
-            name="listPublicly"
-            className="rw-label"
-            errorClassName="rw-label rw-label-error"
-          >
-            List publicly
-          </Label>
+              <Label
+                name="listPublicly"
+                className="rw-label"
+                errorClassName="rw-label rw-label-error"
+              >
+                List publicly
+              </Label>
 
-          <CheckboxField
-            name="listPublicly"
-            defaultChecked={props.rewardable?.listPublicly}
-            className="rw-input w-12"
-            errorClassName="rw-input rw-input-error"
-          />
+              <CheckboxField
+                name="listPublicly"
+                defaultChecked={props.rewardable?.listPublicly}
+                className="rw-input w-12"
+                errorClassName="rw-input rw-input-error"
+              />
 
-          <FieldError name="listPublicly" className="rw-field-error" />
+              <FieldError name="listPublicly" className="rw-field-error" />
 
-          <Label
-            name="type"
-            className="rw-label"
-            errorClassName="rw-label rw-label-error"
-          >
-            Type
-          </Label>
+              <Label
+                name="type"
+                className="rw-label"
+                errorClassName="rw-label rw-label-error"
+              >
+                Type
+              </Label>
 
-          <div className="rw-check-radio-items">
-            <RadioField
-              id="rewardable-type-0"
-              name="type"
-              defaultValue="PUZZLE"
-              defaultChecked={props.rewardable?.type?.includes('PUZZLE')}
-              className="rw-input"
-              errorClassName="rw-input rw-input-error"
-            />
-            <div>Puzzle</div>
+              <div className="rw-check-radio-items">
+                <RadioField
+                  id="rewardable-type-0"
+                  name="type"
+                  defaultValue="PUZZLE"
+                  defaultChecked={props.rewardable?.type?.includes('PUZZLE')}
+                  className="rw-input"
+                  errorClassName="rw-input rw-input-error"
+                />
+                <div>Puzzle</div>
+              </div>
+
+              <div className="rw-check-radio-items">
+                <RadioField
+                  id="rewardable-type-1"
+                  name="type"
+                  defaultValue="PACK"
+                  defaultChecked={props.rewardable?.type?.includes('PACK')}
+                  className="rw-input"
+                  errorClassName="rw-input rw-input-error"
+                />
+                <div>Pack</div>
+              </div>
+
+              <div className="rw-check-radio-items">
+                <RadioField
+                  id="rewardable-type-2"
+                  name="type"
+                  defaultValue="BUNDLE"
+                  defaultChecked={props.rewardable?.type?.includes('BUNDLE')}
+                  className="rw-input"
+                  errorClassName="rw-input rw-input-error"
+                />
+                <div>Bundle</div>
+              </div>
+
+              <FieldError name="type" className="rw-field-error" />
+            </div>
+
+            <div className="flex-1">
+              <h2 className="mt-8 text-4xl font-bold">Add NFT</h2>
+              <NftForm />
+            </div>
           </div>
-
-          <div className="rw-check-radio-items">
-            <RadioField
-              id="rewardable-type-1"
-              name="type"
-              defaultValue="PACK"
-              defaultChecked={props.rewardable?.type?.includes('PACK')}
-              className="rw-input"
-              errorClassName="rw-input rw-input-error"
-            />
-            <div>Pack</div>
-          </div>
-
-          <div className="rw-check-radio-items">
-            <RadioField
-              id="rewardable-type-2"
-              name="type"
-              defaultValue="BUNDLE"
-              defaultChecked={props.rewardable?.type?.includes('BUNDLE')}
-              className="rw-input"
-              errorClassName="rw-input rw-input-error"
-            />
-            <div>Bundle</div>
-          </div>
-
-          <FieldError name="type" className="rw-field-error" />
-
           <div className="rw-button-group">
             <Submit
               disabled={props.loading}
