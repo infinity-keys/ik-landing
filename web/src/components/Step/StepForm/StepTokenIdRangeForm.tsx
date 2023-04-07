@@ -1,29 +1,10 @@
-import {
-  Form,
-  FormError,
-  FieldError,
-  Label,
-  TextField,
-  NumberField,
-  Submit,
-} from '@redwoodjs/forms'
+import { FieldError, Label, TextField, NumberField } from '@redwoodjs/forms'
 
-import type {
-  EditStepTokenIdRangeById,
-  UpdateStepTokenIdRangeInput,
-} from 'types/graphql'
+import type { UpdateStepTokenIdRangeInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
 
-type FormStepTokenIdRange = NonNullable<
-  EditStepTokenIdRangeById['stepTokenIdRange']
->
-
 interface StepTokenIdRangeFormProps {
-  stepTokenIdRange?: EditStepTokenIdRangeById['stepTokenIdRange']
-  onSave?: (
-    data: UpdateStepTokenIdRangeInput,
-    id?: FormStepTokenIdRange['id']
-  ) => void
+  onSave?: (data: UpdateStepTokenIdRangeInput) => void
   error?: RWGqlError
   loading?: boolean
 }
@@ -41,7 +22,6 @@ const StepTokenIdRangeForm = (props: StepTokenIdRangeFormProps) => {
 
       <TextField
         name="stepTypeData.contractAddress"
-        defaultValue={props.stepTokenIdRange?.contractAddress}
         className="rw-input"
         errorClassName="rw-input rw-input-error"
         validation={{ required: true }}
@@ -70,7 +50,6 @@ const StepTokenIdRangeForm = (props: StepTokenIdRangeFormProps) => {
 
       <TextField
         name="stepTypeData.chainId"
-        defaultValue={props.stepTokenIdRange?.chainId}
         className="rw-input"
         errorClassName="rw-input rw-input-error"
         validation={{ required: true }}
@@ -88,7 +67,6 @@ const StepTokenIdRangeForm = (props: StepTokenIdRangeFormProps) => {
 
       <NumberField
         name="stepTypeData.startId"
-        defaultValue={props.stepTokenIdRange?.startId}
         className="rw-input"
         errorClassName="rw-input rw-input-error"
         validation={{ required: true }}
@@ -106,7 +84,6 @@ const StepTokenIdRangeForm = (props: StepTokenIdRangeFormProps) => {
 
       <NumberField
         name="stepTypeData.endId"
-        defaultValue={props.stepTokenIdRange?.endId}
         className="rw-input"
         errorClassName="rw-input rw-input-error"
         validation={{ required: true }}

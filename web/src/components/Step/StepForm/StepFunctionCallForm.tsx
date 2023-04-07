@@ -1,35 +1,17 @@
-import {
-  Form,
-  FormError,
-  FieldError,
-  Label,
-  TextField,
-  Submit,
-} from '@redwoodjs/forms'
+import { FieldError, Label, TextField } from '@redwoodjs/forms'
 
-import type {
-  EditStepFunctionCallById,
-  UpdateStepFunctionCallInput,
-} from 'types/graphql'
+import type { UpdateStepFunctionCallInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
 
-type FormStepFunctionCall = NonNullable<
-  EditStepFunctionCallById['stepFunctionCall']
->
-
 interface StepFunctionCallFormProps {
-  stepFunctionCall?: EditStepFunctionCallById['stepFunctionCall']
-  onSave?: (
-    data: UpdateStepFunctionCallInput,
-    id?: FormStepFunctionCall['id']
-  ) => void
+  onSave?: (data: UpdateStepFunctionCallInput) => void
   error?: RWGqlError
   loading?: boolean
 }
 
 const StepFunctionCallForm = (props: StepFunctionCallFormProps) => {
-  const onSubmit = (data: FormStepFunctionCall) => {
-    props.onSave(data, props?.stepFunctionCall?.id)
+  const onSubmit = (data) => {
+    props.onSave(data)
   }
 
   return (
@@ -47,7 +29,6 @@ const StepFunctionCallForm = (props: StepFunctionCallFormProps) => {
 
       <TextField
         name="stepTypeData.methodIds"
-        defaultValue={props.stepFunctionCall?.methodIds}
         className="rw-input"
         errorClassName="rw-input rw-input-error"
         validation={{ required: true }}
@@ -65,7 +46,6 @@ const StepFunctionCallForm = (props: StepFunctionCallFormProps) => {
 
       <TextField
         name="stepTypeData.contractAddress"
-        defaultValue={props.stepFunctionCall?.contractAddress}
         className="rw-input"
         errorClassName="rw-input rw-input-error"
       />

@@ -1,5 +1,3 @@
-import type { EditRewardableById, UpdateRewardableInput } from 'types/graphql'
-
 import {
   Form,
   FormError,
@@ -17,43 +15,7 @@ import StepForm from 'src/components/Step/StepForm/StepForm'
 import NftForm from 'src/components/Nft/NftForm/NftForm'
 import RewardableConnectionForm from 'src/components/RewardableConnection/RewardableConnectionForm/RewardableConnectionForm'
 
-type FormRewardable = NonNullable<EditRewardableById['rewardable']>
-
-/*
-{
-  "name": "rewa",
-  "slug": "sl",
-  "explanation": "puzzle",
-  "successMessage": "yay",
-  "listPublicly": false,
-  "type": "PUZZLE",
-  "parentId": "packid",
-  "childId": null,
-  "childSortWeight": 1,
-  "nft": {
-    "tokenId": 140,
-    "contractName": "121212",
-    "data": {},
-    "cloudinaryId": "cloiud"
-  },
-  "steps": [
-    {
-      "failMessage": "fail",
-      "successMessage": "succ",
-      "challenge": "chal",
-      "resourceLinks": "res",
-      "stepSortWeight": 1,
-      "type": "SIMPLE_TEXT",
-      "stepTypeData": {
-          "solution": "siple"
-      }
-    }
-  ]
-}
-*/
-
 interface RewardableFormProps {
-  rewardable?: EditRewardableById['rewardable']
   onSave: (data: any) => void
   error: RWGqlError
   loading: boolean
@@ -175,7 +137,6 @@ const RewardableForm = (props: RewardableFormProps) => {
 
               <TextField
                 name="name"
-                defaultValue={props.rewardable?.name}
                 className="rw-input"
                 errorClassName="rw-input rw-input-error"
                 validation={{ required: true }}
@@ -193,7 +154,6 @@ const RewardableForm = (props: RewardableFormProps) => {
 
               <TextField
                 name="slug"
-                defaultValue={props.rewardable?.slug}
                 className="rw-input"
                 errorClassName="rw-input rw-input-error"
                 validation={{ required: true }}
@@ -211,7 +171,6 @@ const RewardableForm = (props: RewardableFormProps) => {
 
               <TextField
                 name="explanation"
-                defaultValue={props.rewardable?.explanation}
                 className="rw-input"
                 errorClassName="rw-input rw-input-error"
                 validation={{ required: true }}
@@ -229,7 +188,6 @@ const RewardableForm = (props: RewardableFormProps) => {
 
               <TextField
                 name="successMessage"
-                defaultValue={props.rewardable?.successMessage}
                 className="rw-input"
                 errorClassName="rw-input rw-input-error"
               />
@@ -246,7 +204,6 @@ const RewardableForm = (props: RewardableFormProps) => {
 
               <CheckboxField
                 name="listPublicly"
-                defaultChecked={props.rewardable?.listPublicly}
                 className="rw-input w-12"
                 errorClassName="rw-input rw-input-error"
               />
@@ -324,7 +281,6 @@ const RewardableForm = (props: RewardableFormProps) => {
                   id="rewardable-type-0"
                   name="type"
                   defaultValue="PUZZLE"
-                  defaultChecked={props.rewardable?.type?.includes('PUZZLE')}
                   className="rw-input"
                   errorClassName="rw-input rw-input-error"
                 />
@@ -336,7 +292,6 @@ const RewardableForm = (props: RewardableFormProps) => {
                   id="rewardable-type-1"
                   name="type"
                   defaultValue="PACK"
-                  defaultChecked={props.rewardable?.type?.includes('PACK')}
                   className="rw-input"
                   errorClassName="rw-input rw-input-error"
                 />
@@ -348,7 +303,6 @@ const RewardableForm = (props: RewardableFormProps) => {
                   id="rewardable-type-2"
                   name="type"
                   defaultValue="BUNDLE"
-                  defaultChecked={props.rewardable?.type?.includes('BUNDLE')}
                   className="rw-input"
                   errorClassName="rw-input rw-input-error"
                 />

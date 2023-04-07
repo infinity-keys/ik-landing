@@ -1,22 +1,11 @@
-import {
-  Form,
-  FormError,
-  FieldError,
-  Label,
-  TextField,
-  CheckboxField,
-  Submit,
-} from '@redwoodjs/forms'
+import { FieldError, Label, CheckboxField } from '@redwoodjs/forms'
 
 import type { UpdateStepNftCheckInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
 import { useRef } from 'react'
 
-type FormStepNftCheck = NonNullable<EditStepNftCheckById['stepNftCheck']>
-
 interface StepNftCheckFormProps {
-  stepNftCheck?: EditStepNftCheckById['stepNftCheck']
-  onSave?: (data: UpdateStepNftCheckInput, id?: FormStepNftCheck['id']) => void
+  onSave?: (data: UpdateStepNftCheckInput) => void
   error?: RWGqlError
   loading?: boolean
   handleSetNftCheckData: (data: {

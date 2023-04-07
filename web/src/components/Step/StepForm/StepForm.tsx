@@ -7,22 +7,20 @@ import {
   NumberField,
   RadioField,
   Submit,
+  RWGqlError,
 } from '@redwoodjs/forms'
 import { useForm } from 'react-hook-form'
 
-import type { EditStepById, StepType, UpdateStepInput } from 'types/graphql'
-import type { RWGqlError } from '@redwoodjs/forms'
+import type { StepType, UpdateStepInput } from 'types/graphql'
+
 import { useState } from 'react'
 import StepNftCheckForm from 'src/components/Step/StepForm/StepNftCheckForm'
 import StepSimpleTextForm from './StepSimpleTextForm'
 import StepTokenIdRangeForm from './StepTokenIdRangeForm'
 import StepFunctionCallForm from './StepFunctionCallForm'
 
-type FormStep = NonNullable<EditStepById['step']>
-
 interface StepFormProps {
-  step?: EditStepById['step']
-  onSave: (data: UpdateStepInput, id?: FormStep['id']) => void
+  onSave: (data: UpdateStepInput) => void
   error?: RWGqlError
   loading?: boolean
 }
@@ -51,7 +49,7 @@ const StepForm = (props: StepFormProps) => {
 
   const formMethods = useForm()
 
-  const onSubmit = (data: FormStep) => {
+  const onSubmit = (data) => {
     const stepTypeDataNoEmptyFields = removeEmpty(data.stepTypeData || {})
 
     const { requireAllNfts, ...rest } = stepTypeDataNoEmptyFields
@@ -100,7 +98,7 @@ const StepForm = (props: StepFormProps) => {
       }
     }
 
-    props.onSave(formattedData, props?.step?.id)
+    props.onSave(formattedData)
     formMethods.reset()
     setStepType('')
     setNftCheckData([])
@@ -126,11 +124,7 @@ const StepForm = (props: StepFormProps) => {
 
   return (
     <div className="rw-form-wrapper">
-      <Form<FormStep>
-        formMethods={formMethods}
-        onSubmit={onSubmit}
-        error={props.error}
-      >
+      <Form formMethods={formMethods} onSubmit={onSubmit} error={props.error}>
         <FormError
           error={props.error}
           wrapperClassName="rw-form-error-wrapper"
@@ -148,7 +142,6 @@ const StepForm = (props: StepFormProps) => {
 
         <TextField
           name="failMessage"
-          defaultValue={props.step?.failMessage}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
         />
@@ -165,7 +158,6 @@ const StepForm = (props: StepFormProps) => {
 
         <TextField
           name="successMessage"
-          defaultValue={props.step?.successMessage}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
         />
@@ -182,7 +174,6 @@ const StepForm = (props: StepFormProps) => {
 
         <TextField
           name="challenge"
-          defaultValue={props.step?.challenge}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
         />
@@ -199,7 +190,6 @@ const StepForm = (props: StepFormProps) => {
 
         <TextField
           name="resourceLinks"
-          defaultValue={props.step?.resourceLinks}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
         />
@@ -216,7 +206,6 @@ const StepForm = (props: StepFormProps) => {
 
         <NumberField
           name="stepSortWeight"
-          defaultValue={props.step?.stepSortWeight}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
@@ -238,7 +227,6 @@ const StepForm = (props: StepFormProps) => {
             id="step-type-0"
             name="type"
             defaultValue="SIMPLE_TEXT"
-            defaultChecked={props.step?.type?.includes('SIMPLE_TEXT')}
             className="rw-input"
             errorClassName="rw-input rw-input-error"
             onClick={handleSetStepType}
@@ -251,7 +239,6 @@ const StepForm = (props: StepFormProps) => {
             id="step-type-1"
             name="type"
             defaultValue="NFT_CHECK"
-            defaultChecked={props.step?.type?.includes('NFT_CHECK')}
             className="rw-input"
             errorClassName="rw-input rw-input-error"
             onClick={handleSetStepType}
@@ -264,7 +251,6 @@ const StepForm = (props: StepFormProps) => {
             id="step-type-2"
             name="type"
             defaultValue="FUNCTION_CALL"
-            defaultChecked={props.step?.type?.includes('FUNCTION_CALL')}
             className="rw-input"
             errorClassName="rw-input rw-input-error"
             onClick={handleSetStepType}
@@ -277,7 +263,6 @@ const StepForm = (props: StepFormProps) => {
             id="step-type-3"
             name="type"
             defaultValue="COMETH_API"
-            defaultChecked={props.step?.type?.includes('COMETH_API')}
             className="rw-input"
             errorClassName="rw-input rw-input-error"
             onClick={handleSetStepType}
@@ -290,7 +275,6 @@ const StepForm = (props: StepFormProps) => {
             id="step-type-4"
             name="type"
             defaultValue="TOKEN_ID_RANGE"
-            defaultChecked={props.step?.type?.includes('TOKEN_ID_RANGE')}
             className="rw-input"
             errorClassName="rw-input rw-input-error"
             onClick={handleSetStepType}

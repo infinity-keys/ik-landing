@@ -1,27 +1,10 @@
-import {
-  Form,
-  FormError,
-  FieldError,
-  Label,
-  TextField,
-  NumberField,
-  Submit,
-} from '@redwoodjs/forms'
+import { FieldError, Label, TextField } from '@redwoodjs/forms'
 
-import type {
-  EditStepSimpleTextById,
-  UpdateStepSimpleTextInput,
-} from 'types/graphql'
+import type { UpdateStepSimpleTextInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
 
-type FormStepSimpleText = NonNullable<EditStepSimpleTextById['stepSimpleText']>
-
 interface StepSimpleTextFormProps {
-  stepSimpleText?: EditStepSimpleTextById['stepSimpleText']
-  onSave?: (
-    data: UpdateStepSimpleTextInput,
-    id?: FormStepSimpleText['id']
-  ) => void
+  onSave?: (data: UpdateStepSimpleTextInput) => void
   error?: RWGqlError
   loading?: boolean
 }
@@ -39,7 +22,6 @@ const StepSimpleTextForm = (props: StepSimpleTextFormProps) => {
 
       <TextField
         name="stepTypeData.solution"
-        defaultValue={props.stepSimpleText?.solution}
         className="rw-input"
         errorClassName="rw-input rw-input-error"
         validation={{ required: true }}
