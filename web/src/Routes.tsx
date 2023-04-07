@@ -19,7 +19,7 @@ const Routes = () => {
     <Router useAuth={useAuth}>
       <Private unauthenticated="profile" roles={'ADMIN'}>
         <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
-          <Route path="/puzzle/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newPuzzle" />
+          <Route path="/rewardable/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newRewardable" />
           {/* <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" /> */}
         </Set>
       </Private>

@@ -15,6 +15,7 @@ import type { RWGqlError } from '@redwoodjs/forms'
 import { useState } from 'react'
 import StepForm from 'src/components/Step/StepForm/StepForm'
 import NftForm from 'src/components/Nft/NftForm/NftForm'
+import RewardableConnectionForm from 'src/components/RewardableConnection/RewardableConnectionForm/RewardableConnectionForm'
 
 type FormRewardable = NonNullable<EditRewardableById['rewardable']>
 
@@ -78,8 +79,8 @@ const RewardableForm = (props: RewardableFormProps) => {
       <div className="text-sm">
         <h2 className="mb-8 text-4xl font-bold">Add Steps</h2>
 
-        <div className="flex items-start gap-8">
-          <div className="rw-form-wrapper max-w-lg flex-1">
+        <div className="flex items-start gap-12">
+          <div className="rw-form-wrapper flex-1">
             <StepForm onSave={addStep} />
           </div>
           <div className="grid flex-1 grid-cols-1 gap-8">
@@ -105,7 +106,7 @@ const RewardableForm = (props: RewardableFormProps) => {
         </div>
       </div>
 
-      <div className="rw-form-wrapper">
+      <div className="rw-form-wrapper mt-12 border-t">
         <Form onSubmit={onSubmit} error={props.error} formMethods={formMethods}>
           <div className="flex gap-12">
             <div className="flex-1">
@@ -250,6 +251,8 @@ const RewardableForm = (props: RewardableFormProps) => {
               </div>
 
               <FieldError name="type" className="rw-field-error" />
+
+              <RewardableConnectionForm />
             </div>
 
             <div className="flex-1">
