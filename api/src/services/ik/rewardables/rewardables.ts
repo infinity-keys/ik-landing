@@ -7,7 +7,7 @@ import {
 import { IK_ID_COOKIE } from '@infinity-keys/constants'
 import { IkJwt } from '@infinity-keys/core'
 import cookie from 'cookie'
-import type { QueryResolvers, MutationResolvers } from 'types/graphql'
+import type { QueryResolvers, MutationResolvers, StepType } from 'types/graphql'
 import { context } from '@redwoodjs/graphql-server'
 
 import { ForbiddenError } from '@redwoodjs/graphql-server'
@@ -686,3 +686,90 @@ export const userProgress: QueryResolvers['userProgress'] = () => {
     },
   })
 }
+
+// @TODO: move to lookups
+const stepTypeLookup: {
+  [key in StepType]: string
+} = {
+  SIMPLE_TEXT: 'stepSimpleText',
+  NFT_CHECK: 'stepNftCheck',
+  FUNCTION_CALL: 'stepFunctionCall',
+  COMETH_API: 'stepComethApi',
+  TOKEN_ID_RANGE: 'stepTokenIdRange',
+}
+
+export const createRewardablesStepsNfts: MutationResolvers['createRewardablesStepsNfts'] =
+  async ({ input }) => {
+    if (input.type === 'PACK') {
+      const { nft, ...rest } = input
+
+      const { id } = await db.rewardable.create({
+        data: {
+          ...rest,
+          organization: {
+            connect: {
+              id: 'cla9yay7y003k08la2z4j2xrv',
+            },
+          },
+          ...(nft?.contractName
+            ? {
+                nfts: {
+                  create: [nft],
+                },
+              }
+            : {}),
+        },
+      })
+
+      return { id }
+    }
+
+    if (input.type === 'PUZZLE') {
+      const { nft, steps, rewardableConnection, ...rest } = input
+
+      const formattedSteps = steps.map((step) => {
+        const { stepTypeData, ...rest } = step
+
+        return {
+          ...rest,
+          [stepTypeLookup[step.type]]: {
+            create: stepTypeData[stepTypeLookup[step.type]],
+          },
+        }
+      })
+
+      const { id } = await db.rewardable.create({
+        data: {
+          ...rest,
+          organization: {
+            connect: {
+              id: 'cla9yay7y003k08la2z4j2xrv',
+            },
+          },
+          puzzle: {
+            create: {
+              steps: {
+                create: formattedSteps,
+              },
+            },
+          },
+          ...(nft?.contractName
+            ? {
+                nfts: {
+                  create: [nft],
+                },
+              }
+            : {}),
+          ...(rewardableConnection?.parentId
+            ? {
+                asChild: {
+                  create: rewardableConnection,
+                },
+              }
+            : {}),
+        },
+      })
+
+      return { id }
+    }
+  }
