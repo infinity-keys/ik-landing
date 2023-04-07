@@ -47,30 +47,36 @@ export const stepTypeLookup: {
 
 const StepForm = (props: StepFormProps) => {
   const [stepType, setStepType] = useState('')
-  const [stepTypeData, setStepTypeData] = useState()
   const [nftCheckData, setNftCheckData] = useState([])
 
   const formMethods = useForm()
 
   const onSubmit = (data: FormStep) => {
-    const stepTypeDataNoEmptyFields = removeEmpty(data.stepTypeData)
+    const stepTypeDataNoEmptyFields = removeEmpty(data.stepTypeData || {})
 
     const { requireAllNfts, ...rest } = stepTypeDataNoEmptyFields
 
     let formattedData = {
       ...data,
-      stepTypeData:
-        data.type !== 'NFT_CHECK' ? rest : stepTypeDataNoEmptyFields,
+      stepTypeData: {
+        [stepTypeLookup[data.type]]:
+          data.type !== 'NFT_CHECK' ? rest : stepTypeDataNoEmptyFields,
+      },
     }
 
     if (data.type === 'FUNCTION_CALL') {
-      const methodIds = formattedData.stepTypeData.methodIds
+      const methodIds = formattedData.stepTypeData.stepFunctionCall.methodIds
         .split(',')
         .map((methodId) => methodId.trim())
 
       formattedData = {
         ...formattedData,
-        stepTypeData: { ...formattedData.stepTypeData, methodIds },
+        stepTypeData: {
+          stepFunctionCall: {
+            ...formattedData.stepTypeData.stepFunctionCall,
+            methodIds,
+          },
+        },
       }
     }
 
@@ -79,7 +85,19 @@ const StepForm = (props: StepFormProps) => {
         removeEmpty(rest)
       )
 
-      formattedData = { ...formattedData, stepTypeData: formattedNftCheckData }
+      const { requireAllNfts } = data.stepTypeData
+
+      formattedData = {
+        ...formattedData,
+        stepTypeData: {
+          stepNftCheck: {
+            requireAllNfts,
+            nftCheckData: {
+              create: formattedNftCheckData,
+            },
+          },
+        },
+      }
     }
 
     props.onSave(formattedData, props?.step?.id)

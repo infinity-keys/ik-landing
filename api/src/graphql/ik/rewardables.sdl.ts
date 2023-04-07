@@ -15,9 +15,18 @@ export const schema = gql`
     childSortWeight: Int
   }
 
+  input CreateNftDataInput {
+    create: [UpdateNftCheckDatumInput]
+  }
+
+  input StepNftCheckInput {
+    requireAllNfts: Boolean!
+    nftCheckData: CreateNftDataInput
+  }
+
   input StepTypeData {
     stepSimpleText: UpdateStepSimpleTextInput
-    stepNftCheck: UpdateStepNftCheckInput
+    stepNftCheck: StepNftCheckInput
     stepFunctionCall: UpdateStepFunctionCallInput
     stepComethApi: UpdateStepComethApiInput
     stepTokenIdRange: UpdateStepTokenIdRangeInput
