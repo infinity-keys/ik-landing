@@ -19,6 +19,39 @@ import RewardableConnectionForm from 'src/components/RewardableConnection/Reward
 
 type FormRewardable = NonNullable<EditRewardableById['rewardable']>
 
+/*
+{
+  "name": "rewa",
+  "slug": "sl",
+  "explanation": "puzzle",
+  "successMessage": "yay",
+  "listPublicly": false,
+  "type": "PUZZLE",
+  "parentId": "packid",
+  "childId": null,
+  "childSortWeight": 1,
+  "nft": {
+    "tokenId": 140,
+    "contractName": "121212",
+    "data": {},
+    "cloudinaryId": "cloiud"
+  },
+  "steps": [
+    {
+      "failMessage": "fail",
+      "successMessage": "succ",
+      "challenge": "chal",
+      "resourceLinks": "res",
+      "stepSortWeight": 1,
+      "type": "SIMPLE_TEXT",
+      "stepTypeData": {
+          "solution": "siple"
+      }
+    }
+  ]
+}
+*/
+
 interface RewardableFormProps {
   rewardable?: EditRewardableById['rewardable']
   onSave: (data: any) => void
@@ -37,8 +70,12 @@ const RewardableForm = (props: RewardableFormProps) => {
   const formMethods = useForm()
 
   const onSubmit = (data) => {
-    const withSteps = { ...data, steps }
-    console.log('withSteps: ', withSteps)
+    if (data.availableChains) {
+      data.availableChains = data.availableChains.filter((v) => !!v)
+    }
+
+    const { nft, ...rest } = data
+    const filteredData = nft.tokenId !== null ? data : rest
 
     if (data.type === 'PUZZLE' && steps.length === 0) {
       alert('Puzzles need at least one step')
@@ -52,9 +89,19 @@ const RewardableForm = (props: RewardableFormProps) => {
       return
     }
 
-    // add steps
-    // call mutation -> from page?
-    props.onSave(withSteps)
+    if (data.type === 'PACK') {
+      const { rewardableConnection, ...rest } = filteredData
+      props.onSave(rest)
+    } else {
+      const { rewardableConnection, ...rest } = filteredData
+
+      const withSteps = rewardableConnection.parentId
+        ? { ...filteredData, steps }
+        : { ...rest, steps }
+
+      props.onSave(withSteps)
+    }
+
     setSteps([])
     formMethods.reset()
   }
@@ -205,6 +252,64 @@ const RewardableForm = (props: RewardableFormProps) => {
               />
 
               <FieldError name="listPublicly" className="rw-field-error" />
+
+              <Label
+                name="availableChains"
+                className="rw-label"
+                errorClassName="rw-label rw-label-error"
+              >
+                Available chains
+              </Label>
+
+              <div className="rw-check-radio-items">
+                <CheckboxField
+                  id="rewardable-availableChains-0"
+                  name="availableChains[0]"
+                  defaultValue="AVAX"
+                  defaultChecked={true}
+                  className="rw-input"
+                  errorClassName="rw-input rw-input-error"
+                />
+                <div>Avax</div>
+              </div>
+
+              <div className="rw-check-radio-items">
+                <CheckboxField
+                  id="rewardable-availableChains-1"
+                  name="availableChains[1]"
+                  defaultValue="ETH"
+                  defaultChecked={true}
+                  className="rw-input"
+                  errorClassName="rw-input rw-input-error"
+                />
+                <div>Eth</div>
+              </div>
+
+              <div className="rw-check-radio-items">
+                <CheckboxField
+                  id="rewardable-availableChains-2"
+                  name="availableChains[2]"
+                  defaultValue="POLY"
+                  defaultChecked={true}
+                  className="rw-input"
+                  errorClassName="rw-input rw-input-error"
+                />
+                <div>Poly</div>
+              </div>
+
+              <div className="rw-check-radio-items">
+                <CheckboxField
+                  id="rewardable-availableChains-3"
+                  name="availableChains[3]"
+                  defaultValue="OPT"
+                  defaultChecked={true}
+                  className="rw-input"
+                  errorClassName="rw-input rw-input-error"
+                />
+                <div>Opt</div>
+              </div>
+
+              <FieldError name="availableChains" className="rw-field-error" />
 
               <Label
                 name="type"

@@ -70,7 +70,10 @@ const StepNftCheckForm = (props: StepNftCheckFormProps) => {
         errorClassName="rw-input rw-input-error"
       />
 
-      <FieldError name="requireAllNfts" className="rw-field-error" />
+      <FieldError
+        name="stepTypeData.requireAllNfts"
+        className="rw-field-error"
+      />
 
       <div className="mt-4 flex flex-col">
         <label htmlFor="contractAddress">Contract Address</label>

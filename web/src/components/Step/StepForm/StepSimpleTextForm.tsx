@@ -29,12 +29,6 @@ interface StepSimpleTextFormProps {
 const StepSimpleTextForm = (props: StepSimpleTextFormProps) => {
   return (
     <div className="rw-form-wrapper">
-      <FormError
-        error={props.error}
-        wrapperClassName="rw-form-error-wrapper"
-        titleClassName="rw-form-error-title"
-        listClassName="rw-form-error-list"
-      />
       <Label
         name="stepTypeData.solution"
         className="rw-label"

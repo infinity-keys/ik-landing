@@ -35,6 +35,16 @@ function removeEmpty(obj) {
   )
 }
 
+export const stepTypeLookup: {
+  [key in StepType]: string
+} = {
+  SIMPLE_TEXT: 'stepSimpleText',
+  NFT_CHECK: 'stepNftCheck',
+  FUNCTION_CALL: 'stepFunctionCall',
+  COMETH_API: 'stepComethApi',
+  TOKEN_ID_RANGE: 'stepTokenIdRange',
+}
+
 const StepForm = (props: StepFormProps) => {
   const [stepType, setStepType] = useState('')
   const [stepTypeData, setStepTypeData] = useState()

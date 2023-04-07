@@ -686,3 +686,68 @@ export const userProgress: QueryResolvers['userProgress'] = () => {
     },
   })
 }
+
+export const createRewardablesStepsNfts: MutationResolvers['createRewardablesStepsNfts'] =
+  async ({ input }) => {
+    if (input.type === 'PACK') {
+      const { nft, ...rest } = input
+
+      const { id } = await db.rewardable.create({
+        data: {
+          ...rest,
+          organization: {
+            connect: {
+              id: 'cla9yay7y003k08la2z4j2xrv',
+            },
+          },
+          ...(nft?.contractName
+            ? {
+                nfts: {
+                  create: [nft],
+                },
+              }
+            : {}),
+        },
+      })
+
+      return { id }
+    }
+
+    if (input.type === 'PUZZLE') {
+      const { nft, steps, rewardableConnection, ...rest } = input
+
+      const { id } = await db.rewardable.create({
+        data: {
+          ...rest,
+          organization: {
+            connect: {
+              id: 'cla9yay7y003k08la2z4j2xrv',
+            },
+          },
+          puzzle: {
+            create: {
+              steps: {
+                create: steps,
+              },
+            },
+          },
+          ...(nft?.contractName
+            ? {
+                nfts: {
+                  create: [nft],
+                },
+              }
+            : {}),
+          ...(rewardableConnection?.parentId
+            ? {
+                asChild: {
+                  create: rewardableConnection,
+                },
+              }
+            : {}),
+        },
+      })
+
+      return { id }
+    }
+  }

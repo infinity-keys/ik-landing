@@ -9,6 +9,47 @@ export const schema = gql`
     puzzleId: String!
     stepSortWeight: Int!
   }
+
+  input RewardableConnectionInput {
+    parentId: String!
+    childSortWeight: Int
+  }
+
+  input StepTypeData {
+    stepSimpleText: UpdateStepSimpleTextInput
+    stepNftCheck: UpdateStepNftCheckInput
+    stepFunctionCall: UpdateStepFunctionCallInput
+    stepComethApi: UpdateStepComethApiInput
+    stepTokenIdRange: UpdateStepTokenIdRangeInput
+  }
+
+  input StepInput {
+    failMessage: String
+    successMessage: String
+    challenge: String
+    resourceLinks: String
+    stepSortWeight: Int!
+    type: StepType!
+    stepTypeData: StepTypeData
+  }
+
+  input CreateRewardablesStepsNftsInput {
+    name: String!
+    slug: String!
+    explanation: String!
+    successMessage: String
+    listPublicly: Boolean
+    type: RewardableType!
+    rewardableConnection: RewardableConnectionInput
+    availableChains: [AvailableChains]!
+    nft: CreateNftInput
+    steps: [StepInput]
+  }
+
+  type CreateRewardablesStepsNftsResponse {
+    id: String!
+  }
+
   type Query {
     rewardableBySlug(slug: String!, type: RewardableType!): Rewardable @skipAuth
     rewardableBySlugWithAnonPuzzle(slug: String!): Rewardable @skipAuth
@@ -26,5 +67,8 @@ export const schema = gql`
     addNftReward(id: String!): UserReward! @requireAuth
     # Synchronizes user's v1 and v2 cookie with actual progress in db
     reconcileProgress: Boolean @requireAuth
+    createRewardablesStepsNfts(
+      input: CreateRewardablesStepsNftsInput!
+    ): CreateRewardablesStepsNftsResponse! @requireAuth(roles: ["ADMIN"])
   }
 `

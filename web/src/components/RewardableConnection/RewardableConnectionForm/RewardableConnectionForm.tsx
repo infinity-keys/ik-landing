@@ -32,55 +32,44 @@ const RewardableConnectionForm = (props: RewardableConnectionFormProps) => {
   return (
     <div className="rw-form-wrapper mt-8">
       <Label
-        name="parentId"
+        name="rewardableConnection.parentId"
         className="rw-label"
         errorClassName="rw-label rw-label-error"
       >
-        Parent id
+        Parent ID
       </Label>
 
       <TextField
-        name="parentId"
+        name="rewardableConnection.parentId"
         defaultValue={props.rewardableConnection?.parentId}
         className="rw-input"
         errorClassName="rw-input rw-input-error"
       />
 
-      <FieldError name="parentId" className="rw-field-error" />
-
-      <Label
-        name="childId"
-        className="rw-label"
-        errorClassName="rw-label rw-label-error"
-      >
-        Child id
-      </Label>
-
-      <TextField
-        name="childId"
-        defaultValue={props.rewardableConnection?.childId}
-        className="rw-input"
-        errorClassName="rw-input rw-input-error"
+      <FieldError
+        name="rewardableConnection.parentId"
+        className="rw-field-error"
       />
 
-      <FieldError name="childId" className="rw-field-error" />
-
       <Label
-        name="childSortWeight"
+        name="rewardableConnection.childSortWeight"
         className="rw-label"
         errorClassName="rw-label rw-label-error"
       >
-        Child sort weight
+        Sort Weight
       </Label>
 
       <NumberField
-        name="childSortWeight"
+        name="rewardableConnection.childSortWeight"
         defaultValue={props.rewardableConnection?.childSortWeight}
         className="rw-input"
         errorClassName="rw-input rw-input-error"
       />
 
-      <FieldError name="childSortWeight" className="rw-field-error" />
+      <FieldError
+        name="rewardableConnection.childSortWeight"
+        className="rw-field-error"
+      />
     </div>
   )
 }
