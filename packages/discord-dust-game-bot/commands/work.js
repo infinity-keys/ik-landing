@@ -23,7 +23,7 @@ module.exports = {
           'Unfortunately, your search has not produced...ahem...results... Come back at the appropriate time to try the stacks again, perhaps you’ll feel a bit more refreshed.'
         )
         .setColor('c3b4f7')
-      return interaction.reply({ embeds: [embedNoWork] })
+      return interaction.reply({ embeds: [embedNoWork], ephemeral: true })
     }
 
     const embedWork = new EmbedBuilder()
@@ -34,6 +34,6 @@ module.exports = {
         `It appears that your search has not been in vain. I thank you my friend. You have collected \`${work.reward} pages 📜\`. Come back in another hour to seek within the stacks once more.`
       )
       .setColor('c3b4f7')
-    return interaction.reply({ embeds: [embedWork] })
+    return interaction.reply({ embeds: [embedWork], ephemeral: true })
   },
 }
