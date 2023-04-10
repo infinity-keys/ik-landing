@@ -26,11 +26,16 @@ export class AppController {
     @Headers() headers: Record<string, string>[],
     @Res() response: Response,
   ) {
+    const methodIdArray =
+      typeof methodId === 'string'
+        ? [methodId.toLowerCase()]
+        : methodId.map((id) => id.toLowerCase());
+
     return this.appService.streamListener(
       streamListenerDto,
       headers,
-      contract,
-      methodId,
+      contract.toLowerCase(),
+      methodIdArray,
       response,
     );
   }
