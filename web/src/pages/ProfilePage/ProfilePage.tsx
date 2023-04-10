@@ -25,6 +25,7 @@ const ProfilePage = () => {
   const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
   const emailRef = useRef(null)
+  const redirectURI = new URL('/profile', window.location.origin)
 
   const handleLogOut = () => {
     setErrorMessage('')
@@ -41,8 +42,7 @@ const ProfilePage = () => {
     }
 
     try {
-      // @TODO: dynamic uri
-      await logIn({ email, redirectURI: 'http://localhost:8910/profile' })
+      await logIn({ email, redirectURI: redirectURI.toString() })
       // function -> reconcile cookies
       reconcilePuzzles()
     } catch (e) {
