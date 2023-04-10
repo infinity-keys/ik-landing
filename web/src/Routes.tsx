@@ -6,13 +6,14 @@
 //
 // 'src/pages/HomePage/HomePage.js'         -> HomePage
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
-import { useAuth } from '@redwoodjs/auth'
 import { Router, Route, Set, Private } from '@redwoodjs/router'
 
 // import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
 import HeaderFooterLayout from 'src/layouts/HeaderFooterLayout'
 import MainLayout from 'src/layouts/MainLayout/MainLayout'
 import WrapperLayout from 'src/layouts/WrapperLayout'
+
+import { useAuth } from './auth'
 
 const Routes = () => {
   return (

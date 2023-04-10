@@ -4,7 +4,6 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import RewardablesGrid from 'src/components/RewardablesGrid'
-
 import { GridLandingRouteType } from 'src/lib/urlBuilders'
 
 export const QUERY = gql`

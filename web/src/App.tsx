@@ -2,20 +2,20 @@ import { avalancheChain } from '@infinity-keys/constants'
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { getDefaultWallets } from '@rainbow-me/rainbowkit'
 import loMerge from 'lodash/merge'
-import { Magic } from 'magic-sdk'
 import { WagmiConfig } from 'wagmi'
 import { chain, configureChains, createClient } from 'wagmi'
 import { infuraProvider } from 'wagmi/providers/infura'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { publicProvider } from 'wagmi/providers/public'
 
-import { useAuth, AuthProvider } from '@redwoodjs/auth'
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
 import CookieConsentBanner from 'src/components/CookieConsentBanner/CookieConsentBanner'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
+
+import { AuthProvider, useAuth } from './auth'
 
 import './scaffold.css'
 import './index.css'
@@ -71,21 +71,19 @@ export const wagmiClient = createClient({
   provider,
 })
 
-const magic = new Magic(process.env.MAGIC_LINK_PUBLIC)
-
 const App = () => {
   return (
     <FatalErrorBoundary page={FatalErrorPage}>
       <WagmiConfig client={wagmiClient}>
         <RainbowKitProvider chains={chains} theme={IKTheme}>
-          <AuthProvider client={magic} type="magicLink">
-            <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
+          <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
+            <AuthProvider>
               <RedwoodApolloProvider useAuth={useAuth}>
                 <Routes />
                 <CookieConsentBanner />
               </RedwoodApolloProvider>
-            </RedwoodProvider>
-          </AuthProvider>
+            </AuthProvider>
+          </RedwoodProvider>
         </RainbowKitProvider>
       </WagmiConfig>
     </FatalErrorBoundary>

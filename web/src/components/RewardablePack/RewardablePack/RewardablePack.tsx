@@ -8,6 +8,7 @@ import type { FindRewardablePackBySlug } from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
 import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'
@@ -16,7 +17,6 @@ import TwitterShare from 'src/components/TwitterShare/TwitterShare'
 import useCurrentWidth from 'src/hooks/useCurrentWidth'
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
-import { useAuth } from '@redwoodjs/auth'
 
 interface Props {
   rewardable: NonNullable<FindRewardablePackBySlug['pack']>
