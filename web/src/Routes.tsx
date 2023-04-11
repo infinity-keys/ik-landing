@@ -9,11 +9,10 @@
 import { Router, Route, Set, Private } from '@redwoodjs/router'
 
 // import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
+import { useAuth } from 'src/auth'
 import HeaderFooterLayout from 'src/layouts/HeaderFooterLayout'
 import MainLayout from 'src/layouts/MainLayout/MainLayout'
 import WrapperLayout from 'src/layouts/WrapperLayout'
-
-import { useAuth } from './auth'
 
 const Routes = () => {
   return (
