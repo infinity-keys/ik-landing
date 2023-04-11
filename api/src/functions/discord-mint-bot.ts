@@ -21,14 +21,18 @@ if (!Moralis.Core.isStarted) {
 export const handler = async (event) => {
   const { body, headers } = event
   const parsedBody = await JSON.parse(body)
+  console.log('parsedbody', parsedBody)
 
   try {
     await Moralis.Streams.verifySignature({
       body: parsedBody,
       signature: headers['x-signature'],
     })
-
-    if (parsedBody.txs.length === 0 || !parsedBody.confirmed) {
+    if (
+      parsedBody.txs.length === 0 ||
+      !parsedBody.confirmed ||
+      !parsedBody.logs.length
+    ) {
       return { statusCode: 200 }
     }
 
@@ -36,6 +40,8 @@ export const handler = async (event) => {
     const tokenId = parseInt(parsedBody.logs[0].topic1, 16)
     const chainId = parseInt(parsedBody.chainId, 16)
     const chain = chainIdLookup[chainId]
+
+    console.log('tokenid', tokenId)
 
     const image = await db.nft.findUnique({
       where: {
