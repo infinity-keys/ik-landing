@@ -41,7 +41,7 @@ type RedwoodUser = Record<string, unknown> & { roles?: string[] }
 const mAdmin = new Magic(process.env.MAGICLINK_SECRET)
 
 export const authDecoder = async (token: string, type: string) => {
-  if (type !== 'custom-auth') {
+  if (type !== 'magicLink') {
     return null
   }
 

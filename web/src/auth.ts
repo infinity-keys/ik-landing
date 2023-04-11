@@ -3,34 +3,6 @@ import { Magic, MagicSDKExtensionsOption } from 'magic-sdk'
 
 import { createAuthentication } from '@redwoodjs/auth'
 
-// If you're integrating with an auth service provider you should delete this interface.
-// Instead you should import the type from their auth client sdk.
-// export interface AuthClient {
-//   login: () => User
-//   logout: () => void
-//   signup: () => User
-//   getToken: () => string
-//   getUserMetadata: () => User | null
-// }
-
-// If you're integrating with an auth service provider you should delete this interface.
-// This type should be inferred from the general interface above.
-// interface User {
-//   // The name of the id variable will vary depending on what auth service
-//   // provider you're integrating with. Another common name is `sub`
-//   id: string
-//   email?: string
-//   username?: string
-//   roles: string[]
-// }
-
-// If you're integrating with an auth service provider you should delete this interface
-// This type should be inferred from the general interface above
-export interface ValidateResetTokenResponse {
-  error?: string
-  [key: string]: string | undefined
-}
-
 // Replace this with the auth service provider client sdk
 const client = new Magic(process.env.MAGIC_LINK_PUBLIC)
 
@@ -46,21 +18,41 @@ function createAuth() {
 // the shape of this object (i.e. keep all the key names) but change all the
 // values/functions to use methods from the auth service provider client sdk
 // you're integrating with
+const TEN_MINUTES = 10 * 60 * 1000
 
 function createAuthImplementation(
   client: InstanceWithExtensions<SDKBase, MagicSDKExtensionsOption<string>>
 ) {
+  let token: string | null
+  let expireTime = 0
+
   return {
-    type: 'custom-auth',
+    type: 'magicLink',
     client,
-    // TODO: maybe a different redirectURI default
-    login: async ({ email, redirectURI = '' }) =>
+    login: async ({ email }) =>
+      await client.auth.loginWithMagicLink({
+        email,
+        showUI: true,
+      }),
+    logout: async () => {
+      token = null
+      expireTime = 0
+
+      return await client.user.logout()
+    },
+    signup: async ({ email, redirectURI = window.location.origin }) =>
       client.auth.loginWithMagicLink({ email, showUI: true, redirectURI }),
-    logout: async () => client.user.logout(),
-    signup: async ({ email, redirectURI = '' }) =>
-      client.auth.loginWithMagicLink({ email, showUI: true, redirectURI }),
-    getToken: async () => client.user.generateIdToken(),
-    getUserMetadata: async () => client.user.getMetadata(),
+    getToken: async () => {
+      if (!token || Date.now() > expireTime) {
+        expireTime = Date.now() + TEN_MINUTES
+
+        return (token = await client.user.getIdToken())
+      } else {
+        return token
+      }
+    },
+    getUserMetadata: async () =>
+      (await client.user.isLoggedIn()) ? await client.user.getMetadata() : null,
   }
 }
 
