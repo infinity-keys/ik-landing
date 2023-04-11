@@ -15,8 +15,8 @@
     "cypress:run": "yarn workspace cypress cypress run --headless --browser chrome"
   },
   "devDependencies": {
-    "@redwoodjs/auth-custom-setup": "4.4.3",
-    "@redwoodjs/core": "^4.4.3",
+    "@redwoodjs/auth-custom-setup": "4.5.0",
+    "@redwoodjs/core": "4.5.0",
     "start-server-and-test": "^2.0.0",
     "zod": "^3.19.1"
   },
