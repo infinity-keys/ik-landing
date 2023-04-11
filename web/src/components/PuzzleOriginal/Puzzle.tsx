@@ -143,7 +143,7 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
           {showFail ? (
             <div className="visible-message">
               <p>
-                Thats not it. Need help?{' '}
+                That&apos;s not it. Need help?{' '}
                 <a href="https://discord.gg/infinitykeys" target="_blank">
                   <u>Join our discord</u>
                 </a>
