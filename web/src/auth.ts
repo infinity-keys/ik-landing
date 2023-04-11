@@ -40,8 +40,8 @@ function createAuthImplementation(
 
       return await client.user.logout()
     },
-    signup: async ({ email, redirectURI = window.location.origin }) =>
-      client.auth.loginWithMagicLink({ email, showUI: true, redirectURI }),
+    signup: async ({ email }) =>
+      client.auth.loginWithMagicLink({ email, showUI: true }),
     getToken: async () => {
       if (!token || Date.now() > expireTime) {
         expireTime = Date.now() + TEN_MINUTES
