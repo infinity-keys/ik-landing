@@ -18,14 +18,10 @@ function createAuth() {
 // the shape of this object (i.e. keep all the key names) but change all the
 // values/functions to use methods from the auth service provider client sdk
 // you're integrating with
-const TEN_MINUTES = 10 * 60 * 1000
 
 function createAuthImplementation(
   client: InstanceWithExtensions<SDKBase, MagicSDKExtensionsOption<string>>
 ) {
-  let token: string | null
-  let expireTime = 0
-
   return {
     type: 'magicLink',
     client,
@@ -34,23 +30,10 @@ function createAuthImplementation(
         email,
         showUI: true,
       }),
-    logout: async () => {
-      token = null
-      expireTime = 0
-
-      return await client.user.logout()
-    },
+    logout: async () => await client.user.logout(),
     signup: async ({ email }) =>
       client.auth.loginWithMagicLink({ email, showUI: true }),
-    getToken: async () => {
-      if (!token || Date.now() > expireTime) {
-        expireTime = Date.now() + TEN_MINUTES
-
-        return (token = await client.user.getIdToken())
-      } else {
-        return token
-      }
-    },
+    getToken: async () => await client.user.getIdToken(),
     getUserMetadata: async () =>
       (await client.user.isLoggedIn()) ? await client.user.getMetadata() : null,
   }
