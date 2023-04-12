@@ -1,15 +1,15 @@
 import { useState } from 'react'
 
-import { useAuth } from '@redwoodjs/auth'
-import { useParams } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
-
-import { createAnonAttempt, redirectUser } from 'src/lib/attempt/makeAttempt'
-
 import {
   MakeAttemptMutation,
   MakeAttemptMutationVariables,
 } from 'types/graphql'
+
+import { useParams } from '@redwoodjs/router'
+import { useMutation } from '@redwoodjs/web'
+
+import { useAuth } from 'src/auth'
+import { createAnonAttempt, redirectUser } from 'src/lib/attempt/makeAttempt'
 
 const MAKE_ATTEMPT = gql`
   mutation MakeAttemptMutation($stepId: String!, $data: JSON!) {

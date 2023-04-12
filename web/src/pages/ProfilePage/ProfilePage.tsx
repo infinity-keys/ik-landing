@@ -2,13 +2,12 @@ import { FormEvent, useRef, useState } from 'react'
 
 import { isValidEmail } from '@infinity-keys/core'
 
-import { useAuth } from '@redwoodjs/auth'
-
+import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
-import useReconcileProgress from 'src/hooks/useReconcileProgress'
 import Seo from 'src/components/Seo/Seo'
+import useReconcileProgress from 'src/hooks/useReconcileProgress'
 
 /*
   IMPORTANT: This page needs to run a GraphQL function to create a new user in
@@ -26,6 +25,7 @@ const ProfilePage = () => {
   const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
   const emailRef = useRef(null)
+  // const redirectURI = new URL('/profile', window.location.origin)
 
   const handleLogOut = () => {
     setErrorMessage('')
@@ -42,7 +42,6 @@ const ProfilePage = () => {
     }
 
     try {
-      // @NOTE: redirectURI not working with built-in logIn function
       await logIn({ email })
       // function -> reconcile cookies
       reconcilePuzzles()

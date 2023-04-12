@@ -1,15 +1,16 @@
 import type { FindRewardablePuzzleBySlug } from 'types/graphql'
 
-import { useAuth } from '@redwoodjs/auth'
 import { useParams } from '@redwoodjs/router'
+import { routes } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
+import Alert from 'src/components/Alert/Alert'
+import Button from 'src/components/Button/Button'
 import DummyThumbnail from 'src/components/DummyThumbnail/DummyThumbnail'
 import PuzzleLandingLayout from 'src/components/PuzzleLandingLayout/PuzzleLandingLayout'
 import StepsCell from 'src/components/StepsCell'
+
 import '@infinity-keys/react-lens-share-button/dist/style.css'
-import Alert from 'src/components/Alert/Alert'
-import { routes } from '@redwoodjs/router'
-import Button from 'src/components/Button/Button'
 
 interface Props {
   rewardable: FindRewardablePuzzleBySlug['rewardable']
