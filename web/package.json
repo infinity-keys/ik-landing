@@ -19,6 +19,8 @@
     "@infinity-keys/constants": "workspace:^",
     "@infinity-keys/core": "workspace:^",
     "@infinity-keys/react-lens-share-button": "workspace:^",
+    "@lens-protocol/react-web": "^1.0.1",
+    "@lens-protocol/wagmi": "^1.0.1",
     "@rainbow-me/rainbowkit": "^0.8.0",
     "@redwoodjs/auth": "4.5.0",
     "@redwoodjs/forms": "4.5.0",

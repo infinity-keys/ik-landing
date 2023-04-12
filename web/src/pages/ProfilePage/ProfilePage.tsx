@@ -4,6 +4,7 @@ import { isValidEmail } from '@infinity-keys/core'
 
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
+import LensConnect from 'src/components/LensConnect/LensConnect'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
 import Seo from 'src/components/Seo/Seo'
@@ -87,10 +88,14 @@ const ProfilePage = () => {
               </p>
             </div>
           ) : (
-            <Button
-              onClick={handleLogOut}
-              text={isAuthenticated ? 'Log Out' : 'Log In'}
-            />
+            <div>
+              <Button
+                onClick={handleLogOut}
+                text={isAuthenticated ? 'Log Out' : 'Log In'}
+              />
+
+              <LensConnect />
+            </div>
           )}
 
           <p className="absolute -bottom-8 left-0">{errorMessage}</p>
