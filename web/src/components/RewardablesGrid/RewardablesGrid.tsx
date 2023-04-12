@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useAuth } from '@redwoodjs/auth'
 
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import {
@@ -13,12 +12,12 @@ import type { FindRewardables } from 'types/graphql'
 
 import { useParams } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
 import GridLayoutButtons from 'src/components/GridLayoutButtons/GridLayoutButtons'
 import GridPagination from 'src/components/GridPagination/GridPagination'
 import Seo from 'src/components/Seo/Seo'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
-
 import { GridLandingRouteType } from 'src/lib/urlBuilders'
 
 const RewardablesList = ({
