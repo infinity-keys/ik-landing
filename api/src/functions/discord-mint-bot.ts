@@ -21,7 +21,6 @@ if (!Moralis.Core.isStarted) {
 export const handler = async (event) => {
   const { body, headers } = event
   const parsedBody = await JSON.parse(body)
-  console.log('parsedbody', parsedBody)
 
   try {
     await Moralis.Streams.verifySignature({
@@ -41,7 +40,10 @@ export const handler = async (event) => {
     const chainId = parseInt(parsedBody.chainId, 16)
     const chain = chainIdLookup[chainId]
 
-    console.log('tokenid', tokenId)
+    // to log basic info on each transaction
+    console.log('from address: ', from)
+    console.log('tokenid: ', tokenId)
+    console.log('chain: ', chain)
 
     const image = await db.nft.findUnique({
       where: {
