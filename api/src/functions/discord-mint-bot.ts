@@ -1,6 +1,7 @@
 import { chainIdLookup } from '@infinity-keys/constants'
 import { cloudinaryUrl } from '@infinity-keys/core'
 import { db } from 'src/lib/db'
+import { logger } from 'src/lib/logger'
 
 const discord = require('discord.js')
 const { EmbedBuilder } = require('discord.js')
@@ -21,7 +22,6 @@ if (!Moralis.Core.isStarted) {
 export const handler = async (event) => {
   const { body, headers } = event
   const parsedBody = await JSON.parse(body)
-  console.log('parsedbody', parsedBody)
 
   try {
     await Moralis.Streams.verifySignature({
@@ -41,7 +41,10 @@ export const handler = async (event) => {
     const chainId = parseInt(parsedBody.chainId, 16)
     const chain = chainIdLookup[chainId]
 
-    console.log('tokenid', tokenId)
+    // to log basic info on each transaction
+    logger.info(
+      `from address: ${from} and minted tokenID: ${tokenId} from chain: ${chain}`
+    )
 
     const image = await db.nft.findUnique({
       where: {
