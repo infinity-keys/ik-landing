@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 
 import {
   useWalletLogin,
-  useActiveWallet,
   useActiveProfile,
   useWalletLogout,
 } from '@lens-protocol/react-web'
@@ -30,7 +29,6 @@ const LensConnect = () => {
     error: connectToLensError,
     isPending: connectToLensPending,
   } = useWalletLogin()
-  const { data: wallet } = useActiveWallet()
   const { data: profile } = useActiveProfile()
   const { execute: logout, isPending } = useWalletLogout()
   const { openConnectModal } = useConnectModal()
