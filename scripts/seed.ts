@@ -9,12 +9,12 @@ export default async () => {
       slug: 'ik',
     },
   })
+
   console.log(`created ${ikOrg.name} organization`)
 
+  // siteRole { ADMIN } user data
   const ikUsersData = [
-    // TODO: create non-admin users
     {
-      username: 'Infinity Keys User',
       email: 'infinitykeys_devs@protonmail.com',
       authId: 'did:ethr:0xf19621f2Fb459B9954170bf5F2F7b15A2aA1E3f9',
     },
@@ -52,9 +52,13 @@ export default async () => {
       id: 'clfbqfryd000008i8dlmn3elb',
       email: 'rick.a.burd@gmail.com',
       authId: 'did:ethr:0xF09818A04FF3fEB2705AA0cC235901b0fC363dec',
+      twitterProfile: 'Richard_A_Burd',
+      discordProfile: 'Richard Burd#6701',
     },
   ]
-  const users = await Promise.all(
+
+  // create the siteRole { ADMIN } users
+  const adminUsers = await Promise.all(
     ikUsersData.map((data) => {
       return db.user.create({
         data: {
@@ -74,20 +78,75 @@ export default async () => {
       })
     })
   )
-  console.log(`created ${users.length} users`)
 
-  // Note we cannot use .createMany for puzzles due to the need to create deeply
-  // nested objects like Steps. There is no nested .createMany!
+  console.log(`created ${adminUsers.length} IK admin users`)
+
+  // Create an NFT for puzzle1
+  const nft1 = await db.nft.create({
+    data: {
+      tokenId: 1,
+      contractName: 'YourContractName',
+      data: {
+        key: 'value',
+      },
+      cloudinaryId: 'ik-alpha-trophies/starter-pack-achievment_cdbvlv',
+    },
+  })
+
+  // Create an NFT for puzzle4
+  const nft2 = await db.nft.create({
+    data: {
+      tokenId: 2,
+      contractName: 'YourContractName',
+      data: {
+        key: 'value',
+      },
+      cloudinaryId: 'ik-alpha-trophies/Map-24_tulnvo',
+    },
+  })
+
+  // Create an NFT for pack1
+  const pack1Nft = await db.nft.create({
+    data: {
+      tokenId: 3,
+      contractName: 'YourContractName',
+      data: {
+        key: 'value',
+      },
+      cloudinaryId: 'ik-alpha-trophies/horn-polish_o3gcba',
+    },
+  })
+
+  // Create an NFT for pack2
+  const pack2Nft = await db.nft.create({
+    data: {
+      tokenId: 4,
+      contractName: 'YourContractName',
+      data: {
+        key: 'value',
+      },
+      cloudinaryId: 'ik-alpha-trophies/probably0-astro_hk9mnl',
+    },
+  })
+
   const puzzle1 = await db.rewardable.create({
     data: {
-      name: 'puzzle-1',
+      name: 'Puzzle 1',
       slug: 'puzzle-1',
-      explanation: 'This is the first puzzle',
+      explanation:
+        'This is the first puzzle, it is anonymous so you can solve it without logging in',
       type: 'PUZZLE',
       orgId: ikOrg.id,
+
+      // Connect the NFT to 'puzzle1' in this rewardable
+      nfts: {
+        connect: {
+          id: nft1.id,
+        },
+      },
       puzzle: {
         create: {
-          isAnon: false,
+          isAnon: true,
           steps: {
             create: [
               {
@@ -105,12 +164,22 @@ export default async () => {
         },
       },
     },
+    // required for user rick.a.burd to attempt this puzzle
+    include: {
+      puzzle: {
+        include: {
+          steps: true,
+        },
+      },
+    },
   })
+
   const puzzle2 = await db.rewardable.create({
     data: {
-      name: 'puzzle 2',
+      name: 'Puzzle 2',
       slug: 'puzzle-2',
-      explanation: 'This is the second puzzle',
+      explanation:
+        'This is the second puzzle, you must be logged in to solve it',
       type: 'PUZZLE',
       organization: {
         connect: {
@@ -138,7 +207,135 @@ export default async () => {
       },
     },
   })
+
+  const puzzle3 = await db.rewardable.create({
+    data: {
+      name: 'Puzzle 3',
+      slug: 'puzzle-3',
+      explanation:
+        'This is the third puzzle, you must be logged in to solve it',
+      type: 'PUZZLE',
+      organization: {
+        connect: {
+          id: ikOrg.id,
+        },
+      },
+      puzzle: {
+        create: {
+          isAnon: false,
+          steps: {
+            create: [
+              {
+                challenge: 'What is the capital of Greece?',
+                stepSortWeight: 1,
+                type: 'SIMPLE_TEXT',
+                stepSimpleText: {
+                  create: {
+                    solution: 'Athens',
+                  },
+                },
+              },
+            ],
+          },
+        },
+      },
+    },
+  })
+
+  const puzzle4 = await db.rewardable.create({
+    data: {
+      name: 'Puzzle 4',
+      slug: 'puzzle-4',
+      explanation:
+        'This is the forth puzzle, you must be logged in to solve it',
+      type: 'PUZZLE',
+      organization: {
+        connect: {
+          id: ikOrg.id,
+        },
+      },
+      // Connect the NFT to 'puzzle1' in this rewardable
+      nfts: {
+        connect: {
+          id: nft2.id,
+        },
+      },
+      puzzle: {
+        create: {
+          isAnon: false,
+          steps: {
+            create: [
+              {
+                challenge: 'What is the capital of Itlay?',
+                stepSortWeight: 1,
+                type: 'SIMPLE_TEXT',
+                stepSimpleText: {
+                  create: {
+                    solution: 'Rome',
+                  },
+                },
+              },
+            ],
+          },
+        },
+      },
+    },
+  })
   console.log('Puzzles created')
+
+  // user rick.a.burd@gmail.com attempts step in Puzzle 1
+  const attempt1 = await db.attempt.create({
+    data: {
+      data: [
+        "// schema.prisma says: 'What did they guess/input/confirm/connect?'",
+      ],
+      user: {
+        connect: {
+          id: ikUsersData[ikUsersData.length - 1].id,
+        },
+      },
+      step: {
+        connect: {
+          id: puzzle1.puzzle.steps[0].id,
+        },
+      },
+    },
+  })
+
+  // user rick.a.burd@gmail.com solves step in Puzzle 1
+  const solve1 = await db.solve.create({
+    //solve (not userReward)
+    data: {
+      user: {
+        connect: {
+          id: ikUsersData[ikUsersData.length - 1].id,
+        },
+      },
+      attempt: {
+        connect: {
+          id: attempt1.id,
+        },
+      },
+      data: {}, // Optional additional data, you can provide an object here if needed
+    },
+  })
+
+  // user rick.a.burd@gmail.com solves Puzzle 3
+  const solve2 = await db.userReward.create({
+    //userReward (not solve)
+    data: {
+      user: {
+        connect: {
+          id: ikUsersData[ikUsersData.length - 1].id,
+        },
+      },
+      rewardable: {
+        connect: {
+          id: puzzle3.id,
+        },
+      },
+    },
+  })
 
   const pack1 = await db.rewardable.create({
     data: {
@@ -151,26 +348,99 @@ export default async () => {
           id: ikOrg.id,
         },
       },
+      // Connect the NFT to 'puzzle1' in this rewardable
+      nfts: {
+        connect: {
+          id: pack1Nft.id,
+        },
+      },
       pack: {
         create: {},
       },
       asParent: {
         createMany: {
-          data: [puzzle1, puzzle2].map((puzzle) => ({
-            childId: puzzle.id,
-          })),
+          data: [
+            {
+              childId: puzzle1.id,
+
+              // order of puzzles in the pack,
+              // Defaults to alphabetical order
+              childSortWeight: 1,
+            },
+            {
+              childId: puzzle2.id,
+
+              // order of puzzles in the pack,
+              // Defaults to alphabetical order
+              childSortWeight: 2,
+            },
+          ],
         },
       },
     },
   })
 
-  console.log('Packs created')
+  const pack2 = await db.rewardable.create({
+    data: {
+      name: 'Pack 2',
+      slug: 'pack-2',
+      explanation: 'This is the second pack',
+      type: 'PACK',
+      organization: {
+        connect: {
+          id: ikOrg.id,
+        },
+      },
+      // Connect the NFT to 'puzzle2' in this rewardable
+      nfts: {
+        connect: {
+          id: pack2Nft.id,
+        },
+      },
+      pack: {
+        create: {},
+      },
+      asParent: {
+        createMany: {
+          data: [
+            {
+              childId: puzzle3.id,
 
-  // TODO: migrate these test cases
+              // order of puzzles in the pack,
+              // Defaults to alphabetical order
+              childSortWeight: 1,
+            },
+            {
+              childId: puzzle4.id,
+
+              // order of puzzles in the pack,
+              // Defaults to alphabetical order
+              childSortWeight: 2,
+            },
+          ],
+        },
+      },
+    },
+  })
+
+  // TODOs:
+  // 1. Puzzle 3 is solved (green checkmark) but key is not highlighted
+  //    ...Puzzle one key is highlighted but not solved (green checkmark)
+  //    ...this is because Puzzle 1 has an attempt while Puzzle 3 has a rewardable
+  //    ...fix this so that it looks right and represents what a player would do.
+  // 2. puzzles 1,2,3 & 4 should be renamed as "rewardable"
+  // 3. puzzles should be created that are not rewardable
+  // 4. Create a pack with 2 anon puzzles and a 3rd that requires sign in to solve,
+  //    ...this 3rd puzzle would have the rewardable attached to it.
+  // 5. solve1 is a "solve" model whereas solve2 is a "userReward" model
+  //    ...untangle these so we have seperate solves and seperate userrewards
+
   // 1. Rewardable -> Puzzle -> Anon Steps 1-3 -> Step 4 requires sign in -> Reward at the end
   // 2. Rewardable -> Puzzle -> No anonymous steps (1-3) -> Reward at the end
   // 3. Rewardable -> Puzzle -> 12 goddamn steps -> sign in for all, all steps are nft check, passcode, function call, API check
   // 4. The above, but anon for all steps.
   // 5. All of these under 1 pack?
   // 6. A bunch more random pack of simple puzzles to help fill out the /play page
+
+  // NOTE: `Submission` is outdated and will eventually be deleted; currently we use `Attempt` instead
 }
