@@ -2,15 +2,17 @@ import React from 'react'
 
 import EnvelopeIcon from '@heroicons/react/20/solid/EnvelopeIcon'
 import { truncate } from '@infinity-keys/core'
+import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import Avatar from 'boring-avatars'
 import type { FindUserQuery, FindUserQueryVariables } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
 import { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
+import LensConnect from 'src/components/LensConnect/LensConnect'
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
-import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 
 export const QUERY = gql`
   query FindUserQuery {
@@ -98,7 +100,7 @@ export const Success = ({
         </div>
       </div>
 
-      <div className="px-10 pb-10 text-white">
+      <div className="px-10 pb-6 text-white">
         <div className="flex items-center pb-4">
           <EnvelopeIcon className="h-5 w-5 text-white" />
           <p className="ml-4 text-sm text-white/70">{user.email}</p>
@@ -120,10 +122,14 @@ export const Success = ({
 
         {user.lensProfile && (
           <div className="flex items-center">
-            <EnvelopeIcon className="h-5 w-5 text-white" />
+            <LensIcon className="h-5 w-5 text-white" />
             <p className="ml-4 text-sm text-white/70">{user.lensProfile}</p>
           </div>
         )}
+
+        <div className="mt-8 flex justify-center">
+          <LensConnect />
+        </div>
       </div>
     </div>
   )

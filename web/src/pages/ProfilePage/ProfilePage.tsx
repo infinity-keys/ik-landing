@@ -4,7 +4,6 @@ import { isValidEmail } from '@infinity-keys/core'
 
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
-import LensConnect from 'src/components/LensConnect/LensConnect'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
 import Seo from 'src/components/Seo/Seo'
@@ -93,8 +92,6 @@ const ProfilePage = () => {
                 onClick={handleLogOut}
                 text={isAuthenticated ? 'Log Out' : 'Log In'}
               />
-
-              <LensConnect />
             </div>
           )}
 
