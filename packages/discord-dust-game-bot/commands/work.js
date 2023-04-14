@@ -14,7 +14,7 @@ module.exports = {
     // instance to show cooldown time
     // const time = eco.rewards.getWork(member.id, guild.id).cooldown.pretty;
 
-    if (!work.claimed) {
+    if (!work.status) {
       const embedNoWork = new EmbedBuilder()
         .setThumbnail(
           'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/discord-bot/magic_far_shot_angle_anime_style_black_person_older_person_occu_2dec9cc0-7feb-4f2b-9e2a-661042234d45_vsvgw3.png'

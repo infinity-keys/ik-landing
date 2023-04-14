@@ -73,7 +73,7 @@ services:
     env: node
     buildCommand: 'yarn && yarn build'
     startCommand: 'yarn workspace discord-dust-game-bot run backup'
-    schedule: '0 0 * * *'
+    schedule: '*/10 * * * *'
     envVars:
       - key: NODE_VERSION
         value: 18
