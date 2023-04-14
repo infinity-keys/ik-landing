@@ -33,17 +33,26 @@ const LensConnect = () => {
   const { execute: logout, isPending } = useWalletLogout()
   const { openConnectModal } = useConnectModal()
   const [hasTriedConnection, setHasTriedConnection] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const noProfile = hasTriedConnection && !profile
   const isLoading = connectToLensPending || isPending
+  const isError = connectToLensError || errorMessage
 
-  const [create] = useMutation<UpdateUserMutation, UpdateUserMutationVariables>(
-    UPDATE_LENS_PROFILE
-  )
+  const [updateLensProfile] = useMutation<
+    UpdateUserMutation,
+    UpdateUserMutationVariables
+  >(UPDATE_LENS_PROFILE, {
+    onError: () => {
+      logout()
+      setHasTriedConnection(false)
+      setErrorMessage('Error connecting Lens profile to user account.')
+    },
+  })
 
   useEffect(() => {
     if (hasTriedConnection && profile?.handle) {
-      create({
+      updateLensProfile({
         variables: {
           input: {
             lensProfile: profile.handle,
@@ -51,9 +60,10 @@ const LensConnect = () => {
         },
       })
     }
-  }, [hasTriedConnection, profile, create])
+  }, [hasTriedConnection, profile, updateLensProfile])
 
   const onLoginClick = async () => {
+    setErrorMessage('')
     try {
       const signer = await connector.getSigner()
       await connectToLens(signer)
@@ -64,7 +74,7 @@ const LensConnect = () => {
   }
 
   const onLogoutClick = () => {
-    create({
+    updateLensProfile({
       variables: {
         input: {
           lensProfile: null,
@@ -105,13 +115,13 @@ const LensConnect = () => {
         <LoadingIcon />
       )}
 
-      {connectToLensError && (
+      {(connectToLensError || errorMessage) && (
         <p className="pt-2 text-sm italic text-gray-150">
-          Error connecting to Lens account
+          {errorMessage || 'Error connecting to Lens account'}
         </p>
       )}
 
-      {noProfile && !connectToLensError && !isLoading && (
+      {noProfile && !isError && !isLoading && (
         <p className="pt-2 text-sm italic text-gray-150">
           No active Lens profile associated with this wallet
         </p>
