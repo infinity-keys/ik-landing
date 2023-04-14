@@ -22,7 +22,7 @@
     "@infinity-keys/react-lens-share-button": "workspace:^",
     "@lens-protocol/react-web": "^1.0.1",
     "@lens-protocol/wagmi": "^1.0.1",
-    "@rainbow-me/rainbowkit": "^0.8.0",
+    "@rainbow-me/rainbowkit": "^0.12.8",
     "@redwoodjs/auth": "4.5.0",
     "@redwoodjs/forms": "4.5.0",
     "@redwoodjs/router": "4.5.0",
@@ -46,7 +46,7 @@
     "react-particles": "^2.5.3",
     "tsparticles": "^2.5.3",
     "use-device-pixel-ratio": "^1.1.0",
-    "wagmi": "^0.6.7"
+    "wagmi": "^0.12.10"
   },
   "devDependencies": {
     "@types/gtag.js": "^0.0.11",

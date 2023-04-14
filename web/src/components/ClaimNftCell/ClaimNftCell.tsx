@@ -1,5 +1,4 @@
 import { Fragment, useEffect } from 'react'
-import { Link } from '@redwoodjs/router'
 
 import { gql, useLazyQuery } from '@apollo/client'
 import {
@@ -23,6 +22,7 @@ import {
   useAccount,
 } from 'wagmi'
 
+import { Link } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
@@ -132,8 +132,8 @@ export const Success = ({
   } = data?.claim || {}
 
   const { config } = usePrepareContractWrite({
-    addressOrName: contractAddress,
-    contractInterface: IKAchievementABI__factory.abi,
+    address: contractAddress || undefined,
+    abi: IKAchievementABI__factory.abi,
     functionName: 'claim',
     args: [tokenId, signature],
     // keeps this hook from firing until we get a valid signature

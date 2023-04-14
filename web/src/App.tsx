@@ -7,7 +7,8 @@ import {
   getDefaultWallets,
 } from '@rainbow-me/rainbowkit'
 import loMerge from 'lodash/merge'
-import { chain, configureChains, createClient, WagmiConfig } from 'wagmi'
+import { configureChains, createClient, WagmiConfig } from 'wagmi'
+import { mainnet, polygon, optimism } from 'wagmi/chains'
 import { infuraProvider } from 'wagmi/providers/infura'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { publicProvider } from 'wagmi/providers/public'
@@ -52,14 +53,17 @@ export const IKTheme = loMerge(darkTheme(), {
     modal: '8px',
     modalMobile: '8px',
   },
+  j,
 })
 
 export const { chains, provider } = configureChains(
-  [chain.polygon, chain.mainnet, avalancheChain, chain.optimism],
+  [polygon, mainnet, avalancheChain, optimism],
   [
-    infuraProvider(),
+    infuraProvider({ apiKey: process.env.INFURA_PUBLIC_API_KEY }),
     publicProvider(),
-    jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) }),
+    jsonRpcProvider({
+      rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }),
+    }),
   ]
 )
 

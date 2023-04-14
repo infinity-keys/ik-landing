@@ -76,7 +76,7 @@ export const chainIds = [
 ]
 
 export const contractAddressLookup: {
-  [key: number]: string
+  [key: number]: `0x${string}`
 } = {
   [ETH_CHAIN_ID]: CONTRACT_ADDRESS_ETH,
   [POLYGON_CHAIN_ID]: CONTRACT_ADDRESS_POLYGON,
@@ -134,7 +134,12 @@ export const avalancheChain: Chain = {
     symbol: 'AVAX',
   },
   rpcUrls: {
-    default: 'https://api.avax.network/ext/bc/C/rpc',
+    default: {
+      http: ['https://api.avax.network/ext/bc/C/rpc'],
+    },
+    public: {
+      http: ['https://api.avax.network/ext/bc/C/rpc'],
+    },
   },
   blockExplorers: {
     default: { name: 'SnowTrace', url: 'https://snowtrace.io' },
