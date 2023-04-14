@@ -87,10 +87,12 @@ const ProfilePage = () => {
               </p>
             </div>
           ) : (
-            <Button
-              onClick={handleLogOut}
-              text={isAuthenticated ? 'Log Out' : 'Log In'}
-            />
+            <div>
+              <Button
+                onClick={handleLogOut}
+                text={isAuthenticated ? 'Log Out' : 'Log In'}
+              />
+            </div>
           )}
 
           <p className="absolute -bottom-8 left-0">{errorMessage}</p>

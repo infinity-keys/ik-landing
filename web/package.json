@@ -13,12 +13,15 @@
     ]
   },
   "dependencies": {
+    "@apollo/client": "3.7.10",
     "@formspree/react": "^2.4.0",
     "@headlessui/react": "^1.7.2",
     "@heroicons/react": "^2.0.11",
     "@infinity-keys/constants": "workspace:^",
     "@infinity-keys/core": "workspace:^",
     "@infinity-keys/react-lens-share-button": "workspace:^",
+    "@lens-protocol/react-web": "^1.0.1",
+    "@lens-protocol/wagmi": "^1.0.1",
     "@rainbow-me/rainbowkit": "^0.8.0",
     "@redwoodjs/auth": "4.5.0",
     "@redwoodjs/forms": "4.5.0",
