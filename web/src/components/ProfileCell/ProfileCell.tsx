@@ -3,6 +3,7 @@ import React from 'react'
 import EnvelopeIcon from '@heroicons/react/20/solid/EnvelopeIcon'
 import { truncate } from '@infinity-keys/core'
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
+import { useActiveProfile } from '@lens-protocol/react-web'
 import Avatar from 'boring-avatars'
 import type { FindUserQuery, FindUserQueryVariables } from 'types/graphql'
 import { useAccount } from 'wagmi'
@@ -48,6 +49,7 @@ export const Success = ({
   user,
 }: CellSuccessProps<FindUserQuery, FindUserQueryVariables>) => {
   const { address } = useAccount()
+  const { data: lensProfile } = useActiveProfile()
 
   // Immediately upon mount, reconcile progress, but also provide function to
   // use on button click
@@ -120,10 +122,10 @@ export const Success = ({
           </div>
         )}
 
-        {user.lensProfile && (
+        {lensProfile?.handle && (
           <div className="flex items-center">
             <LensIcon className="h-5 w-5 text-white" />
-            <p className="ml-4 text-sm text-white/70">{user.lensProfile}</p>
+            <p className="ml-4 text-sm text-white/70">{lensProfile.handle}</p>
           </div>
         )}
 
