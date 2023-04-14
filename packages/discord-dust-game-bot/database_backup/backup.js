@@ -1,7 +1,10 @@
+/* eslint-disable no-empty-function */
+/* eslint-disable prettier/prettier */
+const { exec } = require('child_process')
 const fs = require('fs')
-const _ = require('lodash')
-const exec = require('child_process').exec
 const path = require('path')
+
+const _ = require('lodash')
 
 // Concatenate root directory path with our backup folder.
 const backupDirPath = path.join(__dirname)
@@ -49,12 +52,12 @@ exports.dbAutoBackUp = () => {
 
   // check for auto backup is enabled or disabled
   if (dbOptions.autoBackup == true) {
-    let date = new Date()
+    const date = new Date()
     let beforeDate, oldBackupDir, oldBackupPath
 
     // Current date
-    currentDate = this.stringToDate(date)
-    let newBackupDir =
+    const currentDate = this.stringToDate(date)
+    const newBackupDir =
       currentDate.getFullYear() +
       '-' +
       (currentDate.getMonth() + 1) +
@@ -64,7 +67,8 @@ exports.dbAutoBackUp = () => {
     console.log('newbackupdir', newBackupDir)
 
     // New backup path for current backup process
-    let newBackupPath = dbOptions.autoBackupPath + '-mongodump-' + newBackupDir
+    const newBackupPath =
+      dbOptions.autoBackupPath + '-mongodump-' + newBackupDir
     // check for remove old backup after keeping # of days given in configuration
 
     console.log('newbackuppath', newBackupPath)
@@ -87,7 +91,7 @@ exports.dbAutoBackUp = () => {
     }
 
     // Command for mongodb dump process
-    let cmd =
+    const cmd =
       'mongodump --host=' +
       dbOptions.host +
       ' --port=' +
@@ -103,14 +107,14 @@ exports.dbAutoBackUp = () => {
 
     console.log('cmd', cmd)
 
-    exec(cmd, (error, stdout, stderr) => {
+    exec(cmd, (error, _stdout, _stderr) => {
       console.log('exec')
       if (this.empty(error)) {
         // check for remove old backup after keeping # of days given in configuration.
         console.log('error', error)
         if (dbOptions.removeOldBackup == true) {
           if (fs.existsSync(oldBackupPath)) {
-            exec('rm -rf ' + oldBackupPath, (err) => {})
+            exec('rm -rf ' + oldBackupPath, (_err) => {})
           }
         }
       }
