@@ -9,6 +9,7 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import Markdown from 'src/components/Markdown/Markdown'
 import StepsLayout from 'src/components/StepsLayout/StepsLayout'
 
 export const QUERY = gql`
@@ -18,6 +19,7 @@ export const QUERY = gql`
       isAnon
       rewardable {
         id
+        successMessage
         userRewards {
           id
         }
@@ -100,7 +102,14 @@ export const Success = ({
       step={step}
     >
       {hasBeenSolved && (
-        <div className="flex justify-center">
+        <div className="flex flex-col items-center justify-center">
+          {puzzle.rewardable.successMessage && (
+            <div className="mb-8">
+              <div className="rounded border-l-4 border-turquoise bg-white/5 p-4">
+                <Markdown>{puzzle.rewardable.successMessage}</Markdown>
+              </div>
+            </div>
+          )}
           {isAuthenticated ? (
             <Button
               to={routes.claim({ id: puzzle.rewardable.id })}
