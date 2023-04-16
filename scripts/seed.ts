@@ -206,6 +206,14 @@ export default async () => {
         },
       },
     },
+    // required for user rick.a.burd to attempt this puzzle
+    include: {
+      puzzle: {
+        include: {
+          steps: true,
+        },
+      },
+    },
   })
 
   const puzzle3 = await db.rewardable.create({
@@ -320,8 +328,44 @@ export default async () => {
     },
   })
 
-  // user rick.a.burd@gmail.com solves Puzzle 3
-  const solve2 = await db.userReward.create({
+  // user rick.a.burd@gmail.com attempts step in Puzzle 2
+  const attempt2 = await db.attempt.create({
+    data: {
+      data: [
+        "// schema.prisma says: 'What did they guess/input/confirm/connect?'",
+      ],
+      user: {
+        connect: {
+          id: ikUsersData[ikUsersData.length - 1].id,
+        },
+      },
+      step: {
+        connect: {
+          id: puzzle2.puzzle.steps[0].id,
+        },
+      },
+    },
+  })
+
+  // user rick.a.burd@gmail.com solves step in Puzzle 2
+  const solve2 = await db.solve.create({
+    data: {
+      user: {
+        connect: {
+          id: ikUsersData[ikUsersData.length - 1].id,
+        },
+      },
+      attempt: {
+        connect: {
+          id: attempt2.id,
+        },
+      },
+      data: {}, // Optional additional data, you can provide an object here if needed
+    },
+  })
+
+  // user rick.a.burd@gmail.com gets a reward for Puzzle 1
+  const userReward1 = await db.userReward.create({
     // userReward (not solve) like in "const solve1"
     data: {
       user: {
@@ -331,7 +375,24 @@ export default async () => {
       },
       rewardable: {
         connect: {
-          id: puzzle3.id,
+          id: puzzle1.id,
+        },
+      },
+    },
+  })
+
+  // user rick.a.burd@gmail.com gets a reward for Puzzle 2
+  const userReward2 = await db.userReward.create({
+    // userReward (not solve) like in "const solve1"
+    data: {
+      user: {
+        connect: {
+          id: ikUsersData[ikUsersData.length - 1].id,
+        },
+      },
+      rewardable: {
+        connect: {
+          id: puzzle2.id,
         },
       },
     },
@@ -375,6 +436,23 @@ export default async () => {
               childSortWeight: 2,
             },
           ],
+        },
+      },
+    },
+  })
+
+  // user rick.a.burd@gmail.com gets a reward for Pack1 1
+  const userReward3 = await db.userReward.create({
+    // userReward (not solve) like in "const solve1"
+    data: {
+      user: {
+        connect: {
+          id: ikUsersData[ikUsersData.length - 1].id,
+        },
+      },
+      rewardable: {
+        connect: {
+          id: pack1.id,
         },
       },
     },
@@ -424,42 +502,11 @@ export default async () => {
   })
 
   // TODOs:
-  // 1. Puzzle 3 is solved (green checkmark) but key is not highlighted
-  //    ...Puzzle one key is highlighted but not solved (green checkmark)
-  //    ...this is because Puzzle 1 has an attempt while Puzzle 3 has a userReward
-  //    ...fix this so that it looks right and represents what a player would do.
-  // 2. puzzles 1,2,3 & 4 should be renamed as "rewardable"
-  // 3. puzzles should be created that are not rewardable
-  // 4. Create a pack with 2 anon puzzles and a 3rd that requires sign in to solve,
+  // 1. puzzles should be created that are not rewardable
+  // 2. Create a pack with 2 anon puzzles and a 3rd that requires sign in to solve,
   //    ...this 3rd puzzle would have the rewardable attached to it.
-  // 5. solve1 is a "solve" model whereas solve2 is a "userReward" model
-  //    ...untangle these so we have seperate solves and seperate userrewards
-
-  // 1. Rewardable -> Puzzle -> Anon Steps 1-3 -> Step 4 requires sign in -> Reward at the end
-  // 2. Rewardable -> Puzzle -> No anonymous steps (1-3) -> Reward at the end
-  // 3. Rewardable -> Puzzle -> 12 goddamn steps -> sign in for all, all steps are nft check, passcode, function call, API check
-  // 4. The above, but anon for all steps.
-  // 5. All of these under 1 pack?
-  // 6. A bunch more random pack of simple puzzles to help fill out the /play page
-
+  // 3. Rewardable -> Puzzle -> Anon Steps 1-3 -> Step 4 requires sign in -> Reward at the end
+  // 4. Rewardable -> Puzzle -> No anonymous steps (1-3) -> Reward at the end
+  // 5. http://localhost:8910/profile should show 1 or more NFTs
   // NOTE: `Submission` is outdated and will eventually be deleted; currently we use `Attempt` instead
 }
-
-/*
-Here is an overview of the relationships between the entities in the schema:
-
-    A `Puzzle` is a collection of one or more `Step`s that a player must complete to solve the puzzle.
-    A `Step` represents a single challenge or task that the player must complete to progress in the puzzle. A `Step` can have one of several types, such as `StepSimpleText` or `StepNftCheck`, which determine how the player must complete the step.
-    A `Rewardable` is a thing that can reward NFTs. It can be a puzzle, a pack, or a bundle.
-    A `Pack` is a collection of puzzles. A Bundle is a collection of packs.
-    An `Nft` represents an NFT that can be rewarded for completing a Rewardable.
-    A `UserReward` represents a reward that a user has earned for completing a Rewardable. It contains a reference to the Rewardable and a list of Nfts that the user has earned.
-
-In summary, a `Puzzle` is a type of `Rewardable` that is made up of `Step`s that a player must complete. A `Rewardable` can also be a `Pack` or a `Bundle`, which are collections of puzzles. Completing a `Rewardable` can earn the player one or more `Nft`s, which are represented by Nft objects. A `UserReward` represents a reward that a user has earned for completing a `Rewardable`, and it contains a reference to the `Rewardable` and a list of `Nft`s that the user has earned.
-
-a `solve` is typically represented as a relationship between a `User` and a `Puzzle`. A `solve` indicates that a particular `User` has solved a specific `Puzzle`. It is implemented as a `UserReward` model in the schema.
-
-When a `User` solves a `Puzzle`, a new `UserReward` is created that connects the `User` and the `Puzzle`. This `UserReward` includes information about the `User` who solved the `Puzzle`, the `Puzzle` that was solved, and the time that the `Puzzle` was solved.
-
-This relationship allows for tracking of which `User`s have solved which `Puzzle`s and can also be used to calculate and assign rewards to the `User`s who successfully solve a `Puzzle`.
-*/
