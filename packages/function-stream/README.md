@@ -39,6 +39,9 @@ The `/moralis` endpoint looks at incoming streams and saves any transactions tha
 
 It is saved as a new document in the db in the following format:
 
+> **Note**<br>
+> All keys are converted to lowercase before being saved.
+
 ```js
 // The contract address
 "0x86935f11c86623dec8a25696e1c19a8659cbf95d": {
@@ -52,12 +55,6 @@ It is saved as a new document in the db in the following format:
 }
 ```
 
-{% note %}
-
-**Note:** All keys are converted to lowercase before being saved.
-
-{% endnote %}
-
 ## Reading from the DB
 
 The `/hasUserCalledFunction` route accepts GET requests with the following format. It can also handle multiple methodId parameters.
@@ -66,8 +63,6 @@ The `/hasUserCalledFunction` route accepts GET requests with the following forma
 
 It counts matching documents and returns an array of booleans indicating whether the user has called the provided methodIds.
 
-{% note %}
 
-**Note:** All parameters are converted to lowercase before doing the lookup.
-
-{% endnote %}
+> **Note**<br>
+> All parameters are converted to lowercase before doing the lookup.
