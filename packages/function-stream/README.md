@@ -47,8 +47,8 @@ It is saved as a new document in the db in the following format:
 "0x86935f11c86623dec8a25696e1c19a8659cbf95d": {
   // The method id
   "0x22c67519": {
-    // The users wallet address
-    "0xA752158F67b9Fb39c29412g6F8e1C563FF6724f6": [
+    // The user's wallet address
+    "0xa752158f67b9fb39c29412g6f8e1c563ff6724f6": [
       // Array of transactions
     ]
   },
