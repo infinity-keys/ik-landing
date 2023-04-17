@@ -74,7 +74,7 @@ const SimpleTextInput = ({
                 >
                   <Markdown>
                     {step.failMessage ||
-                      'Thats not it. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
+                      "That's not it. Need help? [Join our discord](https://discord.gg/infinitykeys)"}
                   </Markdown>
                 </div>
               )}
