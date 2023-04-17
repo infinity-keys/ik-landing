@@ -2,7 +2,7 @@
 
 ## To run locally
 
-<!-- @TODO: Add env file default -->
+Fill in the .env variables with your Moralis stream API key and MongoDB uri (examples in the env.default)
 
 `cd packages/function-stream && yarn`
 
@@ -37,19 +37,37 @@ MethodID: 0x22c67519
 
 The `/moralis` endpoint looks at incoming streams and saves any transactions that match the contract address and method ids from the URL parameters.
 
-It is save to the db in the following format:
+It is saved as a new document in the db in the following format:
 
 ```js
 // The contract address
-"0x123": {
+"0x86935f11c86623dec8a25696e1c19a8659cbf95d": {
   // The method id
-  "0x456": {
+  "0x22c67519": {
     // The users wallet address
-    "0x789": [
+    "0xA752158F67b9Fb39c29412g6F8e1C563FF6724f6": [
       // Array of transactions
     ]
   },
 }
 ```
 
-https://function-stream.onrender.com/hasUserCalledFunction?contractAddress=0x86935f11c86623dec8a25696e1c19a8659cbf95d&methodId=0x22c67519&walletAddress=0x86f5badc9fB2Db49303D69aD0358b467cFd393E0
+{% note %}
+
+**Note:** All keys are converted to lowercase before being saved.
+
+{% endnote %}
+
+## Reading from the DB
+
+The `/hasUserCalledFunction` route accepts GET requests with the following format. It can also handle multiple methodId parameters.
+
+`https://{our-function-stream-url-on-render.com}/hasUserCalledFunction?contractAddress=0x86935f11c86623dec8a25696e1c19a8659cbf95d&methodId=0x22c67519&walletAddress=0xA752158F67b9Fb39c29412g6F8e1C563FF6724f6`
+
+It counts matching documents and returns an array of booleans indicating whether the user has called the provided methodIds.
+
+{% note %}
+
+**Note:** All parameters are converted to lowercase before doing the lookup.
+
+{% endnote %}
