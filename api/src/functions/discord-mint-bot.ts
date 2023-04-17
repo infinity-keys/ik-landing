@@ -1,6 +1,7 @@
 import { chainIdLookup } from '@infinity-keys/constants'
 import { cloudinaryUrl } from '@infinity-keys/core'
 import { db } from 'src/lib/db'
+import { logger } from 'src/lib/logger'
 
 const discord = require('discord.js')
 const { EmbedBuilder } = require('discord.js')
@@ -27,8 +28,11 @@ export const handler = async (event) => {
       body: parsedBody,
       signature: headers['x-signature'],
     })
-
-    if (parsedBody.txs.length === 0 || !parsedBody.confirmed) {
+    if (
+      parsedBody.txs.length === 0 ||
+      !parsedBody.confirmed ||
+      !parsedBody.logs.length
+    ) {
       return { statusCode: 200 }
     }
 
@@ -36,6 +40,11 @@ export const handler = async (event) => {
     const tokenId = parseInt(parsedBody.logs[0].topic1, 16)
     const chainId = parseInt(parsedBody.chainId, 16)
     const chain = chainIdLookup[chainId]
+
+    // to log basic info on each transaction
+    logger.info(
+      `from address: ${from} and minted tokenID: ${tokenId} from chain: ${chain}`
+    )
 
     const image = await db.nft.findUnique({
       where: {

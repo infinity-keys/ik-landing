@@ -2,18 +2,18 @@ import type { MutationResolvers } from 'types/graphql'
 
 import { context } from '@redwoodjs/graphql-server'
 
-import { db } from 'src/lib/db'
-import { checkNft } from 'src/lib/web3/check-nft'
-import { checkFunctionCall } from 'src/lib/web3/check-function-call'
-import { createSolve } from 'src/services/solves/solves'
 import { checkComethApi } from 'src/lib/api/cometh'
-import { getErc721TokenIds } from 'src/lib/web3/check-tokenid-range'
+import { db } from 'src/lib/db'
 import {
   createRewards,
   getStep,
   SolutionData,
   stepSolutionTypeLookup,
 } from 'src/lib/makeAttempt'
+import { checkFunctionCall } from 'src/lib/web3/check-function-call'
+import { checkNft } from 'src/lib/web3/check-nft'
+import { getErc721TokenIds } from 'src/lib/web3/check-tokenid-range'
+import { createSolve } from 'src/services/solves/solves'
 
 export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   stepId,

@@ -1,18 +1,21 @@
 import { avalancheChain } from '@infinity-keys/constants'
-import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
-import { getDefaultWallets } from '@rainbow-me/rainbowkit'
+import { LensConfig, production, LensProvider } from '@lens-protocol/react-web'
+import { bindings as wagmiBindings } from '@lens-protocol/wagmi'
+import {
+  darkTheme,
+  RainbowKitProvider,
+  getDefaultWallets,
+} from '@rainbow-me/rainbowkit'
 import loMerge from 'lodash/merge'
-import { Magic } from 'magic-sdk'
-import { WagmiConfig } from 'wagmi'
-import { chain, configureChains, createClient } from 'wagmi'
+import { chain, configureChains, createClient, WagmiConfig } from 'wagmi'
 import { infuraProvider } from 'wagmi/providers/infura'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { publicProvider } from 'wagmi/providers/public'
 
-import { useAuth, AuthProvider } from '@redwoodjs/auth'
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
+import { AuthProvider, useAuth } from 'src/auth'
 import CookieConsentBanner from 'src/components/CookieConsentBanner/CookieConsentBanner'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
@@ -52,7 +55,7 @@ export const IKTheme = loMerge(darkTheme(), {
 })
 
 export const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, avalancheChain, chain.optimism],
+  [chain.polygon, chain.mainnet, avalancheChain, chain.optimism],
   [
     infuraProvider(),
     publicProvider(),
@@ -71,22 +74,27 @@ export const wagmiClient = createClient({
   provider,
 })
 
-const magic = new Magic(process.env.MAGIC_LINK_PUBLIC)
+const lensConfig: LensConfig = {
+  bindings: wagmiBindings(),
+  environment: production,
+}
 
 const App = () => {
   return (
     <FatalErrorBoundary page={FatalErrorPage}>
       <WagmiConfig client={wagmiClient}>
-        <RainbowKitProvider chains={chains} theme={IKTheme}>
-          <AuthProvider client={magic} type="magicLink">
+        <LensProvider config={lensConfig}>
+          <RainbowKitProvider chains={chains} theme={IKTheme}>
             <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
-              <RedwoodApolloProvider useAuth={useAuth}>
-                <Routes />
-                <CookieConsentBanner />
-              </RedwoodApolloProvider>
+              <AuthProvider>
+                <RedwoodApolloProvider useAuth={useAuth}>
+                  <Routes />
+                  <CookieConsentBanner />
+                </RedwoodApolloProvider>
+              </AuthProvider>
             </RedwoodProvider>
-          </AuthProvider>
-        </RainbowKitProvider>
+          </RainbowKitProvider>
+        </LensProvider>
       </WagmiConfig>
     </FatalErrorBoundary>
   )

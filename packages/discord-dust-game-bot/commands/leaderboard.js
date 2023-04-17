@@ -33,6 +33,7 @@ module.exports = {
       .setTitle('Records? Yes of course.')
       .setDescription(
         `${leaderboard
+          .slice(0, 20)
           .map(
             (lb, index) =>
               `${index + 1} - <@${lb.userID}> - **${lb.money}** pages`
