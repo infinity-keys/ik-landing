@@ -72,7 +72,7 @@ services:
     type: cron
     env: node
     buildCommand: 'yarn && yarn build'
-    startCommand: 'yarn workspace discord-dust-game-bot run backup'
+    startCommand: 'yarn rw exec generateAnonPuzzleData && yarn workspace discord-dust-game-bot run backup'
     schedule: '*/10 * * * *'
     envVars:
       - key: NODE_VERSION
