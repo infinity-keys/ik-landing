@@ -1,73 +1,55 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Function Stream
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## To run locally
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+<!-- @TODO: Add env file default -->
 
-## Description
+`cd packages/function-stream && yarn`
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+`yarn start:dev`
 
-## Installation
+## Moralis Stream Setup
 
-```bash
-$ yarn install
+The `/moralis` route watches for incoming Moralis stream POST requests, and saves all valid function calls to our MongoDB instance.
+
+### What is a valid function call?
+
+Set up a Moralis stream and point the webhook URL to our `/moralis` endpoint. The URL should have the contract address we are monitoring, and the method ids of the functions we want users to have called. For example:
+
+`https://{our-function-stream-url-on-render.com}/moralis/0x86935f11c86623dec8a25696e1c19a8659cbf95d?methodId=0x22c67519`
+
+With multiple functions:
+
+`https://{our-function-stream-url-on-render.com}/moralis/0x86935f11c86623dec8a25696e1c19a8659cbf95d?methodId=0x22c67519&methodId=0x85c3c3cf`
+
+### Where to get the method ids?
+
+Find the contract on the relevant chain explorer (Polygonscan, Etherscan, etc.) and find a transaction calling the function you want to monitor. The "Input Data" field will have the method id listen:
+
+```
+Function: interact(uint256[] _tokenIds) ***
+
+MethodID: 0x22c67519
+[0]:  0000000...
 ```
 
-## Running the app
+## Saving to the DB
 
-```bash
-# development
-$ yarn run start
+The `/moralis` endpoint looks at incoming streams and saves any transactions that match the contract address and method ids from the URL parameters.
 
-# watch mode
-$ yarn run start:dev
+It is save to the db in the following format:
 
-# production mode
-$ yarn run start:prod
+```js
+// The contract address
+"0x123": {
+  // The method id
+  "0x456": {
+    // The users wallet address
+    "0x789": [
+      // Array of transactions
+    ]
+  },
+}
 ```
 
-## Test
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+https://function-stream.onrender.com/hasUserCalledFunction?contractAddress=0x86935f11c86623dec8a25696e1c19a8659cbf95d&methodId=0x22c67519&walletAddress=0x86f5badc9fB2Db49303D69aD0358b467cFd393E0
