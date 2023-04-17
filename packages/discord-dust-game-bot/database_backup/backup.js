@@ -7,7 +7,7 @@ const path = require('path')
 const _ = require('lodash')
 
 // Concatenate root directory path with our backup folder.
-const backupDirPath = path.join(__dirname)
+const backupDirPath = path.join(__dirname, 'database_backup')
 console.log('backupdirpath', backupDirPath)
 console.log('dirname', __dirname)
 
