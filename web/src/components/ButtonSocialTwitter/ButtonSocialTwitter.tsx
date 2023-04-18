@@ -1,6 +1,6 @@
 const ButtonSocialTwitter = () => (
   <a
-    className="inline-flex items-center space-x-2 rounded bg-blue-300 px-3 py-1 font-medium text-white"
+    className="bg-brand-gray-primary-300 inline-flex items-center space-x-2 rounded px-3 py-1 font-medium text-white"
     href="https://twitter.com/InfinityKeys"
     target="_blank"
     rel="noopener noreferrer"

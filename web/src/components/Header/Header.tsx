@@ -16,7 +16,10 @@ const Header = () => {
   const { loading } = useAuth()
 
   return (
-    <Disclosure as="header" className="header fixed top-0 z-50 w-full bg-blue">
+    <Disclosure
+      as="header"
+      className="header fixed top-0 z-50 w-full bg-brand-gray-primary"
+    >
       {({ open }) => (
         <>
           <div
@@ -108,7 +111,7 @@ const Header = () => {
           </div>
 
           {/* mobile menu */}
-          <Disclosure.Panel className="absolute top-20 left-0 w-full bg-blue lg:hidden">
+          <Disclosure.Panel className="absolute top-20 left-0 w-full bg-brand-gray-primary lg:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
               <Link
                 to={routes.home()}

@@ -15,9 +15,13 @@ const Wrapper: FC<PropsWithChildren<WrapperProps>> = ({
   customClasses = [],
 }) => (
   <div
-    className={clsx(customClasses, 'relative z-0 bg-blue text-gray-100', {
-      'radial-bg': radialBg,
-    })}
+    className={clsx(
+      customClasses,
+      'relative z-0 bg-brand-gray-primary text-gray-100',
+      {
+        'radial-bg': radialBg,
+      }
+    )}
   >
     <div
       className={clsx(

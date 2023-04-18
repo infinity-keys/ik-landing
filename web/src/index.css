@@ -39,7 +39,7 @@
   }
 
   html {
-    @apply bg-blue;
+    @apply bg-brand-gray-primary;
   }
 
   svg {
