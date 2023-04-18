@@ -1,7 +1,7 @@
 /**
  * @file
  *
- * The embedded puzzle form used to attmpt solution.
+ * The embedded puzzle form used to attempt solution.
  */
 
 // React libraries for managing state of user's answer
@@ -27,6 +27,9 @@ type PuzzleProps = {
 const Puzzle = ({ answer = '' }: PuzzleProps) => {
   // This is what the user enters into the RICIBs
   const [guess, setGuess] = useState('')
+
+  // Our hint for the puzzle's password
+  const [hintVisible, setHintVisible] = useState(false)
 
   // The submit button is disabled unless all RICIBs are filled
   // This determines whether or not the user can submit a guess
@@ -113,6 +116,12 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
           <Lock />
         </div>
         <h1 className="pt-2 pl-4 text-base font-bold">Solve Puzzle</h1>
+        <button
+          onClick={() => setHintVisible(!hintVisible)}
+          className="mt-2 ml-4 rounded px-2 uppercase tracking-wider text-brand-accent-primary transition-colors hover:bg-black/40 hover:text-brand-accent-secondary"
+        >
+          {hintVisible ? 'Unlock' : 'Hint?'}
+        </button>
       </div>
 
       <form onSubmit={handleSubmit}>
