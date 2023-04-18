@@ -11,6 +11,8 @@ import ProfileIcon from 'src/components/ProfileIcon/ProfileIcon'
 import WalletButton from 'src/components/WalletButton/WalletButton'
 import LogoHeader1x from 'src/images/header-logo-1x.webp'
 import LogoHeader2x from 'src/images/header-logo-2x.webp'
+import LogoHeaderSm1x from 'src/images/header-logo-sm-1x.webp'
+import LogoHeaderSm2x from 'src/images/header-logo-sm-2x.webp'
 
 const Header = () => {
   const { loading } = useAuth()
@@ -28,16 +30,31 @@ const Header = () => {
           >
             <div className="relative flex h-20 items-center justify-between">
               <div data-cy="ik logo" className="logo">
-                <div className="flex items-center">
+                <div className="flex items-center sm:hidden">
                   <Link
                     to={routes.home()}
-                    className="block"
+                    className="block max-w-[60px]"
+                    aria-label="return home"
+                  >
+                    <img
+                      srcSet={`${LogoHeaderSm1x}, ${LogoHeaderSm2x} 2x`}
+                      src={LogoHeaderSm1x}
+                      alt=""
+                      className="block w-full"
+                    />
+                  </Link>
+                </div>
+                <div className="hidden items-center sm:flex">
+                  <Link
+                    to={routes.home()}
+                    className="block max-w-[150px]"
                     aria-label="return home"
                   >
                     <img
                       srcSet={`${LogoHeader1x}, ${LogoHeader2x} 2x`}
                       src={LogoHeader1x}
                       alt=""
+                      className="block w-full"
                     />
                   </Link>
                 </div>
