@@ -33,7 +33,7 @@ const Thumbnail = ({
     <Link
       to={href}
       className={clsx(
-        'puzzle-thumb bg-brand-gray-primary-800 relative block w-full max-w-[18rem] cursor-pointer break-words rounded-lg border border-transparent shadow transition hover:border-brand-accent-primary',
+        'puzzle-thumb relative block w-full max-w-[18rem] cursor-pointer break-words rounded-lg border border-transparent bg-black/40 shadow transition hover:border-brand-accent-primary',
         progress === ThumbnailProgress.Current
           ? 'border-brand-accent-primary'
           : 'border-transparent',
@@ -74,7 +74,14 @@ const Thumbnail = ({
               size={isGrid ? 128 : 56}
               name={id}
               variant="marble"
-              colors={['#101D42', '#E400FF', '#3FCCBB', '#8500AC', '#303B5B']}
+              colors={[
+                '#b1804a',
+                '#76493b',
+                '#543230',
+                '#352d2d',
+                '#a89382',
+                '#ccbba0',
+              ]}
             />
           )}
         </span>

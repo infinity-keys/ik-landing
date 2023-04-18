@@ -38,11 +38,11 @@ import './styles/customer/evermore.css'
 
 export const IKTheme = loMerge(darkTheme(), {
   colors: {
-    accentColor: '#3FCCBB',
+    accentColor: '#b1804a',
     connectButtonBackground: '#354161',
-    modalBackground: '#101D42',
+    modalBackground: '#1e1e1c',
     modalBorder: 'rgba(255,255,255,.2)',
-    menuItemBackground: '#101D42',
+    menuItemBackground: '#585857',
   },
   fonts: {
     body: 'Poppins, sans-serif',

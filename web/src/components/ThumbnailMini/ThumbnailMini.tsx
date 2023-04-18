@@ -16,7 +16,7 @@ const ThumbnailMini = ({ name, progress, to }: ThumbnailMiniProps) => {
   return (
     <Link
       className={clsx(
-        'puzzle-thumb bg-brand-gray-primary-800 relative flex w-full max-w-[10rem] items-center rounded-lg border py-3 px-3 text-center shadow lg:px-4',
+        'puzzle-thumb relative flex w-full max-w-[10rem] items-center rounded-lg border bg-black/40 py-3 px-3 text-center shadow lg:px-4',
         progress === ThumbnailProgress.Current
           ? 'border-brand-accent-primary'
           : 'border-transparent',
@@ -48,7 +48,14 @@ const ThumbnailMini = ({ name, progress, to }: ThumbnailMiniProps) => {
         size={28}
         name={name}
         variant="marble"
-        colors={['#101D42', '#E400FF', '#3FCCBB', '#8500AC', '#303B5B']}
+        colors={[
+          '#b1804a',
+          '#76493b',
+          '#543230',
+          '#352d2d',
+          '#a89382',
+          '#ccbba0',
+        ]}
       />
 
       <p className="ml-2 text-sm text-gray-150 lg:ml-4">{name}</p>

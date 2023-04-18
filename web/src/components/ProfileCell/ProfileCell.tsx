@@ -61,7 +61,14 @@ export const Success = ({
           size={56}
           name={user.email}
           variant="marble"
-          colors={['#101D42', '#E400FF', '#3FCCBB', '#8500AC', '#303B5B']}
+          colors={[
+            '#b1804a',
+            '#76493b',
+            '#543230',
+            '#352d2d',
+            '#a89382',
+            '#ccbba0',
+          ]}
         />
 
         <div className="ml-6">
