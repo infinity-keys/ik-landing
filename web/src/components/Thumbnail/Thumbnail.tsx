@@ -6,7 +6,6 @@ import clsx from 'clsx'
 import { Link } from '@redwoodjs/router'
 
 import CloudImage from 'src/components/CloudImage/CloudImage'
-import MinimalKeyLogo from 'src/svgs/MinimalKeyLogo'
 
 interface ThumbnailProps {
   id: string
@@ -102,12 +101,10 @@ const Thumbnail = ({
                 <span
                   key={i}
                   className={clsx(
-                    'h-5 w-5 pt-2',
-                    solved ? 'text-turquoise' : 'text-gray-300'
+                    'mr-1 mt-2 block h-2 w-2 rounded-full pt-2',
+                    solved ? 'bg-green-500' : 'bg-brand-gray-secondary'
                   )}
-                >
-                  <MinimalKeyLogo />
-                </span>
+                ></span>
               ))}
             </dd>
           </dl>

@@ -9,8 +9,8 @@ import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
 import ProfileIcon from 'src/components/ProfileIcon/ProfileIcon'
 import WalletButton from 'src/components/WalletButton/WalletButton'
-import Logo from 'src/svgs/Logo'
-import LogoMobile from 'src/svgs/LogoMobile'
+import LogoHeader1x from 'src/images/header-logo-1x.webp'
+import LogoHeader2x from 'src/images/header-logo-2x.webp'
 
 const Header = () => {
   const { loading } = useAuth()
@@ -25,22 +25,17 @@ const Header = () => {
           >
             <div className="relative flex h-20 items-center justify-between">
               <div data-cy="ik logo" className="logo">
-                <div className="block sm:hidden">
+                <div className="flex items-center">
                   <Link
                     to={routes.home()}
                     className="block"
                     aria-label="return home"
                   >
-                    <LogoMobile />
-                  </Link>
-                </div>
-                <div className="hidden sm:block">
-                  <Link
-                    to={routes.home()}
-                    className="bg-purple-500 text-left"
-                    aria-label="return home"
-                  >
-                    <Logo />
+                    <img
+                      srcSet={`${LogoHeader1x}, ${LogoHeader2x} 2x`}
+                      src={LogoHeader1x}
+                      alt=""
+                    />
                   </Link>
                 </div>
               </div>
