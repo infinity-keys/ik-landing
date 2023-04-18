@@ -9,7 +9,6 @@ import { RewardableType } from 'types/graphql'
 import { Link } from '@redwoodjs/router'
 
 import { rewardableGridRoute } from 'src/lib/urlBuilders'
-
 import { GridLandingRouteType } from 'src/lib/urlBuilders'
 
 interface GridDropdownProps {
@@ -81,7 +80,7 @@ const GridDropdown = ({ currentCount, rewardableType }: GridDropdownProps) => {
                       }}
                       className={clsx(
                         {
-                          'bg-turquoise font-medium': selectedCount,
+                          'bg-brand-accent-primary font-medium': selectedCount,
                           'bg-indigo-500': active,
                         },
                         'block px-4 py-4 text-sm hover:bg-indigo-500 md:py-2'

@@ -20,7 +20,7 @@ const ProfileIcon = () => {
             <span
               className={clsx(
                 'ml-1 inline-block h-2 w-2 rounded-full',
-                isAuthenticated ? 'bg-turquoise' : 'bg-orange-300'
+                isAuthenticated ? 'bg-green-400' : 'bg-orange-300'
               )}
             ></span>
           </Menu.Button>

@@ -27,7 +27,7 @@ const CollapsibleMarkdown = ({
       <Disclosure defaultOpen={defaultOpen}>
         {({ open }) => (
           <>
-            <Disclosure.Button className="relative flex w-full items-center justify-center p-2 transition hover:bg-turquoise/50">
+            <Disclosure.Button className="relative flex w-full items-center justify-center p-2 transition hover:bg-brand-accent-primary/50">
               <Heading visual="s" as="h2">
                 {title}
               </Heading>

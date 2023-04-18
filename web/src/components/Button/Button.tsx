@@ -39,23 +39,26 @@ export default function Button({
     { 'block w-full': fullWidth },
     // borders
     { 'border-transparent': !border },
-    { 'border-turquoise': border },
+    { 'border-brand-accent-primary': border },
     // Text color
     [
-      textColor === 'light' && 'text-white hover:text-blue',
-      textColor === 'dark' && 'text-blue hover:text-white',
+      textColor === 'light' && 'text-white hover:text-brand-gray-primary',
+      textColor === 'dark' && 'text-brand-gray-primary hover:text-white',
     ],
     // Variants
     [
       variant === 'solid' && {
-        'bg-turquoise': true,
-        'bg-turquoise/50 border-turquoise hover:border-turquoise text-white/50 hover:text-white/50':
+        'bg-brand-accent-primary': true,
+        'bg-brand-accent-primary/50 border-brand-accent-primary hover:brand-accent-primary/50 text-white/50 hover:text-white/50':
           disabled,
       },
-      variant === 'outline' && 'text-white hover:bg-turquoise',
+      variant === 'outline' && {
+        'text-white hover:bg-brand-accent-primary': true,
+        'hover:border-brand-accent-primary': true,
+      },
       variant === 'warn' &&
         'text-white bg-red-500 border-red-500 hover:bg-red-700 hover:text-white',
-      variant === 'faded' && 'bg-white/10 hover:text-turquoise',
+      variant === 'faded' && 'bg-white/10 hover:text-brand-accent-primary',
       variant === 'purple' &&
         'bg-indigo-500 border-indigo-500 hover:text-white hover:bg-indigo-600 ',
     ],
