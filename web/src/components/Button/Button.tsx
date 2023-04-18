@@ -12,7 +12,7 @@ interface ButtonProps {
   border?: boolean
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium'
-  variant?: 'solid' | 'outline' | 'faded' | 'purple' | 'warn'
+  variant?: 'solid' | 'outline' | 'faded' | 'secondary' | 'warn'
   onClick?: () => void
   disabled?: boolean
   responsive?: boolean
@@ -59,8 +59,8 @@ export default function Button({
       variant === 'warn' &&
         'text-white bg-red-500 border-red-500 hover:bg-red-700 hover:text-white',
       variant === 'faded' && 'bg-white/10 hover:text-brand-accent-primary',
-      variant === 'purple' &&
-        'bg-indigo-500 border-indigo-500 hover:text-white hover:bg-indigo-600 ',
+      variant === 'secondary' &&
+        'bg-brand-gray-secondary border-brand-gray-secondary hover:text-white hover:bg-brand-accent-primary ',
     ],
     // Sizes and responsive sizes
     [

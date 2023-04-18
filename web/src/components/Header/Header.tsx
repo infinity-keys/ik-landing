@@ -23,7 +23,7 @@ const Header = () => {
       {({ open }) => (
         <>
           <div
-            className="border-b border-indigo-500 px-4 sm:px-6 lg:border-none lg:px-8"
+            className="border-b border-brand-gray-secondary px-4 sm:px-6 lg:border-none lg:px-8"
             aria-label="Top"
           >
             <div className="relative flex h-20 items-center justify-between">

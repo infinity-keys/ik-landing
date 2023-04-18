@@ -26,13 +26,13 @@ const EmailNewsletter = () => {
             type="email"
             name="email"
             placeholder="Enter your email"
-            className="block w-full rounded-md border-0 px-4 py-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 focus:ring-offset-gray-900"
+            className="block w-full rounded-md border-0 px-4 py-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-accent-secondary focus:ring-offset-2 focus:ring-offset-gray-900"
           />
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-3">
           <Button
             type="submit"
-            variant="purple"
+            variant="secondary"
             disabled={state.submitting}
             text="Subscribe"
             fullWidth

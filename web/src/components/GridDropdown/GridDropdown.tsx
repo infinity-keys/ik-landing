@@ -81,9 +81,9 @@ const GridDropdown = ({ currentCount, rewardableType }: GridDropdownProps) => {
                       className={clsx(
                         {
                           'bg-brand-accent-primary font-medium': selectedCount,
-                          'bg-indigo-500': active,
+                          'bg-brand-gray-secondary': active,
                         },
-                        'block px-4 py-4 text-sm hover:bg-indigo-500 md:py-2'
+                        'block px-4 py-4 text-sm hover:bg-brand-gray-secondary md:py-2'
                       )}
                     >
                       {count}

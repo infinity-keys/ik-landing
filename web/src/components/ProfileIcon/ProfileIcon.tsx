@@ -44,7 +44,9 @@ const ProfileIcon = () => {
                         to={routes.profile()}
                         className={clsx(
                           'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                          active ? 'bg-indigo-500 text-white' : 'text-gray-100'
+                          active
+                            ? 'bg-brand-gray-secondary text-white'
+                            : 'text-gray-100'
                         )}
                       >
                         View Profile
@@ -57,7 +59,9 @@ const ProfileIcon = () => {
                         onClick={logOut}
                         className={clsx(
                           'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                          active ? 'bg-indigo-500 text-white' : 'text-gray-100'
+                          active
+                            ? 'bg-brand-gray-secondary text-white'
+                            : 'text-gray-100'
                         )}
                       >
                         Log Out
@@ -72,7 +76,9 @@ const ProfileIcon = () => {
                       to={routes.profile()}
                       className={clsx(
                         'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-                        active ? 'bg-indigo-500 text-white' : 'text-gray-100'
+                        active
+                          ? 'bg-brand-gray-secondary text-white'
+                          : 'text-gray-100'
                       )}
                     >
                       Sign In

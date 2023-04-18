@@ -43,7 +43,7 @@ const Footer = () => {
     <footer className="ik-footer text-white">
       <div className="overflow-hidden bg-brand-gray-primary py-12 px-4 sm:px-6 lg:px-8">
         <nav className="px-4 sm:px-6 lg:px-8" aria-label="Top">
-          <div className="flex w-full flex-col items-center justify-center border-b border-indigo-500 py-6 sm:flex-row lg:border-none">
+          <div className="flex w-full flex-col items-center justify-center border-b border-brand-gray-secondary py-6 sm:flex-row lg:border-none">
             <div className="mb-4 flex items-center space-x-4 sm:mb-0">
               {links.map(({ className, href, testing, ariaLabel, icon }) => (
                 <div key={href}>
