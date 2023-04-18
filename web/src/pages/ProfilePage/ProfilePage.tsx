@@ -77,7 +77,7 @@ const ProfilePage = () => {
                   type="email"
                   placeholder="Your Email"
                   ref={emailRef}
-                  className="mr-4 mb-2 rounded border border-brand-accent-primary bg-transparent text-lg text-white placeholder:text-gray-150 focus:ring-brand-accent-secondary"
+                  className="mr-4 mb-2 rounded border border-brand-accent-primary bg-transparent text-lg text-white placeholder:text-gray-150 "
                 />
                 <Button type="submit" text="Log In" />
               </form>

@@ -45,6 +45,10 @@
   svg {
     @apply fill-current;
   }
+  [type='text']:focus,
+  [type='email']:focus {
+    @apply border-brand-accent-primary ring-brand-accent-secondary;
+  }
 }
 
 @layer components {
@@ -172,11 +176,6 @@
     p > img {
       @apply mx-auto;
     }
-  }
-
-  input:focus,
-  input:active {
-    @apply ring-fuchsia-600;
   }
 }
 
