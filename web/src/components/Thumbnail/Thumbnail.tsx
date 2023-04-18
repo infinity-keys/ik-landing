@@ -45,13 +45,11 @@ const Thumbnail = ({
         }
       )}
     >
-      {progress === ThumbnailProgress.Completed &&
-        solvedArray?.filter(Boolean).length >= 2 &&
-        solvedArray?.every((value) => value === true) && (
-          <span className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-turquoise/30 ">
-            <CheckIcon className="h-3 w-3 text-turquoise" />
-          </span>
-        )}
+      {progress === ThumbnailProgress.Completed && (
+        <span className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-turquoise/30 ">
+          <CheckIcon className="h-3 w-3 text-turquoise" />
+        </span>
+      )}
 
       <span
         className={clsx(
