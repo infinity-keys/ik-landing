@@ -16,11 +16,14 @@ const Header = () => {
   const { loading } = useAuth()
 
   return (
-    <Disclosure as="header" className="header fixed top-0 z-50 w-full bg-blue">
+    <Disclosure
+      as="header"
+      className="header fixed top-0 z-50 w-full bg-brand-gray-primary"
+    >
       {({ open }) => (
         <>
           <div
-            className="border-b border-indigo-500 px-4 sm:px-6 lg:border-none lg:px-8"
+            className="border-b border-brand-gray-secondary px-4 sm:px-6 lg:border-none lg:px-8"
             aria-label="Top"
           >
             <div className="relative flex h-20 items-center justify-between">
@@ -44,31 +47,31 @@ const Header = () => {
                 <nav className="flex space-x-4">
                   <Link
                     to={routes.home()}
-                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                    className="header-nav--link text-2xl font-medium text-white hover:text-brand-accent-primary"
                   >
                     Home
                   </Link>
                   <a
                     href="https://blog.infinitykeys.io/what-is-infinity-keys"
                     target="_blank"
-                    rel="noopener"
-                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                    rel="noopener noreferrer"
+                    className="header-nav--link text-2xl font-medium text-white hover:text-brand-accent-primary"
                   >
                     Thesis
                   </a>
                   <a
                     href="https://docs.infinitykeys.io"
                     target="_blank"
-                    rel="noopener"
-                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                    rel="noopener noreferrer"
+                    className="header-nav--link text-2xl font-medium text-white hover:text-brand-accent-primary"
                   >
                     Docs
                   </a>
                   <a
                     href="https://blog.infinitykeys.io"
                     target="_blank"
-                    rel="noopener"
-                    className="header-nav--link text-2xl font-medium text-white hover:text-turquoise"
+                    rel="noopener noreferrer"
+                    className="header-nav--link text-2xl font-medium text-white hover:text-brand-accent-primary"
                   >
                     Blog
                   </a>
@@ -103,7 +106,7 @@ const Header = () => {
           </div>
 
           {/* mobile menu */}
-          <Disclosure.Panel className="absolute top-20 left-0 w-full bg-blue lg:hidden">
+          <Disclosure.Panel className="absolute top-20 left-0 w-full bg-brand-gray-primary lg:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
               <Link
                 to={routes.home()}
@@ -114,7 +117,7 @@ const Header = () => {
               <a
                 href="https://blog.infinitykeys.io/what-is-infinity-keys"
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
                 className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
               >
                 Thesis
@@ -122,7 +125,7 @@ const Header = () => {
               <a
                 href="https://docs.infinitykeys.io"
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
                 className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
               >
                 Docs
@@ -130,7 +133,7 @@ const Header = () => {
               <a
                 href="https://blog.infinitykeys.io"
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
                 className="block rounded-md px-3 py-2 text-2xl font-medium text-white"
               >
                 Blog

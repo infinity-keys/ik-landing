@@ -32,21 +32,21 @@ const Thumbnail = ({
     <Link
       to={href}
       className={clsx(
-        'puzzle-thumb relative block w-full max-w-[18rem] cursor-pointer break-words rounded-lg border border-transparent bg-blue-800 shadow transition hover:border-turquoise',
+        'puzzle-thumb relative block w-full max-w-[18rem] cursor-pointer break-words rounded-lg border border-transparent bg-black/40 shadow transition hover:border-brand-accent-primary',
         progress === ThumbnailProgress.Current
-          ? 'border-turquoise'
+          ? 'border-brand-accent-primary'
           : 'border-transparent',
         {
           'flex flex-col text-center': isGrid,
-          'cursor-pointer transition hover:border-turquoise':
+          'cursor-pointer transition hover:border-brand-accent-primary':
             progress === ThumbnailProgress.Completed,
           'opacity-60 grayscale': progress === ThumbnailProgress.NotCompleted,
         }
       )}
     >
       {progress === ThumbnailProgress.Completed && (
-        <span className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-turquoise/30 ">
-          <CheckIcon className="h-3 w-3 text-turquoise" />
+        <span className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand-accent-primary/30 ">
+          <CheckIcon className="h-3 w-3 text-brand-accent-secondary" />
         </span>
       )}
 
@@ -73,7 +73,14 @@ const Thumbnail = ({
               size={isGrid ? 128 : 56}
               name={id}
               variant="marble"
-              colors={['#101D42', '#E400FF', '#3FCCBB', '#8500AC', '#303B5B']}
+              colors={[
+                '#b1804a',
+                '#76493b',
+                '#543230',
+                '#352d2d',
+                '#a89382',
+                '#ccbba0',
+              ]}
             />
           )}
         </span>
@@ -102,7 +109,7 @@ const Thumbnail = ({
                   key={i}
                   className={clsx(
                     'mr-1 mt-2 block h-2 w-2 rounded-full pt-2',
-                    solved ? 'bg-green-500' : 'bg-brand-gray-secondary'
+                    solved ? 'text-brand-accent-primary' : 'text-gray-300'
                   )}
                 ></span>
               ))}

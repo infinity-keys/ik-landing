@@ -27,7 +27,7 @@ const Seo = ({
         ogContentUrl={imageUrl}
       />
       <Head>
-        <meta name="theme-color" content="#3FCCBB" />
+        <meta name="theme-color" content="#b1804a" />
       </Head>
     </>
   )

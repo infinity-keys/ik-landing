@@ -73,7 +73,7 @@ const PuzzleLandingLayout = ({
                   {index ? ', ' : ''}
                   <Link
                     to={rewardableLandingRoute({ slug, type })}
-                    className="ml-2 mt-2 inline-block italic transition-colors hover:text-turquoise"
+                    className="ml-2 mt-2 inline-block italic transition-colors hover:text-brand-accent-primary"
                   >
                     {name} {capitalize(type)}
                   </Link>

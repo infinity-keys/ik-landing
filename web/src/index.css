@@ -39,7 +39,7 @@
   }
 
   html {
-    @apply bg-blue;
+    @apply bg-brand-gray-primary;
   }
 
   svg {
@@ -52,8 +52,8 @@
     @apply flex flex-wrap justify-center;
   }
   .ik-code-input {
-    @apply m-0 mx-1 mb-2 border-gray-200 bg-gray-500 text-2xl font-bold text-turquoise shadow-md !important;
-    text-shadow: -2px 0px 7px #3fccbb;
+    @apply m-0 mx-1 mb-2 border-brand-gray-secondary bg-brand-gray-secondary/40 text-2xl font-bold text-brand-accent-secondary shadow-md !important;
+    text-shadow: -2px 0px 7px #b1804a;
     width: 45px !important;
     height: 45px !important;
     padding: 0;
@@ -84,8 +84,8 @@
   }
 
   .radial-bg {
-    background: radial-gradient(ellipse at left top, #3fccbb50, transparent 40%),
-      radial-gradient(ellipse at right bottom, #d2508e70, transparent 40%);
+    /* background: radial-gradient(ellipse at left top, #3fccbb50, transparent 40%),
+      radial-gradient(ellipse at right bottom, #d2508e70, transparent 40%); */
   }
 
   .discordIcon:hover {
@@ -163,7 +163,7 @@
     }
 
     a {
-      @apply text-turquoise transition hover:text-turquoiseDark;
+      @apply text-brand-accent-primary transition hover:text-brand-accent-secondary;
     }
   }
 
@@ -172,6 +172,11 @@
     p > img {
       @apply mx-auto;
     }
+  }
+
+  input:focus,
+  input:active {
+    @apply ring-fuchsia-600;
   }
 }
 

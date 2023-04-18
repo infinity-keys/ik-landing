@@ -5,7 +5,7 @@ const KeysLink = () => (
       href="https://twitter.com/InfinityKeys"
       rel="noopener noreferrer"
       target="_blank"
-      className="text-turquoise"
+      className="text-brand-accent-primary"
     >
       @InfinityKeys
     </a>

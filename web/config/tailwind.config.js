@@ -10,6 +10,10 @@ module.exports = {
     },
     extend: {
       colors: {
+        'brand-accent-primary': '#b1804a',
+        'brand-accent-secondary': '#ccbba0',
+        'brand-gray-primary': '#1e1e1c',
+        'brand-gray-secondary': '#585857',
         transparent: 'transparent',
         current: 'currentColor',
         white: '#ffffff',
@@ -47,8 +51,8 @@ module.exports = {
           '100%': { opacity: 1 },
         },
         glow: {
-          '0%': { textShadow: '0 0 0px #3fccbb' },
-          '100%': { textShadow: '0 0 8px #3fccbb' },
+          '0%': { textShadow: '0 0 0px #b1804a' },
+          '100%': { textShadow: '0 0 8px #b1804a' },
         },
       },
     },

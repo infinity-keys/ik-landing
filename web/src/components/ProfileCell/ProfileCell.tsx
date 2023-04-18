@@ -61,41 +61,50 @@ export const Success = ({
           size={56}
           name={user.email}
           variant="marble"
-          colors={['#101D42', '#E400FF', '#3FCCBB', '#8500AC', '#303B5B']}
+          colors={[
+            '#b1804a',
+            '#76493b',
+            '#543230',
+            '#352d2d',
+            '#a89382',
+            '#ccbba0',
+          ]}
         />
 
         <div className="ml-6">
           <p className="text-xl font-bold text-white">
             {user.username || user.email.split('@')[0]}
           </p>
-          {address && <p className="text-turquoise">{truncate(address)}</p>}
+          {address && (
+            <p className="text-brand-accent-primary">{truncate(address)}</p>
+          )}
         </div>
       </div>
 
       <div className="flex gap-10 p-10">
         <div>
-          <p className="text-xl font-bold text-turquoise">
+          <p className="text-xl font-bold text-brand-accent-primary">
             {user.stepsSolvedCount}
           </p>
           <p>Steps</p>
         </div>
 
         <div>
-          <p className="text-xl font-bold text-turquoise">
+          <p className="text-xl font-bold text-brand-accent-primary">
             {user.puzzlesSolvedCount}
           </p>
           <p>Puzzles</p>
         </div>
 
         <div>
-          <p className="text-xl font-bold text-turquoise">
+          <p className="text-xl font-bold text-brand-accent-primary">
             {user.packsSolvedCount}
           </p>
           <p>Packs</p>
         </div>
 
         <div>
-          <p className="text-xl font-bold text-turquoise">
+          <p className="text-xl font-bold text-brand-accent-primary">
             {user.nftsSolvedCount}
           </p>
           <p>NFTs</p>

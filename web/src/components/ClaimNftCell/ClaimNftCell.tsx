@@ -1,5 +1,4 @@
 import { Fragment, useEffect } from 'react'
-import { Link } from '@redwoodjs/router'
 
 import { gql, useLazyQuery } from '@apollo/client'
 import {
@@ -23,6 +22,7 @@ import {
   useAccount,
 } from 'wagmi'
 
+import { Link } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
@@ -255,7 +255,7 @@ export const Success = ({
             target="_blank"
             rel="noopener noreferrer"
             href={`${marketplaceLookup[chainClaimed || chain?.id]}${tokenId}`}
-            className="text-gray-200 underline transition-colors hover:text-turquoise"
+            className="text-gray-200 underline transition-colors hover:text-brand-accent-primary"
           >
             View NFT On {marketplaceNameLookup[chainClaimed || chain?.id]}
           </a>
@@ -280,7 +280,7 @@ export const Success = ({
                   {index ? ', ' : ''}
                   <Link
                     to={rewardableLandingRoute({ slug, type })}
-                    className="ml-2 mt-2 inline-block italic transition-colors hover:text-turquoise"
+                    className="ml-2 mt-2 inline-block italic transition-colors hover:text-brand-accent-primary"
                   >
                     {name} {capitalize(type)}
                   </Link>

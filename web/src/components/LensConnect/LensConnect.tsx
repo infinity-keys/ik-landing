@@ -96,7 +96,7 @@ const LensConnect = () => {
               <button
                 disabled={isPending}
                 onClick={onLogoutClick}
-                className="text-sm text-gray-200 transition-colors hover:text-turquoise"
+                className="text-sm text-gray-200 transition-colors hover:text-brand-accent-primary"
               >
                 Disconnect Lens Profile
               </button>
