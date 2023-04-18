@@ -109,7 +109,9 @@ const Thumbnail = ({
                   key={i}
                   className={clsx(
                     'mr-1 mt-2 block h-1 w-1 rounded-full',
-                    solved ? 'bg-green-400' : 'bg-brand-gray-secondary'
+                    solved
+                      ? 'animate-glowContinuous bg-green-400'
+                      : 'bg-brand-gray-secondary'
                   )}
                 />
               ))}
