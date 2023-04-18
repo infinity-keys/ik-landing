@@ -79,6 +79,8 @@ export default async () => {
     })
   )
 
+  const protagonistUser = ikUsersData.at(-1)
+
   console.log(`created ${adminUsers.length} IK admin users`)
 
   // Create an NFT for puzzle1
@@ -131,10 +133,10 @@ export default async () => {
 
   const puzzle1 = await db.rewardable.create({
     data: {
-      name: 'Puzzle 1',
+      name: 'Puzzle 1 (Brazil)',
       slug: 'puzzle-1',
       explanation:
-        'This is the first puzzle, it is anonymous so you can solve it without logging in',
+        'This is the first puzzle, it is about Brazil, it is anonymous so you can solve it without logging in',
       type: 'PUZZLE',
       orgId: ikOrg.id,
 
@@ -150,12 +152,12 @@ export default async () => {
           steps: {
             create: [
               {
-                challenge: 'What is the capital of France?',
+                challenge: 'What is the biggest river in Brazil?',
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
                 stepSimpleText: {
                   create: {
-                    solution: 'Paris',
+                    solution: 'Amazon',
                   },
                 },
               },
@@ -176,7 +178,7 @@ export default async () => {
 
   const puzzle2 = await db.rewardable.create({
     data: {
-      name: 'Puzzle 2',
+      name: 'Puzzle 2 (Japan)',
       slug: 'puzzle-2',
       explanation:
         'This is the second puzzle, you must be logged in to solve it',
@@ -201,6 +203,16 @@ export default async () => {
                   },
                 },
               },
+              {
+                challenge: 'What Japanese food has raw fish wrapped in rice?',
+                stepSortWeight: 2,
+                type: 'SIMPLE_TEXT',
+                stepSimpleText: {
+                  create: {
+                    solution: 'Sushi',
+                  },
+                },
+              },
             ],
           },
         },
@@ -218,7 +230,7 @@ export default async () => {
 
   const puzzle3 = await db.rewardable.create({
     data: {
-      name: 'Puzzle 3',
+      name: 'Puzzle 3 (Greece)',
       slug: 'puzzle-3',
       explanation:
         'This is the third puzzle, you must be logged in to solve it',
@@ -243,6 +255,26 @@ export default async () => {
                   },
                 },
               },
+              {
+                challenge: 'What is the biggest island in Greece?',
+                stepSortWeight: 2,
+                type: 'SIMPLE_TEXT',
+                stepSimpleText: {
+                  create: {
+                    solution: 'Crete',
+                  },
+                },
+              },
+              {
+                challenge: 'Who is head of the ancient Greek Olympian gods?',
+                stepSortWeight: 3,
+                type: 'SIMPLE_TEXT',
+                stepSimpleText: {
+                  create: {
+                    solution: 'Zeus',
+                  },
+                },
+              },
             ],
           },
         },
@@ -252,10 +284,10 @@ export default async () => {
 
   const puzzle4 = await db.rewardable.create({
     data: {
-      name: 'Puzzle 4',
+      name: 'Puzzle 4 (Egypt)',
       slug: 'puzzle-4',
       explanation:
-        'This is the forth puzzle, you must be logged in to solve it',
+        'This is the forth puzzle, it is about Egypt, you must be logged in to solve it',
       type: 'PUZZLE',
       organization: {
         connect: {
@@ -274,12 +306,32 @@ export default async () => {
           steps: {
             create: [
               {
-                challenge: 'What is the capital of Itlay?',
+                challenge: "What is the name of Egypt's main canal?",
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
                 stepSimpleText: {
                   create: {
-                    solution: 'Rome',
+                    solution: 'Suez',
+                  },
+                },
+              },
+              {
+                challenge: 'Where are the great pyramids?',
+                stepSortWeight: 2,
+                type: 'SIMPLE_TEXT',
+                stepSimpleText: {
+                  create: {
+                    solution: 'Giza',
+                  },
+                },
+              },
+              {
+                challenge: "What is the name of Egypt's main river?",
+                stepSortWeight: 3,
+                type: 'SIMPLE_TEXT',
+                stepSimpleText: {
+                  create: {
+                    solution: 'Nile',
                   },
                 },
               },
@@ -291,15 +343,14 @@ export default async () => {
   })
   console.log('Puzzles created')
 
-  // user rick.a.burd@gmail.com attempts step in Puzzle 1
+  // protagonistUser attempts only step in Puzzle 1
+  // ...and enters the correct answer
   const attempt1 = await db.attempt.create({
     data: {
-      data: [
-        "// schema.prisma says: 'What did they guess/input/confirm/connect?'",
-      ],
+      data: ['Brazil'],
       user: {
         connect: {
-          id: ikUsersData[ikUsersData.length - 1].id,
+          id: protagonistUser.id,
         },
       },
       step: {
@@ -310,13 +361,13 @@ export default async () => {
     },
   })
 
-  // user rick.a.burd@gmail.com solves step in Puzzle 1
+  // protagonistUser solves only step in Puzzle 1
   const solve1 = await db.solve.create({
     //solve (not userReward) like in "const solve2"
     data: {
       user: {
         connect: {
-          id: ikUsersData[ikUsersData.length - 1].id,
+          id: protagonistUser.id,
         },
       },
       attempt: {
@@ -328,15 +379,14 @@ export default async () => {
     },
   })
 
-  // user rick.a.burd@gmail.com attempts step in Puzzle 2
+  // protagonistUser attempts step 1 of 2 in Puzzle 2
+  // ...and enters the correct answer
   const attempt2 = await db.attempt.create({
     data: {
-      data: [
-        "// schema.prisma says: 'What did they guess/input/confirm/connect?'",
-      ],
+      data: [{ solution: 'tokyo' }],
       user: {
         connect: {
-          id: ikUsersData[ikUsersData.length - 1].id,
+          id: protagonistUser.id,
         },
       },
       step: {
@@ -347,12 +397,12 @@ export default async () => {
     },
   })
 
-  // user rick.a.burd@gmail.com solves step in Puzzle 2
+  // protagonistUser solves step 1 of 2 in Puzzle 2
   const solve2 = await db.solve.create({
     data: {
       user: {
         connect: {
-          id: ikUsersData[ikUsersData.length - 1].id,
+          id: protagonistUser.id,
         },
       },
       attempt: {
@@ -364,13 +414,13 @@ export default async () => {
     },
   })
 
-  // user rick.a.burd@gmail.com gets a reward for Puzzle 1
+  // protagonistUser gets a reward for Puzzle 1
   const userReward1 = await db.userReward.create({
     // userReward (not solve) like in "const solve1"
     data: {
       user: {
         connect: {
-          id: ikUsersData[ikUsersData.length - 1].id,
+          id: protagonistUser.id,
         },
       },
       rewardable: {
@@ -381,13 +431,65 @@ export default async () => {
     },
   })
 
-  // user rick.a.burd@gmail.com gets a reward for Puzzle 2
-  const userReward2 = await db.userReward.create({
-    // userReward (not solve) like in "const solve1"
+  // protagonistUser attempts step 2 of 2 in Puzzle 2
+  // ...but enters the wrong answer
+  const attempt3 = await db.attempt.create({
+    data: {
+      data: [{ solution: 'sashimi' }],
+      user: {
+        connect: {
+          id: protagonistUser.id,
+        },
+      },
+      step: {
+        connect: {
+          id: puzzle2.puzzle.steps[1].id,
+        },
+      },
+    },
+  })
+
+  // protagonistUser attempts step 2 of 2 in Puzzle 2
+  // ...and this time enters the correct answer
+  const attempt4 = await db.attempt.create({
+    data: {
+      data: [{ solution: 'sushi' }],
+      user: {
+        connect: {
+          id: protagonistUser.id,
+        },
+      },
+      step: {
+        connect: {
+          id: puzzle2.puzzle.steps[1].id,
+        },
+      },
+    },
+  })
+
+  // protagonistUser solves step 2 of 2 in Puzzle 2
+  const solve3 = await db.solve.create({
     data: {
       user: {
         connect: {
-          id: ikUsersData[ikUsersData.length - 1].id,
+          id: protagonistUser.id,
+        },
+      },
+      attempt: {
+        connect: {
+          id: attempt4.id,
+        },
+      },
+      data: {},
+    },
+  })
+
+  // protagonistUser gets a reward for Puzzle 2
+  const userReward2 = await db.userReward.create({
+    data: {
+      user: {
+        connect: {
+          id: protagonistUser.id,
         },
       },
       rewardable: {
@@ -447,7 +549,7 @@ export default async () => {
     data: {
       user: {
         connect: {
-          id: ikUsersData[ikUsersData.length - 1].id,
+          id: protagonistUser.id,
         },
       },
       rewardable: {
