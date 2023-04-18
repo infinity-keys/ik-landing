@@ -118,7 +118,7 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
       <form onSubmit={handleSubmit}>
         {/* Input Boxes */}
         {showRICIBs ? (
-          <div className="magic-input font-bold text-turquoise">
+          <div className="magic-input font-bold text-brand-accent-primary">
             <RICIBs
               amount={count}
               handleOutputString={(text) => {

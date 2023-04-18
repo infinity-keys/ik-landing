@@ -18,7 +18,7 @@ const Flicker = ({
   <span
     style={{ animationDelay: delay }}
     className={clsx(
-      'text-turquoise opacity-0',
+      'text-brand-accent-primary opacity-0',
       once ? 'animate-fadeGlow' : 'animate-flickerGlow',
       bold ? 'font-bold' : 'font-medium'
     )}

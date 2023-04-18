@@ -392,7 +392,7 @@ const PrivacyPolicyPage = () => {
             href="https://discord.gg/infinitykeys"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-turquoise"
+            className="text-brand-accent-primary"
           >
             here
           </a>

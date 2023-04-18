@@ -38,9 +38,9 @@ const ThumbnailMini = ({ name, progress, to }: ThumbnailMiniProps) => {
     >
       <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full ">
         {progress === ThumbnailProgress.Completed ? (
-          <LockOpenIcon className="h-3 w-3 text-turquoise" />
+          <LockOpenIcon className="h-3 w-3 text-brand-accent-primary" />
         ) : (
-          <LockClosedIcon className="h-3 w-3 text-turquoise" />
+          <LockClosedIcon className="h-3 w-3 text-brand-accent-primary" />
         )}
       </span>
 

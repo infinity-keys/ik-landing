@@ -58,7 +58,7 @@ const ProfilePage = () => {
           <ProfileCell />
 
           <button
-            className="mx-auto mt-2 block italic text-gray-200 underline transition-colors hover:text-turquoise"
+            className="mx-auto mt-2 block italic text-gray-200 underline transition-colors hover:text-brand-accent-primary"
             onClick={() => reconcilePuzzles()}
           >
             Sync your progress

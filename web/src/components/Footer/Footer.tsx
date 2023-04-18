@@ -71,7 +71,7 @@ const Footer = () => {
           reserved. |{' '}
           <Link
             to={routes.privacyPolicy()}
-            className="transition hover:text-turquoise"
+            className="transition hover:text-brand-accent-primary"
           >
             Privacy Policy
           </Link>

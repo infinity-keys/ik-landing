@@ -103,7 +103,7 @@ const Thumbnail = ({
                   key={i}
                   className={clsx(
                     'h-5 w-5 pt-2',
-                    solved ? 'text-turquoise' : 'text-gray-300'
+                    solved ? 'text-brand-accent-primary' : 'text-gray-300'
                   )}
                 >
                   <MinimalKeyLogo />

@@ -34,7 +34,10 @@ const CookieConsentBanner = () => {
     >
       We use cookies to ensure that we give you the best experience on our
       website. Read our{' '}
-      <Link to={routes.privacyPolicy()} className="text-turquoise underline">
+      <Link
+        to={routes.privacyPolicy()}
+        className="text-brand-accent-primary underline"
+      >
         Privacy Policy
       </Link>
       .

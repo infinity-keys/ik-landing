@@ -19,13 +19,13 @@ export default function Heading({
 }: HeadingProps) {
   const classes = clsx(
     'tracking-tight font-bold',
-    turquoise ? 'text-turquoise' : 'text-white',
+    turquoise ? 'text-brand-accent-primary' : 'text-white',
     {
       'text-xl sm:text-2xl': visual === 's',
       'text-2xl sm:text-4xl': visual === 'm',
       'text-4xl sm:text-6xl': visual === 'l',
       'text-center': center,
-      'text-turquoise': turquoise,
+      'text-brand-accent-primary': turquoise,
     }
   )
 

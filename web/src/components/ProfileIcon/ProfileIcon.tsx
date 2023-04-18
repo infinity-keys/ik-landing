@@ -15,7 +15,7 @@ const ProfileIcon = () => {
     <div className="text-right">
       <Menu as="div" className="relative z-50 inline-block text-left">
         <div>
-          <Menu.Button className="inline-flex w-full items-center justify-center rounded-lg border border-transparent bg-white/10 px-2 py-1 text-sm font-medium text-white transition-colors hover:border-white hover:text-turquoise focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 sm:px-3 sm:py-2">
+          <Menu.Button className="inline-flex w-full items-center justify-center rounded-lg border border-transparent bg-white/10 px-2 py-1 text-sm font-medium text-white transition-colors hover:border-white hover:text-brand-accent-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 sm:px-3 sm:py-2">
             <UserCircleIcon className="block h-6 w-6 fill-transparent sm:h-7 sm:w-7" />
             <span
               className={clsx(
