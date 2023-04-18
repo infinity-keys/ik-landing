@@ -108,10 +108,10 @@ const Thumbnail = ({
                 <span
                   key={i}
                   className={clsx(
-                    'mr-1 mt-2 block h-2 w-2 rounded-full pt-2',
-                    solved ? 'text-brand-accent-primary' : 'text-gray-300'
+                    'mr-1 mt-2 block h-1 w-1 rounded-full',
+                    solved ? 'bg-green-400' : 'bg-brand-gray-secondary'
                   )}
-                ></span>
+                />
               ))}
             </dd>
           </dl>
