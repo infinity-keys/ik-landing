@@ -1,15 +1,15 @@
-import type { IOptions, RecursivePartial } from "tsparticles-engine";
+import type { IOptions, RecursivePartial } from 'tsparticles-engine'
 
 export const heroStars: RecursivePartial<IOptions> = {
   fps_limit: 60,
   fullScreen: false,
   interactivity: {
-    detect_on: "canvas",
+    detect_on: 'canvas',
     events: {
-      onclick: { enable: true, mode: "repulse" },
+      onclick: { enable: true, mode: 'repulse' },
       onhover: {
         enable: true,
-        mode: "bubble",
+        mode: 'bubble',
         parallax: { enable: false, force: 2, smooth: 10 },
       },
       resize: true,
@@ -29,9 +29,9 @@ export const heroStars: RecursivePartial<IOptions> = {
     },
   },
   particles: {
-    color: { value: "#3FCCBB" },
+    color: { value: '#b1804a' },
     line_linked: {
-      color: "#ffffff",
+      color: '#ffffff',
       distance: 150,
       enable: false,
       opacity: 0.4,
@@ -41,9 +41,9 @@ export const heroStars: RecursivePartial<IOptions> = {
       size: true,
       attract: { enable: false, rotateX: 600, rotateY: 600 },
       bounce: false,
-      direction: "none",
+      direction: 'none',
       enable: true,
-      out_mode: "out",
+      out_mode: 'out',
       random: true,
       speed: 0.3,
       straight: false,
@@ -59,8 +59,8 @@ export const heroStars: RecursivePartial<IOptions> = {
     },
     shape: {
       polygon: { nb_sides: 5 },
-      stroke: { color: "#000000", width: 0 },
-      type: "circle",
+      stroke: { color: '#000000', width: 0 },
+      type: 'circle',
     },
     size: {
       anim: { enable: false, size_min: 0.3, speed: 4, sync: false },
@@ -71,13 +71,13 @@ export const heroStars: RecursivePartial<IOptions> = {
   polygon: {
     draw: {
       enable: false,
-      lineColor: "#ffffff",
+      lineColor: '#ffffff',
       lineWidth: 0.5,
     },
     move: { radius: 10 },
     scale: 1,
-    type: "none",
-    url: "",
+    type: 'none',
+    url: '',
   },
   retina_detect: true,
-};
+}

@@ -51,8 +51,8 @@ module.exports = {
           '100%': { opacity: 1 },
         },
         glow: {
-          '0%': { textShadow: '0 0 0px #3fccbb' },
-          '100%': { textShadow: '0 0 8px #3fccbb' },
+          '0%': { textShadow: '0 0 0px #b1804a' },
+          '100%': { textShadow: '0 0 8px #b1804a' },
         },
       },
     },

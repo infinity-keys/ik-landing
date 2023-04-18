@@ -9,7 +9,7 @@
 .Button {
   padding: 40px 80px;
   font-size: 2em;
-  background: #3fccbb;
+  background: #b1804a;
   border-radius: 20px;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 60px;
@@ -20,7 +20,7 @@
   line-height: 20px;
   border-style: solid;
   border-width: 2px;
-  border-color: #3fccbb;
+  border-color: #b1804a;
   border-radius: 20px;
   padding: 40px;
 }

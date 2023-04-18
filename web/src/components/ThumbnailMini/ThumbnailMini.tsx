@@ -18,10 +18,10 @@ const ThumbnailMini = ({ name, progress, to }: ThumbnailMiniProps) => {
       className={clsx(
         'puzzle-thumb bg-brand-gray-primary-800 relative flex w-full max-w-[10rem] items-center rounded-lg border py-3 px-3 text-center shadow lg:px-4',
         progress === ThumbnailProgress.Current
-          ? 'border-turquoise'
+          ? 'border-brand-accent-primary'
           : 'border-transparent',
         {
-          'cursor-pointer transition hover:border-turquoise':
+          'cursor-pointer transition hover:border-brand-accent-primary':
             progress === ThumbnailProgress.Completed,
           'opacity-60 grayscale':
             progress === ThumbnailProgress.NotCompleted ||

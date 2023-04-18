@@ -33,13 +33,13 @@ const Thumbnail = ({
     <Link
       to={href}
       className={clsx(
-        'puzzle-thumb bg-brand-gray-primary-800 relative block w-full max-w-[18rem] cursor-pointer break-words rounded-lg border border-transparent shadow transition hover:border-turquoise',
+        'puzzle-thumb bg-brand-gray-primary-800 relative block w-full max-w-[18rem] cursor-pointer break-words rounded-lg border border-transparent shadow transition hover:border-brand-accent-primary',
         progress === ThumbnailProgress.Current
-          ? 'border-turquoise'
+          ? 'border-brand-accent-primary'
           : 'border-transparent',
         {
           'flex flex-col text-center': isGrid,
-          'cursor-pointer transition hover:border-turquoise':
+          'cursor-pointer transition hover:border-brand-accent-primary':
             progress === ThumbnailProgress.Completed,
           'opacity-60 grayscale': progress === ThumbnailProgress.NotCompleted,
         }
