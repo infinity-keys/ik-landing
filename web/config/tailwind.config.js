@@ -10,6 +10,10 @@ module.exports = {
     },
     extend: {
       colors: {
+        'brand-accent-primary': '#b1804a',
+        'brand-accent-secondary': '#ccbba0',
+        'brand-gray-primary': '#1e1e1c',
+        'brand-gray-secondary': '#585857',
         transparent: 'transparent',
         current: 'currentColor',
         white: '#ffffff',
