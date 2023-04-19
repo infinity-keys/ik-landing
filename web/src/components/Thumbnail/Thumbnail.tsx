@@ -1,4 +1,5 @@
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon'
+import { AVATAR_GRADIENT_COLORS } from '@infinity-keys/constants'
 import { ThumbnailProgress } from '@infinity-keys/core'
 import Avatar from 'boring-avatars'
 import clsx from 'clsx'
@@ -73,14 +74,7 @@ const Thumbnail = ({
               size={isGrid ? 128 : 56}
               name={id}
               variant="marble"
-              colors={[
-                '#b1804a',
-                '#76493b',
-                '#543230',
-                '#352d2d',
-                '#a89382',
-                '#ccbba0',
-              ]}
+              colors={AVATAR_GRADIENT_COLORS}
             />
           )}
         </span>
