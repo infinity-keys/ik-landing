@@ -7,7 +7,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "strictNullChecks": true,
+    "strict": true,
     "baseUrl": "./",
     "rootDirs": [
       "./src",
