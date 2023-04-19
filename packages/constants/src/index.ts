@@ -13,6 +13,16 @@ export const welcome = 'Thanks for playing :)'
 // Email stuff
 export const SENDGRID_SENDER_ACCOUNT = 'noreply@infinitykeys.io'
 
+// UI
+export const AVATAR_GRADIENT_COLORS = [
+  '#b1804a',
+  '#76493b',
+  '#543230',
+  '#352d2d',
+  '#a89382',
+  '#ccbba0',
+]
+
 // Route stuff, see utils.ts:Routes
 export const URL_ORIGIN =
   typeof window !== 'undefined'

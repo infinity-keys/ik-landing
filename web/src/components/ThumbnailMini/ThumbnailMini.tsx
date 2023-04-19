@@ -1,5 +1,6 @@
 import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon'
 import LockOpenIcon from '@heroicons/react/24/solid/LockOpenIcon'
+import { AVATAR_GRADIENT_COLORS } from '@infinity-keys/constants'
 import { ThumbnailProgress } from '@infinity-keys/core'
 import Avatar from 'boring-avatars'
 import clsx from 'clsx'
@@ -48,14 +49,7 @@ const ThumbnailMini = ({ name, progress, to }: ThumbnailMiniProps) => {
         size={28}
         name={name}
         variant="marble"
-        colors={[
-          '#b1804a',
-          '#76493b',
-          '#543230',
-          '#352d2d',
-          '#a89382',
-          '#ccbba0',
-        ]}
+        colors={AVATAR_GRADIENT_COLORS}
       />
 
       <p className="ml-2 text-sm text-gray-150 lg:ml-4">{name}</p>
