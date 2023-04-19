@@ -16402,11 +16402,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord-coin-bot@workspace:packages/discord-dust-game-bot":
+"discord-dust-game-bot@workspace:packages/discord-dust-game-bot":
   version: 0.0.0-use.local
-  resolution: "discord-coin-bot@workspace:packages/discord-dust-game-bot"
+  resolution: "discord-dust-game-bot@workspace:packages/discord-dust-game-bot"
   dependencies:
-    discord-economy-super: latest
+    discord-economy-super: 1.7.5
     discord.js: ^14.7.1
     dotenv: ^16.0.3
     eslint: ^8.36.0
@@ -16414,7 +16414,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"discord-economy-super@npm:latest":
+"discord-economy-super@npm:1.7.5":
   version: 1.7.5
   resolution: "discord-economy-super@npm:1.7.5"
   dependencies:
@@ -22953,13 +22953,13 @@ __metadata:
   linkType: hard
 
 "loader-utils@npm:^1.2.3":
-  version: 1.4.0
-  resolution: "loader-utils@npm:1.4.0"
+  version: 1.4.2
+  resolution: "loader-utils@npm:1.4.2"
   dependencies:
     big.js: ^5.2.2
     emojis-list: ^3.0.0
     json5: ^1.0.1
-  checksum: b3f383612c23c0adf535d61709fb3eaf864afa54dae45608e3831156b89b4b05a0a4ddc6db7d742071babe872750ba3f4f9ce89326d94f6e096dbed978fa424e
+  checksum: 2b726088b5526f7605615e3e28043ae9bbd2453f4a85898e1151f3c39dbf7a2b65d09f3996bc588d92ac7e717ded529d3e1ea3ea42c433393be84a58234a2f53
   languageName: node
   linkType: hard
 
@@ -23290,10 +23290,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^7.10.1, lru-cache@npm:^7.14.1, lru-cache@npm:^7.7.1":
+"lru-cache@npm:^7.10.1, lru-cache@npm:^7.14.1":
   version: 7.18.3
   resolution: "lru-cache@npm:7.18.3"
   checksum: b3a452b491433db885beed95041eb104c157ef7794b9c9b4d647be503be91769d11206bb573849a16b4cc0d03cbd15ffd22df7960997788b74c1d399ac7a4fed
+  languageName: node
+  linkType: hard
+
+"lru-cache@npm:^7.7.1":
+  version: 7.14.0
+  resolution: "lru-cache@npm:7.14.0"
+  checksum: 88f1a8c2fd3bafc69121104740dcebc71e4ace97fb03f0ccf3b7d52df7dc10eedb78951af74f08437cf5fdb8c50d5956a0bcc944a073540f027efd8357f87cd1
   languageName: node
   linkType: hard
 
@@ -27636,12 +27643,12 @@ __metadata:
   linkType: hard
 
 "quick-mongo-super@npm:^1.0.11":
-  version: 1.0.11
-  resolution: "quick-mongo-super@npm:1.0.11"
+  version: 1.0.12
+  resolution: "quick-mongo-super@npm:1.0.12"
   dependencies:
     mongodb: ^4.3.1
     node-fetch: ^2.6.7
-  checksum: dee60f5721232bbfa974f7380133a62e8a8d7947b878882583c97066cf0aed9621d732790bef6fba7819cf7f83c84c73a503b5deaf62b9dcea89e35b94345dda
+  checksum: 1575468491030201453bcbc8358014c3e606cdc7ae3813b0586963e30dd729e5039d39d8db61ddc85abccf71c827e2cc1629ae31a78460497be78cc7182e627e
   languageName: node
   linkType: hard
 
