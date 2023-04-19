@@ -11,9 +11,10 @@ interface ThumbnailMiniProps {
   name: string
   progress: ThumbnailProgress
   to?: string
+  id: string
 }
 
-const ThumbnailMini = ({ name, progress, to }: ThumbnailMiniProps) => {
+const ThumbnailMini = ({ name, progress, to, id }: ThumbnailMiniProps) => {
   return (
     <Link
       className={clsx(
@@ -47,7 +48,7 @@ const ThumbnailMini = ({ name, progress, to }: ThumbnailMiniProps) => {
 
       <Avatar
         size={28}
-        name={name}
+        name={name + id}
         variant="marble"
         colors={AVATAR_GRADIENT_COLORS}
       />

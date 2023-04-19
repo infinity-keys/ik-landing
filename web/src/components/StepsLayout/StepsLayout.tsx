@@ -136,6 +136,7 @@ const StepsLayout = ({
                 : hasAnonUserCompletedStep
               return (
                 <ThumbnailMini
+                  id={id}
                   key={stepSortWeight}
                   name={`Step ${stepSortWeight.toString()}`}
                   progress={
