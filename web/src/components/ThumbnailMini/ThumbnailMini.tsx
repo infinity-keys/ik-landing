@@ -1,11 +1,12 @@
 import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon'
 import LockOpenIcon from '@heroicons/react/24/solid/LockOpenIcon'
-import { AVATAR_GRADIENT_COLORS } from '@infinity-keys/constants'
 import { ThumbnailProgress } from '@infinity-keys/core'
 import Avatar from 'boring-avatars'
 import clsx from 'clsx'
 
 import { Link } from '@redwoodjs/router'
+
+import { generateAvatarGradient } from 'src/lib/theme/helpers'
 
 interface ThumbnailMiniProps {
   name: string
@@ -48,9 +49,9 @@ const ThumbnailMini = ({ name, progress, to, id }: ThumbnailMiniProps) => {
 
       <Avatar
         size={28}
-        name={name + id}
+        name={id}
         variant="marble"
-        colors={AVATAR_GRADIENT_COLORS}
+        colors={generateAvatarGradient()}
       />
 
       <p className="ml-2 text-sm text-gray-150 lg:ml-4">{name}</p>

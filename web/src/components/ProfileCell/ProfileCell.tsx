@@ -12,6 +12,7 @@ import { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import LensConnect from 'src/components/LensConnect/LensConnect'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import { generateAvatarGradient } from 'src/lib/theme/helpers'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
@@ -61,14 +62,7 @@ export const Success = ({
           size={56}
           name={user.email}
           variant="marble"
-          colors={[
-            '#b1804a',
-            '#76493b',
-            '#543230',
-            '#352d2d',
-            '#a89382',
-            '#ccbba0',
-          ]}
+          colors={generateAvatarGradient()}
         />
 
         <div className="ml-6">

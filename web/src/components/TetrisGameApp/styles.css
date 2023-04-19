@@ -7,7 +7,7 @@
 .TetrisApp {
   font-family: sans-serif;
   text-align: center;
-  color: #b1804a;
+  color: theme(colors[brand-accent-primary]);
   background-color: #101d42;
   height: 100vh;
   padding: 20px;

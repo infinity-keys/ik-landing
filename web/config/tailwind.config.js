@@ -2,6 +2,8 @@
 
 const tailwindforms = require('@tailwindcss/forms')
 
+const IK_TOKENS = require('../src/lib/theme/ik-tokens.tokens.json')
+
 module.exports = {
   content: ['src/**/*.{js,jsx,ts,tsx}'],
   theme: {
@@ -10,18 +12,18 @@ module.exports = {
     },
     extend: {
       colors: {
-        'brand-accent-primary': '#b1804a',
-        'brand-accent-secondary': '#ccbba0',
-        'brand-gray-primary': '#1e1e1c',
-        'brand-gray-secondary': '#585857',
+        'brand-accent-primary': IK_TOKENS.brand.color['ik-gold-primary'].$value,
+        'brand-accent-secondary':
+          IK_TOKENS.brand.color['ik-gold-secondary'].$value,
+        'brand-gray-primary': IK_TOKENS.brand.color['ik-gray-primary'].$value,
+        'brand-gray-secondary':
+          IK_TOKENS.brand.color['ik-gray-secondary'].$value,
         transparent: 'transparent',
         current: 'currentColor',
         white: '#ffffff',
         blue: '#101D42',
         'blue-300': '#93c5fd',
         'blue-800': '#070e1f',
-        turquoise: '#3FCCBB',
-        turquoiseDark: '#5ffae7',
         twitterBlue: '#1da1f2',
         discordPurple: '#5865f2',
         gray: {
@@ -51,8 +53,12 @@ module.exports = {
           '100%': { opacity: 1 },
         },
         glow: {
-          '0%': { textShadow: '0 0 0px #b1804a' },
-          '100%': { textShadow: '0 0 8px #b1804a' },
+          '0%': {
+            textShadow: `0 0 0px ${IK_TOKENS.brand.color['ik-gold-primary'].$value}`,
+          },
+          '100%': {
+            textShadow: `0 0 8px ${IK_TOKENS.brand.color['ik-gold-primary'].$value}`,
+          },
         },
       },
     },

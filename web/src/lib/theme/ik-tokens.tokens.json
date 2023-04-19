@@ -1,0 +1,41 @@
+{
+  "brand": {
+    "$description": "Design tokens from our brand guidelines",
+    "color": {
+      "$description": "Our brand's primary color palette",
+      "ik-gold-primary": {
+        "$value": "#b1804a",
+        "$type": "color"
+      },
+      "ik-gold-secondary": {
+        "$value": "#ccbba0",
+        "$type": "color"
+      },
+      "ik-gray-primary": {
+        "$value": "#1e1e1c",
+        "$type": "color"
+      },
+      "ik-gray-secondary": {
+        "$value": "#585857",
+        "$type": "color"
+      }
+    }
+  },
+  "avatar": {
+    "$description": "Additional colors used in our avatar component's gradient",
+    "color": {
+      "ik-avatar-gold-light": {
+        "$value": "#a89382",
+        "$type": "color"
+      },
+      "ik-avatar-gold-medium": {
+        "$value": "#76493b",
+        "$type": "color"
+      },
+      "ik-avatar-gold-dark": {
+        "$value": "#543230",
+        "$type": "color"
+      }
+    }
+  }
+}
