@@ -39,6 +39,7 @@ const Routes = () => {
         </Private>
 
         <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
+          <Route path="/profile" page={ProfilePage} name="profile" />
           <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
           <Route path="/puzzles/{count:Int}/{page:Int}" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzlesPagination" />
           <Route path="/packs" page={RewardablePackRewardablePacksPage} name="packs" />
