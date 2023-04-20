@@ -18,6 +18,7 @@ const Routes = () => {
   return (
     <Router useAuth={useAuth}>
       <Route path="/" page={UnderConstructionPage} name="underConstruction" />
+      <Route path="/profile" page={ProfilePage} name="profile" />
 
       <Private unauthenticated="underConstruction" roles={'ADMIN'}>
         <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
