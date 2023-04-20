@@ -17,7 +17,7 @@ import WrapperLayout from 'src/layouts/WrapperLayout'
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
-      <Private unauthenticated="underConstruction" roles={'ADMIN'}>
+      <Private unauthenticated="profile" roles={'ADMIN'}>
         <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
           <Route path="/rewardable/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newRewardable" />
           {/* <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" /> */}
