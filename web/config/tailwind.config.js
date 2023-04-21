@@ -41,6 +41,7 @@ module.exports = {
         flickerGlow:
           'flicker 2s forwards, glow 1.2s alternate-reverse infinite',
         fadeGlow: 'fade .8s forwards, glow 1.2s alternate-reverse infinite',
+        glowContinuous: 'glowGreen 2.4s alternate-reverse infinite',
       },
       keyframes: {
         fade: {
@@ -58,6 +59,16 @@ module.exports = {
           },
           '100%': {
             textShadow: `0 0 8px ${IK_TOKENS.brand.color['ik-gold-primary'].$value}`,
+          },
+        },
+        glowGreen: {
+          '0%': {
+            boxShadow: '0 0 0px 0px rgba(74, 222, 128, 0)',
+            opacity: 0.7,
+          },
+          '100%': {
+            boxShadow: '0 0 0px 1px rgba(74, 222, 128, .5)',
+            opacity: 1,
           },
         },
       },
