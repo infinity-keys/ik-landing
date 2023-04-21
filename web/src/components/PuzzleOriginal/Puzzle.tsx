@@ -13,9 +13,9 @@ import { routes } from '@redwoodjs/router'
 
 // Styling and logic for the input boxes used to answer the puzzle
 
-import Button from 'src/components/Button'
 
 // small padlock icon
+import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Lock from 'src/svgs/Lock'
 
@@ -158,8 +158,8 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
           ) : (
             <div className="invisible-message opacity-0">
               <p>
-                'this is placeholder text that is the same height as the
-                markdown text above'
+                &apos;this is placeholder text that is the same height as the
+                markdown text above&apos;
               </p>
             </div>
           )}

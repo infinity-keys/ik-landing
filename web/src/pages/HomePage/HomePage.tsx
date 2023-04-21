@@ -24,7 +24,7 @@ const HomePage = () => {
     <Wrapper full radialBg={false}>
       <Seo title="Home" />
 
-      <div className="slice--top radial-bg relative z-0 flex min-h-screen w-full items-center justify-center overflow-hidden pt-20">
+      <div className="slice--top relative z-0 flex min-h-screen w-full items-center justify-center overflow-hidden pt-20">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black opacity-40" />
 
         <Particles

@@ -17,6 +17,7 @@ import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
 import { AuthProvider, useAuth } from 'src/auth'
 import CookieConsentBanner from 'src/components/CookieConsentBanner/CookieConsentBanner'
+import IK_TOKENS from 'src/lib/theme/ik-tokens.tokens.json'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 
@@ -38,11 +39,10 @@ import './styles/customer/evermore.css'
 
 export const IKTheme = loMerge(darkTheme(), {
   colors: {
-    accentColor: '#b1804a',
-    connectButtonBackground: '#354161',
-    modalBackground: '#1e1e1c',
+    accentColor: IK_TOKENS.brand.color['ik-gold-primary'].$value,
+    modalBackground: IK_TOKENS.brand.color['ik-gray-primary'].$value,
     modalBorder: 'rgba(255,255,255,.2)',
-    menuItemBackground: '#585857',
+    menuItemBackground: IK_TOKENS.brand.color['ik-gray-secondary'].$value,
   },
   fonts: {
     body: 'Poppins, sans-serif',

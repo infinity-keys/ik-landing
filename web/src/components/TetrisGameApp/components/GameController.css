@@ -1,6 +1,0 @@
-/* Update 12/15/2022: this is why it keeps jumping to the top of the page. It's autofocusing on the input which is positioned -100em above the game. */
-
-.GameController {
-  position: absolute;
-  top: -100em;
-}

@@ -1,5 +1,7 @@
 import type { IOptions, RecursivePartial } from 'tsparticles-engine'
 
+import IK_TOKENS from 'src/lib/theme/ik-tokens.tokens.json'
+
 export const heroStars: RecursivePartial<IOptions> = {
   fps_limit: 60,
   fullScreen: false,
@@ -29,7 +31,7 @@ export const heroStars: RecursivePartial<IOptions> = {
     },
   },
   particles: {
-    color: { value: '#b1804a' },
+    color: { value: IK_TOKENS.brand.color['ik-gold-primary'].$value },
     line_linked: {
       color: '#ffffff',
       distance: 150,
