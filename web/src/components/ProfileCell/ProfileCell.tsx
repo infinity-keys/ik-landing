@@ -12,13 +12,14 @@ import { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import LensConnect from 'src/components/LensConnect/LensConnect'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-import { generateAvatarGradient } from 'src/lib/theme/helpers'
+import { avatarGradient } from 'src/lib/theme/helpers'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
 export const QUERY = gql`
   query FindUserQuery {
     user {
+      id
       username
       email
       twitterProfile
@@ -60,14 +61,14 @@ export const Success = ({
       <div className="flex items-center bg-black/20 py-8 px-10">
         <Avatar
           size={56}
-          name={user.email}
+          name={user.email || user.id}
           variant="marble"
-          colors={generateAvatarGradient()}
+          colors={avatarGradient}
         />
 
         <div className="ml-6">
           <p className="text-xl font-bold text-white">
-            {user.username || user.email.split('@')[0]}
+            {user.username || user.email?.split('@')[0] || ''}
           </p>
           {address && (
             <p className="text-brand-accent-primary">{truncate(address)}</p>

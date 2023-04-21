@@ -1,7 +1,7 @@
 import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon'
 import Avatar from 'boring-avatars'
 
-import { generateAvatarGradient } from 'src/lib/theme/helpers'
+import { avatarGradient } from 'src/lib/theme/helpers'
 
 const DummyThumbnail = ({ name }: { name: string }) => {
   return (
@@ -10,12 +10,7 @@ const DummyThumbnail = ({ name }: { name: string }) => {
         <LockClosedIcon className="h-3 w-3 text-brand-accent-primary" />
       </span>
 
-      <Avatar
-        size={28}
-        name={name}
-        variant="marble"
-        colors={generateAvatarGradient()}
-      />
+      <Avatar size={28} name={name} variant="marble" colors={avatarGradient} />
 
       <p className="ml-2 text-sm text-gray-150 lg:ml-4">{name}</p>
     </div>

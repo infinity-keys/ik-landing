@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { Link } from '@redwoodjs/router'
 
 import CloudImage from 'src/components/CloudImage/CloudImage'
-import { generateAvatarGradient } from 'src/lib/theme/helpers'
+import { avatarGradient } from 'src/lib/theme/helpers'
 import MinimalKeyLogo from 'src/svgs/MinimalKeyLogo'
 
 interface ThumbnailProps {
@@ -75,7 +75,7 @@ const Thumbnail = ({
               size={isGrid ? 128 : 56}
               name={id}
               variant="marble"
-              colors={generateAvatarGradient()}
+              colors={avatarGradient}
             />
           )}
         </span>

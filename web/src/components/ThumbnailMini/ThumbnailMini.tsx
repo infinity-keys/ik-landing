@@ -6,7 +6,7 @@ import clsx from 'clsx'
 
 import { Link } from '@redwoodjs/router'
 
-import { generateAvatarGradient } from 'src/lib/theme/helpers'
+import { avatarGradient } from 'src/lib/theme/helpers'
 
 interface ThumbnailMiniProps {
   name: string
@@ -47,12 +47,7 @@ const ThumbnailMini = ({ name, progress, to, id }: ThumbnailMiniProps) => {
         )}
       </span>
 
-      <Avatar
-        size={28}
-        name={id}
-        variant="marble"
-        colors={generateAvatarGradient()}
-      />
+      <Avatar size={28} name={id} variant="marble" colors={avatarGradient} />
 
       <p className="ml-2 text-sm text-gray-150 lg:ml-4">{name}</p>
     </Link>
