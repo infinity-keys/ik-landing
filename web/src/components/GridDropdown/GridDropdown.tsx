@@ -9,7 +9,6 @@ import { RewardableType } from 'types/graphql'
 import { Link } from '@redwoodjs/router'
 
 import { rewardableGridRoute } from 'src/lib/urlBuilders'
-
 import { GridLandingRouteType } from 'src/lib/urlBuilders'
 
 interface GridDropdownProps {
@@ -43,7 +42,7 @@ const GridDropdown = ({ currentCount, rewardableType }: GridDropdownProps) => {
   return (
     <Menu as="div" className="relative z-10 ml-5 inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex w-full justify-center rounded-md border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium shadow-sm hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-turquoise focus:ring-offset-2 focus:ring-offset-gray-100">
+        <Menu.Button className="inline-flex w-full justify-center rounded-md border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium shadow-sm hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-brand-accent-primary focus:ring-offset-2 focus:ring-offset-gray-100">
           {currentCount}
           <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
         </Menu.Button>
@@ -58,7 +57,7 @@ const GridDropdown = ({ currentCount, rewardableType }: GridDropdownProps) => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 mt-2 w-full origin-top-right overflow-hidden rounded-md border border-white/20 bg-blue text-right shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 mt-2 w-full origin-top-right overflow-hidden rounded-md border border-white/20 bg-brand-gray-primary text-right shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="">
             {PAGINATION_COUNTS.map((count) => {
               const selectedCount = currentCount === count
@@ -81,10 +80,10 @@ const GridDropdown = ({ currentCount, rewardableType }: GridDropdownProps) => {
                       }}
                       className={clsx(
                         {
-                          'bg-turquoise font-medium': selectedCount,
-                          'bg-indigo-500': active,
+                          'bg-brand-accent-primary font-medium': selectedCount,
+                          'bg-brand-gray-secondary': active,
                         },
-                        'block px-4 py-4 text-sm hover:bg-indigo-500 md:py-2'
+                        'block px-4 py-4 text-sm hover:bg-brand-gray-secondary md:py-2'
                       )}
                     >
                       {count}

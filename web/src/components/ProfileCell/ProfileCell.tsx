@@ -12,12 +12,14 @@ import { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import LensConnect from 'src/components/LensConnect/LensConnect'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import { avatarGradient } from 'src/lib/theme/helpers'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
 export const QUERY = gql`
   query FindUserQuery {
     user {
+      id
       username
       email
       twitterProfile
@@ -59,43 +61,45 @@ export const Success = ({
       <div className="flex items-center bg-black/20 py-8 px-10">
         <Avatar
           size={56}
-          name={user.email}
+          name={user.email || user.id}
           variant="marble"
-          colors={['#101D42', '#E400FF', '#3FCCBB', '#8500AC', '#303B5B']}
+          colors={avatarGradient}
         />
 
         <div className="ml-6">
           <p className="text-xl font-bold text-white">
-            {user.username || user.email.split('@')[0]}
+            {user.username || user.email?.split('@')[0] || ''}
           </p>
-          {address && <p className="text-turquoise">{truncate(address)}</p>}
+          {address && (
+            <p className="text-brand-accent-primary">{truncate(address)}</p>
+          )}
         </div>
       </div>
 
       <div className="flex gap-10 p-10">
         <div>
-          <p className="text-xl font-bold text-turquoise">
+          <p className="text-xl font-bold text-brand-accent-primary">
             {user.stepsSolvedCount}
           </p>
           <p>Steps</p>
         </div>
 
         <div>
-          <p className="text-xl font-bold text-turquoise">
+          <p className="text-xl font-bold text-brand-accent-primary">
             {user.puzzlesSolvedCount}
           </p>
           <p>Puzzles</p>
         </div>
 
         <div>
-          <p className="text-xl font-bold text-turquoise">
+          <p className="text-xl font-bold text-brand-accent-primary">
             {user.packsSolvedCount}
           </p>
           <p>Packs</p>
         </div>
 
         <div>
-          <p className="text-xl font-bold text-turquoise">
+          <p className="text-xl font-bold text-brand-accent-primary">
             {user.nftsSolvedCount}
           </p>
           <p>NFTs</p>

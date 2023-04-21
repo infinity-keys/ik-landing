@@ -106,10 +106,10 @@
   @apply bg-green-700;
 }
 .rw-button.rw-button-blue {
-  @apply bg-blue text-white;
+  @apply bg-brand-gray-primary text-white;
 }
 .rw-button.rw-button-blue:hover {
-  @apply bg-blue-800;
+  @apply bg-brand-gray-primary;
 }
 .rw-button.rw-button-red {
   @apply bg-red-500 text-white;
@@ -217,7 +217,7 @@
   @apply text-blue;
 }
 .rw-table-actions .rw-button-blue:hover {
-  @apply bg-blue text-white;
+  @apply bg-brand-gray-primary text-white;
 }
 .rw-table-actions .rw-button-red {
   @apply text-red-600;

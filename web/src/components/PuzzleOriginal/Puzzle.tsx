@@ -6,18 +6,20 @@
 
 // React libraries for managing state of user's answer
 import React, { useState, FormEvent } from 'react'
+
+import RICIBs from 'react-individual-character-input-boxes'
+
 import { routes } from '@redwoodjs/router'
 
 // Styling and logic for the input boxes used to answer the puzzle
-import RICIBs from 'react-individual-character-input-boxes'
 
-import Button from 'src/components/Button'
 
 // small padlock icon
+import Button from 'src/components/Button'
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Lock from 'src/svgs/Lock'
 
 // we need the loading icon for when the user types in the wrong answer
-import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 
 type PuzzleProps = {
   answer: string
@@ -116,7 +118,7 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
       <form onSubmit={handleSubmit}>
         {/* Input Boxes */}
         {showRICIBs ? (
-          <div className="magic-input font-bold text-turquoise">
+          <div className="magic-input font-bold text-brand-accent-primary">
             <RICIBs
               amount={count}
               handleOutputString={(text) => {
@@ -144,7 +146,11 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
             <div className="visible-message">
               <p>
                 That&apos;s not it. Need help?{' '}
-                <a href="https://discord.gg/infinitykeys" target="_blank">
+                <a
+                  href="https://discord.gg/infinitykeys"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <u>Join our discord</u>
                 </a>
               </p>
@@ -152,8 +158,8 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
           ) : (
             <div className="invisible-message opacity-0">
               <p>
-                'this is placeholder text that is the same height as the
-                markdown text above'
+                &apos;this is placeholder text that is the same height as the
+                markdown text above&apos;
               </p>
             </div>
           )}
@@ -161,7 +167,12 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
 
         {/* Submit Button */}
         <div data-cy="submit" className="flex justify-center">
-          <Button text="Submit" type="submit" disabled={!canSubmit} />
+          <Button
+            text="Submit"
+            type="submit"
+            disabled={!canSubmit}
+            variant="solid"
+          />
         </div>
       </form>
     </div>

@@ -6,22 +6,25 @@ import clsx from 'clsx'
 
 import { Link } from '@redwoodjs/router'
 
+import { avatarGradient } from 'src/lib/theme/helpers'
+
 interface ThumbnailMiniProps {
   name: string
   progress: ThumbnailProgress
   to?: string
+  id: string
 }
 
-const ThumbnailMini = ({ name, progress, to }: ThumbnailMiniProps) => {
+const ThumbnailMini = ({ name, progress, to, id }: ThumbnailMiniProps) => {
   return (
     <Link
       className={clsx(
-        'puzzle-thumb relative flex w-full max-w-[10rem] items-center rounded-lg border bg-blue-800 py-3 px-3 text-center shadow lg:px-4',
+        'puzzle-thumb relative flex w-full max-w-[10rem] items-center rounded-lg border bg-black/40 py-3 px-3 text-center shadow lg:px-4',
         progress === ThumbnailProgress.Current
-          ? 'border-turquoise'
+          ? 'border-brand-accent-primary'
           : 'border-transparent',
         {
-          'cursor-pointer transition hover:border-turquoise':
+          'cursor-pointer transition hover:border-brand-accent-primary':
             progress === ThumbnailProgress.Completed,
           'opacity-60 grayscale':
             progress === ThumbnailProgress.NotCompleted ||
@@ -38,18 +41,13 @@ const ThumbnailMini = ({ name, progress, to }: ThumbnailMiniProps) => {
     >
       <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full ">
         {progress === ThumbnailProgress.Completed ? (
-          <LockOpenIcon className="h-3 w-3 text-turquoise" />
+          <LockOpenIcon className="h-3 w-3 text-brand-accent-primary" />
         ) : (
-          <LockClosedIcon className="h-3 w-3 text-turquoise" />
+          <LockClosedIcon className="h-3 w-3 text-brand-accent-primary" />
         )}
       </span>
 
-      <Avatar
-        size={28}
-        name={name}
-        variant="marble"
-        colors={['#101D42', '#E400FF', '#3FCCBB', '#8500AC', '#303B5B']}
-      />
+      <Avatar size={28} name={id} variant="marble" colors={avatarGradient} />
 
       <p className="ml-2 text-sm text-gray-150 lg:ml-4">{name}</p>
     </Link>
