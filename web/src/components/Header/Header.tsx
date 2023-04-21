@@ -9,8 +9,10 @@ import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
 import ProfileIcon from 'src/components/ProfileIcon/ProfileIcon'
 import WalletButton from 'src/components/WalletButton/WalletButton'
-import Logo from 'src/svgs/Logo'
-import LogoMobile from 'src/svgs/LogoMobile'
+import LogoHeader1x from 'src/images/header-logo-1x.webp'
+import LogoHeader2x from 'src/images/header-logo-2x.webp'
+import LogoHeaderSm1x from 'src/images/header-logo-sm-1x.webp'
+import LogoHeaderSm2x from 'src/images/header-logo-sm-2x.webp'
 
 const Header = () => {
   const { loading } = useAuth()
@@ -28,22 +30,32 @@ const Header = () => {
           >
             <div className="relative flex h-20 items-center justify-between">
               <div data-cy="ik logo" className="logo">
-                <div className="block sm:hidden">
+                <div className="flex items-center sm:hidden">
                   <Link
                     to={routes.home()}
-                    className="block"
+                    className="inline-block max-w-[60px]"
                     aria-label="return home"
                   >
-                    <LogoMobile />
+                    <img
+                      srcSet={`${LogoHeaderSm1x} 1x, ${LogoHeaderSm2x} 2x`}
+                      src={LogoHeaderSm1x}
+                      alt=""
+                      className="block w-full"
+                    />
                   </Link>
                 </div>
-                <div className="hidden sm:block">
+                <div className="hidden items-center sm:flex">
                   <Link
                     to={routes.home()}
-                    className="bg-purple-500 text-left"
+                    className="inline-block max-w-[150px]"
                     aria-label="return home"
                   >
-                    <Logo />
+                    <img
+                      srcSet={`${LogoHeader1x} 1x, ${LogoHeader2x} 2x`}
+                      src={LogoHeader1x}
+                      alt=""
+                      className="block w-full"
+                    />
                   </Link>
                 </div>
               </div>

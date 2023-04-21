@@ -7,7 +7,6 @@ import { Link } from '@redwoodjs/router'
 
 import CloudImage from 'src/components/CloudImage/CloudImage'
 import { avatarGradient } from 'src/lib/theme/helpers'
-import MinimalKeyLogo from 'src/svgs/MinimalKeyLogo'
 
 interface ThumbnailProps {
   id: string
@@ -18,8 +17,6 @@ interface ThumbnailProps {
   solvedArray?: boolean[]
   progress?: ThumbnailProgress
 }
-
-// @TODO: how do show solved puzzles?
 
 const Thumbnail = ({
   name,
@@ -103,12 +100,12 @@ const Thumbnail = ({
                 <span
                   key={i}
                   className={clsx(
-                    'h-5 w-5 pt-2',
-                    solved ? 'text-brand-accent-primary' : 'text-gray-300'
+                    'mr-1 mt-2 block h-1 w-1 rounded-full',
+                    solved
+                      ? 'animate-glowContinuous bg-green-400'
+                      : 'bg-brand-gray-secondary'
                   )}
-                >
-                  <MinimalKeyLogo />
-                </span>
+                />
               ))}
             </dd>
           </dl>

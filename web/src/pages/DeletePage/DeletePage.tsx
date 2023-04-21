@@ -14,7 +14,8 @@ import Heading from 'src/components/Heading/Heading'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Seo from 'src/components/Seo/Seo'
 import Text from 'src/components/Text/Text'
-import Logo from 'src/svgs/Logo'
+import LogoFull1x from 'src/images/full-logo-1x.webp'
+import LogoFull2x from 'src/images/full-logo-2x.webp'
 
 const DELETE_ALL_USER_INFO_MUTATION = gql`
   mutation DeleteAllUserInfoMutation($jwt: String!) {
@@ -45,9 +46,13 @@ const DeletePage = ({ jwt }) => {
     <>
       <Seo title="Delete My Data" />
 
-      <div className="max-w-2xl text-center">
+      <div className="mx-auto max-w-2xl text-center">
         <Link to={routes.home()} className="flex justify-center">
-          <Logo />
+          <img
+            srcSet={`${LogoFull1x}, ${LogoFull2x} 2x`}
+            src={LogoFull1x}
+            alt=""
+          />
         </Link>
 
         {successMessage && (
