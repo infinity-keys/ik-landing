@@ -6,6 +6,8 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "strict": true,
     "baseUrl": "./",
     "rootDirs": [
       "./src",

@@ -3,6 +3,8 @@ import { IK_CLAIMS_NAMESPACE } from '@infinity-keys/constants'
 import { Head } from '@redwoodjs/web'
 import { MetaTags } from '@redwoodjs/web'
 
+import IK_TOKENS from 'src/lib/theme/ik-tokens.tokens.json'
+
 interface Props {
   title?: string
   description?: string
@@ -27,7 +29,10 @@ const Seo = ({
         ogContentUrl={imageUrl}
       />
       <Head>
-        <meta name="theme-color" content="#b1804a" />
+        <meta
+          name="theme-color"
+          content={IK_TOKENS.brand.color['ik-gold-primary'].$value}
+        />
       </Head>
     </>
   )

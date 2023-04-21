@@ -1,5 +1,4 @@
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon'
-import { AVATAR_GRADIENT_COLORS } from '@infinity-keys/constants'
 import { ThumbnailProgress } from '@infinity-keys/core'
 import Avatar from 'boring-avatars'
 import clsx from 'clsx'
@@ -7,6 +6,7 @@ import clsx from 'clsx'
 import { Link } from '@redwoodjs/router'
 
 import CloudImage from 'src/components/CloudImage/CloudImage'
+import { avatarGradient } from 'src/lib/theme/helpers'
 
 interface ThumbnailProps {
   id: string
@@ -17,8 +17,6 @@ interface ThumbnailProps {
   solvedArray?: boolean[]
   progress?: ThumbnailProgress
 }
-
-// @TODO: how do show solved puzzles?
 
 const Thumbnail = ({
   name,
@@ -74,7 +72,7 @@ const Thumbnail = ({
               size={isGrid ? 128 : 56}
               name={id}
               variant="marble"
-              colors={AVATAR_GRADIENT_COLORS}
+              colors={avatarGradient}
             />
           )}
         </span>
