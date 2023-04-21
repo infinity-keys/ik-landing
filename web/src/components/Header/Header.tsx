@@ -33,11 +33,11 @@ const Header = () => {
                 <div className="flex items-center sm:hidden">
                   <Link
                     to={routes.home()}
-                    className="block max-w-[60px]"
+                    className="inline-block max-w-[60px]"
                     aria-label="return home"
                   >
                     <img
-                      srcSet={`${LogoHeaderSm1x}, ${LogoHeaderSm2x} 2x`}
+                      srcSet={`${LogoHeaderSm1x} 1x, ${LogoHeaderSm2x} 2x`}
                       src={LogoHeaderSm1x}
                       alt=""
                       className="block w-full"
@@ -47,11 +47,11 @@ const Header = () => {
                 <div className="hidden items-center sm:flex">
                   <Link
                     to={routes.home()}
-                    className="block max-w-[150px]"
+                    className="inline-block max-w-[150px]"
                     aria-label="return home"
                   >
                     <img
-                      srcSet={`${LogoHeader1x}, ${LogoHeader2x} 2x`}
+                      srcSet={`${LogoHeader1x} 1x, ${LogoHeader2x} 2x`}
                       src={LogoHeader1x}
                       alt=""
                       className="block w-full"
