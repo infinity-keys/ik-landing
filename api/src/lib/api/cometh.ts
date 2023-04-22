@@ -1,4 +1,5 @@
 import fetch from 'node-fetch'
+
 import { logger } from 'src/lib/logger'
 
 export const checkComethApi = async (account) => {

@@ -1,6 +1,6 @@
-import { FieldError, Label, TextField } from '@redwoodjs/forms'
-
 import type { UpdateStepFunctionCallInput } from 'types/graphql'
+
+import { FieldError, Label, TextField } from '@redwoodjs/forms'
 import type { RWGqlError } from '@redwoodjs/forms'
 
 interface StepFunctionCallFormProps {

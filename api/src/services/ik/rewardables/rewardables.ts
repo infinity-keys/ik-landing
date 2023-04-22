@@ -8,8 +8,8 @@ import { IK_ID_COOKIE } from '@infinity-keys/constants'
 import { IkJwt } from '@infinity-keys/core'
 import cookie from 'cookie'
 import type { QueryResolvers, MutationResolvers, StepType } from 'types/graphql'
-import { context } from '@redwoodjs/graphql-server'
 
+import { context } from '@redwoodjs/graphql-server'
 import { ForbiddenError } from '@redwoodjs/graphql-server'
 
 import { PuzzlesData } from 'src/lib/cookie'
@@ -19,6 +19,7 @@ import { verifyToken } from 'src/lib/jwt'
 import { logger } from 'src/lib/logger'
 
 import anonPuzzles from '../../../../anonPuzzleData.json'
+
 import supersecretRoutes from './supersecretRoutes'
 
 export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({

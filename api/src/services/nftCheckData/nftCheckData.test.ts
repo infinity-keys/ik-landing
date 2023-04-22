@@ -3,8 +3,6 @@ import type { NftCheckDatum } from '@prisma/client'
 import {
   nftCheckData,
   nftCheckDatum,
-  createNftCheckDatum,
-  updateNftCheckDatum,
   deleteNftCheckDatum,
 } from './nftCheckData'
 import type { StandardScenario } from './nftCheckData.scenarios'

@@ -20,10 +20,7 @@ export const Empty = () => {
   return (
     <div className="rw-text-center">
       {'No puzzles yet. '}
-      <Link
-        to={routes.newPuzzle()}
-        className="rw-link"
-      >
+      <Link to={routes.newPuzzle()} className="rw-link">
         {'Create one?'}
       </Link>
     </div>

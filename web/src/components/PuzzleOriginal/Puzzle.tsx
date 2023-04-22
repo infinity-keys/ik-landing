@@ -13,7 +13,6 @@ import { routes } from '@redwoodjs/router'
 
 // Styling and logic for the input boxes used to answer the puzzle
 
-
 // small padlock icon
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'

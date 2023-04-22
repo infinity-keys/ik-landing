@@ -1,5 +1,6 @@
-import { createLogger } from '@redwoodjs/api/logger'
 import datadog from 'pino-datadog'
+
+import { createLogger } from '@redwoodjs/api/logger'
 
 /**
  * Creates a logger with RedwoodLoggerOptions

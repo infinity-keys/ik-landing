@@ -1,3 +1,8 @@
+import { useState } from 'react'
+
+import { useForm } from 'react-hook-form'
+import type { StepType, UpdateStepInput } from 'types/graphql'
+
 import {
   Form,
   FormError,
@@ -9,15 +14,12 @@ import {
   Submit,
   RWGqlError,
 } from '@redwoodjs/forms'
-import { useForm } from 'react-hook-form'
 
-import type { StepType, UpdateStepInput } from 'types/graphql'
-
-import { useState } from 'react'
 import StepNftCheckForm from 'src/components/Step/StepForm/StepNftCheckForm'
+
+import StepFunctionCallForm from './StepFunctionCallForm'
 import StepSimpleTextForm from './StepSimpleTextForm'
 import StepTokenIdRangeForm from './StepTokenIdRangeForm'
-import StepFunctionCallForm from './StepFunctionCallForm'
 
 interface StepFormProps {
   onSave: (data: UpdateStepInput) => void
