@@ -1,8 +1,10 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import Particles from 'react-particles'
 import { loadFull } from 'tsparticles'
 import type { Engine } from 'tsparticles-engine'
+
+import { navigate, routes } from '@redwoodjs/router'
 
 import Puzzle from 'src/components/PuzzleOriginal/Puzzle'
 import Section from 'src/components/Section/Section'
@@ -15,6 +17,16 @@ import '@infinity-keys/react-lens-share-button/dist/style.css'
 const HomePage = () => {
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine)
+  }, [])
+
+  useEffect(() => {
+    // If user has solved the unlock puzzle, forward them.
+    // 'hasSolvedUnlock' is set in src/components/PuzzleOriginal/Puzzle.tsx
+    const hasSolvedUnlock = window.localStorage.getItem('hasSolvedUnlock')
+
+    if (hasSolvedUnlock) {
+      navigate(routes.play())
+    }
   }, [])
 
   return (

@@ -66,6 +66,7 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
 
       // we are now mimicing a server call
       setTimeout(() => {
+        window.localStorage.setItem('hasSolvedUnlock', JSON.stringify(true))
         // after a delay, the user can proceed to play more puzzles
         setShowSuccess(true)
       }, 1000)
