@@ -11,7 +11,7 @@ interface ButtonProps {
   fullWidth?: boolean
   border?: boolean
   type?: 'button' | 'submit' | 'reset'
-  size?: 'small' | 'medium'
+  size?: 'small' | 'medium' | 'large'
   variant?: 'solid' | 'outline' | 'faded' | 'secondary' | 'warn'
   onClick?: () => void
   disabled?: boolean
@@ -68,6 +68,7 @@ export default function Button({
       !responsive && {
         'py-1 px-2 text-base': size === 'small',
         'py-2 px-4 text-lg': size === 'medium',
+        'py-2 px-8 text-2xl': size === 'large',
       },
     ]
   )

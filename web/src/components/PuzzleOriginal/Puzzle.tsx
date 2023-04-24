@@ -92,10 +92,11 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
         {/* Play More Button */}
         {showSuccess ? (
           <div
-            className="play-more-button-container container flex max-w-[12rem] justify-center"
+            className="play-more-button-container container flex max-w-[12rem] flex-col justify-center text-center"
             data-cy="success_message_check"
           >
-            <Button text="Play" fullWidth to={routes.play()} />
+            <p className="pb-4 text-xl">Success!</p>
+            <Button text="Enter" fullWidth to={routes.play()} size="large" />
           </div>
         ) : (
           <LoadingIcon />
