@@ -24,7 +24,7 @@ const HomePage = () => {
     // 'hasSolvedUnlock' is set in src/components/PuzzleOriginal/Puzzle.tsx
     const hasSolvedUnlock = window.localStorage.getItem('hasSolvedUnlock')
 
-    if (hasSolvedUnlock) {
+    if (hasSolvedUnlock === 'true') {
       navigate(routes.play())
     }
   }, [])
