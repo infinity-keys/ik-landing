@@ -57,7 +57,7 @@
   }
   .ik-code-input {
     @apply m-0 mx-1 mb-2 border-brand-gray-secondary bg-brand-gray-secondary/40 text-2xl font-bold text-brand-accent-secondary shadow-md !important;
-    text-shadow: -2px 0px 7px #b1804a;
+    text-shadow: -2px 0px 7px theme(colors[brand-accent-primary]);
     width: 45px !important;
     height: 45px !important;
     padding: 0;
@@ -85,11 +85,6 @@
     /* 1536+ */
     @screen 2xl {
     }
-  }
-
-  .radial-bg {
-    /* background: radial-gradient(ellipse at left top, #3fccbb50, transparent 40%),
-      radial-gradient(ellipse at right bottom, #d2508e70, transparent 40%); */
   }
 
   .discordIcon:hover {
