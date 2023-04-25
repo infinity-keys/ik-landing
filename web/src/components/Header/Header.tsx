@@ -51,7 +51,6 @@ const Header = () => {
   const { loading } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const { pathname } = useLocation()
-  console.log('pathname: ', pathname)
 
   function closeModal() {
     setIsOpen(false)
@@ -61,6 +60,7 @@ const Header = () => {
     setIsOpen(true)
   }
 
+  // Close menu when route changes (ie, user click internal link)
   useEffect(() => {
     closeModal()
   }, [pathname])
@@ -69,6 +69,7 @@ const Header = () => {
     <div className="fixed top-0 left-0 z-20 w-full px-4 sm:px-6 lg:px-8">
       <div className="flex h-20 items-center justify-between">
         <div className="flex items-center" data-cy="ik logo">
+          {/* Left logo */}
           <Link
             to={routes.home()}
             className="inline-block max-w-[60px] sm:max-w-[150px]"
@@ -85,6 +86,7 @@ const Header = () => {
           </Link>
         </div>
 
+        {/* Menu open button */}
         <Button
           onClick={openModal}
           text="Menu"
@@ -92,8 +94,11 @@ const Header = () => {
           border={false}
         />
       </div>
+
+      {/* Modal Menu */}
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative" onClose={closeModal}>
+          {/* Backdrop */}
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -119,6 +124,7 @@ const Header = () => {
               >
                 <Dialog.Panel className="w-full max-w-md transform transition-all">
                   <div className="relative rounded-lg border-2 border-brand-accent-primary/20 bg-brand-gray-primary text-center align-middle">
+                    {/* Close button */}
                     <button
                       className="absolute right-2 top-2 rounded p-2 text-white/30 hover:bg-black/20 hover:text-brand-accent-primary"
                       onClick={closeModal}
@@ -126,12 +132,13 @@ const Header = () => {
                       <XMarkIcon className="h-5 w-5" />
                     </button>
 
-                    {/* i need some space */}
+                    {/* Menu panel logo */}
                     <div className="absolute top-0 left-1/2 max-w-[120px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-brand-accent-primary/20 bg-brand-gray-primary p-1 shadow-md shadow-black/50">
                       <img src={LogoFullSm} alt="" className="w-full" />
                     </div>
 
                     <nav className="mt-7 flex flex-col items-center p-6">
+                      {/* Navigation links */}
                       <NavTitle text="Navigation" />
                       <Link
                         to={routes.play()}
@@ -156,12 +163,14 @@ const Header = () => {
                         Blog
                       </a>
 
+                      {/* Wallet and profile buttons */}
                       <NavTitle text="Connect" />
                       <div className="mt-7 flex items-center justify-center gap-2">
                         <WalletButton />
                         {loading ? <LoaderIcon /> : <ProfileIcon />}
                       </div>
 
+                      {/* Social Icons */}
                       <NavTitle text="Social" />
                       <div className="mt-7 flex justify-center gap-4">
                         {links.map(({ href, testing, ariaLabel, icon }) => (
