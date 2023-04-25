@@ -55,7 +55,7 @@ export default function WalletButton() {
                       }
                     }}
                     type="button"
-                    responsive
+                    size="small"
                   />
                 )
               }

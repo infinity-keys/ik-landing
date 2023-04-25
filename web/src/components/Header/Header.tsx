@@ -1,8 +1,6 @@
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
-import { Dialog, Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon'
+import { Dialog, Transition } from '@headlessui/react'
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 
@@ -68,26 +66,22 @@ const Header = () => {
   }, [pathname])
 
   return (
-    <div className="relative border-b border-brand-gray-secondary px-4 sm:px-6 lg:border-none lg:px-8">
-      <div className="z-20 flex h-20 items-center justify-between">
+    <div className="fixed top-0 left-0 z-20 w-full px-4 sm:px-6 lg:px-8">
+      <div className="flex h-20 items-center justify-between">
         <div className="flex items-center" data-cy="ik logo">
           <Link
             to={routes.home()}
             className="inline-block max-w-[60px] sm:max-w-[150px]"
             aria-label="return home"
           >
-            <img
-              srcSet={`${LogoHeaderSm1x} 1x, ${LogoHeaderSm2x} 2x`}
-              src={LogoHeaderSm1x}
-              alt=""
-              className="block w-full sm:hidden"
-            />
-            <img
-              srcSet={`${LogoHeader1x} 1x, ${LogoHeader2x} 2x`}
-              src={LogoHeader1x}
-              alt=""
-              className="hidden w-full sm:block"
-            />
+            <picture>
+              <source
+                srcSet={`${LogoHeader1x} 1x, ${LogoHeader2x} 2x`}
+                media="(min-width: 640px)"
+              />
+              <source srcSet={`${LogoHeaderSm1x} 1x, ${LogoHeaderSm2x} 2x`} />
+              <img src={LogoHeaderSm1x} alt="" />
+            </picture>
           </Link>
         </div>
 
