@@ -6,7 +6,7 @@ import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon'
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes, useLocation } from '@redwoodjs/router'
 import { LoaderIcon } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
@@ -51,8 +51,9 @@ const links = [
 
 const Header = () => {
   const { loading } = useAuth()
-
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
+  const { pathname } = useLocation()
+  console.log('pathname: ', pathname)
 
   function closeModal() {
     setIsOpen(false)
@@ -61,6 +62,10 @@ const Header = () => {
   function openModal() {
     setIsOpen(true)
   }
+
+  useEffect(() => {
+    closeModal()
+  }, [pathname])
 
   return (
     <div className="relative border-b border-brand-gray-secondary px-4 sm:px-6 lg:border-none lg:px-8">
@@ -86,7 +91,12 @@ const Header = () => {
           </Link>
         </div>
 
-        <Button onClick={openModal} text="Menu" />
+        <Button
+          onClick={openModal}
+          text="Menu"
+          variant="faded"
+          border={false}
+        />
       </div>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative" onClose={closeModal}>
@@ -102,8 +112,8 @@ const Header = () => {
             <div className="fixed inset-0 bg-black bg-opacity-75" />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <div className="fixed inset-0 max-h-screen overflow-y-scroll">
+            <div className="flex min-h-full items-center justify-center p-4 pt-12 text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -114,22 +124,24 @@ const Header = () => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-md transform transition-all">
-                  {/* <Dialog.Title
-                    as="p"
-                    className="text-center text-lg font-medium leading-6 text-white"
-                  >
-                    Menu
-                  </Dialog.Title> */}
-                  <div className="relative rounded-lg border-2 border-brand-accent-primary/30 bg-brand-gray-primary text-center align-middle shadow-xl">
-                    <div className="absolute top-0 left-1/2 max-w-[100px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-brand-accent-primary/30 bg-brand-gray-primary p-2">
+                  <div className="relative rounded-lg border-2 border-brand-accent-primary/20 bg-brand-gray-primary text-center align-middle">
+                    <button
+                      className="absolute right-2 top-2 rounded p-2 text-white/30 hover:bg-black/20 hover:text-brand-accent-primary"
+                      onClick={closeModal}
+                    >
+                      <XMarkIcon className="h-5 w-5" />
+                    </button>
+
+                    {/* i need some space */}
+                    <div className="absolute top-0 left-1/2 max-w-[120px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-brand-accent-primary/20 bg-brand-gray-primary p-1 shadow-md shadow-black/50">
                       <img src={LogoFullSm} alt="" className="w-full" />
                     </div>
 
-                    <nav className="mt-6 flex flex-col p-6">
-                      <NavTitle label="Navigation" />
+                    <nav className="mt-7 flex flex-col items-center p-6">
+                      <NavTitle text="Navigation" />
                       <Link
                         to={routes.play()}
-                        className="header-nav--link mt-4 p-2 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
+                        className="header-nav--link mt-5 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
                         Play
                       </Link>
@@ -137,7 +149,7 @@ const Header = () => {
                         href="https://docs.infinitykeys.io"
                         target="_blank"
                         rel="noreferrer"
-                        className="header-nav--link mt-4 p-2 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
+                        className="header-nav--link mt-3 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
                         Info
                       </a>
@@ -145,13 +157,19 @@ const Header = () => {
                         href="https://blog.infinitykeys.io"
                         target="_blank"
                         rel="noreferrer"
-                        className="header-nav--link mt-4 p-2 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
+                        className="header-nav--link mt-3 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
                         Blog
                       </a>
 
-                      <NavTitle label="Social" />
-                      <div className="mt-6 flex justify-center gap-4">
+                      <NavTitle text="Connect" />
+                      <div className="mt-7 flex items-center justify-center gap-2">
+                        <WalletButton />
+                        {loading ? <LoaderIcon /> : <ProfileIcon />}
+                      </div>
+
+                      <NavTitle text="Social" />
+                      <div className="mt-7 flex justify-center gap-4">
                         {links.map(({ href, testing, ariaLabel, icon }) => (
                           <a
                             key={href}
@@ -180,10 +198,10 @@ const Header = () => {
 
 export default Header
 
-const NavTitle = ({ label }: { label: string }) => {
+const NavTitle = ({ text }: { text: string }) => {
   return (
-    <div className="mt-6 flex items-center gap-4 text-sm uppercase text-brand-accent-primary before:block before:h-[1px] before:flex-1 before:bg-brand-accent-primary/30 before:content-[''] after:block after:h-[1px] after:flex-1 after:bg-brand-accent-primary/30 after:content-['']">
-      {label}
+    <div className="mt-7 flex w-full items-center gap-4 text-sm uppercase text-brand-accent-primary before:block before:h-[1px] before:flex-1 before:bg-brand-accent-primary/20 before:content-[''] after:block after:h-[1px] after:flex-1 after:bg-brand-accent-primary/20 after:content-['']">
+      {text}
     </div>
   )
 }
