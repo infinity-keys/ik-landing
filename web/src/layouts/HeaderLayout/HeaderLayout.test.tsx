@@ -1,14 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import HeaderFooterLayout from './HeaderFooterLayout'
+import HeaderLayout from './HeaderLayout'
 
 //   Improve this test with help from the Redwood Testing Doc:
 //   https://redwoodjs.com/docs/testing#testing-pages-layouts
 
-describe('HeaderFooterLayout', () => {
+describe('HeaderLayout', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<HeaderFooterLayout />)
+      render(<HeaderLayout />)
     }).not.toThrow()
   })
 })

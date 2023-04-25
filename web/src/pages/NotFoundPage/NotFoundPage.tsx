@@ -4,13 +4,13 @@ import Heading from 'src/components/Heading/Heading'
 import Seo from 'src/components/Seo/Seo'
 import LogoFull1x from 'src/images/full-logo-1x.webp'
 import LogoFull2x from 'src/images/full-logo-2x.webp'
-import HeaderFooterLayout from 'src/layouts/HeaderFooterLayout'
+import HeaderLayout from 'src/layouts/HeaderLayout/HeaderLayout'
 import MainLayout from 'src/layouts/MainLayout/MainLayout'
 import WrapperLayout from 'src/layouts/WrapperLayout/WrapperLayout'
 
 const NotFoundPage = () => {
   return (
-    <HeaderFooterLayout>
+    <HeaderLayout>
       <MainLayout>
         <WrapperLayout>
           <Seo title="404 - Page Not Found" />
@@ -33,7 +33,7 @@ const NotFoundPage = () => {
           </div>
         </WrapperLayout>
       </MainLayout>
-    </HeaderFooterLayout>
+    </HeaderLayout>
   )
 }
 export default NotFoundPage
