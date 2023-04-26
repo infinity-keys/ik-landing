@@ -10,7 +10,7 @@ import { Router, Route, Set, Private } from '@redwoodjs/router'
 
 // import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
 import { useAuth } from 'src/auth'
-import HeaderFooterLayout from 'src/layouts/HeaderFooterLayout'
+import HeaderLayout from 'src/layouts/HeaderLayout/HeaderLayout'
 import MainLayout from 'src/layouts/MainLayout/MainLayout'
 import WrapperLayout from 'src/layouts/WrapperLayout'
 
@@ -21,25 +21,25 @@ const Routes = () => {
       <Route path="/" page={HomePage} name="home" />
 
       <Private unauthenticated="profile" roles={'ADMIN'}>
-        <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
+        <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
           <Route path="/rewardable/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newRewardable" />
           {/* <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" /> */}
         </Set>
       </Private>
 
       <Private unauthenticated="profile">
-        {/* @TODO: Replace HeaderFooterLayout once we get a minimal header */}
-        <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
+        {/* @TODO: Replace HeaderLayout once we get a minimal header */}
+        <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
           <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleStep" />
           <Route path="/user/delete" page={DeletePage} name="delete" />
         </Set>
 
-        <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
+        <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
           <Route path="/claim/{id}" page={ClaimPage} name="claim" />
         </Set>
       </Private>
 
-      <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
+      <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
         <Route path="/profile" page={ProfilePage} name="profile" />
         <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
         <Route path="/puzzles/{count:Int}/{page:Int}" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzlesPagination" />
@@ -49,12 +49,12 @@ const Routes = () => {
         <Route path="/play/{count:Int}/{page:Int}" page={PlayPage} name="playPagination" />
       </Set>
 
-      <Set wrap={[HeaderFooterLayout, MainLayout]}>
+      <Set wrap={[HeaderLayout, MainLayout]}>
         <Route path="/privacy-policy" page={PrivacyPolicyPage} name="privacyPolicy" />
       </Set>
 
-      {/* @TODO: Replace HeaderFooterLayout once we get a minimal header */}
-      <Set wrap={[HeaderFooterLayout, MainLayout, WrapperLayout]}>
+      {/* @TODO: Replace HeaderLayout once we get a minimal header */}
+      <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
         <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleLanding" />
         <Route path="/pack/{slug}" page={RewardablePackRewardablePackPage} name="packLanding" />
         {/* Anonymous Puzzles - landing and step pages */}
