@@ -52,17 +52,9 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   const { pathname } = useLocation()
 
-  function closeModal() {
-    setIsOpen(false)
-  }
-
-  function openModal() {
-    setIsOpen(true)
-  }
-
   // Close menu when route changes (ie, user click internal link)
   useEffect(() => {
-    closeModal()
+    setIsOpen(false)
   }, [pathname])
 
   return (
@@ -88,7 +80,7 @@ const Header = () => {
 
         {/* Menu open button */}
         <Button
-          onClick={openModal}
+          onClick={() => setIsOpen(true)}
           text="Menu"
           variant="faded"
           border={false}
@@ -97,7 +89,11 @@ const Header = () => {
 
       {/* Modal Menu */}
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative" onClose={closeModal}>
+        <Dialog
+          as="div"
+          className="relative z-30"
+          onClose={() => setIsOpen(false)}
+        >
           {/* Backdrop */}
           <Transition.Child
             as={Fragment}
@@ -127,7 +123,7 @@ const Header = () => {
                     {/* Close button */}
                     <button
                       className="absolute right-2 top-2 rounded p-2 text-white/30 hover:bg-black/20 hover:text-brand-accent-primary"
-                      onClick={closeModal}
+                      onClick={() => setIsOpen(false)}
                     >
                       <XMarkIcon className="h-5 w-5" />
                     </button>
