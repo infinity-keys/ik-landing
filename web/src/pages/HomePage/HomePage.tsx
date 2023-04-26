@@ -1,10 +1,14 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import Particles from 'react-particles'
 import { loadFull } from 'tsparticles'
 import type { Engine } from 'tsparticles-engine'
 
-import PuzzleDumb from 'src/components/PuzzleDumb/PuzzleDumb'
+import { navigate, routes } from '@redwoodjs/router'
+
+import PuzzleDumb, {
+  EmbeddedPuzzleStatus,
+} from 'src/components/PuzzleDumb/PuzzleDumb'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import Wrapper from 'src/components/Wrapper/Wrapper'
@@ -15,6 +19,16 @@ import '@infinity-keys/react-lens-share-button/dist/style.css'
 const HomePage = () => {
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine)
+  }, [])
+
+  useEffect(() => {
+    // If user has solved the unlock puzzle, forward them.
+    // 'hasSolvedUnlock' is set in src/components/PuzzleDumb/PuzzleDumb.tsx
+    const unlockPuzzleStatus = window.localStorage.getItem('unlockPuzzleStatus')
+
+    if (unlockPuzzleStatus === EmbeddedPuzzleStatus.Solved) {
+      navigate(routes.play())
+    }
   }, [])
 
   return (

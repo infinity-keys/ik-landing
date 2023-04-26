@@ -25,6 +25,12 @@ import Lock from 'src/svgs/Lock'
 type PuzzleProps = {
   answer: string
 }
+
+export enum EmbeddedPuzzleStatus {
+  Solved = 'SOLVED',
+  Unsolved = 'UNSOLVED',
+}
+
 const PuzzleDumb = ({ answer = '' }: PuzzleProps) => {
   // This is what the user enters into the RICIBs
   const [guess, setGuess] = useState('')
@@ -68,6 +74,10 @@ const PuzzleDumb = ({ answer = '' }: PuzzleProps) => {
 
       // we are now mimicing a server call
       setTimeout(() => {
+        window.localStorage.setItem(
+          'unlockPuzzleStatus',
+          EmbeddedPuzzleStatus.Solved
+        )
         // after a delay, the user can proceed to play more puzzles
         setShowSuccess(true)
       }, 1000)
