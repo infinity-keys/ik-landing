@@ -17,6 +17,25 @@ import NftForm from 'src/components/Nft/NftForm/NftForm'
 import RewardableConnectionForm from 'src/components/RewardableConnection/RewardableConnectionForm/RewardableConnectionForm'
 import StepForm from 'src/components/Step/StepForm/StepForm'
 
+// Richard's attempt to replace `any` with a type that is more specific
+// No way for Richard to test this
+
+// interface UpdatedRewardable {
+//   id: string
+//   name: string
+//   slug: string
+//   explanation: string
+//   successMessage: string
+//   listPublicly: boolean
+//   type: string
+//   orgId: string
+//   nft: {
+//     id: string
+//     tokenId: string
+//     contractAddress: string
+//     chainId: string
+//   }
+// }
 interface RewardableFormProps {
   onSave: (data: any) => void
   error: RWGqlError

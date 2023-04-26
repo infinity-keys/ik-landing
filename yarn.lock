@@ -22051,7 +22051,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-watch-typeahead@npm:2.2.2":
+"jest-watch-typeahead@npm:2.2.2, jest-watch-typeahead@npm:^2.2.2":
   version: 2.2.2
   resolution: "jest-watch-typeahead@npm:2.2.2"
   dependencies:
@@ -28896,6 +28896,7 @@ __metadata:
   dependencies:
     "@redwoodjs/auth-custom-setup": 4.5.0
     "@redwoodjs/core": 4.5.0
+    jest-watch-typeahead: ^2.2.2
     lodash: ^4.17.21
     node-fetch: ^2
     start-server-and-test: ^2.0.0

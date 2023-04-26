@@ -64,7 +64,8 @@ const SimpleTextInput = ({
                 inputProps={loRange(count).map(() => ({
                   className: 'ik-code-input',
                 }))}
-                // autoFocus
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus
               />
 
               {failedAttempt && !errorMessage && (

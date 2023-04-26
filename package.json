@@ -33,6 +33,7 @@
   },
   "packageManager": "yarn@3.2.3",
   "dependencies": {
+    "jest-watch-typeahead": "^2.2.2",
     "lodash": "^4.17.21",
     "node-fetch": "^2"
   }
