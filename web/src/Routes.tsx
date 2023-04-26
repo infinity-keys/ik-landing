@@ -18,6 +18,7 @@ const Routes = () => {
   return (
     <Router useAuth={useAuth}>
       {/* <Route path="/" page={UnderConstructionPage} name="underConstruction" /> */}
+      <Route path="/" page={HomePage} name="home" />
 
       <Private unauthenticated="profile" roles={'ADMIN'}>
         <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
@@ -49,7 +50,6 @@ const Routes = () => {
       </Set>
 
       <Set wrap={[HeaderLayout, MainLayout]}>
-        <Route path="/" page={HomePage} name="home" />
         <Route path="/privacy-policy" page={PrivacyPolicyPage} name="privacyPolicy" />
       </Set>
 

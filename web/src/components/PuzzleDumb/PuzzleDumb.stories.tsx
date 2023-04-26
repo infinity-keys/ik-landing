@@ -13,13 +13,13 @@
 
 import type { ComponentMeta } from '@storybook/react'
 
-import Puzzle from './Puzzle'
+import PuzzleDumb from './PuzzleDumb'
 
 export const generated = () => {
-  return <Puzzle />
+  return <PuzzleDumb />
 }
 
 export default {
-  title: 'Components/Puzzle',
-  component: Puzzle,
-} as ComponentMeta<typeof Puzzle>
+  title: 'Components/PuzzleDumb',
+  component: PuzzleDumb,
+} as ComponentMeta<typeof PuzzleDumb>
