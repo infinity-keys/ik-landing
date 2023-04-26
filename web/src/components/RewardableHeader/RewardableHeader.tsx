@@ -34,7 +34,7 @@ const RewardableHeader = ({
         {name} {currentStep && `- ${currentStep}`}
       </Heading>
 
-      {instructions && (
+      {instructions && !currentStep && (
         <div className="pack__text pt-4 text-lg">
           <Markdown>{instructions}</Markdown>
         </div>
