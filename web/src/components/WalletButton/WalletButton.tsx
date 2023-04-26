@@ -55,7 +55,7 @@ export default function WalletButton() {
                       }
                     }}
                     type="button"
-                    responsive
+                    size="small"
                   />
                 )
               }
@@ -81,7 +81,7 @@ export default function WalletButton() {
                     type="button"
                     variant="faded"
                     text={isSmall ? '' : chain.name || 'Unknown'}
-                    responsive
+                    size="small"
                     border={false}
                   >
                     {chain.hasIcon && (
@@ -104,7 +104,7 @@ export default function WalletButton() {
                     onClick={openAccountModal}
                     type="button"
                     variant="faded"
-                    responsive
+                    size="small"
                     border={false}
                   >
                     {isSmall && (
