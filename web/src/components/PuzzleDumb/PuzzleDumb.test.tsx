@@ -1,14 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import Puzzle from './Puzzle'
+import PuzzleDumb from './PuzzleDumb'
 
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe('Puzzle', () => {
+describe('PuzzleDumb', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<Puzzle />)
+      render(<PuzzleDumb />)
     }).not.toThrow()
   })
 })
