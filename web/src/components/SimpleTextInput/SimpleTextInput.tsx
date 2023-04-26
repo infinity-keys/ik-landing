@@ -64,7 +64,7 @@ const SimpleTextInput = ({
                 inputProps={loRange(count).map(() => ({
                   className: 'ik-code-input',
                 }))}
-                autoFocus
+                // autoFocus
               />
 
               {failedAttempt && !errorMessage && (

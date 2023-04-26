@@ -54,10 +54,10 @@ const RewardableForm = (props: RewardableFormProps) => {
     }
 
     if (data.type === 'PACK') {
-      const { rewardableConnection, ...rest } = filteredData
+      const { rewardableConnection: _, ...rest } = filteredData
       props.onSave(rest)
     } else {
-      const { rewardableConnection, ...rest } = filteredData
+      const { rewardableConnection: _, ...rest } = filteredData
 
       const withSteps = rewardableConnection.parentId
         ? { ...filteredData, steps }

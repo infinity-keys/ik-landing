@@ -4,7 +4,7 @@ import { Menu, Transition } from '@headlessui/react'
 import ChevronDownIcon from '@heroicons/react/20/solid/ChevronDownIcon'
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import clsx from 'clsx'
-import { RewardableType } from 'types/graphql'
+// import { RewardableType } from 'types/graphql'
 
 import { Link } from '@redwoodjs/router'
 

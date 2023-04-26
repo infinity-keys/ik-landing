@@ -1,18 +1,18 @@
-import type { UpdateStepFunctionCallInput } from 'types/graphql'
+// import type { UpdateStepFunctionCallInput } from 'types/graphql'
 
 import { FieldError, Label, TextField } from '@redwoodjs/forms'
-import type { RWGqlError } from '@redwoodjs/forms'
+// import type { RWGqlError } from '@redwoodjs/forms'
 
-interface StepFunctionCallFormProps {
-  onSave?: (data: UpdateStepFunctionCallInput) => void
-  error?: RWGqlError
-  loading?: boolean
-}
+// interface StepFunctionCallFormProps {
+//   onSave?: (data: UpdateStepFunctionCallInput) => void
+//   error?: RWGqlError
+//   loading?: boolean
+// }
 
-const StepFunctionCallForm = (props: StepFunctionCallFormProps) => {
-  const onSubmit = (data) => {
-    props.onSave(data)
-  }
+const StepFunctionCallForm = () => {
+  // const onSubmit = (data) => {
+  //   props.onSave(data)
+  // }
 
   return (
     <div className="rw-form-wrapper">

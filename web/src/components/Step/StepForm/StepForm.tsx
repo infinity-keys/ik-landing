@@ -54,7 +54,7 @@ const StepForm = (props: StepFormProps) => {
   const onSubmit = (data) => {
     const stepTypeDataNoEmptyFields = removeEmpty(data.stepTypeData || {})
 
-    const { requireAllNfts, ...rest } = stepTypeDataNoEmptyFields
+    const { requireAllNfts: _, ...rest } = stepTypeDataNoEmptyFields
 
     let formattedData = {
       ...data,
@@ -81,7 +81,7 @@ const StepForm = (props: StepFormProps) => {
     }
 
     if (data.type === 'NFT_CHECK') {
-      const formattedNftCheckData = nftCheckData.map(({ tempId, ...rest }) =>
+      const formattedNftCheckData = nftCheckData.map(({ tempId: _, ...rest }) =>
         removeEmpty(rest)
       )
 
@@ -111,7 +111,7 @@ const StepForm = (props: StepFormProps) => {
   }
 
   const handleSetNftCheckData = (data) => {
-    const { tempId, ...rest } = data
+    const { tempId: _, ...rest } = data
     const isEmpty = Object.values(rest).every((key) => !key)
     if (isEmpty) {
       alert('NFT check data needs at least one field')
