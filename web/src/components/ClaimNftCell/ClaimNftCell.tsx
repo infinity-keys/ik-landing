@@ -104,7 +104,10 @@ export const Success = ({
     chain?.id,
     rewardable.availableChains
   )
-  const contractAddress = isValidChain && contractAddressLookup[chain?.id]
+
+  const contractAddress = isValidChain
+    ? contractAddressLookup[chain?.id || 0]
+    : ''
 
   // checks both db and blockchain to see if user is eligible to mint
   // if successful, it returns all the data needed to mint nft
@@ -180,19 +183,21 @@ export const Success = ({
 
   return (
     <div>
-      <div className="mb-8 flex flex-col items-center">
-        <div className="mb-6">
-          <CloudImage
-            id={rewardable.nfts[0].cloudinaryId}
-            height={200}
-            width={200}
-          />
+      {rewardable.nfts[0]?.cloudinaryId && (
+        <div className="mb-8 flex flex-col items-center">
+          <div className="mb-6">
+            <CloudImage
+              id={rewardable.nfts[0].cloudinaryId}
+              height={200}
+              width={200}
+            />
+          </div>
+          <Heading>Claim Your Treasure</Heading>
         </div>
-        <Heading>Claim Your Treasure</Heading>
-      </div>
+      )}
 
       {!queryLoading &&
-        data?.claim?.errors?.map((err, i) => (
+        data?.claim?.errors?.map((err: string, i: number) => (
           <p className="mb-4 italic text-gray-200" key={i}>
             {err}
           </p>
@@ -228,8 +233,8 @@ export const Success = ({
 
       {canMint && (
         <>
-          <p className="mb-4">Claim Your Trophy on {chain.name}</p>
-          <Button text="Mint Treasure" onClick={mintNft} />
+          <p className="mb-4">Claim Your Trophy on {chain?.name}</p>
+          <Button text="Claim" onClick={mintNft} />
         </>
       )}
 
@@ -274,18 +279,26 @@ export const Success = ({
           <p>
             Return to:
             {rewardable.asChildPublicParentRewardables.map(
-              ({ parentRewardable: { slug, name, type } }, index) => (
-                <Fragment key={slug + type}>
-                  {/* prepend a comma to all but the first item */}
-                  {index ? ', ' : ''}
-                  <Link
-                    to={rewardableLandingRoute({ slug, type })}
-                    className="ml-2 mt-2 inline-block italic transition-colors hover:text-brand-accent-primary"
-                  >
-                    {name} {capitalize(type)}
-                  </Link>
-                </Fragment>
-              )
+              (rewardable, index) => {
+                if (!rewardable?.parentRewardable) return null
+
+                const {
+                  parentRewardable: { slug, name, type },
+                } = rewardable
+
+                return (
+                  <Fragment key={slug + type}>
+                    {/* prepend a comma to all but the first item */}
+                    {index ? ', ' : ''}
+                    <Link
+                      to={rewardableLandingRoute({ slug, type })}
+                      className="ml-2 mt-2 inline-block italic transition-colors hover:text-brand-accent-primary"
+                    >
+                      {name} {capitalize(type)}
+                    </Link>
+                  </Fragment>
+                )
+              }
             )}
           </p>
         </div>

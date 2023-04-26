@@ -17,7 +17,7 @@ export const availableChainLookup: {
 
 export const isValidAvailableChain = (
   chain: number | undefined,
-  availableChains: AvailableChains[]
+  availableChains: (AvailableChains | null)[]
 ) => {
   if (typeof chain === 'undefined') return false
   const chainEnum = availableChainLookup[chain]
