@@ -6,7 +6,9 @@ import type { Engine } from 'tsparticles-engine'
 
 import { navigate, routes } from '@redwoodjs/router'
 
-import PuzzleDumb from 'src/components/PuzzleDumb/PuzzleDumb'
+import PuzzleDumb, {
+  EmbeddedPuzzleStatus,
+} from 'src/components/PuzzleDumb/PuzzleDumb'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import Wrapper from 'src/components/Wrapper/Wrapper'
@@ -21,10 +23,10 @@ const HomePage = () => {
 
   useEffect(() => {
     // If user has solved the unlock puzzle, forward them.
-    // 'hasSolvedUnlock' is set in src/components/PuzzleOriginal/Puzzle.tsx
-    const hasSolvedUnlock = window.localStorage.getItem('hasSolvedUnlock')
+    // 'hasSolvedUnlock' is set in src/components/PuzzleDumb/PuzzleDumb.tsx
+    const unlockPuzzleStatus = window.localStorage.getItem('unlockPuzzleStatus')
 
-    if (hasSolvedUnlock === 'true') {
+    if (unlockPuzzleStatus === EmbeddedPuzzleStatus.Solved) {
       navigate(routes.play())
     }
   }, [])
