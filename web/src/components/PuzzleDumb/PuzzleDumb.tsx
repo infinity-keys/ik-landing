@@ -1,7 +1,9 @@
 /**
  * @file
  *
- * The embedded puzzle form used to attempt solution.
+ * The embedded puzzle form used to attempt solution. It does not interact with
+ * the backend and instead uses a hardcoded value for the simple text solution.
+ *
  */
 
 // React libraries for managing state of user's answer
@@ -23,7 +25,7 @@ import Lock from 'src/svgs/Lock'
 type PuzzleProps = {
   answer: string
 }
-const Puzzle = ({ answer = '' }: PuzzleProps) => {
+const PuzzleDumb = ({ answer = '' }: PuzzleProps) => {
   // This is what the user enters into the RICIBs
   const [guess, setGuess] = useState('')
 
@@ -189,4 +191,4 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
   )
 }
 
-export default Puzzle
+export default PuzzleDumb

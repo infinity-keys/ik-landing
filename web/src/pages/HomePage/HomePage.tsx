@@ -6,7 +6,7 @@ import type { Engine } from 'tsparticles-engine'
 
 import { navigate, routes } from '@redwoodjs/router'
 
-import Puzzle from 'src/components/PuzzleOriginal/Puzzle'
+import PuzzleDumb from 'src/components/PuzzleDumb/PuzzleDumb'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import Wrapper from 'src/components/Wrapper/Wrapper'
@@ -45,7 +45,7 @@ const HomePage = () => {
 
         <div className="relative z-10">
           <Section largePadding={false}>
-            <Puzzle answer="unlock" />
+            <PuzzleDumb answer="unlock" />
           </Section>
         </div>
       </div>
