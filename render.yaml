@@ -68,16 +68,6 @@ services:
       - key: NODE_VERSION
         value: 18
 
-  - name: mongodb-backup
-    type: cron
-    env: node
-    buildCommand: 'yarn && yarn build'
-    startCommand: 'yarn workspace discord-dust-game-bot run backup'
-    schedule: '*/10 * * * *'
-    envVars:
-      - key: NODE_VERSION
-        value: 18
-
 databases:
   - name: redwoodjs-db
     region: oregon
