@@ -2,7 +2,6 @@ import ArrowLeftIcon from '@heroicons/react/20/solid/ArrowLeftIcon'
 import ArrowRightIcon from '@heroicons/react/20/solid/ArrowRightIcon'
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import clsx from 'clsx'
-import { RewardableType } from 'types/graphql'
 
 import { Link } from '@redwoodjs/router'
 

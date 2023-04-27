@@ -1,8 +1,9 @@
-import { FieldError, Label, CheckboxField } from '@redwoodjs/forms'
+import { useRef } from 'react'
 
 import type { UpdateStepNftCheckInput } from 'types/graphql'
+
+import { FieldError, Label, CheckboxField } from '@redwoodjs/forms'
 import type { RWGqlError } from '@redwoodjs/forms'
-import { useRef } from 'react'
 
 interface StepNftCheckFormProps {
   onSave?: (data: UpdateStepNftCheckInput) => void

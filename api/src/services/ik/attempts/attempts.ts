@@ -3,13 +3,13 @@ import { z } from 'zod'
 
 import { context } from '@redwoodjs/graphql-server'
 
+import { checkComethApi } from 'src/lib/api/cometh'
 import { db } from 'src/lib/db'
-import { checkNft } from 'src/lib/web3/check-nft'
 import { checkFunctionCall } from 'src/lib/web3/check-function-call'
+import { checkNft } from 'src/lib/web3/check-nft'
+import { getErc721TokenIds } from 'src/lib/web3/check-tokenid-range'
 import { createSolve } from 'src/services/solves/solves'
 import { createUserReward } from 'src/services/userRewards/userRewards'
-import { checkComethApi } from 'src/lib/api/cometh'
-import { getErc721TokenIds } from 'src/lib/web3/check-tokenid-range'
 
 export const stepSolutionTypeLookup: {
   [key in StepType]: string

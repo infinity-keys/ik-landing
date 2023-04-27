@@ -1,7 +1,8 @@
-const Moralis = require('moralis').default
+import { EmbedBuilder } from 'discord.js'
+
 const discord = require('discord.js')
+const Moralis = require('moralis').default
 require('dotenv').config()
-const { EmbedBuilder } = require('discord.js')
 
 const client = new discord.Client({
   intents: [],
