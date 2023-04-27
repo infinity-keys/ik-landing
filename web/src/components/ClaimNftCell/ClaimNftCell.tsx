@@ -229,7 +229,7 @@ export const Success = ({
         </>
       )}
 
-      {canClaim && <Button text="Check My NFTs" onClick={claim} />}
+      {canClaim && <Button text="Check My Keys" onClick={claim} />}
 
       {canMint && (
         <>
