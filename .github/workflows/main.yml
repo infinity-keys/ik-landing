@@ -47,7 +47,7 @@ jobs:
       # install all the dependencies
       - run: yarn install
       # run custom build command
-        run: yarn build
+      - run: yarn build
       # build the redwood app
       - run: yarn rw build
       # run our linter
