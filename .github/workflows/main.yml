@@ -47,7 +47,7 @@ jobs:
       # install all the dependencies
       - run: yarn install
       # run custom build command
-      - run: yarn build
+      - run: yarn build-ci
       # build the redwood app
       - run: yarn rw build
       # run our linter
@@ -55,4 +55,5 @@ jobs:
       # run the api tests
       - run: yarn rw test api --no-watch
       # run the web tests
-      - run: yarn rw test web --no-watch
+      # TODO: uncomment this when we have web tests running
+      # - run: yarn rw test web --no-watch

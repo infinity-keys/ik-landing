@@ -1,6 +1,6 @@
 import { compressAndEncryptText, decryptAndDecompressText } from './encoding'
 
-describe.skip('encoding lib', () => {
+describe('encoding lib', () => {
   it('compresses and encrypts simple strings, decrypts and decompresses correctly', () => {
     const message = 'kittens'
 
