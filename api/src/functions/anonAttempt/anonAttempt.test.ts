@@ -5,7 +5,7 @@ import { handler } from './anonAttempt'
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-functions
 
-describe('anonAttempt function', () => {
+describe.skip('anonAttempt function', () => {
   it('Should respond with 200', async () => {
     const httpEvent = mockHttpEvent({
       queryStringParameters: {

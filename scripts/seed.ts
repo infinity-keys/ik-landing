@@ -362,7 +362,7 @@ export default async () => {
   })
 
   // protagonistUser solves only step in Puzzle 1
-  const solve1 = await db.solve.create({
+  const _solve1 = await db.solve.create({
     //solve (not userReward) like in "const solve2"
     data: {
       user: {
@@ -398,7 +398,7 @@ export default async () => {
   })
 
   // protagonistUser solves step 1 of 2 in Puzzle 2
-  const solve2 = await db.solve.create({
+  const _solve2 = await db.solve.create({
     data: {
       user: {
         connect: {
@@ -415,7 +415,7 @@ export default async () => {
   })
 
   // protagonistUser gets a reward for Puzzle 1
-  const userReward1 = await db.userReward.create({
+  const _userReward1 = await db.userReward.create({
     // userReward (not solve) like in "const solve1"
     data: {
       user: {
@@ -433,7 +433,7 @@ export default async () => {
 
   // protagonistUser attempts step 2 of 2 in Puzzle 2
   // ...but enters the wrong answer
-  const attempt3 = await db.attempt.create({
+  const _attempt3 = await db.attempt.create({
     data: {
       data: [{ solution: 'sashimi' }],
       user: {
@@ -468,7 +468,7 @@ export default async () => {
   })
 
   // protagonistUser solves step 2 of 2 in Puzzle 2
-  const solve3 = await db.solve.create({
+  const _solve3 = await db.solve.create({
     data: {
       user: {
         connect: {
@@ -485,7 +485,7 @@ export default async () => {
   })
 
   // protagonistUser gets a reward for Puzzle 2
-  const userReward2 = await db.userReward.create({
+  const _userReward2 = await db.userReward.create({
     data: {
       user: {
         connect: {
@@ -544,7 +544,7 @@ export default async () => {
   })
 
   // user rick.a.burd@gmail.com gets a reward for Pack1 1
-  const userReward3 = await db.userReward.create({
+  const _userReward3 = await db.userReward.create({
     // userReward (not solve) like in "const solve1"
     data: {
       user: {
@@ -560,7 +560,7 @@ export default async () => {
     },
   })
 
-  const pack2 = await db.rewardable.create({
+  const _pack2 = await db.rewardable.create({
     data: {
       name: 'Pack 2',
       slug: 'pack-2',

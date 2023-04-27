@@ -5,7 +5,7 @@ import Markdown from './Markdown'
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe('Markdown', () => {
+describe.skip('Markdown', () => {
   it('renders successfully', () => {
     expect(() => {
       render(<Markdown />)

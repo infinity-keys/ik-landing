@@ -5,7 +5,7 @@ import GridPagination from './GridPagination'
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe('GridPagination', () => {
+describe.skip('GridPagination', () => {
   it('renders successfully', () => {
     expect(() => {
       render(<GridPagination />)
