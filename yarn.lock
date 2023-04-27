@@ -9989,6 +9989,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jsonwebtoken@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "@types/jsonwebtoken@npm:9.0.1"
+  dependencies:
+    "@types/node": "*"
+  checksum: e603f206c91dac01f23096c6d2aaba014ab60357fc270afef4c68449c335643d76dc1c21cc6464c89d0fb8f7e471d14a03a4ffb13b62d7133c97f61e75d2fcdd
+  languageName: node
+  linkType: hard
+
 "@types/keyv@npm:^3.1.1":
   version: 3.1.4
   resolution: "@types/keyv@npm:3.1.4"
@@ -12182,11 +12191,13 @@ __metadata:
     "@redwoodjs/api": 4.5.0
     "@redwoodjs/graphql-server": 4.5.0
     "@sendgrid/mail": ^7.7.0
+    "@types/jsonwebtoken": ^9.0.1
     cloudinary-build-url: ^0.2.4
     cookie: ^0.5.0
     crypto-js: ^4.1.1
     discord.js: ^14.7.1
     jose: ^4.10.0
+    jsonwebtoken: ^9.0.0
     moralis: ^2.10.4
     nanoid: ^3.0.0
     node-fetch: 2
@@ -22498,7 +22509,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:9.0.0":
+"jsonwebtoken@npm:9.0.0, jsonwebtoken@npm:^9.0.0":
   version: 9.0.0
   resolution: "jsonwebtoken@npm:9.0.0"
   dependencies:
