@@ -1,7 +1,9 @@
 /**
  * @file
  *
- * The embedded puzzle form used to attmpt solution.
+ * The embedded puzzle form used to attempt solution. It does not interact with
+ * the backend and instead uses a hardcoded value for the simple text solution.
+ *
  */
 
 // React libraries for managing state of user's answer
@@ -23,9 +25,18 @@ import Lock from 'src/svgs/Lock'
 type PuzzleProps = {
   answer: string
 }
-const Puzzle = ({ answer = '' }: PuzzleProps) => {
+
+export enum EmbeddedPuzzleStatus {
+  Solved = 'SOLVED',
+  Unsolved = 'UNSOLVED',
+}
+
+const PuzzleDumb = ({ answer = '' }: PuzzleProps) => {
   // This is what the user enters into the RICIBs
   const [guess, setGuess] = useState('')
+
+  // Our hint for the puzzle's password
+  const [hintVisible, setHintVisible] = useState(false)
 
   // The submit button is disabled unless all RICIBs are filled
   // This determines whether or not the user can submit a guess
@@ -63,6 +74,10 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
 
       // we are now mimicing a server call
       setTimeout(() => {
+        window.localStorage.setItem(
+          'unlockPuzzleStatus',
+          EmbeddedPuzzleStatus.Solved
+        )
         // after a delay, the user can proceed to play more puzzles
         setShowSuccess(true)
       }, 1000)
@@ -89,10 +104,11 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
         {/* Play More Button */}
         {showSuccess ? (
           <div
-            className="play-more-button-container container flex max-w-[12rem] justify-center"
+            className="play-more-button-container container flex max-w-[12rem] flex-col justify-center text-center"
             data-cy="success_message_check"
           >
-            <Button text="Play" fullWidth to={routes.play()} />
+            <p className="pb-4 text-xl">Success!</p>
+            <Button text="Enter" fullWidth to={routes.play()} size="large" />
           </div>
         ) : (
           <LoadingIcon />
@@ -112,6 +128,12 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
           <Lock />
         </div>
         <h1 className="pt-2 pl-4 text-base font-bold">Solve Puzzle</h1>
+        <button
+          onClick={() => setHintVisible(!hintVisible)}
+          className="mt-2 ml-4 rounded px-2 uppercase tracking-wider text-brand-accent-primary transition-colors hover:bg-black/40 hover:text-brand-accent-secondary"
+        >
+          {hintVisible ? 'Unlock' : 'Hint?'}
+        </button>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -178,4 +200,4 @@ const Puzzle = ({ answer = '' }: PuzzleProps) => {
   )
 }
 
-export default Puzzle
+export default PuzzleDumb

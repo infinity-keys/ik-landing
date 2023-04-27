@@ -1,9 +1,12 @@
+import type { APIGatewayEvent } from 'aws-lambda'
+
+import { logger } from 'src/lib/logger'
 import { nftByContractAndTokenId } from 'src/services/nfts-custom/nfts-custom'
 
-export const handler = async (event) => {
+export const handler = async (event: APIGatewayEvent) => {
   if (event.httpMethod !== 'GET') return { statusCode: 405 }
 
-  const { contractName, tokenId } = event.queryStringParameters
+  const { contractName, tokenId } = event.queryStringParameters || {}
   if (!tokenId || !contractName) return { statusCode: 400 }
 
   try {
@@ -11,6 +14,8 @@ export const handler = async (event) => {
       tokenId: parseInt(tokenId, 10),
       contractName,
     })
+
+    logger.info(`Request for token ID: ${tokenId}`)
 
     return {
       statusCode: 200,
@@ -20,6 +25,7 @@ export const handler = async (event) => {
       body: JSON.stringify(data),
     }
   } catch (e) {
+    logger.error(e)
     return { statusCode: 500 }
   }
 }
