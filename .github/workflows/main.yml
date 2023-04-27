@@ -3,7 +3,7 @@ name: Redwood CI
 
 on:
   push:
-    branches: ['rmain']
+    branches: ['main']
   pull_request:
     branches: ['main']
 
