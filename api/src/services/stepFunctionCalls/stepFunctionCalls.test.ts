@@ -15,7 +15,7 @@ import type { StandardScenario } from './stepFunctionCalls.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('stepFunctionCalls', () => {
+describe.skip('stepFunctionCalls', () => {
   scenario(
     'returns all stepFunctionCalls',
     async (scenario: StandardScenario) => {

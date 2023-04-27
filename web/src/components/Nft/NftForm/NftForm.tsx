@@ -1,15 +1,12 @@
+import type { EditNftById, UpdateNftInput } from 'types/graphql'
+
 import {
-  Form,
-  FormError,
   FieldError,
   Label,
   NumberField,
   TextField,
   TextAreaField,
-  Submit,
 } from '@redwoodjs/forms'
-
-import type { EditNftById, UpdateNftInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
 
 type FormNft = NonNullable<EditNftById['nft']>
@@ -22,10 +19,6 @@ interface NftFormProps {
 }
 
 const NftForm = (props: NftFormProps) => {
-  const onSubmit = (data: FormNft) => {
-    props.onSave(data, props?.nft?.id)
-  }
-
   return (
     <div className="rw-form-wrapper mt-8">
       <Label

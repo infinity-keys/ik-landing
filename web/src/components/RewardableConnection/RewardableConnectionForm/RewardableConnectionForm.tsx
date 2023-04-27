@@ -1,17 +1,9 @@
-import {
-  Form,
-  FormError,
-  FieldError,
-  Label,
-  TextField,
-  NumberField,
-  Submit,
-} from '@redwoodjs/forms'
-
 import type {
   EditRewardableConnectionById,
   UpdateRewardableConnectionInput,
 } from 'types/graphql'
+
+import { FieldError, Label, TextField, NumberField } from '@redwoodjs/forms'
 import type { RWGqlError } from '@redwoodjs/forms'
 
 type FormRewardableConnection = NonNullable<

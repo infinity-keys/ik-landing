@@ -1,15 +1,6 @@
 import { FieldError, Label, TextField } from '@redwoodjs/forms'
 
-import type { UpdateStepSimpleTextInput } from 'types/graphql'
-import type { RWGqlError } from '@redwoodjs/forms'
-
-interface StepSimpleTextFormProps {
-  onSave?: (data: UpdateStepSimpleTextInput) => void
-  error?: RWGqlError
-  loading?: boolean
-}
-
-const StepSimpleTextForm = (props: StepSimpleTextFormProps) => {
+const StepSimpleTextForm = () => {
   return (
     <div className="rw-form-wrapper">
       <Label
