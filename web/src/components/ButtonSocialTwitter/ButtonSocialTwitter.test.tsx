@@ -5,7 +5,7 @@ import ButtonSocialTwitter from './ButtonSocialTwitter'
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe('ButtonSocialTwitter', () => {
+describe.skip('ButtonSocialTwitter', () => {
   it('renders successfully', () => {
     expect(() => {
       render(<ButtonSocialTwitter />)

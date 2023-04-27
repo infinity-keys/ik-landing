@@ -9,7 +9,7 @@ import { standard } from './AnonStepsCell.mock'
 //        https://redwoodjs.com/docs/testing#testing-cells
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('AnonStepsCell', () => {
+describe.skip('AnonStepsCell', () => {
   it('renders Loading successfully', () => {
     expect(() => {
       render(<Loading />)

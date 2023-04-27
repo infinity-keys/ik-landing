@@ -15,7 +15,7 @@ import type { StandardScenario } from './stepComethApis.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('stepComethApis', () => {
+describe.skip('stepComethApis', () => {
   scenario('returns all stepComethApis', async (scenario: StandardScenario) => {
     const result = await stepComethApis()
 

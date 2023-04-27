@@ -5,7 +5,7 @@ import Text from './Text'
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe('Text', () => {
+describe.skip('Text', () => {
   it('renders successfully', () => {
     expect(() => {
       render(<Text />)

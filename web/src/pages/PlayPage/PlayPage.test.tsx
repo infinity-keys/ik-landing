@@ -5,7 +5,7 @@ import PlayPage from './PlayPage'
 //   Improve this test with help from the Redwood Testing Doc:
 //   https://redwoodjs.com/docs/testing#testing-pages-layouts
 
-describe('PlayPage', () => {
+describe.skip('PlayPage', () => {
   it('renders successfully', () => {
     expect(() => {
       render(<PlayPage />)

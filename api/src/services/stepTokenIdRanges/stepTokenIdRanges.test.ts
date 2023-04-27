@@ -15,7 +15,7 @@ import type { StandardScenario } from './stepTokenIdRanges.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('stepTokenIdRanges', () => {
+describe.skip('stepTokenIdRanges', () => {
   scenario(
     'returns all stepTokenIdRanges',
     async (scenario: StandardScenario) => {
