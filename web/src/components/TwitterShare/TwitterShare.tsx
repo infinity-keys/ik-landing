@@ -14,7 +14,7 @@ const TwitterShare = ({ tweetBody, text, icon = true }: TwitterShareProps) => {
       )}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="social-share inline-flex items-center rounded bg-twitterBlue px-3 py-1 text-sm font-medium transition hover:bg-twitterBlue/70"
+      className="social-share inline-flex items-center rounded bg-twitterBlue px-4 py-2 text-sm font-medium transition hover:bg-twitterBlue/70"
     >
       {text || 'Share'}
       {icon && (
