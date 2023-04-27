@@ -238,10 +238,6 @@ export const Success = ({
         </>
       )}
 
-      {transactionSuccess && (
-        <p className="mb-4">Your trophy has been claimed!</p>
-      )}
-
       {(claimed || transactionSuccess) && (
         <div>
           <div className="pb-8">
