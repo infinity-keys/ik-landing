@@ -23,5 +23,8 @@
     "qfs-compression": "^0.2.1",
     "uuid": "^9.0.0",
     "zod": "^3.19.1"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.1.1"
   }
 }
