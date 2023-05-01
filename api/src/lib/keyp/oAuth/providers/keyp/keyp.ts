@@ -106,12 +106,15 @@ export const onConnected = async ({
     const user = await db.user.upsert({
       update: { email: userDetails.email, accessToken },
       create: {
-        id: userDetails.sub,
+        // NOTE: changed from `id`
+        authId: userDetails.sub,
         email: userDetails.email,
         username: userDetails.username,
         accessToken,
+        roles: ['VERIFIED'],
       },
-      where: { id: userDetails.sub },
+      // NOTE: changed from `id`
+      where: { authId: userDetails.sub },
     })
     return user
   } catch (e) {

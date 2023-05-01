@@ -15,7 +15,8 @@ export const handler = async (event, context) => {
     cors,
     authModelAccessor: 'user',
     authFields: {
-      id: 'id',
+      // @NOTE: this has been changed from `id`
+      id: 'authId',
       username: 'username',
     },
     login: {
@@ -65,8 +66,6 @@ export const handler = async (event, context) => {
       }),
     },
   })
-
-  console.log(authHandler)
 
   authHandler.login = async () => {
     const { code, state, type } = authHandler.params
