@@ -1,16 +1,11 @@
 import { FormEvent, useRef, useState } from 'react'
 
-import { isValidEmail } from '@infinity-keys/core'
-
-import { toast } from '@redwoodjs/web/dist/toast'
-
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
 import Seo from 'src/components/Seo/Seo'
 import useReconcileProgress from 'src/hooks/useReconcileProgress'
-import { getErrorResponse } from 'src/utils/helpers'
 
 /*
   IMPORTANT: This page needs to run a GraphQL function to create a new user in
@@ -22,29 +17,10 @@ import { getErrorResponse } from 'src/utils/helpers'
   we ensure the user has a valid token and authId, and create a new user or
   update an existing user.
 */
-const logIn = async (attributes) => {
-  console.log(attributes)
-  try {
-    /* eslint-disable-next-line no-undef */
-    const { type, code, state } = attributes
-    // eslint-disable-next-line no-undef
-    const response = await fetch('/api/auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code, state, type, method: 'login' }),
-    })
-    return await response.json()
-  } catch (e) {
-    /* eslint-disable-next-line no-console */
-    const errorMessage = getErrorResponse(`${e}.`, 'login').error.message
-    toast.error(errorMessage)
-    /* eslint-disable-next-line no-console */
-    console.log(errorMessage)
-  }
-}
 
 const ProfilePage = () => {
-  const { logOut, isAuthenticated, loading } = useAuth()
+  const { isAuthenticated, loading, logOut } = useAuth()
+
   const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
   const emailRef = useRef(null)
@@ -52,26 +28,8 @@ const ProfilePage = () => {
 
   const handleLogOut = () => {
     setErrorMessage('')
+    // TODO: providers/auth logout does not change isAuthenticated on the fly
     logOut()
-  }
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    logIn({ type: 'hello@fo.com' })
-    // setErrorMessage('')
-
-    // const email = emailRef.current.value
-    // if (!isValidEmail(email)) {
-    //   return setErrorMessage('Please enter a valid email')
-    // }
-
-    // try {
-    //   await logIn({ email })
-    //   // function -> reconcile cookies
-    //   reconcilePuzzles()
-    // } catch (e) {
-    //   setErrorMessage('Problem sending email')
-    // }
   }
 
   return (
@@ -96,7 +54,7 @@ const ProfilePage = () => {
         <div className="relative text-center">
           {!isAuthenticated ? (
             <div className="flex flex-col items-center">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={() => {}}>
                 <input
                   type="email"
                   placeholder="Your Email"

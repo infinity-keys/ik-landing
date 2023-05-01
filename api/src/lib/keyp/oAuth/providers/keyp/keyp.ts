@@ -103,7 +103,10 @@ export const onConnected = async ({
 
     logger.debug({ custom: userDetails }, 'User info')
 
+    // TODO: handle existing users
     const user = await db.user.upsert({
+      // NOTE: update email but also searching via email? email is the only field
+      // in common, but what happens if user changes email. update authId?
       update: { email: userDetails.email, accessToken },
       create: {
         // NOTE: changed from `id`
@@ -114,7 +117,7 @@ export const onConnected = async ({
         roles: ['VERIFIED'],
       },
       // NOTE: changed from `id`
-      where: { authId: userDetails.sub },
+      where: { email: userDetails.email },
     })
     return user
   } catch (e) {
