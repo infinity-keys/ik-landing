@@ -14,8 +14,10 @@ module.exports = {
     const weekly = await eco.rewards.getWeekly(member.id, guild.id)
     // instance to show cooldown time
     // const time = eco.rewards.getWeekly(member.id, guild.id).cooldown.pretty;
+    console.log('weekly', weekly)
+    console.log(weekly.claimed)
 
-    if (!weekly.status) {
+    if (!weekly.claimed) {
       const embedNoWoeekly = new EmbedBuilder()
         .setThumbnail(
           'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/discord-bot/magic_smirking_9fc26f86-8639-4f0f-85bf-dccb01f80fe2_ieqyuy.png'
