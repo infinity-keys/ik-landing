@@ -17,8 +17,7 @@ const LoginPortal = () => {
     if (error === 'expired') return `Session expired, please log in again.`
   }
 
-  const onSubmitSignUp = async (type) => {
-    console.log('type: ', type)
+  const onSubmitSignUp = async (type: string) => {
     let parsedType = type
     let login_provider = ''
     if (type.includes('KEYP')) {
@@ -26,7 +25,7 @@ const LoginPortal = () => {
       login_provider = `&login_provider=${type.split('KEYP_')[1]}`
     }
     const response = await signUp({ type: parsedType })
-    console.log('response: ', response)
+
     if (response.url) {
       window.location = response.url + login_provider
     } else {

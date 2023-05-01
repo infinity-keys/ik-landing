@@ -66,6 +66,8 @@ export const handler = async (event, context) => {
     },
   })
 
+  console.log(authHandler)
+
   authHandler.login = async () => {
     const { code, state, type } = authHandler.params
     validateLoginRequest({ type })

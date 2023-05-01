@@ -145,7 +145,6 @@ const useRedirection = () => React.useContext(RedirectionContext)
 export { RedirectionProvider, useRedirection, saveRedirectTo, getRedirectTo }
 
 const logIn = async (attributes) => {
-  console.log(attributes)
   try {
     /* eslint-disable-next-line no-undef */
     const { type, code, state } = attributes
