@@ -1,19 +1,15 @@
-// /* eslint-disable-next-line no-unused-vars */
-import type { APIGatewayEvent, Context } from 'aws-lambda'
-import { User } from 'types/graphql'
-
-import { DbAuthHandler } from '@redwoodjs/api'
+/* eslint-disable-next-line no-unused-vars */
+import { DbAuthHandler } from '@redwoodjs/auth-dbauth-api'
 
 import { db } from 'src/lib/db'
 import { validateLoginRequest } from 'src/lib/keyp/auth/validation'
 import { isProduction, cors } from 'src/lib/keyp/helpers'
-import { oAuthUrl, submitCodeGrant } from 'src/lib/keyp/oAuth/oAuth'
+import { oAuthUrl, submitCodeGrant } from 'src/lib/keyp/oAuth'
 import { providers } from 'src/lib/keyp/oAuth/providers'
 import { logger } from 'src/lib/logger'
 
-export const handler = async (event: APIGatewayEvent, context: Context) => {
+export const handler = async (event, context) => {
   logger.debug('Invoked /auth ')
-
   const authHandler = new DbAuthHandler(event, context, {
     db: db,
     cors,
@@ -23,7 +19,7 @@ export const handler = async (event: APIGatewayEvent, context: Context) => {
       username: 'username',
     },
     login: {
-      handler: (user: User) => {
+      handler: (user) => {
         return user
       },
       errors: {
@@ -65,14 +61,16 @@ export const handler = async (event: APIGatewayEvent, context: Context) => {
       SameSite: 'Strict',
       Secure: isProduction,
       ...(isProduction && {
-        Domain: process.env.APP_DOMAIN?.split('://')[1] || '',
+        Domain: process.env.APP_DOMAIN.split('://')[1],
       }),
     },
   })
+
   authHandler.login = async () => {
     const { code, state, type } = authHandler.params
     validateLoginRequest({ type })
     if (!code || !state) throw 'logIn() Code or state not provided.'
+
     const tokens = await submitCodeGrant({
       state,
       code,
@@ -80,10 +78,12 @@ export const handler = async (event: APIGatewayEvent, context: Context) => {
     })
     const user = await providers[type].onConnected(tokens)
     const sessionData = { id: user[authHandler.options.authFields.id] }
+
     // TODO: this needs to go into graphql somewhere so that each request makes
     // a new CSRF token and sets it in both the encrypted session and the
     // csrf-token header
     const csrfToken = DbAuthHandler.CSRF_TOKEN
+
     const response = [
       sessionData,
       {
@@ -94,6 +94,7 @@ export const handler = async (event: APIGatewayEvent, context: Context) => {
     logger.debug({ custom: response }, 'login() cookie')
     return response
   }
+
   authHandler.signup = async () => {
     try {
       const { type } = authHandler.params
@@ -106,5 +107,6 @@ export const handler = async (event: APIGatewayEvent, context: Context) => {
       return [JSON.stringify(e), {}, { statusCode: 500, error: e }]
     }
   }
-  // return await authHandler.invoke()
+
+  return await authHandler.invoke()
 }

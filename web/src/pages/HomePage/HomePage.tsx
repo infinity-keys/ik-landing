@@ -6,6 +6,7 @@ import type { Engine } from 'tsparticles-engine'
 
 import { navigate, routes } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
 import PuzzleDumb, {
   EmbeddedPuzzleStatus,
 } from 'src/components/PuzzleDumb/PuzzleDumb'
@@ -20,6 +21,10 @@ const HomePage = () => {
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine)
   }, [])
+
+  const { currentUser } = useAuth()
+
+  console.log('currentUser: ', currentUser)
 
   useEffect(() => {
     // If user has solved the unlock puzzle, forward them.

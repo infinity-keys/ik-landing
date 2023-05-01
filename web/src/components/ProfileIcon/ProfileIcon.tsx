@@ -4,9 +4,8 @@ import { Menu, Transition } from '@headlessui/react'
 import UserCircleIcon from '@heroicons/react/24/outline/UserCircleIcon'
 import clsx from 'clsx'
 
-import { Link, routes } from '@redwoodjs/router'
-
 import { useAuth } from 'src/auth'
+import { Link, routes } from '@redwoodjs/router'
 
 const ProfileIcon = () => {
   const { isAuthenticated, logOut } = useAuth()

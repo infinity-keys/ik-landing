@@ -13,6 +13,7 @@ export const oAuthUrl = async (type: string) => {
       throw `OAuth Provider ${type} is not enabled.`
 
     const { params, urlAuthorize, responseType } = providers[type]
+
     const url = new URL(urlAuthorize)
     const pkce = pkceChallenge()
     url.searchParams.set('code_challenge', pkce.code_challenge) // eg. 3uWDl1fX2ioAqf38eSOFlKnxVEl_VyfaYKG2GyLndKs
@@ -72,7 +73,7 @@ export const processCodeGrant = async ({
   }
 }
 
-export const processRevoke = async (type) => {
+export const processRevoke = async (type: string) => {
   try {
     logger.debug(`revoke - ${type}`)
     if (!types.includes(type)) throw `Unknown OAuth Provider - ${type}`
@@ -84,7 +85,15 @@ export const processRevoke = async (type) => {
   }
 }
 
-export const submitCodeGrant = async ({ state, code, type }) => {
+export const submitCodeGrant = async ({
+  state,
+  code,
+  type,
+}: {
+  state: string
+  code: string
+  type: string
+}) => {
   if (!Object.values(types).includes(type))
     throw `OAuth Provider "${type}" is not enabled.`
 

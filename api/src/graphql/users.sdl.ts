@@ -21,6 +21,8 @@ export const schema = gql`
     puzzlesSolvedCount: Int!
     packsSolvedCount: Int!
     nftsSolvedCount: Int!
+    accessToken: String
+    refreshToken: String
   }
 
   enum SiteRole {

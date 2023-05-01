@@ -9,6 +9,7 @@
     "@magic-sdk/admin": "^1.8.0",
     "@moralisweb3/common-evm-utils": "^2.9.0",
     "@redwoodjs/api": "4.5.0",
+    "@redwoodjs/auth-dbauth-api": "4.5.0",
     "@redwoodjs/graphql-server": "4.5.0",
     "@sendgrid/mail": "^7.7.0",
     "cloudinary-build-url": "^0.2.4",
@@ -21,11 +22,13 @@
     "nanoid": "^3.0.0",
     "node-fetch": "2",
     "pino-datadog": "^2.0.2",
+    "pkce-challenge": "^3.1.0",
     "qfs-compression": "^0.2.1",
     "uuid": "^9.0.0",
     "zod": "^3.19.1"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.1"
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/uuid": "^9.0.1"
   }
 }

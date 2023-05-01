@@ -1,5 +1,5 @@
 import fetch from 'cross-fetch'
-import { decode as decodeJwt } from 'jsonwebtoken'
+import { JwtPayload, decode as decodeJwt } from 'jsonwebtoken'
 
 import { db } from 'src/lib/db'
 import { encodeBody, getExpiration } from 'src/lib/keyp/oAuth/helpers'
@@ -81,7 +81,13 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
   }
 }
 
-export const onConnected = async ({ accessToken, decoded }) => {
+export const onConnected = async ({
+  accessToken,
+  decoded,
+}: {
+  accessToken: string
+  decoded: JwtPayload
+}) => {
   try {
     const userDetails = await fetch(`${KEYP_OAUTH_DOMAIN}/me`, {
       headers: { Authorization: `Bearer ${accessToken}` },
@@ -103,7 +109,6 @@ export const onConnected = async ({ accessToken, decoded }) => {
         id: userDetails.sub,
         email: userDetails.email,
         username: userDetails.username,
-        address: userDetails.address,
         accessToken,
       },
       where: { id: userDetails.sub },

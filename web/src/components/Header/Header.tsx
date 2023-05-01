@@ -4,10 +4,10 @@ import { Dialog, Transition } from '@headlessui/react'
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 
+import { useAuth } from 'src/auth'
 import { Link, routes, useLocation } from '@redwoodjs/router'
 import { LoaderIcon } from '@redwoodjs/web/dist/toast'
 
-import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
 import ProfileIcon from 'src/components/ProfileIcon/ProfileIcon'
 import WalletButton from 'src/components/WalletButton/WalletButton'

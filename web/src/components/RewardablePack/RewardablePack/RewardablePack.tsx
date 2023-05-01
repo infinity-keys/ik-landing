@@ -6,9 +6,9 @@ import {
 import { LensShareButton } from '@infinity-keys/react-lens-share-button'
 import type { FindRewardablePackBySlug } from 'types/graphql'
 
+import { useAuth } from 'src/auth'
 import { routes } from '@redwoodjs/router'
 
-import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
 import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'

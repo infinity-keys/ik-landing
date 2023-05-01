@@ -1,9 +1,9 @@
 import type { FindRewardablePuzzleBySlug } from 'types/graphql'
 
+import { useAuth } from 'src/auth'
 import { useParams } from '@redwoodjs/router'
 import { routes } from '@redwoodjs/router'
 
-import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
 import DummyThumbnail from 'src/components/DummyThumbnail/DummyThumbnail'

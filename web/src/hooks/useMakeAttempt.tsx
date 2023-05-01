@@ -5,10 +5,10 @@ import {
   MakeAttemptMutationVariables,
 } from 'types/graphql'
 
+import { useAuth } from 'src/auth'
 import { useParams } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 
-import { useAuth } from 'src/auth'
 import { createAnonAttempt, redirectUser } from 'src/lib/attempt/makeAttempt'
 
 const MAKE_ATTEMPT = gql`

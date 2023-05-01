@@ -10,9 +10,9 @@ import clsx from 'clsx'
 import loCapitalize from 'lodash/capitalize'
 import type { FindRewardables } from 'types/graphql'
 
+import { useAuth } from 'src/auth'
 import { useParams } from '@redwoodjs/router'
 
-import { useAuth } from 'src/auth'
 import GridLayoutButtons from 'src/components/GridLayoutButtons/GridLayoutButtons'
 import GridPagination from 'src/components/GridPagination/GridPagination'
 import Seo from 'src/components/Seo/Seo'
