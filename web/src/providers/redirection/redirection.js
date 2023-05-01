@@ -1,9 +1,9 @@
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { routes } from '@redwoodjs/router'
 
-import { useAuth } from 'src/auth'
+import { login } from 'src/providers/auth/auth'
 import { useOAuth } from 'src/providers/oAuth'
-import { getErrorResponse } from 'src/utils/helpers'
+
 const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
 
 // If one of these types, treat the incoming action as a login
@@ -25,8 +25,6 @@ const RedirectionContext = React.createContext({})
 const RedirectionProvider = ({ children }) => {
   const [state, setState] = React.useState({ isLoading: true })
 
-  // TODO: does this come from the class component?
-  // const { logIn } = useAuth()
   const { submitCodeGrant } = useOAuth()
 
   let url
@@ -49,7 +47,8 @@ const RedirectionProvider = ({ children }) => {
   }
 
   const submitLoginCodeGrant = async () => {
-    const response = await logIn({
+    // Note: login came from `useAuth`, but is now imported from `src/providers`
+    const response = await login({
       code,
       state: grantState,
       type: type.toUpperCase(),
@@ -143,36 +142,3 @@ const RedirectionProvider = ({ children }) => {
 const useRedirection = () => React.useContext(RedirectionContext)
 
 export { RedirectionProvider, useRedirection, saveRedirectTo, getRedirectTo }
-
-const logIn = async (attributes) => {
-  try {
-    /* eslint-disable-next-line no-undef */
-    const { type, code, state } = attributes
-    // eslint-disable-next-line no-undef
-    const response = await fetch(`${global.RWJS_API_URL}/auth`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code, state, type, method: 'login' }),
-    })
-    return await response.json()
-  } catch (e) {
-    /* eslint-disable-next-line no-console */
-    const errorMessage = getErrorResponse(`${e}.`, 'login').error.message
-    console.error(errorMessage)
-  }
-}
-
-const logout = async () => {
-  try {
-    /* eslint-disable-next-line no-undef */
-    await fetch(global.RWJS_API_DBAUTH_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ method: 'logout' }),
-    })
-  } catch (e) {
-    /* eslint-disable-next-line no-console */
-    const errorMessage = getErrorResponse(`${e}.`, 'logout').error.message
-    console.error(errorMessage)
-  }
-}
