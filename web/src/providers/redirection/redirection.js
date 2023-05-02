@@ -1,7 +1,9 @@
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { routes } from '@redwoodjs/router'
 
-import { login } from 'src/providers/auth/auth'
+import { useAuth } from 'src/auth'
+
+// import { login } from 'src/providers/auth/auth'
 import { useOAuth } from 'src/providers/oAuth'
 
 const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
@@ -23,6 +25,7 @@ const getRedirectTo = () => {
 const RedirectionContext = React.createContext({})
 
 const RedirectionProvider = ({ children }) => {
+  const { logIn } = useAuth()
   const [state, setState] = React.useState({ isLoading: true })
 
   const { submitCodeGrant } = useOAuth()
@@ -48,7 +51,7 @@ const RedirectionProvider = ({ children }) => {
 
   const submitLoginCodeGrant = async () => {
     // Note: login came from `useAuth`, but is now imported from `src/providers`
-    const response = await login({
+    const response = await logIn({
       code,
       state: grantState,
       type: type.toUpperCase(),
