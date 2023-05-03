@@ -4,6 +4,7 @@ import { useParams, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
+import Button from 'src/components/Button'
 import { saveRedirectTo } from 'src/providers/redirection'
 
 const LoginPortal = () => {
@@ -49,43 +50,27 @@ const LoginPortal = () => {
   }, [isAuthenticated])
 
   const getButton = (type, text) => (
-    <button onClick={() => onSubmitSignUp(type)} className="login-button mt-2">
-      <div className="align-center m-1 flex items-center justify-center">
-        <span className="mr-2">{text}</span>
-      </div>
-    </button>
+    <div className="mt-6">
+      <Button
+        onClick={() => onSubmitSignUp(type)}
+        text={text}
+        size="small"
+        variant="faded"
+        border={false}
+        fullWidth
+      />
+    </div>
   )
 
   return (
-    <div className="flex justify-center text-white">
-      <div className="login-portal-container w-80 sm:w-96">
-        <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
-          <span className="block xl:inline">Keyp Example App Redwood</span>
+    <div className="flex justify-center">
+      <div className="bg-black/20 py-8 px-12">
+        <h1 className="rounded pb-4 text-2xl font-bold text-brand-accent-primary">
+          Login with Keyp
         </h1>
-        <div className="mt-6">
-          <div className="mb-2">
-            <h2 className="color-grey-light text-center text-base font-bold">
-              Sign in
-            </h2>
-          </div>
-        </div>
-
-        <div className="login-portal-container--button-wrapper ">
-          {getButton('KEYP_DISCORD', 'Discord')} <br />
-          {getButton('KEYP_NODE_OIDC', 'oidc-provider')} <br />
-          {getButton('KEYP_GOOGLE', 'Google')} <br />
-          {errorText && <div className="rw-cell-error mt-2">{errorText}</div>}
-        </div>
-        <div className="w-full text-center"></div>
-        <h4 className="mt-6">
-          <a className="mr-2 text-blue" href="/">
-            Terms of Service
-          </a>
-          ·
-          <a className="ml-2 text-blue" href="/">
-            Privacy Policy
-          </a>
-        </h4>
+        {getButton('KEYP_DISCORD', 'Discord')}
+        {getButton('KEYP_GOOGLE', 'Google')}
+        {errorText && <div className="rw-cell-error mt-2">{errorText}</div>}
       </div>
     </div>
   )
