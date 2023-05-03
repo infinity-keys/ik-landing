@@ -1,4 +1,7 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
+const {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+} = require('@discordjs/builders')
 const { EmbedBuilder } = require('discord.js')
 
 const eco = require('../ecoDB')
@@ -9,7 +12,8 @@ module.exports = {
     .setName('results')
     .setDescription(
       'Announcing the winner of the current cycle and resetting balances to zero'
-    ),
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
     const { guild } = interaction
 

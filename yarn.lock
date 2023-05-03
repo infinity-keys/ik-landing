@@ -29153,6 +29153,7 @@ __metadata:
   dependencies:
     "@redwoodjs/auth-custom-setup": 5.0.3
     "@redwoodjs/core": 5.0.3
+    discord-economy-super: ^1.7.6
     jest-watch-typeahead: ^2.2.2
     lodash: ^4.17.21
     node-fetch: ^2

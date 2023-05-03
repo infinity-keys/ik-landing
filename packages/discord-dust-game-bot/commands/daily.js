@@ -15,9 +15,6 @@ module.exports = {
     // instance to show cooldown time
     // const time = eco.rewards.getDaily(member.id, guild.id).cooldown.pretty;
 
-    console.log('daily', daily)
-    console.log(daily.claimed)
-
     if (!daily.claimed) {
       const embedNoDaily = new EmbedBuilder()
         .setThumbnail(
