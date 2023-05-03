@@ -15,9 +15,6 @@ module.exports = {
     // instance to show cooldown time
     // const time = eco.rewards.getWork(member.id, guild.id).cooldown.pretty;
 
-    console.log('work', work)
-    console.log(work.claimed)
-
     if (!work.claimed) {
       const embedNoWork = new EmbedBuilder()
         .setThumbnail(

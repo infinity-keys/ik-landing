@@ -14,8 +14,6 @@ module.exports = {
     const weekly = await eco.rewards.getWeekly(member.id, guild.id)
     // instance to show cooldown time
     // const time = eco.rewards.getWeekly(member.id, guild.id).cooldown.pretty;
-    console.log('weekly', weekly)
-    console.log(weekly.claimed)
 
     if (!weekly.claimed) {
       const embedNoWoeekly = new EmbedBuilder()
