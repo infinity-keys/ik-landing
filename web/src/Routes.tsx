@@ -44,7 +44,6 @@ const Routes = () => {
 
         <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
           <Route path="/profile" page={ProfilePage} name="profile" />
-          <Route path="/login" page={LoginPage} name="login" />
           <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
 
           <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />

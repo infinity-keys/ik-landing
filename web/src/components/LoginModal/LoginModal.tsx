@@ -1,19 +1,18 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useParams, navigate, routes } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
+import Seo from 'src/components/Seo/Seo'
 import { saveRedirectTo } from 'src/providers/redirection'
 
-const LoginPortal = () => {
+const LoginModal = () => {
   const { signUp, isAuthenticated, reauthenticate } = useAuth()
-
   const { error, redirectTo } = useParams()
+  const [errorText, setErrorText] = useState('')
 
-  const [errorText, setErrorText] = React.useState('')
-  const getErrorText = (error) => {
+  const getErrorText = (error: string) => {
     if (error === 'expired') return `Session expired, please log in again.`
   }
 
@@ -27,7 +26,7 @@ const LoginPortal = () => {
     const response = await signUp({ type: parsedType })
 
     if (response.url) {
-      window.location = response.url + login_provider
+      window.location.href = response.url + login_provider
     } else {
       console.log('Something went wrong')
     }
@@ -49,7 +48,7 @@ const LoginPortal = () => {
     }
   }, [isAuthenticated])
 
-  const getButton = (type, text) => (
+  const getButton = (type: string, text: string) => (
     <div className="mt-6">
       <Button
         onClick={() => onSubmitSignUp(type)}
@@ -64,8 +63,9 @@ const LoginPortal = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="bg-black/20 py-8 px-12">
-        <h1 className="rounded pb-4 text-2xl font-bold text-brand-accent-primary">
+      <Seo title="Sign In" description="Join to start collecting." />
+      <div className="w-full max-w-sm rounded-lg bg-black/20 p-12 text-center">
+        <h1 className="pb-2 text-2xl font-bold text-brand-accent-primary">
           Login with Keyp
         </h1>
         {getButton('KEYP_DISCORD', 'Discord')}
@@ -76,13 +76,4 @@ const LoginPortal = () => {
   )
 }
 
-const LoginPage = () => {
-  return (
-    <>
-      <MetaTags title="Sign In" description="Join to start collecting." />
-      <LoginPortal />
-    </>
-  )
-}
-
-export default LoginPage
+export default LoginModal

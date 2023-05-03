@@ -20,7 +20,11 @@ const getRedirectTo = () => {
   return url
 }
 
-const RedirectionContext = React.createContext({})
+const RedirectionContext = React.createContext({
+  errorMessage: '',
+  successMessage: '',
+  isLoading: false,
+})
 
 const RedirectionProvider = ({ children }) => {
   const [state, setState] = React.useState({ isLoading: true })

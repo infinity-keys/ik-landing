@@ -1,6 +1,6 @@
 import type { ComponentMeta } from '@storybook/react'
 
-import LoginPage from './LoginPage'
+import LoginPage from './LoginModal'
 
 export const generated = () => {
   return <LoginPage />
