@@ -1,9 +1,7 @@
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { routes } from '@redwoodjs/router'
 
-import { useAuth } from 'src/auth'
-
-// import { login } from 'src/providers/auth/auth'
+import { logIn } from 'src/providers/auth'
 import { useOAuth } from 'src/providers/oAuth'
 
 const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
@@ -25,7 +23,6 @@ const getRedirectTo = () => {
 const RedirectionContext = React.createContext({})
 
 const RedirectionProvider = ({ children }) => {
-  const { logIn } = useAuth()
   const [state, setState] = React.useState({ isLoading: true })
 
   const { submitCodeGrant } = useOAuth()

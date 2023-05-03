@@ -5,13 +5,12 @@ import { MetaTags } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import { saveRedirectTo } from 'src/providers/redirection'
-import { useToast } from 'src/providers/toast'
 
 const LoginPortal = () => {
-  const { signUp, isAuthenticated, reauthenticate, currentUser } = useAuth()
+  const { signUp, isAuthenticated, reauthenticate } = useAuth()
 
   const { error, redirectTo } = useParams()
-  const { toast } = useToast()
+
   const [errorText, setErrorText] = React.useState('')
   const getErrorText = (error) => {
     if (error === 'expired') return `Session expired, please log in again.`
@@ -40,7 +39,7 @@ const LoginPortal = () => {
   }, [redirectTo, reauthenticate])
 
   useEffect(() => {
-    if (error) setErrorText(getErrorText(error || 'KEYP ERROR'))
+    if (error) setErrorText(getErrorText(error) || 'KEYP ERROR')
   }, [error])
 
   useEffect(() => {
@@ -50,11 +49,7 @@ const LoginPortal = () => {
   }, [isAuthenticated])
 
   const getButton = (type, text) => (
-    <button
-      onClick={() => onSubmitSignUp(type)}
-      className="login-button mt-2"
-      size="small"
-    >
+    <button onClick={() => onSubmitSignUp(type)} className="login-button mt-2">
       <div className="align-center m-1 flex items-center justify-center">
         <span className="mr-2">{text}</span>
       </div>

@@ -103,11 +103,8 @@ export const onConnected = async ({
 
     logger.debug({ custom: userDetails }, 'User info')
 
-    // TODO: handle existing users
     const user = await db.user.upsert({
-      // NOTE: update email but also searching via email? email is the only field
-      // in common, but what happens if user changes email. update authId?
-      update: { email: userDetails.email, accessToken },
+      update: { accessToken },
       create: {
         // NOTE: changed from `id`
         authId: userDetails.sub,

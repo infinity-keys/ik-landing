@@ -3,7 +3,7 @@ import { PropsWithChildren } from 'react'
 import { AuthProvider as RedwoodAuthProvider } from 'src/auth'
 import { getErrorResponse } from 'src/utils/helpers'
 
-export const login = async (attributes) => {
+export const logIn = async (attributes) => {
   try {
     /* eslint-disable-next-line no-undef */
     const { type, code, state } = attributes
@@ -17,21 +17,6 @@ export const login = async (attributes) => {
   } catch (e) {
     /* eslint-disable-next-line no-console */
     const errorMessage = getErrorResponse(`${e}.`, 'login').error.message
-    console.error(errorMessage)
-  }
-}
-
-export const logout = async () => {
-  try {
-    /* eslint-disable-next-line no-undef */
-    await fetch(`${global.RWJS_API_URL}/auth`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ method: 'logout' }),
-    })
-  } catch (e) {
-    /* eslint-disable-next-line no-console */
-    const errorMessage = getErrorResponse(`${e}.`, 'logout').error.message
     console.error(errorMessage)
   }
 }
