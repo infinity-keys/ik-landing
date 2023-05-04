@@ -32,8 +32,10 @@
   "dependencies": {
     "@ethersproject/providers": "^5.7.2",
     "@infinity-keys/constants": "workspace:^",
+    "@rollup/plugin-json": "^6.0.0",
     "@typechain/ethers-v5": "^10.1.0",
     "ethers": "^5.7.2",
+    "rollup-plugin-copy": "^3.4.0",
     "typechain": "^8.1.0"
   }
 }
