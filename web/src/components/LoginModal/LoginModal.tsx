@@ -65,7 +65,7 @@ const LoginModal = () => {
       <Seo title="Sign In" description="Join to start collecting." />
 
       <div className="w-full max-w-md rounded-lg border-2 border-brand-accent-primary/10 bg-black/20 p-4 text-center">
-        <div className="flex flex-col items-center gap-4 p-10">
+        <div className="flex flex-col items-center gap-4 py-10 px-4">
           <h1 className="pb-2 text-2xl font-bold text-brand-accent-primary">
             Login to Infinity Keys
           </h1>
@@ -75,7 +75,7 @@ const LoginModal = () => {
         </div>
 
         <p className="text-xs text-white/40">
-          powered by{' '}
+          Powered by{' '}
           <a
             className="transition-colors hover:text-brand-accent-secondary"
             href="https://www.usekeyp.com/"
