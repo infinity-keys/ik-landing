@@ -15,7 +15,7 @@ const RedirectPage = () => {
     <div className="flex justify-center">
       <Seo title="Redirect" />
 
-      <div className="w-full max-w-md rounded-lg bg-black/20 p-12 text-center">
+      <div className="w-full max-w-md rounded-lg border-2 border-brand-accent-primary/10 bg-black/20 p-12 text-center">
         {typeof errorMessage === 'string' ? (
           <>
             <h1 className="font-bold">Oops - there was an issue</h1>
@@ -24,12 +24,12 @@ const RedirectPage = () => {
             </p>
           </>
         ) : (
-          <div>
+          <>
             <h1 className="text-2xl font-bold text-brand-accent-primary">
               {successMessage}
             </h1>
             <p className="mt-4">You will be redirected shortly</p>
-          </div>
+          </>
         )}
       </div>
     </div>
