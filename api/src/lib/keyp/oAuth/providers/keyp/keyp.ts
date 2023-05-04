@@ -103,23 +103,56 @@ export const onConnected = async ({
 
     logger.debug({ custom: userDetails }, 'User info')
 
-    const user = await db.user.upsert({
-      update: { accessToken },
-      create: {
-        // NOTE: changed from `id`
-        authId: userDetails.sub,
+    // Find user if they are in the db with a Magic Link authId
+    const magicLinkUser = await db.user.findFirst({
+      where: {
         email: userDetails.email,
-        username: userDetails.username,
-        accessToken,
-        roles: ['VERIFIED'],
+        authId: {
+          startsWith: 'did:ethr:',
+        },
       },
-      // NOTE: changed from `id`
-      where: { email: userDetails.email },
     })
-    return user
+
+    // Move existing users to the new auth system. Should only run once per user
+    if (magicLinkUser) {
+      try {
+        const user = await db.user.update({
+          where: { email: userDetails.email },
+          data: {
+            authId: userDetails.sub,
+            username: userDetails.username,
+            accessToken,
+          },
+        })
+        return user
+      } catch {
+        throw new Error('Problem updating existing user')
+      }
+    }
+
+    // At this point authId should be unique and using the new system
+    try {
+      const user = await db.user.upsert({
+        update: { email: userDetails.email, accessToken },
+        create: {
+          authId: userDetails.sub,
+          email: userDetails.email,
+          username: userDetails.username,
+          // address: userDetails.address,
+          accessToken,
+        },
+        where: { authId: userDetails.sub },
+      })
+
+      return user
+    } catch {
+      throw new Error(
+        'There was a problem logging in. Do you have an existing account with this email?'
+      )
+    }
   } catch (e) {
     logger.error(e)
-    throw `onConnected() ${e}`
+    throw e
   }
 }
 

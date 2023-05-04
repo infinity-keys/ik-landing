@@ -81,45 +81,10 @@ const RedirectionProvider = ({ children }) => {
     setState({ successMessage: successMessageCodeGrant, isLoading: false })
   }
 
-  const completeWyreOrder = () => {
-    if (!orderId || error)
-      return setState({
-        isLoading: false,
-        errorMessage:
-          "Your debit-card wasn't accepted by Wyre. If this keeps happening, please contact us for help.",
-      })
-    setState({
-      isLoading: false,
-      orderSubmitted: true,
-      successMessage: 'Thanks for your order!',
-    })
-  }
-  const completeStripeOrder = () => {
-    if (error === 'cancelled')
-      return setState({
-        isLoading: false,
-        errorMessage: 'Checkout canceled.',
-      })
-    setState({
-      isLoading: false,
-      orderSubmitted: true,
-      successMessage: 'Thanks for your order!',
-    })
-  }
-  const completeRampOrder = () => {
-    setState({
-      isLoading: false,
-      orderSubmitted: true,
-      successMessage: 'Thanks for your order!',
-    })
-  }
-
   React.useEffect(() => {
     if (!isBrowser) return
     if (!url.pathname.includes('/redirect')) return
-    if (type === 'wyre') return completeWyreOrder()
-    if (type === 'stripe') return completeStripeOrder()
-    if (type === 'rampnetwork') return completeRampOrder()
+
     if (error)
       return setState({
         isLoading: false,

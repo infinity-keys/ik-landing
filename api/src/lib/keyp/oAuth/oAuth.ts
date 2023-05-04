@@ -24,8 +24,8 @@ export const oAuthUrl = async (type: string) => {
     // Note: Feel free to add additional data to state, but if the authorization server doesn't
     // support PKCE yet you must include a random string for CSRF protection
     const state = uuidv4()
-    // For oAuth codeGrant, we sometimes need the user id'
 
+    // For oAuth codeGrant, we sometimes need the user id'
     // TODO: id or authId?
     let userId
     if (context.currentUser?.id) userId = context.currentUser?.id
