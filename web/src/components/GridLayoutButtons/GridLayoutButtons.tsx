@@ -5,7 +5,6 @@ import { ThumbnailGridLayoutType } from '@infinity-keys/core'
 import clsx from 'clsx'
 
 import Dropdown from 'src/components/GridDropdown/GridDropdown'
-
 import { GridLandingRouteType } from 'src/lib/urlBuilders'
 
 export interface GridLayoutButtonsProps {

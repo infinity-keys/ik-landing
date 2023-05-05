@@ -1,8 +1,8 @@
 import { balanceOf1155, balanceOf721 } from '@infinity-keys/contracts'
 import { ethers } from 'ethers'
+import fetch from 'node-fetch'
 import { NftCheckDatum } from 'types/graphql'
 import { z } from 'zod'
-import fetch from 'node-fetch'
 
 import { providerLookup } from 'src/lib/lookups'
 

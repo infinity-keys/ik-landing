@@ -1,5 +1,6 @@
-import Moralis from 'moralis'
 import { GetWalletNFTsJSONResponse } from '@moralisweb3/common-evm-utils'
+import Moralis from 'moralis'
+
 import { logger } from 'src/lib/logger'
 
 if (!Moralis.Core.isStarted) {

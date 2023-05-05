@@ -1,5 +1,6 @@
-import Wrapper from 'src/components/Wrapper/Wrapper'
 import { useLocation } from '@redwoodjs/router'
+
+import Wrapper from 'src/components/Wrapper/Wrapper'
 
 const WrapperLayout = ({ children }: { children?: React.ReactNode }) => {
   const { pathname } = useLocation()

@@ -54,10 +54,17 @@ export const Success = ({ puzzle }: CellSuccessProps<EditPuzzleById>) => {
   return (
     <div className="rw-segment">
       <header className="rw-segment-header">
-        <h2 className="rw-heading rw-heading-secondary">Edit Puzzle {puzzle?.id}</h2>
+        <h2 className="rw-heading rw-heading-secondary">
+          Edit Puzzle {puzzle?.id}
+        </h2>
       </header>
       <div className="rw-segment-main">
-        <PuzzleForm puzzle={puzzle} onSave={onSave} error={error} loading={loading} />
+        <PuzzleForm
+          puzzle={puzzle}
+          onSave={onSave}
+          error={error}
+          loading={loading}
+        />
       </div>
     </div>
   )

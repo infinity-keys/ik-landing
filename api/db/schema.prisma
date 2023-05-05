@@ -352,10 +352,11 @@ model User {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   lastLoggedIn   DateTime @default(now())
+  /// Unique string used to cryptographically identify this person. NEVER MAKE PUBLIC
   nonce          String   @default(cuid())
   authId         String?  @unique
   username       String?
-  /// Unique string used to cryptographically identify this person. NEVER MAKE PUBLIC
+  address        String?  @unique // Torus wallet address
   email          String?  @unique
   twitterProfile String?
   discordProfile String?

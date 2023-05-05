@@ -1,3 +1,5 @@
+import type { EditPuzzleById, UpdatePuzzleInput } from 'types/graphql'
+
 import {
   Form,
   FormError,
@@ -6,12 +8,7 @@ import {
   TextField,
   Submit,
 } from '@redwoodjs/forms'
-
-import type { EditPuzzleById, UpdatePuzzleInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
-
-
-
 
 type FormPuzzle = NonNullable<EditPuzzleById['puzzle']>
 
@@ -24,10 +21,6 @@ interface PuzzleFormProps {
 
 const PuzzleForm = (props: PuzzleFormProps) => {
   const onSubmit = (data: FormPuzzle) => {
-  
-    
-    
-  
     props.onSave(data, props?.puzzle?.id)
   }
 
@@ -40,7 +33,7 @@ const PuzzleForm = (props: PuzzleFormProps) => {
           titleClassName="rw-form-error-title"
           listClassName="rw-form-error-list"
         />
-      
+
         <Label
           name="rewardableId"
           className="rw-label"
@@ -48,23 +41,19 @@ const PuzzleForm = (props: PuzzleFormProps) => {
         >
           Rewardable id
         </Label>
-        
-          <TextField
-            name="rewardableId"
-            defaultValue={props.puzzle?.rewardableId}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
-        
+
+        <TextField
+          name="rewardableId"
+          defaultValue={props.puzzle?.rewardableId}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          validation={{ required: true }}
+        />
 
         <FieldError name="rewardableId" className="rw-field-error" />
 
         <div className="rw-button-group">
-          <Submit
-            disabled={props.loading}
-            className="rw-button rw-button-blue"
-          >
+          <Submit disabled={props.loading} className="rw-button rw-button-blue">
             Save
           </Submit>
         </div>

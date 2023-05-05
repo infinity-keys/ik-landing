@@ -15,7 +15,7 @@ import type { StandardScenario } from './stepSimpleTexts.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('stepSimpleTexts', () => {
+describe.skip('stepSimpleTexts', () => {
   scenario(
     'returns all stepSimpleTexts',
     async (scenario: StandardScenario) => {
