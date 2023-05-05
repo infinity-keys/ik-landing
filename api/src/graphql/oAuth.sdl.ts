@@ -1,14 +1,25 @@
 export const schema = gql`
+  type OAuth {
+    state: String!
+    codeChallenge: String!
+    codeVerifier: String!
+    createdAt: DateTime!
+    user: User
+    userId: String
+  }
+
   type LoginUrl {
     type: String!
     text: String
     url: String
   }
+
   type CodeGrantResponse {
     action: String
     text: String
     status: CodeGrantStatus
   }
+
   type RevokeResponse {
     status: CodeGrantStatus
   }
@@ -19,6 +30,7 @@ export const schema = gql`
       @skipAuth
     revokeOAuth(type: String!): RevokeResponse! @requireAuth
   }
+
   enum CodeGrantStatus {
     SUCCESS
     FAILED

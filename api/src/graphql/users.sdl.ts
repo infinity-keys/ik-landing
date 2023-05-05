@@ -7,11 +7,17 @@ export const schema = gql`
     nonce: String!
     authId: String
     username: String
-    email: String
     address: String
+    email: String
     twitterProfile: String
     discordProfile: String
     lensProfile: String
+    mfa_enabled: Boolean
+    imageSrc: String
+    country: String
+    banned: Boolean!
+    blocked: Boolean
+    betaAccess: Boolean!
     roles: [SiteRole]!
     organizations: [OrganizationUser]!
     submissions: [Submission]!
@@ -22,8 +28,10 @@ export const schema = gql`
     puzzlesSolvedCount: Int!
     packsSolvedCount: Int!
     nftsSolvedCount: Int!
-    accessToken: String
     refreshToken: String
+    accessToken: String
+    oauth: [OAuth]!
+    oauthConnection: [OAuthConnection]!
   }
 
   enum SiteRole {
@@ -42,11 +50,20 @@ export const schema = gql`
     nonce: String!
     authId: String
     username: String
-    email: String
     address: String
+    email: String
     twitterProfile: String
     discordProfile: String
     lensProfile: String
+    mfa_enabled: Boolean
+    imageSrc: String
+    country: String
+    banned: Boolean!
+    blocked: Boolean
+    betaAccess: Boolean!
+    roles: [SiteRole]!
+    refreshToken: String
+    accessToken: String
   }
 
   input UpdateUserInput {
@@ -54,11 +71,20 @@ export const schema = gql`
     nonce: String
     authId: String
     username: String
-    email: String
     address: String
+    email: String
     twitterProfile: String
     discordProfile: String
     lensProfile: String
+    mfa_enabled: Boolean
+    imageSrc: String
+    country: String
+    banned: Boolean
+    blocked: Boolean
+    betaAccess: Boolean
+    roles: [SiteRole]!
+    refreshToken: String
+    accessToken: String
   }
 
   type Mutation {
