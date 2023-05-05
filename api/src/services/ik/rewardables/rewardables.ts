@@ -456,7 +456,7 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       // Just loop through all records in the cookie and see if any are missing in db
       const cookieSolvedSteps = Object.entries(
         parsedIkV2Cookie.puzzles
-      ).flatMap(([puzzleData]) => puzzleData.steps)
+      ).flatMap(([, stepData]) => stepData.steps)
 
       // Does the user's cookie steps actually exist in the DB?
       const stepsExist = await db.step.findMany({
