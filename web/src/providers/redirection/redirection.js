@@ -85,19 +85,21 @@ const RedirectionProvider = ({ children }) => {
     if (!isBrowser) return
     if (!url.pathname.includes('/redirect')) return
 
-    if (error)
-      return setState({
+    if (error) {
+      setState({
         isLoading: false,
         errorMessage: error_description || 'Something went wrong',
       })
-    if (!code || !grantState)
-      return setState({
+    } else if (!code || !grantState) {
+      setState({
         isLoading: false,
         errorMessage: 'Invalid redirect parameters',
       })
-    if (APPROVED_LOGIN_PROVIDERS.includes(type.toUpperCase()))
-      return submitLoginCodeGrant()
-    completeOAuth()
+    } else if (APPROVED_LOGIN_PROVIDERS.includes(type.toUpperCase())) {
+      submitLoginCodeGrant()
+    } else {
+      completeOAuth()
+    }
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [code, grantState])
 

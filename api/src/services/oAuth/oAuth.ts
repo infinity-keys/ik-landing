@@ -2,7 +2,7 @@ import {
   oAuthUrl as getOAuthUrl,
   processCodeGrant,
   processRevoke,
-} from 'src/lib/oAuth'
+} from 'src/lib/keyp/oAuth'
 
 export const oAuthUrl = ({ type }) => getOAuthUrl(type)
 
