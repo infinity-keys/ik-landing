@@ -294,7 +294,7 @@ export default async () => {
           id: ikOrg.id,
         },
       },
-      // Connect the NFT to 'puzzle1' in this rewardable
+      // Connect the nft2 to 'puzzle4' in this rewardable
       nfts: {
         connect: {
           id: nft2.id,
@@ -306,8 +306,26 @@ export default async () => {
           steps: {
             create: [
               {
-                challenge: "What is the name of Egypt's main canal?",
+                challenge:
+                  'You must have the Prerequiste NFT in order to enter Egypt',
                 stepSortWeight: 1,
+                type: 'NFT_CHECK',
+                stepNftCheck: {
+                  create: {
+                    nftCheckData: {
+                      create: {
+                        contractAddress:
+                          '0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9',
+                        chainId: 137,
+                        tokenId: 35,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                challenge: "What is the name of Egypt's main canal?",
+                stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
                 stepSimpleText: {
                   create: {
@@ -317,7 +335,7 @@ export default async () => {
               },
               {
                 challenge: 'Where are the great pyramids?',
-                stepSortWeight: 2,
+                stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
                 stepSimpleText: {
                   create: {
@@ -327,7 +345,7 @@ export default async () => {
               },
               {
                 challenge: "What is the name of Egypt's main river?",
-                stepSortWeight: 3,
+                stepSortWeight: 4,
                 type: 'SIMPLE_TEXT',
                 stepSimpleText: {
                   create: {
