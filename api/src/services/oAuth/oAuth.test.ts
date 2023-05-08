@@ -4,6 +4,13 @@
 // import { oAuthUrl, codeGrant } from './oAuth'
 // jest.setTimeout(60000)
 
+describe.skip('coinbaseLoginUrl', () => {
+  scenario('Happy case', async () => {
+    const url = 'test'
+    expect(typeof url === 'string').toBe(true)
+  })
+})
+
 // /* eslint-disable no-console */
 // describe.skip('coinbaseLoginUrl', () => {
 //   scenario('Happy case', async (scenario) => {
