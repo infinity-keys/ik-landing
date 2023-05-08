@@ -121,6 +121,8 @@ export const onConnected = async ({
           data: {
             authId: userDetails.sub,
             username: userDetails.username,
+            address: userDetails.address,
+            lastLoggedIn: new Date().toISOString(),
             accessToken,
           },
         })
@@ -133,12 +135,18 @@ export const onConnected = async ({
     // At this point authId should be unique and using the new system
     try {
       const user = await db.user.upsert({
-        update: { email: userDetails.email, accessToken },
+        update: {
+          email: userDetails.email,
+          lastLoggedIn: new Date().toISOString(),
+          accessToken,
+        },
         create: {
           authId: userDetails.sub,
           email: userDetails.email,
           username: userDetails.username,
-          // address: userDetails.address,
+          address: userDetails.address,
+          lastLoggedIn: new Date().toISOString(),
+          roles: ['VERIFIED'],
           accessToken,
         },
         where: { authId: userDetails.sub },

@@ -37,7 +37,6 @@ const RedirectionProvider = ({ children }) => {
   /* eslint-disable camelcase */
   let error_description
   let error
-  let orderId
   let type
 
   if (isBrowser) {
@@ -46,7 +45,6 @@ const RedirectionProvider = ({ children }) => {
     grantState = url.searchParams.get('state')
     error = url.searchParams.get('error')
     error_description = url.searchParams.get('error_description')
-    orderId = url.searchParams.get('orderId')
     type = url.pathname.split('/redirect/')[1]
   }
 
@@ -63,6 +61,7 @@ const RedirectionProvider = ({ children }) => {
         isLoading: false,
         errorMessage: response.error || 'Something went wrong',
       })
+
     setState({
       isLoading: false,
       successMessage: "Great - You're signed in!",
