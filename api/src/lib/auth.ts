@@ -42,8 +42,6 @@ export const getCurrentUser = async (
   }
 
   const user = await db.user.findUnique({
-    // @TODO: are we upserting anymore?
-
     // @NOTE: session.id is equal to user.authId
     where: { authId: session.id },
     select: {

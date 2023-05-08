@@ -26,16 +26,23 @@ export const oAuthUrl = async (type: string) => {
     const state = uuidv4()
 
     // For oAuth codeGrant, we sometimes need the user id'
-    // TODO: id or authId?
+    // TODO: used authId here and updated schema
     let userId
-    if (context.currentUser?.id) userId = context.currentUser?.id
+    if (typeof context.currentUser?.authId === 'string')
+      userId = context.currentUser?.authId
 
     await db.oAuth.create({
       data: {
         state,
         codeVerifier: pkce.code_verifier,
         codeChallenge: pkce.code_challenge,
-        ...(userId && { member: { connect: { id: userId } } }),
+        ...(userId && {
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        }),
       },
     })
 
