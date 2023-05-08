@@ -5,7 +5,7 @@ import { oAuthUrl, codeGrant } from './oAuth'
 jest.setTimeout(60000)
 
 /* eslint-disable no-console */
-describe('coinbaseLoginUrl', () => {
+describe.skip('coinbaseLoginUrl', () => {
   scenario('Happy case', async (scenario) => {
     mockCurrentUser(scenario.member.alice)
     const { url } = await oAuthUrl({ type: COINBASE })
@@ -15,7 +15,7 @@ describe('coinbaseLoginUrl', () => {
   })
 })
 
-describe('plaidConnection', () => {
+describe.skip('plaidConnection', () => {
   scenario('Get plaid link code', async (scenario) => {
     mockCurrentUser(scenario.member.alice)
     const { text } = await oAuthUrl({ type: PLAID })

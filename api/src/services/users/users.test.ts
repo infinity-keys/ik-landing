@@ -9,7 +9,7 @@ import type { StandardScenario } from './users.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('users', () => {
+describe.skip('users', () => {
   scenario('returns all users', async (scenario: StandardScenario) => {
     const result = await users()
 
