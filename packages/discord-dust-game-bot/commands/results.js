@@ -1,7 +1,5 @@
-const {
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-} = require('@discordjs/builders')
+const { SlashCommandBuilder } = require('@discordjs/builders')
+const { PermissionFlagsBits } = require('discord-api-types/v10')
 const { EmbedBuilder } = require('discord.js')
 
 const eco = require('../ecoDB')
