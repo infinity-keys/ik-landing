@@ -1,7 +1,8 @@
 import { EvmChain } from '@moralisweb3/common-evm-utils'
+import { APIGatewayEvent } from 'aws-lambda'
 import Moralis from 'moralis'
 
-async function sleep(ms) {
+async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
@@ -13,10 +14,11 @@ async function startMoralis() {
   moralisStarted = true
 }
 
-export const handler = async (event) => {
+export const handler = async (event: APIGatewayEvent) => {
   if (event.httpMethod !== 'GET') return { statusCode: 405 }
+  if (!event.queryStringParameters) return { statusCode: 400 }
+  if (!('tokenId' in event.queryStringParameters)) return { statusCode: 400 }
   const { tokenId } = event.queryStringParameters
-  if (!tokenId) return { statusCode: 404 }
 
   await startMoralis()
 
