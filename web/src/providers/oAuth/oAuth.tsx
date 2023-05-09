@@ -1,13 +1,15 @@
 import { PropsWithChildren, createContext, useState } from 'react'
 
 import { useMutation } from '@apollo/client'
-import { oAuthUrlQuery, oAuthUrlQueryVariables } from 'types/graphql'
 
-import {
-  OAUTH_URL_MUTATION,
-  OAUTH_CODE_GRANT_MUTATION,
-  OAUTH_REVOKE_MUTATION,
-} from './graphql'
+import { OAUTH_CODE_GRANT_MUTATION } from './graphql'
+
+type SubmitCodeGrantParams = {
+  code?: string | null
+  grantState?: string | null
+  type?: string | null
+  accountId?: string | null
+}
 
 const OAuthContext = createContext<{
   isLoading: boolean
@@ -16,68 +18,44 @@ const OAuthContext = createContext<{
     code,
     grantState,
     type,
-  }: {
-    code?: string | null
-    grantState?: string | null
-    type?: string | null
-  }) => { error: string; successMessage: string }
-  getOAuthUrl?: () => void
-  revokeOAuth?: () => void
+    accountId,
+  }: SubmitCodeGrantParams) => Promise<{
+    error?: string
+    successMessage?: string
+    data?: {
+      action: string
+      text: string
+      status: string
+    }
+  }>
 }>({
   isLoading: true,
 })
 
 const OAuthProvider = ({ children }: PropsWithChildren) => {
-  const [state, setState] = useState({})
-
-  const [oAuthUrlMutation] = useMutation(OAUTH_URL_MUTATION)
+  const [state, setState] = useState({ isLoading: true, error: '' })
   const [codeGrantMutation] = useMutation(OAUTH_CODE_GRANT_MUTATION)
-  const [revokeMutation] = useMutation(OAUTH_REVOKE_MUTATION)
 
-  const getOAuthUrl = async (type) => {
-    try {
-      if (!type) throw 'No type provided'
-      setState({ isLoading: true })
-      const { data, error } = await oAuthUrlMutation({
-        variables: { type },
-      })
-      if (error) throw error
-      setState({})
-      return data.oAuthUrl
-    } catch (e) {
-      const errorMessage = `getOAuthUrl() Error fetching ${type}. ${e?.message}`
-      return setState({ error: errorMessage, isLoading: false })
-    }
-  }
-
-  const revokeOAuth = async (type) => {
-    try {
-      const { error } = await revokeMutation({
-        variables: { type },
-      })
-      if (error) throw error
-      return true
-    } catch (e) {
-      console.error(e?.message)
-      setState({ error: e?.message, isLoading: false })
-      return false
-    }
-  }
-
-  const submitCodeGrant = async ({ code, grantState, type, accountId }) => {
+  const submitCodeGrant = async ({
+    code,
+    grantState,
+    type,
+    accountId,
+  }: SubmitCodeGrantParams) => {
     try {
       const { data } = await codeGrantMutation({
         variables: {
-          type: type.toUpperCase(),
+          type: type?.toUpperCase(),
           code,
           state: grantState,
           accountId,
         },
       })
+
       const { codeGrant } = data
 
       if (codeGrant.status === 'SUCCESS') {
-        setState({ isLoading: false })
+        setState({ isLoading: false, error: '' })
         return {
           data: codeGrant,
           successMessage: 'Great - connection complete!',
@@ -88,8 +66,11 @@ const OAuthProvider = ({ children }: PropsWithChildren) => {
         return { error: errorMessage }
       }
     } catch (error) {
-      setState({ isLoading: false, error: error.message })
-      return { error: error.message }
+      if (error instanceof Error) {
+        setState({ isLoading: false, error: error.message })
+        return { error: error.message }
+      }
+      return { error: 'There was a problem submitting code grant.' }
     }
   }
 
@@ -98,10 +79,11 @@ const OAuthProvider = ({ children }: PropsWithChildren) => {
       value={{
         isLoading: state.isLoading,
         error: state.error,
-        getOAuthUrl,
-        // openOAuthUrl,
         submitCodeGrant,
-        revokeOAuth,
+        // @NOTE: removed these since they are not used anywhere
+        // getOAuthUrl,
+        // openOAuthUrl,
+        // revokeOAuth,
       }}
     >
       {children}
