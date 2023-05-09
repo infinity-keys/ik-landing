@@ -7,9 +7,9 @@ import { logger } from 'src/lib/logger'
 
 export const KEYP = 'KEYP'
 
-let KEYP_OAUTH_DOMAIN = 'https://app.usekeyp.com/oauth'
-
-if (process.env.LOCAL_KEYP_SERVER) KEYP_OAUTH_DOMAIN = 'http://localhost/oauth' // Don't worry about this, its only needed by the Keyp team
+const KEYP_OAUTH_DOMAIN = process.env.LOCAL_KEYP_SERVER
+  ? 'http://localhost/oauth'
+  : 'https://app.usekeyp.com/oauth'
 
 export const KEYP_OAUTH_URL_AUTHORIZE = `${KEYP_OAUTH_DOMAIN}/auth`
 
@@ -19,7 +19,7 @@ const KEYP_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/keyp'
 
 const responseType = 'code'
 const params = {
-  client_id: process.env.KEYP_CLIENT_ID,
+  client_id: process.env.KEYP_CLIENT_ID || '',
   scope: 'openid email',
   redirect_uri: KEYP_REDIRECT_URI,
 }

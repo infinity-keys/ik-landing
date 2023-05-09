@@ -18,9 +18,10 @@ export const oAuthUrl = async (type: string) => {
     const pkce = pkceChallenge()
     url.searchParams.set('code_challenge', pkce.code_challenge) // eg. 3uWDl1fX2ioAqf38eSOFlKnxVEl_VyfaYKG2GyLndKs
     url.searchParams.set('code_challenge_method', 'S256')
-    Object.keys(params).map((key) => {
-      url.searchParams.set(key, params[key])
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.set(key, value)
     })
+
     // Note: Feel free to add additional data to state, but if the authorization server doesn't
     // support PKCE yet you must include a random string for CSRF protection
     const state = uuidv4()
@@ -76,7 +77,7 @@ export const processCodeGrant = async ({
     if (!types.includes(type)) throw `Unknown OAuth Provider - ${type}`
 
     const tokens = await submitCodeGrant({ state, code, type })
-    logger.debug({ custom: tokens }, 'onSubmitCode() response')
+    logger.debug({ custom: tokens, _accountId }, 'onSubmitCode() response')
     return providers[type].onConnected(tokens)
   } catch (e) {
     logger.error(e)
