@@ -9,7 +9,7 @@ import { providers } from 'src/lib/keyp/oAuth/providers'
 import { logger } from 'src/lib/logger'
 
 export const handler = async (event, context) => {
-  logger.debug('Invoked /auth ')
+  logger.info('Invoked /auth ', { event, context })
   const authHandler = new DbAuthHandler(event, context, {
     db: db,
     cors,

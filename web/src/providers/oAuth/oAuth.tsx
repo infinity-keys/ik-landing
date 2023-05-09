@@ -1,9 +1,7 @@
+import { PropsWithChildren, createContext, useState } from 'react'
+
 import { useMutation } from '@apollo/client'
-
-import { isBrowser } from '@redwoodjs/prerender/browserUtils'
-
-import { useToast } from 'src/providers/toast'
-import popupLoadingHtml from 'src/utils/popupLoadingHtml'
+import { oAuthUrlQuery, oAuthUrlQueryVariables } from 'types/graphql'
 
 import {
   OAUTH_URL_MUTATION,
@@ -11,13 +9,26 @@ import {
   OAUTH_REVOKE_MUTATION,
 } from './graphql'
 
-const OAuthContext = React.createContext({
+const OAuthContext = createContext<{
+  isLoading: boolean
+  error?: string
+  submitCodeGrant?: ({
+    code,
+    grantState,
+    type,
+  }: {
+    code?: string | null
+    grantState?: string | null
+    type?: string | null
+  }) => { error: string; successMessage: string }
+  getOAuthUrl?: () => void
+  revokeOAuth?: () => void
+}>({
   isLoading: true,
 })
 
-const OAuthProvider = ({ children }) => {
-  const { toast } = useToast()
-  const [state, setState] = React.useState({})
+const OAuthProvider = ({ children }: PropsWithChildren) => {
+  const [state, setState] = useState({})
 
   const [oAuthUrlMutation] = useMutation(OAUTH_URL_MUTATION)
   const [codeGrantMutation] = useMutation(OAUTH_CODE_GRANT_MUTATION)
@@ -38,29 +49,7 @@ const OAuthProvider = ({ children }) => {
       return setState({ error: errorMessage, isLoading: false })
     }
   }
-  const openOAuthUrl = async (type) => {
-    let myWindow
-    try {
-      if (isBrowser) {
-        myWindow = window.open(
-          '',
-          '_blank',
-          'width=600,height=1000,toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,copyhistory=yes,resizable=yes'
-        )
-        myWindow.document.write(popupLoadingHtml)
-        const oAuthUrl = await getOAuthUrl(type)
-        myWindow.location = oAuthUrl.url
-      }
-    } catch (e) {
-      setState({ error: e?.message, isLoading: false })
-      myWindow.document.write(
-        `<h3>Oops! An error occured<br/><br/>Sending you back...</h3><p>${e?.message}</p>`
-      )
-      setTimeout(() => {
-        myWindow.close()
-      }, 3000)
-    }
-  }
+
   const revokeOAuth = async (type) => {
     try {
       const { error } = await revokeMutation({
@@ -69,7 +58,7 @@ const OAuthProvider = ({ children }) => {
       if (error) throw error
       return true
     } catch (e) {
-      toast.error(e?.message)
+      console.error(e?.message)
       setState({ error: e?.message, isLoading: false })
       return false
     }
@@ -86,7 +75,7 @@ const OAuthProvider = ({ children }) => {
         },
       })
       const { codeGrant } = data
-      console.log(codeGrant)
+
       if (codeGrant.status === 'SUCCESS') {
         setState({ isLoading: false })
         return {
@@ -110,7 +99,7 @@ const OAuthProvider = ({ children }) => {
         isLoading: state.isLoading,
         error: state.error,
         getOAuthUrl,
-        openOAuthUrl,
+        // openOAuthUrl,
         submitCodeGrant,
         revokeOAuth,
       }}
