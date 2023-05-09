@@ -10,8 +10,6 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
     const ecoUsers = await eco.users.all()
-    console.log('ecoUsers', ecoUsers)
-
     for (const ecoUser of ecoUsers) {
       await eco.database.delete(`${ecoUser.guildID}.${ecoUser.id}`)
     }
