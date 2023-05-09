@@ -22,10 +22,6 @@ const HomePage = () => {
     await loadFull(engine)
   }, [])
 
-  const { currentUser } = useAuth()
-
-  console.log('currentUser: ', currentUser)
-
   useEffect(() => {
     // If user has solved the unlock puzzle, forward them.
     // 'hasSolvedUnlock' is set in src/components/PuzzleDumb/PuzzleDumb.tsx
