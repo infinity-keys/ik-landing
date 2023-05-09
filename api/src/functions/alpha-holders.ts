@@ -27,7 +27,12 @@ export const handler = async (event: APIGatewayEvent) => {
   const addressPolygon = '0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9'
   const addressAvalanche = '0xB40fD6825a366081192d890d2760113C066761Ef'
 
-  async function makeRequest(address, chain, tokenId, cursor) {
+  function makeRequest(
+    address: string,
+    chain: string | number,
+    tokenId: string,
+    cursor: string | undefined
+  ) {
     return Moralis.EvmApi.nft.getNFTTokenIdOwners({
       address,
       chain,
@@ -36,7 +41,11 @@ export const handler = async (event: APIGatewayEvent) => {
     })
   }
 
-  async function getResults(address, chain, tokenId) {
+  async function getResults(
+    address: string,
+    chain: string | number,
+    tokenId: string
+  ) {
     let cursor = null
     let addresses = []
     let total = 0
