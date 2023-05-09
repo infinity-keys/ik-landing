@@ -6,7 +6,6 @@ import type { Engine } from 'tsparticles-engine'
 
 import { navigate, routes } from '@redwoodjs/router'
 
-import { useAuth } from 'src/auth'
 import PuzzleDumb, {
   EmbeddedPuzzleStatus,
 } from 'src/components/PuzzleDumb/PuzzleDumb'
