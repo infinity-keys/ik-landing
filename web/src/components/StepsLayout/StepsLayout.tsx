@@ -4,9 +4,9 @@ import { ThumbnailProgress } from '@infinity-keys/core'
 import clsx from 'clsx'
 import { FindAnonStepQuery, FindStepQuery } from 'types/graphql'
 
-import { useAuth } from 'src/auth'
 import { routes, useParams } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
 import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'

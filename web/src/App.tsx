@@ -102,7 +102,3 @@ const App = () => {
 }
 
 export default App
-
-const Test = () => {
-  return <div>hello</div>
-}

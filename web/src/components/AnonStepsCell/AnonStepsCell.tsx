@@ -3,10 +3,10 @@ import type {
   FindAnonStepQueryVariables,
 } from 'types/graphql'
 
-import { useAuth } from 'src/auth'
 import { routes, useParams } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
+import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
