@@ -16,8 +16,7 @@ async function startMoralis() {
 
 export const handler = async (event: APIGatewayEvent) => {
   if (event.httpMethod !== 'GET') return { statusCode: 405 }
-  if (!event.queryStringParameters) return { statusCode: 400 }
-  if (!('tokenId' in event.queryStringParameters)) return { statusCode: 400 }
+  if (!event.queryStringParameters?.tokenId) return { statusCode: 400 }
   const { tokenId } = event.queryStringParameters
 
   await startMoralis()
@@ -29,7 +28,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
   function makeRequest(
     address: string,
-    chain: string | number,
+    chain: EvmChain,
     tokenId: string,
     cursor: string | undefined
   ) {

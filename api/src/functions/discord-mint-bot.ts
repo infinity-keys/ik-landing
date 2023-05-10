@@ -1,5 +1,6 @@
 import { chainIdLookup } from '@infinity-keys/constants'
 import { cloudinaryUrl } from '@infinity-keys/core'
+import { APIGatewayEvent } from 'aws-lambda'
 
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
@@ -20,12 +21,9 @@ if (!Moralis.Core.isStarted) {
   })
 }
 
-export const handler = async (event: {
-  body: string
-  headers: Record<string, string>
-}) => {
+export const handler = async (event: APIGatewayEvent) => {
   const { body, headers } = event
-  const parsedBody = await JSON.parse(body)
+  const parsedBody = await JSON.parse(body || '')
 
   try {
     await Moralis.Streams.verifySignature({
@@ -66,6 +64,9 @@ export const handler = async (event: {
       }
     }
 
+    const defaultImageUrl =
+      'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png'
+
     const claimedNFT = new EmbedBuilder()
       .setColor('101d42')
       .setTitle("There's treasure everywhere...")
@@ -76,7 +77,15 @@ export const handler = async (event: {
         url: 'https://infinitykeys.io',
       })
       .setDescription('New Mint!!')
-      .setThumbnail(cloudinaryUrl(image.cloudinaryId, 50, 50, false, 1))
+      .setThumbnail(
+        cloudinaryUrl(
+          image ? image.cloudinaryId : defaultImageUrl,
+          50,
+          50,
+          false,
+          1
+        )
+      )
       .addFields(
         { name: 'Token', value: `${tokenId}`, inline: true },
         { name: 'Mint Address', value: `${from}`, inline: true },

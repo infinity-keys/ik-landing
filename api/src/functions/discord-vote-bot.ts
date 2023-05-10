@@ -1,4 +1,4 @@
-import { APIGatewayProxyEventV2 } from 'aws-lambda'
+import { APIGatewayEvent } from 'aws-lambda'
 import { EmbedBuilder } from 'discord.js'
 
 const discord = require('discord.js')
@@ -17,10 +17,14 @@ if (!Moralis.Core.isStarted) {
   })
 }
 
-export const handler = async (event: APIGatewayProxyEventV2) => {
-  const { body = '', headers } = event
+export const handler = async (event: APIGatewayEvent) => {
+  if (!event.body) {
+    return { statusCode: 400 }
+  }
 
-  const parsedBody = await JSON.parse(body)
+  const { body, headers } = event
+
+  const parsedBody = await JSON.parse(body || '')
 
   try {
     await Moralis.Streams.verifySignature({

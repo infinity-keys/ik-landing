@@ -32,6 +32,12 @@ export const handler = async (event: APIGatewayEvent) => {
   const { httpMethod } = event
   if (httpMethod !== 'POST') return { statusCode: 405 }
 
+  // Check if the body is not present
+  if (!event.body) {
+    logger.info('/anonAttempt called without body')
+    return { statusCode: 400 }
+  }
+
   // Check that the referer is from the puzzle page
   const { referer } = event.headers
   if (!referer) {
@@ -68,7 +74,7 @@ export const handler = async (event: APIGatewayEvent) => {
     return { statusCode: 403 }
   }
 
-  const { attempt } = JSON.parse(event.body?.toString() ?? '')
+  const { attempt } = JSON.parse(event.body.toString())
 
   // @NOTE: if there are no cookies, this will break if it's not passed a string
   const puzzlesCompletedCypherText = cookie.parse(event.headers.cookie || '')[

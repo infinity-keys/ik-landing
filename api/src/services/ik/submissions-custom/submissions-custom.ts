@@ -1,39 +1,39 @@
-import type { MutationResolvers } from 'types/graphql'
+// import type { MutationResolvers } from 'types/graphql'
 
-import { validate } from '@redwoodjs/api'
+// import { validate } from '@redwoodjs/api'
 
-import { db } from 'src/lib/db'
+// import { db } from 'src/lib/db'
 
-import { sendEmail } from '../email/email-submission'
+// import { sendEmail } from '../email/email-submission'
 
-// is the "createSubmissionWithOptionalEmail" function a valid property of
-// the MutationResolvers type?  I don't see it in `api/types/graphql.d.ts`
-export const createSubmissionWithOptionalEmail: MutationResolvers['createSubmissionWithOptionalEmail'] =
-  async ({ input }) => {
-    // throws error if not formatted like an email
-    if (
-      typeof input.data === 'object' &&
-      'email' in input.data &&
-      typeof input.data.email === 'string'
-    ) {
-      validate(input.data.email, 'email', { email: true })
-    }
+// // is the "createSubmissionWithOptionalEmail" function a valid property of
+// // the MutationResolvers type?  I don't see it in `api/types/graphql.d.ts`
+// export const createSubmissionWithOptionalEmail: MutationResolvers['createSubmissionWithOptionalEmail'] =
+//   async ({ input }) => {
+//     // throws error if not formatted like an email
+//     if (
+//       typeof input.data === 'object' &&
+//       'email' in input.data &&
+//       typeof input.data.email === 'string'
+//     ) {
+//       validate(input.data.email, 'email', { email: true })
+//     }
 
-    const results = await db.submission.create({
-      data: input,
-    })
+//     const results = await db.submission.create({
+//       data: input,
+//     })
 
-    if (
-      typeof input.data === 'object' &&
-      'email' in input.data &&
-      typeof input.data.email === 'string'
-    ) {
-      sendEmail({
-        email: String(input.data.email),
-        puzzleId: input.puzzleId,
-        userId: input.userId,
-      })
-    }
+//     if (
+//       typeof input.data === 'object' &&
+//       'email' in input.data &&
+//       typeof input.data.email === 'string'
+//     ) {
+//       sendEmail({
+//         email: String(input.data.email),
+//         puzzleId: input.puzzleId,
+//         userId: input.userId,
+//       })
+//     }
 
-    return results
-  }
+//     return results
+//   }
