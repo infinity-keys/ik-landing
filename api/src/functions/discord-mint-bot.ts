@@ -65,18 +65,17 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     const defaultImageUrl =
-      'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png'
+      'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/discord-bot/sm-logo_wrpzif.png'
 
     const claimedNFT = new EmbedBuilder()
       .setColor('101d42')
       .setTitle("There's treasure everywhere...")
       .setAuthor({
         name: 'Infinity Keys',
-        iconURL:
-          'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
+        iconURL: defaultImageUrl,
         url: 'https://infinitykeys.io',
       })
-      .setDescription('New Mint!!')
+      .setDescription(`Key ${tokenId} collected`)
       .setThumbnail(
         cloudinaryUrl(
           image ? image.cloudinaryId : defaultImageUrl,
@@ -86,17 +85,11 @@ export const handler = async (event: APIGatewayEvent) => {
           1
         )
       )
-      .addFields(
-        { name: 'Token', value: `${tokenId}`, inline: true },
-        { name: 'Mint Address', value: `${from}`, inline: true },
-        { name: 'Chain', value: `${chain}`, inline: true }
-      )
 
       .setTimestamp()
       .setFooter({
-        text: 'Claimed',
-        iconURL:
-          'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
+        text: 'Collected',
+        iconURL: defaultImageUrl,
       })
 
     const channel = await client.channels.fetch(process.env.MINT_CHANNEL)
