@@ -63,22 +63,22 @@ export const handler = async (event) => {
       .setAuthor({
         name: 'Infinity Keys',
         iconURL:
-          'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
+          'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/discord-bot/sm-logo_wrpzif.png',
         url: 'https://infinitykeys.io',
       })
-      .setDescription('New Mint!!')
+      .setDescription(`Key ${tokenId} collected`)
       .setThumbnail(cloudinaryUrl(image.cloudinaryId, 50, 50, false, 1))
-      .addFields(
-        { name: 'Token', value: `${tokenId}`, inline: true },
-        { name: 'Mint Address', value: `${from}`, inline: true },
-        { name: 'Chain', value: `${chain}`, inline: true }
-      )
+      // .addFields(
+      //   { name: 'Token', value: `${tokenId}`, inline: true },
+      //   { name: 'Mint Address', value: `${from}`, inline: true },
+      //   { name: 'Chain', value: `${chain}`, inline: true }
+      // )
 
       .setTimestamp()
       .setFooter({
-        text: 'Claimed',
+        text: 'Collected',
         iconURL:
-          'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
+          'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/discord-bot/sm-logo_wrpzif.png',
       })
 
     const channel = await client.channels.fetch(process.env.MINT_CHANNEL)
