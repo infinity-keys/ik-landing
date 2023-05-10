@@ -1,3 +1,4 @@
+import { APIGatewayProxyEventV2 } from 'aws-lambda'
 import { EmbedBuilder } from 'discord.js'
 
 const discord = require('discord.js')
@@ -16,8 +17,9 @@ if (!Moralis.Core.isStarted) {
   })
 }
 
-export const handler = async (event) => {
-  const { body, headers } = event
+export const handler = async (event: APIGatewayProxyEventV2) => {
+  const { body = '', headers } = event
+
   const parsedBody = await JSON.parse(body)
 
   try {
@@ -35,7 +37,7 @@ export const handler = async (event) => {
     const vote = parseInt(voteHex, 16) === 1 ? 'True' : 'False'
 
     const voteAlert = new EmbedBuilder()
-      .setColor('101d42')
+      .setColor('#101d42')
       .setTitle('Aavegotchi DAO Vote')
       .setAuthor({
         name: 'Infinity Keys',

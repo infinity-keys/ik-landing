@@ -20,7 +20,10 @@ if (!Moralis.Core.isStarted) {
   })
 }
 
-export const handler = async (event) => {
+export const handler = async (event: {
+  body: string
+  headers: Record<string, string>
+}) => {
   const { body, headers } = event
   const parsedBody = await JSON.parse(body)
 
@@ -56,6 +59,12 @@ export const handler = async (event) => {
       },
       select: { cloudinaryId: true },
     })
+
+    if (!image) {
+      return {
+        statusCode: 400,
+      }
+    }
 
     const claimedNFT = new EmbedBuilder()
       .setColor('101d42')

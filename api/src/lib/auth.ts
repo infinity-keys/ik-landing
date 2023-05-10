@@ -15,6 +15,10 @@ import { db } from './db'
  */
 type RedwoodUser = Record<string, unknown> & { roles?: string[] }
 
+interface DecodedObject {
+  [key: string]: unknown
+}
+
 /**
  * getCurrentUser returns the user information together with
  * an optional collection of roles used by requireAuth() to check
@@ -52,8 +56,8 @@ export const authDecoder = async (token: string, type: string) => {
 }
 
 export const getCurrentUser = async (
-  decoded,
-  { token }
+  decoded: DecodedObject | null,
+  { token }: { token: string }
 ): Promise<RedwoodUser | null> => {
   if (!decoded) {
     return null
@@ -110,7 +114,9 @@ export const hasRole = (roles: SiteRole | SiteRole[]): boolean => {
 
   if (typeof roles === 'string') return userRoles.includes(roles)
 
-  return userRoles.some((userRole: SiteRole) => roles.includes(userRole))
+  return userRoles.some((userRole) =>
+    (Array.isArray(roles) ? roles : [roles]).includes(userRole as SiteRole)
+  )
 }
 
 /**

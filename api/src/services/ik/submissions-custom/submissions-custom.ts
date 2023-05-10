@@ -6,6 +6,8 @@ import { db } from 'src/lib/db'
 
 import { sendEmail } from '../email/email-submission'
 
+// is the "createSubmissionWithOptionalEmail" function a valid property of
+// the MutationResolvers type?  I don't see it in `api/types/graphql.d.ts`
 export const createSubmissionWithOptionalEmail: MutationResolvers['createSubmissionWithOptionalEmail'] =
   async ({ input }) => {
     // throws error if not formatted like an email

@@ -34,13 +34,17 @@ export const handler = async (event: APIGatewayEvent) => {
 
   // Check that the referer is from the puzzle page
   const { referer } = event.headers
+  if (!referer) {
+    logger.info('/anonAttempt called without referer header')
+    return { statusCode: 403 }
+  }
   const refererUrl = new URL(referer)
   if (!refererUrl.pathname.includes('/puzzle/')) {
     logger.info('/anonAttempt called from non-puzzle page')
     return { statusCode: 403 }
   }
 
-  const { puzzleId, stepParam, stepId } = event.queryStringParameters
+  const { puzzleId, stepParam, stepId } = event.queryStringParameters ?? {}
 
   // Garbage request, bail
   if (!puzzleId || !stepParam || !stepId) {
@@ -64,7 +68,7 @@ export const handler = async (event: APIGatewayEvent) => {
     return { statusCode: 403 }
   }
 
-  const { attempt } = JSON.parse(event.body)
+  const { attempt } = JSON.parse(event.body?.toString() ?? '')
 
   // @NOTE: if there are no cookies, this will break if it's not passed a string
   const puzzlesCompletedCypherText = cookie.parse(event.headers.cookie || '')[

@@ -47,15 +47,24 @@ export const handler = async (event: APIGatewayEvent) => {
     tokenId: string
   ) {
     let cursor = null
-    let addresses = []
+    let addresses: string[] = []
     let total = 0
+
+    // const responseData = await makeRequest(address, chain, tokenId, cursor)
+    // total = responseData.pagination.total
 
     do {
       try {
-        const { raw: data } = await makeRequest(address, chain, tokenId, cursor)
-        total = data.total
-        cursor = data.cursor
-        const result = data.result.map((address) => address.owner_of)
+        const responseData = await makeRequest(address, chain, tokenId, cursor)
+        // check that the type of responseData.pagination.total is not undefined
+        if (typeof responseData.pagination.total === 'undefined') {
+          return {
+            statusCode: 500,
+          }
+        }
+        total = responseData.pagination.total
+        cursor = responseData.pagination.cursor // was "cursor = data.cursor"
+        const result = responseData.result.map((address) => address.owner_of)
         addresses = addresses.concat(result)
       } catch (e) {
         return {
