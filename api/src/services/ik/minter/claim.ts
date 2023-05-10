@@ -94,7 +94,6 @@ export const claim: QueryResolvers['claim'] = async ({
       claimedTokens,
     } = await checkBalance({
       account,
-      chainId,
       tokenIds: requiredNftIds,
     })
 
