@@ -1,3 +1,4 @@
+import { AuthProviderType } from '@infinity-keys/core'
 import pkceChallenge from 'pkce-challenge'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -7,7 +8,7 @@ import { db } from 'src/lib/db'
 import { providers, types } from 'src/lib/keyp/oAuth/providers'
 import { logger } from 'src/lib/logger'
 
-export const oAuthUrl = async (type: string) => {
+export const oAuthUrl = async (type: AuthProviderType) => {
   try {
     if (!Object.values(types).includes(type))
       throw `OAuth Provider ${type} is not enabled.`
@@ -57,7 +58,11 @@ export const oAuthUrl = async (type: string) => {
       url: url.href,
     }
   } catch (e) {
-    throw new AuthenticationError(e)
+    logger.error(e)
+    if (e instanceof Error) {
+      throw new AuthenticationError(e.message)
+    }
+    throw new AuthenticationError('Error creating OAuth URL')
   }
 }
 
@@ -69,7 +74,7 @@ export const processCodeGrant = async ({
 }: {
   state: string
   code: string
-  type: string
+  type: AuthProviderType
   _accountId: string
 }) => {
   try {
@@ -78,24 +83,30 @@ export const processCodeGrant = async ({
 
     const tokens = await submitCodeGrant({ state, code, type })
     logger.debug({ custom: tokens, _accountId }, 'onSubmitCode() response')
-    return providers[type].onConnected(tokens)
+
+    // @TODO: Is there a better way to do this?
+    return providers[type as keyof typeof providers].onConnected(tokens)
   } catch (e) {
     logger.error(e)
-    throw new AuthenticationError(e)
+    if (e instanceof Error) {
+      throw new AuthenticationError(e.message)
+    }
+    throw new AuthenticationError('Error creating OAuth URL')
   }
 }
 
-export const processRevoke = async (type: string) => {
-  try {
-    logger.debug(`revoke - ${type}`)
-    if (!types.includes(type)) throw `Unknown OAuth Provider - ${type}`
-    const { onRevoke } = providers[type]
-    return onRevoke()
-  } catch (e) {
-    logger.error(e)
-    throw new AuthenticationError(e)
-  }
-}
+// @NOTE: `onRevoke` doesn't exist anywhere
+// export const processRevoke = async (type: AuthProviderType) => {
+//   try {
+//     logger.debug(`revoke - ${type}`)
+//     if (!types.includes(type)) throw `Unknown OAuth Provider - ${type}`
+//     const { onRevoke } = providers[type]
+//     return onRevoke()
+//   } catch (e) {
+//     logger.error(e)
+//     throw new AuthenticationError(e)
+//   }
+// }
 
 export const submitCodeGrant = async ({
   state,
@@ -104,7 +115,7 @@ export const submitCodeGrant = async ({
 }: {
   state: string
   code: string
-  type: string
+  type: AuthProviderType
 }) => {
   if (!Object.values(types).includes(type))
     throw `OAuth Provider "${type}" is not enabled.`

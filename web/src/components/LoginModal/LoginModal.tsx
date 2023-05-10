@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { SocialProviderType } from '@infinity-keys/core'
+
 import { useParams, navigate, routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
@@ -16,17 +18,17 @@ const LoginModal = () => {
     if (error === 'expired') return `Session expired, please log in again.`
   }
 
-  const onSubmitSignUp = async (type: string) => {
-    let parsedType = type
-    let login_provider = ''
-    if (type.includes('KEYP')) {
-      parsedType = 'KEYP'
-      login_provider = `&login_provider=${type.split('KEYP_')[1]}`
-    }
-    const response = await signUp({ type: parsedType })
+  const onSubmitSignUp = async (type: SocialProviderType) => {
+    // @NOTE: TS error here since the default `signUp` requires username and
+    // password, but the function gets overwritten in functions/auth
+    const response = await signUp({
+      type: type.includes('KEYP') ? 'KEYP' : type,
+    })
 
     if (response.url) {
-      window.location.href = response.url + login_provider
+      const url = new URL(response.url)
+      url.searchParams.set('login_provider', type.split('KEYP_')[1])
+      window.location.href = url.toString()
     } else {
       console.log('Something went wrong')
     }
@@ -48,7 +50,7 @@ const LoginModal = () => {
     }
   }, [isAuthenticated])
 
-  const getButton = (type: string, text: string) => (
+  const getButton = (type: SocialProviderType, text: string) => (
     <div className="w-full max-w-[200px]">
       <Button
         onClick={() => onSubmitSignUp(type)}

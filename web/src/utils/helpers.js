@@ -1,5 +1,11 @@
 export const getErrorResponse = (error, functionName) => {
-  const errorText = typeof error === 'string' ? error : error.message
+  const errorText =
+    typeof error === 'string'
+      ? error
+      : error instanceof Error
+      ? error.message
+      : `Error auth ${functionName}()`
+
   const res = {
     /* eslint-disable-nextline i18next/no-literal-string */
     message: `Error auth ${functionName}(): ${errorText}`,

@@ -1,5 +1,6 @@
 import fetch from 'cross-fetch'
-import { JwtPayload, decode as decodeJwt } from 'jsonwebtoken'
+import { JWTPayload, decodeJwt } from 'jose'
+import { OAuth } from 'types/graphql'
 
 import { db } from 'src/lib/db'
 import { encodeBody, getExpiration } from 'src/lib/keyp/oAuth/helpers'
@@ -24,7 +25,7 @@ const params = {
   redirect_uri: KEYP_REDIRECT_URI,
 }
 
-export const onSubmitCode = async (code, { codeVerifier }) => {
+export const onSubmitCode = async (code: string, { codeVerifier }: OAuth) => {
   try {
     const body = {
       grant_type: 'authorization_code',
@@ -65,6 +66,7 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
     // @NOTE: added getTime()
     if (
       decoded &&
+      decoded.iat &&
       new Date().getTime() - new Date(decoded.iat * 1000).getTime() > 60 * 1000
     )
       throw 'id_token was not issued recently. It must be <1 minute old.'
@@ -74,6 +76,7 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
       accessTokenExpiration: getExpiration(expiration),
       idToken,
       decoded,
+      // @TODO: what to use if `decoded.exp` is undefined?
       idTokenExpiration: new Date(decoded.exp * 1000),
     }
   } catch (e) {
@@ -86,7 +89,7 @@ export const onConnected = async ({
   decoded,
 }: {
   accessToken: string
-  decoded: JwtPayload
+  decoded: JWTPayload
 }) => {
   try {
     const userDetails = await fetch(`${KEYP_OAUTH_DOMAIN}/me`, {

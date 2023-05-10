@@ -1,5 +1,7 @@
 import { PropsWithChildren } from 'react'
 
+import { AuthProviderType } from '@infinity-keys/core'
+
 import { AuthProvider as RedwoodAuthProvider } from 'src/auth'
 import { getErrorResponse } from 'src/utils/helpers'
 
@@ -8,7 +10,7 @@ export const logIn = async ({
   code,
   state,
 }: {
-  type?: string
+  type?: AuthProviderType
   code?: string
   state?: string
 }) => {

@@ -17,7 +17,6 @@
     "crypto-js": "^4.1.1",
     "discord.js": "^14.7.1",
     "jose": "^4.10.0",
-    "jsonwebtoken": "^9.0.0",
     "moralis": "^2.10.4",
     "nanoid": "^3.0.0",
     "node-fetch": "2",
@@ -28,7 +27,6 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.1",
     "@types/uuid": "^9.0.1"
   }
 }
