@@ -74,7 +74,7 @@ export const handler = async (event: APIGatewayEvent) => {
     return { statusCode: 403 }
   }
 
-  const { attempt } = JSON.parse(event.body.toString())
+  const { attempt } = JSON.parse(event.body)
 
   // @NOTE: if there are no cookies, this will break if it's not passed a string
   const puzzlesCompletedCypherText = cookie.parse(event.headers.cookie || '')[

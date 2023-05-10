@@ -40,11 +40,7 @@ export const handler = async (event: APIGatewayEvent) => {
     })
   }
 
-  async function getResults(
-    address: string,
-    chain: string | number,
-    tokenId: string
-  ) {
+  async function getResults(address: string, chain: EvmChain, tokenId: string) {
     let cursor = null
     let addresses: string[] = []
     let total = 0

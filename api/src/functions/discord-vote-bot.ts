@@ -24,7 +24,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
   const { body, headers } = event
 
-  const parsedBody = await JSON.parse(body || '')
+  const parsedBody = await JSON.parse(body)
 
   try {
     await Moralis.Streams.verifySignature({

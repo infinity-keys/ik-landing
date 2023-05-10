@@ -53,7 +53,7 @@ export const authDecoder = async (token: string, type: string) => {
 }
 
 export const getCurrentUser = async (
-  decoded: Decoded | null,
+  decoded: Decoded,
   { token }: { token: string }
 ): Promise<RedwoodUser | null> => {
   if (!decoded) {

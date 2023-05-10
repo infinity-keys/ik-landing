@@ -22,8 +22,12 @@ if (!Moralis.Core.isStarted) {
 }
 
 export const handler = async (event: APIGatewayEvent) => {
+  if (!event.body) {
+    logger.info('/discord-mint-bot called without body')
+    return { statusCode: 400 }
+  }
   const { body, headers } = event
-  const parsedBody = await JSON.parse(body || '')
+  const parsedBody = await JSON.parse(body)
 
   try {
     await Moralis.Streams.verifySignature({
@@ -57,12 +61,6 @@ export const handler = async (event: APIGatewayEvent) => {
       },
       select: { cloudinaryId: true },
     })
-
-    if (!image) {
-      return {
-        statusCode: 400,
-      }
-    }
 
     const defaultImageUrl =
       'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/discord-bot/sm-logo_wrpzif.png'
