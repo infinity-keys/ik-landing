@@ -7,6 +7,8 @@ import {
   PropsWithChildren,
 } from 'react'
 
+import { AuthProviderType } from '@infinity-keys/core'
+
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { routes } from '@redwoodjs/router'
 
@@ -47,23 +49,29 @@ const RedirectionProvider = ({ children }: PropsWithChildren) => {
   }>({ isLoading: true })
 
   const [authState, setAuthState] = useState<{
-    url?: URL | null
-    code?: string | null
-    grantState?: string | null
-    error_description?: string | null
-    error?: string | null
-    type?: string | null
-  }>()
+    url: URL | null
+    code: string | null
+    grantState: string | null
+    error_description: string | null
+    error: string | null
+    type: AuthProviderType
+  }>({
+    url: null,
+    code: '',
+    grantState: '',
+    error_description: '',
+    error: '',
+    type: 'KEYP',
+  })
 
   const { submitCodeGrant } = useOAuth()
 
   const submitLoginCodeGrant = useCallback(async () => {
     // Note: login came from `useAuth`, but is now imported from `src/providers`
     const response = await logIn({
-      code: authState?.code,
-      state: authState?.grantState,
-      type: authState?.type?.toUpperCase(),
-      method: 'login',
+      code: authState.code,
+      state: authState.grantState,
+      type: authState.type,
     })
 
     if (response.error || !response || !response.id)
@@ -90,7 +98,7 @@ const RedirectionProvider = ({ children }: PropsWithChildren) => {
       await submitCodeGrant({
         code: authState?.code,
         grantState: authState?.grantState,
-        type: authState?.type,
+        type: authState.type.toUpperCase(),
       })
 
     if (codeGrantError)
@@ -110,7 +118,6 @@ const RedirectionProvider = ({ children }: PropsWithChildren) => {
         grantState: url.searchParams.get('state'),
         error_description: url.searchParams.get('error_description'),
         error: url.searchParams.get('error'),
-        type: url.pathname.split('/redirect/')[1],
       }))
     }
   }, [])

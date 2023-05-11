@@ -8,10 +8,7 @@ import { logger } from 'src/lib/logger'
 
 export const KEYP = 'KEYP'
 
-const KEYP_OAUTH_DOMAIN = process.env.LOCAL_KEYP_SERVER
-  ? 'http://localhost/oauth'
-  : 'https://app.usekeyp.com/oauth'
-
+const KEYP_OAUTH_DOMAIN = 'https://app.usekeyp.com/oauth'
 export const KEYP_OAUTH_URL_AUTHORIZE = `${KEYP_OAUTH_DOMAIN}/auth`
 
 const KEYP_OAUTH_URL_TOKEN = `${KEYP_OAUTH_DOMAIN}/token`
@@ -59,6 +56,7 @@ export const onSubmitCode = async (code: string, { codeVerifier }: OAuth) => {
 
     if (!response.id_token) throw 'Failed to get id_token'
     const decoded = await decodeJwt(idToken)
+    if (!decoded.exp) throw 'Invalid token'
 
     logger.debug({ custom: response }, '/token response')
     logger.debug({ custom: decoded }, 'decoded id_token')
@@ -76,7 +74,6 @@ export const onSubmitCode = async (code: string, { codeVerifier }: OAuth) => {
       accessTokenExpiration: getExpiration(expiration),
       idToken,
       decoded,
-      // @TODO: what to use if `decoded.exp` is undefined?
       idTokenExpiration: new Date(decoded.exp * 1000),
     }
   } catch (e) {

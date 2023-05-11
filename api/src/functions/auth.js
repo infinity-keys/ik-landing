@@ -1,4 +1,3 @@
-/* eslint-disable-next-line no-unused-vars */
 import { DbAuthHandler } from '@redwoodjs/auth-dbauth-api'
 
 import { db } from 'src/lib/db'
@@ -69,8 +68,8 @@ export const handler = async (event, context) => {
 
   authHandler.login = async () => {
     const { code, state, type } = authHandler.params
-    validateLoginRequest({ type })
     if (!code || !state) throw 'logIn() Code or state not provided.'
+    validateLoginRequest({ type })
 
     const tokens = await submitCodeGrant({
       state,

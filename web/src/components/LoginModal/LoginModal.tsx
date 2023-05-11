@@ -19,10 +19,11 @@ const LoginModal = () => {
   }
 
   const onSubmitSignUp = async (type: SocialProviderType) => {
-    // @NOTE: TS error here since the default `signUp` requires username and
-    // password, but the function gets overwritten in functions/auth
+    // @NOTE: dbAuth expects a username and password
     const response = await signUp({
       type: type.includes('KEYP') ? 'KEYP' : type,
+      username: '',
+      password: '',
     })
 
     if (response.url) {

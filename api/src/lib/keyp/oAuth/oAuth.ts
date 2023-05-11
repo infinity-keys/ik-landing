@@ -15,20 +15,22 @@ export const oAuthUrl = async (type: AuthProviderType) => {
 
     const { params, urlAuthorize, responseType } = providers[type]
 
+    // Note: Feel free to add additional data to state, but if the authorization server doesn't
+    // support PKCE yet you must include a random string for CSRF protection
+    const state = uuidv4()
     const url = new URL(urlAuthorize)
     const pkce = pkceChallenge()
-    url.searchParams.set('code_challenge', pkce.code_challenge) // eg. 3uWDl1fX2ioAqf38eSOFlKnxVEl_VyfaYKG2GyLndKs
+
+    url.searchParams.set('code_challenge', pkce.code_challenge)
+    url.searchParams.set('response_type', responseType)
+    url.searchParams.set('state', state)
     url.searchParams.set('code_challenge_method', 'S256')
     Object.entries(params).forEach(([key, value]) => {
       url.searchParams.set(key, value)
     })
 
-    // Note: Feel free to add additional data to state, but if the authorization server doesn't
-    // support PKCE yet you must include a random string for CSRF protection
-    const state = uuidv4()
-
     // For oAuth codeGrant, we sometimes need the user id'
-    // TODO: used authId here and updated schema
+    // @NOTE: used authId here and updated schema
     let userId
     if (typeof context.currentUser?.authId === 'string')
       userId = context.currentUser?.authId
@@ -50,8 +52,6 @@ export const oAuthUrl = async (type: AuthProviderType) => {
       },
     })
 
-    url.searchParams.set('response_type', responseType)
-    url.searchParams.set('state', state)
     return {
       text: 'success',
       type: 'redirect',
