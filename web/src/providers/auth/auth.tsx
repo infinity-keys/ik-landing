@@ -3,7 +3,6 @@ import { PropsWithChildren } from 'react'
 import { AuthProviderType } from '@infinity-keys/core'
 
 import { AuthProvider as RedwoodAuthProvider } from 'src/auth'
-import { logger } from 'src/lib/logger'
 
 export const logIn = async ({
   type,
@@ -25,7 +24,7 @@ export const logIn = async ({
     })
     return await response.json()
   } catch (e) {
-    logger.error('Error in web auth logIn', e)
+    console.error('Error in web auth logIn', e)
   }
 }
 
