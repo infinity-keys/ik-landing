@@ -14,7 +14,7 @@ import { db } from './db'
  * Represents the user attributes returned by the decoding the
  * Authentication provider's JWT together with an optional list of roles.
  */
-type RedwoodUser = Record<string, unknown> & { roles?: string[] }
+type RedwoodUser = Record<string, unknown> & { roles?: SiteRole[] }
 
 /**
  * getCurrentUser returns the user information together with
@@ -111,9 +111,7 @@ export const hasRole = (roles: SiteRole | SiteRole[]): boolean => {
 
   if (typeof roles === 'string') return userRoles.includes(roles)
 
-  return userRoles.some((userRole) =>
-    (Array.isArray(roles) ? roles : [roles]).includes(userRole as SiteRole)
-  )
+  return userRoles.some((userRole) => roles.includes(userRole))
 }
 
 /**
