@@ -41,7 +41,7 @@ export const handler = async (event: APIGatewayEvent) => {
     const vote = parseInt(voteHex, 16) === 1 ? 'True' : 'False'
 
     const voteAlert = new EmbedBuilder()
-      .setColor('#101d42')
+      .setColor(0x101d42)
       .setTitle('Aavegotchi DAO Vote')
       .setAuthor({
         name: 'Infinity Keys',

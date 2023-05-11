@@ -66,7 +66,7 @@ export const handler = async (event: APIGatewayEvent) => {
       'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/discord-bot/sm-logo_wrpzif.png'
 
     const claimedNFT = new EmbedBuilder()
-      .setColor('101d42')
+      .setColor(0x101d42)
       .setTitle("There's treasure everywhere...")
       .setAuthor({
         name: 'Infinity Keys',
