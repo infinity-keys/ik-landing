@@ -1,6 +1,7 @@
 import { Magic } from '@magic-sdk/admin'
 import { SiteRole } from 'types/graphql'
 
+import { Decoded } from '@redwoodjs/api'
 import {
   AuthenticationError,
   context,
@@ -13,7 +14,7 @@ import { db } from './db'
  * Represents the user attributes returned by the decoding the
  * Authentication provider's JWT together with an optional list of roles.
  */
-type RedwoodUser = Record<string, unknown> & { roles?: string[] }
+type RedwoodUser = Record<string, unknown> & { roles?: SiteRole[] }
 
 /**
  * getCurrentUser returns the user information together with
@@ -52,8 +53,8 @@ export const authDecoder = async (token: string, type: string) => {
 }
 
 export const getCurrentUser = async (
-  decoded,
-  { token }
+  decoded: Decoded,
+  { token }: { token: string }
 ): Promise<RedwoodUser | null> => {
   if (!decoded) {
     return null
@@ -110,7 +111,7 @@ export const hasRole = (roles: SiteRole | SiteRole[]): boolean => {
 
   if (typeof roles === 'string') return userRoles.includes(roles)
 
-  return userRoles.some((userRole: SiteRole) => roles.includes(userRole))
+  return userRoles.some((userRole) => roles.includes(userRole))
 }
 
 /**
@@ -127,7 +128,7 @@ export const hasRole = (roles: SiteRole | SiteRole[]): boolean => {
  *
  * @see https://github.com/redwoodjs/redwood/tree/main/packages/auth for examples
  */
-export const requireAuth = ({ roles }) => {
+export const requireAuth = ({ roles }: { roles?: SiteRole | SiteRole[] }) => {
   if (!isAuthenticated()) {
     throw new AuthenticationError('Not authenticated')
   }
