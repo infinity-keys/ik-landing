@@ -69,11 +69,11 @@ const LoginModal = () => {
 
       <div className="mb-6 max-w-prose text-gray-150">
         <p>
-          <b className="text-white">Note to existing players:</b> if you have
-          previously created an account using the email flow, please choose a
-          provider below that uses the same email. If neither of these options
-          match, please contact the Infinity Keys and we will migrate your
-          progress.
+          <b className="text-white">Note to existing players:</b> If you used an
+          email address to log in to Infinity Keys before May 12th, 2023, please
+          connect with an account connected to that email address. If neither of
+          these options match, please contact the Infinity Keys and we will
+          migrate your progress.
         </p>
       </div>
 
