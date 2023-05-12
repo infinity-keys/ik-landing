@@ -15,10 +15,11 @@ import { publicProvider } from 'wagmi/providers/public'
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
-import { AuthProvider, useAuth } from 'src/auth'
+import { useAuth } from 'src/auth'
 import CookieConsentBanner from 'src/components/CookieConsentBanner/CookieConsentBanner'
 import IK_TOKENS from 'src/lib/theme/ik-tokens.tokens.json'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
+import AuthProvider from 'src/providers/auth'
 import Routes from 'src/Routes'
 
 import './scaffold.css'
