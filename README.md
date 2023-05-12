@@ -307,13 +307,19 @@ if you need to create a test server and test bot:
 
 Follow the instructions [here](https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server-) to create your own server and [here](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot) to create your test bot.
 
+Note: Make sure you have Docker installed on your machine.
+
+to initially create the database:
+You can follow the instruction [here](https://medium.com/@szpytfire/setting-up-mongodb-within-a-docker-container-for-local-development-327e32a2b68d)
+
 and then follow the instructions below:
 
 1. update `.env` with the correct values (api key, bot token, discord channel id, etc.)
 2. run `yarn` to install/update packages
-3. run `ngrok http [port-number]` to boot up your server
-4. copy the webhook url starting with `https` from the ngrok startup screen
-5. login into [moralis.io](http://www.moralis.io) to update the webhook url to the Moralis stream by selecting `Edit Stream`
-6. make sure moralis stream is set to `Activate Stream` to start receiving post to the discord channel
+3. run `docker compose up -d` then run your local dev server `yarn dev`
+4. run `ngrok http [port-number]` to boot up your server
+5. copy the webhook url starting with `https` from the ngrok startup screen
+6. login into [moralis.io](http://www.moralis.io) to update the webhook url to the Moralis stream by selecting `Edit Stream`
+7. make sure moralis stream is set to `Activate Stream` to start receiving post to the discord channel
 
 ** Once testing is complete, make sure to update all .env variables to point to the production Discord server and the webhook url in Moralis to the appropiate api url i.e.: `http:"//api.infinitykeys.io/[name of discord bot file]` **

@@ -32,7 +32,7 @@
   "prisma": {
     "seed": "yarn rw exec seed"
   },
-  "packageManager": "yarn@3.2.3",
+  "packageManager": "yarn@3.5.1",
   "dependencies": {
     "discord-economy-super": "^1.7.6",
     "jest-watch-typeahead": "^2.2.2",

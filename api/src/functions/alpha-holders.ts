@@ -1,7 +1,8 @@
 import { EvmChain } from '@moralisweb3/common-evm-utils'
+import { APIGatewayEvent } from 'aws-lambda'
 import Moralis from 'moralis'
 
-async function sleep(ms) {
+async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
@@ -13,10 +14,10 @@ async function startMoralis() {
   moralisStarted = true
 }
 
-export const handler = async (event) => {
+export const handler = async (event: APIGatewayEvent) => {
   if (event.httpMethod !== 'GET') return { statusCode: 405 }
+  if (!event.queryStringParameters?.tokenId) return { statusCode: 400 }
   const { tokenId } = event.queryStringParameters
-  if (!tokenId) return { statusCode: 404 }
 
   await startMoralis()
 
@@ -25,7 +26,12 @@ export const handler = async (event) => {
   const addressPolygon = '0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9'
   const addressAvalanche = '0xB40fD6825a366081192d890d2760113C066761Ef'
 
-  async function makeRequest(address, chain, tokenId, cursor) {
+  function makeRequest(
+    address: string,
+    chain: EvmChain,
+    tokenId: string,
+    cursor: string | undefined
+  ) {
     return Moralis.EvmApi.nft.getNFTTokenIdOwners({
       address,
       chain,
@@ -34,17 +40,26 @@ export const handler = async (event) => {
     })
   }
 
-  async function getResults(address, chain, tokenId) {
+  async function getResults(address: string, chain: EvmChain, tokenId: string) {
     let cursor = null
-    let addresses = []
+    let addresses: string[] = []
     let total = 0
+
+    // const responseData = await makeRequest(address, chain, tokenId, cursor)
+    // total = responseData.pagination.total
 
     do {
       try {
-        const { raw: data } = await makeRequest(address, chain, tokenId, cursor)
-        total = data.total
-        cursor = data.cursor
-        const result = data.result.map((address) => address.owner_of)
+        const responseData = await makeRequest(address, chain, tokenId, cursor)
+        // check that the type of responseData.pagination.total is not undefined
+        if (typeof responseData.pagination.total === 'undefined') {
+          return {
+            statusCode: 500,
+          }
+        }
+        total = responseData.pagination.total
+        cursor = responseData.pagination.cursor // was "cursor = data.cursor"
+        const result = responseData.result.map((address) => address.owner_of)
         addresses = addresses.concat(result)
       } catch (e) {
         return {
