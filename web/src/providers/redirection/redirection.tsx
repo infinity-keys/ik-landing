@@ -21,11 +21,10 @@ const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
 export const APPROVED_LOGIN_PROVIDERS = ['KEYP']
 
 const saveRedirectTo = (redirect: string) =>
-  redirect &&
   !redirect.includes('login') &&
   localStorage.setItem(LOCAL_REDIRECT_TO_KEY, redirect)
 
-const getRedirectTo = () => {
+const getRedirectTo = (): string | null => {
   const url = localStorage.getItem(LOCAL_REDIRECT_TO_KEY)
   localStorage.removeItem(LOCAL_REDIRECT_TO_KEY)
   return url
@@ -52,15 +51,13 @@ const RedirectionProvider = ({ children }: PropsWithChildren) => {
     url: URL | null
     code: string | null
     grantState: string | null
-    error_description: string | null
-    error: string | null
+    error_description?: string | null
+    error?: string | null
     type: AuthProviderType
   }>({
     url: null,
     code: '',
     grantState: '',
-    error_description: '',
-    error: '',
     type: 'KEYP',
   })
 
@@ -111,14 +108,14 @@ const RedirectionProvider = ({ children }: PropsWithChildren) => {
     if (isBrowser) {
       const url = new URL(window.location.href)
 
-      setAuthState((prevState) => ({
-        ...prevState,
+      setAuthState({
         url,
         code: url.searchParams.get('code'),
         grantState: url.searchParams.get('state'),
         error_description: url.searchParams.get('error_description'),
         error: url.searchParams.get('error'),
-      }))
+        type: 'KEYP',
+      })
     }
   }, [])
 

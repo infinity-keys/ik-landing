@@ -1,4 +1,4 @@
-import { PropsWithChildren, createContext, useState } from 'react'
+import { PropsWithChildren, createContext, useCallback, useState } from 'react'
 
 import { useMutation } from '@apollo/client'
 
@@ -36,43 +36,41 @@ const OAuthProvider = ({ children }: PropsWithChildren) => {
   const [state, setState] = useState({ isLoading: true, error: '' })
   const [codeGrantMutation] = useMutation(OAUTH_CODE_GRANT_MUTATION)
 
-  const submitCodeGrant = async ({
-    code,
-    grantState,
-    type,
-    accountId,
-  }: SubmitCodeGrantParams) => {
-    try {
-      const { data } = await codeGrantMutation({
-        variables: {
-          type: type?.toUpperCase(),
-          code,
-          state: grantState,
-          accountId,
-        },
-      })
+  const submitCodeGrant = useCallback(
+    async ({ code, grantState, type, accountId }: SubmitCodeGrantParams) => {
+      try {
+        const { data } = await codeGrantMutation({
+          variables: {
+            type: type?.toUpperCase(),
+            code,
+            state: grantState,
+            accountId,
+          },
+        })
 
-      const { codeGrant } = data
+        const { codeGrant } = data
 
-      if (codeGrant.status === 'SUCCESS') {
-        setState({ isLoading: false, error: '' })
-        return {
-          data: codeGrant,
-          successMessage: 'Great - connection complete!',
+        if (codeGrant.status === 'SUCCESS') {
+          setState({ isLoading: false, error: '' })
+          return {
+            data: codeGrant,
+            successMessage: 'Great - connection complete!',
+          }
+        } else {
+          const errorMessage = 'Something went wrong'
+          setState({ isLoading: false, error: errorMessage })
+          return { error: errorMessage }
         }
-      } else {
-        const errorMessage = 'Something went wrong'
-        setState({ isLoading: false, error: errorMessage })
-        return { error: errorMessage }
+      } catch (error) {
+        if (error instanceof Error) {
+          setState({ isLoading: false, error: error.message })
+          return { error: error.message }
+        }
+        return { error: 'There was a problem submitting code grant.' }
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        setState({ isLoading: false, error: error.message })
-        return { error: error.message }
-      }
-      return { error: 'There was a problem submitting code grant.' }
-    }
-  }
+    },
+    [codeGrantMutation]
+  )
 
   return (
     <OAuthContext.Provider
