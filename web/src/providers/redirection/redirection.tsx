@@ -90,7 +90,7 @@ const RedirectionProvider = ({ children }: PropsWithChildren) => {
     }, 3000)
   }, [authState])
 
-  const completeOAuth = async () => {
+  const completeOAuth = useCallback(async () => {
     if (!submitCodeGrant)
       return setState({ errorMessage: 'No submitCodeGrant', isLoading: false })
 
@@ -105,7 +105,7 @@ const RedirectionProvider = ({ children }: PropsWithChildren) => {
       return setState({ errorMessage: codeGrantError, isLoading: false })
     console.log('submitCodeGrant success!')
     setState({ successMessage: successMessageCodeGrant, isLoading: false })
-  }
+  }, [authState, submitCodeGrant])
 
   useEffect(() => {
     if (isBrowser) {
@@ -144,8 +144,7 @@ const RedirectionProvider = ({ children }: PropsWithChildren) => {
     } else {
       completeOAuth()
     }
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [authState])
+  }, [authState, submitLoginCodeGrant, completeOAuth])
 
   return (
     <RedirectionContext.Provider value={state}>
