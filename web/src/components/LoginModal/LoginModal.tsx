@@ -64,8 +64,18 @@ const LoginModal = () => {
   )
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col items-center justify-center">
       <Seo title="Sign In" description="Join to start collecting." />
+
+      <div className="mb-6 max-w-prose text-gray-150">
+        <p>
+          <b className="text-white">Note to existing players:</b> if you have
+          previously created an account using the email flow, please choose a
+          provider below that uses the same email. If neither of these options
+          match, please contact the Infinity Keys and we will migrate your
+          progress.
+        </p>
+      </div>
 
       <div className="w-full max-w-md rounded-lg border-2 border-brand-accent-primary/10 bg-black/20 p-4 text-center">
         <div className="flex flex-col items-center gap-4 py-10 px-4">
