@@ -1,6 +1,9 @@
-import { FormEvent, useRef, useState } from 'react'
+import { FormEvent, useRef, useState, useEffect } from 'react'
 
 import { isValidEmail } from '@infinity-keys/core'
+// import { deleteUserProgress } from 'api/src/services/profile/profile'
+
+import { useMutation } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
@@ -8,6 +11,12 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
 import Seo from 'src/components/Seo/Seo'
 import useReconcileProgress from 'src/hooks/useReconcileProgress'
+
+const DELETE_USER_PROGRESS_MUTATION = gql`
+  mutation DeleteUserProgress {
+    deleteUserProgress
+  }
+`
 
 /*
   IMPORTANT: This page needs to run a GraphQL function to create a new user in
@@ -21,11 +30,27 @@ import useReconcileProgress from 'src/hooks/useReconcileProgress'
 */
 
 const ProfilePage = () => {
-  const { logIn, logOut, isAuthenticated, loading } = useAuth()
+  const {
+    logIn,
+    logOut,
+    isAuthenticated,
+    loading: authLoading,
+    currentUser,
+  } = useAuth()
   const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
   const emailRef = useRef(null)
-  // const redirectURI = new URL('/profile', window.location.origin)
+  const [deleteUserProgress] = useMutation(DELETE_USER_PROGRESS_MUTATION)
+
+  const [isCorrectUser, setIsCorrectUser] = useState(false)
+
+  useEffect(() => {
+    if (currentUser && currentUser.id === process.env.DELETE_PROGRESS_USER_ID) {
+      setIsCorrectUser(true)
+    } else {
+      setIsCorrectUser(false)
+    }
+  }, [currentUser])
 
   const handleLogOut = () => {
     setErrorMessage('')
@@ -50,10 +75,28 @@ const ProfilePage = () => {
     }
   }
 
+  const handleDeleteProgress = async () => {
+    console.log('delete progress')
+    console.log(`currentUser: ${currentUser}`)
+    console.log(`currentUser.id: ${currentUser.id}`)
+    console.log(`env id: ${process.env.DELETE_PROGRESS_USER_ID}`)
+    if (currentUser && currentUser.id === process.env.DELETE_PROGRESS_USER_ID) {
+      console.log('Correct user')
+    } else {
+      console.log('Incorrect user')
+    }
+    try {
+      const response = await deleteUserProgress()
+      console.log(response)
+    } catch (error) {
+      console.error('Failed to run deleteUserProgress mutation:', error)
+    }
+  }
+
   return (
     <div>
       <Seo title="Profile" />
-      {isAuthenticated && !progressLoading && !loading && (
+      {isAuthenticated && !progressLoading && !authLoading && (
         <div className="mx-auto w-full max-w-lg pb-12">
           <ProfileCell />
 
@@ -66,7 +109,7 @@ const ProfilePage = () => {
         </div>
       )}
 
-      {loading || progressLoading ? (
+      {authLoading || progressLoading ? (
         <LoadingIcon />
       ) : (
         <div className="relative text-center">
@@ -98,6 +141,11 @@ const ProfilePage = () => {
           <p className="pt-2 text-center text-brand-accent-secondary">
             {errorMessage}
           </p>
+        </div>
+      )}
+      {isCorrectUser && (
+        <div className="flex justify-center pt-20">
+          <Button onClick={handleDeleteProgress} text={'Clear my progress'} />
         </div>
       )}
     </div>
