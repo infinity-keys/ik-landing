@@ -39,7 +39,7 @@ const ProfilePage = () => {
   } = useAuth()
   const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
-  const emailRef = useRef(null)
+  const emailRef = useRef<HTMLInputElement | null>(null)
   const [deleteUserProgress] = useMutation(DELETE_USER_PROGRESS_MUTATION)
 
   const [isCorrectUser, setIsCorrectUser] = useState(false)
@@ -61,7 +61,8 @@ const ProfilePage = () => {
     e.preventDefault()
     setErrorMessage('')
 
-    const email = emailRef.current.value
+    const email = emailRef.current ? emailRef.current.value : ''
+
     if (!isValidEmail(email)) {
       return setErrorMessage('Please enter a valid email')
     }
@@ -76,20 +77,20 @@ const ProfilePage = () => {
   }
 
   const handleDeleteProgress = async () => {
-    console.log('delete progress')
-    console.log(`currentUser: ${currentUser}`)
-    console.log(`currentUser.id: ${currentUser.id}`)
+    console.log('handleDeleteProgress function ran')
+    console.log(
+      `currentUser.id: ${currentUser ? currentUser.id : 'currentUser is null'}`
+    )
+
     console.log(`env id: ${process.env.DELETE_PROGRESS_USER_ID}`)
     if (currentUser && currentUser.id === process.env.DELETE_PROGRESS_USER_ID) {
       console.log('Correct user')
+      const response = await deleteUserProgress()
+
+      // return statement from: "api/src/services/profile/profile.ts"
+      console.log(response.data.deleteUserProgress)
     } else {
       console.log('Incorrect user')
-    }
-    try {
-      const response = await deleteUserProgress()
-      console.log(response)
-    } catch (error) {
-      console.error('Failed to run deleteUserProgress mutation:', error)
     }
   }
 
