@@ -7,7 +7,6 @@ const eco = require('../ecoDB')
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('reset')
-
     .setDescription("resets the leaderboard and user's balances to zero")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
