@@ -1,24 +1,14 @@
-import { FormEvent, useRef, useState, useEffect } from 'react'
+import { FormEvent, useRef, useState } from 'react'
 
 import { isValidEmail } from '@infinity-keys/core'
-// import { deleteUserProgress } from 'api/src/services/profile/profile'
-
-import { useMutation } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
+import ProgressDeleteButton from 'src/components/ProgressDeleteButton/ProgressDeleteButton'
 import Seo from 'src/components/Seo/Seo'
 import useReconcileProgress from 'src/hooks/useReconcileProgress'
-
-const DELETE_USER_PROGRESS_MUTATION = gql`
-  mutation DeleteUserProgress {
-    deleteUserProgress {
-      success
-    }
-  }
-`
 
 /*
   IMPORTANT: This page needs to run a GraphQL function to create a new user in
@@ -32,22 +22,20 @@ const DELETE_USER_PROGRESS_MUTATION = gql`
 */
 
 const ProfilePage = () => {
-  const {
-    logIn,
-    logOut,
-    isAuthenticated,
-    loading: authLoading,
-    currentUser,
-  } = useAuth()
+  const { logIn, logOut, isAuthenticated, loading, currentUser } = useAuth()
   const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
   const emailRef = useRef<HTMLInputElement | null>(null)
-  const [
-    deleteUserProgress,
-    { data: deleteProgressData, loading: deleteProgressLoading },
-  ] = useMutation(DELETE_USER_PROGRESS_MUTATION)
 
-  console.log(deleteProgressLoading)
+  const [deleteProgressLoading, setDeleteProgressLoading] = useState(false)
+
+  const handleDeleteUserProgress = () => {
+    setDeleteProgressLoading(true)
+
+    setTimeout(() => {
+      setDeleteProgressLoading(false)
+    }, 200)
+  }
 
   const handleLogOut = () => {
     setErrorMessage('')
@@ -73,30 +61,12 @@ const ProfilePage = () => {
     }
   }
 
-  const handleDeleteProgress = async () => {
-    console.log('handleDeleteProgress function ran')
-    console.log(
-      `currentUser.id: ${currentUser ? currentUser.id : 'currentUser is null'}`
-    )
-
-    console.log(`env id: ${process.env.DELETE_PROGRESS_USER_ID}`)
-    if (currentUser && currentUser.id === process.env.DELETE_PROGRESS_USER_ID) {
-      console.log('Correct user')
-      const response = await deleteUserProgress()
-
-      // return statement from: "api/src/services/profile/profile.ts"
-      console.log(response.data.deleteUserProgress)
-    } else {
-      console.log('Incorrect user')
-    }
-  }
-
   return (
     <div>
       <Seo title="Profile" />
       {isAuthenticated &&
         !progressLoading &&
-        !authLoading &&
+        !loading &&
         !deleteProgressLoading && (
           <div className="mx-auto w-full max-w-lg pb-12">
             <ProfileCell />
@@ -110,7 +80,7 @@ const ProfilePage = () => {
           </div>
         )}
 
-      {authLoading || progressLoading ? (
+      {loading || progressLoading ? (
         <LoadingIcon />
       ) : (
         <div className="relative text-center">
@@ -147,7 +117,7 @@ const ProfilePage = () => {
       {currentUser &&
         currentUser.id === process.env.DELETE_PROGRESS_USER_ID && (
           <div className="flex justify-center pt-20">
-            <Button onClick={deleteUserProgress} text={'Clear my progress'} />
+            <ProgressDeleteButton onClick={handleDeleteUserProgress} />
           </div>
         )}
     </div>

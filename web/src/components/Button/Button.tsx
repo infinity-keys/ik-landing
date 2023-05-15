@@ -13,7 +13,7 @@ interface ButtonProps {
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium' | 'large'
   variant?: 'solid' | 'outline' | 'faded' | 'secondary' | 'warn'
-  onClick?: () => void | Promise<void> // consider deleting "| Promise<void>"
+  onClick?: () => void | Promise<void>
   disabled?: boolean
   responsive?: boolean
   children?: ReactNode
