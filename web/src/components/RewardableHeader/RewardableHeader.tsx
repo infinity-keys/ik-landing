@@ -17,7 +17,7 @@ const RewardableHeader = ({
 }: RewardableHeaderProps) => {
   return (
     <div className="mx-auto max-w-prose pb-12">
-      {cloudinaryId && (
+      {cloudinaryId && !currentStep && (
         <div className="flex justify-center pb-8">
           <div className="rounded-md bg-black/20 p-2">
             <CloudImage
@@ -34,7 +34,7 @@ const RewardableHeader = ({
         {name} {currentStep && `- ${currentStep}`}
       </Heading>
 
-      {instructions && (
+      {instructions && !currentStep && (
         <div className="pack__text pt-4 text-lg">
           <Markdown>{instructions}</Markdown>
         </div>
