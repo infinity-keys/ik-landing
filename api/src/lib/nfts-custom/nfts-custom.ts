@@ -1,10 +1,10 @@
 import { db } from 'src/lib/db'
 
-export const nftByContractAndTokenId = (
+export const nftByContractAndTokenId = async (
   tokenId: number,
   contractName: string
 ) => {
-  return db.nft.findUnique({
+  const nft = await db.nft.findUnique({
     where: {
       contractName_tokenId: {
         contractName,
@@ -12,4 +12,6 @@ export const nftByContractAndTokenId = (
       },
     },
   })
+
+  return nft?.data || {}
 }
