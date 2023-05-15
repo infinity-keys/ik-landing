@@ -68,6 +68,7 @@ const useMakeAttempt = () => {
         const { data } = await createAttempt({
           variables: { stepId, data: reqBody },
         })
+        if (!data) throw new Error('Error making attempt.')
         responseData = data.makeAttempt
       }
 
