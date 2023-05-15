@@ -14,7 +14,9 @@ import useReconcileProgress from 'src/hooks/useReconcileProgress'
 
 const DELETE_USER_PROGRESS_MUTATION = gql`
   mutation DeleteUserProgress {
-    deleteUserProgress
+    deleteUserProgress {
+      success
+    }
   }
 `
 
@@ -40,17 +42,12 @@ const ProfilePage = () => {
   const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
   const emailRef = useRef<HTMLInputElement | null>(null)
-  const [deleteUserProgress] = useMutation(DELETE_USER_PROGRESS_MUTATION)
+  const [
+    deleteUserProgress,
+    { data: deleteProgressData, loading: deleteProgressLoading },
+  ] = useMutation(DELETE_USER_PROGRESS_MUTATION)
 
-  const [isCorrectUser, setIsCorrectUser] = useState(false)
-
-  useEffect(() => {
-    if (currentUser && currentUser.id === process.env.DELETE_PROGRESS_USER_ID) {
-      setIsCorrectUser(true)
-    } else {
-      setIsCorrectUser(false)
-    }
-  }, [currentUser])
+  console.log(deleteProgressLoading)
 
   const handleLogOut = () => {
     setErrorMessage('')
@@ -97,18 +94,21 @@ const ProfilePage = () => {
   return (
     <div>
       <Seo title="Profile" />
-      {isAuthenticated && !progressLoading && !authLoading && (
-        <div className="mx-auto w-full max-w-lg pb-12">
-          <ProfileCell />
+      {isAuthenticated &&
+        !progressLoading &&
+        !authLoading &&
+        !deleteProgressLoading && (
+          <div className="mx-auto w-full max-w-lg pb-12">
+            <ProfileCell />
 
-          <button
-            className="mx-auto mt-2 block italic text-gray-200 underline transition-colors hover:text-brand-accent-primary"
-            onClick={() => reconcilePuzzles()}
-          >
-            Sync your progress
-          </button>
-        </div>
-      )}
+            <button
+              className="mx-auto mt-2 block italic text-gray-200 underline transition-colors hover:text-brand-accent-primary"
+              onClick={() => reconcilePuzzles()}
+            >
+              Sync your progress
+            </button>
+          </div>
+        )}
 
       {authLoading || progressLoading ? (
         <LoadingIcon />
@@ -144,11 +144,12 @@ const ProfilePage = () => {
           </p>
         </div>
       )}
-      {isCorrectUser && (
-        <div className="flex justify-center pt-20">
-          <Button onClick={handleDeleteProgress} text={'Clear my progress'} />
-        </div>
-      )}
+      {currentUser &&
+        currentUser.id === process.env.DELETE_PROGRESS_USER_ID && (
+          <div className="flex justify-center pt-20">
+            <Button onClick={deleteUserProgress} text={'Clear my progress'} />
+          </div>
+        )}
     </div>
   )
 }
