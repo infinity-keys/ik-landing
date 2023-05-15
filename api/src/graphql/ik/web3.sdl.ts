@@ -9,10 +9,6 @@ export const schema = gql`
 
   type Query {
     # runs through entire nft claim flow
-    claim(
-      account: String!
-      rewardableId: String!
-      chainId: Int!
-    ): ClaimResponse! @requireAuth
+    claim(account: String!, rewardableId: String!): ClaimResponse! @requireAuth
   }
 `
