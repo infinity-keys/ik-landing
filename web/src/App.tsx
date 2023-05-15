@@ -1,4 +1,3 @@
-import { avalancheChain } from '@infinity-keys/constants'
 import { LensConfig, production, LensProvider } from '@lens-protocol/react-web'
 import { bindings as wagmiBindings } from '@lens-protocol/wagmi'
 import {
@@ -56,7 +55,7 @@ export const IKTheme = loMerge(darkTheme(), {
 })
 
 export const { chains, provider } = configureChains(
-  [chain.polygon, chain.mainnet, avalancheChain, chain.optimism],
+  [chain.optimism],
   [
     infuraProvider(),
     publicProvider(),

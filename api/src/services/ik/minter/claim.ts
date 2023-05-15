@@ -1,3 +1,4 @@
+import { OPTIMISM_CHAIN_ID } from '@infinity-keys/constants'
 import { QueryResolvers } from 'types/graphql'
 
 import { getSignature } from 'src/lib/verifySignature'
@@ -8,7 +9,6 @@ import { rewardableClaim } from 'src/services/ik/rewardables/rewardables'
 export const claim: QueryResolvers['claim'] = async ({
   account,
   rewardableId,
-  chainId,
 }) => {
   // @TODO: can we check cookie to see if puzzleId steps are greater than 0, (but what about packs...)
 
@@ -94,7 +94,6 @@ export const claim: QueryResolvers['claim'] = async ({
       claimedTokens,
     } = await checkBalance({
       account,
-      chainId,
       tokenIds: requiredNftIds,
     })
 
@@ -115,7 +114,7 @@ export const claim: QueryResolvers['claim'] = async ({
     }
   }
 
-  const signature = await getSignature(chainId, account, tokenId)
+  const signature = await getSignature(OPTIMISM_CHAIN_ID, account, tokenId)
 
   return {
     signature,
