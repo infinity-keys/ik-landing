@@ -1,0 +1,61 @@
+# https://redwoodjs.com/docs/how-to/test-in-github-actions
+name: Redwood CI
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+env:
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+  TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      # install all the dependencies
+      - run: yarn install
+      # run custom build command
+      - run: yarn build-ci
+      # build the redwood app
+      - run: yarn rw build
+      # run our linter
+      - run: yarn rw lint
+      # run the api tests
+      - run: yarn rw test api --no-watch
+        env:
+          INFINITY_KEYS_SECRET: ${{ secrets.INFINITY_KEYS_SECRET }}
+      # run the web tests
+      # TODO: uncomment this when we have web tests running
+      # - run: yarn rw test web --no-watch

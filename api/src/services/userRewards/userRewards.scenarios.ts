@@ -1,4 +1,5 @@
 import type { Prisma, UserReward } from '@prisma/client'
+
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard = defineScenario<Prisma.UserRewardCreateArgs>({

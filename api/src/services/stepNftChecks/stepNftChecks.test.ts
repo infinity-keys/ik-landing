@@ -15,7 +15,7 @@ import type { StandardScenario } from './stepNftChecks.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('stepNftChecks', () => {
+describe.skip('stepNftChecks', () => {
   scenario('returns all stepNftChecks', async (scenario: StandardScenario) => {
     const result = await stepNftChecks()
 

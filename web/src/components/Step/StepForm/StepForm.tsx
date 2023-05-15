@@ -1,3 +1,8 @@
+import { useState } from 'react'
+
+import { useForm } from 'react-hook-form'
+import type { StepType, UpdateStepInput } from 'types/graphql'
+
 import {
   Form,
   FormError,
@@ -9,15 +14,12 @@ import {
   Submit,
   RWGqlError,
 } from '@redwoodjs/forms'
-import { useForm } from 'react-hook-form'
 
-import type { StepType, UpdateStepInput } from 'types/graphql'
-
-import { useState } from 'react'
 import StepNftCheckForm from 'src/components/Step/StepForm/StepNftCheckForm'
+
+import StepFunctionCallForm from './StepFunctionCallForm'
 import StepSimpleTextForm from './StepSimpleTextForm'
 import StepTokenIdRangeForm from './StepTokenIdRangeForm'
-import StepFunctionCallForm from './StepFunctionCallForm'
 
 interface StepFormProps {
   onSave: (data: UpdateStepInput) => void
@@ -52,7 +54,7 @@ const StepForm = (props: StepFormProps) => {
   const onSubmit = (data) => {
     const stepTypeDataNoEmptyFields = removeEmpty(data.stepTypeData || {})
 
-    const { requireAllNfts, ...rest } = stepTypeDataNoEmptyFields
+    const { requireAllNfts: _, ...rest } = stepTypeDataNoEmptyFields
 
     let formattedData = {
       ...data,
@@ -79,7 +81,7 @@ const StepForm = (props: StepFormProps) => {
     }
 
     if (data.type === 'NFT_CHECK') {
-      const formattedNftCheckData = nftCheckData.map(({ tempId, ...rest }) =>
+      const formattedNftCheckData = nftCheckData.map(({ tempId: _, ...rest }) =>
         removeEmpty(rest)
       )
 
@@ -109,7 +111,7 @@ const StepForm = (props: StepFormProps) => {
   }
 
   const handleSetNftCheckData = (data) => {
-    const { tempId, ...rest } = data
+    const { tempId: _, ...rest } = data
     const isEmpty = Object.values(rest).every((key) => !key)
     if (isEmpty) {
       alert('NFT check data needs at least one field')

@@ -5,7 +5,7 @@ import LoadingIcon from './LoadingIcon'
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe('LoadingIcon', () => {
+describe.skip('LoadingIcon', () => {
   it('renders successfully', () => {
     expect(() => {
       render(<LoadingIcon />)

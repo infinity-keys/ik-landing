@@ -1,3 +1,7 @@
+import { useState } from 'react'
+
+import { CreateRewardableInput } from 'types/graphql'
+
 import {
   Form,
   FormError,
@@ -10,13 +14,12 @@ import {
   useForm,
 } from '@redwoodjs/forms'
 import type { RWGqlError } from '@redwoodjs/forms'
-import { useState } from 'react'
-import StepForm from 'src/components/Step/StepForm/StepForm'
+
 import NftForm from 'src/components/Nft/NftForm/NftForm'
 import RewardableConnectionForm from 'src/components/RewardableConnection/RewardableConnectionForm/RewardableConnectionForm'
-
+import StepForm from 'src/components/Step/StepForm/StepForm'
 interface RewardableFormProps {
-  onSave: (data: any) => void
+  onSave: (data: CreateRewardableInput) => void
   error: RWGqlError
   loading: boolean
 }
@@ -52,10 +55,10 @@ const RewardableForm = (props: RewardableFormProps) => {
     }
 
     if (data.type === 'PACK') {
-      const { rewardableConnection, ...rest } = filteredData
+      const { rewardableConnection: _, ...rest } = filteredData
       props.onSave(rest)
     } else {
-      const { rewardableConnection, ...rest } = filteredData
+      const { rewardableConnection: _, ...rest } = filteredData
 
       const withSteps = rewardableConnection.parentId
         ? { ...filteredData, steps }

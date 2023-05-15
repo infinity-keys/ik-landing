@@ -1,8 +1,9 @@
+import type { QueryResolvers } from 'types/graphql'
+
 import {
   getOptionalStepAnonymous,
   getOptionalStepAuthenticated,
 } from 'src/lib/steps'
-import type { QueryResolvers } from 'types/graphql'
 
 // this is requireAuth
 export const optionalStep: QueryResolvers['optionalStep'] = async ({
