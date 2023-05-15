@@ -1,5 +1,7 @@
 import { chainIdLookup } from '@infinity-keys/constants'
 import { cloudinaryUrl } from '@infinity-keys/core'
+import { APIGatewayEvent } from 'aws-lambda'
+
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 
@@ -19,7 +21,11 @@ if (!Moralis.Core.isStarted) {
   })
 }
 
-export const handler = async (event) => {
+export const handler = async (event: APIGatewayEvent) => {
+  if (!event.body) {
+    logger.info('/discord-mint-bot called without body')
+    return { statusCode: 400 }
+  }
   const { body, headers } = event
   const parsedBody = await JSON.parse(body)
 
@@ -56,28 +62,32 @@ export const handler = async (event) => {
       select: { cloudinaryId: true },
     })
 
+    const defaultImageUrl =
+      'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/discord-bot/sm-logo_wrpzif.png'
+
     const claimedNFT = new EmbedBuilder()
-      .setColor('101d42')
+      .setColor(0x101d42)
       .setTitle("There's treasure everywhere...")
       .setAuthor({
         name: 'Infinity Keys',
-        iconURL:
-          'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
+        iconURL: defaultImageUrl,
         url: 'https://infinitykeys.io',
       })
-      .setDescription('New Mint!!')
-      .setThumbnail(cloudinaryUrl(image.cloudinaryId, 50, 50, false, 1))
-      .addFields(
-        { name: 'Token', value: `${tokenId}`, inline: true },
-        { name: 'Mint Address', value: `${from}`, inline: true },
-        { name: 'Chain', value: `${chain}`, inline: true }
+      .setDescription(`Key ${tokenId} collected`)
+      .setThumbnail(
+        cloudinaryUrl(
+          image ? image.cloudinaryId : defaultImageUrl,
+          50,
+          50,
+          false,
+          1
+        )
       )
 
       .setTimestamp()
       .setFooter({
-        text: 'Claimed',
-        iconURL:
-          'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/ik-alpha-trophies/Ikey-Antique-Logo_dithbc.png',
+        text: 'Collected',
+        iconURL: defaultImageUrl,
       })
 
     const channel = await client.channels.fetch(process.env.MINT_CHANNEL)

@@ -1,5 +1,5 @@
-import { useAccount } from 'wagmi'
 import { FindStepQuery } from 'types/graphql'
+import { useAccount } from 'wagmi'
 
 import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'

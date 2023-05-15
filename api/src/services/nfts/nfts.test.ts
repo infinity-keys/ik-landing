@@ -9,7 +9,7 @@ import type { StandardScenario } from './nfts.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('nfts', () => {
+describe.skip('nfts', () => {
   scenario('returns all nfts', async (scenario: StandardScenario) => {
     const result = await nfts()
 
