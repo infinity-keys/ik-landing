@@ -217,17 +217,13 @@ export const Success = ({
         </>
       )}
 
-      {canClaim && <Button text="Check My NFTs" onClick={claim} />}
+      {canClaim && <Button text="Check My Keys" onClick={claim} />}
 
       {canMint && (
         <>
-          <p className="mb-4">Claim Your Trophy on {chain.name}</p>
-          <Button text="Mint Treasure" onClick={mintNft} />
+          <p className="mb-4">Claim Your Trophy on {chain?.name}</p>
+          <Button text="Claim" onClick={mintNft} />
         </>
-      )}
-
-      {transactionSuccess && (
-        <p className="mb-4">Your trophy has been claimed!</p>
       )}
 
       {(claimed || transactionSuccess) && (
@@ -266,23 +262,28 @@ export const Success = ({
         <div className="pt-6 text-center text-gray-200">
           <p>
             Return to:
-            {rewardable?.asChildPublicParentRewardables.map((parent, index) => {
-              const { slug, name, type } = parent?.parentRewardable || {}
-              if (!slug || !name || !type) return null
+            {rewardable.asChildPublicParentRewardables.map(
+              (rewardable, index) => {
+                if (!rewardable?.parentRewardable) return null
 
-              return (
-                <Fragment key={slug + type}>
-                  {/* prepend a comma to all but the first item */}
-                  {index ? ', ' : ''}
-                  <Link
-                    to={rewardableLandingRoute({ slug, type })}
-                    className="ml-2 mt-2 inline-block italic transition-colors hover:text-brand-accent-primary"
-                  >
-                    {name} {capitalize(type)}
-                  </Link>
-                </Fragment>
-              )
-            })}
+                const {
+                  parentRewardable: { slug, name, type },
+                } = rewardable
+
+                return (
+                  <Fragment key={slug + type}>
+                    {/* prepend a comma to all but the first item */}
+                    {index ? ', ' : ''}
+                    <Link
+                      to={rewardableLandingRoute({ slug, type })}
+                      className="ml-2 mt-2 inline-block italic transition-colors hover:text-brand-accent-primary"
+                    >
+                      {name} {capitalize(type)}
+                    </Link>
+                  </Fragment>
+                )
+              }
+            )}
           </p>
         </div>
       )}
