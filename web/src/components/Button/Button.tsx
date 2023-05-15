@@ -49,7 +49,7 @@ export default function Button({
     [
       variant === 'solid' && {
         'bg-brand-accent-primary': true,
-        'bg-brand-accent-primary/50 border-brand-accent-primary hover:brand-accent-primary/50 text-white/50 hover:text-white/50':
+        'bg-brand-accent-primary/50 border-brand-accent-primary hover:border-brand-accent-primary text-white/50 hover:text-white/50':
           disabled,
       },
       variant === 'outline' && {
