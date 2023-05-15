@@ -11,11 +11,14 @@ import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleM
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
 
+import Button from '../Button/Button'
+
 interface StepsLayoutProps extends PropsWithChildren {
-  currentStepId: string
+  currentStepId?: string
   hasBeenSolved: boolean
   puzzle: FindAnonStepQuery['puzzle'] | FindStepQuery['puzzle']
   step: FindAnonStepQuery['step'] | FindStepQuery['step']
+  stepNum?: number
 }
 
 const SimpleTextInput = lazy(
@@ -43,13 +46,37 @@ const StepsLayout = ({
   hasBeenSolved,
   puzzle,
   step,
+  stepNum,
   children,
 }: StepsLayoutProps) => {
   const { slug } = useParams()
   const { isAuthenticated } = useAuth()
 
+  if (!puzzle) return null
+  const showButton = !stepNum && puzzle?.rewardable
+
   return (
     <div>
+      {showButton && (
+        <div className="mb-6">
+          {isAuthenticated ? (
+            <Button
+              {...(hasBeenSolved
+                ? { to: routes.claim({ id: puzzle.rewardable.id }) }
+                : {})}
+              text="Claim"
+              disabled={!hasBeenSolved}
+            />
+          ) : (
+            <Button
+              {...(hasBeenSolved ? { to: routes.profile() } : {})}
+              text="Sign in to Claim"
+              disabled={!hasBeenSolved}
+            />
+          )}
+        </div>
+      )}
+
       <Suspense fallback={<LoadingIcon />}>
         {step && (
           <div>
@@ -79,7 +106,7 @@ const StepsLayout = ({
                 {step.type === 'SIMPLE_TEXT' && (
                   <div className="pt-8">
                     <SimpleTextInput
-                      count={step.stepSimpleText.solutionCharCount}
+                      count={step.stepSimpleText?.solutionCharCount || 0}
                       step={step}
                       puzzleId={puzzle.id}
                       isAnon={puzzle.isAnon}
@@ -116,47 +143,46 @@ const StepsLayout = ({
         )}
       </Suspense>
 
-      <div className="my-4">{children}</div>
+      <div>{children}</div>
 
       {(!step || !hasBeenSolved) && (
         <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-4 sm:flex-row">
-          {puzzle.steps.map(
-            ({
-              id,
-              stepSortWeight,
-              hasUserCompletedStep,
-              hasAnonUserCompletedStep,
-            }) => {
-              const routeParams = {
-                slug,
-                step: stepSortWeight,
-              }
-              const completed = isAuthenticated
-                ? hasUserCompletedStep
-                : hasAnonUserCompletedStep
-              return (
-                <ThumbnailMini
-                  id={id}
-                  key={stepSortWeight}
-                  name={`Step ${stepSortWeight.toString()}`}
-                  progress={
-                    hasBeenSolved
-                      ? ThumbnailProgress.Completed
-                      : currentStepId === id
-                      ? ThumbnailProgress.Current
-                      : completed
-                      ? ThumbnailProgress.Completed
-                      : ThumbnailProgress.NotCompleted
-                  }
-                  to={
-                    isAuthenticated && !puzzle.isAnon
-                      ? routes.puzzleStep(routeParams)
-                      : routes.anonPuzzleStep(routeParams)
-                  }
-                />
-              )
+          {puzzle.steps.map((stepData) => {
+            if (!stepData) return null
+
+            const { id, stepSortWeight, hasUserCompletedStep } = stepData
+            const routeParams = {
+              slug,
+              step: stepSortWeight,
             }
-          )}
+
+            const completed =
+              !isAuthenticated && 'hasAnonUserCompletedStep' in stepData
+                ? stepData.hasAnonUserCompletedStep
+                : hasUserCompletedStep
+
+            return (
+              <ThumbnailMini
+                id={id}
+                key={stepSortWeight}
+                name={`Step ${stepSortWeight.toString()}`}
+                progress={
+                  hasBeenSolved
+                    ? ThumbnailProgress.Completed
+                    : currentStepId === id
+                    ? ThumbnailProgress.Current
+                    : completed
+                    ? ThumbnailProgress.Completed
+                    : ThumbnailProgress.NotCompleted
+                }
+                to={
+                  isAuthenticated && !puzzle.isAnon
+                    ? routes.puzzleStep(routeParams)
+                    : routes.anonPuzzleStep(routeParams)
+                }
+              />
+            )
+          })}
         </div>
       )}
     </div>
