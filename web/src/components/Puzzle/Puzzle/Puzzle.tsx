@@ -4,14 +4,7 @@ import type {
   FindStepsByPuzzleId,
 } from 'types/graphql'
 
-import {
-  Link,
-  routes,
-  navigate,
-  NavLink,
-  useParams,
-  useMatch,
-} from '@redwoodjs/router'
+import { Link, routes, navigate, NavLink, useParams } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 

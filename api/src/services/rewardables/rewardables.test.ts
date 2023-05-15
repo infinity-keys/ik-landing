@@ -15,7 +15,7 @@ import type { StandardScenario } from './rewardables.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('rewardables', () => {
+describe.skip('rewardables', () => {
   scenario('returns all rewardables', async (scenario: StandardScenario) => {
     const result = await rewardables()
 

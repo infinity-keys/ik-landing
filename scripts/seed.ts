@@ -294,7 +294,7 @@ export default async () => {
           id: ikOrg.id,
         },
       },
-      // Connect the NFT to 'puzzle1' in this rewardable
+      // Connect the nft2 to 'puzzle4' in this rewardable
       nfts: {
         connect: {
           id: nft2.id,
@@ -306,8 +306,26 @@ export default async () => {
           steps: {
             create: [
               {
-                challenge: "What is the name of Egypt's main canal?",
+                challenge:
+                  'You must have the Prerequiste NFT in order to enter Egypt',
                 stepSortWeight: 1,
+                type: 'NFT_CHECK',
+                stepNftCheck: {
+                  create: {
+                    nftCheckData: {
+                      create: {
+                        contractAddress:
+                          '0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9',
+                        chainId: 137,
+                        tokenId: 35,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                challenge: "What is the name of Egypt's main canal?",
+                stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
                 stepSimpleText: {
                   create: {
@@ -317,7 +335,7 @@ export default async () => {
               },
               {
                 challenge: 'Where are the great pyramids?',
-                stepSortWeight: 2,
+                stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
                 stepSimpleText: {
                   create: {
@@ -327,7 +345,7 @@ export default async () => {
               },
               {
                 challenge: "What is the name of Egypt's main river?",
-                stepSortWeight: 3,
+                stepSortWeight: 4,
                 type: 'SIMPLE_TEXT',
                 stepSimpleText: {
                   create: {
@@ -362,7 +380,7 @@ export default async () => {
   })
 
   // protagonistUser solves only step in Puzzle 1
-  const solve1 = await db.solve.create({
+  const _solve1 = await db.solve.create({
     //solve (not userReward) like in "const solve2"
     data: {
       user: {
@@ -398,7 +416,7 @@ export default async () => {
   })
 
   // protagonistUser solves step 1 of 2 in Puzzle 2
-  const solve2 = await db.solve.create({
+  const _solve2 = await db.solve.create({
     data: {
       user: {
         connect: {
@@ -415,7 +433,7 @@ export default async () => {
   })
 
   // protagonistUser gets a reward for Puzzle 1
-  const userReward1 = await db.userReward.create({
+  const _userReward1 = await db.userReward.create({
     // userReward (not solve) like in "const solve1"
     data: {
       user: {
@@ -433,7 +451,7 @@ export default async () => {
 
   // protagonistUser attempts step 2 of 2 in Puzzle 2
   // ...but enters the wrong answer
-  const attempt3 = await db.attempt.create({
+  const _attempt3 = await db.attempt.create({
     data: {
       data: [{ solution: 'sashimi' }],
       user: {
@@ -468,7 +486,7 @@ export default async () => {
   })
 
   // protagonistUser solves step 2 of 2 in Puzzle 2
-  const solve3 = await db.solve.create({
+  const _solve3 = await db.solve.create({
     data: {
       user: {
         connect: {
@@ -485,7 +503,7 @@ export default async () => {
   })
 
   // protagonistUser gets a reward for Puzzle 2
-  const userReward2 = await db.userReward.create({
+  const _userReward2 = await db.userReward.create({
     data: {
       user: {
         connect: {
@@ -544,7 +562,7 @@ export default async () => {
   })
 
   // user rick.a.burd@gmail.com gets a reward for Pack1 1
-  const userReward3 = await db.userReward.create({
+  const _userReward3 = await db.userReward.create({
     // userReward (not solve) like in "const solve1"
     data: {
       user: {
@@ -560,7 +578,7 @@ export default async () => {
     },
   })
 
-  const pack2 = await db.rewardable.create({
+  const _pack2 = await db.rewardable.create({
     data: {
       name: 'Pack 2',
       slug: 'pack-2',

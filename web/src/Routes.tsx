@@ -6,6 +6,7 @@
 //
 // 'src/pages/HomePage/HomePage.js'         -> HomePage
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
+// import { useAuth } from 'src/auth'
 import { Router, Route, Set, Private } from '@redwoodjs/router'
 
 // import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
@@ -13,57 +14,62 @@ import { useAuth } from 'src/auth'
 import HeaderLayout from 'src/layouts/HeaderLayout/HeaderLayout'
 import MainLayout from 'src/layouts/MainLayout/MainLayout'
 import WrapperLayout from 'src/layouts/WrapperLayout'
+import AllContextProviders from 'src/providers'
 
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
-      {/* <Route path="/" page={UnderConstructionPage} name="underConstruction" /> */}
-      <Route path="/" page={HomePage} name="home" />
+      <AllContextProviders>
+        {/* <Route path="/" page={UnderConstructionPage} name="underConstruction" /> */}
+        <Route path="/" page={HomePage} name="home" />
 
-      <Private unauthenticated="profile" roles={'ADMIN'}>
+        <Private unauthenticated="profile" roles={'ADMIN'}>
+          <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
+            <Route path="/rewardable/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newRewardable" />
+            {/* <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" /> */}
+          </Set>
+        </Private>
+
+        <Private unauthenticated="profile">
+          {/* @TODO: Replace HeaderLayout once we get a minimal header */}
+          <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
+            <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleStep" />
+            <Route path="/user/delete" page={DeletePage} name="delete" />
+          </Set>
+
+          <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
+            <Route path="/claim/{id}" page={ClaimPage} name="claim" />
+          </Set>
+        </Private>
+
         <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
-          <Route path="/rewardable/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newRewardable" />
-          {/* <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" /> */}
-        </Set>
-      </Private>
+          <Route path="/profile" page={ProfilePage} name="profile" />
+          <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
 
-      <Private unauthenticated="profile">
+          <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
+          <Route path="/puzzles/{count:Int}/{page:Int}" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzlesPagination" />
+          <Route path="/packs" page={RewardablePackRewardablePacksPage} name="packs" />
+          <Route path="/packs/{count:Int}/{page:Int}" page={RewardablePackRewardablePacksPage} name="packsPagination" />
+          <Route path="/play" page={PlayPage} name="play" />
+          <Route path="/play/{count:Int}/{page:Int}" page={PlayPage} name="playPagination" />
+        </Set>
+
+        <Set wrap={[HeaderLayout, MainLayout]}>
+          <Route path="/privacy-policy" page={PrivacyPolicyPage} name="privacyPolicy" />
+        </Set>
+
         {/* @TODO: Replace HeaderLayout once we get a minimal header */}
         <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
-          <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleStep" />
-          <Route path="/user/delete" page={DeletePage} name="delete" />
+          <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleLanding" />
+          <Route path="/pack/{slug}" page={RewardablePackRewardablePackPage} name="packLanding" />
+          {/* Anonymous Puzzles - landing and step pages */}
+          <Route path="/a/puzzle/{slug}" page={AnonPuzzlePage} name="anonPuzzleLanding" />
+          <Route path="/a/puzzle/{slug}/{step:Int}" page={AnonPuzzlePage} name="anonPuzzleStep" />
         </Set>
 
-        <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
-          <Route path="/claim/{id}" page={ClaimPage} name="claim" />
-        </Set>
-      </Private>
-
-      <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
-        <Route path="/profile" page={ProfilePage} name="profile" />
-        <Route path="/puzzles" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzles" />
-        <Route path="/puzzles/{count:Int}/{page:Int}" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzlesPagination" />
-        <Route path="/packs" page={RewardablePackRewardablePacksPage} name="packs" />
-        <Route path="/packs/{count:Int}/{page:Int}" page={RewardablePackRewardablePacksPage} name="packsPagination" />
-        <Route path="/play" page={PlayPage} name="play" />
-        <Route path="/play/{count:Int}/{page:Int}" page={PlayPage} name="playPagination" />
-      </Set>
-
-      <Set wrap={[HeaderLayout, MainLayout]}>
-        <Route path="/privacy-policy" page={PrivacyPolicyPage} name="privacyPolicy" />
-      </Set>
-
-      {/* @TODO: Replace HeaderLayout once we get a minimal header */}
-      <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
-        <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleLanding" />
-        <Route path="/pack/{slug}" page={RewardablePackRewardablePackPage} name="packLanding" />
-        {/* Anonymous Puzzles - landing and step pages */}
-        <Route path="/a/puzzle/{slug}" page={AnonPuzzlePage} name="anonPuzzleLanding" />
-        <Route path="/a/puzzle/{slug}/{step:Int}" page={AnonPuzzlePage} name="anonPuzzleStep" />
-      </Set>
-
-      {/* NotFoundPage can't be in a set */}
-      <Route notfound page={NotFoundPage} />
+        {/* NotFoundPage can't be in a set */}
+        <Route notfound page={NotFoundPage} />
+      </AllContextProviders>
     </Router>
   )
 }

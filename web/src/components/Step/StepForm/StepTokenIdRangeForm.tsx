@@ -1,15 +1,6 @@
 import { FieldError, Label, TextField, NumberField } from '@redwoodjs/forms'
 
-import type { UpdateStepTokenIdRangeInput } from 'types/graphql'
-import type { RWGqlError } from '@redwoodjs/forms'
-
-interface StepTokenIdRangeFormProps {
-  onSave?: (data: UpdateStepTokenIdRangeInput) => void
-  error?: RWGqlError
-  loading?: boolean
-}
-
-const StepTokenIdRangeForm = (props: StepTokenIdRangeFormProps) => {
+const StepTokenIdRangeForm = () => {
   return (
     <div className="rw-form-wrapper">
       <Label

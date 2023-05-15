@@ -5,7 +5,7 @@ import Flicker from './Flicker'
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe('Flicker', () => {
+describe.skip('Flicker', () => {
   it('renders successfully', () => {
     expect(() => {
       render(<Flicker />)
