@@ -64,11 +64,14 @@ export const Failure = ({
 export const Success = ({
   step,
   puzzle,
-}: CellSuccessProps<FindStepQuery, FindStepQueryVariables>) => {
+  stepNum,
+}: CellSuccessProps<FindStepQuery, FindStepQueryVariables> & {
+  stepNum?: number
+}) => {
   const hasBeenSolved = puzzle.rewardable.userRewards.length > 0
 
   const currentStepId = puzzle.steps.find(
-    (step) => !step.hasUserCompletedStep
+    (step) => !step?.hasUserCompletedStep
   )?.id
 
   return (
@@ -77,6 +80,7 @@ export const Success = ({
       hasBeenSolved={hasBeenSolved}
       puzzle={puzzle}
       step={step}
+      stepNum={stepNum}
     >
       {hasBeenSolved && (
         <div className="flex flex-col items-center justify-center">
@@ -87,10 +91,6 @@ export const Success = ({
               </div>
             </div>
           )}
-          <Button
-            to={routes.claim({ id: puzzle.rewardable.id })}
-            text="Claim Treasure"
-          />
         </div>
       )}
     </StepsLayout>

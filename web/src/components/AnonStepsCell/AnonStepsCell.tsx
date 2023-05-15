@@ -77,21 +77,24 @@ export const Failure = ({
 export const Success = ({
   step,
   puzzle,
-}: CellSuccessProps<FindAnonStepQuery, FindAnonStepQueryVariables>) => {
+  stepNum,
+}: CellSuccessProps<FindAnonStepQuery, FindAnonStepQueryVariables> & {
+  stepNum: number
+}) => {
   const { isAuthenticated } = useAuth()
 
   // logged in users will have a userReward
   // anonymous users will have all steps completed
   const hasBeenSolved = isAuthenticated
     ? puzzle.rewardable.userRewards.length > 0
-    : puzzle.steps.every((step) => step.hasAnonUserCompletedStep)
+    : puzzle.steps.every((step) => step?.hasAnonUserCompletedStep)
 
   // find the first step that has not been solved
   // returns undefined if all have been solved
   const currentStepId = puzzle.steps.find((step) =>
     isAuthenticated
-      ? !step.hasUserCompletedStep
-      : !step.hasAnonUserCompletedStep
+      ? !step?.hasUserCompletedStep
+      : !step?.hasAnonUserCompletedStep
   )?.id
 
   return (
@@ -100,6 +103,7 @@ export const Success = ({
       hasBeenSolved={hasBeenSolved}
       puzzle={puzzle}
       step={step}
+      stepNum={stepNum}
     >
       {hasBeenSolved && (
         <div className="flex flex-col items-center justify-center">
@@ -109,14 +113,6 @@ export const Success = ({
                 <Markdown>{puzzle.rewardable.successMessage}</Markdown>
               </div>
             </div>
-          )}
-          {isAuthenticated ? (
-            <Button
-              to={routes.claim({ id: puzzle.rewardable.id })}
-              text="Claim Treasure"
-            />
-          ) : (
-            <Button to={routes.profile()} text="Sign in to Claim Treasure" />
           )}
         </div>
       )}
