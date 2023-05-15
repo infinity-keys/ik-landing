@@ -5,6 +5,7 @@ import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import LoginModal from 'src/components/LoginModal/LoginModal'
 import ProfileCell from 'src/components/ProfileCell'
+import ProgressDeleteButton from 'src/components/ProgressDeleteButton/ProgressDeleteButton'
 import Seo from 'src/components/Seo/Seo'
 import useReconcileProgress from 'src/hooks/useReconcileProgress'
 
@@ -20,10 +21,20 @@ import useReconcileProgress from 'src/hooks/useReconcileProgress'
 */
 
 const ProfilePage = () => {
-  const { isAuthenticated, loading, logOut } = useAuth()
+  const { isAuthenticated, loading, logOut, currentUser } = useAuth()
 
   const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
+
+  const [deleteProgressLoading, setDeleteProgressLoading] = useState(false)
+
+  const handleDeleteUserProgress = () => {
+    setDeleteProgressLoading(true)
+
+    setTimeout(() => {
+      setDeleteProgressLoading(false)
+    }, 200)
+  }
 
   const handleLogOut = () => {
     setErrorMessage('')
@@ -33,18 +44,21 @@ const ProfilePage = () => {
   return (
     <div>
       <Seo title="Profile" />
-      {isAuthenticated && !progressLoading && !loading && (
-        <div className="mx-auto w-full max-w-lg pb-12">
-          <ProfileCell />
+      {isAuthenticated &&
+        !progressLoading &&
+        !loading &&
+        !deleteProgressLoading && (
+          <div className="mx-auto w-full max-w-lg pb-12">
+            <ProfileCell />
 
-          <button
-            className="mx-auto mt-2 block italic text-gray-200 underline transition-colors hover:text-brand-accent-primary"
-            onClick={() => reconcilePuzzles()}
-          >
-            Sync your progress
-          </button>
-        </div>
-      )}
+            <button
+              className="mx-auto mt-2 block italic text-gray-200 underline transition-colors hover:text-brand-accent-primary"
+              onClick={() => reconcilePuzzles()}
+            >
+              Sync your progress
+            </button>
+          </div>
+        )}
 
       {loading || progressLoading ? (
         <LoadingIcon />
@@ -66,6 +80,12 @@ const ProfilePage = () => {
           </p>
         </div>
       )}
+      {currentUser &&
+        currentUser.id === process.env.DELETE_PROGRESS_USER_ID && (
+          <div className="flex justify-center pt-20">
+            <ProgressDeleteButton onClick={handleDeleteUserProgress} />
+          </div>
+        )}
     </div>
   )
 }
