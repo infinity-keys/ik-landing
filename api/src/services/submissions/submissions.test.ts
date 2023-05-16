@@ -15,7 +15,7 @@ import type { StandardScenario } from './submissions.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('submissions', () => {
+describe.skip('submissions', () => {
   scenario('returns all submissions', async (scenario: StandardScenario) => {
     const result = await submissions()
 

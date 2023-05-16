@@ -1,5 +1,5 @@
-import { z } from 'zod'
 import fetch from 'node-fetch'
+import { z } from 'zod'
 
 const functionCallResData = z
   .object({

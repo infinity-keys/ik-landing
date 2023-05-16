@@ -10,6 +10,7 @@ import {
 
 import { Link } from '@redwoodjs/router'
 
+import DiscordHelpButton from 'src/components/DiscordHelpButton/DiscordHelpButton'
 import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'
 import TwitterShare from 'src/components/TwitterShare/TwitterShare'
@@ -29,12 +30,14 @@ const PuzzleLandingLayout = ({
   stepParam,
   children,
 }: PuzzleLandingLayoutProps) => {
+  if (!rewardable) return null
+
   // the full https url to this page
   const url = buildUrlString(
     rewardableLandingRoute({
       slug: rewardable.slug,
       type: rewardable.type,
-      anonPuzzle: rewardable.puzzle.isAnon,
+      anonPuzzle: rewardable.puzzle?.isAnon,
     })
   )
 
@@ -67,24 +70,33 @@ const PuzzleLandingLayout = ({
           <p>
             Return to:
             {rewardable.asChildPublicParentRewardables.map(
-              ({ parentRewardable: { slug, name, type } }, index) => (
-                <Fragment key={slug + type}>
-                  {/* prepend a comma to all but the first item */}
-                  {index ? ', ' : ''}
-                  <Link
-                    to={rewardableLandingRoute({ slug, type })}
-                    className="ml-2 mt-2 inline-block italic transition-colors hover:text-turquoise"
-                  >
-                    {name} {capitalize(type)}
-                  </Link>
-                </Fragment>
-              )
+              (rewardable, index) => {
+                if (!rewardable?.parentRewardable) return null
+
+                const {
+                  parentRewardable: { slug, name, type },
+                } = rewardable
+                return (
+                  <Fragment key={slug + type}>
+                    {/* prepend a comma to all but the first item */}
+                    {index ? ', ' : ''}
+                    <Link
+                      to={rewardableLandingRoute({ slug, type })}
+                      className="ml-2 mt-2 inline-block italic transition-colors hover:text-brand-accent-primary"
+                    >
+                      {name} {capitalize(type)}
+                    </Link>
+                  </Fragment>
+                )
+              }
             )}
           </p>
         </div>
       )}
 
-      <div className="flex justify-center gap-4 px-4 pb-9 pt-16">
+      <div className="flex flex-col items-center justify-center gap-4 px-4 pb-9 pt-16 sm:flex-row">
+        <DiscordHelpButton />
+
         <LensShareButton
           postBody={`Can you unlock the ${rewardable.name} puzzle?`}
           url={url}

@@ -11,8 +11,8 @@ interface ButtonProps {
   fullWidth?: boolean
   border?: boolean
   type?: 'button' | 'submit' | 'reset'
-  size?: 'small' | 'medium'
-  variant?: 'solid' | 'outline' | 'faded' | 'purple' | 'warn'
+  size?: 'small' | 'medium' | 'large'
+  variant?: 'solid' | 'outline' | 'faded' | 'secondary' | 'warn'
   onClick?: () => void
   disabled?: boolean
   responsive?: boolean
@@ -39,25 +39,28 @@ export default function Button({
     { 'block w-full': fullWidth },
     // borders
     { 'border-transparent': !border },
-    { 'border-turquoise': border },
+    { 'border-brand-accent-primary': border },
     // Text color
     [
-      textColor === 'light' && 'text-white hover:text-blue',
-      textColor === 'dark' && 'text-blue hover:text-white',
+      textColor === 'light' && 'text-white hover:text-brand-gray-primary',
+      textColor === 'dark' && 'text-brand-gray-primary hover:text-white',
     ],
     // Variants
     [
       variant === 'solid' && {
-        'bg-turquoise': true,
-        'bg-turquoise/50 border-turquoise hover:border-turquoise text-white/50 hover:text-white/50':
+        'bg-brand-accent-primary': true,
+        'bg-brand-accent-primary/50 border-brand-accent-primary hover:border-brand-accent-primary text-white/50 hover:text-white/50':
           disabled,
       },
-      variant === 'outline' && 'text-white hover:bg-turquoise',
+      variant === 'outline' && {
+        'text-white hover:bg-brand-accent-primary': true,
+        'hover:border-brand-accent-primary': true,
+      },
       variant === 'warn' &&
         'text-white bg-red-500 border-red-500 hover:bg-red-700 hover:text-white',
-      variant === 'faded' && 'bg-white/10 hover:text-turquoise',
-      variant === 'purple' &&
-        'bg-indigo-500 border-indigo-500 hover:text-white hover:bg-indigo-600 ',
+      variant === 'faded' && 'bg-white/10 hover:text-brand-accent-primary',
+      variant === 'secondary' &&
+        'bg-brand-gray-secondary border-brand-gray-secondary hover:text-white hover:bg-brand-accent-primary ',
     ],
     // Sizes and responsive sizes
     [
@@ -65,6 +68,7 @@ export default function Button({
       !responsive && {
         'py-1 px-2 text-base': size === 'small',
         'py-2 px-4 text-lg': size === 'medium',
+        'py-2 px-8 text-2xl': size === 'large',
       },
     ]
   )

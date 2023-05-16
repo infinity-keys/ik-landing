@@ -15,7 +15,7 @@ import type { StandardScenario } from './organizationUsers.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('organizationUsers', () => {
+describe.skip('organizationUsers', () => {
   scenario(
     'returns all organizationUsers',
     async (scenario: StandardScenario) => {

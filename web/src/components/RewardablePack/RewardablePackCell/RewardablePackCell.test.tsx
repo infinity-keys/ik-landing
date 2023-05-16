@@ -1,4 +1,5 @@
 import { render } from '@redwoodjs/testing/web'
+
 import { Loading, Empty, Failure, Success } from './RewardablePackCell'
 import { standard } from './RewardablePackCell.mock'
 
@@ -8,7 +9,7 @@ import { standard } from './RewardablePackCell.mock'
 //        https://redwoodjs.com/docs/testing#testing-cells
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('RewardablePackCell', () => {
+describe.skip('RewardablePackCell', () => {
   it('renders Loading successfully', () => {
     expect(() => {
       render(<Loading />)

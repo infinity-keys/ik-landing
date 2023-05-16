@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { Link } from '@redwoodjs/router'
 
 import CloudImage from 'src/components/CloudImage/CloudImage'
-import MinimalKeyLogo from 'src/svgs/MinimalKeyLogo'
+import { avatarGradient } from 'src/lib/theme/helpers'
 
 interface ThumbnailProps {
   id: string
@@ -17,8 +17,6 @@ interface ThumbnailProps {
   solvedArray?: boolean[]
   progress?: ThumbnailProgress
 }
-
-// @TODO: how do show solved puzzles?
 
 const Thumbnail = ({
   name,
@@ -33,21 +31,21 @@ const Thumbnail = ({
     <Link
       to={href}
       className={clsx(
-        'puzzle-thumb relative block w-full max-w-[18rem] cursor-pointer break-words rounded-lg border border-transparent bg-blue-800 shadow transition hover:border-turquoise',
+        'puzzle-thumb relative block w-full max-w-[18rem] cursor-pointer break-words rounded-lg border border-transparent bg-black/40 shadow transition hover:border-brand-accent-primary',
         progress === ThumbnailProgress.Current
-          ? 'border-turquoise'
+          ? 'border-brand-accent-primary'
           : 'border-transparent',
         {
           'flex flex-col text-center': isGrid,
-          'cursor-pointer transition hover:border-turquoise':
+          'cursor-pointer transition hover:border-brand-accent-primary':
             progress === ThumbnailProgress.Completed,
           'opacity-60 grayscale': progress === ThumbnailProgress.NotCompleted,
         }
       )}
     >
       {progress === ThumbnailProgress.Completed && (
-        <span className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-turquoise/30 ">
-          <CheckIcon className="h-3 w-3 text-turquoise" />
+        <span className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand-accent-primary/30 ">
+          <CheckIcon className="h-3 w-3 text-brand-accent-secondary" />
         </span>
       )}
 
@@ -74,7 +72,7 @@ const Thumbnail = ({
               size={isGrid ? 128 : 56}
               name={id}
               variant="marble"
-              colors={['#101D42', '#E400FF', '#3FCCBB', '#8500AC', '#303B5B']}
+              colors={avatarGradient}
             />
           )}
         </span>
@@ -102,12 +100,12 @@ const Thumbnail = ({
                 <span
                   key={i}
                   className={clsx(
-                    'h-5 w-5 pt-2',
-                    solved ? 'text-turquoise' : 'text-gray-300'
+                    'mr-1 mt-2 block h-1 w-1 rounded-full',
+                    solved
+                      ? 'animate-glowContinuous bg-green-400'
+                      : 'bg-brand-gray-secondary'
                   )}
-                >
-                  <MinimalKeyLogo />
-                </span>
+                />
               ))}
             </dd>
           </dl>
