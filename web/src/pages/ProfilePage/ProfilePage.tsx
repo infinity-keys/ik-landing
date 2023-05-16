@@ -20,8 +20,20 @@ import useReconcileProgress from 'src/hooks/useReconcileProgress'
   update an existing user.
 */
 
+type CurrentUser = {
+  roles: string[]
+  // include other properties of currentUser here
+}
+
 const ProfilePage = () => {
-  const { isAuthenticated, loading, logOut, currentUser } = useAuth()
+  const {
+    isAuthenticated,
+    loading,
+    logOut,
+    currentUser: unknownUser,
+  } = useAuth()
+
+  const currentUser = unknownUser as CurrentUser | null
 
   const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
@@ -30,10 +42,6 @@ const ProfilePage = () => {
 
   const handleDeleteUserProgress = () => {
     setDeleteProgressLoading(true)
-
-    setTimeout(() => {
-      setDeleteProgressLoading(false)
-    }, 200)
   }
 
   const handleLogOut = () => {
@@ -80,12 +88,14 @@ const ProfilePage = () => {
           </p>
         </div>
       )}
-      {currentUser &&
-        currentUser.id === process.env.DELETE_PROGRESS_USER_ID && (
-          <div className="flex justify-center pt-20">
-            <ProgressDeleteButton onClick={handleDeleteUserProgress} />
-          </div>
-        )}
+      {currentUser && currentUser.roles.includes('ADMIN') && (
+        <div className="flex justify-center pt-20">
+          <ProgressDeleteButton
+            onClick={handleDeleteUserProgress}
+            setDeleteProgressLoading={setDeleteProgressLoading}
+          />
+        </div>
+      )}
     </div>
   )
 }

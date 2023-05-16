@@ -13,17 +13,21 @@ const DELETE_USER_PROGRESS_MUTATION = gql`
 interface ProgressDeleteButtonProps {
   onClick: () => void
   disabled?: boolean
+  setDeleteProgressLoading: (loading: boolean) => void
 }
 
 const ProgressDeleteButton = ({
   onClick,
   disabled = false,
+  setDeleteProgressLoading,
 }: ProgressDeleteButtonProps) => {
   const [deleteUserProgress] = useMutation(DELETE_USER_PROGRESS_MUTATION)
 
   const handleClick = async () => {
+    setDeleteProgressLoading(true)
     await deleteUserProgress()
     onClick()
+    setDeleteProgressLoading(false)
   }
 
   return (
