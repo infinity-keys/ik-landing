@@ -66,94 +66,106 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
       }
     }
 
-    if (step.type === 'SIMPLE_TEXT') {
-      const attempt = await createAttempt(data)
+    const createResponse = async ({
+      success,
+      errors,
+      attemptId,
+      finalStep,
+    }: {
+      success?: boolean
+      errors?: string[]
+      attemptId: string
+      finalStep: boolean
+    }) => {
+      if (errors && errors.length > 0)
+        return { success: false, message: errors[0] }
 
-      const correctAttempt =
-        step.stepSimpleText.solution.toLowerCase() === userAttempt.toLowerCase()
+      if (typeof success === 'undefined')
+        return { success: false, message: '"success" is undefined' }
 
-      if (correctAttempt) {
-        await createNewSolve(attempt.id)
+      if (success) {
+        await createNewSolve(attemptId)
       }
 
-      return { success: correctAttempt, finalStep }
+      return { success, finalStep }
+    }
+
+    if (step.type === 'SIMPLE_TEXT') {
+      const { id: attemptId } = await createAttempt(data)
+      const success =
+        step.stepSimpleText.solution.toLowerCase() === userAttempt.toLowerCase()
+      const response = await createResponse({ success, attemptId, finalStep })
+
+      return response
     } // end of SIMPLE_TEXT
 
     if (step.type === 'NFT_CHECK') {
-      const attempt = await createAttempt()
-
-      const { nftPass, errors } = await checkNft({
+      const { id: attemptId } = await createAttempt()
+      const { nftPass: success, errors } = await checkNft({
         account: userAttempt,
         nftCheckData: step.stepNftCheck.nftCheckData,
         requireAllNfts: step.stepNftCheck.requireAllNfts,
       })
+      const response = await createResponse({
+        success,
+        attemptId,
+        finalStep,
+        errors,
+      })
 
-      if (errors && errors.length > 0) {
-        return { success: false, message: 'Error checking NFT' }
-      }
-
-      if (nftPass) {
-        await createNewSolve(attempt.id)
-      }
-
-      return { success: nftPass, finalStep }
+      return response
     } // end of NFT_CHECK
 
     if (step.type === 'FUNCTION_CALL') {
-      const attempt = await createAttempt()
+      const { id: attemptId } = await createAttempt()
 
-      const { hasUserCalledFunction, errors } = await checkFunctionCall({
-        account: userAttempt,
-        contractAddress: step.stepFunctionCall.contractAddress,
-        methodIds: step.stepFunctionCall.methodIds,
+      const { hasUserCalledFunction: success, errors } =
+        await checkFunctionCall({
+          account: userAttempt,
+          contractAddress: step.stepFunctionCall.contractAddress,
+          methodIds: step.stepFunctionCall.methodIds,
+        })
+
+      const response = await createResponse({
+        success,
+        attemptId,
+        finalStep,
+        errors,
       })
 
-      if (errors && errors.length > 0) {
-        return { success: false, message: 'Error checking for function call' }
-      }
-
-      if (hasUserCalledFunction) {
-        await createNewSolve(attempt.id)
-      }
-
-      return { success: hasUserCalledFunction, finalStep }
+      return response
     } // end of FUNCTION_CALL
 
     if (step.type === 'COMETH_API') {
-      const attempt = await createAttempt()
-
+      const { id: attemptId } = await createAttempt()
       const { success, errors } = await checkComethApi(userAttempt)
+      const response = await createResponse({
+        success,
+        attemptId,
+        finalStep,
+        errors,
+      })
 
-      if (errors && errors.length > 0) {
-        return { success: false, message: errors[0] }
-      }
-
-      if (success) {
-        await createNewSolve(attempt.id)
-      }
-
-      return { success, finalStep }
+      return response
     } // end of COMETH_API
 
     if (step.type === 'TOKEN_ID_RANGE') {
-      const attempt = await createAttempt()
-
-      const { hasMatches, errors } = await getErc721TokenIds({
+      const { id: attemptId } = await createAttempt()
+      const { hasMatches: success, errors } = await getErc721TokenIds({
         contractAddress: step.stepTokenIdRange.contractAddress,
         address: userAttempt,
         chainId: step.stepTokenIdRange.chainId,
         startId: step.stepTokenIdRange.startId,
         endId: step.stepTokenIdRange.endId,
       })
+      const response = await createResponse({
+        success,
+        attemptId,
+        finalStep,
+        errors,
+      })
 
-      if (errors && errors.length > 0) {
-        return { success: false, message: errors[0] }
-      }
-
-      if (hasMatches) {
-        await createNewSolve(attempt.id)
-      }
-      return { success: hasMatches, finalStep }
+      return response
     } // end of TOKEN_ID_RANGE
 
     return { success: false }

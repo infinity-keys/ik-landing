@@ -12,6 +12,8 @@ const functionCallResData = z
     'Should either return error or hasUserCalledFunction.'
   )
 
+type ResponseType = z.infer<typeof functionCallResData>
+
 export const checkFunctionCall = async ({
   account,
   contractAddress,
@@ -40,10 +42,18 @@ export const checkFunctionCall = async ({
 
   try {
     const res = await fetch(url)
-    const data = await res.json()
+    const data: ResponseType = await res.json()
     functionCallResData.parse(data)
 
-    return { hasUserCalledFunction: data.hasUserCalledFunction.every((b) => b) }
+    if (data.error || !data.hasUserCalledFunction) {
+      return { errors: ['There was a problem checking your function call'] }
+    }
+
+    return {
+      hasUserCalledFunction: data?.hasUserCalledFunction?.every(
+        (b: boolean) => b
+      ),
+    }
   } catch (e) {
     return { errors: ['There was a problem checking your function call'] }
   }

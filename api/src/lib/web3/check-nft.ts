@@ -1,7 +1,7 @@
 import { balanceOf1155, balanceOf721 } from '@infinity-keys/contracts'
 import { ethers } from 'ethers'
 import fetch from 'node-fetch'
-import { NftCheckDatum } from 'types/graphql'
+import { Maybe, NftCheckDatum } from 'types/graphql'
 import { z } from 'zod'
 
 import { providerLookup } from 'src/lib/lookups'
@@ -33,7 +33,7 @@ const checkPoap = async ({
     method: 'GET',
     headers: {
       accept: 'application/json',
-      'X-API-Key': process.env.POAP_API_KEY,
+      'X-API-Key': process.env.POAP_API_KEY || '',
     },
   }
 
@@ -58,7 +58,7 @@ const checkContract = async ({
 }: {
   account: string
   chainId: number
-  tokenId: number
+  tokenId?: Maybe<number>
   contractAddress: string
 }) => {
   // No token Id for ERC721
@@ -93,20 +93,18 @@ export const checkNft = async ({
 }) => {
   const allChecks = nftCheckData.map(
     ({ chainId, tokenId, contractAddress, poapEventId }) => {
-      if (poapEventId) {
-        return checkPoap({ account, poapEventId })
-      }
+      if (poapEventId) return checkPoap({ account, poapEventId })
+
+      if (!chainId || !contractAddress)
+        return { errors: ['Missing nft check data'] }
 
       return checkContract({ account, chainId, tokenId, contractAddress })
     }
   )
 
   const results = await Promise.all(allChecks)
-
   const resErrors = new Set(
-    results
-      .filter((res) => res.errors?.length > 0)
-      .flatMap(({ errors }) => errors)
+    results.flatMap((res) => (res.errors ? res.errors : []))
   )
 
   if ([...resErrors].length > 0) {
