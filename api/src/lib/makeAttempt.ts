@@ -1,8 +1,10 @@
+import type { Rewardable, StepType } from 'types/graphql'
 import { z } from 'zod'
-import type { StepType } from 'types/graphql'
-import { context } from '@redwoodjs/graphql-server'
-import { createUserReward } from 'src/services/userRewards/userRewards'
+
+import { AuthenticationError, context } from '@redwoodjs/graphql-server'
+
 import { db } from 'src/lib/db'
+import { createUserReward } from 'src/services/userRewards/userRewards'
 
 const SimpleTextSolutionData = z.object({
   type: z.literal('simple-text'),
@@ -56,7 +58,11 @@ export const stepSolutionTypeLookup: {
 }
 
 // @TODO: this 'asChild' logic will break if puzzle belongs to bundle
-export const createRewards = async (rewardable) => {
+export const createRewards = async (rewardable: Rewardable) => {
+  if (!context.currentUser?.id) {
+    throw new AuthenticationError('No current user')
+  }
+
   // create puzzle reward when user solves last step
   await createUserReward({
     input: {
@@ -66,7 +72,8 @@ export const createRewards = async (rewardable) => {
   })
 
   // does this step's puzzle belong to a pack
-  if (rewardable.asChild.length > 0) {
+  // @TODO: why doesn't `rewardable.asChild.length` work here?
+  if (rewardable.asChild[0]) {
     const parentPack = await db.rewardable.findUnique({
       where: { id: rewardable.asChild[0].parentId },
       select: {
@@ -88,6 +95,10 @@ export const createRewards = async (rewardable) => {
       },
     })
 
+    if (!parentPack) {
+      throw new Error('No parent pack for this Rewardable')
+    }
+
     // has this user now completed all puzzles in this pack
     const allPuzzlesSolved = parentPack.asParent.every(
       ({ childRewardable }) => childRewardable.userRewards.length > 0
@@ -105,7 +116,11 @@ export const createRewards = async (rewardable) => {
   }
 }
 
-export const getStep = async (id) => {
+export const getStep = async (id: string) => {
+  if (!context.currentUser?.id) {
+    throw new AuthenticationError('No current user')
+  }
+
   return db.step.findUnique({
     where: { id },
     select: {
