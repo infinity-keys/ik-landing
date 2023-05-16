@@ -1,6 +1,7 @@
 import { Fragment, useEffect } from 'react'
 
 import { gql, useLazyQuery } from '@apollo/client'
+import { OPTIMISM_CHAIN_ID } from '@infinity-keys/constants'
 import {
   contractAddressLookup,
   marketplaceLookup,
@@ -31,7 +32,6 @@ import Button from 'src/components/Button/Button'
 import CloudImage from 'src/components/CloudImage/CloudImage'
 import Heading from 'src/components/Heading/Heading'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-import { isValidAvailableChain } from 'src/lib/availableChains'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 
 export const QUERY = gql`
@@ -60,12 +60,8 @@ export const QUERY = gql`
 `
 
 const CHECK_CLAIM_QUERY = gql`
-  query CheckClaimQuery(
-    $account: String!
-    $rewardableId: String!
-    $chainId: Int!
-  ) {
-    claim(account: $account, rewardableId: $rewardableId, chainId: $chainId) {
+  query CheckClaimQuery($account: String!, $rewardableId: String!) {
+    claim(account: $account, rewardableId: $rewardableId) {
       claimed
       chainClaimed
       signature
@@ -100,13 +96,10 @@ export const Success = ({
   const { isConnected, address } = useAccount()
   const { openConnectModal } = useConnectModal()
   const { openChainModal } = useChainModal()
-  const isValidChain = isValidAvailableChain(
-    chain?.id,
-    rewardable.availableChains
-  )
+  const isValidChain = chain?.id === OPTIMISM_CHAIN_ID
 
   const contractAddress = isValidChain
-    ? contractAddressLookup[chain?.id || 0]
+    ? contractAddressLookup[OPTIMISM_CHAIN_ID]
     : ''
 
   // checks both db and blockchain to see if user is eligible to mint
@@ -117,7 +110,6 @@ export const Success = ({
       variables: {
         account: address,
         rewardableId: rewardable.id,
-        chainId: chain?.id,
       },
     }
   )
@@ -168,6 +160,11 @@ export const Success = ({
     }
   }, [transactionSuccess, rewardable.id, updateReward])
 
+  if (!rewardable.nfts.length) {
+    return <div>No NFT found for this {capitalize(rewardable.type)}</div>
+  }
+
+  const nftImage = rewardable.nfts[0]?.cloudinaryId
   const canClaim = !signature && !claimed && isConnected && isValidChain
   const canMint =
     signature &&
@@ -177,24 +174,16 @@ export const Success = ({
     isConnected &&
     isValidChain
 
-  if (!rewardable.nfts.length) {
-    return <div>No NFT found for this {capitalize(rewardable.type)}</div>
-  }
-
   return (
     <div>
-      {rewardable.nfts[0]?.cloudinaryId && (
-        <div className="mb-8 flex flex-col items-center">
+      <div className="mb-8 flex flex-col items-center">
+        {nftImage && (
           <div className="mb-6">
-            <CloudImage
-              id={rewardable.nfts[0].cloudinaryId}
-              height={200}
-              width={200}
-            />
+            <CloudImage id={nftImage} height={200} width={200} />
           </div>
-          <Heading>Claim Your Treasure</Heading>
-        </div>
-      )}
+        )}
+        <Heading>Claim Your Treasure</Heading>
+      </div>
 
       {!queryLoading &&
         data?.claim?.errors?.map((err: string, i: number) => (
@@ -222,8 +211,7 @@ export const Success = ({
       {isConnected && !isValidChain && (
         <>
           <p className="mb-4 italic text-gray-200">
-            This NFT can be minted on:{' '}
-            {rewardable.availableChains.map((network) => network).join(', ')}
+            This NFT can only be minted on Optimism
           </p>
           <Button text="Switch Chains" onClick={openChainModal} />
         </>
