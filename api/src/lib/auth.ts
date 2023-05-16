@@ -14,7 +14,9 @@ import { logger } from 'src/lib/logger'
  * Represents the user attributes returned by the decoding the
  * Authentication provider's JWT together with an optional list of roles.
  */
-type RedwoodUser = Record<string, unknown> & { roles: SiteRole[] }
+
+// @TODO: partial Users
+type RedwoodUser = Record<string, unknown> & { roles: SiteRole[]; id: string }
 
 /**
  * The session object sent in as the first argument to getCurrentUser() will

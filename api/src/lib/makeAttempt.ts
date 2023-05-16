@@ -11,50 +11,24 @@ const SimpleTextSolutionData = z.object({
   simpleTextSolution: z.string(),
 })
 
-const NftCheckSolutionData = z.object({
-  type: z.literal('nft-check'),
-  nftCheckSolution: z.object({
-    account: z.string(),
-  }),
-})
-
-const TokenIdRangeSolutionData = z.object({
-  type: z.literal('token-id-range'),
-  tokenIdRangeSolution: z.object({
-    account: z.string(),
-  }),
-})
-
-const FunctionCallSolutionData = z.object({
-  type: z.literal('function-call'),
-  functionCallSolution: z.object({
-    account: z.string(),
-  }),
-})
-
-const ComethApiSolutionData = z.object({
-  type: z.literal('cometh-api'),
-  comethApiSolution: z.object({
-    account: z.string(),
-  }),
+const AccountCheckData = z.object({
+  type: z.literal('account-check'),
+  account: z.string(),
 })
 
 export const SolutionData = z.discriminatedUnion('type', [
   SimpleTextSolutionData,
-  NftCheckSolutionData,
-  FunctionCallSolutionData,
-  ComethApiSolutionData,
-  TokenIdRangeSolutionData,
+  AccountCheckData,
 ])
 
 export const stepSolutionTypeLookup: {
   [key in StepType]: string
 } = {
   SIMPLE_TEXT: 'simpleTextSolution',
-  NFT_CHECK: 'nftCheckSolution',
-  FUNCTION_CALL: 'functionCallSolution',
-  COMETH_API: 'comethApiSolution',
-  TOKEN_ID_RANGE: 'tokenIdRangeSolution',
+  NFT_CHECK: 'account',
+  FUNCTION_CALL: 'account',
+  COMETH_API: 'account',
+  TOKEN_ID_RANGE: 'account',
 }
 
 // @TODO: this 'asChild' logic will break if puzzle belongs to bundle

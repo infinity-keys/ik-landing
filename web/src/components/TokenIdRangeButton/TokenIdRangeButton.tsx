@@ -22,10 +22,8 @@ const TokenIdRangeButton = ({
       stepId: step.id,
       puzzleId,
       reqBody: {
-        type: 'token-id-range',
-        tokenIdRangeSolution: {
-          account: address,
-        },
+        type: 'account-check',
+        account: address,
       },
     })
   }

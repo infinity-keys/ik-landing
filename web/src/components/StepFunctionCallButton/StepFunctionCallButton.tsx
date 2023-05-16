@@ -22,10 +22,8 @@ const StepFunctionCallButton = ({
       stepId: step.id,
       puzzleId,
       reqBody: {
-        type: 'function-call',
-        functionCallSolution: {
-          account: address,
-        },
+        type: 'account-check',
+        account: address,
       },
     })
   }
