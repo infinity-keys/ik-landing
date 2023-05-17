@@ -153,6 +153,8 @@ enum StepType {
   COMETH_API
   /// corresponds to the StepTokenIdRange model
   TOKEN_ID_RANGE
+  /// corresponds to the model StepOriumApi model
+  ORIUM_API
 }
 
 /// Steps are whate players actually solve. One or more steps make up a Puzzle.

@@ -29,6 +29,7 @@ export const schema = gql`
     FUNCTION_CALL
     COMETH_API
     TOKEN_ID_RANGE
+    ORIUM_API
   }
 
   type Query {
