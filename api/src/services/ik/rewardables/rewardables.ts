@@ -697,6 +697,7 @@ const stepTypeLookup: {
   FUNCTION_CALL: 'stepFunctionCall',
   COMETH_API: 'stepComethApi',
   TOKEN_ID_RANGE: 'stepTokenIdRange',
+  ORIUM_API: 'stepOriumApi',
 }
 
 export const createRewardablesStepsNfts: MutationResolvers['createRewardablesStepsNfts'] =

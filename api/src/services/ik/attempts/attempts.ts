@@ -3,6 +3,7 @@ import type { MutationResolvers } from 'types/graphql'
 import { AuthenticationError, context } from '@redwoodjs/graphql-server'
 
 import { checkComethApi } from 'src/lib/api/cometh'
+import { checkOriumApi } from 'src/lib/api/orium'
 import {
   SolutionData,
   createAttempt,
@@ -135,6 +136,29 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
       return response
     } // end of COMETH_API
+
+    if (step.type === 'ORIUM_API') {
+      if (!step.stepOriumApi) {
+        throw new Error(
+          'Cannot create attempt - missing data for "stepOriumApi"'
+        )
+      }
+
+      const { id: attemptId } = await createAttempt(stepId)
+      const { success, errors } = await checkOriumApi(
+        userAttempt,
+        step.stepOriumApi.checkType
+      )
+      const response = await createResponse({
+        success,
+        attemptId,
+        finalStep,
+        errors,
+        rewardable: step.puzzle.rewardable,
+      })
+
+      return response
+    } // end of ORIUM_API
 
     if (step.type === 'TOKEN_ID_RANGE') {
       if (!step.stepTokenIdRange) {

@@ -32,6 +32,7 @@ export const stepSolutionTypeLookup: {
   FUNCTION_CALL: 'account',
   COMETH_API: 'account',
   TOKEN_ID_RANGE: 'account',
+  ORIUM_API: 'account',
 }
 
 // Helper functions
@@ -186,6 +187,11 @@ export const getStep = async (id: string) => {
         },
       },
       stepSimpleText: true,
+      stepOriumApi: {
+        select: {
+          checkType: true,
+        },
+      },
       puzzle: {
         select: {
           rewardable: {
