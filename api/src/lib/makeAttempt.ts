@@ -7,6 +7,7 @@ import { db } from 'src/lib/db'
 import { createSolve } from 'src/services/solves/solves'
 import { createUserReward } from 'src/services/userRewards/userRewards'
 
+// Parsing/validating the data sent from the front end
 const SimpleTextSolutionData = z.object({
   type: z.literal('simple-text'),
   simpleTextSolution: z.string(),
@@ -22,6 +23,7 @@ export const SolutionData = z.discriminatedUnion('type', [
   AccountCheckData,
 ])
 
+// Lookups
 export const stepSolutionTypeLookup: {
   [key in StepType]: string
 } = {
@@ -32,6 +34,7 @@ export const stepSolutionTypeLookup: {
   TOKEN_ID_RANGE: 'account',
 }
 
+// Helper functions
 export const createAttempt = async (stepId: string, attemptData = {}) => {
   if (!context.currentUser) {
     throw new AuthenticationError('No current user')

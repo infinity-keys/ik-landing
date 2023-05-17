@@ -15,7 +15,7 @@ import { checkNft } from 'src/lib/web3/check-nft'
 import { getErc721TokenIds } from 'src/lib/web3/check-tokenid-range'
 
 /**
- * Every step type follows the same pattern
+ * Pattern when creating a new step type
  * 1. create the attempt
  * 2. run the step type's unique logic
  * 3. create the response
@@ -52,6 +52,12 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     const userAttempt = data[solutionType]
 
     if (step.type === 'SIMPLE_TEXT') {
+      if (!step.stepSimpleText) {
+        throw new Error(
+          'Cannot create attempt - missing data for "stepSimpleText"'
+        )
+      }
+
       const { id: attemptId } = await createAttempt(stepId, data)
       const success =
         step.stepSimpleText.solution.toLowerCase() === userAttempt.toLowerCase()
@@ -66,6 +72,12 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     } // end of SIMPLE_TEXT
 
     if (step.type === 'NFT_CHECK') {
+      if (!step.stepNftCheck) {
+        throw new Error(
+          'Cannot create attempt - missing data for "stepNftCheck"'
+        )
+      }
+
       const { id: attemptId } = await createAttempt(stepId)
       const { nftPass: success, errors } = await checkNft({
         account: userAttempt,
@@ -84,6 +96,12 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     } // end of NFT_CHECK
 
     if (step.type === 'FUNCTION_CALL') {
+      if (!step.stepFunctionCall) {
+        throw new Error(
+          'Cannot create attempt - missing data for "stepFunctionCall"'
+        )
+      }
+
       const { id: attemptId } = await createAttempt(stepId)
 
       const { hasUserCalledFunction: success, errors } =
@@ -119,6 +137,12 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     } // end of COMETH_API
 
     if (step.type === 'TOKEN_ID_RANGE') {
+      if (!step.stepTokenIdRange) {
+        throw new Error(
+          'Cannot create attempt - missing data for "stepTokenIdRange"'
+        )
+      }
+
       const { id: attemptId } = await createAttempt(stepId)
       const { hasMatches: success, errors } = await getErc721TokenIds({
         contractAddress: step.stepTokenIdRange.contractAddress,

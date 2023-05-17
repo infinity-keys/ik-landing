@@ -218,7 +218,7 @@ model StepFunctionCall {
   /// MethodIds for the functions we want to check
   methodIds       String[]
   /// Address for the contract that has our functions
-  contractAddress String?
+  contractAddress String
 }
 
 // Data for the step type that checks a user's wallet for an NFT or POAP
