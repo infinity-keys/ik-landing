@@ -3,17 +3,24 @@ import type { MutationResolvers } from 'types/graphql'
 import { AuthenticationError, context } from '@redwoodjs/graphql-server'
 
 import { checkComethApi } from 'src/lib/api/cometh'
-import { db } from 'src/lib/db'
 import {
   SolutionData,
-  createRewards,
+  createAttempt,
+  createResponse,
   getStep,
   stepSolutionTypeLookup,
 } from 'src/lib/makeAttempt'
 import { checkFunctionCall } from 'src/lib/web3/check-function-call'
 import { checkNft } from 'src/lib/web3/check-nft'
 import { getErc721TokenIds } from 'src/lib/web3/check-tokenid-range'
-import { createSolve } from 'src/services/solves/solves'
+
+/**
+ * Every step type follows the same pattern
+ * 1. create the attempt
+ * 2. run the step type's unique logic
+ * 3. create the response
+ * 4. return the response
+ */
 
 export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   stepId,
@@ -44,63 +51,22 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     const solutionType = stepSolutionTypeLookup[step.type]
     const userAttempt = data[solutionType]
 
-    const createAttempt = async (attemptData = {}) =>
-      db.attempt.create({
-        data: {
-          userId: context.currentUser.id,
-          stepId,
-          data: attemptData,
-        },
-      })
-
-    const createNewSolve = async (attemptId: string) => {
-      await createSolve({
-        input: {
-          attemptId,
-          userId: context.currentUser.id,
-        },
-      })
-
-      if (finalStep) {
-        await createRewards(step.puzzle.rewardable)
-      }
-    }
-
-    const createResponse = async ({
-      success,
-      errors,
-      attemptId,
-      finalStep,
-    }: {
-      success?: boolean
-      errors?: string[]
-      attemptId: string
-      finalStep: boolean
-    }) => {
-      if (errors && errors.length > 0)
-        return { success: false, message: errors[0] }
-
-      if (typeof success === 'undefined')
-        return { success: false, message: '"success" is undefined' }
-
-      if (success) {
-        await createNewSolve(attemptId)
-      }
-
-      return { success, finalStep }
-    }
-
     if (step.type === 'SIMPLE_TEXT') {
-      const { id: attemptId } = await createAttempt(data)
+      const { id: attemptId } = await createAttempt(stepId, data)
       const success =
         step.stepSimpleText.solution.toLowerCase() === userAttempt.toLowerCase()
-      const response = await createResponse({ success, attemptId, finalStep })
+      const response = await createResponse({
+        success,
+        attemptId,
+        finalStep,
+        rewardable: step.puzzle.rewardable,
+      })
 
       return response
     } // end of SIMPLE_TEXT
 
     if (step.type === 'NFT_CHECK') {
-      const { id: attemptId } = await createAttempt()
+      const { id: attemptId } = await createAttempt(stepId)
       const { nftPass: success, errors } = await checkNft({
         account: userAttempt,
         nftCheckData: step.stepNftCheck.nftCheckData,
@@ -111,13 +77,14 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         attemptId,
         finalStep,
         errors,
+        rewardable: step.puzzle.rewardable,
       })
 
       return response
     } // end of NFT_CHECK
 
     if (step.type === 'FUNCTION_CALL') {
-      const { id: attemptId } = await createAttempt()
+      const { id: attemptId } = await createAttempt(stepId)
 
       const { hasUserCalledFunction: success, errors } =
         await checkFunctionCall({
@@ -131,26 +98,28 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         attemptId,
         finalStep,
         errors,
+        rewardable: step.puzzle.rewardable,
       })
 
       return response
     } // end of FUNCTION_CALL
 
     if (step.type === 'COMETH_API') {
-      const { id: attemptId } = await createAttempt()
+      const { id: attemptId } = await createAttempt(stepId)
       const { success, errors } = await checkComethApi(userAttempt)
       const response = await createResponse({
         success,
         attemptId,
         finalStep,
         errors,
+        rewardable: step.puzzle.rewardable,
       })
 
       return response
     } // end of COMETH_API
 
     if (step.type === 'TOKEN_ID_RANGE') {
-      const { id: attemptId } = await createAttempt()
+      const { id: attemptId } = await createAttempt(stepId)
       const { hasMatches: success, errors } = await getErc721TokenIds({
         contractAddress: step.stepTokenIdRange.contractAddress,
         address: userAttempt,
@@ -163,6 +132,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         attemptId,
         finalStep,
         errors,
+        rewardable: step.puzzle.rewardable,
       })
 
       return response

@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { AuthenticationError, context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
+import { createSolve } from 'src/services/solves/solves'
 import { createUserReward } from 'src/services/userRewards/userRewards'
 
 const SimpleTextSolutionData = z.object({
@@ -29,6 +30,68 @@ export const stepSolutionTypeLookup: {
   FUNCTION_CALL: 'account',
   COMETH_API: 'account',
   TOKEN_ID_RANGE: 'account',
+}
+
+export const createAttempt = async (stepId: string, attemptData = {}) => {
+  if (!context.currentUser) {
+    throw new AuthenticationError('No current user')
+  }
+  return db.attempt.create({
+    data: {
+      userId: context.currentUser.id,
+      stepId,
+      data: attemptData,
+    },
+  })
+}
+
+export const createNewSolve = async ({
+  attemptId,
+  finalStep,
+  rewardable,
+}: {
+  attemptId: string
+  finalStep: boolean
+  rewardable: Rewardable
+}) => {
+  if (!context.currentUser) {
+    throw new AuthenticationError('No current user')
+  }
+  await createSolve({
+    input: {
+      attemptId,
+      userId: context.currentUser.id,
+    },
+  })
+
+  if (finalStep) {
+    await createRewards(rewardable)
+  }
+}
+
+export const createResponse = async ({
+  success,
+  errors,
+  attemptId,
+  finalStep,
+  rewardable,
+}: {
+  success?: boolean
+  errors?: string[]
+  attemptId: string
+  finalStep: boolean
+  rewardable: Rewardable
+}) => {
+  if (errors && errors.length > 0) return { success: false, message: errors[0] }
+
+  if (typeof success === 'undefined')
+    return { success: false, message: '"success" is undefined' }
+
+  if (success) {
+    await createNewSolve({ attemptId, finalStep, rewardable })
+  }
+
+  return { success, finalStep }
 }
 
 // @TODO: this 'asChild' logic will break if puzzle belongs to bundle
