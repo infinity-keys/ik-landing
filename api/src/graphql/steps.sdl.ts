@@ -15,6 +15,7 @@ export const schema = gql`
     stepNftCheck: StepNftCheck
     stepFunctionCall: StepFunctionCall
     stepComethApi: StepComethApi
+    stepOriumApi: StepOriumApi
     stepTokenIdRange: StepTokenIdRange
     migrateLandingRoute: String
     attempts: [Attempt]!

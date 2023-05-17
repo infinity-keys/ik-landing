@@ -183,6 +183,7 @@ model Step {
   stepFunctionCall StepFunctionCall?
   stepComethApi    StepComethApi?
   stepTokenIdRange StepTokenIdRange?
+  stepOriumApi     StepOriumApi?
 
   // Every puzzle from IK v1 (Next/Hasura) was a single step, so we need to
   // migrate them; optional because only v1 puzzles will have this.
@@ -252,6 +253,23 @@ model StepComethApi {
 
   step   Step   @relation(fields: [stepId], references: [id])
   stepId String @unique
+}
+
+enum OriumCheckType {
+  HAS_CREATED_VAULT
+  HAS_DEPOSITED_NFT
+  HAS_CREATED_SCHOLARSHIP
+}
+
+/// Require the user to pass the Cometh api call
+model StepOriumApi {
+  id String @id @default(cuid())
+
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @unique
+
+  /// We can check the Orium API for different passing states
+  checkType OriumCheckType
 }
 
 /// Require a user to havve at least 1 NFT within a given range
