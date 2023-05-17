@@ -8,8 +8,9 @@ export const checkComethApi = async (account: string) => {
     const res = await fetch(url)
     const data = await res.json()
 
-    // Cometh returns { error: 'Server error' } if account is not found
-    return { success: !data.error }
+    return {
+      success: data.hasEnoughGamesToSkipTutorial || data.hasCompletedTutorial,
+    }
   } catch {
     logger.error(`Failed Cometh api check for ${account}`)
     return { errors: ['Error checking Cometh.'] }
