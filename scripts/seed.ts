@@ -359,6 +359,97 @@ export default async () => {
       },
     },
   })
+
+  const _puzzle5 = await db.rewardable.create({
+    data: {
+      name: 'Puzzle 5 (Step Types)',
+      slug: 'puzzle-5',
+      explanation: 'Just going to have every step type in here so get ready',
+      type: 'PUZZLE',
+      organization: {
+        connect: {
+          id: ikOrg.id,
+        },
+      },
+      // Connect the nft2 to 'puzzle5' in this rewardable
+      nfts: {
+        connect: {
+          id: nft2.id,
+        },
+      },
+      puzzle: {
+        create: {
+          isAnon: false,
+          steps: {
+            create: [
+              {
+                challenge: 'NFT check',
+                stepSortWeight: 1,
+                type: 'NFT_CHECK',
+                stepNftCheck: {
+                  create: {
+                    nftCheckData: {
+                      create: {
+                        contractAddress:
+                          '0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9',
+                        chainId: 137,
+                        tokenId: 1,
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                challenge: 'Simple Text (the password is text)',
+                stepSortWeight: 2,
+                type: 'SIMPLE_TEXT',
+                stepSimpleText: {
+                  create: {
+                    solution: 'text',
+                  },
+                },
+              },
+              {
+                challenge: 'token id range',
+                stepSortWeight: 3,
+                type: 'TOKEN_ID_RANGE',
+                stepTokenIdRange: {
+                  create: {
+                    contractAddress:
+                      '0xA4E3513c98b30d4D7cc578d2C328Bd550725D1D0',
+                    chainId: '137',
+                    startId: 13232,
+                    endId: 13277,
+                  },
+                },
+              },
+              {
+                challenge: 'Have you pet a gotchi?',
+                stepSortWeight: 4,
+                type: 'FUNCTION_CALL',
+                stepFunctionCall: {
+                  create: {
+                    methodIds: ['0x22c67519'],
+                    contractAddress:
+                      '0x86935F11C86623deC8a25696E1C19a8659CbF95d',
+                  },
+                },
+              },
+              {
+                challenge: 'Cometh API',
+                stepSortWeight: 5,
+                type: 'COMETH_API',
+                stepComethApi: {
+                  create: {},
+                },
+              },
+            ],
+          },
+        },
+      },
+    },
+  })
+
   console.log('Puzzles created')
 
   // protagonistUser attempts only step in Puzzle 1
