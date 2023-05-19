@@ -15,10 +15,10 @@ const CREATE_REWARDABLE_MUTATION = gql`
 `
 
 const NewRewardable = () => {
-  const [createRewardable, { data, loading, error }] = useMutation(
+  const [createRewardable, { loading, error }] = useMutation(
     CREATE_REWARDABLE_MUTATION,
     {
-      onCompleted: () => {
+      onCompleted: (data) => {
         console.log(data.createRewardablesStepsNfts)
         alert(
           `Rewardable created 🎉 🪑\n\nID: ${data.createRewardablesStepsNfts.id}`
