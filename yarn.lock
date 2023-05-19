@@ -28100,6 +28100,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-alice-carousel@npm:^2.7.1":
+  version: 2.7.1
+  resolution: "react-alice-carousel@npm:2.7.1"
+  dependencies:
+    vanilla-swipe: ^2.4.1
+  peerDependencies:
+    react: ">=15.4"
+  checksum: 222912d960edc5a7b0c399aea18b623c5f0476df55dcd27c791d8b842d9d72299faf4b1def4d713201897c26d196173c058452d0d30b116ccdcd07a130eca778
+  languageName: node
+  linkType: hard
+
 "react-cookie-consent@npm:^8.0.1":
   version: 8.0.1
   resolution: "react-cookie-consent@npm:8.0.1"
@@ -33493,6 +33504,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vanilla-swipe@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "vanilla-swipe@npm:2.4.1"
+  checksum: 8392909eeedb25c15516520b2e7ae015280bb1c39b905a189a3170af95d7bcb280551f37b8d6454d04cf7b6e280914ebda001e527a3c857002124a0b60023714
+  languageName: node
+  linkType: hard
+
 "vary@npm:^1, vary@npm:~1.1.2":
   version: 1.1.2
   resolution: "vary@npm:1.1.2"
@@ -34031,6 +34049,7 @@ __metadata:
     prettier-plugin-tailwindcss: ^0.1.13
     prop-types: 15.8.1
     react: 18.2.0
+    react-alice-carousel: ^2.7.1
     react-cookie-consent: ^8.0.1
     react-dom: 18.2.0
     react-individual-character-input-boxes: 1.2.1

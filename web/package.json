@@ -40,6 +40,7 @@
     "magic-sdk": "^10.1.0",
     "prop-types": "15.8.1",
     "react": "18.2.0",
+    "react-alice-carousel": "^2.7.1",
     "react-cookie-consent": "^8.0.1",
     "react-dom": "18.2.0",
     "react-individual-character-input-boxes": "1.2.1",
