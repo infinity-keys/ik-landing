@@ -20,7 +20,7 @@ module.exports = {
     // console.log(filename)
 
     const sourceCollection = client.db('test').collection('database')
-    const targetCollection = client.db('test').collection('backup-may')
+    const targetCollection = client.db('test').collection('backup')
 
     await sourceCollection
       .aggregate([{ $match: {} }, { $out: targetCollection.collectionName }])
