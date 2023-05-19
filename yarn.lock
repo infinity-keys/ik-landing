@@ -16661,7 +16661,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "discord-dust-game-bot@workspace:packages/discord-dust-game-bot"
   dependencies:
-    discord-economy-super: 1.7.5
+    discord-economy-super: ^1.7.6
     discord.js: ^14.7.1
     dotenv: ^16.0.3
     eslint: ^8.36.0
@@ -16669,12 +16669,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"discord-economy-super@npm:1.7.5":
-  version: 1.7.5
-  resolution: "discord-economy-super@npm:1.7.5"
+"discord-economy-super@npm:^1.7.6":
+  version: 1.7.6
+  resolution: "discord-economy-super@npm:1.7.6"
   dependencies:
-    quick-mongo-super: ^1.0.11
-  checksum: 6358716e338e18f8d12e390acc470efd468e585b55b0edeecfec51053a624993f5f1f075883f4456a5dac9a39701301cf2f26691ff69173edbd9a848838d911d
+    quick-mongo-super: ^1.0.12
+  checksum: d88606c2d785c792e4ff43e50892b5607161a120d61c63bd000f897961d90d99580b9c91b200f08d2ffddf68df8cebfdedf2671d9e196919f14f7d2442fe4848
   languageName: node
   linkType: hard
 
@@ -28007,7 +28007,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"quick-mongo-super@npm:^1.0.11":
+"quick-mongo-super@npm:^1.0.12":
   version: 1.0.12
   resolution: "quick-mongo-super@npm:1.0.12"
   dependencies:
@@ -29251,6 +29251,7 @@ __metadata:
   dependencies:
     "@redwoodjs/auth-dbauth-setup": 5.0.5
     "@redwoodjs/core": 5.0.5
+    discord-economy-super: ^1.7.6
     jest-watch-typeahead: ^2.2.2
     lodash: ^4.17.21
     node-fetch: ^2

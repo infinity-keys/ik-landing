@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { EmbedBuilder } = require('discord.js')
+
 const eco = require('../ecoDB')
 
 module.exports = {
@@ -14,7 +15,7 @@ module.exports = {
     // instance to show cooldown time
     // const time = eco.rewards.getDaily(member.id, guild.id).cooldown.pretty;
 
-    if (!daily.status) {
+    if (!daily.claimed) {
       const embedNoDaily = new EmbedBuilder()
         .setThumbnail(
           'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/discord-bot/magic_profile_perspective_anime_style_black_person_older_person_761cd5e0-ea63-45e2-8287-5ee14cdf715d_xavztp.png'

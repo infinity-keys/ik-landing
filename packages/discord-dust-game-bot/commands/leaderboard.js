@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { EmbedBuilder } = require('discord.js')
+
 const { options } = require('../ecoDB')
 const eco = require('../ecoDB')
 
