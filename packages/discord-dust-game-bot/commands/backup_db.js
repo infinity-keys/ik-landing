@@ -14,13 +14,13 @@ module.exports = {
     .setDescription('copies collection into a new collection')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
-    const now = new Date()
-    const dateString = now.toLocaleDateString().replaceAll('/', '-')
-    const filename = `db_backup_${dateString}`
-    console.log(filename)
+    // const now = new Date()
+    // const dateString = now.toLocaleDateString().replaceAll('/', '-')
+    // const filename = `db_backup_${dateString}`
+    // console.log(filename)
 
     const sourceCollection = client.db('test').collection('database')
-    const targetCollection = client.db('test').collection(filename)
+    const targetCollection = client.db('test').collection('backup-may')
 
     await sourceCollection
       .aggregate([{ $match: {} }, { $out: targetCollection.collectionName }])
