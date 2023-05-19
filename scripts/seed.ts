@@ -383,8 +383,18 @@ export default async () => {
           steps: {
             create: [
               {
-                challenge: 'NFT check',
+                challenge: 'Have you created an Orium scholarship?',
                 stepSortWeight: 1,
+                type: 'ORIUM_API',
+                stepOriumApi: {
+                  create: {
+                    checkType: 'HAS_CREATED_SCHOLARSHIP',
+                  },
+                },
+              },
+              {
+                challenge: 'NFT check',
+                stepSortWeight: 2,
                 type: 'NFT_CHECK',
                 stepNftCheck: {
                   create: {
@@ -401,7 +411,7 @@ export default async () => {
               },
               {
                 challenge: 'Simple Text (the password is text)',
-                stepSortWeight: 2,
+                stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
                 stepSimpleText: {
                   create: {
@@ -411,7 +421,7 @@ export default async () => {
               },
               {
                 challenge: 'token id range',
-                stepSortWeight: 3,
+                stepSortWeight: 4,
                 type: 'TOKEN_ID_RANGE',
                 stepTokenIdRange: {
                   create: {
@@ -425,7 +435,7 @@ export default async () => {
               },
               {
                 challenge: 'Have you pet a gotchi?',
-                stepSortWeight: 4,
+                stepSortWeight: 5,
                 type: 'FUNCTION_CALL',
                 stepFunctionCall: {
                   create: {
@@ -437,7 +447,7 @@ export default async () => {
               },
               {
                 challenge: 'Cometh API',
-                stepSortWeight: 5,
+                stepSortWeight: 6,
                 type: 'COMETH_API',
                 stepComethApi: {
                   create: {},
