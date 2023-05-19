@@ -13,7 +13,6 @@ export const schema = gql`
     organization: Organization! @requireAuth(roles: ["ADMIN"])
     orgId: String!
     nfts: [Nft]!
-    availableChains: [AvailableChains]!
     puzzle: Puzzle
     pack: Pack
     bundle: Bundle
@@ -30,13 +29,6 @@ export const schema = gql`
     BUNDLE
   }
 
-  enum AvailableChains {
-    AVAX
-    ETH
-    POLY
-    OPT
-  }
-
   type Query {
     rewardables: [Rewardable!]! @requireAuth
     rewardable(id: String!): Rewardable @requireAuth
@@ -51,7 +43,6 @@ export const schema = gql`
     type: RewardableType!
     sortWeight: Int
     orgId: String!
-    availableChains: [AvailableChains]!
     migrateId: String
   }
 
@@ -64,7 +55,6 @@ export const schema = gql`
     type: RewardableType
     sortWeight: Int
     orgId: String
-    availableChains: [AvailableChains]!
     migrateId: String
   }
 
