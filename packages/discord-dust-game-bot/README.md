@@ -54,5 +54,3 @@ if you have an existing set-up:
 4. run `docker ps` to list running databases
 5. run `docker exec -it [name_of_your_mongodb_container] bash` to boot up mongo
 6. run `mongosh -u root -p rootpassword` to connect
-
-## How to Run Backup to Database
