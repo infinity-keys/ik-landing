@@ -21,23 +21,22 @@ import { getErc721TokenIds } from 'src/lib/web3/check-tokenid-range'
  * 3. create the response
  * 4. return the response
  */
-
 export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   stepId,
   data,
-}) => {
+}): Promise<{ success: boolean; message?: string }> => {
   try {
     // @TODO: why doesn't this fix possibly undefined error
     if (!context?.currentUser) {
       throw new AuthenticationError('No current user')
     }
 
-    SolutionData.parse(data)
+    const solutionData = SolutionData.parse(data)
 
     const step = await getStep(stepId)
 
     // @TODO: why doesn't this fix everything else
-    if (!step || !step.puzzle || !step.puzzle.steps.length) {
+    if (!step?.puzzle?.steps?.length) {
       return { success: false, message: 'Error fetching step data' }
     }
 
@@ -47,9 +46,17 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
     // all the solving logic relies on this function
     // ensure steps are ordered by sortWeight
-    const finalStep = step.puzzle.steps.at(-1).id === stepId
+    const finalStep = step.puzzle.steps.at(-1)?.id === stepId
     const solutionType = stepSolutionTypeLookup[step.type]
-    const userAttempt = data[solutionType]
+
+    // @TODO: bloom left off here
+    // if (solutionType !== 'simpleTextSolution' || solutionType !== 'account') {
+    //   return { success: false, message: 'Invalid solution type' }
+    // }
+    if (solutionData.type === 'account-check' && solutionType === 'account') {
+      const newUserAttempt = solutionData['account']
+    }
+    const userAttempt = solutionData['account']
 
     if (step.type === 'SIMPLE_TEXT') {
       if (!step.stepSimpleText) {

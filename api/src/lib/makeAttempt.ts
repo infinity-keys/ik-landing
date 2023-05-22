@@ -25,7 +25,7 @@ export const SolutionData = z.discriminatedUnion('type', [
 
 // Lookups
 export const stepSolutionTypeLookup: {
-  [key in StepType]: string
+  [key in StepType]: 'simpleTextSolution' | 'account'
 } = {
   SIMPLE_TEXT: 'simpleTextSolution',
   NFT_CHECK: 'account',
