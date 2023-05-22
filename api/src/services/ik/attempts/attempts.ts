@@ -1,7 +1,5 @@
 import type { MutationResolvers } from 'types/graphql'
 
-import { AuthenticationError, context } from '@redwoodjs/graphql-server'
-
 import { checkComethApi } from 'src/lib/api/cometh'
 import {
   SolutionData,
@@ -26,16 +24,10 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   data,
 }): Promise<{ success: boolean; message?: string }> => {
   try {
-    // @TODO: why doesn't this fix possibly undefined error
-    if (!context?.currentUser) {
-      throw new AuthenticationError('No current user')
-    }
-
     const solutionData = SolutionData.parse(data)
 
     const step = await getStep(stepId)
 
-    // @TODO: why doesn't this fix everything else
     if (!step?.puzzle?.steps?.length) {
       return { success: false, message: 'Error fetching step data' }
     }
@@ -48,15 +40,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     // ensure steps are ordered by sortWeight
     const finalStep = step.puzzle.steps.at(-1)?.id === stepId
     const solutionType = stepSolutionTypeLookup[step.type]
-
-    // @TODO: bloom left off here
-    // if (solutionType !== 'simpleTextSolution' || solutionType !== 'account') {
-    //   return { success: false, message: 'Invalid solution type' }
-    // }
-    if (solutionData.type === 'account-check' && solutionType === 'account') {
-      const newUserAttempt = solutionData['account']
-    }
-    const userAttempt = solutionData['account']
+    const userAttempt = solutionData[solutionType as keyof typeof solutionData]
 
     if (step.type === 'SIMPLE_TEXT') {
       if (!step.stepSimpleText) {
@@ -103,7 +87,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     } // end of NFT_CHECK
 
     if (step.type === 'FUNCTION_CALL') {
-      if (!step.stepFunctionCall) {
+      if (!step.stepFunctionCall?.contractAddress) {
         throw new Error(
           'Cannot create attempt - missing data for "stepFunctionCall"'
         )

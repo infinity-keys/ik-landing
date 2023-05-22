@@ -1,4 +1,5 @@
-import type { Rewardable, StepType } from 'types/graphql'
+import { Prisma } from '@prisma/client'
+import type { StepType } from 'types/graphql'
 import { z } from 'zod'
 
 import { AuthenticationError, context } from '@redwoodjs/graphql-server'
@@ -25,7 +26,7 @@ export const SolutionData = z.discriminatedUnion('type', [
 
 // Lookups
 export const stepSolutionTypeLookup: {
-  [key in StepType]: 'simpleTextSolution' | 'account'
+  [key in StepType]: string
 } = {
   SIMPLE_TEXT: 'simpleTextSolution',
   NFT_CHECK: 'account',
@@ -33,6 +34,25 @@ export const stepSolutionTypeLookup: {
   COMETH_API: 'account',
   TOKEN_ID_RANGE: 'account',
 }
+
+// Gets type for relational fields and partial Rewardable fields
+const rewardableData = Prisma.validator<Prisma.RewardableArgs>()({
+  select: {
+    id: true,
+    userRewards: {
+      select: {
+        id: true,
+      },
+    },
+    asChild: {
+      select: {
+        parentId: true,
+      },
+    },
+  },
+})
+
+type RewardableData = Prisma.RewardableGetPayload<typeof rewardableData>
 
 // Helper functions
 export const createAttempt = async (stepId: string, attemptData = {}) => {
@@ -55,7 +75,7 @@ export const createNewSolve = async ({
 }: {
   attemptId: string
   finalStep: boolean
-  rewardable: Rewardable
+  rewardable: RewardableData
 }) => {
   if (!context.currentUser) {
     throw new AuthenticationError('No current user')
@@ -83,7 +103,7 @@ export const createResponse = async ({
   errors?: string[]
   attemptId: string
   finalStep: boolean
-  rewardable: Rewardable
+  rewardable: RewardableData
 }) => {
   if (errors && errors.length > 0) return { success: false, message: errors[0] }
 
@@ -98,7 +118,7 @@ export const createResponse = async ({
 }
 
 // @TODO: this 'asChild' logic will break if puzzle belongs to bundle
-export const createRewards = async (rewardable: Rewardable) => {
+export const createRewards = async (rewardable: RewardableData) => {
   if (!context.currentUser?.id) {
     throw new AuthenticationError('No current user')
   }
