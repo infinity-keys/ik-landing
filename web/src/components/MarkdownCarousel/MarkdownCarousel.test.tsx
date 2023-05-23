@@ -1,14 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import ChallengeCarousel from './ChallengeCarousel'
+import MarkdownCarousel from './MarkdownCarousel'
 
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe('ChallengeCarousel', () => {
+describe('MarkdownCarousel', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<ChallengeCarousel />)
+      render(<MarkdownCarousel />)
     }).not.toThrow()
   })
 })

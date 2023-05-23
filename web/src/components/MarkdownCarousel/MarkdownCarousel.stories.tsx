@@ -4,8 +4,8 @@
 // ```tsx
 // import type { ComponentStory } from '@storybook/react'
 //
-// export const generated: ComponentStory<typeof ChallengeCarousel> = (args) => {
-//   return <ChallengeCarousel {...args} />
+// export const generated: ComponentStory<typeof MarkdownCarousel> = (args) => {
+//   return <MarkdownCarousel {...args} />
 // }
 // ```
 //
@@ -13,13 +13,13 @@
 
 import type { ComponentMeta } from '@storybook/react'
 
-import ChallengeCarousel from './ChallengeCarousel'
+import MarkdownCarousel from './MarkdownCarousel'
 
 export const generated = () => {
-  return <ChallengeCarousel />
+  return <MarkdownCarousel />
 }
 
 export default {
-  title: 'Components/ChallengeCarousel',
-  component: ChallengeCarousel,
-} as ComponentMeta<typeof ChallengeCarousel>
+  title: 'Components/MarkdownCarousel',
+  component: MarkdownCarousel,
+} as ComponentMeta<typeof MarkdownCarousel>

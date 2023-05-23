@@ -4,7 +4,7 @@ import ArrowLeftIcon from '@heroicons/react/20/solid/ArrowLeftIcon'
 import ArrowRightIcon from '@heroicons/react/20/solid/ArrowRightIcon'
 import Carousel, { ControlProps } from 'nuka-carousel'
 
-const ChallengeCarousel = ({ children }: PropsWithChildren) => {
+const MarkdownCarousel = ({ children }: PropsWithChildren) => {
   return (
     <Carousel
       renderCenterRightControls={() => null}
@@ -40,4 +40,4 @@ const ChallengeCarousel = ({ children }: PropsWithChildren) => {
   )
 }
 
-export default ChallengeCarousel
+export default MarkdownCarousel

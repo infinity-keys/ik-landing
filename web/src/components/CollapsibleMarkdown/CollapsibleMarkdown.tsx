@@ -2,9 +2,9 @@ import { Disclosure } from '@headlessui/react'
 import ChevronUpIcon from '@heroicons/react/20/solid/ChevronUpIcon'
 import clsx from 'clsx'
 
-import ChallengeCarousel from 'src/components/ChallengeCarousel/ChallengeCarousel'
 import Heading from 'src/components/Heading/Heading'
 import Markdown from 'src/components/Markdown/Markdown'
+import MarkdownCarousel from 'src/components/MarkdownCarousel/MarkdownCarousel'
 
 interface CollapsibleMarkdownProps {
   title: string
@@ -44,11 +44,11 @@ const CollapsibleMarkdown = ({
             <Disclosure.Panel className="border-t border-t-white/10 px-2">
               <div className="markdown landing-md px-4 pb-4 text-left text-white/80">
                 {pages.length > 1 ? (
-                  <ChallengeCarousel>
+                  <MarkdownCarousel>
                     {pages.map((text, i) => (
                       <Markdown key={i}>{text}</Markdown>
                     ))}
-                  </ChallengeCarousel>
+                  </MarkdownCarousel>
                 ) : (
                   <Markdown>{content}</Markdown>
                 )}
