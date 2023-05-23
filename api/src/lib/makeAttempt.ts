@@ -26,7 +26,7 @@ export const SolutionData = z.discriminatedUnion('type', [
 
 // Lookups
 export const stepSolutionTypeLookup: {
-  [key in StepType]: string
+  [key in StepType]: 'simpleTextSolution' | 'account'
 } = {
   SIMPLE_TEXT: 'simpleTextSolution',
   NFT_CHECK: 'account',
@@ -131,8 +131,7 @@ export const createRewards = async (rewardable: RewardableData) => {
     },
   })
 
-  // does this step's puzzle belong to a pack
-  // @TODO: why doesn't `rewardable.asChild.length` work here?
+  // Does this step's puzzle belong to a pack
   if (rewardable.asChild[0]) {
     const parentPack = await db.rewardable.findUnique({
       where: { id: rewardable.asChild[0].parentId },

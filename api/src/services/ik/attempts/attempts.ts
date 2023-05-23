@@ -11,6 +11,7 @@ import {
 import { checkFunctionCall } from 'src/lib/web3/check-function-call'
 import { checkNft } from 'src/lib/web3/check-nft'
 import { getErc721TokenIds } from 'src/lib/web3/check-tokenid-range'
+import { user } from 'src/services/users/users'
 
 /**
  * Pattern when creating a new step type
@@ -39,8 +40,17 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     // all the solving logic relies on this function
     // ensure steps are ordered by sortWeight
     const finalStep = step.puzzle.steps.at(-1)?.id === stepId
-    const solutionType = stepSolutionTypeLookup[step.type]
-    const userAttempt = solutionData[solutionType as keyof typeof solutionData]
+
+    let userAttempt: string | undefined = undefined
+    if (solutionData.type === 'simple-text') {
+      userAttempt = solutionData.simpleTextSolution
+    }
+    if (solutionData.type === 'account-check') {
+      userAttempt = solutionData.account
+    }
+    if (!userAttempt) {
+      throw new Error('Cannot create attempt - missing user attempt data')
+    }
 
     if (step.type === 'SIMPLE_TEXT') {
       if (!step.stepSimpleText) {
