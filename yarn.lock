@@ -25368,6 +25368,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nuka-carousel@npm:^6.0.3":
+  version: 6.0.3
+  resolution: "nuka-carousel@npm:6.0.3"
+  peerDependencies:
+    react: ">=18.0.0"
+    react-dom: ">=18.0.0"
+  checksum: 27c57f2f8f3ceb2866d9e3a47c92f47c7b7beb9ac8b466db70f424bf151b443f2859a8dee90360ea1352f93afda99bd3a8b312d26d3f2a0fa0f0e65f68ff9da0
+  languageName: node
+  linkType: hard
+
 "null-loader@npm:4.0.1":
   version: 4.0.1
   resolution: "null-loader@npm:4.0.1"
@@ -28097,17 +28107,6 @@ __metadata:
   bin:
     rc: ./cli.js
   checksum: 24a07653150f0d9ac7168e52943cc3cb4b7a22c0e43c7dff3219977c2fdca5a2760a304a029c20811a0e79d351f57d46c9bde216193a0f73978496afc2b85b15
-  languageName: node
-  linkType: hard
-
-"react-alice-carousel@npm:^2.7.1":
-  version: 2.7.1
-  resolution: "react-alice-carousel@npm:2.7.1"
-  dependencies:
-    vanilla-swipe: ^2.4.1
-  peerDependencies:
-    react: ">=15.4"
-  checksum: 222912d960edc5a7b0c399aea18b623c5f0476df55dcd27c791d8b842d9d72299faf4b1def4d713201897c26d196173c058452d0d30b116ccdcd07a130eca778
   languageName: node
   linkType: hard
 
@@ -33504,13 +33503,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vanilla-swipe@npm:^2.4.1":
-  version: 2.4.1
-  resolution: "vanilla-swipe@npm:2.4.1"
-  checksum: 8392909eeedb25c15516520b2e7ae015280bb1c39b905a189a3170af95d7bcb280551f37b8d6454d04cf7b6e280914ebda001e527a3c857002124a0b60023714
-  languageName: node
-  linkType: hard
-
 "vary@npm:^1, vary@npm:~1.1.2":
   version: 1.1.2
   resolution: "vary@npm:1.1.2"
@@ -34043,13 +34035,13 @@ __metadata:
     loaders.css: ^0.1.2
     lodash: ^4.17.21
     magic-sdk: ^10.1.0
+    nuka-carousel: ^6.0.3
     postcss: ^8.4.16
     postcss-loader: ^7.0.1
     postcss-preset-env: ^7.8.2
     prettier-plugin-tailwindcss: ^0.1.13
     prop-types: 15.8.1
     react: 18.2.0
-    react-alice-carousel: ^2.7.1
     react-cookie-consent: ^8.0.1
     react-dom: 18.2.0
     react-individual-character-input-boxes: 1.2.1
