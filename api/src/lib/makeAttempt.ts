@@ -1,4 +1,4 @@
-import type { Rewardable, StepType } from 'types/graphql'
+import { Prisma } from '@prisma/client'
 import { z } from 'zod'
 
 import { AuthenticationError, context } from '@redwoodjs/graphql-server'
@@ -23,17 +23,34 @@ export const SolutionData = z.discriminatedUnion('type', [
   AccountCheckData,
 ])
 
-// Lookups
-export const stepSolutionTypeLookup: {
-  [key in StepType]: string
-} = {
-  SIMPLE_TEXT: 'simpleTextSolution',
-  NFT_CHECK: 'account',
-  FUNCTION_CALL: 'account',
-  COMETH_API: 'account',
-  TOKEN_ID_RANGE: 'account',
-  ORIUM_API: 'account',
+type SolutionDataType = z.infer<typeof SolutionData>
+
+export const getAttempt = (solutionData: SolutionDataType) => {
+  if ('account' in solutionData) return solutionData.account
+  if ('simpleTextSolution' in solutionData)
+    return solutionData.simpleTextSolution
+
+  throw new Error('Cannot create attempt - incorrect user attempt data')
 }
+
+// Gets type for relational fields and partial Rewardable fields
+const rewardableData = Prisma.validator<Prisma.RewardableArgs>()({
+  select: {
+    id: true,
+    userRewards: {
+      select: {
+        id: true,
+      },
+    },
+    asChild: {
+      select: {
+        parentId: true,
+      },
+    },
+  },
+})
+
+type RewardableData = Prisma.RewardableGetPayload<typeof rewardableData>
 
 // Helper functions
 export const createAttempt = async (stepId: string, attemptData = {}) => {
@@ -56,7 +73,7 @@ export const createNewSolve = async ({
 }: {
   attemptId: string
   finalStep: boolean
-  rewardable: Rewardable
+  rewardable: RewardableData
 }) => {
   if (!context.currentUser) {
     throw new AuthenticationError('No current user')
@@ -84,7 +101,7 @@ export const createResponse = async ({
   errors?: string[]
   attemptId: string
   finalStep: boolean
-  rewardable: Rewardable
+  rewardable: RewardableData
 }) => {
   if (errors && errors.length > 0) return { success: false, message: errors[0] }
 
@@ -99,7 +116,7 @@ export const createResponse = async ({
 }
 
 // @TODO: this 'asChild' logic will break if puzzle belongs to bundle
-export const createRewards = async (rewardable: Rewardable) => {
+export const createRewards = async (rewardable: RewardableData) => {
   if (!context.currentUser?.id) {
     throw new AuthenticationError('No current user')
   }
@@ -112,8 +129,7 @@ export const createRewards = async (rewardable: Rewardable) => {
     },
   })
 
-  // does this step's puzzle belong to a pack
-  // @TODO: why doesn't `rewardable.asChild.length` work here?
+  // Does this step's puzzle belong to a pack
   if (rewardable.asChild[0]) {
     const parentPack = await db.rewardable.findUnique({
       where: { id: rewardable.asChild[0].parentId },

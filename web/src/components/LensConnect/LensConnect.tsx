@@ -65,7 +65,7 @@ const LensConnect = () => {
   const onLoginClick = async () => {
     setErrorMessage('')
     try {
-      const signer = await connector.getSigner()
+      const signer = await connector?.getSigner()
       await connectToLens(signer)
     } catch {
       console.error('Error connecting to Lens Profile')
@@ -89,7 +89,11 @@ const LensConnect = () => {
     <div className="flex flex-col items-center">
       {!isLoading ? (
         !isConnected ? (
-          <Button text="Connect Wallet" onClick={openConnectModal} />
+          <Button
+            text="Connect Wallet"
+            size="small"
+            onClick={openConnectModal}
+          />
         ) : (
           <div>
             {profile?.handle ? (
