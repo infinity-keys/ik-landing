@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client'
-import type { StepType } from 'types/graphql'
 import { z } from 'zod'
 
 import { AuthenticationError, context } from '@redwoodjs/graphql-server'
@@ -24,15 +23,14 @@ export const SolutionData = z.discriminatedUnion('type', [
   AccountCheckData,
 ])
 
-// Lookups
-export const stepSolutionTypeLookup: {
-  [key in StepType]: 'simpleTextSolution' | 'account'
-} = {
-  SIMPLE_TEXT: 'simpleTextSolution',
-  NFT_CHECK: 'account',
-  FUNCTION_CALL: 'account',
-  COMETH_API: 'account',
-  TOKEN_ID_RANGE: 'account',
+type SolutionDataType = z.infer<typeof SolutionData>
+
+export const getAttempt = (solutionData: SolutionDataType) => {
+  if ('account' in solutionData) return solutionData.account
+  if ('simpleTextSolution' in solutionData)
+    return solutionData.simpleTextSolution
+
+  throw new Error('Cannot create attempt - incorrect user attempt data')
 }
 
 // Gets type for relational fields and partial Rewardable fields
