@@ -1,44 +1,28 @@
 import type { MutationResolvers } from 'types/graphql'
 
-import { AuthenticationError, context } from '@redwoodjs/graphql-server'
-
 import { checkComethApi } from 'src/lib/api/cometh'
 import { checkOriumApi } from 'src/lib/api/orium'
 import {
   SolutionData,
   createAttempt,
   createResponse,
+  getAttempt,
   getStep,
-  stepSolutionTypeLookup,
 } from 'src/lib/makeAttempt'
 import { checkFunctionCall } from 'src/lib/web3/check-function-call'
 import { checkNft } from 'src/lib/web3/check-nft'
 import { getErc721TokenIds } from 'src/lib/web3/check-tokenid-range'
 
-/**
- * Pattern when creating a new step type
- * 1. create the attempt
- * 2. run the step type's unique logic
- * 3. create the response
- * 4. return the response
- */
-
 export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
   stepId,
   data,
-}) => {
+}): Promise<{ success: boolean; message?: string }> => {
   try {
-    // @TODO: why doesn't this fix possibly undefined error
-    if (!context?.currentUser) {
-      throw new AuthenticationError('No current user')
-    }
-
-    SolutionData.parse(data)
+    const solutionData = SolutionData.parse(data)
 
     const step = await getStep(stepId)
 
-    // @TODO: why doesn't this fix everything else
-    if (!step || !step.puzzle || !step.puzzle.steps.length) {
+    if (!step?.puzzle?.steps?.length) {
       return { success: false, message: 'Error fetching step data' }
     }
 
@@ -48,9 +32,8 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
     // all the solving logic relies on this function
     // ensure steps are ordered by sortWeight
-    const finalStep = step.puzzle.steps.at(-1).id === stepId
-    const solutionType = stepSolutionTypeLookup[step.type]
-    const userAttempt = data[solutionType]
+    const finalStep = step.puzzle.steps.at(-1)?.id === stepId
+    const userAttempt = getAttempt(solutionData)
 
     if (step.type === 'SIMPLE_TEXT') {
       if (!step.stepSimpleText) {
@@ -97,7 +80,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     } // end of NFT_CHECK
 
     if (step.type === 'FUNCTION_CALL') {
-      if (!step.stepFunctionCall) {
+      if (!step.stepFunctionCall?.contractAddress) {
         throw new Error(
           'Cannot create attempt - missing data for "stepFunctionCall"'
         )

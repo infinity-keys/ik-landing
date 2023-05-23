@@ -105,50 +105,48 @@ const StepsLayout = ({
               )}
             </div>
 
-            {!hasBeenSolved && (
-              <>
-                {step.type === 'SIMPLE_TEXT' && (
-                  <div className="pt-8">
-                    <SimpleTextInput
-                      count={step.stepSimpleText?.solutionCharCount || 0}
-                      step={step}
-                      puzzleId={puzzle.id}
-                      isAnon={puzzle.isAnon}
-                    />
-                  </div>
-                )}
-
-                {step.type === 'NFT_CHECK' && (
-                  <div className="pt-8">
-                    <NftCheckButton step={step} puzzleId={puzzle.id} />
-                  </div>
-                )}
-
-                {step.type === 'FUNCTION_CALL' && (
-                  <div className="pt-8">
-                    <StepFunctionCallButton step={step} puzzleId={puzzle.id} />
-                  </div>
-                )}
-
-                {step.type === 'COMETH_API' && (
-                  <div className="pt-8">
-                    <StepComethApiButton step={step} puzzleId={puzzle.id} />
-                  </div>
-                )}
-
-                {step.type === 'ORIUM_API' && (
-                  <div className="pt-8">
-                    <StepOriumApiButton step={step} puzzleId={puzzle.id} />
-                  </div>
-                )}
-
-                {step.type === 'TOKEN_ID_RANGE' && (
-                  <div className="pt-8">
-                    <TokenIdRangeButton step={step} puzzleId={puzzle.id} />
-                  </div>
-                )}
-              </>
+            {/* {!hasBeenSolved && ( */}
+            {step.type === 'SIMPLE_TEXT' && (
+              <div className="pt-8">
+                <SimpleTextInput
+                  count={step.stepSimpleText?.solutionCharCount || 0}
+                  step={step}
+                  puzzleId={puzzle.id}
+                  isAnon={puzzle.isAnon}
+                />
+              </div>
             )}
+
+            {step.type === 'NFT_CHECK' && (
+              <div className="pt-8">
+                <NftCheckButton step={step} puzzleId={puzzle.id} />
+              </div>
+            )}
+
+            {step.type === 'FUNCTION_CALL' && (
+              <div className="pt-8">
+                <StepFunctionCallButton step={step} puzzleId={puzzle.id} />
+              </div>
+            )}
+
+            {step.type === 'COMETH_API' && (
+              <div className="pt-8">
+                <StepComethApiButton step={step} puzzleId={puzzle.id} />
+              </div>
+            )}
+
+            {step.type === 'ORIUM_API' && (
+              <div className="pt-8">
+                <StepOriumApiButton step={step} puzzleId={puzzle.id} />
+              </div>
+            )}
+
+            {step.type === 'TOKEN_ID_RANGE' && (
+              <div className="pt-8">
+                <TokenIdRangeButton step={step} puzzleId={puzzle.id} />
+              </div>
+            )}
+            {/* )} */}
           </div>
         )}
       </Suspense>
