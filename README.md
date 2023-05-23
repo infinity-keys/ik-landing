@@ -323,3 +323,21 @@ and then follow the instructions below:
 7. make sure moralis stream is set to `Activate Stream` to start receiving post to the discord channel
 
 ** Once testing is complete, make sure to update all .env variables to point to the production Discord server and the webhook url in Moralis to the appropiate api url i.e.: `http:"//api.infinitykeys.io/[name of discord bot file]` **
+
+## Custom Markdown
+
+### Embeds
+
+For the markdown fields (ie, Step Challenge, Puzzle Explanation) we can embed an iframe using a link and aspect ratio:
+
+```md
+[optional alt text | 16/9](https://embedabble.link)
+```
+
+### Pagination
+
+Fields that use the Collapsible Markdown component (ie, Challenge, Hint) can be paginated using `===`
+
+```md
+This will be the first page===This will be the second
+```
