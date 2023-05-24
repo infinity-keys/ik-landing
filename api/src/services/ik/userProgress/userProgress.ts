@@ -3,20 +3,24 @@ import { ForbiddenError } from '@redwoodjs/graphql-server'
 import { db } from 'src/lib/db'
 
 export const deleteUserProgress = async () => {
-  if (!context.currentUser || !context.currentUser.roles.includes('ADMIN')) {
+  if (
+    !context.currentUser?.id ||
+    typeof context.currentUser?.id !== 'string' ||
+    !context.currentUser.roles.includes('ADMIN')
+  ) {
     throw new ForbiddenError('Not permitted to call this function.')
   }
   try {
-    const userId = context.currentUser.id as string
+    const userId = context.currentUser.id
 
     const userRewards = db.userReward.deleteMany({
-      where: { userId: userId },
+      where: { userId },
     })
     const solves = db.solve.deleteMany({
-      where: { userId: userId },
+      where: { userId },
     })
     const attempts = db.attempt.deleteMany({
-      where: { userId: userId },
+      where: { userId },
     })
 
     await Promise.all([userRewards, solves, attempts])
