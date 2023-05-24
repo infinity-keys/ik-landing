@@ -203,6 +203,11 @@ export const getStep = async (id: string) => {
         },
       },
       stepSimpleText: true,
+      stepOriumApi: {
+        select: {
+          checkType: true,
+        },
+      },
       puzzle: {
         select: {
           rewardable: {

@@ -61,6 +61,9 @@ export const Step: StepRelationResolvers = {
   stepComethApi: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).stepComethApi()
   },
+  stepOriumApi: (_obj, { root }) => {
+    return db.step.findUnique({ where: { id: root?.id } }).stepOriumApi()
+  },
   stepTokenIdRange: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).stepTokenIdRange()
   },
