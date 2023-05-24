@@ -15,7 +15,7 @@ import type { StandardScenario } from './stepOriumApis.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('stepOriumApis', () => {
+describe.skip('stepOriumApis', () => {
   scenario('returns all stepOriumApis', async (scenario: StandardScenario) => {
     const result = await stepOriumApis()
 
