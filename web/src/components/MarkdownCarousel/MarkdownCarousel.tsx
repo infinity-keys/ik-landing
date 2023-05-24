@@ -7,8 +7,8 @@ import Carousel, { ControlProps } from 'nuka-carousel'
 const MarkdownCarousel = ({ children }: PropsWithChildren) => {
   return (
     <Carousel
-      renderCenterRightControls={() => null}
-      renderCenterLeftControls={() => null}
+      renderCenterRightControls={null}
+      renderCenterLeftControls={null}
       renderBottomRightControls={(props: ControlProps) => (
         <button
           onClick={props.nextSlide}
@@ -26,11 +26,6 @@ const MarkdownCarousel = ({ children }: PropsWithChildren) => {
         </button>
       )}
       defaultControlsConfig={{
-        nextButtonText: <ArrowRightIcon className="h-4 w-4 text-white" />,
-        prevButtonText: (
-          <ArrowLeftIcon className="h-4 w-4 text-white transition-colors hover:text-brand-accent-primary" />
-        ),
-
         pagingDotsClassName: 'mx-[2px]',
       }}
       className="pb-14"

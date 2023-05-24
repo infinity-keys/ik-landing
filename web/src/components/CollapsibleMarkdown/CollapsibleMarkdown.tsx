@@ -20,6 +20,7 @@ const CollapsibleMarkdown = ({
   marginTop,
 }: CollapsibleMarkdownProps) => {
   const pages = content.split('===')
+  const isPaginated = pages.length > 1
 
   return (
     <div
@@ -43,7 +44,7 @@ const CollapsibleMarkdown = ({
             </Disclosure.Button>
             <Disclosure.Panel className="border-t border-t-white/10 px-2">
               <div className="markdown landing-md px-4 pb-4 text-left text-white/80">
-                {pages.length > 1 ? (
+                {isPaginated ? (
                   <MarkdownCarousel>
                     {pages.map((text, i) => (
                       <Markdown key={i}>{text}</Markdown>
