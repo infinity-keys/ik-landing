@@ -1,4 +1,4 @@
-import { SiteRole } from 'types/graphql'
+import { SiteRole, User } from 'types/graphql'
 
 import type { Decoded } from '@redwoodjs/api'
 import {
@@ -14,9 +14,7 @@ import { logger } from 'src/lib/logger'
  * Represents the user attributes returned by the decoding the
  * Authentication provider's JWT together with an optional list of roles.
  */
-
-// @TODO: partial Users
-type RedwoodUser = Record<string, unknown> & { roles: SiteRole[]; id: string }
+type CurrentUser = Pick<User, 'id' | 'username' | 'email' | 'authId' | 'roles'>
 
 /**
  * The session object sent in as the first argument to getCurrentUser() will
@@ -38,7 +36,7 @@ type RedwoodUser = Record<string, unknown> & { roles: SiteRole[]; id: string }
 
 export const getCurrentUser = async (
   session: Decoded
-): Promise<RedwoodUser | null> => {
+): Promise<CurrentUser | null> => {
   if (!session || typeof session.id !== 'string') {
     return null
   }
@@ -92,7 +90,9 @@ export const hasRole = (roles: AllowedRoles): boolean => {
 
   if (typeof roles === 'string') return userRoles.includes(roles)
 
-  return userRoles.some((userRole) => roles.includes(userRole))
+  return userRoles
+    .flatMap((userRole) => (userRole ? [userRole] : []))
+    .some((userRole) => roles.includes(userRole))
 }
 
 /**
