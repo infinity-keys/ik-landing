@@ -67,6 +67,20 @@ const PuzzleLandingLayout = ({
       {/* Allows user to navigate to every public parent of this puzzle */}
       {rewardable.asChildPublicParentRewardables.length > 0 && (
         <div className="text-center text-gray-200">
+          {stepParam && (
+            <p>
+              Return to:
+              <Link
+                to={rewardableLandingRoute({
+                  slug: rewardable.slug,
+                  type: rewardable.type,
+                })}
+                className="ml-2 mt-2 inline-block italic transition-colors hover:text-brand-accent-primary"
+              >
+                {rewardable.name}
+              </Link>
+            </p>
+          )}
           <p>
             Return to:
             {rewardable.asChildPublicParentRewardables.map(
