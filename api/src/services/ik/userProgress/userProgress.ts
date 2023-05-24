@@ -1,13 +1,10 @@
 import { ForbiddenError } from '@redwoodjs/graphql-server'
 
+import { hasRole } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
 export const deleteUserProgress = async () => {
-  if (
-    !context.currentUser?.id ||
-    typeof context.currentUser?.id !== 'string' ||
-    !context.currentUser.roles.includes('ADMIN')
-  ) {
+  if (!context.currentUser || !hasRole('ADMIN')) {
     throw new ForbiddenError('Not permitted to call this function.')
   }
   try {
