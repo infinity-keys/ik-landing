@@ -10,15 +10,20 @@ const REFERER =
 
 const ORIGIN = 'https://subgraph.satsuma-prod.com'
 
-const HAS_CREATED_SCHOLARSHIP = {
-  createBody: (owner: string) => {
+type OriumObjectType = {
+  createBody: (owner: string) => string
+  formatResponse: (data: Record<string, unknown>) => { success: boolean }
+}
+
+const HAS_CREATED_SCHOLARSHIP: OriumObjectType = {
+  createBody(owner) {
     return JSON.stringify({
       query:
         'query GetScholarships ($first: Int, $owner: String) { scholarshipPrograms(first: 1, where:{ owner: $owner }) { id } }',
       variables: { first: 1, owner },
     })
   },
-  formatResponse: (data: object) => {
+  formatResponse(data) {
     if (
       !('scholarshipPrograms' in data) ||
       !Array.isArray(data.scholarshipPrograms)
@@ -30,15 +35,15 @@ const HAS_CREATED_SCHOLARSHIP = {
   },
 }
 
-const HAS_CREATED_VAULT = {
-  createBody: (owner: string) => {
+const HAS_CREATED_VAULT: OriumObjectType = {
+  createBody(owner) {
     return JSON.stringify({
       query:
         'query GetVaults ($first: Int, $owner: String) { vaults(first: 1, where:{ owner: $owner }) { id } }',
       variables: { first: 1, owner },
     })
   },
-  formatResponse: (data: object) => {
+  formatResponse(data) {
     if (!('vaults' in data) || !Array.isArray(data.vaults)) {
       throw new Error('Error formatting response for HAS_CREATED_VAULT')
     }
@@ -47,15 +52,15 @@ const HAS_CREATED_VAULT = {
   },
 }
 
-const HAS_DEPOSITED_NFT = {
-  createBody: (owner: string) => {
+const HAS_DEPOSITED_NFT: OriumObjectType = {
+  createBody(owner) {
     return JSON.stringify({
       query:
         'query GetDepositedNfts ($first: Int, $owner: String) { nfts(first: $first, where: {vault_: {owner: $owner}}) { id } }',
       variables: { first: 1, owner },
     })
   },
-  formatResponse: (data: object) => {
+  formatResponse(data) {
     if (!('nfts' in data) || !Array.isArray(data.nfts)) {
       throw new Error('Error formatting response for HAS_DEPOSITED_NFT')
     }
@@ -65,10 +70,7 @@ const HAS_DEPOSITED_NFT = {
 }
 
 const checkTypeLookup: {
-  [key in OriumCheckType]: {
-    createBody: (owner: string) => string
-    formatResponse: (data: object) => { success: boolean }
-  }
+  [key in OriumCheckType]: OriumObjectType
 } = {
   HAS_CREATED_SCHOLARSHIP,
   HAS_CREATED_VAULT,
@@ -79,7 +81,7 @@ export const checkOriumApi = async (
   account: string,
   checkType: OriumCheckType
 ): Promise<{
-  success?: boolean
+  success: boolean
   errors?: string[]
 }> => {
   const oriumCheck = checkTypeLookup[checkType]
@@ -108,8 +110,8 @@ export const checkOriumApi = async (
     logger.error(`Failed Orium api check for ${account}`, e)
 
     if (e instanceof Error) {
-      return { errors: [e.message] }
+      return { errors: [e.message], success: false }
     }
-    return { errors: ['Error checking Orium.'] }
+    return { errors: ['Error checking Orium.'], success: false }
   }
 }
