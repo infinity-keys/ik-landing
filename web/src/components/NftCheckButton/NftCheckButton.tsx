@@ -22,10 +22,8 @@ const NftCheckButton = ({
       stepId: step.id,
       puzzleId,
       reqBody: {
-        type: 'nft-check',
-        nftCheckSolution: {
-          account: address,
-        },
+        type: 'account-check',
+        account: address,
       },
     })
   }
