@@ -4,7 +4,7 @@ export const schema = gql`
     step: Step!
     stepId: String!
     methodIds: [String]!
-    contractAddress: String
+    contractAddress: String!
   }
 
   type Query {
