@@ -2,6 +2,9 @@
   "compilerOptions": {
     "lib": ["es6"],
     "moduleDetection": "force",
-    "outDir": "./dist"
-  }
+    "outDir": "./dist",
+    "skipLibCheck": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
 }
