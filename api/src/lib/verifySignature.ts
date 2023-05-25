@@ -3,7 +3,11 @@ import { ethers } from 'ethers'
 
 const { PRIVATE_KEY_VERIFY, MINT_SECRET_VERIFY } = process.env
 
-const wallet = new ethers.Wallet(PRIVATE_KEY_VERIFY)
+let wallet: ethers.Wallet | undefined
+
+if (PRIVATE_KEY_VERIFY) {
+  wallet = new ethers.Wallet(PRIVATE_KEY_VERIFY)
+}
 
 export const getSignature = async (
   chainId: number,
@@ -12,7 +16,7 @@ export const getSignature = async (
 ) => {
   const contractAddress = contractAddressLookup[chainId]
 
-  if (!contractAddress) return
+  if (!contractAddress || !wallet) return
 
   const hash = ethers.utils.solidityKeccak256(
     ['address', 'address', 'string', 'string'],

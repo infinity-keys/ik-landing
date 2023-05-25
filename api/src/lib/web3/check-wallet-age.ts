@@ -16,6 +16,11 @@ export const checkWalletAge = async ({
 }) => {
   // TODO: Move this to Moralis. Can check true wallet age for all chains there.
   const provider = providerLookup[chainId]
+
+  if (!provider) {
+    throw new Error(`Provider not found for chainId: ${chainId}`)
+  }
+
   const walletTxCount = await provider.getTransactionCount(account)
   if (walletTxCount === 0) return { success: true, approved: false } // ETH will blow up if 0
 

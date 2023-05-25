@@ -18,7 +18,7 @@ export const schema = gql`
 type RequireAuthValidate = ValidatorDirectiveFunc<{ roles?: string[] }>
 
 const validate: RequireAuthValidate = ({ directiveArgs }) => {
-  const { roles } = directiveArgs
+  const { roles } = directiveArgs // changes in `src/lib/auth.ts` fixed linting error here on `roles`
   applicationRequireAuth({ roles })
 }
 
