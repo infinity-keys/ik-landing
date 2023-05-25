@@ -522,7 +522,7 @@ const handleClick = async () => {
 
 3. Add the new component to the `web/src/components/StepsLayout/StepsLayout.tsx` file:
 
-```tsx
+````tsx
 const StepTest = lazy(
   () => import('src/components/StepTest/StepTest')
 )
@@ -543,4 +543,20 @@ const StepsLayout = ({
     </div>
   )
 }
+## Custom Markdown
+
+### Embeds
+
+For the markdown fields (ie, Step Challenge, Puzzle Explanation) we can embed an iframe using a link and aspect ratio:
+
+```md
+[optional alt text | 16/9](https://embedabble.link)
+````
+
+### Pagination
+
+Fields that use the Collapsible Markdown component (ie, Challenge, Hint) can be paginated using `===`
+
+```md
+This will be the first page===This will be the second
 ```
