@@ -22,10 +22,8 @@ const StepComethApiButton = ({
       stepId: step.id,
       puzzleId,
       reqBody: {
-        type: 'cometh-api',
-        comethApiSolution: {
-          account: address,
-        },
+        type: 'account-check',
+        account: address,
       },
     })
   }

@@ -4,6 +4,7 @@ import clsx from 'clsx'
 
 import Heading from 'src/components/Heading/Heading'
 import Markdown from 'src/components/Markdown/Markdown'
+import MarkdownCarousel from 'src/components/MarkdownCarousel/MarkdownCarousel'
 
 interface CollapsibleMarkdownProps {
   title: string
@@ -18,6 +19,9 @@ const CollapsibleMarkdown = ({
   content,
   marginTop,
 }: CollapsibleMarkdownProps) => {
+  const pages = content.split('===')
+  const isPaginated = pages.length > 1
+
   return (
     <div
       className={clsx('flex-1 overflow-hidden rounded bg-white/5', {
@@ -40,7 +44,15 @@ const CollapsibleMarkdown = ({
             </Disclosure.Button>
             <Disclosure.Panel className="border-t border-t-white/10 px-2">
               <div className="markdown landing-md px-4 pb-4 text-left text-white/80">
-                <Markdown>{content}</Markdown>
+                {isPaginated ? (
+                  <MarkdownCarousel>
+                    {pages.map((text, i) => (
+                      <Markdown key={i}>{text}</Markdown>
+                    ))}
+                  </MarkdownCarousel>
+                ) : (
+                  <Markdown>{content}</Markdown>
+                )}
               </div>
             </Disclosure.Panel>
           </>

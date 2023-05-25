@@ -82,7 +82,7 @@ export const schema = gql`
     banned: Boolean
     blocked: Boolean
     betaAccess: Boolean
-    roles: [SiteRole]!
+    roles: [SiteRole]
     refreshToken: String
     accessToken: String
   }

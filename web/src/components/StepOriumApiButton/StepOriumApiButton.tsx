@@ -7,7 +7,7 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
-const TokenIdRangeButton = ({
+const StepOriumApiButton = ({
   step,
   puzzleId,
 }: {
@@ -53,7 +53,7 @@ const TokenIdRangeButton = ({
             >
               <Markdown>
                 {step.failMessage ||
-                  'This wallet address does not have the required NFT. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
+                  'This wallet address has not completed the required action. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
               </Markdown>
             </div>
           )}
@@ -63,4 +63,4 @@ const TokenIdRangeButton = ({
   )
 }
 
-export default TokenIdRangeButton
+export default StepOriumApiButton

@@ -56,7 +56,7 @@ const RewardableForm = (props: RewardableFormProps) => {
     } else {
       const { rewardableConnection, ...rest } = filteredData
 
-      const withSteps = rewardableConnection.parentId
+      const withSteps = rewardableConnection?.parentId
         ? { ...filteredData, steps }
         : { ...rest, steps }
 

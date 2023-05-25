@@ -29,6 +29,7 @@ export const schema = gql`
     stepNftCheck: StepNftCheckInput
     stepFunctionCall: UpdateStepFunctionCallInput
     stepComethApi: UpdateStepComethApiInput
+    stepOriumApi: UpdateStepOriumApiInput
     stepTokenIdRange: UpdateStepTokenIdRangeInput
   }
 
