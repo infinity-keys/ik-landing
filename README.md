@@ -324,6 +324,227 @@ and then follow the instructions below:
 
 ** Once testing is complete, make sure to update all .env variables to point to the production Discord server and the webhook url in Moralis to the appropiate api url i.e.: `http:"//api.infinitykeys.io/[name of discord bot file]` **
 
+## Adding a New Step Type
+
+### Schema and Types
+
+1. Add the new step type model to `api/db/schema.prisma`
+
+```prisma
+model StepTest {
+  id String @id @default(cuid())
+
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @unique
+
+  // unique data here
+  customText String
+}
+```
+
+2. Add this new model to the step model
+
+```prisma
+model Step {
+  // Step types
+  stepTest     StepTest?
+}
+```
+
+3. Add a corresponding entry to the StepType enum
+
+```prisma
+enum StepType {
+  /// corresponds to the StepTest model
+  TEST
+}
+```
+
+4. `yarn rw prisma migrate dev`
+
+5. `yarn rw g sdl StepTest`
+
+6. Add the new types to the `steps.sdl.ts` file
+
+```graphql
+type Step {
+  stepTest: StepTest
+}
+
+enum StepType {
+  TEST
+}
+```
+
+7. Add the new types to the `rewardables.sdl.ts` file
+
+```graphql
+input StepTypeData {
+  stepTest: UpdateStepTestInput
+}
+```
+
+### Services
+
+1. In `api/src/lib/makeAttempt.ts` we need to add a few things.
+
+Add the new step type to the `getStep` function's db query
+
+```ts
+return db.step.findUnique({
+  where: { id },
+  select: {
+    type: true,
+  }
+  stepTest: {
+    select: {
+      customText: true,
+    },
+  },
+  // ...
+})
+```
+
+**Optional:** If the info your step sends from the front end differs from what we already have in place, you will have to add the zod type and a check in the `getAttempt` function:
+
+```ts
+const NewThingData = z.object({
+  type: z.literal('new-thing'),
+  newThing: z.string(),
+})
+
+export const getAttempt = (solutionData: SolutionDataType) => {
+  if ('newThing' in solutionData) return solutionData.newThing
+  // ...
+}
+```
+
+2. Create the lib function that checks whether or not the user has completed this step type. This function should return `success?: boolean` and `errors?: string[]`
+
+`api/src/lib/checkTest.ts`
+
+```ts
+import { logger } from 'src/lib/logger'
+
+export const checkTest = async ({
+  account,
+  customText,
+}: {
+  account: string
+  customText: string
+}) => {
+  try {
+    const success = account.includes(customText)
+    return { success }
+  } catch {
+    logger.error(`Failed Test check for ${account}`)
+    return { errors: ['Error checking Test.'] }
+  }
+}
+```
+
+3. In the `api/src/services/ik/attempts/attempts.ts` add a new check for this step type, add call your custom lib function in there.
+
+```ts
+if (step.type === 'TEST') {
+  if (!step.stepTest) {
+    throw new Error('Cannot create attempt - missing data for "stepTest"')
+  }
+
+  const { id: attemptId } = await createAttempt(stepId)
+
+  // Your custom function goes here
+  const { success, errors } = await checkTest({
+    account: userAttempt,
+    customText: step.stepTest.customText,
+  })
+
+  const response = await createResponse({
+    success,
+    attemptId,
+    finalStep,
+    errors,
+    rewardable: step.puzzle.rewardable,
+  })
+
+  return response
+} // end of TEST
+```
+
+### React
+
+1. Create a new component for the step type
+
+`yarn rw g component StepTest`
+
+2. Call `makeAttempt` from the `useMakeAttempt` hook with whatever data you need.
+
+```tsx
+const { loading, failedAttempt, errorMessage, makeAttempt } = useMakeAttempt()
+
+const handleClick = async () => {
+  await makeAttempt({
+    stepId: step.id,
+    puzzleId,
+    reqBody: {
+      type: 'account-check',
+      account: address,
+    },
+  })
+}
+```
+
+**Note:** If you had to add an option zod type in step one of the Services section above, the data in the makeAttempt function will have to match:
+
+The type in `api/src/lib/makeAttempt.ts`
+
+```ts
+const NewThingData = z.object({
+  type: z.literal('new-thing'),
+  newThing: z.string(),
+})
+```
+
+The function in your step component:
+
+```tsx
+const handleClick = async () => {
+  await makeAttempt({
+    stepId: step.id,
+    puzzleId,
+    reqBody: {
+      type: 'new-thing',
+      newThing: 'some-string',
+    },
+  })
+}
+```
+
+3. Add the new component to the `web/src/components/StepsLayout/StepsLayout.tsx` file:
+
+```tsx
+const StepTest = lazy(
+  () => import('src/components/StepTest/StepTest')
+)
+
+const StepsLayout = ({
+  //...
+}: StepsLayoutProps) => {
+  //...
+
+  return (
+    <div>
+      // ...
+      {step.type === 'TEST' && (
+        <div className="pt-8">
+          <StepTest step={step} puzzleId={puzzle.id} />
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
 ## Custom Markdown
 
 ### Embeds
