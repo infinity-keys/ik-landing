@@ -6,7 +6,8 @@
   "scripts": {
     "tsc": "tsc",
     "dev": "tsc && node ./dist",
-    "build": "yarn && tsc"
+    "build": "yarn && tsc",
+    "deploy-commands":"tsc && node ./dist/deploy-commands.js"
   },
   "dependencies": {
     "discord-economy-super": "^1.7.6",

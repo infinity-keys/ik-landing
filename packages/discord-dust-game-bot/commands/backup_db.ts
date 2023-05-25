@@ -1,3 +1,6 @@
+import { format } from 'date-fns'
+import { enUS } from 'date-fns/locale'
+
 const { PermissionFlagsBits } = require('discord-api-types/v10')
 const { SlashCommandBuilder } = require('discord.js')
 const { MongoClient } = require('mongodb')
@@ -14,13 +17,15 @@ module.exports = {
     .setDescription('copies collection into a new collection')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   async execute(interaction) {
-    // const now = new Date()
-    // const dateString = now.toLocaleDateString().replaceAll('/', '-')
-    // const filename = `db_backup_${dateString}`
-    // console.log(filename)
+    const now = new Date()
+    const dateInWords = format(now, 'LLLL-dd-yyyy', { locale: enUS })
+
+    // Remove any special characters or spaces from the date in words
+    const sanitizedDateInWords = dateInWords.replace(/[^\w]/g, '')
+    const filename = `${sanitizedDateInWords}`
 
     const sourceCollection = client.db('test').collection('database')
-    const targetCollection = client.db('test').collection('backup')
+    const targetCollection = client.db('test').collection(`${filename}`)
 
     await sourceCollection
       .aggregate([{ $match: {} }, { $out: targetCollection.collectionName }])
