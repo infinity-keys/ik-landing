@@ -1,3 +1,4 @@
+export {}
 const Economy = require('discord-economy-super/mongodb')
 // const Economy = require('discord-economy-super')
 
