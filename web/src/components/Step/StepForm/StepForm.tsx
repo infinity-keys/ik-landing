@@ -18,6 +18,7 @@ import {
 import StepNftCheckForm from 'src/components/Step/StepForm/StepNftCheckForm'
 
 import StepFunctionCallForm from './StepFunctionCallForm'
+import StepOriumApiForm from './StepOriumApiForm'
 import StepSimpleTextForm from './StepSimpleTextForm'
 import StepTokenIdRangeForm from './StepTokenIdRangeForm'
 
@@ -43,6 +44,7 @@ export const stepTypeLookup: {
   FUNCTION_CALL: 'stepFunctionCall',
   COMETH_API: 'stepComethApi',
   TOKEN_ID_RANGE: 'stepTokenIdRange',
+  ORIUM_API: 'stepOriumApi',
 }
 
 const StepForm = (props: StepFormProps) => {
@@ -284,6 +286,18 @@ const StepForm = (props: StepFormProps) => {
           <div>Token Id Range</div>
         </div>
 
+        <div className="rw-check-radio-items">
+          <RadioField
+            id="step-type-5"
+            name="type"
+            defaultValue="ORIUM_API"
+            className="rw-input"
+            errorClassName="rw-input rw-input-error"
+            onClick={handleSetStepType}
+          />
+          <div>Orium Api</div>
+        </div>
+
         <FieldError name="type" className="rw-field-error" />
 
         <div className="pt-4">
@@ -314,6 +328,8 @@ const StepForm = (props: StepFormProps) => {
           {stepType === 'TOKEN_ID_RANGE' && <StepTokenIdRangeForm />}
 
           {stepType === 'FUNCTION_CALL' && <StepFunctionCallForm />}
+
+          {stepType === 'ORIUM_API' && <StepOriumApiForm />}
 
           {stepType === 'COMETH_API' && (
             <p>No addition info currently needed for the Cometh API check</p>

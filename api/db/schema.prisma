@@ -18,14 +18,6 @@ enum RewardableType {
   BUNDLE
 }
 
-// on which chains are the rewardable's NFT allowed to be claimed
-enum AvailableChains {
-  AVAX
-  ETH
-  POLY
-  OPT
-}
-
 /// A thing that can reward NFTs.
 model Rewardable {
   id             String         @id @default(cuid())
@@ -51,9 +43,7 @@ model Rewardable {
   orgId        String
 
   /// The reward for completion
-  nfts            Nft[]
-  /// Choose on which networks this Rewardable's NFTs can be minted
-  availableChains AvailableChains[] @default([AVAX, ETH, POLY, OPT])
+  nfts Nft[]
 
   // Connections to the gaming concepts
   puzzle Puzzle?
