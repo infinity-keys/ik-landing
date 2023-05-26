@@ -1,6 +1,7 @@
 import type { MutationResolvers } from 'types/graphql'
 
 import { checkComethApi } from 'src/lib/api/cometh'
+import { checkLensApi } from 'src/lib/api/lens'
 import { checkOriumApi } from 'src/lib/api/orium'
 import {
   SolutionData,
@@ -132,6 +133,31 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         userAttempt,
         step.stepOriumApi.checkType
       )
+      const response = await createResponse({
+        success,
+        attemptId,
+        finalStep,
+        errors,
+        rewardable: step.puzzle.rewardable,
+      })
+
+      return response
+    } // end of ORIUM_API
+
+    if (step.type === 'LENS_API') {
+      if (!step.stepLensApi) {
+        throw new Error(
+          'Cannot create attempt - missing data for "stepOriumApi"'
+        )
+      }
+
+      if (!context.currentUser?.lensProfile) {
+        throw new Error('User has not connected a valid Lens profile')
+      }
+
+      const { id: attemptId } = await createAttempt(stepId)
+      const { success, errors } = await checkLensApi(step.stepLensApi.checkType)
+
       const response = await createResponse({
         success,
         attemptId,
