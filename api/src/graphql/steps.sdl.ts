@@ -16,6 +16,7 @@ export const schema = gql`
     stepFunctionCall: StepFunctionCall
     stepComethApi: StepComethApi
     stepOriumApi: StepOriumApi
+    stepLensApi: StepLensApi
     stepTokenIdRange: StepTokenIdRange
     migrateLandingRoute: String
     attempts: [Attempt]!
@@ -30,6 +31,7 @@ export const schema = gql`
     COMETH_API
     TOKEN_ID_RANGE
     ORIUM_API
+    LENS_API
   }
 
   type Query {

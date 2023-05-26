@@ -145,6 +145,8 @@ enum StepType {
   TOKEN_ID_RANGE
   /// corresponds to the model StepOriumApi model
   ORIUM_API
+  /// corresponds to the model StepLensApi model
+  LENS_API
 }
 
 /// Steps are whate players actually solve. One or more steps make up a Puzzle.
@@ -176,6 +178,7 @@ model Step {
   stepComethApi    StepComethApi?
   stepTokenIdRange StepTokenIdRange?
   stepOriumApi     StepOriumApi?
+  stepLensApi      StepLensApi?
 
   // Every puzzle from IK v1 (Next/Hasura) was a single step, so we need to
   // migrate them; optional because only v1 puzzles will have this.
@@ -279,6 +282,23 @@ model StepTokenIdRange {
   startId         Int
   /// The end of the range (inclusive)
   endId           Int
+}
+
+enum LensCheckType {
+  HAS_COMPLETED_PROFILE
+  HAS_GENESIS_POST
+  HAS_COLLECTED_POST
+  IS_FOLLOWING_USER
+}
+
+model StepLensApi {
+  id String @id @default(cuid())
+
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @unique
+
+  /// Choose the type of Lens API call you would like to check
+  checkType LensCheckType
 }
 
 /// User form submissions from post-Puzzle forms asking for email address etc

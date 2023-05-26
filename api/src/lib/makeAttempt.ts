@@ -208,6 +208,11 @@ export const getStep = async (id: string) => {
           checkType: true,
         },
       },
+      stepLensApi: {
+        select: {
+          checkType: true,
+        },
+      },
       puzzle: {
         select: {
           rewardable: {
