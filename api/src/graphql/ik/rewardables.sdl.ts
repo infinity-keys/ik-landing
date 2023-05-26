@@ -51,7 +51,6 @@ export const schema = gql`
     listPublicly: Boolean
     type: RewardableType!
     rewardableConnection: RewardableConnectionInput
-    availableChains: [AvailableChains]!
     nft: CreateNftInput
     steps: [StepInput]
   }

@@ -39,7 +39,6 @@ export const QUERY = gql`
     rewardable(id: $id) {
       id
       type
-      availableChains
       slug
       name
       asChildPublicParentRewardables {

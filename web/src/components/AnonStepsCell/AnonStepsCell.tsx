@@ -109,7 +109,7 @@ export const Success = ({
         <div className="flex flex-col items-center justify-center">
           {puzzle.rewardable.successMessage && (
             <div className="my-8">
-              <div className="markdown max-w-prose rounded border-l-4 border-brand-accent-primary bg-white/5 p-4">
+              <div className="markdown max-w-prose rounded border-l-4 border-brand-accent-primary bg-white/5 p-4 pt-1 text-left">
                 <Markdown>{puzzle.rewardable.successMessage}</Markdown>
               </div>
             </div>

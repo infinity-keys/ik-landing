@@ -35,10 +35,6 @@ const RewardableForm = (props: RewardableFormProps) => {
   const formMethods = useForm()
 
   const onSubmit = (data) => {
-    if (data.availableChains) {
-      data.availableChains = data.availableChains.filter((v) => !!v)
-    }
-
     const { nft, ...rest } = data
     const filteredData = nft.tokenId !== null ? data : rest
 
@@ -60,7 +56,7 @@ const RewardableForm = (props: RewardableFormProps) => {
     } else {
       const { rewardableConnection, ...rest } = filteredData
 
-      const withSteps = rewardableConnection.parentId
+      const withSteps = rewardableConnection?.parentId
         ? { ...filteredData, steps }
         : { ...rest, steps }
 
@@ -212,64 +208,6 @@ const RewardableForm = (props: RewardableFormProps) => {
               />
 
               <FieldError name="listPublicly" className="rw-field-error" />
-
-              <Label
-                name="availableChains"
-                className="rw-label"
-                errorClassName="rw-label rw-label-error"
-              >
-                Available chains
-              </Label>
-
-              <div className="rw-check-radio-items">
-                <CheckboxField
-                  id="rewardable-availableChains-0"
-                  name="availableChains[0]"
-                  defaultValue="AVAX"
-                  defaultChecked={true}
-                  className="rw-input"
-                  errorClassName="rw-input rw-input-error"
-                />
-                <div>Avax</div>
-              </div>
-
-              <div className="rw-check-radio-items">
-                <CheckboxField
-                  id="rewardable-availableChains-1"
-                  name="availableChains[1]"
-                  defaultValue="ETH"
-                  defaultChecked={true}
-                  className="rw-input"
-                  errorClassName="rw-input rw-input-error"
-                />
-                <div>Eth</div>
-              </div>
-
-              <div className="rw-check-radio-items">
-                <CheckboxField
-                  id="rewardable-availableChains-2"
-                  name="availableChains[2]"
-                  defaultValue="POLY"
-                  defaultChecked={true}
-                  className="rw-input"
-                  errorClassName="rw-input rw-input-error"
-                />
-                <div>Poly</div>
-              </div>
-
-              <div className="rw-check-radio-items">
-                <CheckboxField
-                  id="rewardable-availableChains-3"
-                  name="availableChains[3]"
-                  defaultValue="OPT"
-                  defaultChecked={true}
-                  className="rw-input"
-                  errorClassName="rw-input rw-input-error"
-                />
-                <div>Opt</div>
-              </div>
-
-              <FieldError name="availableChains" className="rw-field-error" />
 
               <Label
                 name="type"
