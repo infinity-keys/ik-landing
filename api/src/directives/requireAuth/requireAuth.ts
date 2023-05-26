@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { SiteRole } from 'types/graphql'
 
 import {
   createValidatorDirective,
@@ -15,10 +16,11 @@ export const schema = gql`
   directive @requireAuth(roles: [String]) on FIELD_DEFINITION
 `
 
-type RequireAuthValidate = ValidatorDirectiveFunc<{ roles?: string[] }>
+type RequireAuthValidate = ValidatorDirectiveFunc<{ roles?: SiteRole[] }>
 
 const validate: RequireAuthValidate = ({ directiveArgs }) => {
-  const { roles } = directiveArgs // changes in `src/lib/auth.ts` fixed linting error here on `roles`
+  const { roles } = directiveArgs
+
   applicationRequireAuth({ roles })
 }
 

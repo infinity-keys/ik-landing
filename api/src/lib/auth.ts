@@ -71,9 +71,7 @@ export const isAuthenticated = (): boolean => {
  * You can use Prisma enums too (if you're using them for roles), just import your enum type from `@prisma/client`
  */
 
-// Why would we ever want a string here!?  This got rid of linting error on `roles`
-// on line 21 of: `src/directives/requireAuth/requireAuth.ts`
-type AllowedRoles = SiteRole | SiteRole[] | string | string[]
+type AllowedRoles = SiteRole | SiteRole[]
 
 /**
  * Checks if the currentUser is authenticated (and assigned one of the given roles)
@@ -90,18 +88,11 @@ export const hasRole = (roles: AllowedRoles): boolean => {
 
   if (!userRoles) throw new ForbiddenError('Not authorized')
 
-  if (typeof roles === 'string') {
-    return userRoles.some((userRole: SiteRole | null) => userRole === roles)
-  }
+  if (typeof roles === 'string') return userRoles.includes(roles)
 
-  if (Array.isArray(roles) && roles.length === 0) return true
-
-  return userRoles.some((userRole) => {
-    if (typeof userRole === 'string') {
-      return roles.includes(userRole)
-    }
-    return false
-  })
+  return userRoles
+    .flatMap((userRole) => (userRole ? [userRole] : []))
+    .some((userRole) => roles.includes(userRole))
 }
 
 /**
@@ -118,7 +109,7 @@ export const hasRole = (roles: AllowedRoles): boolean => {
  *
  * @see https://github.com/redwoodjs/redwood/tree/main/packages/auth for examples
  */
-export const requireAuth = ({ roles }: { roles?: AllowedRoles } = {}) => {
+export const requireAuth = ({ roles }: { roles?: AllowedRoles }) => {
   if (!isAuthenticated()) {
     throw new AuthenticationError('Not authenticated')
   }
