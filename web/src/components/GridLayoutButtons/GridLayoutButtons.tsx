@@ -23,7 +23,7 @@ const GridLayoutButtons = ({
   const [smallestThumbnailCount] = PAGINATION_COUNTS
 
   return (
-    <div className="mt-8 flex">
+    <div className="flex">
       <button
         onClick={() => setView(ThumbnailGridLayoutType.List)}
         aria-label="set list view"
