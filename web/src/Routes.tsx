@@ -21,7 +21,7 @@ const Routes = () => {
     <Router useAuth={useAuth}>
       <AllContextProviders>
         {/* <Route path="/" page={UnderConstructionPage} name="underConstruction" /> */}
-        <Route path="/" page={HomePage} name="home" />
+        {/* <Route path="/" page={HomePage} name="home" /> */}
 
         <Private unauthenticated="profile" roles={'ADMIN'}>
           <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
@@ -50,8 +50,8 @@ const Routes = () => {
           <Route path="/puzzles/{count:Int}/{page:Int}" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzlesPagination" />
           <Route path="/packs" page={RewardablePackRewardablePacksPage} name="packs" />
           <Route path="/packs/{count:Int}/{page:Int}" page={RewardablePackRewardablePacksPage} name="packsPagination" />
-          <Route path="/play" page={PlayPage} name="play" />
-          <Route path="/play/{count:Int}/{page:Int}" page={PlayPage} name="playPagination" />
+          <Route path="/" page={PlayPage} name="play" />
+          <Route path="/{count:Int}/{page:Int}" page={PlayPage} name="playPagination" />
         </Set>
 
         <Set wrap={[HeaderLayout, MainLayout]}>
