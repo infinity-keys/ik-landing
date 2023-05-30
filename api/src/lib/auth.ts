@@ -14,10 +14,7 @@ import { logger } from 'src/lib/logger'
  * Represents the user attributes returned by the decoding the
  * Authentication provider's JWT together with an optional list of roles.
  */
-type CurrentUser = Pick<
-  User,
-  'id' | 'username' | 'email' | 'authId' | 'roles' | 'lensProfile'
->
+type CurrentUser = Pick<User, 'id' | 'username' | 'email' | 'authId' | 'roles'>
 
 /**
  * The session object sent in as the first argument to getCurrentUser() will
@@ -53,7 +50,6 @@ export const getCurrentUser = async (
       email: true,
       authId: true,
       roles: true,
-      lensProfile: true,
     },
   })
 

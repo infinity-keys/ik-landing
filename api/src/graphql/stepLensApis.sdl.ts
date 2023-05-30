@@ -4,12 +4,12 @@ export const schema = gql`
     step: Step!
     stepId: String!
     checkType: LensCheckType!
+    followedUserId: String
   }
 
   enum LensCheckType {
     HAS_COMPLETED_PROFILE
     HAS_GENESIS_POST
-    HAS_COLLECTED_POST
     IS_FOLLOWING_USER
   }
 
@@ -21,11 +21,13 @@ export const schema = gql`
   input CreateStepLensApiInput {
     stepId: String!
     checkType: LensCheckType!
+    followedUserId: String
   }
 
   input UpdateStepLensApiInput {
     stepId: String
     checkType: LensCheckType
+    followedUserId: String
   }
 
   type Mutation {

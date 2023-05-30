@@ -8,12 +8,12 @@ export const standard = defineScenario<Prisma.StepLensApiCreateArgs>({
         checkType: 'HAS_COMPLETED_PROFILE',
         step: {
           create: {
-            updatedAt: '2023-05-26T16:39:45.852Z',
+            updatedAt: '2023-05-26T19:32:07.770Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2023-05-26T16:39:45.852Z',
+                    updatedAt: '2023-05-26T19:32:07.770Z',
                     name: 'String',
                     slug: 'String',
                     explanation: 'String',
@@ -21,8 +21,8 @@ export const standard = defineScenario<Prisma.StepLensApiCreateArgs>({
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String6467582',
-                        updatedAt: '2023-05-26T16:39:45.852Z',
+                        slug: 'String1495510',
+                        updatedAt: '2023-05-26T19:32:07.770Z',
                       },
                     },
                   },
@@ -38,12 +38,12 @@ export const standard = defineScenario<Prisma.StepLensApiCreateArgs>({
         checkType: 'HAS_COMPLETED_PROFILE',
         step: {
           create: {
-            updatedAt: '2023-05-26T16:39:45.852Z',
+            updatedAt: '2023-05-26T19:32:07.771Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2023-05-26T16:39:45.852Z',
+                    updatedAt: '2023-05-26T19:32:07.771Z',
                     name: 'String',
                     slug: 'String',
                     explanation: 'String',
@@ -51,8 +51,8 @@ export const standard = defineScenario<Prisma.StepLensApiCreateArgs>({
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String6455904',
-                        updatedAt: '2023-05-26T16:39:45.852Z',
+                        slug: 'String2083551',
+                        updatedAt: '2023-05-26T19:32:07.771Z',
                       },
                     },
                   },

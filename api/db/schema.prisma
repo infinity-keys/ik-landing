@@ -287,7 +287,6 @@ model StepTokenIdRange {
 enum LensCheckType {
   HAS_COMPLETED_PROFILE
   HAS_GENESIS_POST
-  HAS_COLLECTED_POST
   IS_FOLLOWING_USER
 }
 
@@ -298,7 +297,9 @@ model StepLensApi {
   stepId String @unique
 
   /// Choose the type of Lens API call you would like to check
-  checkType LensCheckType
+  checkType      LensCheckType
+  /// The id of the user that needs to have been followed
+  followedUserId String?
 }
 
 /// User form submissions from post-Puzzle forms asking for email address etc
