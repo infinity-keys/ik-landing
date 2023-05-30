@@ -150,14 +150,14 @@ const Header = () => {
                       >
                         Info
                       </a>
-                      <a
+                      {/* <a
                         href="https://blog.infinitykeys.io"
                         target="_blank"
                         rel="noreferrer"
                         className="header-nav--link mt-3 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
                         Blog
-                      </a>
+                      </a> */}
 
                       {/* Wallet and profile buttons */}
                       <NavTitle text="Connect" />
