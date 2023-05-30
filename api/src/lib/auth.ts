@@ -109,7 +109,7 @@ export const hasRole = (roles: AllowedRoles): boolean => {
  *
  * @see https://github.com/redwoodjs/redwood/tree/main/packages/auth for examples
  */
-export const requireAuth = ({ roles }: { roles: AllowedRoles }) => {
+export const requireAuth = ({ roles }: { roles?: AllowedRoles }) => {
   if (!isAuthenticated()) {
     throw new AuthenticationError('Not authenticated')
   }
