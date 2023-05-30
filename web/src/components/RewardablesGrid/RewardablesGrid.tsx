@@ -73,6 +73,8 @@ const RewardablesList = ({
 
       {layout !== ThumbnailGridLayoutType.Unknown && (
         <>
+          <p className="py-4 text-3xl font-bold">Puzzles</p>
+
           <GridLayoutButtons
             isGrid={layout === ThumbnailGridLayoutType.Grid}
             thumbnailCount={thumbnailCount}
@@ -82,7 +84,7 @@ const RewardablesList = ({
 
           <ul
             className={clsx(
-              'grid grid-cols-1 gap-6 py-8 sm:grid-cols-2',
+              'grid grid-cols-1 gap-6 pt-12 sm:grid-cols-2',
               layout === ThumbnailGridLayoutType.Grid
                 ? 'md:grid-cols-3 lg:grid-cols-4'
                 : 'lg:grid-cols-3 xl:grid-cols-4'
