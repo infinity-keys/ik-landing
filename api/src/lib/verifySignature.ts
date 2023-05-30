@@ -14,6 +14,7 @@ export const getSignature = async (
   account: string,
   tokenId: number
 ) => {
+  if (!wallet) throw new Error('Wallet failed to initialize.')
   const contractAddress = contractAddressLookup[chainId]
 
   if (!contractAddress || !wallet) return
