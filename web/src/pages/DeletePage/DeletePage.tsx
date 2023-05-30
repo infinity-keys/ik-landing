@@ -47,7 +47,7 @@ const DeletePage = ({ jwt }) => {
       <Seo title="Delete My Data" />
 
       <div className="mx-auto max-w-2xl text-center">
-        <Link to={routes.home()} className="flex justify-center">
+        <Link to={routes.play()} className="flex justify-center">
           <img
             srcSet={`${LogoFull1x}, ${LogoFull2x} 2x`}
             src={LogoFull1x}
@@ -60,7 +60,7 @@ const DeletePage = ({ jwt }) => {
             <div className="mb-4">
               <Text>{successMessage}</Text>
             </div>
-            <Button to={routes.home()} text="Return Home" />
+            <Button to={routes.play()} text="Return Home" />
           </>
         )}
 
