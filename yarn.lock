@@ -4036,7 +4036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/contracts@npm:5.7.0":
+"@ethersproject/contracts@npm:5.7.0, @ethersproject/contracts@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/contracts@npm:5.7.0"
   dependencies:
@@ -4157,7 +4157,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5.7.2":
+"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5.7.0, @ethersproject/providers@npm:^5.7.2":
   version: 5.7.2
   resolution: "@ethersproject/providers@npm:5.7.2"
   dependencies:
@@ -4272,7 +4272,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/units@npm:5.7.0":
+"@ethersproject/units@npm:5.7.0, @ethersproject/units@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/units@npm:5.7.0"
   dependencies:
@@ -4283,7 +4283,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/wallet@npm:5.7.0":
+"@ethersproject/wallet@npm:5.7.0, @ethersproject/wallet@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/wallet@npm:5.7.0"
   dependencies:
@@ -12217,6 +12217,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"alchemy-sdk@npm:^2.8.3":
+  version: 2.8.3
+  resolution: "alchemy-sdk@npm:2.8.3"
+  dependencies:
+    "@ethersproject/abi": ^5.7.0
+    "@ethersproject/abstract-provider": ^5.7.0
+    "@ethersproject/bignumber": ^5.7.0
+    "@ethersproject/bytes": ^5.7.0
+    "@ethersproject/contracts": ^5.7.0
+    "@ethersproject/hash": ^5.7.0
+    "@ethersproject/networks": ^5.7.0
+    "@ethersproject/providers": ^5.7.0
+    "@ethersproject/units": ^5.7.0
+    "@ethersproject/wallet": ^5.7.0
+    "@ethersproject/web": ^5.7.0
+    axios: ^0.26.1
+    sturdy-websocket: ^0.2.1
+    websocket: ^1.0.34
+  checksum: 27a2a0e8a8b229c712b093f6f295c28970369016a33e0304bbd4316013b17e51ff7d4781f850bf7e3d2e2be48d5c8c6337f67f80e0555021c45dba583e23b5d4
+  languageName: node
+  linkType: hard
+
 "ansi-align@npm:^3.0.0":
   version: 3.0.1
   resolution: "ansi-align@npm:3.0.1"
@@ -12409,6 +12431,7 @@ __metadata:
     "@redwoodjs/graphql-server": 5.0.5
     "@sendgrid/mail": ^7.7.0
     "@types/uuid": ^9.0.1
+    alchemy-sdk: ^2.8.3
     cloudinary-build-url: ^0.2.4
     cookie: ^0.5.0
     crypto-js: ^4.1.1
@@ -13008,7 +13031,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.26.0":
+"axios@npm:^0.26.0, axios@npm:^0.26.1":
   version: 0.26.1
   resolution: "axios@npm:0.26.1"
   dependencies:
@@ -30936,6 +30959,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sturdy-websocket@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "sturdy-websocket@npm:0.2.1"
+  checksum: d2aa8ad9542a18c83d13d0a6393ebcdf479827e4c39cbc78bf3f74df9d4e9140005bcb507a5bdd60c3d3ac3f3db348f17edc417447be7c951b6f38d2b2414a22
+  languageName: node
+  linkType: hard
+
 "style-loader@npm:3.3.2":
   version: 3.3.2
   resolution: "style-loader@npm:3.3.2"
@@ -34500,7 +34530,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"websocket@npm:^1.0.32":
+"websocket@npm:^1.0.32, websocket@npm:^1.0.34":
   version: 1.0.34
   resolution: "websocket@npm:1.0.34"
   dependencies:
