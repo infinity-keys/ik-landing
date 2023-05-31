@@ -193,7 +193,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
       })
 
       return response
-    } // end of TEST
+    } // end of ASSET_TRANSFER
 
     return { success: false }
   } catch (e) {
