@@ -31,6 +31,7 @@ export const schema = gql`
     stepComethApi: UpdateStepComethApiInput
     stepOriumApi: UpdateStepOriumApiInput
     stepTokenIdRange: UpdateStepTokenIdRangeInput
+    stepAssetTransfer: UpdateStepAssetTransferInput
   }
 
   input StepInput {
