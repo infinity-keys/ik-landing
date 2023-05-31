@@ -279,7 +279,14 @@ model StepTokenIdRange {
   startId         Int
   /// The end of the range (inclusive)
   endId           Int
+
+  startIds Int[] // 1, 40
+
+  endIds Int[] // 10, 50
 }
+
+// [1, 10]
+// [40, 50]
 
 /// User form submissions from post-Puzzle forms asking for email address etc
 model Submission {

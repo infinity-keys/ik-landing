@@ -384,7 +384,7 @@ export default async () => {
             create: [
               {
                 challenge: 'Have you created an Orium scholarship?',
-                stepSortWeight: 1,
+                stepSortWeight: 4,
                 type: 'ORIUM_API',
                 stepOriumApi: {
                   create: {
@@ -421,15 +421,17 @@ export default async () => {
               },
               {
                 challenge: 'token id range',
-                stepSortWeight: 4,
+                stepSortWeight: 1,
                 type: 'TOKEN_ID_RANGE',
                 stepTokenIdRange: {
                   create: {
                     contractAddress:
                       '0xA4E3513c98b30d4D7cc578d2C328Bd550725D1D0',
                     chainId: '137',
-                    startId: 13232,
-                    endId: 13277,
+                    startId: 1,
+                    endId: 2,
+                    startIds: [3, 13232, 123],
+                    endIds: [4, 13277, 127],
                   },
                 },
               },

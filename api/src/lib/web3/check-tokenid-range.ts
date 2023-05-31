@@ -1,4 +1,5 @@
 import { GetWalletNFTsJSONResponse } from '@moralisweb3/common-evm-utils'
+import { indexOf } from 'lodash'
 import Moralis from 'moralis'
 
 import { logger } from 'src/lib/logger'
@@ -29,14 +30,14 @@ export const getErc721TokenIds = async ({
   address,
   contractAddress,
   chainId,
-  startId,
-  endId,
+  startIds,
+  endIds,
 }: {
   address: string
   contractAddress: string
   chainId: string
-  startId: number
-  endId: number
+  startIds: number[]
+  endIds: number[]
 }) => {
   try {
     let hasMatches = false
@@ -53,7 +54,11 @@ export const getErc721TokenIds = async ({
       })
 
       // checking if any token ids fall within the specified range
-      hasMatches = tokenIdsExist(response.toJSON(), startId, endId)
+      // hasMatches = tokenIdsExist(response.toJSON(), startId, endId)
+      hasMatches = startIds.some((startId, index) => {
+        const endId = endIds[index]
+        return tokenIdsExist(response.toJSON(), startId, endId)
+      })
       cursor = response.pagination.cursor
     } while (cursor !== '' && cursor !== null && !hasMatches)
 

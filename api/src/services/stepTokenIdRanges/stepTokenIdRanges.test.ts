@@ -15,7 +15,7 @@ import type { StandardScenario } from './stepTokenIdRanges.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe.skip('stepTokenIdRanges', () => {
+describe('stepTokenIdRanges', () => {
   scenario(
     'returns all stepTokenIdRanges',
     async (scenario: StandardScenario) => {
@@ -44,16 +44,20 @@ describe.skip('stepTokenIdRanges', () => {
         stepId: scenario.stepTokenIdRange.two.stepId,
         contractAddress: 'String',
         chainId: 'String',
-        startId: 7042705,
-        endId: 1330314,
+        startId: 1983898,
+        endId: 7660692,
+        startIds: 3579568,
+        endIds: 3748002,
       },
     })
 
     expect(result.stepId).toEqual(scenario.stepTokenIdRange.two.stepId)
     expect(result.contractAddress).toEqual('String')
     expect(result.chainId).toEqual('String')
-    expect(result.startId).toEqual(7042705)
-    expect(result.endId).toEqual(1330314)
+    expect(result.startId).toEqual(1983898)
+    expect(result.endId).toEqual(7660692)
+    expect(result.startIds).toEqual(3579568)
+    expect(result.endIds).toEqual(3748002)
   })
 
   scenario('updates a stepTokenIdRange', async (scenario: StandardScenario) => {

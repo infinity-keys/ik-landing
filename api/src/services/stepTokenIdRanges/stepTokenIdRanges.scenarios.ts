@@ -1,5 +1,4 @@
 import type { Prisma, StepTokenIdRange } from '@prisma/client'
-
 import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard = defineScenario<Prisma.StepTokenIdRangeCreateArgs>({
@@ -8,16 +7,18 @@ export const standard = defineScenario<Prisma.StepTokenIdRangeCreateArgs>({
       data: {
         contractAddress: 'String',
         chainId: 'String',
-        startId: 1119622,
-        endId: 8654833,
+        startId: 8089036,
+        endId: 9817442,
+        startIds: 562936,
+        endIds: 1358962,
         step: {
           create: {
-            updatedAt: '2023-04-04T15:21:47.406Z',
+            updatedAt: '2023-05-31T17:13:39.847Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2023-04-04T15:21:47.406Z',
+                    updatedAt: '2023-05-31T17:13:39.847Z',
                     name: 'String',
                     slug: 'String',
                     explanation: 'String',
@@ -25,8 +26,8 @@ export const standard = defineScenario<Prisma.StepTokenIdRangeCreateArgs>({
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String1024534',
-                        updatedAt: '2023-04-04T15:21:47.406Z',
+                        slug: 'String9247192',
+                        updatedAt: '2023-05-31T17:13:39.848Z',
                       },
                     },
                   },
@@ -41,16 +42,18 @@ export const standard = defineScenario<Prisma.StepTokenIdRangeCreateArgs>({
       data: {
         contractAddress: 'String',
         chainId: 'String',
-        startId: 4184651,
-        endId: 3125558,
+        startId: 5203780,
+        endId: 6260581,
+        startIds: 2939000,
+        endIds: 6927970,
         step: {
           create: {
-            updatedAt: '2023-04-04T15:21:47.406Z',
+            updatedAt: '2023-05-31T17:13:39.848Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2023-04-04T15:21:47.406Z',
+                    updatedAt: '2023-05-31T17:13:39.848Z',
                     name: 'String',
                     slug: 'String',
                     explanation: 'String',
@@ -58,8 +61,8 @@ export const standard = defineScenario<Prisma.StepTokenIdRangeCreateArgs>({
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String1220241',
-                        updatedAt: '2023-04-04T15:21:47.406Z',
+                        slug: 'String1523627',
+                        updatedAt: '2023-05-31T17:13:39.848Z',
                       },
                     },
                   },
