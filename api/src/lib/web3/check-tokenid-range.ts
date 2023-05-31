@@ -1,5 +1,4 @@
 import { GetWalletNFTsJSONResponse } from '@moralisweb3/common-evm-utils'
-import { indexOf } from 'lodash'
 import Moralis from 'moralis'
 
 import { logger } from 'src/lib/logger'
