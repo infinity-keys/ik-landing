@@ -384,7 +384,7 @@ export default async () => {
             create: [
               {
                 challenge: 'Have you transferred an asset?',
-                stepSortWeight: 1,
+                stepSortWeight: 2,
                 type: 'ASSET_TRANSFER',
                 stepAssetTransfer: {
                   create: {
