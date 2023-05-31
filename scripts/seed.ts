@@ -432,7 +432,7 @@ export default async () => {
               },
               {
                 challenge: 'token id range',
-                stepSortWeight: 1,
+                stepSortWeight: 4,
                 type: 'TOKEN_ID_RANGE',
                 stepTokenIdRange: {
                   create: {
