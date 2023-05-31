@@ -12,6 +12,7 @@
     "@redwoodjs/auth-dbauth-api": "5.0.5",
     "@redwoodjs/graphql-server": "5.0.5",
     "@sendgrid/mail": "^7.7.0",
+    "alchemy-sdk": "^2.8.3",
     "cloudinary-build-url": "^0.2.4",
     "cookie": "^0.5.0",
     "crypto-js": "^4.1.1",

@@ -203,6 +203,12 @@ export const getStep = async (id: string) => {
         },
       },
       stepSimpleText: true,
+      stepAssetTransfer: {
+        select: {
+          toAddress: true,
+          excludeZeroValue: true,
+        },
+      },
       stepOriumApi: {
         select: {
           checkType: true,

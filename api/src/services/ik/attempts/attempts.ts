@@ -9,6 +9,7 @@ import {
   getAttempt,
   getStep,
 } from 'src/lib/makeAttempt'
+import { checkAssetTransfer } from 'src/lib/web3/check-asset-transfer'
 import { checkFunctionCall } from 'src/lib/web3/check-function-call'
 import { checkNft } from 'src/lib/web3/check-nft'
 import { getErc721TokenIds } from 'src/lib/web3/check-tokenid-range'
@@ -168,6 +169,31 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
       return response
     } // end of TOKEN_ID_RANGE
+
+    if (step.type === 'ASSET_TRANSFER') {
+      if (!step.stepAssetTransfer) {
+        throw new Error('Cannot create attempt - missing data for "stepTest"')
+      }
+
+      const { id: attemptId } = await createAttempt(stepId)
+
+      // Your custom function goes here
+      const { success, errors } = await checkAssetTransfer({
+        account: userAttempt,
+        toAddress: step.stepAssetTransfer.toAddress,
+        excludeZeroValue: step.stepAssetTransfer.excludeZeroValue,
+      })
+
+      const response = await createResponse({
+        success,
+        attemptId,
+        finalStep,
+        errors,
+        rewardable: step.puzzle.rewardable,
+      })
+
+      return response
+    } // end of ASSET_TRANSFER
 
     return { success: false }
   } catch (e) {

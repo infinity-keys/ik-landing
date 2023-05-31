@@ -41,6 +41,10 @@ const StepOriumApiButton = lazy(
   () => import('src/components/StepOriumApiButton/StepOriumApiButton')
 )
 
+const StepAssetTransferButton = lazy(
+  () => import('src/components/StepAssetTransferButton/StepAssetTransferButton')
+)
+
 const TokenIdRangeButton = lazy(
   () => import('src/components/TokenIdRangeButton/TokenIdRangeButton')
 )
@@ -138,6 +142,12 @@ const StepsLayout = ({
             {step.type === 'ORIUM_API' && (
               <div className="pt-8">
                 <StepOriumApiButton step={step} puzzleId={puzzle.id} />
+              </div>
+            )}
+
+            {step.type === 'ASSET_TRANSFER' && (
+              <div className="pt-8">
+                <StepAssetTransferButton step={step} puzzleId={puzzle.id} />
               </div>
             )}
 
