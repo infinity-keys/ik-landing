@@ -383,8 +383,19 @@ export default async () => {
           steps: {
             create: [
               {
+                challenge: 'Have you transferred an asset?',
+                stepSortWeight: 1,
+                type: 'ASSET_TRANSFER',
+                stepAssetTransfer: {
+                  create: {
+                    toAddress: '0xc22834581ebc8527d974f8a1c97e1bea4ef910bc',
+                    excludeZeroValue: false,
+                  },
+                },
+              },
+              {
                 challenge: 'Have you created an Orium scholarship?',
-                stepSortWeight: 4,
+                stepSortWeight: 7,
                 type: 'ORIUM_API',
                 stepOriumApi: {
                   create: {

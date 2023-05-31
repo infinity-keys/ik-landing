@@ -17,6 +17,7 @@ export const schema = gql`
     stepComethApi: StepComethApi
     stepOriumApi: StepOriumApi
     stepTokenIdRange: StepTokenIdRange
+    stepAssetTransfer: StepAssetTransfer
     migrateLandingRoute: String
     attempts: [Attempt]!
     hasUserCompletedStep: Boolean
@@ -30,6 +31,7 @@ export const schema = gql`
     COMETH_API
     TOKEN_ID_RANGE
     ORIUM_API
+    ASSET_TRANSFER
   }
 
   type Query {
