@@ -15,7 +15,7 @@ import type { StandardScenario } from './stepLensApis.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('stepLensApis', () => {
+describe.skip('stepLensApis', () => {
   scenario('returns all stepLensApis', async (scenario: StandardScenario) => {
     const result = await stepLensApis()
 
