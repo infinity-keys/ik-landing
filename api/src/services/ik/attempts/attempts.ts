@@ -207,7 +207,7 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     } // end of TOKEN_ID_RANGE
 
     if (step.type === 'ASSET_TRANSFER') {
-      if (!step.stepAssetTransfer) {
+      if (!step.stepAssetTransfer || typeof userAttempt !== 'string') {
         throw new Error('Cannot create attempt - missing data for "stepTest"')
       }
 
