@@ -285,6 +285,10 @@ model StepTokenIdRange {
   startId         Int
   /// The end of the range (inclusive)
   endId           Int
+
+  startIds Int[] // 1, 40
+
+  endIds Int[] // 10, 50
 }
 
 enum LensCheckType {

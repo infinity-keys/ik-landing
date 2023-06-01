@@ -211,8 +211,8 @@ export const getStep = async (id: string) => {
         select: {
           contractAddress: true,
           chainId: true,
-          startId: true,
-          endId: true,
+          startIds: true,
+          endIds: true,
         },
       },
       stepSimpleText: true,

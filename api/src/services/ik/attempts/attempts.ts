@@ -192,8 +192,8 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         contractAddress: step.stepTokenIdRange.contractAddress,
         address: userAttempt,
         chainId: step.stepTokenIdRange.chainId,
-        startId: step.stepTokenIdRange.startId,
-        endId: step.stepTokenIdRange.endId,
+        startIds: step.stepTokenIdRange.startIds,
+        endIds: step.stepTokenIdRange.endIds,
       })
       const response = await createResponse({
         success,
