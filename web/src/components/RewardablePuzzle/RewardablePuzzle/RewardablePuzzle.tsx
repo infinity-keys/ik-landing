@@ -1,11 +1,9 @@
 import type { FindRewardablePuzzleBySlug } from 'types/graphql'
 
 import { useParams } from '@redwoodjs/router'
-import { routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
-import Button from 'src/components/Button/Button'
 import DummyThumbnail from 'src/components/DummyThumbnail/DummyThumbnail'
 import PuzzleLandingLayout from 'src/components/PuzzleLandingLayout/PuzzleLandingLayout'
 import StepsCell from 'src/components/StepsCell'
@@ -34,9 +32,6 @@ const Rewardable = ({ rewardable }: Props) => {
         <div>
           <div className="flex justify-center">
             <Alert text="Must be logged in to play." />
-          </div>
-          <div className="mt-4 flex justify-center">
-            <Button text="Login to Play" to={routes.profile()} />
           </div>
           <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
             {rewardable.puzzle.steps.map(({ stepSortWeight }) => (
