@@ -384,7 +384,7 @@ export default async () => {
             create: [
               {
                 challenge: 'Have you transferred an asset?',
-                stepSortWeight: 2,
+                stepSortWeight: 1,
                 type: 'ASSET_TRANSFER',
                 stepAssetTransfer: {
                   create: {
@@ -439,10 +439,8 @@ export default async () => {
                     contractAddress:
                       '0xA4E3513c98b30d4D7cc578d2C328Bd550725D1D0',
                     chainId: '137',
-                    startId: 1,
-                    endId: 2,
-                    startIds: [3, 13232, 123],
-                    endIds: [4, 13277, 127],
+                    startId: 13232,
+                    endId: 13277,
                   },
                 },
               },
