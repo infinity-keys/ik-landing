@@ -7,6 +7,8 @@ export const schema = gql`
     chainId: String!
     startId: Int!
     endId: Int!
+    startIds: [Int]!
+    endIds: [Int]!
   }
 
   type Query {
@@ -20,6 +22,8 @@ export const schema = gql`
     chainId: String!
     startId: Int!
     endId: Int!
+    startIds: [Int]!
+    endIds: [Int]!
   }
 
   input UpdateStepTokenIdRangeInput {
@@ -28,6 +32,8 @@ export const schema = gql`
     chainId: String
     startId: Int
     endId: Int
+    startIds: [Int]!
+    endIds: [Int]!
   }
 
   type Mutation {
