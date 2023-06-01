@@ -145,6 +145,8 @@ enum StepType {
   TOKEN_ID_RANGE
   /// corresponds to the model StepOriumApi model
   ORIUM_API
+  /// corresponds to the model StepLensApi model
+  LENS_API
   /// corresponds to the model StepAssetTransfer model
   ASSET_TRANSFER
 }
@@ -179,6 +181,7 @@ model Step {
   stepTokenIdRange  StepTokenIdRange?
   stepOriumApi      StepOriumApi?
   stepAssetTransfer StepAssetTransfer?
+  stepLensApi       StepLensApi?
 
   // Every puzzle from IK v1 (Next/Hasura) was a single step, so we need to
   // migrate them; optional because only v1 puzzles will have this.
@@ -286,6 +289,24 @@ model StepTokenIdRange {
   startIds Int[] // 1, 40
 
   endIds Int[] // 10, 50
+}
+
+enum LensCheckType {
+  HAS_COMPLETED_PROFILE
+  HAS_GENESIS_POST
+  IS_FOLLOWING_USER
+}
+
+model StepLensApi {
+  id String @id @default(cuid())
+
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @unique
+
+  /// Choose the type of Lens API call you would like to check
+  checkType      LensCheckType
+  /// The id of the user that needs to have been followed
+  followedUserId String?
 }
 
 model StepAssetTransfer {

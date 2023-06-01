@@ -5708,6 +5708,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lens-protocol/client@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@lens-protocol/client@npm:1.0.1"
+  dependencies:
+    "@lens-protocol/shared-kernel": 0.7.1
+    "@lens-protocol/storage": 0.7.1
+    graphql: ^16.6.0
+    graphql-request: ^5.1.0
+    graphql-tag: ^2.12.6
+    jwt-decode: ^3.1.2
+    tslib: ^2.5.0
+    zod: ^3.20.6
+  checksum: 116bffc00c79766f92240f1f30eef4c832b8f691b9139fb5e5b7351316c8505de44356c90648088bcb647887acb8842298bb10fa6fe6f5ff4772fcf626fba929
+  languageName: node
+  linkType: hard
+
 "@lens-protocol/domain@npm:0.7.1":
   version: 0.7.1
   resolution: "@lens-protocol/domain@npm:0.7.1"
@@ -12407,6 +12423,7 @@ __metadata:
     "@infinity-keys/constants": "workspace:^"
     "@infinity-keys/contracts": "workspace:^"
     "@infinity-keys/core": "workspace:^"
+    "@lens-protocol/client": ^1.0.1
     "@magic-sdk/admin": ^1.8.0
     "@moralisweb3/common-evm-utils": ^2.9.0
     "@redwoodjs/api": 5.0.5
@@ -20014,6 +20031,20 @@ __metadata:
   peerDependencies:
     graphql: 14 - 16
   checksum: 309a83d9043de8367cdc0b1f7b143d25f5b54189ae841b567b6ed70f9ed147226e1a2a54dd04436df425c2ea012a7210b5318d62cb735fe11ebcd5fa40958efe
+  languageName: node
+  linkType: hard
+
+"graphql-request@npm:^5.1.0":
+  version: 5.2.0
+  resolution: "graphql-request@npm:5.2.0"
+  dependencies:
+    "@graphql-typed-document-node/core": ^3.1.1
+    cross-fetch: ^3.1.5
+    extract-files: ^9.0.0
+    form-data: ^3.0.0
+  peerDependencies:
+    graphql: 14 - 16
+  checksum: a360edaffe2d0000387ed34467e9bff7c16fe87bdc048552d4c3674a32a0f0dd8ab15d5a099bf0bfc8c1720e791d1ab16b630c2510a73bbbfc9c6cd7578fe091
   languageName: node
   linkType: hard
 
