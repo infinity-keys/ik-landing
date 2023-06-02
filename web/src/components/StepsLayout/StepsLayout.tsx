@@ -7,11 +7,11 @@ import { FindAnonStepQuery, FindStepQuery } from 'types/graphql'
 import { routes, useParams } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
+import Alert from 'src/components/Alert/Alert'
+import Button from 'src/components/Button/Button'
 import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
-
-import Button from '../Button/Button'
 
 interface StepsLayoutProps extends PropsWithChildren {
   currentStepId?: string
@@ -80,11 +80,9 @@ const StepsLayout = ({
               disabled={!hasBeenSolved}
             />
           ) : (
-            <Button
-              {...(hasBeenSolved ? { to: routes.profile() } : {})}
-              text="Sign in to Claim"
-              disabled={!hasBeenSolved}
-            />
+            <div className="flex justify-center">
+              <Alert text="Please sign in to claim" />
+            </div>
           )}
         </div>
       )}

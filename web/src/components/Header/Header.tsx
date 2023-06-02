@@ -20,7 +20,7 @@ import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
-const links = [
+const socialLinks = [
   {
     href: 'https://lenster.xyz/u/infinitykeys',
     testing: 'lens',
@@ -78,13 +78,17 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* Menu open button */}
-        <Button
-          onClick={() => setIsOpen(true)}
-          text="Menu"
-          variant="faded"
-          border={false}
-        />
+        <div className="flex gap-4">
+          {loading ? <LoaderIcon /> : <ProfileIcon />}
+
+          {/* Menu open button */}
+          <Button
+            onClick={() => setIsOpen(true)}
+            text="Menu"
+            variant="faded"
+            border={false}
+          />
+        </div>
       </div>
 
       {/* Modal Menu */}
@@ -163,25 +167,26 @@ const Header = () => {
                       <NavTitle text="Connect" />
                       <div className="mt-7 flex items-center justify-center gap-2">
                         <WalletButton />
-                        {loading ? <LoaderIcon /> : <ProfileIcon />}
                       </div>
 
                       {/* Social Icons */}
                       <NavTitle text="Social" />
                       <div className="mt-7 flex justify-center gap-4">
-                        {links.map(({ href, testing, ariaLabel, icon }) => (
-                          <a
-                            key={href}
-                            className="text-white/40 transition-colors hover:text-brand-accent-primary"
-                            data-cy={testing}
-                            href={href}
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label={ariaLabel}
-                          >
-                            {icon}
-                          </a>
-                        ))}
+                        {socialLinks.map(
+                          ({ href, testing, ariaLabel, icon }) => (
+                            <a
+                              key={href}
+                              className="text-white/40 transition-colors hover:text-brand-accent-primary"
+                              data-cy={testing}
+                              href={href}
+                              target="_blank"
+                              rel="noreferrer"
+                              aria-label={ariaLabel}
+                            >
+                              {icon}
+                            </a>
+                          )
+                        )}
                       </div>
                     </nav>
                   </div>
