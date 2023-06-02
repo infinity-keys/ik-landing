@@ -37,7 +37,6 @@ const HAS_CREATED_SCHOLARSHIP: OriumObjectType = {
 
 const HAS_CREATED_VAULT: OriumObjectType = {
   createBody(owner) {
-    console.log('HAS_CREATED_VAULT: ', owner)
     return JSON.stringify({
       query:
         'query GetVaults ($first: Int, $owner: String) { vaults(first: 1, where:{ owner: $owner }) { id } }',
@@ -45,7 +44,6 @@ const HAS_CREATED_VAULT: OriumObjectType = {
     })
   },
   formatResponse(data) {
-    console.log('HAS_CREATED_VAULT', data)
     if (!('vaults' in data) || !Array.isArray(data.vaults)) {
       throw new Error('Error formatting response for HAS_CREATED_VAULT')
     }
@@ -87,9 +85,7 @@ export const checkOriumApi = async (
   errors?: string[]
 }> => {
   const oriumCheck = checkTypeLookup[checkType]
-  console.log({ checkType })
-  console.log(oriumCheck.toString())
-  console.log(account)
+
   try {
     const options = {
       method: 'POST',
@@ -99,17 +95,16 @@ export const checkOriumApi = async (
         origin: ORIGIN,
         referer: REFERER,
       },
-      body: oriumCheck.createBody(account),
+      body: oriumCheck.createBody(account.toLowerCase()),
     }
 
     const res = await fetch(ORIUM_API_URL, options)
     const { data } = await res.json()
-    console.log({ data })
 
     if (typeof data !== 'object' || data === null) {
       throw new Error('Error fetching data from Orium.')
     }
-    console.log({ formatted: oriumCheck.formatResponse(data) })
+
     return oriumCheck.formatResponse(data)
   } catch (e) {
     logger.error(`Failed Orium api check for ${account}`, e)
