@@ -22,5 +22,8 @@
     "RWJS",
     "sdls"
   ],
-  "editor.rulers": [80]
+  "editor.rulers": [
+    80
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
