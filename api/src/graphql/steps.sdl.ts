@@ -16,6 +16,7 @@ export const schema = gql`
     stepFunctionCall: StepFunctionCall
     stepComethApi: StepComethApi
     stepOriumApi: StepOriumApi
+    stepLensApi: StepLensApi
     stepTokenIdRange: StepTokenIdRange
     stepAssetTransfer: StepAssetTransfer
     migrateLandingRoute: String
@@ -31,6 +32,7 @@ export const schema = gql`
     COMETH_API
     TOKEN_ID_RANGE
     ORIUM_API
+    LENS_API
     ASSET_TRANSFER
   }
 

@@ -18,17 +18,30 @@ const AccountCheckData = z.object({
   account: z.string(),
 })
 
+const LensCheckData = z.object({
+  type: z.literal('lens-check'),
+  account: z.string(),
+  lensId: z.string(),
+})
+
 export const SolutionData = z.discriminatedUnion('type', [
   SimpleTextSolutionData,
   AccountCheckData,
+  LensCheckData,
 ])
 
 type SolutionDataType = z.infer<typeof SolutionData>
 
 export const getAttempt = (solutionData: SolutionDataType) => {
-  if ('account' in solutionData) return solutionData.account
-  if ('simpleTextSolution' in solutionData)
+  if (solutionData.type === 'simple-text') {
     return solutionData.simpleTextSolution
+  }
+  if (solutionData.type === 'account-check') {
+    return solutionData.account
+  }
+  if (solutionData.type === 'lens-check') {
+    return { account: solutionData.account, lensId: solutionData.lensId }
+  }
 
   throw new Error('Cannot create attempt - incorrect user attempt data')
 }
@@ -212,6 +225,12 @@ export const getStep = async (id: string) => {
       stepOriumApi: {
         select: {
           checkType: true,
+        },
+      },
+      stepLensApi: {
+        select: {
+          checkType: true,
+          followedUserId: true,
         },
       },
       puzzle: {
