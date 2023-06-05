@@ -5,8 +5,6 @@ export const schema = gql`
     stepId: String!
     contractAddress: String!
     chainId: String!
-    startId: Int!
-    endId: Int!
     startIds: [Int]!
     endIds: [Int]!
   }
@@ -20,8 +18,6 @@ export const schema = gql`
     stepId: String!
     contractAddress: String!
     chainId: String!
-    startId: Int!
-    endId: Int!
     startIds: [Int]!
     endIds: [Int]!
   }
@@ -30,8 +26,6 @@ export const schema = gql`
     stepId: String
     contractAddress: String
     chainId: String
-    startId: Int
-    endId: Int
     startIds: [Int]!
     endIds: [Int]!
   }

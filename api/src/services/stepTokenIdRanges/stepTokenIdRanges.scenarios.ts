@@ -8,8 +8,6 @@ export const standard = defineScenario<Prisma.StepTokenIdRangeCreateArgs>({
       data: {
         contractAddress: 'String',
         chainId: 'String',
-        startId: 4779953,
-        endId: 651781,
         startIds: 3341448,
         endIds: 866907,
         step: {
@@ -43,8 +41,6 @@ export const standard = defineScenario<Prisma.StepTokenIdRangeCreateArgs>({
       data: {
         contractAddress: 'String',
         chainId: 'String',
-        startId: 9445035,
-        endId: 97061,
         startIds: 7568216,
         endIds: 2301032,
         step: {
