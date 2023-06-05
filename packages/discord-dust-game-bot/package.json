@@ -4,10 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "tsc": "tsc",
     "dev": "tsc && node ./dist",
-    "build": "yarn && tsc",
-    "deploy-commands":"tsc && node ./dist/deploy-commands.js"
+    "build": "tsc",
+    "deploy-commands": "tsc && node ./dist/deploy-commands.js"
   },
   "dependencies": {
     "discord-economy-super": "^1.7.6",
