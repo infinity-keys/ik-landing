@@ -439,8 +439,8 @@ export default async () => {
                     contractAddress:
                       '0xA4E3513c98b30d4D7cc578d2C328Bd550725D1D0',
                     chainId: '137',
-                    startId: 13232,
-                    endId: 13277,
+                    startIds: [13232],
+                    endIds: [13277],
                   },
                 },
               },

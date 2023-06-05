@@ -281,14 +281,10 @@ model StepTokenIdRange {
   /// Must be a supported Moralis chain
   /// https://docs.moralis.io/web3-data-api/evm/resolve-api#supported-chains
   chainId         String
-  /// The start of the range (inclusive)
-  startId         Int
+  /// The start of the ranges (inclusive)
+  startIds        Int[] // [1, 40]
   /// The end of the range (inclusive)
-  endId           Int
-
-  startIds Int[] // 1, 40
-
-  endIds Int[] // 10, 50
+  endIds          Int[] // [10, 50]
 }
 
 enum LensCheckType {
