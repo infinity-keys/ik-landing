@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "dev": "tsc && node ./dist",
+    "build": "tsc",
+    "deploy-commands": "tsc && node ./dist/deploy-commands.js"
+  },
   "dependencies": {
     "discord-economy-super": "^1.7.6",
     "discord.js": "^14.7.1",

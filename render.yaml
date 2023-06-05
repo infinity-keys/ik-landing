@@ -49,8 +49,8 @@ services:
     env: node
     region: oregon
     rootDir: packages/discord-dust-game-bot
-    buildCommand: yarn
-    startCommand: node .
+    buildCommand: yarn && yarn build
+    startCommand: node ./dist
     autoDeploy: true
     envVars:
       - key: NODE_VERSION
