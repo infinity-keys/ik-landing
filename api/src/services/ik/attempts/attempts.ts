@@ -1,6 +1,7 @@
 import type { MutationResolvers } from 'types/graphql'
 
 import { checkComethApi } from 'src/lib/api/cometh'
+import { checkLensApi } from 'src/lib/api/lens'
 import { checkOriumApi } from 'src/lib/api/orium'
 import {
   SolutionData,
@@ -9,6 +10,7 @@ import {
   getAttempt,
   getStep,
 } from 'src/lib/makeAttempt'
+import { checkAssetTransfer } from 'src/lib/web3/check-asset-transfer'
 import { checkFunctionCall } from 'src/lib/web3/check-function-call'
 import { checkNft } from 'src/lib/web3/check-nft'
 import { getErc721TokenIds } from 'src/lib/web3/check-tokenid-range'
@@ -36,9 +38,9 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     const userAttempt = getAttempt(solutionData)
 
     if (step.type === 'SIMPLE_TEXT') {
-      if (!step.stepSimpleText) {
+      if (!step.stepSimpleText || typeof userAttempt !== 'string') {
         throw new Error(
-          'Cannot create attempt - missing data for "stepSimpleText"'
+          'Cannot create attempt - incorrect data for "stepSimpleText"'
         )
       }
 
@@ -56,9 +58,9 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     } // end of SIMPLE_TEXT
 
     if (step.type === 'NFT_CHECK') {
-      if (!step.stepNftCheck) {
+      if (!step.stepNftCheck || typeof userAttempt !== 'string') {
         throw new Error(
-          'Cannot create attempt - missing data for "stepNftCheck"'
+          'Cannot create attempt - incorrect data for "stepNftCheck"'
         )
       }
 
@@ -80,9 +82,12 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     } // end of NFT_CHECK
 
     if (step.type === 'FUNCTION_CALL') {
-      if (!step.stepFunctionCall?.contractAddress) {
+      if (
+        !step.stepFunctionCall?.contractAddress ||
+        typeof userAttempt !== 'string'
+      ) {
         throw new Error(
-          'Cannot create attempt - missing data for "stepFunctionCall"'
+          'Cannot create attempt - incorrect data for "stepFunctionCall"'
         )
       }
 
@@ -107,6 +112,12 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     } // end of FUNCTION_CALL
 
     if (step.type === 'COMETH_API') {
+      if (typeof userAttempt !== 'string') {
+        throw new Error(
+          'Cannot create attempt - incorrect data for "stepComethApi"'
+        )
+      }
+
       const { id: attemptId } = await createAttempt(stepId)
       const { success, errors } = await checkComethApi(userAttempt)
       const response = await createResponse({
@@ -121,9 +132,9 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
     } // end of COMETH_API
 
     if (step.type === 'ORIUM_API') {
-      if (!step.stepOriumApi) {
+      if (!step.stepOriumApi || typeof userAttempt !== 'string') {
         throw new Error(
-          'Cannot create attempt - missing data for "stepOriumApi"'
+          'Cannot create attempt - incorrect data for "stepOriumApi"'
         )
       }
 
@@ -143,10 +154,36 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
       return response
     } // end of ORIUM_API
 
-    if (step.type === 'TOKEN_ID_RANGE') {
-      if (!step.stepTokenIdRange) {
+    if (step.type === 'LENS_API') {
+      if (!step.stepLensApi || typeof userAttempt !== 'object') {
         throw new Error(
-          'Cannot create attempt - missing data for "stepTokenIdRange"'
+          'Cannot create attempt - incorrect data for "stepOriumApi"'
+        )
+      }
+
+      const { id: attemptId } = await createAttempt(stepId)
+      const { success, errors } = await checkLensApi({
+        profileId: userAttempt.lensId,
+        account: userAttempt.account,
+        checkType: step.stepLensApi.checkType,
+        followedUserId: step.stepLensApi.followedUserId ?? undefined,
+      })
+
+      const response = await createResponse({
+        success,
+        attemptId,
+        finalStep,
+        errors,
+        rewardable: step.puzzle.rewardable,
+      })
+
+      return response
+    } // end of ORIUM_API
+
+    if (step.type === 'TOKEN_ID_RANGE') {
+      if (!step.stepTokenIdRange || typeof userAttempt !== 'string') {
+        throw new Error(
+          'Cannot create attempt - incorrect data for "stepTokenIdRange"'
         )
       }
 
@@ -155,8 +192,8 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         contractAddress: step.stepTokenIdRange.contractAddress,
         address: userAttempt,
         chainId: step.stepTokenIdRange.chainId,
-        startId: step.stepTokenIdRange.startId,
-        endId: step.stepTokenIdRange.endId,
+        startIds: step.stepTokenIdRange.startIds,
+        endIds: step.stepTokenIdRange.endIds,
       })
       const response = await createResponse({
         success,
@@ -168,6 +205,31 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
       return response
     } // end of TOKEN_ID_RANGE
+
+    if (step.type === 'ASSET_TRANSFER') {
+      if (!step.stepAssetTransfer || typeof userAttempt !== 'string') {
+        throw new Error('Cannot create attempt - missing data for "stepTest"')
+      }
+
+      const { id: attemptId } = await createAttempt(stepId)
+
+      // Your custom function goes here
+      const { success, errors } = await checkAssetTransfer({
+        account: userAttempt,
+        toAddress: step.stepAssetTransfer.toAddress,
+        excludeZeroValue: step.stepAssetTransfer.excludeZeroValue,
+      })
+
+      const response = await createResponse({
+        success,
+        attemptId,
+        finalStep,
+        errors,
+        rewardable: step.puzzle.rewardable,
+      })
+
+      return response
+    } // end of ASSET_TRANSFER
 
     return { success: false }
   } catch (e) {

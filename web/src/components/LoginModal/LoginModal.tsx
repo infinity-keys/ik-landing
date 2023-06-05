@@ -7,10 +7,9 @@ import { useParams, navigate, routes } from '@redwoodjs/router'
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-import Seo from 'src/components/Seo/Seo'
 import { saveRedirectTo } from 'src/providers/redirection'
 
-const LoginModal = () => {
+const LoginModal = ({ redirectPath }: { redirectPath?: string }) => {
   const { signUp, isAuthenticated, reauthenticate } = useAuth()
   const { error, redirectTo } = useParams()
   const [errorText, setErrorText] = useState('')
@@ -42,8 +41,10 @@ const LoginModal = () => {
   useEffect(() => {
     if (redirectTo) {
       saveRedirectTo(redirectTo) && reauthenticate()
+    } else if (redirectPath) {
+      saveRedirectTo(redirectPath) && reauthenticate()
     }
-  }, [redirectTo, reauthenticate])
+  }, [redirectTo, reauthenticate, redirectPath])
 
   useEffect(() => {
     if (error) setErrorText(getErrorText(error) || 'KEYP ERROR')
@@ -69,8 +70,6 @@ const LoginModal = () => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <Seo title="Sign In" description="Join to start collecting." />
-
       <div className="mb-6 max-w-prose text-gray-150">
         <p>
           <b className="text-white">Note to existing players:</b> If you used an

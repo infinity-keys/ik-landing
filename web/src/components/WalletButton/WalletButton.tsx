@@ -1,5 +1,4 @@
 import ShieldExclamationIcon from '@heroicons/react/24/outline/ShieldExclamationIcon'
-import WalletIcon from '@heroicons/react/24/outline/WalletIcon'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import clsx from 'clsx'
 
@@ -80,13 +79,15 @@ export default function WalletButton() {
                     onClick={openChainModal}
                     type="button"
                     variant="faded"
-                    text={isSmall ? '' : chain.name || 'Unknown'}
+                    text={chain.name || 'Unknown'}
                     size="small"
                     border={false}
                   >
                     {chain.hasIcon && (
                       <div
-                        className={clsx('flex shrink-0', { 'mr-4': !isSmall })}
+                        className={clsx('mr-2 flex shrink-0', {
+                          'mr-4': !isSmall,
+                        })}
                       >
                         {chain.iconUrl && (
                           <img
@@ -100,17 +101,13 @@ export default function WalletButton() {
                     )}
                   </Button>
                   <Button
-                    text={isSmall ? '' : account.displayName}
+                    text={account.displayName}
                     onClick={openAccountModal}
                     type="button"
                     variant="faded"
                     size="small"
                     border={false}
-                  >
-                    {isSmall && (
-                      <WalletIcon className="h-5 w-5 fill-transparent" />
-                    )}
-                  </Button>
+                  />
                 </div>
               )
             })()}

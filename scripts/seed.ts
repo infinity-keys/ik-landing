@@ -383,8 +383,19 @@ export default async () => {
           steps: {
             create: [
               {
-                challenge: 'Have you created an Orium scholarship?',
+                challenge: 'Have you transferred an asset?',
                 stepSortWeight: 1,
+                type: 'ASSET_TRANSFER',
+                stepAssetTransfer: {
+                  create: {
+                    toAddress: '0xc22834581ebc8527d974f8a1c97e1bea4ef910bc',
+                    excludeZeroValue: false,
+                  },
+                },
+              },
+              {
+                challenge: 'Have you created an Orium scholarship?',
+                stepSortWeight: 7,
                 type: 'ORIUM_API',
                 stepOriumApi: {
                   create: {
@@ -428,8 +439,8 @@ export default async () => {
                     contractAddress:
                       '0xA4E3513c98b30d4D7cc578d2C328Bd550725D1D0',
                     chainId: '137',
-                    startId: 13232,
-                    endId: 13277,
+                    startIds: [13232],
+                    endIds: [13277],
                   },
                 },
               },

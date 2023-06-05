@@ -44,16 +44,16 @@ describe.skip('stepTokenIdRanges', () => {
         stepId: scenario.stepTokenIdRange.two.stepId,
         contractAddress: 'String',
         chainId: 'String',
-        startId: 7042705,
-        endId: 1330314,
+        startIds: [1239768],
+        endIds: [4087813],
       },
     })
 
     expect(result.stepId).toEqual(scenario.stepTokenIdRange.two.stepId)
     expect(result.contractAddress).toEqual('String')
     expect(result.chainId).toEqual('String')
-    expect(result.startId).toEqual(7042705)
-    expect(result.endId).toEqual(1330314)
+    expect(result.startIds).toEqual(1239768)
+    expect(result.endIds).toEqual(4087813)
   })
 
   scenario('updates a stepTokenIdRange', async (scenario: StandardScenario) => {

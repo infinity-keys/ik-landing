@@ -95,7 +95,7 @@ export const checkOriumApi = async (
         origin: ORIGIN,
         referer: REFERER,
       },
-      body: oriumCheck.createBody(account),
+      body: oriumCheck.createBody(account.toLowerCase()),
     }
 
     const res = await fetch(ORIUM_API_URL, options)

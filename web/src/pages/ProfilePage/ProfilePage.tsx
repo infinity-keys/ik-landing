@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
@@ -8,6 +8,7 @@ import ProfileCell from 'src/components/ProfileCell'
 import ProgressDeleteButton from 'src/components/ProgressDeleteButton/ProgressDeleteButton'
 import Seo from 'src/components/Seo/Seo'
 import useReconcileProgress from 'src/hooks/useReconcileProgress'
+import { clearRedirectTo } from 'src/providers/redirection'
 
 /*
   IMPORTANT: This page needs to run a GraphQL function to create a new user in
@@ -32,6 +33,12 @@ const ProfilePage = () => {
     setErrorMessage('')
     logOut()
   }
+
+  useEffect(() => {
+    // If a user manually navigates to the profile page, clear the redirect route
+    // so they aren't navigated to the wrong page after logging in
+    clearRedirectTo()
+  }, [])
 
   return (
     <div>

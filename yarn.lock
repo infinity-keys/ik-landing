@@ -4036,7 +4036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/contracts@npm:5.7.0":
+"@ethersproject/contracts@npm:5.7.0, @ethersproject/contracts@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/contracts@npm:5.7.0"
   dependencies:
@@ -4157,7 +4157,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5.7.2":
+"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5.7.0, @ethersproject/providers@npm:^5.7.2":
   version: 5.7.2
   resolution: "@ethersproject/providers@npm:5.7.2"
   dependencies:
@@ -4272,7 +4272,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/units@npm:5.7.0":
+"@ethersproject/units@npm:5.7.0, @ethersproject/units@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/units@npm:5.7.0"
   dependencies:
@@ -4283,7 +4283,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/wallet@npm:5.7.0":
+"@ethersproject/wallet@npm:5.7.0, @ethersproject/wallet@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/wallet@npm:5.7.0"
   dependencies:
@@ -5705,6 +5705,22 @@ __metadata:
   peerDependencies:
     ethers: ^5.7.2
   checksum: 4c08d2ff4fcd2f50a4f67700e2050d68b320a82b2d2e77f3b50abdc55c4357c5ebec623d807b2fa60d446b71717ef079449de3d0d3a977f9d21a7d1b56f73a1d
+  languageName: node
+  linkType: hard
+
+"@lens-protocol/client@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@lens-protocol/client@npm:1.0.1"
+  dependencies:
+    "@lens-protocol/shared-kernel": 0.7.1
+    "@lens-protocol/storage": 0.7.1
+    graphql: ^16.6.0
+    graphql-request: ^5.1.0
+    graphql-tag: ^2.12.6
+    jwt-decode: ^3.1.2
+    tslib: ^2.5.0
+    zod: ^3.20.6
+  checksum: 116bffc00c79766f92240f1f30eef4c832b8f691b9139fb5e5b7351316c8505de44356c90648088bcb647887acb8842298bb10fa6fe6f5ff4772fcf626fba929
   languageName: node
   linkType: hard
 
@@ -12201,6 +12217,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"alchemy-sdk@npm:^2.8.3":
+  version: 2.8.3
+  resolution: "alchemy-sdk@npm:2.8.3"
+  dependencies:
+    "@ethersproject/abi": ^5.7.0
+    "@ethersproject/abstract-provider": ^5.7.0
+    "@ethersproject/bignumber": ^5.7.0
+    "@ethersproject/bytes": ^5.7.0
+    "@ethersproject/contracts": ^5.7.0
+    "@ethersproject/hash": ^5.7.0
+    "@ethersproject/networks": ^5.7.0
+    "@ethersproject/providers": ^5.7.0
+    "@ethersproject/units": ^5.7.0
+    "@ethersproject/wallet": ^5.7.0
+    "@ethersproject/web": ^5.7.0
+    axios: ^0.26.1
+    sturdy-websocket: ^0.2.1
+    websocket: ^1.0.34
+  checksum: 27a2a0e8a8b229c712b093f6f295c28970369016a33e0304bbd4316013b17e51ff7d4781f850bf7e3d2e2be48d5c8c6337f67f80e0555021c45dba583e23b5d4
+  languageName: node
+  linkType: hard
+
 "ansi-align@npm:^3.0.0":
   version: 3.0.1
   resolution: "ansi-align@npm:3.0.1"
@@ -12385,6 +12423,7 @@ __metadata:
     "@infinity-keys/constants": "workspace:^"
     "@infinity-keys/contracts": "workspace:^"
     "@infinity-keys/core": "workspace:^"
+    "@lens-protocol/client": ^1.0.1
     "@magic-sdk/admin": ^1.8.0
     "@moralisweb3/common-evm-utils": ^2.9.0
     "@redwoodjs/api": 5.0.5
@@ -12392,6 +12431,7 @@ __metadata:
     "@redwoodjs/graphql-server": 5.0.5
     "@sendgrid/mail": ^7.7.0
     "@types/uuid": ^9.0.1
+    alchemy-sdk: ^2.8.3
     cloudinary-build-url: ^0.2.4
     cookie: ^0.5.0
     crypto-js: ^4.1.1
@@ -12991,7 +13031,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.26.0":
+"axios@npm:^0.26.0, axios@npm:^0.26.1":
   version: 0.26.1
   resolution: "axios@npm:0.26.1"
   dependencies:
@@ -19991,6 +20031,20 @@ __metadata:
   peerDependencies:
     graphql: 14 - 16
   checksum: 309a83d9043de8367cdc0b1f7b143d25f5b54189ae841b567b6ed70f9ed147226e1a2a54dd04436df425c2ea012a7210b5318d62cb735fe11ebcd5fa40958efe
+  languageName: node
+  linkType: hard
+
+"graphql-request@npm:^5.1.0":
+  version: 5.2.0
+  resolution: "graphql-request@npm:5.2.0"
+  dependencies:
+    "@graphql-typed-document-node/core": ^3.1.1
+    cross-fetch: ^3.1.5
+    extract-files: ^9.0.0
+    form-data: ^3.0.0
+  peerDependencies:
+    graphql: 14 - 16
+  checksum: a360edaffe2d0000387ed34467e9bff7c16fe87bdc048552d4c3674a32a0f0dd8ab15d5a099bf0bfc8c1720e791d1ab16b630c2510a73bbbfc9c6cd7578fe091
   languageName: node
   linkType: hard
 
@@ -30905,6 +30959,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sturdy-websocket@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "sturdy-websocket@npm:0.2.1"
+  checksum: d2aa8ad9542a18c83d13d0a6393ebcdf479827e4c39cbc78bf3f74df9d4e9140005bcb507a5bdd60c3d3ac3f3db348f17edc417447be7c951b6f38d2b2414a22
+  languageName: node
+  linkType: hard
+
 "style-loader@npm:3.3.2":
   version: 3.3.2
   resolution: "style-loader@npm:3.3.2"
@@ -34469,7 +34530,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"websocket@npm:^1.0.32":
+"websocket@npm:^1.0.32, websocket@npm:^1.0.34":
   version: 1.0.34
   resolution: "websocket@npm:1.0.34"
   dependencies:

@@ -5,8 +5,8 @@ export const schema = gql`
     stepId: String!
     contractAddress: String!
     chainId: String!
-    startId: Int!
-    endId: Int!
+    startIds: [Int]!
+    endIds: [Int]!
   }
 
   type Query {
@@ -18,16 +18,16 @@ export const schema = gql`
     stepId: String!
     contractAddress: String!
     chainId: String!
-    startId: Int!
-    endId: Int!
+    startIds: [Int]!
+    endIds: [Int]!
   }
 
   input UpdateStepTokenIdRangeInput {
     stepId: String
     contractAddress: String
     chainId: String
-    startId: Int
-    endId: Int
+    startIds: [Int]!
+    endIds: [Int]!
   }
 
   type Mutation {

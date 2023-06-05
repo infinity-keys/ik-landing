@@ -145,6 +145,10 @@ enum StepType {
   TOKEN_ID_RANGE
   /// corresponds to the model StepOriumApi model
   ORIUM_API
+  /// corresponds to the model StepLensApi model
+  LENS_API
+  /// corresponds to the model StepAssetTransfer model
+  ASSET_TRANSFER
 }
 
 /// Steps are whate players actually solve. One or more steps make up a Puzzle.
@@ -169,13 +173,15 @@ model Step {
   puzzleId String
 
   // Step types
-  type             StepType          @default(SIMPLE_TEXT)
-  stepSimpleText   StepSimpleText?
-  stepNftCheck     StepNftCheck?
-  stepFunctionCall StepFunctionCall?
-  stepComethApi    StepComethApi?
-  stepTokenIdRange StepTokenIdRange?
-  stepOriumApi     StepOriumApi?
+  type              StepType           @default(SIMPLE_TEXT)
+  stepSimpleText    StepSimpleText?
+  stepNftCheck      StepNftCheck?
+  stepFunctionCall  StepFunctionCall?
+  stepComethApi     StepComethApi?
+  stepTokenIdRange  StepTokenIdRange?
+  stepOriumApi      StepOriumApi?
+  stepAssetTransfer StepAssetTransfer?
+  stepLensApi       StepLensApi?
 
   // Every puzzle from IK v1 (Next/Hasura) was a single step, so we need to
   // migrate them; optional because only v1 puzzles will have this.
@@ -275,10 +281,38 @@ model StepTokenIdRange {
   /// Must be a supported Moralis chain
   /// https://docs.moralis.io/web3-data-api/evm/resolve-api#supported-chains
   chainId         String
-  /// The start of the range (inclusive)
-  startId         Int
-  /// The end of the range (inclusive)
-  endId           Int
+  /// The start ids of the ranges (inclusive)
+  startIds        Int[] // [1, 40]
+  /// The end ids of the ranges (inclusive)
+  endIds          Int[] // [10, 50]
+}
+
+enum LensCheckType {
+  HAS_COMPLETED_PROFILE
+  HAS_GENESIS_POST
+  IS_FOLLOWING_USER
+}
+
+model StepLensApi {
+  id String @id @default(cuid())
+
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @unique
+
+  /// Choose the type of Lens API call you would like to check
+  checkType      LensCheckType
+  /// The id of the user that needs to have been followed
+  followedUserId String?
+}
+
+model StepAssetTransfer {
+  id String @id @default(cuid())
+
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @unique
+
+  toAddress        String
+  excludeZeroValue Boolean @default(true)
 }
 
 /// User form submissions from post-Puzzle forms asking for email address etc

@@ -18,7 +18,7 @@ const NotFoundPage = () => {
           <div className="text-center">
             <div className="pb-4 sm:mt-5 lg:mt-8">
               <Link
-                to={routes.home()}
+                to={routes.play()}
                 className="inline-block"
                 aria-label="Return home"
               >

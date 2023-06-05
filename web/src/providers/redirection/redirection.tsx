@@ -30,6 +30,10 @@ const getRedirectTo = (): string | null => {
   return url
 }
 
+const clearRedirectTo = () => {
+  localStorage.removeItem(LOCAL_REDIRECT_TO_KEY)
+}
+
 const RedirectionContext = createContext<{
   errorMessage?: string
   successMessage?: string
@@ -83,7 +87,11 @@ const RedirectionProvider = ({ children }: PropsWithChildren) => {
     })
 
     setTimeout(() => {
-      window.location.href = routes.profile()
+      const redirectPath = getRedirectTo()
+      window.location.href = redirectPath || routes.profile()
+      // this doesn't refresh page, so it looks like the user is still logged out
+      // navigate(redirectPath || routes.profile(), { replace: true })
+      clearRedirectTo()
     }, 3000)
   }, [authState])
 
@@ -152,4 +160,10 @@ const RedirectionProvider = ({ children }: PropsWithChildren) => {
 
 const useRedirection = () => useContext(RedirectionContext)
 
-export { RedirectionProvider, useRedirection, saveRedirectTo, getRedirectTo }
+export {
+  RedirectionProvider,
+  useRedirection,
+  saveRedirectTo,
+  getRedirectTo,
+  clearRedirectTo,
+}

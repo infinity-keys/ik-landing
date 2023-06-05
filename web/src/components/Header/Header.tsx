@@ -20,7 +20,7 @@ import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
-const links = [
+const socialLinks = [
   {
     href: 'https://lenster.xyz/u/infinitykeys',
     testing: 'lens',
@@ -58,12 +58,12 @@ const Header = () => {
   }, [pathname])
 
   return (
-    <div className="fixed top-0 left-0 z-20 w-full px-4 sm:px-6 lg:px-8">
+    <div className="fixed top-0 left-0 z-20 w-full bg-brand-gray-primary px-4 sm:px-6 lg:px-8">
       <div className="flex h-20 items-center justify-between">
         <div className="flex items-center" data-cy="ik logo">
           {/* Left logo */}
           <Link
-            to={routes.home()}
+            to={routes.play()}
             className="inline-block max-w-[60px] sm:max-w-[150px]"
             aria-label="return home"
           >
@@ -78,13 +78,17 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* Menu open button */}
-        <Button
-          onClick={() => setIsOpen(true)}
-          text="Menu"
-          variant="faded"
-          border={false}
-        />
+        <div className="flex gap-4">
+          {loading ? <LoaderIcon /> : <ProfileIcon />}
+
+          {/* Menu open button */}
+          <Button
+            onClick={() => setIsOpen(true)}
+            text="Menu"
+            variant="faded"
+            border={false}
+          />
+        </div>
       </div>
 
       {/* Modal Menu */}
@@ -150,38 +154,39 @@ const Header = () => {
                       >
                         Info
                       </a>
-                      <a
+                      {/* <a
                         href="https://blog.infinitykeys.io"
                         target="_blank"
                         rel="noreferrer"
                         className="header-nav--link mt-3 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
                         Blog
-                      </a>
+                      </a> */}
 
                       {/* Wallet and profile buttons */}
                       <NavTitle text="Connect" />
                       <div className="mt-7 flex items-center justify-center gap-2">
                         <WalletButton />
-                        {loading ? <LoaderIcon /> : <ProfileIcon />}
                       </div>
 
                       {/* Social Icons */}
                       <NavTitle text="Social" />
                       <div className="mt-7 flex justify-center gap-4">
-                        {links.map(({ href, testing, ariaLabel, icon }) => (
-                          <a
-                            key={href}
-                            className="text-white/40 transition-colors hover:text-brand-accent-primary"
-                            data-cy={testing}
-                            href={href}
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label={ariaLabel}
-                          >
-                            {icon}
-                          </a>
-                        ))}
+                        {socialLinks.map(
+                          ({ href, testing, ariaLabel, icon }) => (
+                            <a
+                              key={href}
+                              className="text-white/40 transition-colors hover:text-brand-accent-primary"
+                              data-cy={testing}
+                              href={href}
+                              target="_blank"
+                              rel="noreferrer"
+                              aria-label={ariaLabel}
+                            >
+                              {icon}
+                            </a>
+                          )
+                        )}
                       </div>
                     </nav>
                   </div>
