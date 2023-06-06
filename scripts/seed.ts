@@ -391,7 +391,7 @@ export default async () => {
                     contractAddress:
                       '0x3801c3b3b5c98f88a9c9005966aa96aa440b9afc',
                     chainId: '0x89',
-                    minBalance: '1',
+                    minBalance: '1000000000000000000',
                   },
                 },
               },

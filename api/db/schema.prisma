@@ -268,7 +268,7 @@ model StepErc20Balance {
   /// Must be a supported Moralis chain
   /// https://docs.moralis.io/web3-data-api/evm/resolve-api#supported-chains
   chainId         String
-  /// The minimum amount user needs to hold (1 = 1 eth)
+  /// The minimum amount user needs to hold (1000000000000000000 = 1 eth)
   minBalance      String
 }
 

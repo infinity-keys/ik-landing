@@ -1,4 +1,4 @@
-import { BigNumber, ethers } from 'ethers'
+import { BigNumber } from 'ethers'
 import Moralis from 'moralis'
 
 import { logger } from 'src/lib/logger'
@@ -10,10 +10,9 @@ if (!Moralis.Core.isStarted) {
 }
 
 const checkBalance = (balance: string, minBalance: string): boolean => {
-  const balanceInWei = BigNumber.from(balance)
-  const minBalanceInWei = ethers.utils.parseEther(minBalance)
-
-  return balanceInWei.gte(minBalanceInWei)
+  const balanceBig = BigNumber.from(balance)
+  const minBalanceBig = BigNumber.from(minBalance)
+  return balanceBig.gte(minBalanceBig)
 }
 
 export const checkErc20Balance = async ({
