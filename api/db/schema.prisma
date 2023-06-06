@@ -149,6 +149,8 @@ enum StepType {
   LENS_API
   /// corresponds to the model StepAssetTransfer model
   ASSET_TRANSFER
+  /// corresponds to the model SteErc20Balance model
+  ERC20_BALANCE
 }
 
 /// Steps are whate players actually solve. One or more steps make up a Puzzle.
@@ -182,6 +184,7 @@ model Step {
   stepOriumApi      StepOriumApi?
   stepAssetTransfer StepAssetTransfer?
   stepLensApi       StepLensApi?
+  stepErc20Balance  StepErc20Balance?
 
   // Every puzzle from IK v1 (Next/Hasura) was a single step, so we need to
   // migrate them; optional because only v1 puzzles will have this.
@@ -251,6 +254,22 @@ model StepComethApi {
 
   step   Step   @relation(fields: [stepId], references: [id])
   stepId String @unique
+}
+
+/// Require the user have a minimum erc20 balance
+model StepErc20Balance {
+  id String @id @default(cuid())
+
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String @unique
+
+  /// The token's contract address
+  contractAddress String
+  /// Must be a supported Moralis chain
+  /// https://docs.moralis.io/web3-data-api/evm/resolve-api#supported-chains
+  chainId         String
+  /// The minimum amount user needs to hold (1000000000000000000 = 1 eth)
+  minBalance      String
 }
 
 enum OriumCheckType {

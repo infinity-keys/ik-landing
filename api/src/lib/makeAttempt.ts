@@ -233,6 +233,13 @@ export const getStep = async (id: string) => {
           followedUserId: true,
         },
       },
+      stepErc20Balance: {
+        select: {
+          contractAddress: true,
+          chainId: true,
+          minBalance: true,
+        },
+      },
       puzzle: {
         select: {
           rewardable: {

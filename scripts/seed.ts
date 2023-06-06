@@ -383,8 +383,21 @@ export default async () => {
           steps: {
             create: [
               {
-                challenge: 'Have you transferred an asset?',
+                challenge: 'Have you an ERC20?',
                 stepSortWeight: 1,
+                type: 'ERC20_BALANCE',
+                stepErc20Balance: {
+                  create: {
+                    contractAddress:
+                      '0x3801c3b3b5c98f88a9c9005966aa96aa440b9afc',
+                    chainId: '0x89',
+                    minBalance: '1000000000000000000',
+                  },
+                },
+              },
+              {
+                challenge: 'Have you transferred an asset?',
+                stepSortWeight: 8,
                 type: 'ASSET_TRANSFER',
                 stepAssetTransfer: {
                   create: {
