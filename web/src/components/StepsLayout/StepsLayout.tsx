@@ -53,6 +53,10 @@ const TokenIdRangeButton = lazy(
   () => import('src/components/TokenIdRangeButton/TokenIdRangeButton')
 )
 
+const StepErc20BalanceButton = lazy(
+  () => import('src/components/StepErc20BalanceButton/StepErc20BalanceButton')
+)
+
 const StepsLayout = ({
   currentStepId,
   hasBeenSolved,
@@ -162,6 +166,12 @@ const StepsLayout = ({
             {step.type === 'TOKEN_ID_RANGE' && (
               <div className="pt-8">
                 <TokenIdRangeButton step={step} puzzleId={puzzle.id} />
+              </div>
+            )}
+
+            {step.type === 'ERC20_BALANCE' && (
+              <div className="pt-8">
+                <StepErc20BalanceButton step={step} puzzleId={puzzle.id} />
               </div>
             )}
             {/* )} */}

@@ -33,6 +33,7 @@ export const schema = gql`
     stepTokenIdRange: UpdateStepTokenIdRangeInput
     stepLensApi: UpdateStepLensApiInput
     stepAssetTransfer: UpdateStepAssetTransferInput
+    stepErc20Balance: UpdateStepErc20BalanceInput
   }
 
   input StepInput {

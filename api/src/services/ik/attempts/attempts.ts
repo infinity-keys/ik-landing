@@ -11,6 +11,7 @@ import {
   getStep,
 } from 'src/lib/makeAttempt'
 import { checkAssetTransfer } from 'src/lib/web3/check-asset-transfer'
+import { checkErc20Balance } from 'src/lib/web3/check-erc20-balance'
 import { checkFunctionCall } from 'src/lib/web3/check-function-call'
 import { checkNft } from 'src/lib/web3/check-nft'
 import { getErc721TokenIds } from 'src/lib/web3/check-tokenid-range'
@@ -230,6 +231,34 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
       return response
     } // end of ASSET_TRANSFER
+
+    if (step.type === 'ERC20_BALANCE') {
+      if (!step.stepErc20Balance || typeof userAttempt !== 'string') {
+        throw new Error(
+          'Cannot create attempt - missing data for "stepErc20Balance"'
+        )
+      }
+
+      const { id: attemptId } = await createAttempt(stepId)
+
+      // Your custom function goes here
+      const { success, errors } = await checkErc20Balance({
+        account: userAttempt,
+        contractAddress: step.stepErc20Balance.contractAddress,
+        chainId: step.stepErc20Balance.chainId,
+        minBalance: step.stepErc20Balance.minBalance,
+      })
+
+      const response = await createResponse({
+        success,
+        attemptId,
+        finalStep,
+        errors,
+        rewardable: step.puzzle.rewardable,
+      })
+
+      return response
+    } // end of ERC20_BALANCE
 
     return { success: false }
   } catch (e) {
