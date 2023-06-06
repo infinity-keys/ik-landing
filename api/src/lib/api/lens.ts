@@ -12,10 +12,12 @@ type LensObjectType = {
     profileId,
     account,
     followedUserIds,
+    requireAllFollowedUserIds,
   }: {
     profileId: string
     account: string
     followedUserIds?: string[]
+    requireAllFollowedUserIds?: boolean
   }) => Promise<{ success: boolean }>
 }
 
@@ -38,7 +40,7 @@ const HAS_GENESIS_POST: LensObjectType = {
 }
 
 const IS_FOLLOWING_USER: LensObjectType = {
-  async makeRequest({ account, followedUserIds }) {
+  async makeRequest({ account, followedUserIds, requireAllFollowedUserIds }) {
     if (!followedUserIds?.length) {
       throw new Error(
         'Lens check "IS_FOLLOWING_USER" requires at least one "followedUserId"'
@@ -52,7 +54,11 @@ const IS_FOLLOWING_USER: LensObjectType = {
       })),
     })
 
-    return { success: followData.every(({ follows }) => follows) }
+    return {
+      success: requireAllFollowedUserIds
+        ? followData.every(({ follows }) => follows)
+        : followData.some(({ follows }) => follows),
+    }
   },
 }
 
@@ -69,11 +75,13 @@ export const checkLensApi = async ({
   account,
   checkType,
   followedUserIds,
+  requireAllFollowedUserIds,
 }: {
   profileId: string
   account: string
   checkType: LensCheckType
   followedUserIds?: string[]
+  requireAllFollowedUserIds?: boolean
 }): Promise<{
   success: boolean
   errors?: string[]
@@ -85,6 +93,7 @@ export const checkLensApi = async ({
       profileId,
       account,
       followedUserIds,
+      requireAllFollowedUserIds,
     })
 
     return success

@@ -168,6 +168,8 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
         account: userAttempt.account,
         checkType: step.stepLensApi.checkType,
         followedUserIds: step.stepLensApi.followedUserIds,
+        requireAllFollowedUserIds:
+          step.stepLensApi.requireAllFollowedUserIds ?? undefined,
       })
 
       const response = await createResponse({

@@ -231,6 +231,7 @@ export const getStep = async (id: string) => {
         select: {
           checkType: true,
           followedUserIds: true,
+          requireAllFollowedUserIds: true,
         },
       },
       stepErc20Balance: {

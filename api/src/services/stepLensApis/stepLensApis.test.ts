@@ -15,7 +15,7 @@ import type { StandardScenario } from './stepLensApis.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe.skip('stepLensApis', () => {
+describe('stepLensApis', () => {
   scenario('returns all stepLensApis', async (scenario: StandardScenario) => {
     const result = await stepLensApis()
 
@@ -36,11 +36,13 @@ describe.skip('stepLensApis', () => {
       input: {
         stepId: scenario.stepLensApi.two.stepId,
         checkType: 'HAS_COMPLETED_PROFILE',
+        followedUserIds: 'String',
       },
     })
 
     expect(result.stepId).toEqual(scenario.stepLensApi.two.stepId)
     expect(result.checkType).toEqual('HAS_COMPLETED_PROFILE')
+    expect(result.followedUserIds).toEqual('String')
   })
 
   scenario('updates a stepLensApi', async (scenario: StandardScenario) => {
