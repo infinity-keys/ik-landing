@@ -19,6 +19,7 @@ export const schema = gql`
     stepLensApi: StepLensApi
     stepTokenIdRange: StepTokenIdRange
     stepAssetTransfer: StepAssetTransfer
+    stepErc20Balance: StepErc20Balance
     migrateLandingRoute: String
     attempts: [Attempt]!
     hasUserCompletedStep: Boolean
@@ -34,6 +35,7 @@ export const schema = gql`
     ORIUM_API
     LENS_API
     ASSET_TRANSFER
+    ERC20_BALANCE
   }
 
   type Query {
