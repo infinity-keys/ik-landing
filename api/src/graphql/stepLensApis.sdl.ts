@@ -4,7 +4,7 @@ export const schema = gql`
     step: Step!
     stepId: String!
     checkType: LensCheckType!
-    followedUserId: String
+    followedUserIds: [String]
   }
 
   enum LensCheckType {
@@ -21,13 +21,13 @@ export const schema = gql`
   input CreateStepLensApiInput {
     stepId: String!
     checkType: LensCheckType!
-    followedUserId: String
+    followedUserIds: [String]
   }
 
   input UpdateStepLensApiInput {
     stepId: String
     checkType: LensCheckType
-    followedUserId: String
+    followedUserIds: [String]
   }
 
   type Mutation {

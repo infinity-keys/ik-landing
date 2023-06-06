@@ -383,8 +383,19 @@ export default async () => {
           steps: {
             create: [
               {
-                challenge: 'Have you an ERC20?',
+                challenge: 'Follow chair and IK',
                 stepSortWeight: 1,
+                type: 'LENS_API',
+                stepLensApi: {
+                  create: {
+                    checkType: 'IS_FOLLOWING_USER',
+                    followedUserIds: ['0x0117a3', '0xdfab'],
+                  },
+                },
+              },
+              {
+                challenge: 'Have you an ERC20?',
+                stepSortWeight: 9,
                 type: 'ERC20_BALANCE',
                 stepErc20Balance: {
                   create: {
