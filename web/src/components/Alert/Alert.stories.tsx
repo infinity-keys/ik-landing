@@ -11,15 +11,18 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta } from '@storybook/react'
+import type { ComponentMeta, ComponentStory } from '@storybook/react'
 
 import Alert from './Alert'
 
-export const generated = () => {
-  return <Alert />
+export const generated: ComponentStory<typeof Alert> = (args) => {
+  return <Alert {...args} />
 }
 
 export default {
   title: 'Components/Alert',
   component: Alert,
+  args: {
+    text: 'This is an alert!',
+  },
 } as ComponentMeta<typeof Alert>
