@@ -7,14 +7,15 @@ export const standard = defineScenario<Prisma.StepLensApiCreateArgs>({
     one: {
       data: {
         checkType: 'HAS_COMPLETED_PROFILE',
+        followedUserIds: 'String',
         step: {
           create: {
-            updatedAt: '2023-05-26T19:32:07.770Z',
+            updatedAt: '2023-06-06T17:56:52.420Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2023-05-26T19:32:07.770Z',
+                    updatedAt: '2023-06-06T17:56:52.420Z',
                     name: 'String',
                     slug: 'String',
                     explanation: 'String',
@@ -22,8 +23,8 @@ export const standard = defineScenario<Prisma.StepLensApiCreateArgs>({
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String1495510',
-                        updatedAt: '2023-05-26T19:32:07.770Z',
+                        slug: 'String9681682',
+                        updatedAt: '2023-06-06T17:56:52.420Z',
                       },
                     },
                   },
@@ -37,14 +38,15 @@ export const standard = defineScenario<Prisma.StepLensApiCreateArgs>({
     two: {
       data: {
         checkType: 'HAS_COMPLETED_PROFILE',
+        followedUserIds: 'String',
         step: {
           create: {
-            updatedAt: '2023-05-26T19:32:07.771Z',
+            updatedAt: '2023-06-06T17:56:52.420Z',
             puzzle: {
               create: {
                 rewardable: {
                   create: {
-                    updatedAt: '2023-05-26T19:32:07.771Z',
+                    updatedAt: '2023-06-06T17:56:52.420Z',
                     name: 'String',
                     slug: 'String',
                     explanation: 'String',
@@ -52,8 +54,8 @@ export const standard = defineScenario<Prisma.StepLensApiCreateArgs>({
                     organization: {
                       create: {
                         name: 'String',
-                        slug: 'String2083551',
-                        updatedAt: '2023-05-26T19:32:07.771Z',
+                        slug: 'String9183812',
+                        updatedAt: '2023-06-06T17:56:52.420Z',
                       },
                     },
                   },

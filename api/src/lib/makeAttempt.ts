@@ -230,7 +230,8 @@ export const getStep = async (id: string) => {
       stepLensApi: {
         select: {
           checkType: true,
-          followedUserId: true,
+          followedUserIds: true,
+          requireAllFollowedUserIds: true,
         },
       },
       stepErc20Balance: {

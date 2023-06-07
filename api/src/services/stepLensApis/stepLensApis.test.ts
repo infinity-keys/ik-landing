@@ -36,11 +36,13 @@ describe.skip('stepLensApis', () => {
       input: {
         stepId: scenario.stepLensApi.two.stepId,
         checkType: 'HAS_COMPLETED_PROFILE',
+        followedUserIds: 'String',
       },
     })
 
     expect(result.stepId).toEqual(scenario.stepLensApi.two.stepId)
     expect(result.checkType).toEqual('HAS_COMPLETED_PROFILE')
+    expect(result.followedUserIds).toEqual('String')
   })
 
   scenario('updates a stepLensApi', async (scenario: StandardScenario) => {

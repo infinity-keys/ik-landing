@@ -11,11 +11,13 @@ type LensObjectType = {
   makeRequest: ({
     profileId,
     account,
-    followedUserId,
+    followedUserIds,
+    requireAllFollowedUserIds,
   }: {
     profileId: string
     account: string
-    followedUserId?: string
+    followedUserIds?: string[]
+    requireAllFollowedUserIds?: boolean
   }) => Promise<{ success: boolean }>
 }
 
@@ -38,23 +40,25 @@ const HAS_GENESIS_POST: LensObjectType = {
 }
 
 const IS_FOLLOWING_USER: LensObjectType = {
-  async makeRequest({ account, followedUserId }) {
-    if (!followedUserId) {
+  async makeRequest({ account, followedUserIds, requireAllFollowedUserIds }) {
+    if (!followedUserIds?.length) {
       throw new Error(
-        'Lens check "IS_FOLLOWING_USER" requires a "followedUserId"'
+        'Lens check "IS_FOLLOWING_USER" requires at least one "followedUserId"'
       )
     }
 
-    const [{ follows }] = await lensClient.profile.doesFollow({
-      followInfos: [
-        {
-          followerAddress: account,
-          profileId: followedUserId,
-        },
-      ],
+    const followData = await lensClient.profile.doesFollow({
+      followInfos: followedUserIds.map((profileId) => ({
+        followerAddress: account,
+        profileId,
+      })),
     })
 
-    return { success: follows }
+    return {
+      success: requireAllFollowedUserIds
+        ? followData.every(({ follows }) => follows)
+        : followData.some(({ follows }) => follows),
+    }
   },
 }
 
@@ -70,12 +74,14 @@ export const checkLensApi = async ({
   profileId,
   account,
   checkType,
-  followedUserId,
+  followedUserIds,
+  requireAllFollowedUserIds,
 }: {
   profileId: string
   account: string
   checkType: LensCheckType
-  followedUserId?: string
+  followedUserIds?: string[]
+  requireAllFollowedUserIds?: boolean
 }): Promise<{
   success: boolean
   errors?: string[]
@@ -86,7 +92,8 @@ export const checkLensApi = async ({
     const success = await lensCheck.makeRequest({
       profileId,
       account,
-      followedUserId,
+      followedUserIds,
+      requireAllFollowedUserIds,
     })
 
     return success
