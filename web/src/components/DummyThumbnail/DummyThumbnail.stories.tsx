@@ -11,15 +11,19 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta } from '@storybook/react'
+import type { ComponentMeta, ComponentStory } from '@storybook/react'
 
 import DummyThumbnail from './DummyThumbnail'
 
-export const generated = () => {
-  return <DummyThumbnail />
+export const generated: ComponentStory<typeof DummyThumbnail> = (args) => {
+  return <DummyThumbnail {...args} />
 }
 
 export default {
   title: 'Components/DummyThumbnail',
   component: DummyThumbnail,
+  args: {
+    text: 'This is a thumbnail!',
+    name: 'Name of Thumbnail',
+  },
 } as ComponentMeta<typeof DummyThumbnail>
