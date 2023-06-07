@@ -11,15 +11,23 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta } from '@storybook/react'
+import type { ComponentMeta, ComponentStory } from '@storybook/react'
 
 import GridDropdown from './GridDropdown'
 
-export const generated = () => {
-  return <GridDropdown />
+export const generated: ComponentStory<typeof GridDropdown> = (args) => {
+  return <GridDropdown {...args} />
 }
 
 export default {
   title: 'Components/GridDropdown',
   component: GridDropdown,
+  args: {
+    currentCount: 32,
+    rewardableType: 'PUZZLE',
+  },
+  // this line exists on the button, but it doesn't seem to work here,
+  // is there a way to get an 'Action' reaction? Does is matter?
+  // Will we use the `Actions` console?
+  // onClick: { action: 'clicked' },
 } as ComponentMeta<typeof GridDropdown>
