@@ -24,6 +24,10 @@ export default {
   component: GridDropdown,
   args: {
     currentCount: 32,
-    rewardableType: 'PLAY',
+    rewardableType: 'PUZZLE',
   },
+  // this line exists on the button, but it doesn't seem to work here,
+  // is there a way to get an 'Action' reaction? Does is matter?
+  // Will we use the `Actions` console?
+  // onClick: { action: 'clicked' },
 } as ComponentMeta<typeof GridDropdown>

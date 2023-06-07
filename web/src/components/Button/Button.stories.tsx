@@ -38,7 +38,9 @@ export default {
     text: 'Click Me!',
   },
   argTypes: {
-    size: { name: `size (each has a story)`, control: false },
+    size: {
+      name: `sizes: seprate stories`,
+    },
     onClick: { action: 'clicked' },
   },
 } as ComponentMeta<typeof Button>
