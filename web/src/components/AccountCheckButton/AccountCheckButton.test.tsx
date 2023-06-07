@@ -1,14 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import StepAssetTransferButton from './StepAssetTransferButton'
+import AccountCheckButton from './AccountCheckButton'
 
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe('StepAssetTransferButton', () => {
+describe('AccountCheckButton', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<StepAssetTransferButton />)
+      render(<AccountCheckButton />)
     }).not.toThrow()
   })
 })

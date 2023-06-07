@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { FindStepQuery } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
@@ -7,7 +9,7 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
-const StepErc20BalanceButton = ({
+const AccountCheckButton = ({
   step,
   puzzleId,
 }: {
@@ -16,8 +18,12 @@ const StepErc20BalanceButton = ({
 }) => {
   const { address } = useAccount()
   const { loading, failedAttempt, errorMessage, makeAttempt } = useMakeAttempt()
+  const [customErrorMessage, setCustomErrorMessage] = useState('')
 
   const handleClick = async () => {
+    setCustomErrorMessage('')
+    if (!step?.id) return setCustomErrorMessage('Missing step id')
+
     await makeAttempt({
       stepId: step.id,
       puzzleId,
@@ -42,8 +48,10 @@ const StepErc20BalanceButton = ({
             </div>
           )}
 
-          {errorMessage && (
-            <p className="mt-4 italic text-gray-200">{errorMessage}</p>
+          {(errorMessage || customErrorMessage) && (
+            <p className="mt-4 italic text-gray-200">
+              {errorMessage || customErrorMessage}
+            </p>
           )}
 
           {failedAttempt && !errorMessage && (
@@ -52,7 +60,7 @@ const StepErc20BalanceButton = ({
               data-cy="fail_message_check"
             >
               <Markdown>
-                {step.failMessage ||
+                {step?.failMessage ||
                   'This wallet address has not completed the required action. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
               </Markdown>
             </div>
@@ -63,4 +71,4 @@ const StepErc20BalanceButton = ({
   )
 }
 
-export default StepErc20BalanceButton
+export default AccountCheckButton
