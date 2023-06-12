@@ -59,11 +59,12 @@ export const QUERY = gql`
 `
 
 const CHECK_CLAIM_QUERY = gql`
-  query CheckClaimQuery($account: String!, $rewardableId: String!) {
-    claim(account: $account, rewardableId: $rewardableId) {
+  query CheckClaimQuery($rewardableId: String!) {
+    claim(rewardableId: $rewardableId) {
       claimed
-      chainClaimed
-      signature
+      tokenId
+      success
+      explorerUrl
       tokenId
       errors
     }
@@ -92,7 +93,7 @@ export const Success = ({
   rewardable,
 }: CellSuccessProps<FindClaimNftQuery, FindClaimNftQueryVariables>) => {
   const { chain } = useNetwork()
-  const { isConnected, address } = useAccount()
+  const { isConnected } = useAccount()
   const { openConnectModal } = useConnectModal()
   const { openChainModal } = useChainModal()
   const isValidChain = chain?.id === OPTIMISM_CHAIN_ID
@@ -107,7 +108,6 @@ export const Success = ({
     CHECK_CLAIM_QUERY,
     {
       variables: {
-        account: address,
         rewardableId: rewardable.id,
       },
     }

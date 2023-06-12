@@ -1,17 +1,12 @@
-import { OPTIMISM_CHAIN_ID } from '@infinity-keys/constants'
 import { QueryResolvers } from 'types/graphql'
 
-import { getSignature } from 'src/lib/verifySignature'
+import { db } from 'src/lib/db'
+import { mint } from 'src/lib/mint'
 import { checkBalance } from 'src/lib/web3/check-balance'
 import { checkClaimed } from 'src/lib/web3/check-claimed'
 import { rewardableClaim } from 'src/services/ik/rewardables/rewardables'
 
-export const claim: QueryResolvers['claim'] = async ({
-  account,
-  rewardableId,
-}) => {
-  // @TODO: can we check cookie to see if puzzleId steps are greater than 0, (but what about packs...)
-
+export const claim: QueryResolvers['claim'] = async ({ rewardableId }) => {
   const rewardableData = await rewardableClaim({ id: rewardableId })
 
   // rewardable has not been solved
@@ -51,12 +46,17 @@ export const claim: QueryResolvers['claim'] = async ({
   // @TODO: claim logic breaks when we have more than 1 NFT per rewardable
   const { tokenId } = rewardableData.nfts[0]
 
+  const { address: account, accessToken } =
+    (await db.user.findUnique({
+      where: { id: context.currentUser?.id },
+    })) || {}
+
+  if (!accessToken || !account) {
+    throw new Error('Error obtaining user data required to mint.')
+  }
+
   // has this nft already been claimed on this account
-  const {
-    claimed,
-    chainClaimed,
-    errors: checkClaimedErrors,
-  } = await checkClaimed({
+  const { claimed, errors: checkClaimedErrors } = await checkClaimed({
     account,
     tokenId,
   })
@@ -74,7 +74,6 @@ export const claim: QueryResolvers['claim'] = async ({
   if (claimed) {
     return {
       claimed,
-      chainClaimed,
       tokenId,
       errors: ['You have already claimed this NFT'],
     }
@@ -101,9 +100,9 @@ export const claim: QueryResolvers['claim'] = async ({
       return { errors: checkBalanceErrors }
     }
 
-    if (!hasRequiredNfts) {
+    if (!hasRequiredNfts && claimedTokens?.length) {
       const missingNfts = requiredNftIds
-        .filter((n, i) => !claimedTokens[i])
+        .filter((_, i) => !claimedTokens[i])
         .join(', ')
 
       return {
@@ -114,10 +113,19 @@ export const claim: QueryResolvers['claim'] = async ({
     }
   }
 
-  const signature = await getSignature(OPTIMISM_CHAIN_ID, account, tokenId)
+  const { success, explorerUrl, errors } = await mint(
+    accessToken,
+    account,
+    tokenId
+  )
+
+  if (errors?.length) {
+    return { errors }
+  }
 
   return {
-    signature,
+    success,
+    explorerUrl,
     tokenId,
   }
 }
