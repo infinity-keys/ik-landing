@@ -11,15 +11,37 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta } from '@storybook/react'
+import type { ComponentMeta, ComponentStory } from '@storybook/react'
 
 import CollapsibleMarkdown from './CollapsibleMarkdown'
 
-export const generated = () => {
-  return <CollapsibleMarkdown />
+export const singleContentItem: ComponentStory<typeof CollapsibleMarkdown> = (
+  args
+) => {
+  return <CollapsibleMarkdown {...args} />
 }
+
+export const collapsibleCarousel = {
+  title: 'Components/CollapsibleMarkdown',
+  component: CollapsibleMarkdown,
+  args: {
+    title: 'Collapsible Markdown Carousel',
+    defaultOpen: false,
+    content:
+      'First item in collapsible carousel===Second item in collapsible carousel===Third item in collapsible carousel',
+    alt: 'alt text',
+    marginTop: true,
+  },
+} as ComponentMeta<typeof CollapsibleMarkdown>
 
 export default {
   title: 'Components/CollapsibleMarkdown',
   component: CollapsibleMarkdown,
+  args: {
+    title: 'Collapsible Markdown',
+    defaultOpen: false,
+    content: 'This collapsible markdown has one element',
+    alt: 'alt text',
+    marginTop: true,
+  },
 } as ComponentMeta<typeof CollapsibleMarkdown>

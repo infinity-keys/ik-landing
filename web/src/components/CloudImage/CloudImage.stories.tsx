@@ -11,15 +11,23 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta } from '@storybook/react'
+import type { ComponentMeta, ComponentStory } from '@storybook/react'
 
 import CloudImage from './CloudImage'
 
-export const generated = () => {
-  return <CloudImage />
+export const generated: ComponentStory<typeof CloudImage> = (args) => {
+  return <CloudImage {...args} />
 }
 
 export default {
   title: 'Components/CloudImage',
   component: CloudImage,
+  args: {
+    id: 'ik-alpha-trophies/starter-pack-achievment_cdbvlv',
+    height: 200,
+    width: 200,
+    alt: 'alt text',
+    circle: false,
+    dpr: 23,
+  },
 } as ComponentMeta<typeof CloudImage>
