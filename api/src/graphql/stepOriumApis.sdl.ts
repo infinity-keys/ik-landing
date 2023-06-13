@@ -13,8 +13,8 @@ export const schema = gql`
   }
 
   type Query {
-    stepOriumApis: [StepOriumApi!]! @requireAuth
-    stepOriumApi(id: String!): StepOriumApi @requireAuth
+    stepOriumApis: [StepOriumApi!]! @requireAuth(roles: ["ADMIN"])
+    stepOriumApi(id: String!): StepOriumApi @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateStepOriumApiInput {
@@ -29,11 +29,12 @@ export const schema = gql`
 
   type Mutation {
     createStepOriumApi(input: CreateStepOriumApiInput!): StepOriumApi!
-      @requireAuth
+      @requireAuth(roles: ["ADMIN"])
     updateStepOriumApi(
       id: String!
       input: UpdateStepOriumApiInput!
-    ): StepOriumApi! @requireAuth
-    deleteStepOriumApi(id: String!): StepOriumApi! @requireAuth
+    ): StepOriumApi! @requireAuth(roles: ["ADMIN"])
+    deleteStepOriumApi(id: String!): StepOriumApi!
+      @requireAuth(roles: ["ADMIN"])
   }
 `

@@ -10,8 +10,9 @@ export const schema = gql`
   }
 
   type Query {
-    stepTokenIdRanges: [StepTokenIdRange!]! @requireAuth
-    stepTokenIdRange(id: String!): StepTokenIdRange @requireAuth
+    stepTokenIdRanges: [StepTokenIdRange!]! @requireAuth(roles: ["ADMIN"])
+    stepTokenIdRange(id: String!): StepTokenIdRange
+      @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateStepTokenIdRangeInput {
@@ -33,11 +34,12 @@ export const schema = gql`
   type Mutation {
     createStepTokenIdRange(
       input: CreateStepTokenIdRangeInput!
-    ): StepTokenIdRange! @requireAuth
+    ): StepTokenIdRange! @requireAuth(roles: ["ADMIN"])
     updateStepTokenIdRange(
       id: String!
       input: UpdateStepTokenIdRangeInput!
-    ): StepTokenIdRange! @requireAuth
-    deleteStepTokenIdRange(id: String!): StepTokenIdRange! @requireAuth
+    ): StepTokenIdRange! @requireAuth(roles: ["ADMIN"])
+    deleteStepTokenIdRange(id: String!): StepTokenIdRange!
+      @requireAuth(roles: ["ADMIN"])
   }
 `
