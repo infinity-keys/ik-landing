@@ -10,7 +10,6 @@ import cookie from 'cookie'
 import type { QueryResolvers, MutationResolvers, StepType } from 'types/graphql'
 
 import { context } from '@redwoodjs/graphql-server'
-import { ForbiddenError } from '@redwoodjs/graphql-server'
 
 import { PuzzlesData } from 'src/lib/cookie'
 import { db } from 'src/lib/db'
