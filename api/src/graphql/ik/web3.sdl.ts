@@ -7,7 +7,7 @@ export const schema = gql`
     explorerUrl: String
   }
 
-  type Query {
+  type Mutation {
     # runs through entire nft claim flow
     claim(rewardableId: String!): ClaimResponse! @requireAuth
   }
