@@ -8,8 +8,9 @@ export const schema = gql`
   }
 
   type Query {
-    stepAssetTransfers: [StepAssetTransfer!]! @requireAuth
-    stepAssetTransfer(id: String!): StepAssetTransfer @requireAuth
+    stepAssetTransfers: [StepAssetTransfer!]! @requireAuth(roles: ["ADMIN"])
+    stepAssetTransfer(id: String!): StepAssetTransfer
+      @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateStepAssetTransferInput {
@@ -27,11 +28,12 @@ export const schema = gql`
   type Mutation {
     createStepAssetTransfer(
       input: CreateStepAssetTransferInput!
-    ): StepAssetTransfer! @requireAuth
+    ): StepAssetTransfer! @requireAuth(roles: ["ADMIN"])
     updateStepAssetTransfer(
       id: String!
       input: UpdateStepAssetTransferInput!
-    ): StepAssetTransfer! @requireAuth
-    deleteStepAssetTransfer(id: String!): StepAssetTransfer! @requireAuth
+    ): StepAssetTransfer! @requireAuth(roles: ["ADMIN"])
+    deleteStepAssetTransfer(id: String!): StepAssetTransfer!
+      @requireAuth(roles: ["ADMIN"])
   }
 `

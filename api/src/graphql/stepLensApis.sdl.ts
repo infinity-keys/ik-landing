@@ -15,8 +15,8 @@ export const schema = gql`
   }
 
   type Query {
-    stepLensApis: [StepLensApi!]! @requireAuth
-    stepLensApi(id: String!): StepLensApi @requireAuth
+    stepLensApis: [StepLensApi!]! @requireAuth(roles: ["ADMIN"])
+    stepLensApi(id: String!): StepLensApi @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateStepLensApiInput {
@@ -34,11 +34,12 @@ export const schema = gql`
   }
 
   type Mutation {
-    createStepLensApi(input: CreateStepLensApiInput!): StepLensApi! @requireAuth
+    createStepLensApi(input: CreateStepLensApiInput!): StepLensApi!
+      @requireAuth(roles: ["ADMIN"])
     updateStepLensApi(
       id: String!
       input: UpdateStepLensApiInput!
-    ): StepLensApi! @requireAuth
-    deleteStepLensApi(id: String!): StepLensApi! @requireAuth
+    ): StepLensApi! @requireAuth(roles: ["ADMIN"])
+    deleteStepLensApi(id: String!): StepLensApi! @requireAuth(roles: ["ADMIN"])
   }
 `
