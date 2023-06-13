@@ -473,6 +473,8 @@ if (step.type === 'TEST') {
 
 ### React
 
+**Note**: If you are only sending a wallet address to the backend, you can skip ahead to step 3
+
 1. Create a new component for the step type
 
 `yarn rw g component StepTest`
@@ -521,6 +523,21 @@ const handleClick = async () => {
 ```
 
 3. Add the new component to the `web/src/components/StepsLayout/StepsLayout.tsx` file:
+
+For step using the existing `AccountCheckButton` component
+
+```tsx
+{(
+  // ...
+  step.type === 'TOKEN_ID_RANGE' ||
+  step.type === 'TEST') && (
+  <div className="pt-8">
+    <AccountCheckButton step={step} puzzleId={puzzle.id} />
+  </div>
+)}
+```
+
+**Note**: If your new step needed a new component, it will need to be lazy loaded instead.
 
 ```tsx
 const StepTest = lazy(

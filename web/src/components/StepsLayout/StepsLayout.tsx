@@ -25,36 +25,12 @@ const SimpleTextInput = lazy(
   () => import('src/components/SimpleTextInput/SimpleTextInput')
 )
 
-const NftCheckButton = lazy(
-  () => import('src/components/NftCheckButton/NftCheckButton')
-)
-
-const StepFunctionCallButton = lazy(
-  () => import('src/components/StepFunctionCallButton/StepFunctionCallButton')
-)
-
-const StepComethApiButton = lazy(
-  () => import('src/components/StepComethApiButton/StepComethApiButton')
-)
-
-const StepOriumApiButton = lazy(
-  () => import('src/components/StepOriumApiButton/StepOriumApiButton')
+const AccountCheckButton = lazy(
+  () => import('src/components/AccountCheckButton/AccountCheckButton')
 )
 
 const StepLensApiButton = lazy(
   () => import('src/components/StepLensApiButton/StepLensApiButton')
-)
-
-const StepAssetTransferButton = lazy(
-  () => import('src/components/StepAssetTransferButton/StepAssetTransferButton')
-)
-
-const TokenIdRangeButton = lazy(
-  () => import('src/components/TokenIdRangeButton/TokenIdRangeButton')
-)
-
-const StepErc20BalanceButton = lazy(
-  () => import('src/components/StepErc20BalanceButton/StepErc20BalanceButton')
 )
 
 const StepsLayout = ({
@@ -115,7 +91,6 @@ const StepsLayout = ({
               )}
             </div>
 
-            {/* {!hasBeenSolved && ( */}
             {step.type === 'SIMPLE_TEXT' && (
               <div className="pt-8">
                 <SimpleTextInput
@@ -127,27 +102,15 @@ const StepsLayout = ({
               </div>
             )}
 
-            {step.type === 'NFT_CHECK' && (
+            {(step.type === 'NFT_CHECK' ||
+              step.type === 'FUNCTION_CALL' ||
+              step.type === 'COMETH_API' ||
+              step.type === 'ORIUM_API' ||
+              step.type === 'ASSET_TRANSFER' ||
+              step.type === 'TOKEN_ID_RANGE' ||
+              step.type === 'ERC20_BALANCE') && (
               <div className="pt-8">
-                <NftCheckButton step={step} puzzleId={puzzle.id} />
-              </div>
-            )}
-
-            {step.type === 'FUNCTION_CALL' && (
-              <div className="pt-8">
-                <StepFunctionCallButton step={step} puzzleId={puzzle.id} />
-              </div>
-            )}
-
-            {step.type === 'COMETH_API' && (
-              <div className="pt-8">
-                <StepComethApiButton step={step} puzzleId={puzzle.id} />
-              </div>
-            )}
-
-            {step.type === 'ORIUM_API' && (
-              <div className="pt-8">
-                <StepOriumApiButton step={step} puzzleId={puzzle.id} />
+                <AccountCheckButton step={step} puzzleId={puzzle.id} />
               </div>
             )}
 
@@ -156,25 +119,6 @@ const StepsLayout = ({
                 <StepLensApiButton step={step} puzzleId={puzzle.id} />
               </div>
             )}
-
-            {step.type === 'ASSET_TRANSFER' && (
-              <div className="pt-8">
-                <StepAssetTransferButton step={step} puzzleId={puzzle.id} />
-              </div>
-            )}
-
-            {step.type === 'TOKEN_ID_RANGE' && (
-              <div className="pt-8">
-                <TokenIdRangeButton step={step} puzzleId={puzzle.id} />
-              </div>
-            )}
-
-            {step.type === 'ERC20_BALANCE' && (
-              <div className="pt-8">
-                <StepErc20BalanceButton step={step} puzzleId={puzzle.id} />
-              </div>
-            )}
-            {/* )} */}
           </div>
         )}
       </Suspense>
