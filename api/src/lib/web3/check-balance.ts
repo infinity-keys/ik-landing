@@ -31,11 +31,30 @@ const hasOneTruePerIndex = (arrays: boolean[][]): boolean[] => {
   )
 }
 
+/**
+ * This function takes a 2D boolean array and divides each individual array by
+ * the number of wallet addresses we are checking.
+ * @NOTE: If we end up checking more addresses, we need to update this number
+ *
+ * @param arrays - A 2D boolean array.
+ * @returns A 2D boolean array.
+ */
+const divideArrays = (arrays: boolean[][]): boolean[][] =>
+  arrays.flatMap((arr) => {
+    // Length of the array divided by the number of number addresses
+    const middleIndex = Math.ceil(arr.length / 2)
+    const firstHalf = arr.slice(0, middleIndex)
+    const secondHalf = arr.slice(-middleIndex)
+    return [firstHalf, secondHalf]
+  })
+
 export const checkBalance = async ({
   account,
+  externalAddress,
   tokenIds,
 }: {
   account: string
+  externalAddress: string
   tokenIds: number[]
 }) => {
   // Again, this whole API could be migrated to Moralis
@@ -48,11 +67,15 @@ export const checkBalance = async ({
 
   try {
     const accountArray = Array(tokenIds.length).fill(account)
+    const externalAddressArray = Array(tokenIds.length).fill(externalAddress)
 
     // Returns type ethers.BigNumber
     const allBalances = await Promise.all(
       contracts.map((contract) =>
-        contract?.balanceOfBatch(accountArray, tokenIds)
+        contract?.balanceOfBatch(
+          accountArray.concat(externalAddressArray),
+          tokenIds.concat(tokenIds)
+        )
       )
     )
 
@@ -62,9 +85,14 @@ export const checkBalance = async ({
       bigNumberArr.map((b: ethers.BigNumber) => b.toNumber() > 0)
     )
 
+    // Each nested array returned from `allClaimedTokens` contains the results
+    // for both addresses, so that array needs to be divided in half before
+    // checking each index
+    const outputMatrix = divideArrays(allClaimedTokens)
+
     // Convert nested arrays into single array. Index will be true if at least
     // one of the arrays has true at that index
-    const claimedTokens = hasOneTruePerIndex(allClaimedTokens)
+    const claimedTokens = hasOneTruePerIndex(outputMatrix)
 
     // Check if all nft are claimed, returns true if eligible to claim pack nft
     const claimed = claimedTokens?.every((b) => b)
