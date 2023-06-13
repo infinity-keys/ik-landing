@@ -27,7 +27,7 @@
     "rollup-plugin-typescript-paths": "^1.4.0",
     "tslib": "^2.4.1",
     "typescript": "^4.6.4",
-    "vite": "^4.0.0"
+    "vite": "^4.0.5"
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^0.8.0"
