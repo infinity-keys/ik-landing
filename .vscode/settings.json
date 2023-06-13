@@ -22,8 +22,8 @@
     "RWJS",
     "sdls"
   ],
-  "editor.rulers": [
-    80
-  ],
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.rulers": [80],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "prettier.prettierPath": "./node_modules/prettier"
 }

@@ -9,8 +9,9 @@ export const schema = gql`
   }
 
   type Query {
-    stepErc20Balances: [StepErc20Balance!]! @requireAuth
-    stepErc20Balance(id: String!): StepErc20Balance @requireAuth
+    stepErc20Balances: [StepErc20Balance!]! @requireAuth(roles: ["ADMIN"])
+    stepErc20Balance(id: String!): StepErc20Balance
+      @requireAuth(roles: ["ADMIN"])
   }
 
   input CreateStepErc20BalanceInput {
@@ -30,11 +31,12 @@ export const schema = gql`
   type Mutation {
     createStepErc20Balance(
       input: CreateStepErc20BalanceInput!
-    ): StepErc20Balance! @requireAuth
+    ): StepErc20Balance! @requireAuth(roles: ["ADMIN"])
     updateStepErc20Balance(
       id: String!
       input: UpdateStepErc20BalanceInput!
-    ): StepErc20Balance! @requireAuth
-    deleteStepErc20Balance(id: String!): StepErc20Balance! @requireAuth
+    ): StepErc20Balance! @requireAuth(roles: ["ADMIN"])
+    deleteStepErc20Balance(id: String!): StepErc20Balance!
+      @requireAuth(roles: ["ADMIN"])
   }
 `

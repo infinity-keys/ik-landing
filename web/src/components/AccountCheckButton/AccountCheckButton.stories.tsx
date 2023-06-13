@@ -4,8 +4,8 @@
 // ```tsx
 // import type { ComponentStory } from '@storybook/react'
 //
-// export const generated: ComponentStory<typeof StepAssetTransferButton> = (args) => {
-//   return <StepAssetTransferButton {...args} />
+// export const generated: ComponentStory<typeof AccountCheckButton> = (args) => {
+//   return <AccountCheckButton {...args} />
 // }
 // ```
 //
@@ -13,13 +13,13 @@
 
 import type { ComponentMeta } from '@storybook/react'
 
-import StepAssetTransferButton from './StepAssetTransferButton'
+import AccountCheckButton from './AccountCheckButton'
 
 export const generated = () => {
-  return <StepAssetTransferButton />
+  return <AccountCheckButton />
 }
 
 export default {
-  title: 'Components/StepAssetTransferButton',
-  component: StepAssetTransferButton,
-} as ComponentMeta<typeof StepAssetTransferButton>
+  title: 'Components/AccountCheckButton',
+  component: AccountCheckButton,
+} as ComponentMeta<typeof AccountCheckButton>
