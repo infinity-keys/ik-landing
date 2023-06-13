@@ -92,6 +92,8 @@ export const claim: MutationResolvers['claim'] = async ({
         ({ childRewardable }) => childRewardable.nfts[0].tokenId
       )
 
+      // Checks both the generated wallet address from the DB and the one
+      // connected via wagmi
       const {
         claimed: hasRequiredNfts,
         errors: checkBalanceErrors,
