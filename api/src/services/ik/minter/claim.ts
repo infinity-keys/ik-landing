@@ -100,7 +100,7 @@ export const claim: MutationResolvers['claim'] = async ({
         claimedTokens,
       } = await checkBalance({
         account,
-        externalAddress,
+        externalAddress: externalAddress ?? undefined,
         tokenIds: requiredNftIds,
       })
 

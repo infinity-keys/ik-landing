@@ -54,7 +54,7 @@ export const checkBalance = async ({
   tokenIds,
 }: {
   account: string
-  externalAddress: string
+  externalAddress?: string
   tokenIds: number[]
 }) => {
   // Again, this whole API could be migrated to Moralis
@@ -67,14 +67,18 @@ export const checkBalance = async ({
 
   try {
     const accountArray = Array(tokenIds.length).fill(account)
-    const externalAddressArray = Array(tokenIds.length).fill(externalAddress)
+    const externalAddressArray = externalAddress
+      ? Array(tokenIds.length).fill(externalAddress)
+      : []
 
     // Returns type ethers.BigNumber
     const allBalances = await Promise.all(
       contracts.map((contract) =>
         contract?.balanceOfBatch(
-          accountArray.concat(externalAddressArray),
-          tokenIds.concat(tokenIds)
+          externalAddress
+            ? accountArray.concat(externalAddressArray)
+            : accountArray,
+          externalAddress ? tokenIds.concat(tokenIds) : tokenIds
         )
       )
     )
@@ -88,11 +92,13 @@ export const checkBalance = async ({
     // Each nested array returned from `allClaimedTokens` contains the results
     // for both addresses, so that array needs to be divided in half before
     // checking each index
-    const outputMatrix = divideArrays(allClaimedTokens)
+    const formattedArray = externalAddress
+      ? divideArrays(allClaimedTokens)
+      : allClaimedTokens
 
     // Convert nested arrays into single array. Index will be true if at least
     // one of the arrays has true at that index
-    const claimedTokens = hasOneTruePerIndex(outputMatrix)
+    const claimedTokens = hasOneTruePerIndex(formattedArray)
 
     // Check if all nft are claimed, returns true if eligible to claim pack nft
     const claimed = claimedTokens?.every((b) => b)

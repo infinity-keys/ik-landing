@@ -45,7 +45,7 @@ export const QUERY = gql`
 `
 
 const CLAIM_MUTATION = gql`
-  mutation ClaimMutation($rewardableId: String!, $externalAddress: String!) {
+  mutation ClaimMutation($rewardableId: String!, $externalAddress: String) {
     claim(rewardableId: $rewardableId, externalAddress: $externalAddress) {
       claimed
       tokenId
@@ -92,8 +92,9 @@ export const Success = ({
   const nftImage = rewardable.nfts[0]?.cloudinaryId
   const { errors, success, explorerUrl } = data?.claim || {}
 
-  const canMint = !loading && !success && address
-  const mustConnect = !loading && !success && !address
+  const canMint = !loading && !success && !data?.claim.claimed
+  const canConnect =
+    !loading && !success && !address && rewardable.type === 'PACK'
 
   return (
     <div>
@@ -121,8 +122,16 @@ export const Success = ({
 
       {canMint && <Button text="Claim NFT" onClick={claim} />}
 
-      {mustConnect && (
-        <Button text="Connect Wallet" onClick={openConnectModal} />
+      {canConnect && (
+        <div className="pt-12">
+          <p className="pb-2">Want us to check your external wallet too?</p>
+          <Button
+            text="Connect Wallet"
+            variant="faded"
+            border={false}
+            onClick={openConnectModal}
+          />
+        </div>
       )}
 
       {success && (
