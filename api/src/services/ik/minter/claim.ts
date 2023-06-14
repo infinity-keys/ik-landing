@@ -74,6 +74,8 @@ export const claim: MutationResolvers['claim'] = async ({ rewardableId }) => {
 
     // the user has claimed this NFT before and is not eligible to claim again
     if (claimed) {
+      await addNftReward(rewardableId)
+
       return {
         claimed,
         tokenId,
@@ -126,7 +128,6 @@ export const claim: MutationResolvers['claim'] = async ({ rewardableId }) => {
     }
 
     if (success) {
-      // @TODO: still return tx information even if this line breaks
       await addNftReward(rewardableId)
     }
 
