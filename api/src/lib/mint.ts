@@ -11,6 +11,34 @@ if (PRIVATE_KEY_VERIFY) {
   wallet = new ethers.Wallet(PRIVATE_KEY_VERIFY)
 }
 
+const fetchWithRetry = async (
+  func: () => Promise<Response>,
+  maxAttempts = 3,
+  interval = 5000
+) => {
+  try {
+    const res = await func()
+
+    if (res.status !== 200) {
+      throw new Error('There was a problem minting your NFT. Please try again.')
+    }
+
+    const data = await res.json()
+    return data
+  } catch (error) {
+    if (maxAttempts <= 1) {
+      // If no more attempts left, rethrow the error
+      throw error
+    }
+
+    // If the function failed, wait for the interval before trying again
+    await new Promise((resolve) => setTimeout(resolve, interval))
+
+    // Call the function again with one fewer attempt
+    await fetchWithRetry(func, maxAttempts - 1, interval)
+  }
+}
+
 export const mint = async (
   accessToken: string,
   account: string,
@@ -45,19 +73,10 @@ export const mint = async (
       }),
     }
 
-    const res = await fetch(
-      `https://api.usekeyp.com/v1/contracts/method/write`,
-      options
+    const { status, explorerUrl } = await fetchWithRetry(async () =>
+      fetch(`https://api.usekeyp.com/v1/contracts/method/write`, options)
     )
 
-    if (res.status !== 200) {
-      // @TODO: since first call will fail, should we just recall it once here?
-      throw new Error(
-        'There was a problem with gasless minting. Please try again.'
-      )
-    }
-
-    const { status, explorerUrl } = await res.json()
     return { success: status === 'SUCCESS', explorerUrl }
   } catch (e) {
     logger.error('Error claiming NFT', e)
