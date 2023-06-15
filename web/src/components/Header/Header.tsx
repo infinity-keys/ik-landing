@@ -20,6 +20,8 @@ import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
+import DiscordAuthButton from '../DiscordAuthButton/DiscordAuthButton'
+
 const socialLinks = [
   {
     href: 'https://lenster.xyz/u/infinitykeys',
@@ -77,6 +79,8 @@ const Header = () => {
             </picture>
           </Link>
         </div>
+
+        <DiscordAuthButton />
 
         <div className="flex gap-4">
           {loading ? <LoaderIcon /> : <ProfileIcon />}
