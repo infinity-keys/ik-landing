@@ -16,6 +16,7 @@
     "cypress:run": "yarn workspace cypress cypress run --headless --browser chrome"
   },
   "devDependencies": {
+    "@hookform/devtools": "^4.3.1",
     "@redwoodjs/auth-dbauth-setup": "5.0.5",
     "@redwoodjs/core": "5.0.5",
     "prettier": "^2.8.8",
