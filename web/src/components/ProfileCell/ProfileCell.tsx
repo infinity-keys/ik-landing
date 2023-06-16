@@ -1,14 +1,15 @@
 import React, { lazy } from 'react'
 
 import EnvelopeIcon from '@heroicons/react/20/solid/EnvelopeIcon'
+import ClipboardIcon from '@heroicons/react/24/outline/ClipboardIcon'
 import { truncate } from '@infinity-keys/core'
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import { useActiveProfile } from '@lens-protocol/react-web'
 import Avatar from 'boring-avatars'
 import type { FindUserQuery, FindUserQueryVariables } from 'types/graphql'
-import { useAccount } from 'wagmi'
 
 import { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/toast'
 
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import { avatarGradient } from 'src/lib/theme/helpers'
@@ -21,6 +22,7 @@ export const QUERY = gql`
       id
       username
       email
+      address
       twitterProfile
       discordProfile
       lensProfile
@@ -50,7 +52,6 @@ export const Failure = ({
 export const Success = ({
   user,
 }: CellSuccessProps<FindUserQuery, FindUserQueryVariables>) => {
-  const { address } = useAccount()
   const { data: lensProfile } = useActiveProfile()
 
   // Immediately upon mount, reconcile progress, but also provide function to
@@ -70,8 +71,23 @@ export const Success = ({
           <p className="text-xl font-bold text-white">
             {user.username || user.email?.split('@')[0] || ''}
           </p>
-          {address && (
-            <p className="text-brand-accent-primary">{truncate(address)}</p>
+          {user.address && (
+            <div className="flex items-center">
+              <p className="text-brand-accent-primary">
+                {truncate(user.address)}
+              </p>
+              <button
+                onClick={() => {
+                  toast('Address copied to clipboard', {
+                    className:
+                      'bg-black/40 border border-brand-accent-primary text-white',
+                  })
+                  navigator.clipboard.writeText(user.address)
+                }}
+              >
+                <ClipboardIcon className="ml-1 -mt-[2px] h-4 w-4 fill-transparent text-gray-200 hover:text-brand-accent-primary" />
+              </button>
+            </div>
           )}
         </div>
       </div>

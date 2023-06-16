@@ -10,7 +10,6 @@ import cookie from 'cookie'
 import type { QueryResolvers, MutationResolvers, StepType } from 'types/graphql'
 
 import { context } from '@redwoodjs/graphql-server'
-import { ForbiddenError } from '@redwoodjs/graphql-server'
 
 import { PuzzlesData } from 'src/lib/cookie'
 import { db } from 'src/lib/db'
@@ -116,68 +115,6 @@ export const rewardableClaim = ({ id }) => {
               },
             },
           },
-        },
-      },
-    },
-  })
-}
-
-export const addNftReward: QueryResolvers['userReward'] = async ({ id }) => {
-  const rewardable = await db.rewardable.findUnique({
-    where: { id },
-    select: {
-      type: true,
-      userRewards: {
-        where: { userId: context.currentUser.id },
-        select: {
-          id: true,
-        },
-      },
-      asParent: {
-        select: {
-          childRewardable: {
-            select: {
-              userRewards: {
-                where: { userId: context.currentUser.id },
-                select: {
-                  id: true,
-                },
-              },
-            },
-          },
-        },
-      },
-      nfts: {
-        select: {
-          id: true,
-        },
-      },
-    },
-  })
-
-  const isPack = rewardable.type === 'PACK'
-
-  if (isPack) {
-    const allPuzzlesSolved = rewardable.asParent.every(
-      ({ childRewardable }) => childRewardable.userRewards.length > 0
-    )
-
-    if (!allPuzzlesSolved) {
-      throw new ForbiddenError('You have not solved all the associated puzzles')
-    }
-  }
-
-  return db.userReward.update({
-    where: {
-      userId_rewardableId: {
-        userId: context.currentUser.id,
-        rewardableId: id,
-      },
-    },
-    data: {
-      nfts: {
-        connect: {
-          id: rewardable.nfts[0].id,
         },
       },
     },
