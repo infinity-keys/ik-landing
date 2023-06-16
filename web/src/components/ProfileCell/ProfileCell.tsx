@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy } from 'react'
 
 import EnvelopeIcon from '@heroicons/react/20/solid/EnvelopeIcon'
 import { truncate } from '@infinity-keys/core'
@@ -10,7 +10,6 @@ import { useAccount } from 'wagmi'
 
 import { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import LensConnect from 'src/components/LensConnect/LensConnect'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import { avatarGradient } from 'src/lib/theme/helpers'
 import DiscordIcon from 'src/svgs/DiscordIcon'
@@ -36,6 +35,7 @@ export const QUERY = gql`
     }
   }
 `
+const LensConnect = lazy(() => import('src/components/LensConnect/LensConnect'))
 
 export const Loading = () => <LoadingIcon />
 
