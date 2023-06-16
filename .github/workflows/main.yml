@@ -54,10 +54,11 @@ jobs:
       - run: yarn rw lint
       # run the api tests
       - run: yarn rw test api --no-watch
-      # run Cypress tests
-      - run: yarn cypress:run
         env:
           INFINITY_KEYS_SECRET: ${{ secrets.INFINITY_KEYS_SECRET }}
+      # run Cypress tests
+      - run: yarn cypress:run
+
       # run the web tests
       # TODO: uncomment this when we have web tests running
       # - run: yarn rw test web --no-watch
