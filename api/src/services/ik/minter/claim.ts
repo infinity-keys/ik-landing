@@ -133,9 +133,15 @@ export const claim: MutationResolvers['claim'] = async ({
       return { errors }
     }
 
-    if (success) {
-      await addNftReward(rewardableId)
+    if (!success) {
+      return {
+        errors: [
+          'Gas prices are unpredictable and may cause errors. Please try again in a few seconds.',
+        ],
+      }
     }
+
+    await addNftReward(rewardableId)
 
     return {
       success,
