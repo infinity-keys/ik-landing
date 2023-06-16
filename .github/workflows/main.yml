@@ -50,8 +50,8 @@ jobs:
       - run: yarn build-ci
       # build the redwood app
       - run: yarn rw build
-      # serve the redwood app
-      - run: yarn rw serve
+        # serve the redwood app
+        # - run: yarn rw serve
         env:
           DISCORD_MINT_BOT_KEY: ${{ secrets.DISCORD_MINT_BOT_KEY }}
           DISCORD_VOTE_BOT_KEY: ${{ secrets.DISCORD_VOTE_BOT_KEY }}
