@@ -50,14 +50,16 @@ jobs:
       - run: yarn build-ci
       # build the redwood app
       - run: yarn rw build
+      # serve the redwood app
+      - run: yarn rw serve
+      # run Cypress tests
+      - run: yarn cypress:run
       # run our linter
       - run: yarn rw lint
       # run the api tests
       - run: yarn rw test api --no-watch
         env:
           INFINITY_KEYS_SECRET: ${{ secrets.INFINITY_KEYS_SECRET }}
-      # run Cypress tests
-      - run: yarn cypress:run
 
       # run the web tests
       # TODO: uncomment this when we have web tests running
