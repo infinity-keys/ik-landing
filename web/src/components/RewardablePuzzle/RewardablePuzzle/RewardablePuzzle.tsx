@@ -1,14 +1,19 @@
+import { lazy } from 'react'
+
 import type { FindRewardablePuzzleBySlug } from 'types/graphql'
 
 import { useParams } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
-import DummyThumbnail from 'src/components/DummyThumbnail/DummyThumbnail'
 import PuzzleLandingLayout from 'src/components/PuzzleLandingLayout/PuzzleLandingLayout'
 import StepsCell from 'src/components/StepsCell'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
+
+const DummyThumbnail = lazy(
+  () => import('src/components/DummyThumbnail/DummyThumbnail')
+)
 
 interface Props {
   rewardable: FindRewardablePuzzleBySlug['rewardable']
