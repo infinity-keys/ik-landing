@@ -61,9 +61,7 @@ jobs:
         with:
           wait-on: 'http://localhost:8910'
           record: false
-          working-directory: packages/cypress/cypress/e2e
-      # run Cypress tests
-      - run: yarn cypress:run
+          working-directory: packages/cypress
       # run our linter
       - run: yarn rw lint
       # run the api tests
