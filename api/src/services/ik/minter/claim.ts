@@ -7,7 +7,10 @@ import { checkBalance } from 'src/lib/web3/check-balance'
 import { checkClaimed } from 'src/lib/web3/check-claimed'
 import { rewardableClaim } from 'src/services/ik/rewardables/rewardables'
 
-export const claim: MutationResolvers['claim'] = async ({ rewardableId }) => {
+export const claim: MutationResolvers['claim'] = async ({
+  rewardableId,
+  externalAddress,
+}) => {
   try {
     const rewardableData = await rewardableClaim({ id: rewardableId })
 
@@ -91,12 +94,15 @@ export const claim: MutationResolvers['claim'] = async ({ rewardableId }) => {
         ({ childRewardable }) => childRewardable.nfts[0].tokenId
       )
 
+      // Checks both the generated wallet address from the DB and the one
+      // connected via wagmi
       const {
         claimed: hasRequiredNfts,
         errors: checkBalanceErrors,
         claimedTokens,
       } = await checkBalance({
         account,
+        externalAddress: externalAddress ?? undefined,
         tokenIds: requiredNftIds,
       })
 

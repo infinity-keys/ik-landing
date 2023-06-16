@@ -1,12 +1,14 @@
 import { Fragment } from 'react'
 
 import { gql } from '@apollo/client'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 import capitalize from 'lodash/capitalize'
 import type {
   FindClaimNftQuery,
   FindClaimNftQueryVariables,
 } from 'types/graphql'
 import { ClaimMutation } from 'types/graphql'
+import { useAccount } from 'wagmi'
 
 import { Link } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
@@ -43,8 +45,8 @@ export const QUERY = gql`
 `
 
 const CLAIM_MUTATION = gql`
-  mutation ClaimMutation($rewardableId: String!) {
-    claim(rewardableId: $rewardableId) {
+  mutation ClaimMutation($rewardableId: String!, $externalAddress: String) {
+    claim(rewardableId: $rewardableId, externalAddress: $externalAddress) {
       claimed
       tokenId
       success
@@ -68,6 +70,9 @@ export const Failure = ({
 export const Success = ({
   rewardable,
 }: CellSuccessProps<FindClaimNftQuery, FindClaimNftQueryVariables>) => {
+  const { address } = useAccount()
+  const { openConnectModal } = useConnectModal()
+
   // checks both db and blockchain to see if user is eligible to mint
   // if successful, it runs the gasless claim function
   const [claim, { loading, data }] = useMutation<ClaimMutation>(
@@ -75,6 +80,7 @@ export const Success = ({
     {
       variables: {
         rewardableId: rewardable.id,
+        externalAddress: address,
       },
     }
   )
@@ -85,6 +91,10 @@ export const Success = ({
 
   const nftImage = rewardable.nfts[0]?.cloudinaryId
   const { errors, success, explorerUrl } = data?.claim || {}
+
+  const canMint = !loading && !success && !data?.claim.claimed
+  const canConnect =
+    !loading && !success && !address && rewardable.type === 'PACK'
 
   return (
     <div>
@@ -110,7 +120,19 @@ export const Success = ({
         </div>
       )}
 
-      {!loading && !success && <Button text="Claim NFT" onClick={claim} />}
+      {canMint && <Button text="Claim NFT" onClick={claim} />}
+
+      {canConnect && (
+        <div className="pt-12">
+          <p className="pb-2">Want us to check your external wallet too?</p>
+          <Button
+            text="Connect Wallet"
+            variant="faded"
+            border={false}
+            onClick={openConnectModal}
+          />
+        </div>
+      )}
 
       {success && (
         <div>
