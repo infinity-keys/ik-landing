@@ -1,33 +1,19 @@
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 
-import { gql, useLazyQuery } from '@apollo/client'
-import { OPTIMISM_CHAIN_ID } from '@infinity-keys/constants'
-import {
-  contractAddressLookup,
-  marketplaceLookup,
-  marketplaceNameLookup,
-} from '@infinity-keys/constants'
-import { IKAchievementABI__factory } from '@infinity-keys/contracts'
-import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { gql } from '@apollo/client'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 import capitalize from 'lodash/capitalize'
 import type {
   FindClaimNftQuery,
   FindClaimNftQueryVariables,
 } from 'types/graphql'
-import { AddNftRewardMutation } from 'types/graphql'
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useNetwork,
-  useWaitForTransaction,
-  useAccount,
-} from 'wagmi'
+import { ClaimMutation } from 'types/graphql'
+import { useAccount } from 'wagmi'
 
 import { Link } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
 import CloudImage from 'src/components/CloudImage/CloudImage'
 import Heading from 'src/components/Heading/Heading'
@@ -58,22 +44,15 @@ export const QUERY = gql`
   }
 `
 
-const CHECK_CLAIM_QUERY = gql`
-  query CheckClaimQuery($account: String!, $rewardableId: String!) {
-    claim(account: $account, rewardableId: $rewardableId) {
+const CLAIM_MUTATION = gql`
+  mutation ClaimMutation($rewardableId: String!, $externalAddress: String) {
+    claim(rewardableId: $rewardableId, externalAddress: $externalAddress) {
       claimed
-      chainClaimed
-      signature
+      tokenId
+      success
+      explorerUrl
       tokenId
       errors
-    }
-  }
-`
-
-const ADD_NFT_REWARD_MUTATION = gql`
-  mutation AddNftRewardMutation($id: String!) {
-    addNftReward(id: $id) {
-      id
     }
   }
 `
@@ -91,87 +70,31 @@ export const Failure = ({
 export const Success = ({
   rewardable,
 }: CellSuccessProps<FindClaimNftQuery, FindClaimNftQueryVariables>) => {
-  const { chain } = useNetwork()
-  const { isConnected, address } = useAccount()
+  const { address } = useAccount()
   const { openConnectModal } = useConnectModal()
-  const { openChainModal } = useChainModal()
-  const isValidChain = chain?.id === OPTIMISM_CHAIN_ID
-
-  const contractAddress = isValidChain
-    ? contractAddressLookup[OPTIMISM_CHAIN_ID]
-    : ''
 
   // checks both db and blockchain to see if user is eligible to mint
-  // if successful, it returns all the data needed to mint nft
-  const [claim, { loading: queryLoading, data }] = useLazyQuery(
-    CHECK_CLAIM_QUERY,
+  // if successful, it runs the gasless claim function
+  const [claim, { loading, data }] = useMutation<ClaimMutation>(
+    CLAIM_MUTATION,
     {
       variables: {
-        account: address,
         rewardableId: rewardable.id,
+        externalAddress: address,
       },
     }
   )
-
-  // add nft to userRewards table on successful transaction
-  const [updateReward] = useMutation<AddNftRewardMutation>(
-    ADD_NFT_REWARD_MUTATION
-  )
-
-  const {
-    claimed = false,
-    chainClaimed = 0,
-    signature = '',
-    tokenId = undefined,
-  } = data?.claim || {}
-
-  const { config } = usePrepareContractWrite({
-    addressOrName: contractAddress,
-    contractInterface: IKAchievementABI__factory.abi,
-    functionName: 'claim',
-    args: [tokenId, signature],
-    // keeps this hook from firing until we get a valid signature
-    enabled: !!signature,
-  })
-
-  const {
-    data: writeData,
-    write: mintNft,
-    error: writeError,
-  } = useContractWrite(config)
-
-  const {
-    error: transactionError,
-    isLoading: transactionPending,
-    isSuccess: transactionSuccess,
-  } = useWaitForTransaction({
-    hash: writeData?.hash,
-  })
-
-  useEffect(() => {
-    if (transactionSuccess) {
-      // once the transaction succeeds, add NFT to userReward
-      updateReward({
-        variables: {
-          id: rewardable.id,
-        },
-      })
-    }
-  }, [transactionSuccess, rewardable.id, updateReward])
 
   if (!rewardable.nfts.length) {
     return <div>No NFT found for this {capitalize(rewardable.type)}</div>
   }
 
   const nftImage = rewardable.nfts[0]?.cloudinaryId
-  const canClaim = !signature && !claimed && isConnected && isValidChain
-  const canMint =
-    signature &&
-    !claimed &&
-    !transactionSuccess &&
-    !transactionPending &&
-    isConnected &&
-    isValidChain
+  const { errors, success, explorerUrl } = data?.claim || {}
+
+  const canMint = !loading && !success && !data?.claim.claimed
+  const canConnect =
+    !loading && !success && !address && rewardable.type === 'PACK'
 
   return (
     <div>
@@ -184,48 +107,34 @@ export const Success = ({
         <Heading>Claim Your Treasure</Heading>
       </div>
 
-      {!queryLoading &&
-        data?.claim?.errors?.map((err: string, i: number) => (
+      {!loading &&
+        errors?.map((err: string, i: number) => (
           <p className="mb-4 italic text-gray-200" key={i}>
             {err}
           </p>
         ))}
 
-      {(queryLoading || transactionPending) && (
+      {loading && (
         <div className="my-4">
           <LoadingIcon />
         </div>
       )}
 
-      {transactionPending && (
-        <div className="mb-4 flex justify-center">
-          <Alert text="Transaction pending. Do not close page." />
+      {canMint && <Button text="Claim NFT" onClick={claim} />}
+
+      {canConnect && (
+        <div className="pt-12">
+          <p className="pb-2">Want us to check your external wallet too?</p>
+          <Button
+            text="Connect Wallet"
+            variant="faded"
+            border={false}
+            onClick={openConnectModal}
+          />
         </div>
       )}
 
-      {!isConnected && (
-        <Button text="Connect Wallet" onClick={openConnectModal} />
-      )}
-
-      {isConnected && !isValidChain && (
-        <>
-          <p className="mb-4 italic text-gray-200">
-            This NFT can only be minted on Optimism
-          </p>
-          <Button text="Switch Chains" onClick={openChainModal} />
-        </>
-      )}
-
-      {canClaim && <Button text="Check My Keys" onClick={claim} />}
-
-      {canMint && (
-        <>
-          <p className="mb-4">Claim Your Trophy on {chain?.name}</p>
-          <Button text="Claim" onClick={mintNft} />
-        </>
-      )}
-
-      {(claimed || transactionSuccess) && (
+      {success && (
         <div>
           <div className="pb-8">
             <Button
@@ -239,21 +148,18 @@ export const Success = ({
               )}`}
             />
           </div>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={`${marketplaceLookup[chainClaimed || chain?.id]}${tokenId}`}
-            className="text-gray-200 underline transition-colors hover:text-brand-accent-primary"
-          >
-            View NFT On {marketplaceNameLookup[chainClaimed || chain?.id]}
-          </a>
-        </div>
-      )}
 
-      {(writeError || transactionError) && (
-        <p className="mt-4 italic text-gray-200">
-          Error processing transaction. Please try again.
-        </p>
+          {explorerUrl && (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={explorerUrl}
+              className="text-gray-200 underline transition-colors hover:text-brand-accent-primary"
+            >
+              View transaction
+            </a>
+          )}
+        </div>
       )}
 
       {/* Allows user to navigate to every public parent of this puzzle */}
