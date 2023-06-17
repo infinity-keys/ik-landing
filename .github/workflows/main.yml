@@ -50,18 +50,19 @@ jobs:
       - run: yarn build-ci
       # build the redwood app
       - run: yarn rw build
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
-        with:
-          start: yarn rw serve
-          wait-on: 'http://localhost:8910'
-          record: false
-          project: ./cypress
-          config-file: packages/cypress/cypress.config.ts
+      # serve the redwood app
+      - run: yarn rw serve &
         env:
           DISCORD_MINT_BOT_KEY: ${{ secrets.DISCORD_MINT_BOT_KEY }}
           DISCORD_VOTE_BOT_KEY: ${{ secrets.DISCORD_VOTE_BOT_KEY }}
           MORALIS_API_KEY: ${{ secrets.MORALIS_API_KEY }}
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          wait-on: 'http://localhost:8910'
+          record: false
+          working-directory: './cypress'
+          config-file: cypress.config.ts
       # run our linter
       - run: yarn rw lint
       # run the api tests
