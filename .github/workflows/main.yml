@@ -56,6 +56,7 @@ jobs:
           start: yarn rw serve
           wait-on: 'http://localhost:8910'
           record: false
+          project: ./cypress
           config-file: packages/cypress/cypress.config.ts
         env:
           DISCORD_MINT_BOT_KEY: ${{ secrets.DISCORD_MINT_BOT_KEY }}

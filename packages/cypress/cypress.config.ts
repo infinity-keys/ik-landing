@@ -10,6 +10,8 @@ export default defineConfig({
     defaultCommandTimeout: 6000,
     video: false,
     screenshotOnRunFailure: false,
-    supportFile: false,
   },
+  integrationFolder: 'cypress/cypress/e2e',
+  supportFile: 'cypress/cypress/support/index.ts',
+  fixturesFolder: 'cypress/cypress/fixtures',
 })
