@@ -53,7 +53,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          start: yarn rw dev
+          start: yarn rw serve
           wait-on: 'http://localhost:8910'
           record: false
           config-file: packages/cypress/cypress.config.ts
