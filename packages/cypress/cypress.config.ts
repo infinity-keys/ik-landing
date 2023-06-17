@@ -11,7 +11,4 @@ export default defineConfig({
     video: false,
     screenshotOnRunFailure: false,
   },
-  integrationFolder: 'cypress/cypress/e2e',
-  supportFile: 'cypress/cypress/support/index.ts',
-  fixturesFolder: 'cypress/cypress/fixtures',
 })
