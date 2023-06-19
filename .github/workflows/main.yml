@@ -50,6 +50,7 @@ jobs:
       - run: yarn build-ci
       # build the redwood app
       - run: yarn rw build
+      # run Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
@@ -62,13 +63,13 @@ jobs:
           DISCORD_MINT_BOT_KEY: ${{ secrets.DISCORD_MINT_BOT_KEY }}
           DISCORD_VOTE_BOT_KEY: ${{ secrets.DISCORD_VOTE_BOT_KEY }}
           MORALIS_API_KEY: ${{ secrets.MORALIS_API_KEY }}
+          DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
       # run our linter
       - run: yarn rw lint
       # run the api tests
       - run: yarn rw test api --no-watch
         env:
           INFINITY_KEYS_SECRET: ${{ secrets.INFINITY_KEYS_SECRET }}
-
       # run the web tests
       # TODO: uncomment this when we have web tests running
       # - run: yarn rw test web --no-watch

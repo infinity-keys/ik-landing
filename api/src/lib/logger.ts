@@ -24,13 +24,13 @@ export const stream = datadog.createWriteStreamSync({
   size: 1,
 })
 
-console.log(process.env.NODE_ENV)
-
 export const logger = createLogger({
-  // @TODO: fix cypress error
-  // ...(process.env.NODE_ENV === 'production' && {
-  //   destination: stream,
-  //   options: { level: 'info' },
-  // }),
-  options: { level: 'info' },
+  ...(process.env.NODE_ENV === 'production'
+    ? {
+        destination: stream,
+        options: { level: 'info' },
+      }
+    : {
+        options: { level: 'warn' },
+      }),
 })
