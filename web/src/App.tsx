@@ -13,6 +13,7 @@ import { publicProvider } from 'wagmi/providers/public'
 
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+import { Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 import CookieConsentBanner from 'src/components/CookieConsentBanner/CookieConsentBanner'
@@ -90,6 +91,7 @@ const App = () => {
                 <RedwoodApolloProvider useAuth={useAuth}>
                   <Routes />
                   <CookieConsentBanner />
+                  <Toaster position="bottom-right" />
                 </RedwoodApolloProvider>
               </AuthProvider>
             </RedwoodProvider>
