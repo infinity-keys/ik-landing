@@ -9,7 +9,7 @@ import type { StandardScenario } from './users.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe.skip('users', () => {
+describe('users', () => {
   scenario('returns all users', async (scenario: StandardScenario) => {
     const result = await users()
 
@@ -24,20 +24,20 @@ describe.skip('users', () => {
 
   scenario('creates a user', async () => {
     const result = await createUser({
-      input: { updatedAt: '2023-05-05T18:54:34.915Z' },
+      input: { updatedAt: '2023-06-19T16:45:23.735Z' },
     })
 
-    expect(result.updatedAt).toEqual(new Date('2023-05-05T18:54:34.915Z'))
+    expect(result.updatedAt).toEqual(new Date('2023-06-19T16:45:23.735Z'))
   })
 
   scenario('updates a user', async (scenario: StandardScenario) => {
     const original = (await user({ id: scenario.user.one.id })) as User
     const result = await updateUser({
       id: original.id,
-      input: { updatedAt: '2023-05-06T18:54:34.915Z' },
+      input: { updatedAt: '2023-06-20T16:45:23.735Z' },
     })
 
-    expect(result.updatedAt).toEqual(new Date('2023-05-06T18:54:34.915Z'))
+    expect(result.updatedAt).toEqual(new Date('2023-06-20T16:45:23.735Z'))
   })
 
   scenario('deletes a user', async (scenario: StandardScenario) => {

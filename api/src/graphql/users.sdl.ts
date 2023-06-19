@@ -32,6 +32,7 @@ export const schema = gql`
     accessToken: String
     oauth: [OAuth]!
     oauthConnection: [OAuthConnection]!
+    discordConnection: DiscordConnection
   }
 
   enum SiteRole {
