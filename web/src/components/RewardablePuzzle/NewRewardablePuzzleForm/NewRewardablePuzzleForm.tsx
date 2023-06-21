@@ -44,6 +44,10 @@ const RewardableForm = (props: RewardableFormProps) => {
     const { nft, ...rest } = data
     const filteredData = nft.tokenId !== null ? data : rest
 
+    // this is where we delete the unwanted `id` field that is being added
+    // by the `useFieldArray` hook which our middleware is rejecting
+    const transformedFields = fields.map(({ id, ...rest }) => rest)
+
     if (data.type === 'PUZZLE' && fields.length === 0) {
       alert('Puzzles need at least one step')
       return
@@ -63,17 +67,21 @@ const RewardableForm = (props: RewardableFormProps) => {
       const { rewardableConnection, ...rest } = filteredData
 
       const withSteps = rewardableConnection?.parentId
-        ? { ...filteredData, steps }
-        : { ...rest, steps }
+        ? { ...filteredData, steps: transformedFields }
+        : { ...rest, steps: transformedFields }
 
       props.onSave(withSteps)
     }
 
-    setSteps([])
+    console.log('data:', data)
+    console.log('steps:', steps)
+    console.log('fields:', fields)
+    // setSteps([])
     formMethods.reset()
   }
 
   const addStep = (data) => {
+    console.log('start of addStep data:', data)
     const duplicate = fields.some(
       ({ stepSortWeight }) => stepSortWeight === data.stepSortWeight
     )
@@ -85,8 +93,11 @@ const RewardableForm = (props: RewardableFormProps) => {
       // this is an attempt to get rid of the id field
       // but it doesn't work regardless
       const strippedData = { ...data }
-      delete strippedData.id
+      // delete strippedData.id
       append(strippedData)
+      console.log('end of of addStep data:', data)
+      console.log('end of of addStep strippedData:', strippedData)
+      console.log('strippedData.id:', strippedData.id)
     }
   }
 
