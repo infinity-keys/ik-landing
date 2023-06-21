@@ -180,54 +180,53 @@ export const Success = ({
         </div>
       </div>
 
-      {user?.authId?.split('DISCORD-')[1] &&
-        currentUser?.roles.includes('ADMIN') && (
-          <div className="rounded-md border-t border-white/10 bg-black/25 py-8 px-10 text-sm text-gray-100">
-            {discordSyncLoading ? (
-              <LoadingIcon />
-            ) : (
-              <>
-                {!discordRolesData?.syncDiscordRoles.success && (
-                  <>
-                    <p>
-                      Are you a member of our{' '}
-                      <a
-                        href="https://discord.gg/infinitykeys"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline transition-colors hover:text-brand-accent-primary"
-                      >
-                        Discord server
-                      </a>
-                      ? Sync your Discord roles here.
-                    </p>
-
-                    <div className="flex justify-center">
-                      <button
-                        onClick={() => syncDiscordRoles()}
-                        className="social-share mt-4 inline-flex items-center rounded bg-discordPurple px-4 py-2 text-sm font-medium text-white transition hover:bg-discordPurple/70"
-                      >
-                        Sync Roles
-                      </button>
-                    </div>
-                  </>
-                )}
-
-                {discordRolesData?.syncDiscordRoles?.message && (
-                  <p className="text-center">
-                    {discordRolesData?.syncDiscordRoles?.message}
+      {user?.authId?.split('DISCORD-')[1] && (
+        <div className="rounded-md border-t border-white/10 bg-black/25 py-8 px-10 text-sm text-gray-100">
+          {discordSyncLoading ? (
+            <LoadingIcon />
+          ) : (
+            <>
+              {!discordRolesData?.syncDiscordRoles.success && (
+                <>
+                  <p>
+                    Are you a member of our{' '}
+                    <a
+                      href="https://discord.gg/infinitykeys"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline transition-colors hover:text-brand-accent-primary"
+                    >
+                      Discord server
+                    </a>
+                    ? Sync your Discord roles here.
                   </p>
-                )}
 
-                {discordRolesData?.syncDiscordRoles?.errors?.map((text, i) => (
-                  <p className="mt-2" key={i}>
-                    {text}
-                  </p>
-                ))}
-              </>
-            )}
-          </div>
-        )}
+                  <div className="flex justify-center">
+                    <button
+                      onClick={() => syncDiscordRoles()}
+                      className="social-share mt-4 inline-flex items-center rounded bg-discordPurple px-4 py-2 text-sm font-medium text-white transition hover:bg-discordPurple/70"
+                    >
+                      Sync Roles
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {discordRolesData?.syncDiscordRoles?.message && (
+                <p className="text-center">
+                  {discordRolesData?.syncDiscordRoles?.message}
+                </p>
+              )}
+
+              {discordRolesData?.syncDiscordRoles?.errors?.map((text, i) => (
+                <p className="mt-2" key={i}>
+                  {text}
+                </p>
+              ))}
+            </>
+          )}
+        </div>
+      )}
     </div>
   )
 }
