@@ -15,7 +15,6 @@ import type {
 import { CellSuccessProps, CellFailureProps, useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-import { useAuth } from 'src/auth'
 import LensConnect from 'src/components/LensConnect/LensConnect'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import { avatarGradient } from 'src/lib/theme/helpers'
@@ -75,7 +74,6 @@ export const Success = ({
   ] = useMutation<SyncDiscordRolesMutation>(SYNC_DISCORD_ROLES_MUTATION)
   // Immediately upon mount, reconcile progress, but also provide function to
   // use on button click
-  const { currentUser } = useAuth()
 
   return (
     <div className="flexs">
