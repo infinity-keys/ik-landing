@@ -1,123 +1,162 @@
-import { OPTIMISM_CHAIN_ID } from '@infinity-keys/constants'
-import { QueryResolvers } from 'types/graphql'
+import { MutationResolvers } from 'types/graphql'
 
-import { getSignature } from 'src/lib/verifySignature'
+import { db } from 'src/lib/db'
+import { mint } from 'src/lib/mint'
+import { addNftReward } from 'src/lib/nft'
 import { checkBalance } from 'src/lib/web3/check-balance'
 import { checkClaimed } from 'src/lib/web3/check-claimed'
 import { rewardableClaim } from 'src/services/ik/rewardables/rewardables'
 
-export const claim: QueryResolvers['claim'] = async ({
-  account,
+export const claim: MutationResolvers['claim'] = async ({
   rewardableId,
+  externalAddress,
 }) => {
-  // @TODO: can we check cookie to see if puzzleId steps are greater than 0, (but what about packs...)
+  try {
+    const rewardableData = await rewardableClaim({ id: rewardableId })
 
-  const rewardableData = await rewardableClaim({ id: rewardableId })
-
-  // rewardable has not been solved
-  if (!rewardableData || rewardableData.userRewards.length === 0) {
-    return {
-      errors: ['Please solve to claim'],
-    }
-  }
-
-  // Has this rewardable's NFT been claimed by this user account
-  const usersNfts = rewardableData.userRewards[0].nfts?.map(({ id }) => id)
-  const claimedByUser = rewardableData.nfts.every(({ id }) =>
-    usersNfts.includes(id)
-  )
-
-  if (claimedByUser) {
-    return {
-      errors: ['This NFT has already been claimed on this user account.'],
-    }
-  }
-
-  const isPack = rewardableData.type === 'PACK'
-
-  if (isPack) {
-    // all child rewardables need to be solved first
-    const solvedAllChildren = rewardableData.asParent.every(
-      ({ childRewardable }) => childRewardable.userRewards.length > 0
-    )
-
-    if (!solvedAllChildren) {
+    // rewardable has not been solved
+    if (!rewardableData || rewardableData.userRewards.length === 0) {
       return {
-        errors: ['Must solve all associated puzzles before claiming'],
+        errors: ['Please solve to claim'],
       }
     }
-  }
 
-  // @TODO: claim logic breaks when we have more than 1 NFT per rewardable
-  const { tokenId } = rewardableData.nfts[0]
-
-  // has this nft already been claimed on this account
-  const {
-    claimed,
-    chainClaimed,
-    errors: checkClaimedErrors,
-  } = await checkClaimed({
-    account,
-    tokenId,
-  })
-
-  // if an error occurs in checkClaimed, it will not return a "claimed" key
-  if (
-    typeof claimed === 'undefined' &&
-    checkClaimedErrors &&
-    checkClaimedErrors.length > 0
-  ) {
-    return { errors: checkClaimedErrors }
-  }
-
-  // the user has claimed this NFT before and is not eligible to claim again
-  if (claimed) {
-    return {
-      claimed,
-      chainClaimed,
-      tokenId,
-      errors: ['You have already claimed this NFT'],
-    }
-  }
-
-  // if the rewardable has children NFTs that need to have been claimed
-  // ensure user has claimed them all before generating signature
-  if (isPack) {
-    // generate gatedIds if claiming a pack, bundle, etc
-    const requiredNftIds = rewardableData.asParent.map(
-      ({ childRewardable }) => childRewardable.nfts[0].tokenId
+    // Has this rewardable's NFT been claimed by this user account
+    const usersNfts = rewardableData.userRewards[0].nfts?.map(({ id }) => id)
+    const claimedByUser = rewardableData.nfts.every(({ id }) =>
+      usersNfts.includes(id)
     )
 
-    const {
-      claimed: hasRequiredNfts,
-      errors: checkBalanceErrors,
-      claimedTokens,
-    } = await checkBalance({
-      account,
-      tokenIds: requiredNftIds,
-    })
-
-    if (checkBalanceErrors && checkBalanceErrors.length > 0) {
-      return { errors: checkBalanceErrors }
+    if (claimedByUser) {
+      return {
+        errors: ['This NFT has already been claimed on this user account.'],
+      }
     }
 
-    if (!hasRequiredNfts) {
-      const missingNfts = requiredNftIds
-        .filter((n, i) => !claimedTokens[i])
-        .join(', ')
+    const isPack = rewardableData.type === 'PACK'
+
+    if (isPack) {
+      // all child rewardables need to be solved first
+      const solvedAllChildren = rewardableData.asParent.every(
+        ({ childRewardable }) => childRewardable.userRewards.length > 0
+      )
+
+      if (!solvedAllChildren) {
+        return {
+          errors: ['Must solve all associated puzzles before claiming'],
+        }
+      }
+    }
+
+    // @TODO: claim logic breaks when we have more than 1 NFT per rewardable
+    const { tokenId } = rewardableData.nfts[0]
+
+    const { address: account, accessToken } =
+      (await db.user.findUnique({
+        where: { id: context.currentUser?.id },
+      })) || {}
+
+    if (!accessToken || !account) {
+      throw new Error('Error obtaining user data required to mint.')
+    }
+
+    // has this nft already been claimed on this account
+    const { claimed, errors: checkClaimedErrors } = await checkClaimed({
+      account,
+      tokenId,
+    })
+
+    // if an error occurs in checkClaimed, it will not return a "claimed" key
+    if (
+      typeof claimed === 'undefined' &&
+      checkClaimedErrors &&
+      checkClaimedErrors.length > 0
+    ) {
+      return { errors: checkClaimedErrors }
+    }
+
+    // the user has claimed this NFT before and is not eligible to claim again
+    if (claimed) {
+      await addNftReward(rewardableId)
 
       return {
+        claimed,
+        tokenId,
+        errors: ['You have already claimed this NFT'],
+      }
+    }
+
+    // if the rewardable has children NFTs that need to have been claimed
+    // ensure user has claimed them all before generating signature
+    if (isPack) {
+      // generate gatedIds if claiming a pack, bundle, etc
+      const requiredNftIds = rewardableData.asParent.map(
+        ({ childRewardable }) => childRewardable.nfts[0].tokenId
+      )
+
+      // Checks both the generated wallet address from the DB and the one
+      // connected via wagmi
+      const {
+        claimed: hasRequiredNfts,
+        errors: checkBalanceErrors,
+        claimedTokens,
+      } = await checkBalance({
+        account,
+        externalAddress: externalAddress ?? undefined,
+        tokenIds: requiredNftIds,
+      })
+
+      if (checkBalanceErrors && checkBalanceErrors.length > 0) {
+        return { errors: checkBalanceErrors }
+      }
+
+      if (!hasRequiredNfts && claimedTokens?.length) {
+        const missingNfts = requiredNftIds
+          .filter((_, i) => !claimedTokens[i])
+          .join(', ')
+
+        return {
+          errors: [
+            `You are missing NFT ids: ${missingNfts}. Please ensure you have completed the above puzzles and are on the correct chain.`,
+          ],
+        }
+      }
+    }
+
+    const { success, explorerUrl, errors } = await mint(
+      accessToken,
+      account,
+      tokenId
+    )
+
+    if (errors?.length) {
+      return { errors }
+    }
+
+    if (!success) {
+      return {
         errors: [
-          `You are missing NFT ids: ${missingNfts}. Please ensure you have completed the above puzzles and are on the correct chain.`,
+          'Gas prices are unpredictable and may cause errors. Please try again in a few seconds.',
         ],
       }
     }
-  }
 
-  const signature = await getSignature(OPTIMISM_CHAIN_ID, account, tokenId)
+    await addNftReward(rewardableId)
 
-  return {
-    signature,
-    tokenId,
+    return {
+      success,
+      explorerUrl,
+      tokenId,
+    }
+  } catch (e) {
+    if (e instanceof Error) {
+      return { errors: [e.message] }
+    }
+
+    return {
+      errors: [e].flatMap((msg) => (typeof msg === 'string' ? msg : [])) ?? [
+        'There was an error claiming this NFT.',
+      ],
+    }
   }
 }
