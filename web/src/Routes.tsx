@@ -22,6 +22,7 @@ const Routes = () => {
       <AllContextProviders>
         {/* <Route path="/" page={UnderConstructionPage} name="underConstruction" /> */}
         {/* <Route path="/" page={HomePage} name="home" /> */}
+        <Route path="/connect-accounts" page={ConnectAccountsPage} name="connectAccounts" />
 
         <Private unauthenticated="profile" roles={'ADMIN'}>
           <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>

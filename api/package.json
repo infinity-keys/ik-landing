@@ -23,8 +23,6 @@
     "moralis": "^2.10.4",
     "nanoid": "^3.0.0",
     "node-fetch": "2",
-    "passport": "^0.6.0",
-    "passport-discord": "^0.1.4",
     "pino-datadog": "^2.0.2",
     "pkce-challenge": "^3.1.0",
     "qfs-compression": "^0.2.1",
@@ -32,8 +30,6 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
-    "@types/passport": "^1.0.12",
-    "@types/passport-discord": "^0.1.6",
     "@types/uuid": "^9.0.1"
   }
 }
