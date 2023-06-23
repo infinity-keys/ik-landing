@@ -4,8 +4,8 @@
 // ```tsx
 // import type { ComponentStory } from '@storybook/react'
 //
-// export const generated: ComponentStory<typeof DiscordAuthButton> = (args) => {
-//   return <DiscordAuthButton {...args} />
+// export const generated: ComponentStory<typeof ConnectAccountButton> = (args) => {
+//   return <ConnectAccountButton {...args} />
 // }
 // ```
 //
@@ -13,13 +13,13 @@
 
 import type { ComponentMeta } from '@storybook/react'
 
-import DiscordAuthButton from './DiscordAuthButton'
+import ConnectAccountButton from './ConnectAccountButton'
 
 export const generated = () => {
-  return <DiscordAuthButton />
+  return <ConnectAccountButton />
 }
 
 export default {
-  title: 'Components/DiscordAuthButton',
-  component: DiscordAuthButton,
-} as ComponentMeta<typeof DiscordAuthButton>
+  title: 'Components/ConnectAccountButton',
+  component: ConnectAccountButton,
+} as ComponentMeta<typeof ConnectAccountButton>

@@ -1,14 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import DiscordAuthButton from './DiscordAuthButton'
+import ConnectAccountButton from './ConnectAccountButton'
 
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe('DiscordAuthButton', () => {
+describe('ConnectAccountButton', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<DiscordAuthButton />)
+      render(<ConnectAccountButton />)
     }).not.toThrow()
   })
 })

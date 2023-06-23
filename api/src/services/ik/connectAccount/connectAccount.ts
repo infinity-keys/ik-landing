@@ -8,27 +8,30 @@ import {
 import { db } from 'src/lib/db'
 import { compressAndEncryptText } from 'src/lib/encoding/encoding'
 
-export const connectAccount: MutationResolvers['connectAccount'] = async ({
-  code,
-  state,
-  provider,
-}) => {
+export const connectAccount: MutationResolvers['connectAccount'] = async (
+  { code, state, provider },
+  obj
+) => {
   try {
-    const encryptedState = cookie.parse(context.event.headers.cookie || '')[
-      'discordState'
-    ]
-    const cookieState = encryptedState
+    const ctx = obj?.context
+
+    if (!ctx?.event) {
+      return { success: false, errors: ['Error connecting account'] }
+    }
+
+    const cookieState = cookie.parse(ctx.event.headers.cookie || '')['state']
 
     if (cookieState !== state) {
-      console.log('state wrong')
       return {
         success: false,
+        errors: ['Invalid state'],
       }
     }
 
     if (!context?.currentUser?.id) {
       return {
         success: false,
+        errors: ['Must be logged in.'],
       }
     }
 
@@ -67,6 +70,7 @@ export const connectAccount: MutationResolvers['connectAccount'] = async ({
     console.log(e)
     return {
       success: false,
+      errors: ['Error connecting account'],
     }
   }
 }

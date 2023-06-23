@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { ConnectAccountMutation } from 'types/graphql'
 
-import { Link, routes, useParams } from '@redwoodjs/router'
+import { useParams } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { MetaTags } from '@redwoodjs/web'
 
@@ -14,13 +14,14 @@ const CONNECT_ACCOUNT_MUTATION = gql`
   ) {
     connectAccount(code: $code, state: $state, provider: $provider) {
       success
+      errors
     }
   }
 `
 
 const ConnectAccountsPage = () => {
+  const [error, setError] = useState('')
   const { code, state, provider } = useParams()
-  console.log({ code, state, provider })
 
   const [connect, { data }] = useMutation<ConnectAccountMutation>(
     CONNECT_ACCOUNT_MUTATION,
@@ -32,10 +33,12 @@ const ConnectAccountsPage = () => {
       },
     }
   )
-  console.log(data)
+
   useEffect(() => {
     if (code && state && provider) {
       connect()
+    } else {
+      setError('Missing parameters')
     }
   }, [code, state, provider, connect])
 
@@ -43,15 +46,13 @@ const ConnectAccountsPage = () => {
     <>
       <MetaTags title="ConnectAccounts" description="ConnectAccounts page" />
 
-      <h1>ConnectAccountsPage</h1>
-      <p>
-        Find me in{' '}
-        <code>./web/src/pages/ConnectAccountsPage/ConnectAccountsPage.tsx</code>
-      </p>
-      <p>
-        My default route is named <code>connectAccounts</code>, link to me with
-        `<Link to={routes.connectAccounts()}>ConnectAccounts</Link>`
-      </p>
+      {data?.connectAccount?.errors?.map((err, i) => (
+        <p key={i}>{err}</p>
+      ))}
+
+      {error && <p>{error}</p>}
+
+      {data?.connectAccount.success && <h1>Success!</h1>}
     </>
   )
 }

@@ -1,24 +1,53 @@
 import { APIGatewayEvent } from 'aws-lambda'
+import cookie from 'cookie'
 import { nanoid } from 'nanoid'
 
+import { authDecoder } from '@redwoodjs/auth-dbauth-api'
+import { useRequireAuth } from '@redwoodjs/graphql-server'
+
+import { getCurrentUser, isAuthenticated } from 'src/lib/auth'
 import { createAuthUrl } from 'src/lib/connectAccounts/accounts/discord'
 
-export const handler = async (event: APIGatewayEvent) => {
+const connectAccount = async (event: APIGatewayEvent) => {
+  if (!isAuthenticated()) {
+    return {
+      statusCode: 401,
+    }
+  }
+
   const { provider } = event.queryStringParameters || {}
-  console.log(provider)
+
+  if (!provider) {
+    return {
+      statusCode: 400,
+    }
+  }
+
+  // TODO: tie to session somehow?
   const state = nanoid(15)
 
   // @TODO: make this flexible
   const authUrl = createAuthUrl(state)
 
+  const stateCookie = cookie.serialize('state', state, {
+    httpOnly: true,
+    secure: true,
+    maxAge: 600, // 10 minutes
+    sameSite: 'strict',
+    path: '/',
+  })
+
   return {
     statusCode: 200,
-    headers: {
-      // @TODO: use cookie the library
-      'Set-Cookie': `discordState=${state}; HttpOnly; SameSite=Lax; Max-Age=3600`,
-    },
+    headers: { 'Set-Cookie': stateCookie },
     body: JSON.stringify({
       authUrl: authUrl.toString(),
     }),
   }
 }
+
+export const handler = useRequireAuth({
+  handlerFn: connectAccount,
+  getCurrentUser,
+  authDecoder,
+})

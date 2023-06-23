@@ -20,7 +20,7 @@ import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
-import DiscordAuthButton from '../DiscordAuthButton/DiscordAuthButton'
+import ConnectAccountButton from '../ConnectAccountButton/ConnectAccountButton'
 
 const socialLinks = [
   {
@@ -80,7 +80,7 @@ const Header = () => {
           </Link>
         </div>
 
-        <DiscordAuthButton />
+        <ConnectAccountButton provider="discord" />
 
         <div className="flex gap-4">
           {loading ? <LoaderIcon /> : <ProfileIcon />}
