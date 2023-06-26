@@ -1,93 +1,115 @@
-import { db } from 'src/lib/db'
+import { DiscordConnection } from 'types/graphql'
 
-const clientId = process.env.DISCORD_TEST_CLIENT
-const clientSecret = process.env.DISCORD_TEST_SECRET
+import { db } from 'src/lib/db'
+import { compressAndEncryptText } from 'src/lib/encoding/encoding'
+
+import { ConnectAccountOauthProvider, ConnectConfig } from '../base'
+
+const clientId = process.env.DISCORD_TEST_CLIENT || ''
+const clientSecret = process.env.DISCORD_TEST_SECRET || ''
 const redirectUri = 'http://localhost:8910/connect-accounts?provider=discord'
 
-export const createAuthUrl = (state: string) => {
-  if (!clientId || !redirectUri) {
-    throw new Error('No client ID provided.')
-  }
-  const url = new URL('https://discord.com/api/oauth2/authorize')
-  url.searchParams.append('client_id', clientId)
-  url.searchParams.append('redirect_uri', redirectUri)
-  url.searchParams.append('response_type', 'code')
-  url.searchParams.append('scope', 'identify guilds')
-  url.searchParams.append('state', state)
-
-  return url
-}
-
-export const createTokenExchangeBody = (code: string) => {
-  if (!clientSecret || !clientId) {
-    throw new Error('No code parameter provided.')
-  }
-
-  const query = {
+const config = {
+  authUrl: 'https://discord.com/api/oauth2/authorize',
+  tokenUrl: 'https://discord.com/api/oauth2/token',
+  redirectUrl: redirectUri,
+  profileUrl: 'https://discord.com/api/users/@me',
+  authUrlParams: {
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    response_type: 'code',
+    scope: 'identify guilds',
+  },
+  tokenExchangeBody: {
     client_id: clientId,
     client_secret: clientSecret,
     grant_type: 'authorization_code',
-    code: code,
     redirect_uri: redirectUri,
-  }
-
-  const params = new URLSearchParams(query).toString()
-
-  return params
+  },
 }
 
-export const upsertConnection = async ({
-  userId,
-  accessToken,
-  refreshToken,
-  discordId,
-}: {
-  userId: string
-  accessToken: string
-  refreshToken: string
-  discordId: string
-}) => {
-  return db.discordConnection.upsert({
-    where: {
-      userId,
-    },
-    create: {
-      accessToken,
-      refreshToken,
-      discordId,
-      userId,
-    },
-    update: {
-      accessToken,
-      refreshToken,
-      discordId,
-    },
-  })
-}
+export class DiscordConnect extends ConnectAccountOauthProvider<
+  Partial<DiscordConnection>
+> {
+  tokenExchangeBody: Record<string, string>
 
-export const refreshAccessToken = async (refreshToken: string) => {
-  if (!clientSecret || !clientId) {
-    throw new Error('No code parameter provided.')
+  constructor({
+    authUrl,
+    tokenUrl,
+    profileUrl,
+    authUrlParams,
+    tokenExchangeBody,
+  }: ConnectConfig & { tokenExchangeBody: Record<string, string> }) {
+    super({ authUrl, tokenUrl, profileUrl, authUrlParams })
+    this.tokenExchangeBody = tokenExchangeBody
   }
 
-  const query = {
-    client_id: clientId,
-    client_secret: clientSecret,
-    grant_type: 'refresh_token',
-    refresh_token: refreshToken,
+  async exchangeToken(code: string) {
+    const params = new URLSearchParams(this.tokenExchangeBody)
+    params.append('code', code)
+
+    const res = await fetch(this.tokenUrl, {
+      method: 'POST',
+      body: params,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
+
+    const { refresh_token, access_token } = await res.json()
+    if (typeof refresh_token !== 'string' || typeof access_token !== 'string') {
+      throw new Error('Tokens missing from response')
+    }
+
+    return { refreshToken: refresh_token, accessToken: access_token }
   }
 
-  const params = new URLSearchParams(query).toString()
+  async getProfile(accessToken: string): Promise<Record<string, string>> {
+    if (!accessToken) {
+      throw new Error('Missing token')
+    }
 
-  const res = await fetch('https://discord.com/api/oauth2/token', {
-    method: 'POST',
-    body: params,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-  })
+    const profileRes = await fetch(this.profileUrl, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
 
-  const data = await res.json()
+    const data = await profileRes.json()
+    return data
+  }
 
-  return data
+  async upsertConnection(
+    profileId: string,
+    accessToken: string,
+    refreshToken: string
+  ) {
+    if (!accessToken || !refreshToken) {
+      throw new Error('Missing tokens')
+    }
+
+    if (!context?.currentUser?.id) {
+      throw new Error('Must be logged in')
+    }
+
+    return db.discordConnection.upsert({
+      where: {
+        userId: context.currentUser.id,
+      },
+      create: {
+        accessToken: compressAndEncryptText(refreshToken),
+        refreshToken: compressAndEncryptText(accessToken),
+        // @TODO: should discordIds be unique
+        discordId: profileId,
+        userId: context.currentUser.id,
+      },
+      update: {
+        accessToken: compressAndEncryptText(refreshToken),
+        refreshToken: compressAndEncryptText(accessToken),
+        discordId: context.currentUser.id,
+      },
+    })
+  }
 }
+
+export const discordConnect = new DiscordConnect(config)

@@ -6,7 +6,7 @@ import { authDecoder } from '@redwoodjs/auth-dbauth-api'
 import { useRequireAuth } from '@redwoodjs/graphql-server'
 
 import { getCurrentUser, isAuthenticated } from 'src/lib/auth'
-import { createAuthUrl } from 'src/lib/connectAccounts/accounts/discord'
+import { discordConnect } from 'src/lib/connectAccounts/accounts/discord'
 
 const connectAccount = async (event: APIGatewayEvent) => {
   if (!isAuthenticated()) {
@@ -26,8 +26,8 @@ const connectAccount = async (event: APIGatewayEvent) => {
   // TODO: tie to session somehow?
   const state = nanoid(15)
 
-  // @TODO: make this flexible
-  const authUrl = createAuthUrl(state)
+  // @TODO: use provider lookup
+  const authUrl = discordConnect.generateAuthUrl(state)
 
   const stateCookie = cookie.serialize('state', state, {
     httpOnly: true,
