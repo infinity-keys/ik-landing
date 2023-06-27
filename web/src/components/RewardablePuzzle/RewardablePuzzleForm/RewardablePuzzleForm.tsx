@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { CreateRewardableInput } from 'types/graphql'
 
 import {
@@ -45,7 +43,7 @@ const RewardableForm = (props: RewardableFormProps) => {
 
     // this is where we delete the unwanted `id` field that is being added
     // by the `useFieldArray` hook which our middleware is rejecting
-    const transformedFields = fields.map(({ id, ...rest }) => rest)
+    const transformedFields = fields.map(({ id: _id, ...rest }) => rest)
 
     if (data.type === 'PUZZLE' && fields.length === 0) {
       alert('Puzzles need at least one step')
