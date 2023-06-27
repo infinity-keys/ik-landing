@@ -10,6 +10,7 @@ import { UpdateUserMutation, UpdateUserMutationVariables } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
 import { useMutation } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/dist/toast'
 
 import Button from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
@@ -33,11 +34,9 @@ const LensConnect = ({ text }: { text?: string }) => {
   const { execute: logout, isPending } = useWalletLogout()
   const { openConnectModal } = useConnectModal()
   const [hasTriedConnection, setHasTriedConnection] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
 
   const noProfile = hasTriedConnection && !profile
   const isLoading = connectToLensPending || isPending
-  const isError = connectToLensError || errorMessage
 
   const [updateLensProfile] = useMutation<
     UpdateUserMutation,
@@ -46,7 +45,7 @@ const LensConnect = ({ text }: { text?: string }) => {
     onError: () => {
       logout()
       setHasTriedConnection(false)
-      setErrorMessage('Error connecting Lens profile to user account.')
+      toast.error('Error connecting Lens profile to user account.')
     },
   })
 
@@ -62,13 +61,18 @@ const LensConnect = ({ text }: { text?: string }) => {
     }
   }, [hasTriedConnection, profile, updateLensProfile])
 
+  useEffect(() => {
+    if (noProfile && !connectToLensError && !isLoading) {
+      toast.error('No active Lens profile associated with this wallet.')
+    }
+  }, [noProfile, connectToLensError, isLoading])
+
   const onLoginClick = async () => {
-    setErrorMessage('')
     try {
       const signer = await connector?.getSigner()
       await connectToLens(signer)
     } catch {
-      console.error('Error connecting to Lens Profile')
+      toast.error('Error connecting to Lens Profile')
     }
     setHasTriedConnection(true)
   }
@@ -120,18 +124,6 @@ const LensConnect = ({ text }: { text?: string }) => {
         )
       ) : (
         <LoadingIcon />
-      )}
-
-      {(connectToLensError || errorMessage) && (
-        <p className="pt-2 text-sm italic text-gray-150">
-          {errorMessage || 'Error connecting to Lens account'}
-        </p>
-      )}
-
-      {noProfile && !isError && !isLoading && (
-        <p className="pt-2 text-sm italic text-gray-150">
-          No active Lens profile associated with this wallet
-        </p>
       )}
     </div>
   )

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 
 import { useAuth } from 'src/auth'
-import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import LoginModal from 'src/components/LoginModal/LoginModal'
 import ProfileCell from 'src/components/ProfileCell'
