@@ -17,21 +17,19 @@ import { createLogger } from '@redwoodjs/api/logger'
  * @param {boolean} showConfig - whether to display logger configuration on initialization
  */
 
-// export const stream = datadog.createWriteStreamSync({
-//   apiKey: process.env.DATADOG_API_KEY,
-//   ddsource: 'ik-redwood',
-//   service: 'ik-redwood',
-//   size: 1,
-// })
+export const stream = datadog.createWriteStreamSync({
+  apiKey: process.env.DATADOG_API_KEY,
+  ddsource: 'ik-redwood',
+  service: 'ik-redwood',
+  size: 1,
+})
 
-// export const logger = createLogger({
-//   ...(process.env.NODE_ENV === 'production' && {
-//     destination: stream,
-//     options: { level: 'info' },
-//   }),
-//   options: {
-//     level: 'error',
-//   },
-// })
-
-export const logger = createLogger({ options: { level: 'silent' } })
+export const logger = createLogger({
+  ...(process.env.NODE_ENV === 'production' && {
+    destination: stream,
+    options: { level: 'info' },
+  }),
+  options: {
+    level: 'error',
+  },
+})
