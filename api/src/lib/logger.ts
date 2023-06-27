@@ -29,7 +29,4 @@ export const logger = createLogger({
     destination: stream,
     options: { level: 'info' },
   }),
-  options: {
-    level: 'error',
-  },
 })
