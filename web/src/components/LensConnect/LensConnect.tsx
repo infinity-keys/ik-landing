@@ -22,7 +22,7 @@ const UPDATE_LENS_PROFILE = gql`
   }
 `
 
-const LensConnect = () => {
+const LensConnect = ({ text }: { text?: string }) => {
   const { isConnected, connector } = useAccount()
   const {
     execute: connectToLens,
@@ -93,6 +93,8 @@ const LensConnect = () => {
             text="Connect Wallet"
             size="small"
             onClick={openConnectModal}
+            variant="faded"
+            border={false}
           />
         ) : (
           <div>
@@ -100,18 +102,19 @@ const LensConnect = () => {
               <button
                 disabled={isPending}
                 onClick={onLogoutClick}
-                className="text-sm text-gray-200 transition-colors hover:text-brand-accent-primary"
+                className="overflow-hidden rounded-md p-2 text-sm text-gray-200 transition-colors hover:bg-white/10 hover:text-brand-accent-primary"
               >
-                Disconnect Lens Profile
+                Disconnect
               </button>
             ) : (
-              <button
+              <Button
                 disabled={connectToLensPending}
                 onClick={onLoginClick}
-                className="rounded bg-[#abfe2c] py-2 px-4 text-[#00510e] transition-colors hover:bg-[#00510e] hover:text-[#abfe2c]"
-              >
-                Connect to Lens
-              </button>
+                text={text || 'Connect to Lens'}
+                size="small"
+                variant="faded"
+                border={false}
+              />
             )}
           </div>
         )

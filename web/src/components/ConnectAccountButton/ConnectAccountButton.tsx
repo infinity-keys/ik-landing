@@ -1,5 +1,4 @@
 import { ConnectAccountProviders } from '@infinity-keys/core'
-import capitalize from 'lodash/capitalize'
 
 import { toast } from '@redwoodjs/web/dist/toast'
 
@@ -9,8 +8,10 @@ import { connectAccountApiUrl } from 'src/lib/urlBuilders'
 
 const ConnectAccountButton = ({
   provider,
+  text,
 }: {
   provider: ConnectAccountProviders
+  text?: string
 }) => {
   const { currentUser } = useAuth()
 
@@ -40,8 +41,11 @@ const ConnectAccountButton = ({
 
   return (
     <Button
-      text={`Connect ${capitalize(provider)} Account`}
+      text={text || 'Connect'}
       onClick={fetchAuthUrl}
+      size="small"
+      variant="faded"
+      border={false}
     />
   )
 }
