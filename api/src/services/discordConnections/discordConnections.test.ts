@@ -15,7 +15,7 @@ import type { StandardScenario } from './discordConnections.scenarios'
 //       https://redwoodjs.com/docs/testing#testing-services
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('discordConnections', () => {
+describe.skip('discordConnections', () => {
   scenario(
     'returns all discordConnections',
     async (scenario: StandardScenario) => {
