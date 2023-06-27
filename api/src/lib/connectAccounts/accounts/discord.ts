@@ -129,6 +129,24 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
 
     return connection
   }
+
+  async deleteConnection() {
+    if (!context?.currentUser?.id) {
+      throw new Error('Must be logged in')
+    }
+
+    const connection = await db.discordConnection.delete({
+      where: {
+        userId: context.currentUser.id,
+      },
+    })
+
+    if (!('id' in connection)) {
+      throw new Error('Error removing account connection from db')
+    }
+
+    return connection
+  }
 }
 
 export const discordConnect = new DiscordConnect(config)

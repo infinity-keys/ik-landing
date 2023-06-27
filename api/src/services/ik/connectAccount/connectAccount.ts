@@ -55,3 +55,29 @@ export const connectAccount: MutationResolvers['connectAccount'] = async (
     }
   }
 }
+
+export const deleteAccountConnection: MutationResolvers['deleteAccountConnection'] =
+  async ({ provider }) => {
+    try {
+      await discordConnect.deleteConnection()
+      return { success: true }
+    } catch (e) {
+      logger.error('Error in deleteAccountConnection', e)
+
+      const defaultMessage = `An error occurred while trying to disconnect your ${
+        provider ? `${capitalize(provider)} account` : 'account'
+      }`
+
+      if (e instanceof Error) {
+        return {
+          success: false,
+          errors: [defaultMessage, e.message],
+        }
+      }
+
+      return {
+        success: false,
+        errors: [defaultMessage],
+      }
+    }
+  }

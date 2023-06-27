@@ -39,4 +39,6 @@ export abstract class ConnectAccountOauthProvider<T> {
     accessToken: string,
     refreshToken: string
   ): Promise<T>
+
+  abstract deleteConnection(): Promise<T>
 }

@@ -23,6 +23,8 @@ import { avatarGradient } from 'src/lib/theme/helpers'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
+import DisconnectAccountButton from '../DisconnectAccountButton/DisconnectAccountButton'
+
 export const QUERY = gql`
   query FindUserQuery {
     user {
@@ -38,6 +40,9 @@ export const QUERY = gql`
       puzzlesSolvedCount
       packsSolvedCount
       nftsSolvedCount
+      discordConnection {
+        id
+      }
       userRewards {
         id
       }
@@ -68,6 +73,7 @@ export const Failure = ({
 export const Success = ({
   user,
   handleLogOut,
+  queryResult,
 }: CellSuccessProps<FindUserQuery, FindUserQueryVariables> & {
   handleLogOut: () => void
 }) => {
@@ -81,7 +87,7 @@ export const Success = ({
   // use on button click
 
   return (
-    <div className="flex gap-6">
+    <div className="flex flex-col gap-6 lg:flex-row">
       <div className="">
         <div className="overflow-hidden rounded-lg bg-black/30">
           <div className="flex items-center justify-between bg-black/20 py-8 px-10">
@@ -242,10 +248,17 @@ export const Success = ({
           <p className="">Connect social accounts:</p>
         </div>
 
-        <div className="flex flex-col gap-6 p-8">
+        <div className="flex flex-col gap-4 p-8">
           <div className="flex items-center justify-between">
             <p>Discord:</p>
-            <ConnectAccountButton provider="discord" />
+            {user?.discordConnection?.id ? (
+              <DisconnectAccountButton
+                provider="discord"
+                onSuccess={queryResult?.refetch}
+              />
+            ) : (
+              <ConnectAccountButton provider="discord" />
+            )}
           </div>
           <div className="flex items-center justify-between">
             <p>Lens:</p>
