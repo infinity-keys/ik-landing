@@ -38,7 +38,7 @@ const ConnectAccountsPage = () => {
       },
       onCompleted({ connectAccount }) {
         if (connectAccount.success) {
-          toast(`Successfully connected your ${capitalize(provider)} account`)
+          toast(`Successfully connected your ${capitalize(provider)} account!`)
           navigate(routes.profile(), { replace: true })
         }
       },

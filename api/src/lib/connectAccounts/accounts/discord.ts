@@ -45,6 +45,14 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
   }
 
   async exchangeToken(code: string) {
+    if (
+      !this.tokenExchangeBody.client_id ||
+      !this.tokenExchangeBody.client_secret ||
+      !code
+    ) {
+      throw new Error('Missing parameters in token exchange')
+    }
+
     const params = new URLSearchParams(this.tokenExchangeBody)
     params.append('code', code)
 
@@ -57,8 +65,9 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
     })
 
     const { refresh_token, access_token } = await res.json()
+
     if (typeof refresh_token !== 'string' || typeof access_token !== 'string') {
-      throw new Error('Tokens missing from response')
+      throw new Error('Tokens missing from token exchange response')
     }
 
     return { refreshToken: refresh_token, accessToken: access_token }
@@ -66,7 +75,7 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
 
   async getProfile(accessToken: string): Promise<Record<string, string>> {
     if (!accessToken) {
-      throw new Error('Missing token')
+      throw new Error('Missing user access token')
     }
 
     const profileRes = await fetch(this.profileUrl, {
@@ -74,6 +83,10 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
         Authorization: `Bearer ${accessToken}`,
       },
     })
+
+    if (profileRes.status !== 200) {
+      throw new Error('Error obtaining Discord profile')
+    }
 
     const data = await profileRes.json()
     return data
@@ -92,7 +105,7 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
       throw new Error('Must be logged in')
     }
 
-    return db.discordConnection.upsert({
+    const connection = await db.discordConnection.upsert({
       where: {
         userId: context.currentUser.id,
       },
@@ -109,6 +122,12 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
         discordId: context.currentUser.id,
       },
     })
+
+    if (!('id' in connection)) {
+      throw new Error('Error adding account connection to db')
+    }
+
+    return connection
   }
 }
 

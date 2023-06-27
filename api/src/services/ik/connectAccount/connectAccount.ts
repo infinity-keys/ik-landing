@@ -29,27 +29,29 @@ export const connectAccount: MutationResolvers['connectAccount'] = async (
     const { refreshToken, accessToken } = await discordConnect.exchangeToken(
       code
     )
-
     const { id } = await discordConnect.getProfile(accessToken)
-    const connection = await discordConnect.upsertConnection(
-      id,
-      accessToken,
-      refreshToken
-    )
+    await discordConnect.upsertConnection(id, accessToken, refreshToken)
 
     return {
-      success: 'id' in connection,
+      success: true,
     }
   } catch (e) {
     logger.error('Error in connectAccount', e)
 
+    const defaultMessage = `An error occurred while trying to connect your ${
+      provider ? `${capitalize(provider)} account` : 'account'
+    }`
+
+    if (e instanceof Error) {
+      return {
+        success: false,
+        errors: [defaultMessage, e.message],
+      }
+    }
+
     return {
       success: false,
-      errors: [
-        `An error occurred while trying to connect your ${
-          provider ? `${capitalize(provider)} account` : 'account'
-        }.`,
-      ],
+      errors: [defaultMessage],
     }
   }
 }
