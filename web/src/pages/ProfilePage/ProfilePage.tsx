@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
+import ConnectAccountButton from 'src/components/ConnectAccountButton/ConnectAccountButton'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import LoginModal from 'src/components/LoginModal/LoginModal'
 import ProfileCell from 'src/components/ProfileCell'
@@ -49,6 +50,8 @@ const ProfilePage = () => {
         !deleteProgressLoading && (
           <div className="mx-auto w-full max-w-lg pb-12">
             <ProfileCell />
+
+            <ConnectAccountButton provider="discord" />
 
             <button
               className="mx-auto mt-2 block italic text-gray-200 underline transition-colors hover:text-brand-accent-primary"

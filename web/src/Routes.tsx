@@ -22,7 +22,6 @@ const Routes = () => {
       <AllContextProviders>
         {/* <Route path="/" page={UnderConstructionPage} name="underConstruction" /> */}
         {/* <Route path="/" page={HomePage} name="home" /> */}
-        <Route path="/connect-accounts" page={ConnectAccountsPage} name="connectAccounts" />
 
         <Private unauthenticated="profile" roles={'ADMIN'}>
           <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
@@ -53,6 +52,7 @@ const Routes = () => {
           <Route path="/packs/{count:Int}/{page:Int}" page={RewardablePackRewardablePacksPage} name="packsPagination" />
           <Route path="/" page={PlayPage} name="play" />
           <Route path="/{count:Int}/{page:Int}" page={PlayPage} name="playPagination" />
+          <Route path="/connect-accounts" page={ConnectAccountsPage} name="connectAccounts" />
         </Set>
 
         <Set wrap={[HeaderLayout, MainLayout]}>

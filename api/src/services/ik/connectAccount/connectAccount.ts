@@ -1,10 +1,12 @@
 import cookie from 'cookie'
+import { capitalize } from 'lodash'
 import type { MutationResolvers } from 'types/graphql'
 
 import { discordConnect } from 'src/lib/connectAccounts/accounts/discord'
+import { logger } from 'src/lib/logger'
 
 export const connectAccount: MutationResolvers['connectAccount'] = async (
-  { code, state },
+  { code, state, provider },
   obj
 ) => {
   try {
@@ -39,10 +41,15 @@ export const connectAccount: MutationResolvers['connectAccount'] = async (
       success: 'id' in connection,
     }
   } catch (e) {
-    console.log(e)
+    logger.error('Error in connectAccount', e)
+
     return {
       success: false,
-      errors: ['Error connecting account'],
+      errors: [
+        `An error occurred while trying to connect your ${
+          provider ? `${capitalize(provider)} account` : 'account'
+        }.`,
+      ],
     }
   }
 }

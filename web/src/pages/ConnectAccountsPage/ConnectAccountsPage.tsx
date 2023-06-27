@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react'
 
+import capitalize from 'lodash/capitalize'
 import { ConnectAccountMutation } from 'types/graphql'
 
+import { navigate, routes } from '@redwoodjs/router'
 import { useParams } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { MetaTags } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/dist/toast'
+
+import Button from 'src/components/Button'
 
 const CONNECT_ACCOUNT_MUTATION = gql`
   mutation ConnectAccountMutation(
@@ -31,6 +36,12 @@ const ConnectAccountsPage = () => {
         state,
         provider,
       },
+      onCompleted({ connectAccount }) {
+        if (connectAccount.success) {
+          toast(`Successfully connected your ${capitalize(provider)} account`)
+          navigate(routes.profile(), { replace: true })
+        }
+      },
     }
   )
 
@@ -45,14 +56,22 @@ const ConnectAccountsPage = () => {
   return (
     <>
       <MetaTags title="ConnectAccounts" description="ConnectAccounts page" />
+      {(error || data?.connectAccount?.errors?.length) && (
+        <div className="text-center">
+          <h1 className="mb-2 text-4xl font-bold">Oops!</h1>
+          {data?.connectAccount?.errors?.map((err, i) => (
+            <p key={i} className="mb-2">
+              {err}
+            </p>
+          ))}
 
-      {data?.connectAccount?.errors?.map((err, i) => (
-        <p key={i}>{err}</p>
-      ))}
+          {error && <p>{error}</p>}
 
-      {error && <p>{error}</p>}
-
-      {data?.connectAccount.success && <h1>Success!</h1>}
+          <div className="mt-8">
+            <Button text="Return to Profile Page" to={routes.profile()} />
+          </div>
+        </div>
+      )}
     </>
   )
 }
