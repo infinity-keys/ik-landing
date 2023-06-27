@@ -12,6 +12,7 @@ import {
   RadioField,
   Submit,
   useForm,
+  useFieldArray,
 } from '@redwoodjs/forms'
 import type { RWGqlError } from '@redwoodjs/forms'
 
@@ -31,19 +32,27 @@ interface RewardableFormProps {
  */
 
 const RewardableForm = (props: RewardableFormProps) => {
-  const [steps, setSteps] = useState([])
   const formMethods = useForm()
+  const { control } = formMethods
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'steps',
+  })
 
   const onSubmit = (data) => {
     const { nft, ...rest } = data
     const filteredData = nft.tokenId !== null ? data : rest
 
-    if (data.type === 'PUZZLE' && steps.length === 0) {
+    // this is where we delete the unwanted `id` field that is being added
+    // by the `useFieldArray` hook which our middleware is rejecting
+    const transformedFields = fields.map(({ id, ...rest }) => rest)
+
+    if (data.type === 'PUZZLE' && fields.length === 0) {
       alert('Puzzles need at least one step')
       return
     }
 
-    if (data.type === 'PACK' && steps.length > 0) {
+    if (data.type === 'PACK' && fields.length > 0) {
       alert(
         'Pack is selected but steps are present. Please remove steps or select Puzzle'
       )
@@ -57,29 +66,32 @@ const RewardableForm = (props: RewardableFormProps) => {
       const { rewardableConnection, ...rest } = filteredData
 
       const withSteps = rewardableConnection?.parentId
-        ? { ...filteredData, steps }
-        : { ...rest, steps }
+        ? { ...filteredData, steps: transformedFields }
+        : { ...rest, steps: transformedFields }
 
       props.onSave(withSteps)
     }
 
-    setSteps([])
     formMethods.reset()
   }
 
   const addStep = (data) => {
-    const duplicate = steps.some(
+    const duplicate = fields.some(
       ({ stepSortWeight }) => stepSortWeight === data.stepSortWeight
     )
     if (duplicate) {
       alert('Duplicate stepSortWeight')
     } else {
-      setSteps((prevState) => [...prevState, data])
+      const strippedData = { ...data }
+      append(strippedData)
     }
   }
 
   const deleteStep = (id) => {
-    setSteps(steps.filter(({ stepSortWeight }) => stepSortWeight !== id))
+    const index = fields.findIndex((step) => step.stepSortWeight === id)
+    if (index !== -1) {
+      remove(index)
+    }
   }
 
   return (
@@ -92,7 +104,7 @@ const RewardableForm = (props: RewardableFormProps) => {
             <StepForm onSave={addStep} />
           </div>
           <div className="grid flex-1 grid-cols-1 gap-8">
-            {steps.map((step) => (
+            {fields.map((step) => (
               <div className="border p-2" key={step.stepSortWeight}>
                 <button
                   onClick={() => deleteStep(step.stepSortWeight)}

@@ -2,7 +2,7 @@ import type { CreateRewardableInput } from 'types/graphql'
 
 import { useMutation } from '@redwoodjs/web'
 
-import NewRewardableForm from 'src/components/RewardablePuzzle/NewRewardablePuzzleForm'
+import RewardableForm from 'src/components/RewardablePuzzle/RewardablePuzzleForm'
 
 const CREATE_REWARDABLE_MUTATION = gql`
   mutation CreateRewardablesStepsNftsMutation(
@@ -40,7 +40,7 @@ const NewRewardable = () => {
         <h2 className="rw-heading rw-heading-secondary">New Rewardable</h2>
       </header>
       <div className="rw-segment-main text-gray-500">
-        <NewRewardableForm onSave={onSave} loading={loading} error={error} />
+        <RewardableForm onSave={onSave} loading={loading} error={error} />
       </div>
     </div>
   )
