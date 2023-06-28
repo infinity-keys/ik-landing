@@ -1,7 +1,15 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const { EmbedBuilder } = require('discord.js')
+import {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  CommandInteraction,
+} from 'discord.js'
 
-const eco = require('../ecoDB')
+import { eco } from '../ecoDB'
+
+// const { SlashCommandBuilder } = require('@discordjs/builders')
+// const { EmbedBuilder } = require('discord.js')
+
+// const eco = require('../ecoDB')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -9,9 +17,9 @@ module.exports = {
     .setDescription(
       'Gracefully inquire whether Archivist Nebo has the records of your page collection efforts at hand.'
     ),
-  async execute(interaction) {
+  async execute(interaction: CommandInteraction) {
     const { guild, member } = interaction
-    const balance = await eco.balance.get(member.id, guild.id)
+    const balance = await eco.balance.get(member.user.id, guild.id)
     // instance to show the name of user
     // const username = interaction.user.username;
 
@@ -22,7 +30,7 @@ module.exports = {
       .setDescription(
         `I’m sure you’ve been working hard. Let me collect those files… According to the records you’ve located \`${balance}\` pages. Is that all? Well then.`
       )
-      .setColor('c3b4f7')
+      .setColor(0xc3b4f7)
     return interaction.reply({ embeds: [embedBalance] })
   },
 }

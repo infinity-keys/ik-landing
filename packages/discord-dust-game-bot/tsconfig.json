@@ -3,7 +3,8 @@
     "lib": ["es6"],
     "moduleDetection": "force",
     "outDir": "./dist",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "esModuleInterop":true
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules"]

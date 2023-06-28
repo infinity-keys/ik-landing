@@ -1,16 +1,26 @@
 // Require the necessary discord.js classes
-const fs = require('node:fs')
-const path = require('node:path')
+import * as fs from 'node:fs'
+import * as path from 'node:path'
 
-const { Client, Collection, GatewayIntentBits } = require('discord.js')
+import { Client, Collection, GatewayIntentBits } from 'discord.js'
+
+require('dotenv').config()
 // set up to use config file, if needed
 // const { token } = require('./config.json');
-require('dotenv').config()
+interface CustomClient extends Client {
+  commands?: Collection<string, unknown>
+}
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] })
+const { Guilds, GuildMessages, GuildMessageReactions } = GatewayIntentBits
 
-client.commands = new Collection()
+const client = new Client({
+  intents: [Guilds, GuildMessages, GuildMessageReactions],
+})
+
+const customClient: CustomClient = client
+
+customClient.commands = new Collection()
 const commandsPath = path.join(__dirname, 'commands')
 const commandFiles = fs
   .readdirSync(commandsPath)
@@ -21,7 +31,7 @@ for (const file of commandFiles) {
   const command = require(filePath)
   // Set a new item in the Collection with the key as the command name and the value as the exported module
   if ('data' in command && 'execute' in command) {
-    client.commands.set(command.data.name, command)
+    customClient.commands.set(command.data.name, command)
   } else {
     console.log(
       `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`
@@ -43,6 +53,5 @@ for (const file of eventFiles) {
     client.on(event.name, (...args) => event.execute(...args))
   }
 }
-
 // Log in to Discord with your client's token
 client.login(process.env.token)
