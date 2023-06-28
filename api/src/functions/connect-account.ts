@@ -7,6 +7,7 @@ import { useRequireAuth } from '@redwoodjs/graphql-server'
 
 import { getCurrentUser, isAuthenticated } from 'src/lib/auth'
 import { discordConnect } from 'src/lib/connectAccounts/accounts/discord'
+import { makeStateToken } from 'src/lib/jwt'
 
 const connectAccount = async (event: APIGatewayEvent) => {
   if (!isAuthenticated()) {
@@ -25,11 +26,12 @@ const connectAccount = async (event: APIGatewayEvent) => {
 
   // TODO: tie to session somehow?
   const state = nanoid(15)
+  const stateToken = await makeStateToken(state)
 
   // @TODO: use provider lookup
   const authUrl = discordConnect.generateAuthUrl(state)
 
-  const stateCookie = cookie.serialize('state', state, {
+  const stateCookie = cookie.serialize('stateToken', stateToken, {
     httpOnly: true,
     secure: true,
     maxAge: 600, // 10 minutes

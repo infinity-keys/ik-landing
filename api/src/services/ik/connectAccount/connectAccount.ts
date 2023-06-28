@@ -3,6 +3,7 @@ import { capitalize } from 'lodash'
 import type { MutationResolvers } from 'types/graphql'
 
 import { discordConnect } from 'src/lib/connectAccounts/accounts/discord'
+import { verifyToken } from 'src/lib/jwt'
 import { logger } from 'src/lib/logger'
 
 export const connectAccount: MutationResolvers['connectAccount'] = async (
@@ -16,9 +17,10 @@ export const connectAccount: MutationResolvers['connectAccount'] = async (
       return { success: false, errors: ['Error retrieving account'] }
     }
 
-    const cookieState = cookie.parse(ctx.event.headers.cookie || '')['state']
+    const token = cookie.parse(ctx.event.headers.cookie || '')['stateToken']
+    const cookieState = await verifyToken(token)
 
-    if (!cookieState || cookieState !== state) {
+    if (!cookieState || cookieState.payload.state !== state) {
       return {
         success: false,
         errors: ['Invalid state'],
