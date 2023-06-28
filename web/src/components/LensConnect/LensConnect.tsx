@@ -10,10 +10,10 @@ import { UpdateUserMutation, UpdateUserMutationVariables } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
 import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/dist/toast'
+import { LoaderIcon, toast } from '@redwoodjs/web/dist/toast'
 
 import Button from 'src/components/Button/Button'
-import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import { ButtonProps } from 'src/components/Button/Button'
 
 const UPDATE_LENS_PROFILE = gql`
   mutation UpdateUserMutation($input: UpdateUserInput!) {
@@ -23,20 +23,20 @@ const UPDATE_LENS_PROFILE = gql`
   }
 `
 
-const LensConnect = ({ text }: { text?: string }) => {
+const LensConnect = (props: Partial<ButtonProps>) => {
   const { isConnected, connector } = useAccount()
   const {
     execute: connectToLens,
     error: connectToLensError,
     isPending: connectToLensPending,
   } = useWalletLogin()
-  const { data: profile } = useActiveProfile()
+  const { data: profile, loading: profileLoading } = useActiveProfile()
   const { execute: logout, isPending } = useWalletLogout()
   const { openConnectModal } = useConnectModal()
   const [hasTriedConnection, setHasTriedConnection] = useState(false)
 
   const noProfile = hasTriedConnection && !profile
-  const isLoading = connectToLensPending || isPending
+  const isLoading = connectToLensPending || isPending || profileLoading
 
   const [updateLensProfile] = useMutation<
     UpdateUserMutation,
@@ -71,10 +71,11 @@ const LensConnect = ({ text }: { text?: string }) => {
     try {
       const signer = await connector?.getSigner()
       await connectToLens(signer)
+      setHasTriedConnection(true)
     } catch {
       toast.error('Error connecting to Lens Profile')
+      setHasTriedConnection(true)
     }
-    setHasTriedConnection(true)
   }
 
   const onLogoutClick = () => {
@@ -93,13 +94,12 @@ const LensConnect = ({ text }: { text?: string }) => {
     <div className="flex flex-col items-center">
       {!isLoading ? (
         !isConnected ? (
-          <Button
-            text="Connect Wallet"
-            size="small"
+          <button
             onClick={openConnectModal}
-            variant="faded"
-            border={false}
-          />
+            className="overflow-hidden rounded-md p-2 text-sm text-gray-200 transition-colors hover:bg-white/10 hover:text-brand-accent-primary"
+          >
+            Connect Wallet
+          </button>
         ) : (
           <div>
             {profile?.handle ? (
@@ -112,18 +112,16 @@ const LensConnect = ({ text }: { text?: string }) => {
               </button>
             ) : (
               <Button
+                {...props}
                 disabled={connectToLensPending}
                 onClick={onLoginClick}
-                text={text || 'Connect to Lens'}
-                size="small"
-                variant="faded"
-                border={false}
+                text={props.text || 'Connect to Lens'}
               />
             )}
           </div>
         )
       ) : (
-        <LoadingIcon />
+        <LoaderIcon />
       )}
     </div>
   )

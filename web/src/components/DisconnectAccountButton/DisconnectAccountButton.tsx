@@ -5,9 +5,7 @@ import {
 } from 'types/graphql'
 
 import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/dist/toast'
-
-import LoadingIcon from '../LoadingIcon/LoadingIcon'
+import { LoaderIcon, toast } from '@redwoodjs/web/dist/toast'
 
 const DELETE_ACCOUNT_CONNECTION = gql`
   mutation DeleteDiscordConnectionMutation($provider: String!) {
@@ -49,7 +47,7 @@ const DisconnectAccountButton = ({
   })
 
   return loading ? (
-    <LoadingIcon />
+    <LoaderIcon />
   ) : (
     <button
       onClick={() => deleteConnection()}
