@@ -18,44 +18,21 @@ export async function execute(interaction: Interaction) {
     fetchReply: true,
   })
 
-  // const emoji = client.emojis.cache.find(
-  //   (emoji) => emoji.id === '1000793300103606343'
-  // )
-
-  // message.react(emoji)
-  // message.react('👍🏾')
-  const { guild, member } = interaction
-  // console.log('interaction', interaction)
-  // const balance = eco.balance.add(10, member.user.id, guild.id)
+  const { guild } = interaction
 
   const filter = (reaction) => {
     return reaction.emoji.name === '👍🏾'
   }
 
-  // const collector = message.createReactionCollector({ filter, time: 15000 })
-
-  // collector.on('collect', (reaction, user) => {
-  //   console.log(`Collected ${reaction.emoji.name} from ${user.tag}`)
-  // })
-
-  // collector.on('end', (collected) => {
-  //   console.log(`Collected ${collected.size} items`)
-  // })
-
-  message
+  await message
     .awaitReactions({ filter, max: 5, time: 30000 })
-    .then((collected) => {
-      const user = collected.get('👍🏾').users
-      console.log('users', user)
-      eco.balance.add(10, member.user.id, guild.id)
+    .then(async (collected) => {
+      for (const reaction of collected.values()) {
+        const user = reaction.users.cache.map((user) => user.id)
+        await eco.balance.add(10, `${user}`, guild.id)
+      }
     })
     .catch((collected) => {
-      // console.log('collected', collected)
       console.log(`After 10 seconds, only ${collected.size} out of 5 reacted`)
     })
 }
-
-// const ecoUsers = await eco.users.all()
-//     for (const ecoUser of ecoUsers) {
-//       await eco.database.delete(`${ecoUser.guildID}.${ecoUser.id}`)
-//     }
