@@ -3,10 +3,10 @@ import { useState } from 'react'
 import { FindStepQuery } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
-import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
+import WalletButton from 'src/components/WalletButton/WalletButton'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
 const AccountCheckButton = ({
@@ -43,9 +43,7 @@ const AccountCheckButton = ({
           {address ? (
             <Button text="Check Wallet" onClick={handleClick} />
           ) : (
-            <div className="flex justify-center">
-              <Alert text="Please connect your wallet to continue" />
-            </div>
+            <WalletButton />
           )}
 
           {(errorMessage || customErrorMessage) && (
