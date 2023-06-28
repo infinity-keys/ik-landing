@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { DevTool } from '@hookform/devtools'
 import { useForm } from 'react-hook-form'
 import type { StepType, UpdateStepInput } from 'types/graphql'
 
@@ -47,13 +48,35 @@ export const stepTypeLookup: {
   ORIUM_API: 'stepOriumApi',
 }
 
+// this lets Richard see when & how many times the form is rendering
+let renderCount = 0
+
+// react-hook-form requires to define the type of data being submitted
+type FormValues = {
+  failMessage: string
+  successMessage: string
+  challenge: string
+  resourceLinks: string
+  stepSortWeight: number
+  type: StepType
+  stepTypeData: {
+    solution: string
+  }
+}
+
 const StepForm = (props: StepFormProps) => {
   const [stepType, setStepType] = useState('')
   const [nftCheckData, setNftCheckData] = useState([])
 
   const formMethods = useForm()
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: FormValues) => {
+    // richard put this in here to see WTF is going on
+    console.log(
+      'This is what the data looks like:',
+      JSON.stringify(data, null, 2)
+    )
+
     const stepTypeDataNoEmptyFields = removeEmpty(data.stepTypeData || {})
 
     const { requireAllNfts: _, ...rest } = stepTypeDataNoEmptyFields
@@ -126,8 +149,15 @@ const StepForm = (props: StepFormProps) => {
     setNftCheckData(nftCheckData.filter((data) => data.tempId !== tempId))
   }
 
+  // this lets Richard see when & how many times the form is rendering
+  renderCount++
+
   return (
     <div className="rw-form-wrapper">
+      <h1 className="bg-rose-200 p-2 text-2xl font-extrabold">
+        Form ({renderCount})
+      </h1>
+      <DevTool control={formMethods.control} />
       <Form formMethods={formMethods} onSubmit={onSubmit} error={props.error}>
         <FormError
           error={props.error}
