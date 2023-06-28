@@ -1,3 +1,4 @@
+import { DevTool } from '@hookform/devtools'
 import { CreateRewardableInput } from 'types/graphql'
 
 import {
@@ -125,6 +126,7 @@ const RewardableForm = (props: RewardableFormProps) => {
       </div>
 
       <div className="rw-form-wrapper mt-12 border-t">
+        <DevTool control={formMethods.control} />
         <Form onSubmit={onSubmit} error={props.error} formMethods={formMethods}>
           <div className="flex gap-12">
             <div className="flex-1">
