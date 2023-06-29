@@ -58,10 +58,18 @@ type FormValues = {
   challenge: string
   resourceLinks: string
   stepSortWeight: number
-  type: StepType
+  type: StepType // ['SIMPLE_TEXT', 'NFT_CHECK', 'FUNCTION_CALL', 'COMETH_API', 'TOKEN_ID_RANGE', 'ORIUM_API']
   stepTypeData: {
     solution: string
+    contractAddress?: string
+    chainId?: string
+    startId?: number
+    endId?: number
+    stepComethApi?: {
+      method: string // is this correct?
+    }
   }
+  id?: string
 }
 
 const StepForm = (props: StepFormProps) => {
@@ -155,7 +163,7 @@ const StepForm = (props: StepFormProps) => {
   return (
     <div className="rw-form-wrapper">
       <h1 className="bg-rose-200 p-2 text-2xl font-extrabold">
-        Form ({renderCount})
+        Total times this form has rendered: ({renderCount})
       </h1>
       <DevTool control={formMethods.control} />
       <Form formMethods={formMethods} onSubmit={onSubmit} error={props.error}>
