@@ -92,6 +92,19 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
     return data
   }
 
+  async updateProfile(data: Record<string, string>) {
+    if (!context?.currentUser?.id) {
+      throw new Error('Must be logged in')
+    }
+
+    await db.user.update({
+      where: { id: context.currentUser.id },
+      data: {
+        discordProfile: data.username,
+      },
+    })
+  }
+
   async upsertConnection(
     profileId: string,
     accessToken: string,
@@ -144,6 +157,13 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
     if (!('id' in connection)) {
       throw new Error('Error removing account connection from db')
     }
+
+    await db.user.update({
+      where: { id: context.currentUser.id },
+      data: {
+        discordProfile: null,
+      },
+    })
 
     return connection
   }

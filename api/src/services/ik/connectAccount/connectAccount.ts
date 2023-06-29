@@ -3,6 +3,7 @@ import { capitalize } from 'lodash'
 import type { MutationResolvers } from 'types/graphql'
 
 import { discordConnect } from 'src/lib/connectAccounts/accounts/discord'
+import { db } from 'src/lib/db'
 import { verifyToken } from 'src/lib/jwt'
 import { logger } from 'src/lib/logger'
 
@@ -31,8 +32,10 @@ export const connectAccount: MutationResolvers['connectAccount'] = async (
     const { refreshToken, accessToken } = await discordConnect.exchangeToken(
       code
     )
-    const { id } = await discordConnect.getProfile(accessToken)
-    await discordConnect.upsertConnection(id, accessToken, refreshToken)
+
+    const profile = await discordConnect.getProfile(accessToken)
+    await discordConnect.upsertConnection(profile.id, accessToken, refreshToken)
+    await discordConnect.updateProfile(profile)
 
     return {
       success: true,
