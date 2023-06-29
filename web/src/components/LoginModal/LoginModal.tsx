@@ -70,14 +70,6 @@ const LoginModal = ({ redirectPath }: { redirectPath?: string }) => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="mb-6 max-w-prose text-gray-150">
-        <p>
-          <b className="text-white">Note to existing players:</b> If you used an
-          email address to log in to Infinity Keys before May 12th, 2023, please
-          connect with an account connected to that email address.
-        </p>
-      </div>
-
       {loading ? (
         <LoadingIcon />
       ) : (
