@@ -7,7 +7,11 @@ import useCurrentWidth from 'src/hooks/useCurrentWidth'
 
 const BREAK_POINT = 1024
 
-export default function WalletButton() {
+export default function WalletButton({
+  size = 'medium',
+}: {
+  size?: 'small' | 'medium' | 'large'
+}) {
   const width = useCurrentWidth()
   const isSmall = width < BREAK_POINT
 
@@ -54,7 +58,7 @@ export default function WalletButton() {
                       }
                     }}
                     type="button"
-                    size="small"
+                    size={size}
                   />
                 )
               }

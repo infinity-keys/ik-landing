@@ -54,7 +54,7 @@ const ProfilePage = () => {
               className="mx-auto mt-2 block italic text-gray-200 underline transition-colors hover:text-brand-accent-primary"
               onClick={() => reconcilePuzzles()}
             >
-              Sync your progress
+              Sync your anonymous progress
             </button>
           </div>
         )}
