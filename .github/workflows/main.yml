@@ -62,6 +62,7 @@ jobs:
         env:
           DISCORD_MINT_BOT_KEY: ${{ secrets.DISCORD_MINT_BOT_KEY }}
           DISCORD_VOTE_BOT_KEY: ${{ secrets.DISCORD_VOTE_BOT_KEY }}
+          DISCORD_ROLES_BOT_KEY: ${{ secrets.DISCORD_ROLES_BOT_KEY }}
           MORALIS_API_KEY: ${{ secrets.MORALIS_API_KEY }}
           DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
       # run our linter
