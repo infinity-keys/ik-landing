@@ -123,11 +123,15 @@ export const claim: MutationResolvers['claim'] = async ({
       }
     }
 
-    const { success, explorerUrl, errors } = await mint(
+    const { success, explorerUrl, errors, unauthorized } = await mint(
       accessToken,
       account,
       tokenId
     )
+
+    if (unauthorized) {
+      return { unauthorized }
+    }
 
     if (errors?.length) {
       return { errors }

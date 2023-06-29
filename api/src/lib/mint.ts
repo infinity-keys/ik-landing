@@ -19,6 +19,10 @@ const fetchWithRetry = async (
   try {
     const res = await func()
 
+    if (res.status === 401) {
+      return { unauthorized: true }
+    }
+
     if (res.status !== 200) {
       throw new Error('There was a problem minting your NFT. Please try again.')
     }
@@ -73,9 +77,14 @@ export const mint = async (
       }),
     }
 
-    const { status, explorerUrl } = await fetchWithRetry(async () =>
-      fetch(`https://api.usekeyp.com/v1/contracts/method/write`, options)
+    const { status, explorerUrl, unauthorized } = await fetchWithRetry(
+      async () =>
+        fetch(`https://api.usekeyp.com/v1/contracts/method/write`, options)
     )
+
+    if (unauthorized) {
+      return { unauthorized }
+    }
 
     return { success: status === 'SUCCESS', explorerUrl }
   } catch (e) {

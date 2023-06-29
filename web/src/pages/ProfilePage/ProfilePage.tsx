@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { useParams } from '@redwoodjs/router'
+
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
@@ -23,6 +25,7 @@ import { clearRedirectTo } from 'src/providers/redirection'
 
 const ProfilePage = () => {
   const { isAuthenticated, loading, logOut, currentUser } = useAuth()
+  const { redirectTo } = useParams()
 
   const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
@@ -37,8 +40,10 @@ const ProfilePage = () => {
   useEffect(() => {
     // If a user manually navigates to the profile page, clear the redirect route
     // so they aren't navigated to the wrong page after logging in
-    clearRedirectTo()
-  }, [])
+    if (!redirectTo) {
+      clearRedirectTo()
+    }
+  }, [redirectTo])
 
   return (
     <div>
