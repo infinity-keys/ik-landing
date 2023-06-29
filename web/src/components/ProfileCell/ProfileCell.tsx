@@ -193,7 +193,7 @@ export const Success = ({
           </div>
         </div>
 
-        {user?.authId?.split('DISCORD-')[1] && (
+        {(user?.authId?.split('DISCORD-')[1] || user.discordConnection?.id) && (
           <div className="rounded-md border-t border-white/10 bg-black/25 py-8 px-10 text-sm text-gray-100">
             {discordSyncLoading ? (
               <LoaderIcon />
