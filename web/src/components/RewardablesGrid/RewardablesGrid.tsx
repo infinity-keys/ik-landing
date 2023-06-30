@@ -124,7 +124,9 @@ const RewardablesList = ({
 
       {layout !== ThumbnailGridLayoutType.Unknown && (
         <div>
-          <p className="py-4 text-3xl font-bold">Puzzles</p>
+          <p className="py-4 text-3xl font-bold" data-cy="grid-label">
+            Puzzles
+          </p>
 
           <GridLayoutButtons
             isGrid={layout === ThumbnailGridLayoutType.Grid}
