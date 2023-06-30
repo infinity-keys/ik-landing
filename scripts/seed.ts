@@ -1,3 +1,4 @@
+import { testPuzzle } from '@infinity-keys/constants'
 import { db } from 'api/src/lib/db'
 
 export default async () => {
@@ -133,10 +134,7 @@ export default async () => {
 
   const puzzle1 = await db.rewardable.create({
     data: {
-      name: 'Puzzle 1 (Brazil)',
-      slug: 'puzzle-1',
-      explanation:
-        'This is the first puzzle, it is about Brazil, it is anonymous so you can solve it without logging in',
+      ...testPuzzle.rewardable,
       type: 'PUZZLE',
       orgId: ikOrg.id,
 
@@ -150,18 +148,7 @@ export default async () => {
         create: {
           isAnon: true,
           steps: {
-            create: [
-              {
-                challenge: 'What is the biggest river in Brazil?',
-                stepSortWeight: 1,
-                type: 'SIMPLE_TEXT',
-                stepSimpleText: {
-                  create: {
-                    solution: 'Amazon',
-                  },
-                },
-              },
-            ],
+            create: [testPuzzle.step],
           },
         },
       },
