@@ -60,7 +60,7 @@ export const rewardableBySlugWithAnonPuzzle: QueryResolvers['rewardableBySlugWit
   }
 
 export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
-  async ({ types, page = 1, count = 1 }) => {
+  async ({ types, page = 1, count = 16 }) => {
     const skip = (page - 1) * count
     const [smallestPaginationCount] = PAGINATION_COUNTS
     const take = PAGINATION_COUNTS.includes(count)
