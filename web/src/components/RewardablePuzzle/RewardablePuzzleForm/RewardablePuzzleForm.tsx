@@ -12,6 +12,7 @@ import {
   Submit,
   useForm,
   useFieldArray,
+  SubmitHandler,
 } from '@redwoodjs/forms'
 import type { RWGqlError } from '@redwoodjs/forms'
 
@@ -31,14 +32,14 @@ interface RewardableFormProps {
  */
 
 const RewardableForm = (props: RewardableFormProps) => {
-  const formMethods = useForm()
+  const formMethods = useForm<CreateRewardableInput>()
   const { control } = formMethods
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'steps',
   })
 
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<CreateRewardableInput> = (data) => {
     const { nft, ...rest } = data
     const filteredData = nft.tokenId !== null ? data : rest
 
@@ -171,6 +172,8 @@ const RewardableForm = (props: RewardableFormProps) => {
               />
 
               <FieldError name="slug" className="rw-field-error" />
+
+              {/* <TextField name="kittens" /> */}
 
               <Label
                 name="explanation"
