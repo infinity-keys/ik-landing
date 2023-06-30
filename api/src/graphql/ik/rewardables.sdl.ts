@@ -53,6 +53,7 @@ export const schema = gql`
     successMessage: String
     listPublicly: Boolean
     type: RewardableType!
+    sortType: RewardableSortType
     rewardableConnection: RewardableConnectionInput
     nft: CreateNftInput
     steps: [StepInput]
@@ -63,6 +64,7 @@ export const schema = gql`
   }
 
   type Query {
+    rewardablesBySortType(sortType: RewardableSortType): [Rewardable] @skipAuth
     rewardableBySlug(slug: String!, type: RewardableType!): Rewardable @skipAuth
     rewardableBySlugWithAnonPuzzle(slug: String!): Rewardable @skipAuth
     rewardablesCollection(

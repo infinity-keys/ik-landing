@@ -7,13 +7,19 @@ import RewardablesGrid from 'src/components/RewardablesGrid'
 import { GridLandingRouteType } from 'src/lib/urlBuilders'
 
 export const QUERY = gql`
-  query FindRewardables($count: Int, $page: Int, $types: [RewardableType!]!) {
+  query FindRewardables(
+    $count: Int
+    $page: Int
+    $types: [RewardableType!]!
+    $sortType: RewardableSortType
+  ) {
     rewardablesCollection(types: $types, page: $page, count: $count) {
       rewardables {
         id
         name
         slug
         type
+        sortType
         puzzle {
           isAnon
           steps {
@@ -39,6 +45,35 @@ export const QUERY = gql`
       }
       totalCount
     }
+    labeled: rewardablesBySortType(sortType: $sortType) {
+      id
+      name
+      slug
+      type
+      sortType
+      puzzle {
+        isAnon
+        steps {
+          id
+          stepSortWeight
+          hasUserCompletedStep
+        }
+      }
+      nfts {
+        cloudinaryId
+      }
+      userRewards {
+        id
+      }
+      asParent {
+        childSortWeight
+        childRewardable {
+          userRewards {
+            id
+          }
+        }
+      }
+    }
   }
 `
 
@@ -58,13 +93,16 @@ export const Failure = ({ error }: CellFailureProps) => (
 
 export const Success = ({
   rewardablesCollection,
+  labeled,
   landingRoute,
 }: CellSuccessProps<FindRewardables> & {
   landingRoute?: GridLandingRouteType
 }) => {
+  console.log(labeled)
   return (
     <RewardablesGrid
       rewardables={rewardablesCollection.rewardables}
+      labeled={labeled}
       totalCount={rewardablesCollection.totalCount}
       landingRoute={landingRoute}
     />
