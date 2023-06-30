@@ -8,7 +8,7 @@ import {
 } from '@infinity-keys/core'
 import clsx from 'clsx'
 import loCapitalize from 'lodash/capitalize'
-import type { FindRewardables, Rewardable } from 'types/graphql'
+import type { FindRewardables } from 'types/graphql'
 
 import { useParams } from '@redwoodjs/router'
 
@@ -27,7 +27,7 @@ const RewardablesList = ({
   labeled,
 }: FindRewardables['rewardablesCollection'] & {
   landingRoute?: GridLandingRouteType
-  labeled: [Rewardable]
+  labeled: FindRewardables['labeled']
 }) => {
   const { isAuthenticated } = useAuth()
   const { page, count } = useParams()
@@ -73,9 +73,9 @@ const RewardablesList = ({
         url={buildUrlString(`/puzzles`)}
       />
 
-      {labeled?.length && (
+      {labeled && labeled?.length > 0 && (
         <div className="mb-8">
-          <p className="py-4 text-3xl font-bold">{labeled[0].sortType}</p>
+          <p className="py-4 text-3xl font-bold">Featured Puzzles</p>
           <ul
             className={clsx(
               'grid grid-cols-1 gap-6 sm:grid-cols-2',
@@ -83,14 +83,14 @@ const RewardablesList = ({
             )}
           >
             {labeled.map((rewardable) => {
+              if (!rewardable) return null
               const solvedArray =
                 rewardable.type === 'PACK'
                   ? rewardable.asParent.map(
-                      ({ childRewardable }) =>
-                        !!childRewardable.userRewards.length
+                      (parent) => !!parent?.childRewardable.userRewards.length
                     )
-                  : rewardable.puzzle.steps.map(
-                      ({ hasUserCompletedStep }) => hasUserCompletedStep
+                  : rewardable?.puzzle?.steps.map(
+                      (step) => !!step?.hasUserCompletedStep
                     )
 
               return (
@@ -147,13 +147,11 @@ const RewardablesList = ({
                 const solvedArray =
                   rewardable.type === 'PACK'
                     ? rewardable.asParent.map(
-                        ({ childRewardable }) =>
-                          !!childRewardable.userRewards.length
+                        (parent) => !!parent?.childRewardable.userRewards.length
                       )
-                    : rewardable.puzzle.steps.map(
-                        ({ hasUserCompletedStep }) => hasUserCompletedStep
+                    : rewardable?.puzzle?.steps.map(
+                        (step) => !!step?.hasUserCompletedStep
                       )
-
                 return (
                   <li
                     key={rewardable.id}

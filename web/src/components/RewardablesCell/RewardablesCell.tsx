@@ -98,7 +98,6 @@ export const Success = ({
 }: CellSuccessProps<FindRewardables> & {
   landingRoute?: GridLandingRouteType
 }) => {
-  console.log(labeled)
   return (
     <RewardablesGrid
       rewardables={rewardablesCollection.rewardables}
