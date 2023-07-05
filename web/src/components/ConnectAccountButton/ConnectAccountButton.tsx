@@ -15,8 +15,6 @@ const ConnectAccountButton = ({
   const { currentUser } = useAuth()
 
   const fetchAuthUrl = async () => {
-    // @TODO: ...?
-    // https://redwoodjs.com/docs/5.0/serverless-functions#security-considerations
     const res = await fetch(connectAccountApiUrl(provider), {
       headers: {
         Authorization: `Bearer ${currentUser?.authId}`,
