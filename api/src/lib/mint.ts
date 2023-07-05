@@ -81,7 +81,7 @@ export const mint = async (
       fetch(`https://api.usekeyp.com/v1/contracts/method/write`, options)
     )
 
-    if (!authorized) {
+    if (typeof authorized === 'boolean' && !authorized) {
       return { authorized }
     }
 
