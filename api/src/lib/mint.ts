@@ -20,7 +20,7 @@ const fetchWithRetry = async (
     const res = await func()
 
     if (res.status === 401) {
-      return { unauthorized: true }
+      return { authorized: false }
     }
 
     if (res.status !== 200) {
@@ -77,13 +77,12 @@ export const mint = async (
       }),
     }
 
-    const { status, explorerUrl, unauthorized } = await fetchWithRetry(
-      async () =>
-        fetch(`https://api.usekeyp.com/v1/contracts/method/write`, options)
+    const { status, explorerUrl, authorized } = await fetchWithRetry(async () =>
+      fetch(`https://api.usekeyp.com/v1/contracts/method/write`, options)
     )
 
-    if (unauthorized) {
-      return { unauthorized }
+    if (!authorized) {
+      return { authorized }
     }
 
     return { success: status === 'SUCCESS', explorerUrl }

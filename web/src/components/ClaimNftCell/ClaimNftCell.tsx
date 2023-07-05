@@ -54,7 +54,7 @@ const CLAIM_MUTATION = gql`
       explorerUrl
       tokenId
       errors
-      unauthorized
+      authorized
     }
   }
 `
@@ -86,7 +86,10 @@ export const Success = ({
         externalAddress: address,
       },
       onCompleted(data) {
-        if (data.claim.unauthorized) {
+        if (
+          typeof data.claim.authorized === 'boolean' &&
+          !data.claim.authorized
+        ) {
           logOut()
         }
       },
