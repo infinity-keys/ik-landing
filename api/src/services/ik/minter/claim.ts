@@ -129,7 +129,8 @@ export const claim: MutationResolvers['claim'] = async ({
     try {
       decryptedAccessToken = decryptAndDecompressText(accessToken)
     } catch {
-      return { authorized: false }
+      // return { authorized: false }
+      decryptedAccessToken = accessToken
     }
 
     const { success, explorerUrl, errors, authorized } = await mint(
