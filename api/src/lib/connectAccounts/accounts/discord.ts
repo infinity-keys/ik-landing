@@ -5,8 +5,8 @@ import { compressAndEncryptText } from 'src/lib/encoding/encoding'
 
 import { ConnectAccountOauthProvider, ConnectConfig } from '../base'
 
-const clientId = process.env.DISCORD_TEST_CLIENT || ''
-const clientSecret = process.env.DISCORD_TEST_SECRET || ''
+const clientId = process.env.DISCORD_CONNECT_CLIENT || ''
+const clientSecret = process.env.DISCORD_CONNECT_SECRET || ''
 const redirectUri = 'http://localhost:8910/connect-accounts?provider=discord'
 
 const config = {
@@ -125,7 +125,6 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
       create: {
         accessToken: compressAndEncryptText(refreshToken),
         refreshToken: compressAndEncryptText(accessToken),
-        // @TODO: should discordIds be unique
         discordId: profileId,
         userId: context.currentUser.id,
       },
