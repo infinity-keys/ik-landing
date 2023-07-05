@@ -1,6 +1,7 @@
 import { MutationResolvers } from 'types/graphql'
 
 import { db } from 'src/lib/db'
+import { decryptAndDecompressText } from 'src/lib/encoding/encoding'
 import { mint } from 'src/lib/mint'
 import { addNftReward } from 'src/lib/nft'
 import { checkBalance } from 'src/lib/web3/check-balance'
@@ -124,7 +125,7 @@ export const claim: MutationResolvers['claim'] = async ({
     }
 
     const { success, explorerUrl, errors, unauthorized } = await mint(
-      accessToken,
+      decryptAndDecompressText(accessToken),
       account,
       tokenId
     )
