@@ -138,7 +138,7 @@ export const claim: MutationResolvers['claim'] = async ({
       tokenId
     )
 
-    if (!authorized) {
+    if (typeof authorized === 'boolean' && !authorized) {
       return { authorized }
     }
 
