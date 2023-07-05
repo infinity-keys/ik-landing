@@ -25,8 +25,12 @@ export const stream = datadog.createWriteStreamSync({
 })
 
 export const logger = createLogger({
-  ...(process.env.NODE_ENV === 'production' && {
-    destination: stream,
-    options: { level: 'info' },
-  }),
+  ...(process.env.NODE_ENV === 'production'
+    ? {
+        destination: stream,
+        options: { level: 'info' },
+      }
+    : {
+        options: { level: 'warn' },
+      }),
 })
