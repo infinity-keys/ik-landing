@@ -88,6 +88,7 @@ const StepsLayout = ({
                   <CollapsibleMarkdown
                     title="Hint"
                     content={`${step.resourceLinks}`}
+                    defaultOpen={!step.challenge}
                   />
                 </div>
               )}

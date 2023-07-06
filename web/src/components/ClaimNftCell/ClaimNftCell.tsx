@@ -14,6 +14,7 @@ import { Link } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
+import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
 import CloudImage from 'src/components/CloudImage/CloudImage'
 import Heading from 'src/components/Heading/Heading'
@@ -53,6 +54,7 @@ const CLAIM_MUTATION = gql`
       explorerUrl
       tokenId
       errors
+      authorized
     }
   }
 `
@@ -70,6 +72,7 @@ export const Failure = ({
 export const Success = ({
   rewardable,
 }: CellSuccessProps<FindClaimNftQuery, FindClaimNftQueryVariables>) => {
+  const { logOut } = useAuth()
   const { address } = useAccount()
   const { openConnectModal } = useConnectModal()
 
@@ -81,6 +84,14 @@ export const Success = ({
       variables: {
         rewardableId: rewardable.id,
         externalAddress: address,
+      },
+      onCompleted(data) {
+        if (
+          typeof data.claim.authorized === 'boolean' &&
+          !data.claim.authorized
+        ) {
+          logOut()
+        }
       },
     }
   )
