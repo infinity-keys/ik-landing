@@ -38,7 +38,6 @@
     "humanize-string": "2.1.0",
     "loaders.css": "^0.1.2",
     "lodash": "^4.17.21",
-    "magic-sdk": "^10.1.0",
     "nuka-carousel": "^6.0.3",
     "prop-types": "15.8.1",
     "react": "18.2.0",
