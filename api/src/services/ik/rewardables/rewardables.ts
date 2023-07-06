@@ -42,6 +42,7 @@ export const rewardablesBySortType: QueryResolvers['rewardablesBySortType'] = ({
   return db.rewardable.findMany({
     where: {
       sortType,
+      listPublicly: true,
     },
   })
 }
