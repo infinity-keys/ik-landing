@@ -2,6 +2,7 @@ import { DiscordConnection } from 'types/graphql'
 
 import { db } from 'src/lib/db'
 import { compressAndEncryptText } from 'src/lib/encoding/encoding'
+import { logger } from 'src/lib/logger'
 
 import { ConnectAccountOauthProvider, ConnectConfig } from '../base'
 
@@ -50,6 +51,7 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
       !this.tokenExchangeBody.client_secret ||
       !code
     ) {
+      logger.error('Missing parameters in token exchange')
       throw new Error('Missing parameters in token exchange')
     }
 
@@ -67,6 +69,7 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
     const { refresh_token, access_token } = await res.json()
 
     if (typeof refresh_token !== 'string' || typeof access_token !== 'string') {
+      logger.error('Tokens missing from token exchange response')
       throw new Error('Tokens missing from token exchange response')
     }
 
@@ -75,6 +78,7 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
 
   async getProfile(accessToken: string): Promise<Record<string, string>> {
     if (!accessToken) {
+      logger.error('Missing user access token')
       throw new Error('Missing user access token')
     }
 
@@ -85,6 +89,7 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
     })
 
     if (profileRes.status !== 200) {
+      logger.error('Error obtaining Discord profile')
       throw new Error('Error obtaining Discord profile')
     }
 
@@ -98,10 +103,12 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
     refreshToken: string
   ) {
     if (!accessToken || !refreshToken) {
+      logger.error('Missing tokens')
       throw new Error('Missing tokens')
     }
 
     if (!context?.currentUser?.id) {
+      logger.error('Must be logged in')
       throw new Error('Must be logged in')
     }
 
@@ -123,6 +130,7 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
     })
 
     if (!('id' in connection)) {
+      logger.error('Error adding account connection to db')
       throw new Error('Error adding account connection to db')
     }
 

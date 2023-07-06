@@ -10,10 +10,13 @@ export const connectAccount: MutationResolvers['connectAccount'] = async (
   { code, state, provider },
   obj
 ) => {
+  logger.info('Invoked /connectAccounts')
+
   try {
     const ctx = obj?.context
 
     if (!ctx?.event || !context?.currentUser?.id) {
+      logger.error('Error retrieving account /connectAccounts')
       return { success: false, errors: ['Error retrieving account'] }
     }
 
@@ -21,6 +24,7 @@ export const connectAccount: MutationResolvers['connectAccount'] = async (
     const cookieState = await verifyToken(token)
 
     if (!cookieState || cookieState.payload.state !== state) {
+      logger.error('Invalid state /connectAccounts')
       return {
         success: false,
         errors: ['Invalid state'],
@@ -44,16 +48,9 @@ export const connectAccount: MutationResolvers['connectAccount'] = async (
       provider ? `${capitalize(provider)} account` : 'account'
     }`
 
-    if (e instanceof Error) {
-      return {
-        success: false,
-        errors: [defaultMessage, e.message],
-      }
-    }
-
     return {
       success: false,
-      errors: [defaultMessage],
+      errors: [defaultMessage, ...(e instanceof Error ? [e.message] : [])],
     }
   }
 }
