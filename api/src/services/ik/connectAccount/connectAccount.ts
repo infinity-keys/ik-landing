@@ -44,16 +44,9 @@ export const connectAccount: MutationResolvers['connectAccount'] = async (
       provider ? `${capitalize(provider)} account` : 'account'
     }`
 
-    if (e instanceof Error) {
-      return {
-        success: false,
-        errors: [defaultMessage, e.message],
-      }
-    }
-
     return {
       success: false,
-      errors: [defaultMessage],
+      errors: [defaultMessage, ...(e instanceof Error ? [e.message] : [])],
     }
   }
 }
@@ -70,16 +63,9 @@ export const deleteAccountConnection: MutationResolvers['deleteAccountConnection
         provider ? `${capitalize(provider)} account` : 'account'
       }`
 
-      if (e instanceof Error) {
-        return {
-          success: false,
-          errors: [defaultMessage, e.message],
-        }
-      }
-
       return {
         success: false,
-        errors: [defaultMessage],
+        errors: [defaultMessage, ...(e instanceof Error ? [e.message] : [])],
       }
     }
   }
