@@ -139,7 +139,7 @@ export const onConnected = async ({
         update: {
           email: userDetails.email,
           lastLoggedIn: new Date().toISOString(),
-          accessToken,
+          accessToken: compressAndEncryptText(accessToken),
         },
         create: {
           authId: userDetails.sub,
