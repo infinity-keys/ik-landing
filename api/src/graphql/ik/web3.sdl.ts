@@ -5,6 +5,7 @@ export const schema = gql`
     success: Boolean
     tokenId: Int
     explorerUrl: String
+    authorized: Boolean
   }
 
   type Mutation {
