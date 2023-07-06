@@ -7,7 +7,7 @@ import { ConnectAccountOauthProvider, ConnectConfig } from '../base'
 
 const clientId = process.env.DISCORD_CONNECT_CLIENT || ''
 const clientSecret = process.env.DISCORD_CONNECT_SECRET || ''
-const redirectUri = 'http://localhost:8910/connect-accounts?provider=discord'
+const redirectUri = process.env.DISCORD_CONNECT_REDIRECT_URI || ''
 
 const config = {
   authUrl: 'https://discord.com/api/oauth2/authorize',
