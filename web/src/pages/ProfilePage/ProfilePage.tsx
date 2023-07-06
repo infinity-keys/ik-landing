@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { useParams } from '@redwoodjs/router'
+
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
 import ConnectAccountButton from 'src/components/ConnectAccountButton/ConnectAccountButton'
@@ -11,19 +13,9 @@ import Seo from 'src/components/Seo/Seo'
 import useReconcileProgress from 'src/hooks/useReconcileProgress'
 import { clearRedirectTo } from 'src/providers/redirection'
 
-/*
-  IMPORTANT: This page needs to run a GraphQL function to create a new user in
-  the db. That function currently comes from ProfileCell.
-
-  To create a user, we first check if they are authenticated with Magic.link,
-  and then we run a GraphQL function (the query in ProfileCell) to call the
-  getCurrentUser function. This function runs for all graphql requests. In it,
-  we ensure the user has a valid token and authId, and create a new user or
-  update an existing user.
-*/
-
 const ProfilePage = () => {
   const { isAuthenticated, loading, logOut, currentUser } = useAuth()
+  const { redirectTo } = useParams()
 
   const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
@@ -38,8 +30,10 @@ const ProfilePage = () => {
   useEffect(() => {
     // If a user manually navigates to the profile page, clear the redirect route
     // so they aren't navigated to the wrong page after logging in
-    clearRedirectTo()
-  }, [])
+    if (!redirectTo) {
+      clearRedirectTo()
+    }
+  }, [redirectTo])
 
   return (
     <div>

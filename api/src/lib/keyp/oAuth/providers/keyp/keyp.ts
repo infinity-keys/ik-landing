@@ -3,6 +3,7 @@ import { JWTPayload, decodeJwt } from 'jose'
 import { OAuth } from 'types/graphql'
 
 import { db } from 'src/lib/db'
+import { compressAndEncryptText } from 'src/lib/encoding/encoding'
 import { encodeBody, getExpiration } from 'src/lib/keyp/oAuth/helpers'
 import { logger } from 'src/lib/logger'
 
@@ -123,7 +124,7 @@ export const onConnected = async ({
             username: userDetails.username,
             address: userDetails.address,
             lastLoggedIn: new Date().toISOString(),
-            accessToken,
+            accessToken: compressAndEncryptText(accessToken),
           },
         })
         return user
@@ -147,7 +148,7 @@ export const onConnected = async ({
           address: userDetails.address,
           lastLoggedIn: new Date().toISOString(),
           roles: ['VERIFIED'],
-          accessToken,
+          accessToken: compressAndEncryptText(accessToken),
         },
         where: { authId: userDetails.sub },
       })
