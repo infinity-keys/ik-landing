@@ -16,6 +16,14 @@ import { contractLookup } from 'src/lib/lookups'
  *
  * @param arrays - A 2D boolean array.
  * @returns A boolean array.
+ * @example
+ * const arrays = [
+ *   [true, false, true, false],
+ *   [true, false, false, true],
+ * ]
+ *
+ * const result = hasOneTruePerIndex(arrays)
+ * console.log(result) // [true, false, true, true]
  */
 const hasOneTruePerIndex = (arrays: boolean[][]): boolean[] => {
   // All inner arrays should be the same length (the length of the tokenIds array)
@@ -38,6 +46,21 @@ const hasOneTruePerIndex = (arrays: boolean[][]): boolean[] => {
  *
  * @param arrays - A 2D boolean array.
  * @returns A 2D boolean array.
+ * @example
+ * const arrays = [
+ *   [true, false, true, true,],
+ *   [false, true, false, false],
+ * ]
+ *
+ * const dividedArrays = divideArrays(arrays)
+ * console.log(dividedArrays)
+ * // Output:
+ * // [
+ * //   [true, false],
+ * //   [true, true],
+ * //   [false, true],
+ * //   [false, false],
+ * // ]
  */
 const divideArrays = (arrays: boolean[][]): boolean[][] =>
   arrays.flatMap((arr) => {
