@@ -8,7 +8,7 @@ import { connectAccountApiUrl } from 'src/lib/urlBuilders'
 
 const ConnectAccountButton = ({
   provider,
-  text,
+  text = 'Connect',
 }: {
   provider: ConnectAccountProviders
   text?: string
@@ -39,7 +39,7 @@ const ConnectAccountButton = ({
 
   return (
     <Button
-      text={text || 'Connect'}
+      text={text}
       onClick={fetchAuthUrl}
       size="small"
       variant="faded"
