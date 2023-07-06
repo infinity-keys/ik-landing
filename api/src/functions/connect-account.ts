@@ -8,9 +8,14 @@ import { useRequireAuth } from '@redwoodjs/graphql-server'
 import { getCurrentUser, isAuthenticated } from 'src/lib/auth'
 import { discordConnect } from 'src/lib/connectAccounts/accounts/discord'
 import { makeStateToken } from 'src/lib/jwt'
+import { logger } from 'src/lib/logger'
 
 const connectAccount = async (event: APIGatewayEvent) => {
+  logger.info('Invoked /connect-account')
+
   if (!isAuthenticated()) {
+    logger.error('Unauthenticated request to /connect-account')
+
     return {
       statusCode: 401,
     }
@@ -19,12 +24,13 @@ const connectAccount = async (event: APIGatewayEvent) => {
   const { provider } = event.queryStringParameters || {}
 
   if (!provider) {
+    logger.error('Request to /connect-account without provider')
+
     return {
       statusCode: 400,
     }
   }
 
-  // TODO: tie to session somehow?
   const state = nanoid(15)
   const stateToken = await makeStateToken(state)
 
