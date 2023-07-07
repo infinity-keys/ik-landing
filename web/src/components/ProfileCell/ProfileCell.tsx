@@ -32,7 +32,6 @@ export const QUERY = gql`
       email
       address
       twitterProfile
-      discordProfile
       lensProfile
       authId
       stepsSolvedCount
@@ -41,6 +40,7 @@ export const QUERY = gql`
       nftsSolvedCount
       discordConnection {
         id
+        username
       }
       userRewards {
         id
@@ -173,11 +173,11 @@ export const Success = ({
               </div>
             )}
 
-            {user.discordProfile && (
+            {user.discordConnection?.username && (
               <div className="flex items-center pb-4">
                 <DiscordIcon width={20} height={20} />
                 <p className="ml-4 text-sm text-white/70">
-                  {user.discordProfile}
+                  {user.discordConnection.username}
                 </p>
               </div>
             )}

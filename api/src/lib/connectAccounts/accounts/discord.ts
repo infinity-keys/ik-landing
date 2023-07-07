@@ -100,7 +100,8 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
   async upsertConnection(
     profileId: string,
     accessToken: string,
-    refreshToken: string
+    refreshToken: string,
+    username: string
   ) {
     if (!accessToken || !refreshToken) {
       logger.error('Missing tokens')
@@ -121,11 +122,13 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
         refreshToken: compressAndEncryptText(accessToken),
         discordId: profileId,
         userId: context.currentUser.id,
+        username,
       },
       update: {
         accessToken: compressAndEncryptText(refreshToken),
         refreshToken: compressAndEncryptText(accessToken),
         discordId: context.currentUser.id,
+        username,
       },
     })
 
