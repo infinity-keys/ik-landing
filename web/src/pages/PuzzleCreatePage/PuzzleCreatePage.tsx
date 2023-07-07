@@ -15,7 +15,7 @@ import {
 } from '@redwoodjs/forms'
 
 type Nft = {
-  tokenId: number | ''
+  tokenId: string
   contractName: string
 }
 
@@ -80,6 +80,9 @@ const EditNFT = ({
   }
   return (
     <div className="my-4 max-w-3xl border-2 border-zinc-500 bg-zinc-300 p-4">
+      {process.env.NODE_ENV === 'development' && (
+        <DevTool control={formMethods.control} />
+      )}
       <Form formMethods={formMethods} onSubmit={onSubmit}>
         <div>
           <DisplayNFT control={control} index={index} />
@@ -114,17 +117,23 @@ const EditNFT = ({
 }
 
 export default function PuzzleForm() {
-  const { control } = useForm<PuzzleFormType>()
-  const { fields, append, update, remove } = useFieldArray({
-    control,
-    name: nftsFieldArrayName,
-  })
-  const formMethods = useForm({
+  const formMethods = useForm<PuzzleFormType>({
     defaultValues: {
       [nftsFieldArrayName]: [],
     },
   })
+  const { fields, append, update, remove } = useFieldArray({
+    control: formMethods.control,
+    name: nftsFieldArrayName,
+  })
+
+  // console.log(formMethods.getValues())
+
   const renderCount = useRef(1)
+
+  const onSubmit = (data: PuzzleFormType) => {
+    console.log(data)
+  }
 
   useEffect(() => {
     {
@@ -149,7 +158,7 @@ export default function PuzzleForm() {
             {process.env.NODE_ENV === 'development' && (
               <DevTool control={formMethods.control} />
             )}
-            <Form>
+            <Form formMethods={formMethods} onSubmit={onSubmit}>
               <div className="max-w-3xl">
                 <h2 className="my-8 text-4xl font-bold">Create a Puzzle</h2>
                 <Label name="name" className="rw-label">
@@ -198,7 +207,7 @@ export default function PuzzleForm() {
               {fields.map((field, index) => (
                 <fieldset key={field.id}>
                   <EditNFT
-                    control={control}
+                    control={formMethods.control}
                     update={update}
                     index={index}
                     value={field}
