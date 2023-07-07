@@ -466,6 +466,7 @@ model DiscordConnection {
   accessToken  String
   refreshToken String
   discordId    String
+  username     String
 }
 
 /// A User's role specifically within the Organization they belong

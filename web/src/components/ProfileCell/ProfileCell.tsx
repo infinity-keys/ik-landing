@@ -35,7 +35,6 @@ export const QUERY = gql`
       discordProfile
       lensProfile
       authId
-      imageSrc
       stepsSolvedCount
       puzzlesSolvedCount
       packsSolvedCount
@@ -92,20 +91,12 @@ export const Success = ({
         <div className="overflow-hidden rounded-lg bg-black/30">
           <div className="sm:items-centers flex flex-col justify-between bg-black/20 py-8 px-4 sm:flex-row sm:px-10">
             <div className="flex items-center">
-              {user?.imageSrc ? (
-                <img
-                  src={user.imageSrc}
-                  alt=""
-                  className="h-14 w-14 rounded-full"
-                />
-              ) : (
-                <Avatar
-                  size={56}
-                  name={user.email || user.id}
-                  variant="marble"
-                  colors={avatarGradient}
-                />
-              )}
+              <Avatar
+                size={56}
+                name={user.email || user.id}
+                variant="marble"
+                colors={avatarGradient}
+              />
 
               <div className="ml-6">
                 <p className="text-xl font-bold text-white">

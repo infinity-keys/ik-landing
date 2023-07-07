@@ -34,8 +34,6 @@ export abstract class ConnectAccountOauthProvider<T> {
 
   abstract getProfile(accessToken: string): Promise<Record<string, string>>
 
-  abstract updateProfile(data: Record<string, string>): void
-
   abstract upsertConnection(
     profileId: string,
     accessToken: string,
