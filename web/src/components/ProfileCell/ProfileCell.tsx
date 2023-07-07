@@ -22,7 +22,6 @@ import LensConnect from 'src/components/LensConnect/LensConnect'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import { avatarGradient } from 'src/lib/theme/helpers'
 import DiscordIcon from 'src/svgs/DiscordIcon'
-import TwitterIcon from 'src/svgs/TwitterIcon'
 
 export const QUERY = gql`
   query FindUserQuery {
@@ -31,7 +30,6 @@ export const QUERY = gql`
       username
       email
       address
-      twitterProfile
       lensProfile
       authId
       stepsSolvedCount
@@ -163,15 +161,6 @@ export const Success = ({
               <EnvelopeIcon className="h-5 w-5 text-white" />
               <p className="ml-4 text-sm text-white/70">{user.email}</p>
             </div>
-
-            {user.twitterProfile && (
-              <div className="flex items-center pb-4">
-                <TwitterIcon width={20} height={20} />
-                <p className="ml-4 text-sm text-white/70">
-                  {user.twitterProfile}
-                </p>
-              </div>
-            )}
 
             {user.discordConnection?.username && (
               <div className="flex items-center pb-4">
