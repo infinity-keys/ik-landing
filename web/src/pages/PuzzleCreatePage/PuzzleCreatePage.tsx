@@ -31,11 +31,10 @@ const DisplayNFT = ({
   if (!data?.tokenId) return null
 
   return (
-    <div>
-      <h3>Submitted NFT</h3>
-      <p>
-        {data?.tokenId} {data?.contractName}
-      </p>
+    <div className="my-4 border-2 border-zinc-500 bg-gray-100 p-4">
+      <h3 className="font-bold italic">NFT Currently in State:</h3>
+      <div className="font-bold">Token id: {data?.tokenId}</div>
+      <div className="font-bold">Contract name: {data?.contractName}</div>
     </div>
   )
 }
@@ -46,7 +45,7 @@ const EditNFT = ({
   value,
   control,
 }: {
-  update: Function
+  update: (index: number, data: any) => void
   index: number
   value: any
   control: Control
@@ -55,33 +54,45 @@ const EditNFT = ({
     defaultValues: value,
   })
 
+  const formMethods = useForm()
+
+  const onSubmit = () => {
+    formMethods.reset()
+  }
+  {
+    /* <div className="max-w-3xl"></div> */
+  }
   return (
-    <div>
-      <div>
-        <DisplayNFT control={control} index={index} />
-      </div>
-      <Label name="tokenId" className="rw-label">
-        Token Id
-      </Label>
-      <TextField
-        placeholder="Token Id"
-        {...register(`tokenId`, { required: true })}
-      />
-      <Label name="contractName" className="rw-label">
-        Contract Name
-      </Label>
-      <TextField
-        placeholder="Contract Name"
-        {...register(`contractName`, { required: true })}
-      />
-      <Submit
-        className="rw-button-group rw-button rw-button-blue"
-        onClick={handleSubmit((data) => {
-          update(index, data)
-        })}
-      >
-        Add NFT to State
-      </Submit>
+    <div className="my-4 max-w-3xl border-2 border-zinc-500 bg-zinc-300 p-4">
+      <Form formMethods={formMethods} onSubmit={onSubmit}>
+        <div>
+          <DisplayNFT control={control} index={index} />
+        </div>
+        <Label name="tokenId" className="rw-label">
+          Token Id
+        </Label>
+        <TextField
+          className="w-full"
+          placeholder="Token Id"
+          {...register(`tokenId`, { required: true })}
+        />
+        <Label name="contractName" className="rw-label">
+          Contract Name
+        </Label>
+        <TextField
+          className="w-full"
+          placeholder="Contract Name"
+          {...register(`contractName`, { required: true })}
+        />
+        <Submit
+          className="rw-button-group rw-button rw-button-blue"
+          onClick={handleSubmit((data) => {
+            update(index, data)
+          })}
+        >
+          Add NFT to State
+        </Submit>
+      </Form>
     </div>
   )
 }
