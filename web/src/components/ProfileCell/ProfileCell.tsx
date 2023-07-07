@@ -22,7 +22,6 @@ import LensConnect from 'src/components/LensConnect/LensConnect'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import { avatarGradient } from 'src/lib/theme/helpers'
 import DiscordIcon from 'src/svgs/DiscordIcon'
-import TwitterIcon from 'src/svgs/TwitterIcon'
 
 export const QUERY = gql`
   query FindUserQuery {
@@ -31,8 +30,6 @@ export const QUERY = gql`
       username
       email
       address
-      twitterProfile
-      discordProfile
       lensProfile
       authId
       stepsSolvedCount
@@ -41,6 +38,7 @@ export const QUERY = gql`
       nftsSolvedCount
       discordConnection {
         id
+        username
       }
       userRewards {
         id
@@ -89,7 +87,7 @@ export const Success = ({
     <div className="mt-12 flex flex-col gap-6 lg:mt-0 lg:flex-row">
       <div className="lg:basis-2/3">
         <div className="overflow-hidden rounded-lg bg-black/30">
-          <div className="sm:items-centers flex flex-col justify-between bg-black/20 py-8 px-10 sm:flex-row">
+          <div className="sm:items-centers flex flex-col justify-between bg-black/20 py-8 px-4 sm:flex-row sm:px-10">
             <div className="flex items-center">
               <Avatar
                 size={56}
@@ -128,7 +126,7 @@ export const Success = ({
             </div>
           </div>
 
-          <div className="flex gap-10 p-10">
+          <div className="flex gap-10 py-10 px-4 sm:px-10">
             <div>
               <p className="text-xl font-bold text-brand-accent-primary">
                 {user.stepsSolvedCount}
@@ -158,26 +156,17 @@ export const Success = ({
             </div>
           </div>
 
-          <div className="px-10 pb-6 text-white">
+          <div className="px-4 pb-6 text-white sm:px-10">
             <div className="flex items-center pb-4">
               <EnvelopeIcon className="h-5 w-5 text-white" />
               <p className="ml-4 text-sm text-white/70">{user.email}</p>
             </div>
 
-            {user.twitterProfile && (
-              <div className="flex items-center pb-4">
-                <TwitterIcon width={20} height={20} />
-                <p className="ml-4 text-sm text-white/70">
-                  {user.twitterProfile}
-                </p>
-              </div>
-            )}
-
-            {user.discordProfile && (
+            {user.discordConnection?.username && (
               <div className="flex items-center pb-4">
                 <DiscordIcon width={20} height={20} />
                 <p className="ml-4 text-sm text-white/70">
-                  {user.discordProfile}
+                  {user.discordConnection.username}
                 </p>
               </div>
             )}
@@ -193,8 +182,8 @@ export const Success = ({
           </div>
         </div>
 
-        {user?.authId?.split('DISCORD-')[1] && (
-          <div className="rounded-md border-t border-white/10 bg-black/25 py-8 px-10 text-sm text-gray-100">
+        {(user?.authId?.split('DISCORD-')[1] || user.discordConnection?.id) && (
+          <div className="rounded-md border-t border-white/10 bg-black/25 py-8 px-4 text-sm text-gray-100 sm:px-10">
             {discordSyncLoading ? (
               <LoaderIcon />
             ) : (
@@ -243,11 +232,11 @@ export const Success = ({
       </div>
 
       <div className="overflow-hidden rounded-lg bg-black/30 lg:basis-1/3">
-        <div className="bg-black/30 p-8">
+        <div className="bg-black/30 py-8 px-4 sm:px-8">
           <p className="">Connect social accounts:</p>
         </div>
 
-        <div className="flex flex-col gap-4 p-8">
+        <div className="flex flex-col gap-4 py-8 px-4 sm:px-8">
           <div className="flex items-center justify-between">
             <p>Discord:</p>
             {user?.discordConnection?.id ? (

@@ -37,7 +37,8 @@ export abstract class ConnectAccountOauthProvider<T> {
   abstract upsertConnection(
     profileId: string,
     accessToken: string,
-    refreshToken: string
+    refreshToken: string,
+    username: string
   ): Promise<T>
 
   abstract deleteConnection(): Promise<T>

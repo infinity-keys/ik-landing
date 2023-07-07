@@ -35,8 +35,14 @@ export const connectAccount: MutationResolvers['connectAccount'] = async (
     const { refreshToken, accessToken } = await discordConnect.exchangeToken(
       code
     )
-    const { id } = await discordConnect.getProfile(accessToken)
-    await discordConnect.upsertConnection(id, accessToken, refreshToken)
+
+    const profile = await discordConnect.getProfile(accessToken)
+    await discordConnect.upsertConnection(
+      profile.id,
+      accessToken,
+      refreshToken,
+      profile.username
+    )
 
     return {
       success: true,
