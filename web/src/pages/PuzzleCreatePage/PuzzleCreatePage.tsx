@@ -9,13 +9,95 @@ import {
   TextField,
   CheckboxField,
   Submit,
-  // useFieldArray,
-  // useWatch,
+  useFieldArray,
+  useWatch,
+  Control,
 } from '@redwoodjs/forms'
 
-const PuzzleForm = () => {
-  const formMethods = useForm()
-  const renderCount = useRef(0)
+const fieldArrayName = 'array'
+
+const DisplayNFT = ({
+  control,
+  index,
+}: {
+  control: Control
+  index: number
+}) => {
+  const data = useWatch({
+    control,
+    name: `${fieldArrayName}.${index}`,
+  })
+
+  if (!data?.tokenId) return null
+
+  return (
+    <div>
+      <h3>Submitted NFT</h3>
+      <p>
+        {data?.tokenId} {data?.contractName}
+      </p>
+    </div>
+  )
+}
+
+const EditNFT = ({
+  update,
+  index,
+  value,
+  control,
+}: {
+  update: Function
+  index: number
+  value: any
+  control: Control
+}) => {
+  const { register, handleSubmit } = useForm({
+    defaultValues: value,
+  })
+
+  return (
+    <div>
+      <div>
+        <DisplayNFT control={control} index={index} />
+      </div>
+      <Label name="tokenId" className="rw-label">
+        Token Id
+      </Label>
+      <TextField
+        placeholder="Token Id"
+        {...register(`tokenId`, { required: true })}
+      />
+      <Label name="contractName" className="rw-label">
+        Contract Name
+      </Label>
+      <TextField
+        placeholder="Contract Name"
+        {...register(`contractName`, { required: true })}
+      />
+      <Submit
+        className="rw-button-group rw-button rw-button-blue"
+        onClick={handleSubmit((data) => {
+          update(index, data)
+        })}
+      >
+        Add NFT to State
+      </Submit>
+    </div>
+  )
+}
+
+export default function PuzzleForm() {
+  const { control } = useForm()
+  const { fields, append, update, remove } = useFieldArray({
+    control,
+    name: fieldArrayName,
+  })
+  const formMethods = useForm({
+    defaultValues: {
+      [fieldArrayName]: [],
+    },
+  })
+  const renderCount = useRef(1)
 
   useEffect(() => {
     {
@@ -27,7 +109,7 @@ const PuzzleForm = () => {
   return (
     <div>
       <div className="m-4 inline-block bg-pink-200 p-2 text-lg text-red-800">
-        This component has rendered <b>{renderCount.current}</b> times
+        Times this component has rendered: <b>{renderCount.current}</b>
       </div>
       <div className="rw-segment">
         <header className="rw-segment-header">
@@ -86,8 +168,36 @@ const PuzzleForm = () => {
                 <TextField name="sortWeight" className="rw-input w-14" />
               </div>
 
+              {fields.map((field, index) => (
+                <fieldset key={field.id}>
+                  <EditNFT
+                    control={control}
+                    update={update}
+                    index={index}
+                    value={field}
+                  />
+                  <button
+                    className="rw-button-group rw-button rw-button-blue"
+                    type="button"
+                    onClick={() => remove(index)}
+                  >
+                    Remove
+                  </button>
+                </fieldset>
+              ))}
+
               <div className="rw-button-group">
-                <button className="rw-button rw-button-blue">Add NFT</button>
+                <button
+                  className="rw-button rw-button-blue"
+                  onClick={() => {
+                    append({
+                      tokenId: '',
+                      contractName: '',
+                    })
+                  }}
+                >
+                  Add NFT
+                </button>
               </div>
               <div className="rw-button-group">
                 <button className="rw-button rw-button-blue">Add Step</button>
@@ -104,5 +214,3 @@ const PuzzleForm = () => {
     </div>
   )
 }
-
-export default PuzzleForm
