@@ -5,11 +5,19 @@ export const schema = gql`
     errors: [String]
   }
 
+  type DeleteAccountConnectionResponse {
+    success: Boolean!
+    errors: [String]
+  }
+
   type Mutation {
     connectAccount(
       code: String!
       state: String!
       provider: String
     ): ConnectAccountResponse! @requireAuth
+
+    deleteAccountConnection(provider: String!): DeleteAccountConnectionResponse
+      @requireAuth
   }
 `

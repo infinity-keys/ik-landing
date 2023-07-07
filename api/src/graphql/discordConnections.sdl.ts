@@ -8,6 +8,7 @@ export const schema = gql`
     accessToken: String!
     refreshToken: String!
     discordId: String!
+    username: String!
   }
 
   type Query {
@@ -20,6 +21,7 @@ export const schema = gql`
     accessToken: String!
     refreshToken: String!
     discordId: String!
+    username: String!
   }
 
   input UpdateDiscordConnectionInput {
@@ -27,6 +29,7 @@ export const schema = gql`
     accessToken: String
     refreshToken: String
     discordId: String
+    username: String
   }
 
   type Mutation {

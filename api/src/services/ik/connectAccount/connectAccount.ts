@@ -35,8 +35,14 @@ export const connectAccount: MutationResolvers['connectAccount'] = async (
     const { refreshToken, accessToken } = await discordConnect.exchangeToken(
       code
     )
-    const { id } = await discordConnect.getProfile(accessToken)
-    await discordConnect.upsertConnection(id, accessToken, refreshToken)
+
+    const profile = await discordConnect.getProfile(accessToken)
+    await discordConnect.upsertConnection(
+      profile.id,
+      accessToken,
+      refreshToken,
+      profile.username
+    )
 
     return {
       success: true,
@@ -54,3 +60,22 @@ export const connectAccount: MutationResolvers['connectAccount'] = async (
     }
   }
 }
+
+export const deleteAccountConnection: MutationResolvers['deleteAccountConnection'] =
+  async ({ provider }) => {
+    try {
+      await discordConnect.deleteConnection()
+      return { success: true }
+    } catch (e) {
+      logger.error('Error in deleteAccountConnection', e)
+
+      const defaultMessage = `An error occurred while trying to disconnect your ${
+        provider ? `${capitalize(provider)} account` : 'account'
+      }`
+
+      return {
+        success: false,
+        errors: [defaultMessage, ...(e instanceof Error ? [e.message] : [])],
+      }
+    }
+  }

@@ -100,7 +100,8 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
   async upsertConnection(
     profileId: string,
     accessToken: string,
-    refreshToken: string
+    refreshToken: string,
+    username: string
   ) {
     if (!accessToken || !refreshToken) {
       logger.error('Missing tokens')
@@ -121,17 +122,37 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
         refreshToken: compressAndEncryptText(accessToken),
         discordId: profileId,
         userId: context.currentUser.id,
+        username,
       },
       update: {
         accessToken: compressAndEncryptText(refreshToken),
         refreshToken: compressAndEncryptText(accessToken),
         discordId: context.currentUser.id,
+        username,
       },
     })
 
     if (!('id' in connection)) {
       logger.error('Error adding account connection to db')
       throw new Error('Error adding account connection to db')
+    }
+
+    return connection
+  }
+
+  async deleteConnection() {
+    if (!context?.currentUser?.id) {
+      throw new Error('Must be logged in')
+    }
+
+    const connection = await db.discordConnection.delete({
+      where: {
+        userId: context.currentUser.id,
+      },
+    })
+
+    if (!('id' in connection)) {
+      throw new Error('Error removing account connection from db')
     }
 
     return connection
