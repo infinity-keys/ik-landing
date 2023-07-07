@@ -412,26 +412,18 @@ enum SiteRole {
 
 /// Identifiable player
 model User {
-  id             String   @id @default(cuid())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  lastLoggedIn   DateTime @default(now())
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  lastLoggedIn DateTime @default(now())
   /// Unique string used to cryptographically identify this person. NEVER MAKE PUBLIC
-  nonce          String   @default(cuid())
-  authId         String?  @unique
-  username       String?
-  address        String?  @unique // Torus wallet address
-  email          String?  @unique
-  twitterProfile String?
-  discordProfile String?
-  lensProfile    String?
-
-  mfa_enabled Boolean?
-  imageSrc    String? // Avatar URL
-  country     String? // Player's country  eg. US, DE
-  banned      Boolean  @default(false)
-  blocked     Boolean? // Prevents others from interacting with this person
-  betaAccess  Boolean  @default(false)
+  nonce        String   @default(cuid())
+  authId       String?  @unique
+  username     String?
+  address      String?  @unique // Torus wallet address
+  email        String?  @unique
+  lensProfile  String?
+  avatar       String?
 
   // User's role on the site, as a whole
   roles SiteRole[] @default([ANONYMOUS])
@@ -451,6 +443,7 @@ model User {
   refreshToken String?
   accessToken  String?
 
+  // Auth
   oauth             OAuth[]
   oauthConnection   OAuthConnection[]
   discordConnection DiscordConnection?
