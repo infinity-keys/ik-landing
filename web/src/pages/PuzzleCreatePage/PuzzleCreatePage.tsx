@@ -14,18 +14,34 @@ import {
   Control,
 } from '@redwoodjs/forms'
 
-const fieldArrayName = 'array'
+type Nft = {
+  tokenId: number | ''
+  contractName: string
+}
+
+type PuzzleFormType = {
+  name: string
+  slug: string
+  explanation: string
+  successMessage: string
+  listPublicly: boolean
+  parentId: string
+  sortWeight: number
+  nftsArray: Nft[]
+}
+
+const nftsFieldArrayName = 'nftsArray'
 
 const DisplayNFT = ({
   control,
   index,
 }: {
-  control: Control
+  control: Control<PuzzleFormType>
   index: number
 }) => {
   const data = useWatch({
     control,
-    name: `${fieldArrayName}.${index}`,
+    name: `${nftsFieldArrayName}.${index}`,
   })
 
   if (!data?.tokenId) return null
@@ -45,10 +61,10 @@ const EditNFT = ({
   value,
   control,
 }: {
-  update: (index: number, data: any) => void
+  update: (index: number, data: Nft) => void
   index: number
-  value: any
-  control: Control
+  value: Nft
+  control: Control<PuzzleFormType>
 }) => {
   const { register, handleSubmit } = useForm({
     defaultValues: value,
@@ -98,14 +114,14 @@ const EditNFT = ({
 }
 
 export default function PuzzleForm() {
-  const { control } = useForm()
+  const { control } = useForm<PuzzleFormType>()
   const { fields, append, update, remove } = useFieldArray({
     control,
-    name: fieldArrayName,
+    name: nftsFieldArrayName,
   })
   const formMethods = useForm({
     defaultValues: {
-      [fieldArrayName]: [],
+      [nftsFieldArrayName]: [],
     },
   })
   const renderCount = useRef(1)
