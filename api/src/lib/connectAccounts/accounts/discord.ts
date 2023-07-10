@@ -117,7 +117,7 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
       throw new Error('Must be logged in')
     }
 
-    if (!data?.username) {
+    if (data?.username || typeof data?.username !== 'string') {
       logger.error('No username provided by Discord')
       throw new Error('No username provided by Discord')
     }

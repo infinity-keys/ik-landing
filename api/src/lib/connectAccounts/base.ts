@@ -9,7 +9,7 @@ export type UpsertParams = {
   profileId: string
   accessToken: string
   refreshToken: string
-  data?: Record<string, string>
+  data?: Record<string, unknown>
 }
 
 export abstract class ConnectAccountOauthProvider<T> {
