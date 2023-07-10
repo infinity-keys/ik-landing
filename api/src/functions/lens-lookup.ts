@@ -1,5 +1,6 @@
 import { APIGatewayEvent } from 'aws-lambda'
 
+import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 
 export const handler = async (event: APIGatewayEvent) => {
@@ -13,9 +14,9 @@ export const handler = async (event: APIGatewayEvent) => {
       }
     }
 
-    const params = event.queryStringParameters
+    const { address } = event.queryStringParameters || {}
 
-    if (!params || !params.address) {
+    if (!address) {
       return {
         statusCode: 400,
         body: JSON.stringify({
@@ -24,11 +25,18 @@ export const handler = async (event: APIGatewayEvent) => {
       }
     }
 
-    const result = 'yay'
+    const results = await db.lensKeypConnection.findMany({
+      where: {
+        lensAddress: address,
+      },
+      select: {
+        keypAddress: true,
+      },
+    })
 
     return {
       statusCode: 200,
-      body: JSON.stringify(result),
+      body: JSON.stringify(results.map(({ keypAddress }) => keypAddress)),
     }
   } catch (e) {
     logger.error('Error in /lens-lookup', e)
