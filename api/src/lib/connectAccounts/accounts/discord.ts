@@ -70,6 +70,10 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
       },
     })
 
+    logger.info(
+      `Discord exchangeToken response - ${res.status}: ${res.statusText}`
+    )
+
     const { refresh_token, access_token } = await res.json()
 
     if (typeof refresh_token !== 'string' || typeof access_token !== 'string') {
