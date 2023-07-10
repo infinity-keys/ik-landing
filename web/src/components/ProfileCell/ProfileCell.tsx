@@ -15,6 +15,7 @@ import type {
 import { CellSuccessProps, CellFailureProps, useMutation } from '@redwoodjs/web'
 import { LoaderIcon, toast } from '@redwoodjs/web/toast'
 
+import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
 import ConnectAccountButton from 'src/components/ConnectAccountButton/ConnectAccountButton'
 import DisconnectAccountButton from 'src/components/DisconnectAccountButton/DisconnectAccountButton'
@@ -75,6 +76,7 @@ export const Success = ({
   handleLogOut: () => void
 }) => {
   const { data: lensProfile } = useActiveProfile()
+  const { currentUser } = useAuth()
 
   const [
     syncDiscordRoles,
@@ -85,7 +87,7 @@ export const Success = ({
 
   return (
     <div className="mt-12 flex flex-col gap-6 lg:mt-0 lg:flex-row">
-      <div className="lg:basis-2/3">
+      <div className="mx-auto lg:basis-2/3">
         <div className="overflow-hidden rounded-lg bg-black/30">
           <div className="sm:items-centers flex flex-col justify-between bg-black/20 py-8 px-4 sm:flex-row sm:px-10">
             <div className="flex items-center">
@@ -231,34 +233,36 @@ export const Success = ({
         )}
       </div>
 
-      <div className="overflow-hidden rounded-lg bg-black/30 lg:basis-1/3">
-        <div className="bg-black/30 py-8 px-4 sm:px-8">
-          <p className="">Connect social accounts:</p>
-        </div>
+      {currentUser.roles.includes('ADMIN') && (
+        <div className="overflow-hidden rounded-lg bg-black/30 lg:basis-1/3">
+          <div className="bg-black/30 py-8 px-4 sm:px-8">
+            <p className="">Connect social accounts:</p>
+          </div>
 
-        <div className="flex flex-col gap-4 py-8 px-4 sm:px-8">
-          <div className="flex items-center justify-between">
-            <p>Discord:</p>
-            {user?.discordConnection?.id ? (
-              <DisconnectAccountButton
-                provider="discord"
-                onSuccess={queryResult?.refetch}
+          <div className="flex flex-col gap-4 py-8 px-4 sm:px-8">
+            <div className="flex items-center justify-between">
+              <p>Discord:</p>
+              {user?.discordConnection?.id ? (
+                <DisconnectAccountButton
+                  provider="discord"
+                  onSuccess={queryResult?.refetch}
+                />
+              ) : (
+                <ConnectAccountButton provider="discord" />
+              )}
+            </div>
+            <div className="flex items-center justify-between">
+              <p>Lens:</p>
+              <LensConnect
+                text="Connect"
+                size="small"
+                variant="faded"
+                border={false}
               />
-            ) : (
-              <ConnectAccountButton provider="discord" />
-            )}
-          </div>
-          <div className="flex items-center justify-between">
-            <p>Lens:</p>
-            <LensConnect
-              text="Connect"
-              size="small"
-              variant="faded"
-              border={false}
-            />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
