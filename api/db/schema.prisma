@@ -18,11 +18,15 @@ enum RewardableType {
   BUNDLE
 }
 
+enum RewardableSortType {
+  FEATURED
+}
+
 /// A thing that can reward NFTs.
 model Rewardable {
-  id             String         @id @default(cuid())
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  id             String              @id @default(cuid())
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
   /// Full name, with spaces, ie Not Right
   name           String
   /// Short name used in URLs, lowercase and dashes, no spaces/caps, ie not-right
@@ -32,11 +36,12 @@ model Rewardable {
   /// When this is successfully completed/rewarded, what should be shown
   successMessage String?
   /// Show in public listings
-  listPublicly   Boolean        @default(true)
+  listPublicly   Boolean             @default(true)
   /// Categorize Rewardables into different buckets
   type           RewardableType
   /// The order this rewardable will show in the grid
-  sortWeight     Int?           @default(1)
+  sortWeight     Int?                @default(1)
+  sortType       RewardableSortType?
 
   /// Assign management of a Rewardable to an Organization
   organization Organization @relation(fields: [orgId], references: [id])

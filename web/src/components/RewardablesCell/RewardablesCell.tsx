@@ -6,41 +6,59 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import RewardablesGrid from 'src/components/RewardablesGrid'
 import { GridLandingRouteType } from 'src/lib/urlBuilders'
 
-export const QUERY = gql`
-  query FindRewardables($count: Int, $page: Int, $types: [RewardableType!]!) {
-    rewardablesCollection(types: $types, page: $page, count: $count) {
-      rewardables {
+export const REWARDABLES_GRID_FRAG = gql`
+  fragment RewardablesGridFrag on Rewardable {
+    id
+    name
+    slug
+    type
+    sortType
+    puzzle {
+      isAnon
+      steps {
         id
-        name
-        slug
-        type
-        puzzle {
-          isAnon
-          steps {
-            id
-            stepSortWeight
-            hasUserCompletedStep
-          }
-        }
-        nfts {
-          cloudinaryId
-        }
+        stepSortWeight
+        hasUserCompletedStep
+      }
+    }
+    nfts {
+      cloudinaryId
+    }
+    userRewards {
+      id
+    }
+    asParent {
+      childSortWeight
+      childRewardable {
         userRewards {
           id
         }
-        asParent {
-          childSortWeight
-          childRewardable {
-            userRewards {
-              id
-            }
-          }
-        }
       }
-      totalCount
     }
   }
 `
+
+export const QUERY = () => {
+  return gql`
+    ${REWARDABLES_GRID_FRAG}
+    query FindRewardables(
+      $count: Int
+      $page: Int
+      $types: [RewardableType!]!
+      $sortType: RewardableSortType
+    ) {
+      rewardablesCollection(types: $types, page: $page, count: $count) {
+        rewardables {
+          ...RewardablesGridFrag
+        }
+        totalCount
+      }
+      labeled: rewardablesBySortType(sortType: $sortType) {
+        ...RewardablesGridFrag
+      }
+    }
+  `
+}
 
 export const Loading = () => <LoadingIcon />
 
@@ -58,6 +76,7 @@ export const Failure = ({ error }: CellFailureProps) => (
 
 export const Success = ({
   rewardablesCollection,
+  labeled,
   landingRoute,
 }: CellSuccessProps<FindRewardables> & {
   landingRoute?: GridLandingRouteType
@@ -65,6 +84,7 @@ export const Success = ({
   return (
     <RewardablesGrid
       rewardables={rewardablesCollection.rewardables}
+      labeled={labeled}
       totalCount={rewardablesCollection.totalCount}
       landingRoute={landingRoute}
     />
