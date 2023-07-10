@@ -4,7 +4,11 @@ import { db } from 'src/lib/db'
 import { compressAndEncryptText } from 'src/lib/encoding/encoding'
 import { logger } from 'src/lib/logger'
 
-import { ConnectAccountOauthProvider, ConnectConfig } from '../base'
+import {
+  ConnectAccountOauthProvider,
+  ConnectConfig,
+  UpsertParams,
+} from '../base'
 
 const clientId = process.env.DISCORD_CONNECT_CLIENT || ''
 const clientSecret = process.env.DISCORD_CONNECT_SECRET || ''
@@ -97,12 +101,12 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
     return data
   }
 
-  async upsertConnection(
-    profileId: string,
-    accessToken: string,
-    refreshToken: string,
-    username: string
-  ) {
+  async upsertConnection({
+    profileId,
+    accessToken,
+    refreshToken,
+    data,
+  }: UpsertParams) {
     if (!accessToken || !refreshToken) {
       logger.error('Missing tokens')
       throw new Error('Missing tokens')
@@ -111,6 +115,11 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
     if (!context?.currentUser?.id) {
       logger.error('Must be logged in')
       throw new Error('Must be logged in')
+    }
+
+    if (data?.username || typeof data?.username !== 'string') {
+      logger.error('No username provided by Discord')
+      throw new Error('No username provided by Discord')
     }
 
     const connection = await db.discordConnection.upsert({
@@ -122,13 +131,13 @@ export class DiscordConnect extends ConnectAccountOauthProvider<
         refreshToken: compressAndEncryptText(accessToken),
         discordId: profileId,
         userId: context.currentUser.id,
-        username,
+        username: data.username,
       },
       update: {
         accessToken: compressAndEncryptText(refreshToken),
         refreshToken: compressAndEncryptText(accessToken),
         discordId: context.currentUser.id,
-        username,
+        username: data.username,
       },
     })
 

@@ -5,6 +5,13 @@ export type ConnectConfig = {
   authUrlParams: Record<string, string>
 }
 
+export type UpsertParams = {
+  profileId: string
+  accessToken: string
+  refreshToken: string
+  data?: Record<string, unknown>
+}
+
 export abstract class ConnectAccountOauthProvider<T> {
   protected authUrl: string
   protected tokenUrl: string
@@ -34,12 +41,7 @@ export abstract class ConnectAccountOauthProvider<T> {
 
   abstract getProfile(accessToken: string): Promise<Record<string, string>>
 
-  abstract upsertConnection(
-    profileId: string,
-    accessToken: string,
-    refreshToken: string,
-    username: string
-  ): Promise<T>
+  abstract upsertConnection(params: UpsertParams): Promise<T>
 
   abstract deleteConnection(): Promise<T>
 }
