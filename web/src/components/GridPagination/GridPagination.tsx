@@ -29,7 +29,7 @@ const GridPagination = ({
   return (
     <div
       className={clsx(
-        'mb-8 flex',
+        'my-8 flex',
         isFirstPage && !isLastPage ? 'justify-end' : 'justify-between'
       )}
     >
