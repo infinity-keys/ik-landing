@@ -26,6 +26,7 @@ export const schema = gql`
     oauth: [OAuth]!
     oauthConnection: [OAuthConnection]!
     discordConnection: DiscordConnection
+    lensKeypConnection: [LensKeypConnection]!
   }
 
   enum SiteRole {

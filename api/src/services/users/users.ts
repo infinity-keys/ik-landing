@@ -59,6 +59,9 @@ export const User: UserRelationResolvers = {
   discordConnection: (_obj, { root }) => {
     return db.user.findUnique({ where: { id: root?.id } }).discordConnection()
   },
+  lensKeypConnection: (_obj, { root }) => {
+    return db.user.findUnique({ where: { id: root?.id } }).lensKeypConnection()
+  },
   stepsSolvedCount: () => {
     return db.solve.count({
       where: { userId: context.currentUser.id },

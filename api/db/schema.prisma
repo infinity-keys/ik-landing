@@ -452,6 +452,9 @@ model User {
   oauth             OAuth[]
   oauthConnection   OAuthConnection[]
   discordConnection DiscordConnection?
+
+  /// Maps a user's connected Lens address to their Keyp address
+  lensKeypConnection LensKeypConnection[]
 }
 
 model DiscordConnection {
@@ -526,4 +529,16 @@ model OAuthConnection {
   refreshToken String?
   accessToken  String
   expiration   DateTime?
+}
+
+model LensKeypConnection {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [authId])
+  userId String
+
+  lensAddress String
+  keypAddress String
 }
