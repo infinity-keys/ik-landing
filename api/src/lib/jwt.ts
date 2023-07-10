@@ -65,6 +65,19 @@ export const makeUserToken = (payload: IkJwt, userId?: string) => {
 
   return token.sign(new TextEncoder().encode(JWT_SECRET_KEY))
 }
+/**
+ * Create a state for cookie
+ */
+export const makeStateToken = (state: string) => {
+  return new SignJWT({
+    state,
+  })
+    .setExpirationTime('10m')
+    .setProtectedHeader({ alg: 'HS256' })
+    .setJti(nanoid())
+    .setIssuedAt(epochMinus30s())
+    .sign(new TextEncoder().encode(JWT_SECRET_KEY))
+}
 
 /**
  * Verify all tokens from the same shared secret
