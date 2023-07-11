@@ -12,6 +12,7 @@ export const upsertLensKeypConnect: MutationResolvers['upsertLensKeypConnect'] =
         throw new AuthenticationError('Must be logged in')
       }
 
+      // Delete connection when user disconnects their Lens account
       if (!lensAddress) {
         await db.lensKeypConnection.delete({
           where: {
