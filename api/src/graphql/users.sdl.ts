@@ -63,7 +63,7 @@ export const schema = gql`
     email: String
     lensProfile: String
     avatar: String
-    roles: [SiteRole]!
+    roles: [SiteRole]
     refreshToken: String
     accessToken: String
   }
