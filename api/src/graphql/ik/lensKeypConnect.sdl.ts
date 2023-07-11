@@ -5,7 +5,7 @@ export const schema = gql`
   }
 
   type Mutation {
-    upsertLensKeypConnect(lensAddress: String!): UpsertLensKeypConnectResponse
+    upsertLensKeypConnect(lensAddress: String): UpsertLensKeypConnectResponse
       @requireAuth
   }
 `

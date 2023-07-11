@@ -18,7 +18,7 @@ import { ButtonProps } from 'src/components/Button/Button'
 const UPDATE_LENS_PROFILE = gql`
   mutation UpdateUserMutation(
     $userInput: UpdateUserInput!
-    $lensAddress: String!
+    $lensAddress: String
   ) {
     updateUser(input: $userInput) {
       id
@@ -89,9 +89,10 @@ const LensConnect = (props: Partial<ButtonProps>) => {
   const onLogoutClick = () => {
     updateLensProfile({
       variables: {
-        input: {
+        userInput: {
           lensProfile: null,
         },
+        lensAddress: null,
       },
     })
     logout()

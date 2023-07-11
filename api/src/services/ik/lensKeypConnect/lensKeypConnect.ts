@@ -12,6 +12,18 @@ export const upsertLensKeypConnect: MutationResolvers['upsertLensKeypConnect'] =
         throw new AuthenticationError('Must be logged in')
       }
 
+      if (!lensAddress) {
+        await db.lensKeypConnection.delete({
+          where: {
+            userId: context.currentUser.id,
+          },
+        })
+
+        return {
+          success: true,
+        }
+      }
+
       const user = await db.user.findUniqueOrThrow({
         where: { id: context.currentUser.id },
         select: { address: true },
