@@ -91,7 +91,13 @@ const App = () => {
                 <RedwoodApolloProvider useAuth={useAuth}>
                   <Routes />
                   <CookieConsentBanner />
-                  <Toaster position="bottom-right" />
+                  <Toaster
+                    position="bottom-right"
+                    toastOptions={{
+                      className:
+                        'bg-black/40 border border-brand-accent-primary text-white',
+                    }}
+                  />
                 </RedwoodApolloProvider>
               </AuthProvider>
             </RedwoodProvider>

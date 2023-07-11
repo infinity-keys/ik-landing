@@ -32,14 +32,20 @@ const tokenToRolesLookup: {
 export const syncDiscordRoles: MutationResolvers['syncDiscordRoles'] =
   async () => {
     try {
-      // Grab the Discord id off the user's authId. This will eventually change
-      // when we add option to connect Discord to all users
-      const discordId = context.currentUser?.authId?.split('DISCORD-')[1]
+      let discordId: string | undefined
+
+      // Grab the Discord id off the user's authId if they used Discord to login
+      discordId = context.currentUser?.authId?.split('DISCORD-')[1]
 
       if (!discordId) {
-        throw new Error(
-          'This feature is currently only available to profiles using Discord login. It is coming soon to all users.'
-        )
+        // Get user's Discord id from the Discord oauth connection
+        const connection = await db.discordConnection.findUnique({
+          where: { userId: context.currentUser?.id },
+        })
+        if (!connection) {
+          throw new Error('Please connect your Discord account to continue.')
+        }
+        discordId = connection.discordId
       }
 
       // Get all the user's claimed NFTs from their user rewards
