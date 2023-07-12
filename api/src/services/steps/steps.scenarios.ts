@@ -6,12 +6,17 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
   step: {
     one: {
       data: {
-        updatedAt: '2023-04-04T15:23:01.718Z',
+        updatedAt: '2023-07-12T15:53:40.238Z',
+        featuredImage: 'String',
+        body: 'String',
+        hint: 'String',
+        category: 'SEEK',
+        requirements: 'HOLDERS',
         puzzle: {
           create: {
             rewardable: {
               create: {
-                updatedAt: '2023-04-04T15:23:01.718Z',
+                updatedAt: '2023-07-12T15:53:40.238Z',
                 name: 'String',
                 slug: 'String',
                 explanation: 'String',
@@ -19,8 +24,8 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
                 organization: {
                   create: {
                     name: 'String',
-                    slug: 'String8601350',
-                    updatedAt: '2023-04-04T15:23:01.718Z',
+                    slug: 'String2853175',
+                    updatedAt: '2023-07-12T15:53:40.238Z',
                   },
                 },
               },
@@ -31,12 +36,17 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
     },
     two: {
       data: {
-        updatedAt: '2023-04-04T15:23:01.718Z',
+        updatedAt: '2023-07-12T15:53:40.238Z',
+        featuredImage: 'String',
+        body: 'String',
+        hint: 'String',
+        category: 'SEEK',
+        requirements: 'HOLDERS',
         puzzle: {
           create: {
             rewardable: {
               create: {
-                updatedAt: '2023-04-04T15:23:01.718Z',
+                updatedAt: '2023-07-12T15:53:40.238Z',
                 name: 'String',
                 slug: 'String',
                 explanation: 'String',
@@ -44,8 +54,8 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
                 organization: {
                   create: {
                     name: 'String',
-                    slug: 'String9500531',
-                    updatedAt: '2023-04-04T15:23:01.718Z',
+                    slug: 'String5468217',
+                    updatedAt: '2023-07-12T15:53:40.238Z',
                   },
                 },
               },

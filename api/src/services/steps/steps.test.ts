@@ -25,23 +25,33 @@ describe.skip('steps', () => {
   scenario('creates a step', async (scenario: StandardScenario) => {
     const result = await createStep({
       input: {
-        updatedAt: '2023-04-04T15:23:01.466Z',
+        updatedAt: '2023-07-12T15:53:40.123Z',
         puzzleId: scenario.step.two.puzzleId,
+        featuredImage: 'String',
+        body: 'String',
+        hint: 'String',
+        category: 'SEEK',
+        requirements: 'HOLDERS',
       },
     })
 
-    expect(result.updatedAt).toEqual(new Date('2023-04-04T15:23:01.466Z'))
+    expect(result.updatedAt).toEqual(new Date('2023-07-12T15:53:40.123Z'))
     expect(result.puzzleId).toEqual(scenario.step.two.puzzleId)
+    expect(result.featuredImage).toEqual('String')
+    expect(result.body).toEqual('String')
+    expect(result.hint).toEqual('String')
+    expect(result.category).toEqual('SEEK')
+    expect(result.requirements).toEqual('HOLDERS')
   })
 
   scenario('updates a step', async (scenario: StandardScenario) => {
     const original = (await step({ id: scenario.step.one.id })) as Step
     const result = await updateStep({
       id: original.id,
-      input: { updatedAt: '2023-04-05T15:23:01.466Z' },
+      input: { updatedAt: '2023-07-13T15:53:40.123Z' },
     })
 
-    expect(result.updatedAt).toEqual(new Date('2023-04-05T15:23:01.466Z'))
+    expect(result.updatedAt).toEqual(new Date('2023-07-13T15:53:40.123Z'))
   })
 
   scenario('deletes a step', async (scenario: StandardScenario) => {

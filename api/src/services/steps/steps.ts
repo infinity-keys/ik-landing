@@ -61,18 +61,23 @@ export const Step: StepRelationResolvers = {
   stepComethApi: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).stepComethApi()
   },
-  stepOriumApi: (_obj, { root }) => {
-    return db.step.findUnique({ where: { id: root?.id } }).stepOriumApi()
-  },
   stepTokenIdRange: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).stepTokenIdRange()
   },
+  stepOriumApi: (_obj, { root }) => {
+    return db.step.findUnique({ where: { id: root?.id } }).stepOriumApi()
+  },
+  stepAssetTransfer: (_obj, { root }) => {
+    return db.step.findUnique({ where: { id: root?.id } }).stepAssetTransfer()
+  },
+  stepLensApi: (_obj, { root }) => {
+    return db.step.findUnique({ where: { id: root?.id } }).stepLensApi()
+  },
+  stepErc20Balance: (_obj, { root }) => {
+    return db.step.findUnique({ where: { id: root?.id } }).stepErc20Balance()
+  },
   attempts: (_obj, { root }) => {
-    return db.step.findUnique({ where: { id: root?.id } }).attempts({
-      where: {
-        userId: context.currentUser.id,
-      },
-    })
+    return db.step.findUnique({ where: { id: root?.id } }).attempts()
   },
   /*
    * These `completedStep` resolvers allow us to check via graphQL whether a

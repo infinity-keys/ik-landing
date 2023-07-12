@@ -198,7 +198,32 @@ model Step {
   // A user's attempt at solving this Step
   attempts Attempt[]
 
+  // These are the new fields
+  featuredImage String
+  body          String[]
+  hint          String
+  category      StepCategory
+  requirements  StepRequirements[]
+
   @@unique([puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
+}
+
+enum StepRequirements {
+  HOLDERS
+  ACCOUNT
+  WALLET
+  GAS
+  WALK
+  PATIENCE
+}
+
+enum StepCategory {
+  SEEK
+  INFER
+  REWIND
+  TRACK
+  COLLECT
+  ACTIVATE
 }
 
 /// Simple guess of a text string

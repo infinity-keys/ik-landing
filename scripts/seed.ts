@@ -1,4 +1,3 @@
-import { testPuzzle } from '@infinity-keys/constants'
 import { db } from 'api/src/lib/db'
 
 export default async () => {
@@ -79,6 +78,8 @@ export default async () => {
   )
 
   const protagonistUser = ikUsersData.at(-1)
+  const stepImageUrl =
+    'https://images.unsplash.com/photo-1688396068145-4bec246f615c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80'
 
   console.log(`created ${adminUsers.length} IK admin users`)
 
@@ -130,12 +131,15 @@ export default async () => {
     },
   })
 
+  // const testStep: CreateStepInput = testPuzzle.step
   const puzzle1 = await db.rewardable.create({
     data: {
-      ...testPuzzle.rewardable,
+      name: 'Puzzle 1 (Brazil)',
+      slug: 'puzzle-1',
+      explanation:
+        'This is the first puzzle, it is about Brazil, it is anonymous so you can solve it without logging in',
       type: 'PUZZLE',
       orgId: ikOrg.id,
-
       // Connect the NFT to 'puzzle1' in this rewardable
       nfts: {
         connect: {
@@ -146,7 +150,23 @@ export default async () => {
         create: {
           isAnon: true,
           steps: {
-            create: [testPuzzle.step],
+            create: [
+              {
+                challenge: 'What is the biggest river in Brazil?',
+                stepSortWeight: 1,
+                type: 'SIMPLE_TEXT',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
+                stepSimpleText: {
+                  create: {
+                    solution: 'Amazon',
+                  },
+                },
+              },
+            ],
           },
         },
       },
@@ -182,6 +202,11 @@ export default async () => {
                 challenge: 'What is the capital of Japan?',
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Tokyo',
@@ -192,6 +217,11 @@ export default async () => {
                 challenge: 'What Japanese food has raw fish wrapped in rice?',
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Sushi',
@@ -234,6 +264,11 @@ export default async () => {
                 challenge: 'What is the capital of Greece?',
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Athens',
@@ -244,6 +279,11 @@ export default async () => {
                 challenge: 'What is the biggest island in Greece?',
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Crete',
@@ -254,6 +294,11 @@ export default async () => {
                 challenge: 'Who is head of the ancient Greek Olympian gods?',
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Zeus',
@@ -295,6 +340,11 @@ export default async () => {
                   'You must have the Prerequiste NFT in order to enter Egypt',
                 stepSortWeight: 1,
                 type: 'NFT_CHECK',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepNftCheck: {
                   create: {
                     nftCheckData: {
@@ -312,6 +362,11 @@ export default async () => {
                 challenge: "What is the name of Egypt's main canal?",
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Suez',
@@ -322,6 +377,11 @@ export default async () => {
                 challenge: 'Where are the great pyramids?',
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Giza',
@@ -332,6 +392,11 @@ export default async () => {
                 challenge: "What is the name of Egypt's main river?",
                 stepSortWeight: 4,
                 type: 'SIMPLE_TEXT',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Nile',
@@ -371,6 +436,11 @@ export default async () => {
                 challenge: 'Follow chair and IK',
                 stepSortWeight: 1,
                 type: 'LENS_API',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepLensApi: {
                   create: {
                     checkType: 'IS_FOLLOWING_USER',
@@ -382,6 +452,11 @@ export default async () => {
                 challenge: 'Have you an ERC20?',
                 stepSortWeight: 9,
                 type: 'ERC20_BALANCE',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepErc20Balance: {
                   create: {
                     contractAddress:
@@ -395,6 +470,11 @@ export default async () => {
                 challenge: 'Have you transferred an asset?',
                 stepSortWeight: 8,
                 type: 'ASSET_TRANSFER',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepAssetTransfer: {
                   create: {
                     toAddress: '0xc22834581ebc8527d974f8a1c97e1bea4ef910bc',
@@ -406,6 +486,11 @@ export default async () => {
                 challenge: 'Have you created an Orium scholarship?',
                 stepSortWeight: 7,
                 type: 'ORIUM_API',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepOriumApi: {
                   create: {
                     checkType: 'HAS_CREATED_SCHOLARSHIP',
@@ -416,6 +501,11 @@ export default async () => {
                 challenge: 'NFT check',
                 stepSortWeight: 2,
                 type: 'NFT_CHECK',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepNftCheck: {
                   create: {
                     nftCheckData: {
@@ -433,6 +523,11 @@ export default async () => {
                 challenge: 'Simple Text (the password is text)',
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'text',
@@ -443,6 +538,11 @@ export default async () => {
                 challenge: 'token id range',
                 stepSortWeight: 4,
                 type: 'TOKEN_ID_RANGE',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepTokenIdRange: {
                   create: {
                     contractAddress:
@@ -457,6 +557,11 @@ export default async () => {
                 challenge: 'Have you pet a gotchi?',
                 stepSortWeight: 5,
                 type: 'FUNCTION_CALL',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepFunctionCall: {
                   create: {
                     methodIds: ['0x22c67519'],
@@ -469,6 +574,11 @@ export default async () => {
                 challenge: 'Cometh API',
                 stepSortWeight: 6,
                 type: 'COMETH_API',
+                category: 'SEEK',
+                featuredImage: stepImageUrl,
+                hint: 'Hint',
+                body: ['**bold** text about the deal', 'this will be page two'],
+                requirements: ['ACCOUNT'],
                 stepComethApi: {
                   create: {},
                 },

@@ -22,6 +22,11 @@ export const schema = gql`
     stepErc20Balance: StepErc20Balance
     migrateLandingRoute: String
     attempts: [Attempt]!
+    featuredImage: String!
+    body: [String]!
+    hint: String!
+    category: StepCategory!
+    requirements: [StepRequirements]!
     hasUserCompletedStep: Boolean
     hasAnonUserCompletedStep: Boolean
   }
@@ -38,6 +43,24 @@ export const schema = gql`
     ERC20_BALANCE
   }
 
+  enum StepCategory {
+    SEEK
+    INFER
+    REWIND
+    TRACK
+    COLLECT
+    ACTIVATE
+  }
+
+  enum StepRequirements {
+    HOLDERS
+    ACCOUNT
+    WALLET
+    GAS
+    WALK
+    PATIENCE
+  }
+
   type Query {
     steps: [Step!]! @skipAuth
     step(id: String!): Step @requireAuth
@@ -52,6 +75,11 @@ export const schema = gql`
     puzzleId: String!
     type: StepType!
     migrateLandingRoute: String
+    featuredImage: String!
+    body: [String]!
+    hint: String!
+    category: StepCategory!
+    requirements: [StepRequirements]!
   }
 
   input UpdateStepInput {
@@ -63,6 +91,11 @@ export const schema = gql`
     puzzleId: String
     type: StepType
     migrateLandingRoute: String
+    featuredImage: String
+    body: [String]
+    hint: String
+    category: StepCategory
+    requirements: [StepRequirements]
   }
 
   type Mutation {
