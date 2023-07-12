@@ -531,8 +531,9 @@ model OAuthConnection {
   expiration   DateTime?
 }
 
+// Allows us to connect a Lens profile address to a user's Keyp wallet
 model LensKeypConnection {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
