@@ -62,6 +62,10 @@ export const rewardableBySlugWithAnonPuzzle: QueryResolvers['rewardableBySlugWit
 
 export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
   async ({ types, page = 1, count = 16 }) => {
+    if (!page || !count) {
+      throw new Error('Missing pagination info')
+    }
+
     const skip = (page - 1) * count
     const [smallestPaginationCount] = PAGINATION_COUNTS
     const take = PAGINATION_COUNTS.includes(count)

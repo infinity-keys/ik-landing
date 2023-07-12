@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { useParams } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
-import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import LoginModal from 'src/components/LoginModal/LoginModal'
 import ProfileCell from 'src/components/ProfileCell'
@@ -41,8 +40,8 @@ const ProfilePage = () => {
         !progressLoading &&
         !loading &&
         !deleteProgressLoading && (
-          <div className="mx-auto w-full max-w-lg pb-12">
-            <ProfileCell />
+          <div className="mx-auto w-full max-w-4xl pb-12">
+            <ProfileCell handleLogOut={handleLogOut} />
 
             <button
               className="mx-auto mt-2 block italic text-gray-200 underline transition-colors hover:text-brand-accent-primary"
@@ -57,16 +56,7 @@ const ProfilePage = () => {
         <LoadingIcon />
       ) : (
         <div className="relative text-center">
-          {!isAuthenticated ? (
-            <LoginModal />
-          ) : (
-            <div>
-              <Button
-                onClick={handleLogOut}
-                text={isAuthenticated ? 'Log Out' : 'Log In'}
-              />
-            </div>
-          )}
+          {!isAuthenticated && <LoginModal />}
 
           <p className="pt-2 text-center text-brand-accent-secondary">
             {errorMessage}

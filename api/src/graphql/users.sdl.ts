@@ -9,15 +9,8 @@ export const schema = gql`
     username: String
     address: String
     email: String
-    twitterProfile: String
-    discordProfile: String
     lensProfile: String
-    mfa_enabled: Boolean
-    imageSrc: String
-    country: String
-    banned: Boolean!
-    blocked: Boolean
-    betaAccess: Boolean!
+    avatar: String
     roles: [SiteRole]!
     organizations: [OrganizationUser]!
     submissions: [Submission]!
@@ -32,6 +25,7 @@ export const schema = gql`
     accessToken: String
     oauth: [OAuth]!
     oauthConnection: [OAuthConnection]!
+    discordConnection: DiscordConnection
   }
 
   enum SiteRole {
@@ -52,15 +46,8 @@ export const schema = gql`
     username: String
     address: String
     email: String
-    twitterProfile: String
-    discordProfile: String
     lensProfile: String
-    mfa_enabled: Boolean
-    imageSrc: String
-    country: String
-    banned: Boolean!
-    blocked: Boolean
-    betaAccess: Boolean!
+    avatar: String
     roles: [SiteRole]!
     refreshToken: String
     accessToken: String
@@ -73,15 +60,8 @@ export const schema = gql`
     username: String
     address: String
     email: String
-    twitterProfile: String
-    discordProfile: String
     lensProfile: String
-    mfa_enabled: Boolean
-    imageSrc: String
-    country: String
-    banned: Boolean
-    blocked: Boolean
-    betaAccess: Boolean
+    avatar: String
     roles: [SiteRole]
     refreshToken: String
     accessToken: String
