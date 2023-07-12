@@ -67,9 +67,6 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
 
       const { id: attemptId } = await createAttempt(stepId)
 
-      let success
-      let errors
-
       // Check user's external wallet first
       const { nftPass: externalCheckSuccess, errors: externalCheckErrors } =
         await checkNft({
@@ -78,12 +75,11 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
           requireAllNfts: step.stepNftCheck.requireAllNfts,
         })
 
+      let success = externalCheckSuccess
+      let errors = externalCheckErrors
+
       // If they haven't claimed on that wallet, check their Keyp wallet
-      if (
-        !externalCheckSuccess &&
-        !externalCheckErrors?.length &&
-        context.currentUser?.address
-      ) {
+      if (!success && !errors?.length && context.currentUser?.address) {
         const { nftPass: internalCheckSuccess, errors: internalCheckErrors } =
           await checkNft({
             account: context.currentUser.address,
@@ -92,9 +88,6 @@ export const makeAttempt: MutationResolvers['makeAttempt'] = async ({
           })
         success = internalCheckSuccess
         errors = internalCheckErrors
-      } else {
-        success = externalCheckSuccess
-        errors = externalCheckErrors
       }
 
       const response = await createResponse({
