@@ -35,6 +35,18 @@ export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
   })
 }
 
+export const rewardablesBySortType: QueryResolvers['rewardablesBySortType'] = ({
+  sortType,
+}) => {
+  if (!sortType) return []
+  return db.rewardable.findMany({
+    where: {
+      sortType,
+      listPublicly: true,
+    },
+  })
+}
+
 export const rewardableBySlugWithAnonPuzzle: QueryResolvers['rewardableBySlugWithAnonPuzzle'] =
   async ({ slug }) => {
     return db.rewardable.findFirstOrThrow({
@@ -50,6 +62,10 @@ export const rewardableBySlugWithAnonPuzzle: QueryResolvers['rewardableBySlugWit
 
 export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
   async ({ types, page = 1, count = 16 }) => {
+    if (!page || !count) {
+      throw new Error('Missing pagination info')
+    }
+
     const skip = (page - 1) * count
     const [smallestPaginationCount] = PAGINATION_COUNTS
     const take = PAGINATION_COUNTS.includes(count)

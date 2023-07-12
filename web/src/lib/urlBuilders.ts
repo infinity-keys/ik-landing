@@ -65,3 +65,13 @@ export const rewardableGridRoute = ({
       throw new Error(`rewardableGridRoute type '${type}' not supported`)
   }
 }
+
+export const connectAccountApiUrl = (provider: 'discord') => {
+  const url = new URL(
+    `${global.RWJS_API_URL}/connect-account`,
+    window.location.origin
+  )
+  url.searchParams.append('provider', provider)
+
+  return url
+}
