@@ -35,35 +35,6 @@ export const REWARDABLES_GRID_FRAG = gql`
         }
       }
     }
-    labeled: rewardablesBySortType(sortType: $sortType) {
-      id
-      name
-      slug
-      type
-      sortType
-      puzzle {
-        isAnon
-        steps {
-          id
-          stepSortWeight
-          hasUserCompletedStep
-        }
-      }
-      nfts {
-        cloudinaryId
-      }
-      userRewards {
-        id
-      }
-      asParent {
-        childSortWeight
-        childRewardable {
-          userRewards {
-            id
-          }
-        }
-      }
-    }
   }
 `
 
