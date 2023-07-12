@@ -10,7 +10,6 @@ import { clearRedirectTo } from 'src/providers/redirection'
 
 const LoginModal = lazy(() => import('src/components/LoginModal/LoginModal'))
 const LoadingIcon = lazy(() => import('src/components/LoadingIcon/LoadingIcon'))
-const Button = lazy(() => import('src/components/Button/Button'))
 const ProgressDeleteButton = lazy(
   () => import('src/components/ProgressDeleteButton/ProgressDeleteButton')
 )
@@ -44,8 +43,8 @@ const ProfilePage = () => {
         !progressLoading &&
         !loading &&
         !deleteProgressLoading && (
-          <div className="mx-auto w-full max-w-lg pb-12">
-            <ProfileCell />
+          <div className="mx-auto w-full max-w-4xl pb-12">
+            <ProfileCell handleLogOut={handleLogOut} />
 
             <button
               className="mx-auto mt-2 block italic text-gray-200 underline transition-colors hover:text-brand-accent-primary"
@@ -60,16 +59,7 @@ const ProfilePage = () => {
         <LoadingIcon />
       ) : (
         <div className="relative text-center">
-          {!isAuthenticated ? (
-            <LoginModal />
-          ) : (
-            <div>
-              <Button
-                onClick={handleLogOut}
-                text={isAuthenticated ? 'Log Out' : 'Log In'}
-              />
-            </div>
-          )}
+          {!isAuthenticated && <LoginModal />}
 
           <p className="pt-2 text-center text-brand-accent-secondary">
             {errorMessage}

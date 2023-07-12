@@ -9,6 +9,7 @@ export const schema = gql`
     successMessage: String
     listPublicly: Boolean!
     type: RewardableType!
+    sortType: RewardableSortType
     sortWeight: Int
     organization: Organization! @requireAuth(roles: ["ADMIN"])
     orgId: String!
@@ -27,6 +28,10 @@ export const schema = gql`
     PUZZLE
     PACK
     BUNDLE
+  }
+
+  enum RewardableSortType {
+    FEATURED
   }
 
   type Query {

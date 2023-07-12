@@ -4,7 +4,7 @@ import clsx from 'clsx'
 
 import { Link } from '@redwoodjs/router'
 
-interface ButtonProps {
+export interface ButtonProps {
   text: string
   to?: string
   textColor?: 'dark' | 'light'

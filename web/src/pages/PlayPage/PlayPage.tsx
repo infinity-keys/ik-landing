@@ -13,6 +13,7 @@ const PlayPage = ({ count, page }) => {
       count={perPage}
       page={pageNum}
       types={['PACK', 'PUZZLE']}
+      sortType="FEATURED"
       landingRoute={'PLAY'}
     />
   )

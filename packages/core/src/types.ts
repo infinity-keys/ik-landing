@@ -61,3 +61,4 @@ export const emailSchema = z.string().min(5).email()
 
 export type AuthProviderType = 'KEYP'
 export type SocialProviderType = 'KEYP_DISCORD' | 'KEYP_GOOGLE'
+export type ConnectAccountProviders = 'discord'
