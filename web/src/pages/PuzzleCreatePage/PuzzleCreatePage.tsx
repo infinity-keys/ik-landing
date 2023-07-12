@@ -87,7 +87,11 @@ const EditNFT = ({
         <div>
           <DisplayNFT control={control} index={index} />
         </div>
-        <Label name="tokenId" className="rw-label">
+        <Label
+          name="tokenId"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
           Token Id
         </Label>
         <TextField
@@ -95,7 +99,11 @@ const EditNFT = ({
           placeholder="Token Id"
           {...register(`tokenId`, { required: true })}
         />
-        <Label name="contractName" className="rw-label">
+        <Label
+          name="contractName"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
           Contract Name
         </Label>
         <TextField
@@ -161,47 +169,105 @@ export default function PuzzleForm() {
             <Form formMethods={formMethods} onSubmit={onSubmit}>
               <div className="max-w-3xl">
                 <h2 className="my-8 text-4xl font-bold">Create a Puzzle</h2>
-                <Label name="name" className="rw-label">
+                <Label
+                  name="name"
+                  className="rw-label"
+                  errorClassName="rw-label rw-label-error"
+                >
                   Name
                 </Label>
 
-                <TextField name="name" className="rw-input" />
+                <TextField
+                  name="name"
+                  className="rw-input"
+                  errorClassName="rw-input rw-input-error"
+                  validation={{ required: true }}
+                />
 
-                <Label name="slug" className="rw-label">
+                <Label
+                  name="slug"
+                  className="rw-label"
+                  errorClassName="rw-label rw-label-error"
+                >
                   Slug
                 </Label>
 
-                <TextField name="slug" className="rw-input" />
+                <TextField
+                  name="slug"
+                  className="rw-input"
+                  errorClassName="rw-input rw-input-error"
+                  validation={{ required: true }}
+                />
 
-                <Label name="explanation" className="rw-label">
+                <Label
+                  name="explanation"
+                  className="rw-label"
+                  errorClassName="rw-label rw-label-error"
+                >
                   Explanation
                 </Label>
 
-                <TextField name="explanation" className="rw-input" />
+                <TextField
+                  name="explanation"
+                  className="rw-input"
+                  errorClassName="rw-input rw-input-error"
+                  validation={{ required: true }}
+                />
 
-                <Label name="successMessage" className="rw-label">
+                <Label
+                  name="successMessage"
+                  className="rw-label"
+                  errorClassName="rw-label rw-label-error"
+                >
                   Success message
                 </Label>
 
-                <TextField name="successMessage" className="rw-input" />
+                <TextField
+                  name="successMessage"
+                  className="rw-input"
+                  errorClassName="rw-input rw-input-error"
+                  validation={{ required: true }}
+                />
 
-                <Label name="listPublicly" className="rw-label">
+                <Label
+                  name="listPublicly"
+                  className="rw-label"
+                  errorClassName="rw-label rw-label-error"
+                >
                   List publicly
                 </Label>
 
                 <CheckboxField name="listPublicly" className="rw-input" />
 
-                <Label name="parentId" className="rw-label">
+                <Label
+                  name="parentId"
+                  className="rw-label"
+                  errorClassName="rw-label rw-label-error"
+                >
                   Parent Id
                 </Label>
 
-                <TextField name="parentId" className="rw-input" />
+                <TextField
+                  name="parentId"
+                  className="rw-input"
+                  errorClassName="rw-input rw-input-error"
+                  validation={{ required: true }}
+                />
 
-                <Label name="sortWeight" className="rw-label">
+                <Label
+                  name="sortWeight"
+                  className="rw-label"
+                  errorClassName="rw-label rw-label-error"
+                >
                   Sort Weight
                 </Label>
 
-                <TextField name="sortWeight" className="rw-input w-14" />
+                <TextField
+                  name="sortWeight"
+                  className="rw-input w-14"
+                  errorClassName="rw-input rw-input-error"
+                  validation={{ required: true }}
+                />
               </div>
 
               {fields.map((field, index) => (
