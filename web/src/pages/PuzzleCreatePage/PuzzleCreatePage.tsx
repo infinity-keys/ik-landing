@@ -29,6 +29,7 @@ type Step = {
   challenge: string
   resourceLinks: string
   stepSortWeight: string
+  solution?: string
 }
 
 type PuzzleFormType = {
@@ -92,6 +93,7 @@ const DisplayStep = ({
       <div className="font-bold">Success message: {data?.successMessage}</div>
       <div className="font-bold">Challenge: {data?.challenge}</div>
       <div className="font-bold">Step sort weight: {data?.stepSortWeight}</div>
+      <div className="font-bold">Solution: {data?.solution}</div>
     </div>
   )
 }
@@ -241,7 +243,7 @@ const EditStep = ({
         </Label>
         <TextField
           className="w-full"
-          placeholder="Contract Name"
+          placeholder="Success message"
           {...register(`successMessage`, { required: true })}
         />
         <Label
@@ -253,7 +255,7 @@ const EditStep = ({
         </Label>
         <TextAreaField
           className="w-full"
-          placeholder="Data"
+          placeholder="Challenge"
           {...register(`challenge`, { required: true })}
         />
         <Label
@@ -265,7 +267,7 @@ const EditStep = ({
         </Label>
         <TextField
           className="w-full"
-          placeholder="Cloudinary Id"
+          placeholder="Resource links"
           {...register(`resourceLinks`, { required: true })}
         />
         <Label
@@ -277,7 +279,7 @@ const EditStep = ({
         </Label>
         <TextField
           className="w-full"
-          placeholder="Cloudinary Id"
+          placeholder="Step sort weight"
           {...register(`stepSortWeight`, { required: true })}
         />
         <Label
@@ -371,9 +373,9 @@ const EditStep = ({
                 Solution
               </Label>
               <TextField
-                name="solution"
                 className="w-full"
                 placeholder="Solutuion"
+                {...register(`solution`, { required: true })}
               />
             </div>
           </div>
@@ -667,6 +669,7 @@ export default function PuzzleForm() {
                       challenge: '',
                       resourceLinks: '',
                       stepSortWeight: '',
+                      solution: '',
                     })
                   }}
                 >
