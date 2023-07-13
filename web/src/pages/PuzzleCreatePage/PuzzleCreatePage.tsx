@@ -201,9 +201,9 @@ const EditStep = ({
     defaultValues: value,
   })
 
-  const formMethods = useForm()
+  const [stepType, setStepType] = useState<string | undefined>()
 
-  const [stepType, setStepType] = useState('SIMPLE_TEXT')
+  const formMethods = useForm()
 
   const onSubmit = () => {
     formMethods.reset()
@@ -294,7 +294,8 @@ const EditStep = ({
             defaultValue="SIMPLE_TEXT"
             className="rw-input"
             errorClassName="rw-input rw-input-error"
-            onClick={() => setStepType('SIMPLE_TEXT')}
+            onClick={handleSetStepType}
+            onChange={() => setStepType('SIMPLE_TEXT')}
           />
           <div>Simple Text</div>
         </div>
@@ -306,6 +307,7 @@ const EditStep = ({
             className="rw-input"
             errorClassName="rw-input rw-input-error"
             onClick={handleSetStepType}
+            onChange={() => setStepType('NFT_CHECK')}
           />
           <div>Nft Check</div>
         </div>
@@ -357,6 +359,77 @@ const EditStep = ({
           />
           <div>Orium Api</div>
         </div>
+
+        {stepType === 'SIMPLE_TEXT' ? (
+          <div className="simple-text">
+            <div className="solution">
+              <Label
+                name="solution"
+                className="rw-label"
+                errorClassName="rw-label rw-label-error"
+              >
+                Solution
+              </Label>
+              <TextField
+                name="solution"
+                className="w-full"
+                placeholder="Solutuion"
+              />
+            </div>
+          </div>
+        ) : null}
+        {stepType === 'SIMPLE_TEXT' ? <div></div> : null}
+        {/* New Section Start */}
+        {stepType === 'NFT_CHECK' ? (
+          <div className="nft-check">
+            <div className="contract-address">
+              <Label
+                name="contractAddress"
+                className="rw-label"
+                errorClassName="rw-label rw-label-error"
+              >
+                Contract Address
+              </Label>
+              <TextField
+                name="contractAddress"
+                className="w-full"
+                placeholder="Contract Address"
+              />
+            </div>
+            <div className="chain-id">
+              <Label name="chainId" className="rw-label">
+                Chain Id
+              </Label>
+              <TextField
+                name="chainId"
+                className="w-full"
+                placeholder="Chain Id"
+              />
+            </div>
+            <div className="token-id">
+              <Label name="tokenId" className="rw-label">
+                Token Id
+              </Label>
+              <TextField
+                name="tokenId"
+                className="w-full"
+                placeholder="Token Id"
+              />
+            </div>
+            <div className="poap-event-id">
+              <Label name="poapEventId" className="rw-label">
+                Poap Event Id
+              </Label>
+              <TextField
+                name="poapEventId"
+                className="w-full"
+                placeholder="Poap Event Id"
+              />
+            </div>
+          </div>
+        ) : null}
+        {stepType === 'NFT_CHECK' ? <div></div> : null}
+        {/* New Section Finish */}
         <Submit
           className="rw-button-group rw-button rw-button-blue"
           onClick={handleSubmit((data) => {
