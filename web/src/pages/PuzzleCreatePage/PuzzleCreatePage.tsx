@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 
 import { DevTool } from '@hookform/devtools'
 
@@ -6,7 +6,9 @@ import {
   Form,
   useForm,
   Label,
+  RadioField,
   TextField,
+  TextAreaField,
   CheckboxField,
   Submit,
   useFieldArray,
@@ -17,6 +19,16 @@ import {
 type Nft = {
   tokenId: string
   contractName: string
+  nftData: string
+  cloudinaryId: string
+}
+
+type Step = {
+  failMessage: string
+  successMessage: string
+  challenge: string
+  resourceLinks: string
+  stepSortWeight: string
 }
 
 type PuzzleFormType = {
@@ -28,9 +40,11 @@ type PuzzleFormType = {
   parentId: string
   sortWeight: number
   nftsArray: Nft[]
+  stepsArray: Step[]
 }
 
 const nftsFieldArrayName = 'nftsArray'
+const stepsFieldArrayName = 'stepsArray'
 
 const DisplayNFT = ({
   control,
@@ -51,17 +65,44 @@ const DisplayNFT = ({
       <h3 className="font-bold italic">NFT Currently in State:</h3>
       <div className="font-bold">Token id: {data?.tokenId}</div>
       <div className="font-bold">Contract name: {data?.contractName}</div>
+      <div className="font-bold">Data: {data?.nftData}</div>
+      <div className="font-bold">Cloudinary Id: {data?.cloudinaryId}</div>
+    </div>
+  )
+}
+
+const DisplayStep = ({
+  control,
+  index,
+}: {
+  control: Control<PuzzleFormType>
+  index: number
+}) => {
+  const data = useWatch({
+    control,
+    name: `${stepsFieldArrayName}.${index}`,
+  })
+
+  if (!data?.failMessage) return null
+
+  return (
+    <div className="my-4 border-2 border-zinc-500 bg-gray-100 p-4">
+      <h3 className="font-bold italic">NFT Currently in State:</h3>
+      <div className="font-bold">Fail message: {data?.failMessage}</div>
+      <div className="font-bold">Success message: {data?.successMessage}</div>
+      <div className="font-bold">Challenge: {data?.challenge}</div>
+      <div className="font-bold">Step sort weight: {data?.stepSortWeight}</div>
     </div>
   )
 }
 
 const EditNFT = ({
-  update,
+  updateNft,
   index,
   value,
   control,
 }: {
-  update: (index: number, data: Nft) => void
+  updateNft: (index: number, data: Nft) => void
   index: number
   value: Nft
   control: Control<PuzzleFormType>
@@ -74,9 +115,6 @@ const EditNFT = ({
 
   const onSubmit = () => {
     formMethods.reset()
-  }
-  {
-    /* <div className="max-w-3xl"></div> */
   }
   return (
     <div className="my-4 max-w-3xl border-2 border-zinc-500 bg-zinc-300 p-4">
@@ -111,13 +149,221 @@ const EditNFT = ({
           placeholder="Contract Name"
           {...register(`contractName`, { required: true })}
         />
+        <Label
+          name="nftData"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Data
+        </Label>
+        <TextAreaField
+          className="w-full"
+          placeholder="Data"
+          {...register(`nftData`, { required: true })}
+        />
+        <Label
+          name="cloudinaryId"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Cloudinary Id
+        </Label>
+        <TextField
+          className="w-full"
+          placeholder="Cloudinary Id"
+          {...register(`cloudinaryId`, { required: true })}
+        />
         <Submit
           className="rw-button-group rw-button rw-button-blue"
           onClick={handleSubmit((data) => {
-            update(index, data)
+            updateNft(index, data)
           })}
         >
           Add NFT to State
+        </Submit>
+      </Form>
+    </div>
+  )
+}
+
+const EditStep = ({
+  updateStep,
+  index,
+  value,
+  control,
+}: {
+  updateStep: (index: number, data: Step) => void
+  index: number
+  value: Step
+  control: Control<PuzzleFormType>
+}) => {
+  const { register, handleSubmit } = useForm({
+    defaultValues: value,
+  })
+
+  const formMethods = useForm()
+
+  const [stepType, setStepType] = useState('SIMPLE_TEXT')
+
+  const onSubmit = () => {
+    formMethods.reset()
+  }
+  const handleSetStepType = (/*event*/) => {
+    // setStepType(event.target.value)
+  }
+  return (
+    <div className="my-4 max-w-3xl border-2 border-zinc-500 bg-zinc-300 p-4">
+      {process.env.NODE_ENV === 'development' && (
+        <DevTool control={formMethods.control} />
+      )}
+      <Form formMethods={formMethods} onSubmit={onSubmit}>
+        <div>
+          <DisplayStep control={control} index={index} />
+        </div>
+        <Label
+          name="failMessage"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Fail message
+        </Label>
+        <TextField
+          className="w-full"
+          placeholder="Fail message"
+          {...register(`failMessage`, { required: true })}
+        />
+        <Label
+          name="successMessage"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Success message
+        </Label>
+        <TextField
+          className="w-full"
+          placeholder="Contract Name"
+          {...register(`successMessage`, { required: true })}
+        />
+        <Label
+          name="challenge"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Challenge
+        </Label>
+        <TextAreaField
+          className="w-full"
+          placeholder="Data"
+          {...register(`challenge`, { required: true })}
+        />
+        <Label
+          name="resourceLinks"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Resource links
+        </Label>
+        <TextField
+          className="w-full"
+          placeholder="Cloudinary Id"
+          {...register(`resourceLinks`, { required: true })}
+        />
+        <Label
+          name="stepSortWeight"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Step sort weight
+        </Label>
+        <TextField
+          className="w-full"
+          placeholder="Cloudinary Id"
+          {...register(`stepSortWeight`, { required: true })}
+        />
+        <Label
+          name="type"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Type
+        </Label>
+        <div className="rw-check-radio-items">
+          <RadioField
+            id="step-type-0"
+            name="type"
+            defaultValue="SIMPLE_TEXT"
+            className="rw-input"
+            errorClassName="rw-input rw-input-error"
+            onClick={() => setStepType('SIMPLE_TEXT')}
+          />
+          <div>Simple Text</div>
+        </div>
+        <div className="rw-check-radio-items">
+          <RadioField
+            id="step-type-1"
+            name="type"
+            defaultValue="NFT_CHECK"
+            className="rw-input"
+            errorClassName="rw-input rw-input-error"
+            onClick={handleSetStepType}
+          />
+          <div>Nft Check</div>
+        </div>
+
+        <div className="rw-check-radio-items">
+          <RadioField
+            id="step-type-2"
+            name="type"
+            defaultValue="FUNCTION_CALL"
+            className="rw-input"
+            errorClassName="rw-input rw-input-error"
+            onClick={handleSetStepType}
+          />
+          <div>Function Call</div>
+        </div>
+
+        <div className="rw-check-radio-items">
+          <RadioField
+            id="step-type-3"
+            name="type"
+            defaultValue="COMETH_API"
+            className="rw-input"
+            errorClassName="rw-input rw-input-error"
+            onClick={handleSetStepType}
+          />
+          <div>Cometh Api</div>
+        </div>
+
+        <div className="rw-check-radio-items">
+          <RadioField
+            id="step-type-4"
+            name="type"
+            defaultValue="TOKEN_ID_RANGE"
+            className="rw-input"
+            errorClassName="rw-input rw-input-error"
+            onClick={handleSetStepType}
+          />
+          <div>Token Id Range</div>
+        </div>
+
+        <div className="rw-check-radio-items">
+          <RadioField
+            id="step-type-5"
+            name="type"
+            defaultValue="ORIUM_API"
+            className="rw-input"
+            errorClassName="rw-input rw-input-error"
+            onClick={handleSetStepType}
+          />
+          <div>Orium Api</div>
+        </div>
+        <Submit
+          className="rw-button-group rw-button rw-button-blue"
+          onClick={handleSubmit((data) => {
+            updateStep(index, data)
+          })}
+        >
+          Add Step to State
         </Submit>
       </Form>
     </div>
@@ -128,13 +374,28 @@ export default function PuzzleForm() {
   const formMethods = useForm<PuzzleFormType>({
     defaultValues: {
       [nftsFieldArrayName]: [],
+      [stepsFieldArrayName]: [],
     },
   })
-  const { fields, append, update, remove } = useFieldArray({
+  const {
+    fields: nftFields,
+    append: appendNft,
+    update: updateNft,
+    remove: removeNft,
+  } = useFieldArray({
     control: formMethods.control,
     name: nftsFieldArrayName,
   })
 
+  const {
+    fields: stepFields,
+    append: appendStep,
+    update: updateStep,
+    remove: removeStep,
+  } = useFieldArray({
+    control: formMethods.control,
+    name: stepsFieldArrayName,
+  })
   // console.log(formMethods.getValues())
 
   const renderCount = useRef(1)
@@ -270,18 +531,18 @@ export default function PuzzleForm() {
                 />
               </div>
 
-              {fields.map((field, index) => (
+              {nftFields.map((field, index) => (
                 <fieldset key={field.id}>
                   <EditNFT
                     control={formMethods.control}
-                    update={update}
+                    updateNft={updateNft}
                     index={index}
                     value={field}
                   />
                   <button
                     className="rw-button-group rw-button rw-button-blue"
                     type="button"
-                    onClick={() => remove(index)}
+                    onClick={() => removeNft(index)}
                   >
                     Remove
                   </button>
@@ -290,19 +551,54 @@ export default function PuzzleForm() {
 
               <div className="rw-button-group">
                 <button
+                  type="button"
                   className="rw-button rw-button-blue"
                   onClick={() => {
-                    append({
+                    appendNft({
                       tokenId: '',
                       contractName: '',
+                      nftData: '',
+                      cloudinaryId: '',
                     })
                   }}
                 >
                   Add NFT
                 </button>
               </div>
+              {stepFields.map((field, index) => (
+                <fieldset key={field.id}>
+                  <EditStep
+                    control={formMethods.control}
+                    updateStep={updateStep}
+                    index={index}
+                    value={field}
+                  />
+                  <button
+                    className="rw-button-group rw-button rw-button-blue"
+                    type="button"
+                    onClick={() => removeStep(index)}
+                  >
+                    Remove
+                  </button>
+                </fieldset>
+              ))}
+
               <div className="rw-button-group">
-                <button className="rw-button rw-button-blue">Add Step</button>
+                <button
+                  type="button"
+                  className="rw-button rw-button-blue"
+                  onClick={() => {
+                    appendStep({
+                      failMessage: '',
+                      successMessage: '',
+                      challenge: '',
+                      resourceLinks: '',
+                      stepSortWeight: '',
+                    })
+                  }}
+                >
+                  Add Step
+                </button>
               </div>
               <div className="rw-button-group">
                 <Submit className="rw-button-group rw-button rw-button-blue">
