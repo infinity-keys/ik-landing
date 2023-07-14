@@ -16,9 +16,16 @@ import Button from 'src/components/Button/Button'
 import { ButtonProps } from 'src/components/Button/Button'
 
 const UPDATE_LENS_PROFILE = gql`
-  mutation UpdateUserMutation($input: UpdateUserInput!) {
-    updateUser(input: $input) {
+  mutation UpdateUserMutation(
+    $userInput: UpdateUserInput!
+    $lensAddress: String
+  ) {
+    updateUser(input: $userInput) {
       id
+    }
+    upsertLensKeypConnect(lensAddress: $lensAddress) {
+      success
+      errors
     }
   }
 `
@@ -50,12 +57,13 @@ const LensConnect = (props: Partial<ButtonProps>) => {
   })
 
   useEffect(() => {
-    if (hasTriedConnection && profile?.handle) {
+    if (hasTriedConnection && profile?.handle && profile?.ownedBy) {
       updateLensProfile({
         variables: {
-          input: {
+          userInput: {
             lensProfile: profile.handle,
           },
+          lensAddress: profile.ownedBy,
         },
       })
     }
@@ -81,9 +89,10 @@ const LensConnect = (props: Partial<ButtonProps>) => {
   const onLogoutClick = () => {
     updateLensProfile({
       variables: {
-        input: {
+        userInput: {
           lensProfile: null,
         },
+        lensAddress: null,
       },
     })
     logout()
