@@ -13,13 +13,21 @@ interface Props {
 
 const AnonPuzzle = ({ rewardable }: Props) => {
   const { step: stepParam } = useParams()
-  const stepNum = stepParam && parseInt(stepParam, 10)
+
+  if (!rewardable?.puzzle?.id) return null
+
+  const stepNum = stepParam ? parseInt(stepParam, 10) : null
   const stepIndex = stepNum && stepNum - 1
+
+  const stepId =
+    typeof stepIndex === 'number'
+      ? rewardable?.puzzle?.steps[stepIndex]?.id
+      : undefined
 
   return (
     <PuzzleLandingLayout rewardable={rewardable} stepParam={stepParam}>
       <AnonStepsCell
-        stepId={stepParam && rewardable.puzzle.steps[stepIndex].id}
+        stepId={stepId}
         puzzleId={rewardable.puzzle.id}
         stepNum={stepNum && stepNum}
       />

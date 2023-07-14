@@ -10008,10 +10008,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/gtag.js@npm:^0.0.11":
-  version: 0.0.11
-  resolution: "@types/gtag.js@npm:0.0.11"
-  checksum: 0c436bca2bf41ee0d49501797c1498a49804535c1958c8b77d3476eb922019b8e58db02e26b8c2a8bccacf707b614b1bbf0b43bde41183f4153e1c90f73e1a90
+"@types/gtag.js@npm:^0.0.12":
+  version: 0.0.12
+  resolution: "@types/gtag.js@npm:0.0.12"
+  checksum: fee8f4c6e627301b89ab616c9e219bd53fa6ea1ffd1d0a8021e21363f0bdb2cf7eb1a5bcda0c6f1502186379bc7784ec29c932e21634f4e07f9e7a8c56887400
   languageName: node
   linkType: hard
 
@@ -33971,7 +33971,7 @@ __metadata:
     "@redwoodjs/router": 5.0.5
     "@redwoodjs/web": 5.0.5
     "@tailwindcss/forms": ^0.5.3
-    "@types/gtag.js": ^0.0.11
+    "@types/gtag.js": ^0.0.12
     autoprefixer: ^10.4.12
     boring-avatars: ^1.7.0
     buffer: ^6.0.3
