@@ -3,13 +3,13 @@ import { useEffect, useState, lazy } from 'react'
 import { useParams } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
 import Seo from 'src/components/Seo/Seo'
 import useReconcileProgress from 'src/hooks/useReconcileProgress'
 import { clearRedirectTo } from 'src/providers/redirection'
 
 const LoginModal = lazy(() => import('src/components/LoginModal/LoginModal'))
-const LoadingIcon = lazy(() => import('src/components/LoadingIcon/LoadingIcon'))
 const ProgressDeleteButton = lazy(
   () => import('src/components/ProgressDeleteButton/ProgressDeleteButton')
 )

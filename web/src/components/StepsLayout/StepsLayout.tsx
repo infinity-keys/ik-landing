@@ -7,6 +7,7 @@ import { FindAnonStepQuery, FindStepQuery } from 'types/graphql'
 import { routes, useParams } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 
 interface StepsLayoutProps extends PropsWithChildren {
   currentStepId?: string
@@ -31,7 +32,7 @@ const ThumbnailMini = lazy(
 const CollapsibleMarkdown = lazy(
   () => import('src/components/CollapsibleMarkdown/CollapsibleMarkdown')
 )
-const LoadingIcon = lazy(() => import('src/components/LoadingIcon/LoadingIcon'))
+
 const Alert = lazy(() => import('src/components/Alert/Alert'))
 const Button = lazy(() => import('src/components/Button/Button'))
 
