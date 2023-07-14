@@ -6,10 +6,10 @@ import {
   Form,
   useForm,
   Label,
-  RadioField,
   TextField,
   TextAreaField,
   CheckboxField,
+  SelectField,
   Submit,
   useFieldArray,
   useWatch,
@@ -29,8 +29,44 @@ type Step = {
   challenge: string
   resourceLinks: string
   stepSortWeight: string
-  solution?: string
+  solution?: string // this would really go in "type stepSimpleText"
+  nftCheck?: string // this would really go in "type stepNftCheck"
 }
+
+// // in order to render the 'Step Type' just like we render the 'Step'
+// type stepType = {
+//   simpleText: string
+//   nftCheck: string
+//   functionCall: string
+//   comethApi: string
+//   tokenIdRange: string
+//   oriumApi: string
+// }
+
+// // in order to render the 'Step Type' > 'Step Simple Text' just like we render the 'Step'
+// type stepSimpleText = {
+//   solution: string
+// }
+
+// // ...and so on...this feels like a lot of work for showing unique text fields
+// type stepNftCheck = {
+//   contractAddress: string
+//   chainId: string
+//   tokenId: string
+//   poapEventId: string
+// }
+
+// type stepFunctionCall = {
+//   methodIds: string
+//   contractAddress: string
+// }
+
+// type tokenIdRange = {
+//   contractAddress: string
+//   chainId: string
+//   startId: string
+//   oriumApi: string
+// }
 
 type PuzzleFormType = {
   name: string
@@ -93,7 +129,33 @@ const DisplayStep = ({
       <div className="font-bold">Success message: {data?.successMessage}</div>
       <div className="font-bold">Challenge: {data?.challenge}</div>
       <div className="font-bold">Step sort weight: {data?.stepSortWeight}</div>
-      <div className="font-bold">Solution: {data?.solution}</div>
+      {data?.solution && (
+        <div className="font-bold">Solution: {data?.solution}</div>
+      )}
+      {/* this won't work because the NFT check has children */}
+      {/* {data?.nftCheck && (
+        <div className="font-bold">NFT Check: {data?. ...WTF goes here...}</div>
+      )} */}
+    </div>
+  )
+}
+
+const DisplayStepType = ({
+  control,
+  index,
+}: {
+  control: Control<PuzzleFormType>
+  index: number
+}) => {
+  const data = useWatch({
+    control,
+    name: `${stepsFieldArrayName}.${index}`,
+  })
+
+  if (!data?.failMessage) return null
+  return (
+    <div>
+      <div>This is the result of selecting a step type</div>
     </div>
   )
 }
@@ -203,16 +265,15 @@ const EditStep = ({
     defaultValues: value,
   })
 
-  const [stepType, setStepType] = useState<string | undefined>()
+  const [stepType, setStepType] = useState('')
 
   const formMethods = useForm()
 
   const onSubmit = () => {
-    formMethods.reset()
+    // nothing happens right now when the form is submitted
+    // formMethods.reset()
   }
-  const handleSetStepType = (/*event*/) => {
-    // setStepType(event.target.value)
-  }
+
   return (
     <div className="my-4 max-w-3xl border-2 border-zinc-500 bg-zinc-300 p-4">
       {process.env.NODE_ENV === 'development' && (
@@ -287,82 +348,25 @@ const EditStep = ({
           className="rw-label"
           errorClassName="rw-label rw-label-error"
         >
-          Type
+          Step Type
         </Label>
         <div className="rw-check-radio-items">
-          <RadioField
-            id="step-type-0"
+          <SelectField
             name="type"
-            defaultValue="SIMPLE_TEXT"
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            onClick={handleSetStepType}
-            onChange={() => setStepType('SIMPLE_TEXT')}
-          />
-          <div>Simple Text</div>
-        </div>
-        <div className="rw-check-radio-items">
-          <RadioField
-            id="step-type-1"
-            name="type"
-            defaultValue="NFT_CHECK"
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            onClick={handleSetStepType}
-            onChange={() => setStepType('NFT_CHECK')}
-          />
-          <div>Nft Check</div>
+            defaultValue={stepType}
+            onChange={(event) => setStepType(event.target.value)}
+          >
+            <option disabled value="">
+              Select a step type
+            </option>
+            <option value="SIMPLE_TEXT">Simple Text</option>
+            <option value="NFT_CHECK">NFT Check</option>
+          </SelectField>
         </div>
 
-        <div className="rw-check-radio-items">
-          <RadioField
-            id="step-type-2"
-            name="type"
-            defaultValue="FUNCTION_CALL"
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            onClick={handleSetStepType}
-          />
-          <div>Function Call</div>
-        </div>
+        <DisplayStepType control={control} index={index} />
 
-        <div className="rw-check-radio-items">
-          <RadioField
-            id="step-type-3"
-            name="type"
-            defaultValue="COMETH_API"
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            onClick={handleSetStepType}
-          />
-          <div>Cometh Api</div>
-        </div>
-
-        <div className="rw-check-radio-items">
-          <RadioField
-            id="step-type-4"
-            name="type"
-            defaultValue="TOKEN_ID_RANGE"
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            onClick={handleSetStepType}
-          />
-          <div>Token Id Range</div>
-        </div>
-
-        <div className="rw-check-radio-items">
-          <RadioField
-            id="step-type-5"
-            name="type"
-            defaultValue="ORIUM_API"
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            onClick={handleSetStepType}
-          />
-          <div>Orium Api</div>
-        </div>
-
-        {stepType === 'SIMPLE_TEXT' ? (
+        {stepType === 'SIMPLE_TEXT' && (
           <div className="simple-text">
             <div className="solution">
               <Label
@@ -379,9 +383,7 @@ const EditStep = ({
               />
             </div>
           </div>
-        ) : null}
-        {stepType === 'SIMPLE_TEXT' ? <div></div> : null}
-        {/* New Section Start */}
+        )}
         {stepType === 'NFT_CHECK' ? (
           <div className="nft-check">
             <div className="contract-address">
@@ -430,8 +432,6 @@ const EditStep = ({
             </div>
           </div>
         ) : null}
-        {stepType === 'NFT_CHECK' ? <div></div> : null}
-        {/* New Section Finish */}
         <Submit
           className="rw-button-group rw-button rw-button-blue"
           onClick={handleSubmit((data) => {
