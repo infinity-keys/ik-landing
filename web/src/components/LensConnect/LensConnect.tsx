@@ -10,34 +10,40 @@ import { UpdateUserMutation, UpdateUserMutationVariables } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
 import { useMutation } from '@redwoodjs/web'
+import { LoaderIcon, toast } from '@redwoodjs/web/dist/toast'
 
 import Button from 'src/components/Button/Button'
-import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import { ButtonProps } from 'src/components/Button/Button'
 
 const UPDATE_LENS_PROFILE = gql`
-  mutation UpdateUserMutation($input: UpdateUserInput!) {
-    updateUser(input: $input) {
+  mutation UpdateUserMutation(
+    $userInput: UpdateUserInput!
+    $lensAddress: String
+  ) {
+    updateUser(input: $userInput) {
       id
+    }
+    upsertLensKeypConnect(lensAddress: $lensAddress) {
+      success
+      errors
     }
   }
 `
 
-const LensConnect = () => {
+const LensConnect = (props: Partial<ButtonProps>) => {
   const { isConnected, connector } = useAccount()
   const {
     execute: connectToLens,
     error: connectToLensError,
     isPending: connectToLensPending,
   } = useWalletLogin()
-  const { data: profile } = useActiveProfile()
+  const { data: profile, loading: profileLoading } = useActiveProfile()
   const { execute: logout, isPending } = useWalletLogout()
   const { openConnectModal } = useConnectModal()
   const [hasTriedConnection, setHasTriedConnection] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
 
   const noProfile = hasTriedConnection && !profile
-  const isLoading = connectToLensPending || isPending
-  const isError = connectToLensError || errorMessage
+  const isLoading = connectToLensPending || isPending || profileLoading
 
   const [updateLensProfile] = useMutation<
     UpdateUserMutation,
@@ -46,39 +52,47 @@ const LensConnect = () => {
     onError: () => {
       logout()
       setHasTriedConnection(false)
-      setErrorMessage('Error connecting Lens profile to user account.')
+      toast.error('Error connecting Lens profile to user account.')
     },
   })
 
   useEffect(() => {
-    if (hasTriedConnection && profile?.handle) {
+    if (hasTriedConnection && profile?.handle && profile?.ownedBy) {
       updateLensProfile({
         variables: {
-          input: {
+          userInput: {
             lensProfile: profile.handle,
           },
+          lensAddress: profile.ownedBy,
         },
       })
     }
   }, [hasTriedConnection, profile, updateLensProfile])
 
+  useEffect(() => {
+    if (noProfile && !connectToLensError && !isLoading) {
+      toast.error('No active Lens profile associated with this wallet.')
+    }
+  }, [noProfile, connectToLensError, isLoading])
+
   const onLoginClick = async () => {
-    setErrorMessage('')
     try {
       const signer = await connector?.getSigner()
       await connectToLens(signer)
+      setHasTriedConnection(true)
     } catch {
-      console.error('Error connecting to Lens Profile')
+      toast.error('Error connecting to Lens Profile')
+      setHasTriedConnection(true)
     }
-    setHasTriedConnection(true)
   }
 
   const onLogoutClick = () => {
     updateLensProfile({
       variables: {
-        input: {
+        userInput: {
           lensProfile: null,
         },
+        lensAddress: null,
       },
     })
     logout()
@@ -89,46 +103,34 @@ const LensConnect = () => {
     <div className="flex flex-col items-center">
       {!isLoading ? (
         !isConnected ? (
-          <Button
-            text="Connect Wallet"
-            size="small"
+          <button
             onClick={openConnectModal}
-          />
+            className="overflow-hidden rounded-md p-2 text-sm text-gray-200 transition-colors hover:bg-white/10 hover:text-brand-accent-primary"
+          >
+            Connect Wallet
+          </button>
         ) : (
           <div>
             {profile?.handle ? (
               <button
                 disabled={isPending}
                 onClick={onLogoutClick}
-                className="text-sm text-gray-200 transition-colors hover:text-brand-accent-primary"
+                className="overflow-hidden rounded-md p-2 text-sm text-gray-200 transition-colors hover:bg-white/10 hover:text-brand-accent-primary"
               >
-                Disconnect Lens Profile
+                Disconnect
               </button>
             ) : (
-              <button
+              <Button
+                {...props}
                 disabled={connectToLensPending}
                 onClick={onLoginClick}
-                className="rounded bg-[#abfe2c] py-2 px-4 text-[#00510e] transition-colors hover:bg-[#00510e] hover:text-[#abfe2c]"
-              >
-                Connect to Lens
-              </button>
+                text={props.text || 'Connect to Lens'}
+              />
             )}
           </div>
         )
       ) : (
-        <LoadingIcon />
-      )}
-
-      {(connectToLensError || errorMessage) && (
-        <p className="pt-2 text-sm italic text-gray-150">
-          {errorMessage || 'Error connecting to Lens account'}
-        </p>
-      )}
-
-      {noProfile && !isError && !isLoading && (
-        <p className="pt-2 text-sm italic text-gray-150">
-          No active Lens profile associated with this wallet
-        </p>
+        <LoaderIcon />
       )}
     </div>
   )

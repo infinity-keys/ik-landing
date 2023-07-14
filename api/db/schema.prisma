@@ -18,11 +18,15 @@ enum RewardableType {
   BUNDLE
 }
 
+enum RewardableSortType {
+  FEATURED
+}
+
 /// A thing that can reward NFTs.
 model Rewardable {
-  id             String         @id @default(cuid())
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  id             String              @id @default(cuid())
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
   /// Full name, with spaces, ie Not Right
   name           String
   /// Short name used in URLs, lowercase and dashes, no spaces/caps, ie not-right
@@ -32,11 +36,12 @@ model Rewardable {
   /// When this is successfully completed/rewarded, what should be shown
   successMessage String?
   /// Show in public listings
-  listPublicly   Boolean        @default(true)
+  listPublicly   Boolean             @default(true)
   /// Categorize Rewardables into different buckets
   type           RewardableType
   /// The order this rewardable will show in the grid
-  sortWeight     Int?           @default(1)
+  sortWeight     Int?                @default(1)
+  sortType       RewardableSortType?
 
   /// Assign management of a Rewardable to an Organization
   organization Organization @relation(fields: [orgId], references: [id])
@@ -412,26 +417,18 @@ enum SiteRole {
 
 /// Identifiable player
 model User {
-  id             String   @id @default(cuid())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  lastLoggedIn   DateTime @default(now())
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  lastLoggedIn DateTime @default(now())
   /// Unique string used to cryptographically identify this person. NEVER MAKE PUBLIC
-  nonce          String   @default(cuid())
-  authId         String?  @unique
-  username       String?
-  address        String?  @unique // Torus wallet address
-  email          String?  @unique
-  twitterProfile String?
-  discordProfile String?
-  lensProfile    String?
-
-  mfa_enabled Boolean?
-  imageSrc    String? // Avatar URL
-  country     String? // Player's country  eg. US, DE
-  banned      Boolean  @default(false)
-  blocked     Boolean? // Prevents others from interacting with this person
-  betaAccess  Boolean  @default(false)
+  nonce        String   @default(cuid())
+  authId       String?  @unique
+  username     String?
+  address      String?  @unique // Torus wallet address
+  email        String?  @unique
+  lensProfile  String?
+  avatar       String?
 
   // User's role on the site, as a whole
   roles SiteRole[] @default([ANONYMOUS])
@@ -451,8 +448,26 @@ model User {
   refreshToken String?
   accessToken  String?
 
-  oauth           OAuth[]
-  oauthConnection OAuthConnection[]
+  // Auth
+  oauth             OAuth[]
+  oauthConnection   OAuthConnection[]
+  discordConnection DiscordConnection?
+
+  /// Maps a user's connected Lens address to their Keyp address
+  lensKeypConnection LensKeypConnection?
+}
+
+model DiscordConnection {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+
+  accessToken  String
+  refreshToken String
+  discordId    String
+  username     String
 }
 
 /// A User's role specifically within the Organization they belong
@@ -514,4 +529,17 @@ model OAuthConnection {
   refreshToken String?
   accessToken  String
   expiration   DateTime?
+}
+
+// Allows us to connect a Lens profile address to a user's Keyp wallet
+model LensKeypConnection {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  lensAddress String
+  keypAddress String
 }

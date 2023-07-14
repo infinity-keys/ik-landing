@@ -4,8 +4,8 @@
 // ```tsx
 // import type { ComponentStory } from '@storybook/react'
 //
-// export const generated: ComponentStory<typeof NftCheckButton> = (args) => {
-//   return <NftCheckButton {...args} />
+// export const generated: ComponentStory<typeof ConnectAccountButton> = (args) => {
+//   return <ConnectAccountButton {...args} />
 // }
 // ```
 //
@@ -13,13 +13,13 @@
 
 import type { ComponentMeta } from '@storybook/react'
 
-import NftCheckButton from './NftCheckButton'
+import ConnectAccountButton from './ConnectAccountButton'
 
 export const generated = () => {
-  return <NftCheckButton />
+  return <ConnectAccountButton />
 }
 
 export default {
-  title: 'Components/NftCheckButton',
-  component: NftCheckButton,
-} as ComponentMeta<typeof NftCheckButton>
+  title: 'Components/ConnectAccountButton',
+  component: ConnectAccountButton,
+} as ComponentMeta<typeof ConnectAccountButton>
