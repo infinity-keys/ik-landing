@@ -1,13 +1,8 @@
 import { useEffect, useState } from 'react'
 
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
-import {
-  buildUrlString,
-  ThumbnailGridLayoutType,
-  ThumbnailProgress,
-} from '@infinity-keys/core'
+import { ThumbnailGridLayoutType, ThumbnailProgress } from '@infinity-keys/core'
 import clsx from 'clsx'
-import loCapitalize from 'lodash/capitalize'
 import type { FindRewardables } from 'types/graphql'
 
 import { useParams } from '@redwoodjs/router'
@@ -15,7 +10,6 @@ import { useParams } from '@redwoodjs/router'
 import { useAuth } from 'src/auth'
 import GridLayoutButtons from 'src/components/GridLayoutButtons/GridLayoutButtons'
 import GridPagination from 'src/components/GridPagination/GridPagination'
-import Seo from 'src/components/Seo/Seo'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { GridLandingRouteType } from 'src/lib/urlBuilders'
@@ -68,11 +62,6 @@ const RewardablesList = ({
 
   return (
     <>
-      <Seo
-        title={`${loCapitalize(rewardables[0].type)}s`}
-        url={buildUrlString(`/puzzles`)}
-      />
-
       {labeled && labeled?.length > 0 && (
         <div className="mb-8">
           <p className="py-4 text-3xl font-bold">Featured Puzzles</p>
