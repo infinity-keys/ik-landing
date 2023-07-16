@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect } from 'react'
 
 import { DevTool } from '@hookform/devtools'
 
@@ -7,8 +7,6 @@ import {
   useForm,
   Label,
   TextField,
-  TextAreaField,
-  CheckboxField,
   SelectField,
   Submit,
   useFieldArray,
@@ -16,96 +14,57 @@ import {
   Control,
 } from '@redwoodjs/forms'
 
-type Nft = {
-  tokenId: string
-  contractName: string
-  nftData: string
-  cloudinaryId: string
-}
-
 type Step = {
   failMessage: string
   successMessage: string
-  challenge: string
-  resourceLinks: string
-  stepSortWeight: string
-  solution?: string // this would really go in "type stepSimpleText"
-  nftCheck?: string // this would really go in "type stepNftCheck"
+  stepType: 'SIMPLE_TEXT' | 'NFT_CHECK' | undefined
+} & StepTypeData
+
+type SimpleText = {
+  solution: string
 }
 
-// // in order to render the 'Step Type' just like we render the 'Step'
-// type stepType = {
-//   simpleText: string
-//   nftCheck: string
-//   functionCall: string
-//   comethApi: string
-//   tokenIdRange: string
-//   oriumApi: string
-// }
+type NftCheck = {
+  contractAddress: string
+  chainId: string
+}
 
-// // in order to render the 'Step Type' > 'Step Simple Text' just like we render the 'Step'
-// type stepSimpleText = {
-//   solution: string
-// }
+type StepTypeData = SimpleText | NftCheck
 
-// // ...and so on...this feels like a lot of work for showing unique text fields
-// type stepNftCheck = {
-//   contractAddress: string
-//   chainId: string
-//   tokenId: string
-//   poapEventId: string
-// }
-
-// type stepFunctionCall = {
-//   methodIds: string
-//   contractAddress: string
-// }
-
-// type tokenIdRange = {
-//   contractAddress: string
-//   chainId: string
-//   startId: string
-//   oriumApi: string
-// }
+type DisplayStepTypeProps = {
+  stepType: Step['stepType']
+  data: StepTypeData
+}
 
 type PuzzleFormType = {
   name: string
   slug: string
-  explanation: string
-  successMessage: string
-  listPublicly: boolean
-  parentId: string
-  sortWeight: number
-  nftsArray: Nft[]
   stepsArray: Step[]
 }
 
-const nftsFieldArrayName = 'nftsArray'
 const stepsFieldArrayName = 'stepsArray'
 
-const DisplayNFT = ({
-  control,
-  index,
-}: {
-  control: Control<PuzzleFormType>
-  index: number
+const DisplayStepType: React.FC<DisplayStepTypeProps> = ({
+  stepType,
+  data,
 }) => {
-  const data = useWatch({
-    control,
-    name: `${nftsFieldArrayName}.${index}`,
-  })
-
-  if (!data?.tokenId) return null
-
-  return (
-    <div className="my-4 border-2 border-zinc-500 bg-gray-100 p-4">
-      <h3 className="font-bold italic">NFT Currently in State:</h3>
-      <div className="font-bold">Token id: {data?.tokenId}</div>
-      <div className="font-bold">Contract name: {data?.contractName}</div>
-      <div className="font-bold">Data: {data?.nftData}</div>
-      <div className="font-bold">Cloudinary Id: {data?.cloudinaryId}</div>
-    </div>
-  )
+  switch (stepType) {
+    case 'SIMPLE_TEXT':
+      return (
+        <div className="font-bold">
+          Solution: {(data as SimpleText).solution}
+        </div>
+      )
+    case 'NFT_CHECK':
+      return (
+        <div className="font-bold">
+          <div>Contract Address: {(data as NftCheck).contractAddress}</div>
+          <div>Chain ID: {(data as NftCheck).chainId}</div>
+        </div>
+      )
+    default:
+      return null
+  }
 }
 
 const DisplayStep = ({
@@ -124,161 +83,110 @@ const DisplayStep = ({
 
   return (
     <div className="my-4 border-2 border-zinc-500 bg-gray-100 p-4">
-      <h3 className="font-bold italic">NFT Currently in State:</h3>
+      <h3 className="font-bold italic">Step Currently in State:</h3>
       <div className="font-bold">Fail message: {data?.failMessage}</div>
       <div className="font-bold">Success message: {data?.successMessage}</div>
-      <div className="font-bold">Challenge: {data?.challenge}</div>
-      <div className="font-bold">Step sort weight: {data?.stepSortWeight}</div>
-      {data?.solution && (
-        <div className="font-bold">Solution: {data?.solution}</div>
-      )}
-      {/* this won't work because the NFT check has children */}
-      {/* {data?.nftCheck && (
-        <div className="font-bold">NFT Check: {data?. ...WTF goes here...}</div>
-      )} */}
+      <DisplayStepType stepType={data.stepType} data={data as StepTypeData} />
     </div>
   )
 }
 
-const DisplayStepType = ({
-  control,
-  index,
-}: {
-  control: Control<PuzzleFormType>
-  index: number
-}) => {
-  const data = useWatch({
-    control,
-    name: `${stepsFieldArrayName}.${index}`,
-  })
-
-  if (!data?.failMessage) return null
-  return (
-    <div>
-      <div>This is the result of selecting a step type</div>
-    </div>
-  )
-}
-
-const EditNFT = ({
-  updateNft,
-  index,
-  value,
-  control,
-}: {
-  updateNft: (index: number, data: Nft) => void
-  index: number
-  value: Nft
-  control: Control<PuzzleFormType>
-}) => {
-  const { register, handleSubmit } = useForm({
+const EditSimpleText = ({ value }: { value: Step }) => {
+  const formMethods = useForm<Step>({
     defaultValues: value,
   })
 
-  const formMethods = useForm()
+  const { register } = formMethods
 
-  const onSubmit = () => {
-    formMethods.reset()
-  }
   return (
-    <div className="my-4 max-w-3xl border-2 border-zinc-500 bg-zinc-300 p-4">
-      {process.env.NODE_ENV === 'development' && (
-        <DevTool control={formMethods.control} />
-      )}
-      <Form formMethods={formMethods} onSubmit={onSubmit}>
-        <div>
-          <DisplayNFT control={control} index={index} />
-        </div>
-        <Label
-          name="tokenId"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Token Id
-        </Label>
-        <TextField
-          className="w-full"
-          placeholder="Token Id"
-          {...register(`tokenId`, { required: true })}
-        />
-        <Label
-          name="contractName"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Contract Name
-        </Label>
-        <TextField
-          className="w-full"
-          placeholder="Contract Name"
-          {...register(`contractName`, { required: true })}
-        />
-        <Label
-          name="nftData"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Data
-        </Label>
-        <TextAreaField
-          className="w-full"
-          placeholder="Data"
-          {...register(`nftData`, { required: true })}
-        />
-        <Label
-          name="cloudinaryId"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Cloudinary Id
-        </Label>
-        <TextField
-          className="w-full"
-          placeholder="Cloudinary Id"
-          {...register(`cloudinaryId`, { required: true })}
-        />
-        <Submit
-          className="rw-button-group rw-button rw-button-blue"
-          onClick={handleSubmit((data) => {
-            updateNft(index, data)
-          })}
-        >
-          Add NFT to State
-        </Submit>
-      </Form>
+    <div className="simple-text">
+      <Label
+        name="solution"
+        className="rw-label"
+        errorClassName="rw-label rw-label-error"
+      >
+        Solution
+      </Label>
+      <TextField
+        className="w-full"
+        placeholder="Solution"
+        {...register('solution', { required: true })}
+      />
+    </div>
+  )
+}
+
+const EditNftCheck = ({ value }: { value: Step }) => {
+  const formMethods = useForm<Step>({
+    defaultValues: value,
+  })
+
+  const { register } = formMethods
+
+  return (
+    <div className="nft-check">
+      <Label
+        name="contractAddress"
+        className="rw-label"
+        errorClassName="rw-label rw-label-error"
+      >
+        Contract Address
+      </Label>
+
+      <TextField
+        className="w-full"
+        placeholder="Contract Address"
+        {...register('contractAddress', { required: true })}
+      />
+      <Label
+        name="chainId"
+        className="rw-label"
+        errorClassName="rw-label rw-label-error"
+      >
+        Chain ID
+      </Label>
+
+      <TextField
+        className="w-full"
+        placeholder="Chain ID"
+        {...register('chainId', { required: true })}
+      />
     </div>
   )
 }
 
 const EditStep = ({
   updateStep,
+  removeStep,
   index,
   value,
   control,
 }: {
   updateStep: (index: number, data: Step) => void
+  removeStep: (index: number) => void
   index: number
   value: Step
   control: Control<PuzzleFormType>
 }) => {
-  const { register, handleSubmit } = useForm({
+  const formMethods = useForm<Step>({
     defaultValues: value,
   })
 
-  const [stepType, setStepType] = useState('')
+  const { register, handleSubmit, setValue, watch } = formMethods
 
-  const formMethods = useForm()
+  const stepType = watch('stepType')
 
-  const onSubmit = () => {
-    // nothing happens right now when the form is submitted
-    // formMethods.reset()
+  useEffect(() => {
+    register('stepType')
+  }, [register])
+
+  const onSubmit = (data: Step) => {
+    updateStep(index, data)
   }
 
   return (
     <div className="my-4 max-w-3xl border-2 border-zinc-500 bg-zinc-300 p-4">
-      {process.env.NODE_ENV === 'development' && (
-        <DevTool control={formMethods.control} />
-      )}
+      {process.env.NODE_ENV === 'development' && <DevTool control={control} />}
       <Form formMethods={formMethods} onSubmit={onSubmit}>
         <div>
           <DisplayStep control={control} index={index} />
@@ -308,138 +216,46 @@ const EditStep = ({
           {...register(`successMessage`, { required: true })}
         />
         <Label
-          name="challenge"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Challenge
-        </Label>
-        <TextAreaField
-          className="w-full"
-          placeholder="Challenge"
-          {...register(`challenge`, { required: true })}
-        />
-        <Label
-          name="resourceLinks"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Resource links
-        </Label>
-        <TextField
-          className="w-full"
-          placeholder="Resource links"
-          {...register(`resourceLinks`, { required: true })}
-        />
-        <Label
-          name="stepSortWeight"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Step sort weight
-        </Label>
-        <TextField
-          className="w-full"
-          placeholder="Step sort weight"
-          {...register(`stepSortWeight`, { required: true })}
-        />
-        <Label
-          name="type"
+          name="typeLabel"
           className="rw-label"
           errorClassName="rw-label rw-label-error"
         >
           Step Type
         </Label>
-        <div className="rw-check-radio-items">
+        <div className="select-field-items">
           <SelectField
-            name="type"
-            defaultValue={stepType}
-            onChange={(event) => setStepType(event.target.value)}
+            name="stepType"
+            validation={{ required: true }}
+            onChange={(e) => {
+              setValue(
+                'stepType',
+                e.target.value as 'SIMPLE_TEXT' | 'NFT_CHECK' | undefined
+              )
+            }}
           >
-            <option disabled value="">
-              Select a step type
-            </option>
+            <option value="">Select a step type</option>
             <option value="SIMPLE_TEXT">Simple Text</option>
             <option value="NFT_CHECK">NFT Check</option>
           </SelectField>
         </div>
 
-        <DisplayStepType control={control} index={index} />
+        {stepType === 'SIMPLE_TEXT' && <EditSimpleText value={value} />}
 
-        {stepType === 'SIMPLE_TEXT' && (
-          <div className="simple-text">
-            <div className="solution">
-              <Label
-                name="solution"
-                className="rw-label"
-                errorClassName="rw-label rw-label-error"
-              >
-                Solution
-              </Label>
-              <TextField
-                className="w-full"
-                placeholder="Solutuion"
-                {...register(`solution`, { required: true })}
-              />
-            </div>
-          </div>
-        )}
-        {stepType === 'NFT_CHECK' ? (
-          <div className="nft-check">
-            <div className="contract-address">
-              <Label
-                name="contractAddress"
-                className="rw-label"
-                errorClassName="rw-label rw-label-error"
-              >
-                Contract Address
-              </Label>
-              <TextField
-                name="contractAddress"
-                className="w-full"
-                placeholder="Contract Address"
-              />
-            </div>
-            <div className="chain-id">
-              <Label name="chainId" className="rw-label">
-                Chain Id
-              </Label>
-              <TextField
-                name="chainId"
-                className="w-full"
-                placeholder="Chain Id"
-              />
-            </div>
-            <div className="token-id">
-              <Label name="tokenId" className="rw-label">
-                Token Id
-              </Label>
-              <TextField
-                name="tokenId"
-                className="w-full"
-                placeholder="Token Id"
-              />
-            </div>
-            <div className="poap-event-id">
-              <Label name="poapEventId" className="rw-label">
-                Poap Event Id
-              </Label>
-              <TextField
-                name="poapEventId"
-                className="w-full"
-                placeholder="Poap Event Id"
-              />
-            </div>
-          </div>
-        ) : null}
+        {stepType === 'NFT_CHECK' && <EditNftCheck value={value} />}
+
         <Submit
           className="rw-button-group rw-button rw-button-blue"
-          onClick={handleSubmit((data) => {
-            updateStep(index, data)
-          })}
+          onClick={handleSubmit(onSubmit)}
         >
           Add Step to State
         </Submit>
+        <button
+          className="rw-button-group rw-button rw-button-blue"
+          type="button"
+          onClick={() => removeStep(index)}
+        >
+          Remove
+        </button>
       </Form>
     </div>
   )
@@ -448,18 +264,8 @@ const EditStep = ({
 export default function PuzzleForm() {
   const formMethods = useForm<PuzzleFormType>({
     defaultValues: {
-      [nftsFieldArrayName]: [],
       [stepsFieldArrayName]: [],
     },
-  })
-  const {
-    fields: nftFields,
-    append: appendNft,
-    update: updateNft,
-    remove: removeNft,
-  } = useFieldArray({
-    control: formMethods.control,
-    name: nftsFieldArrayName,
   })
 
   const {
@@ -471,7 +277,6 @@ export default function PuzzleForm() {
     control: formMethods.control,
     name: stepsFieldArrayName,
   })
-  // console.log(formMethods.getValues())
 
   const renderCount = useRef(1)
 
@@ -534,127 +339,18 @@ export default function PuzzleForm() {
                   errorClassName="rw-input rw-input-error"
                   validation={{ required: true }}
                 />
-
-                <Label
-                  name="explanation"
-                  className="rw-label"
-                  errorClassName="rw-label rw-label-error"
-                >
-                  Explanation
-                </Label>
-
-                <TextField
-                  name="explanation"
-                  className="rw-input"
-                  errorClassName="rw-input rw-input-error"
-                  validation={{ required: true }}
-                />
-
-                <Label
-                  name="successMessage"
-                  className="rw-label"
-                  errorClassName="rw-label rw-label-error"
-                >
-                  Success message
-                </Label>
-
-                <TextField
-                  name="successMessage"
-                  className="rw-input"
-                  errorClassName="rw-input rw-input-error"
-                  validation={{ required: true }}
-                />
-
-                <Label
-                  name="listPublicly"
-                  className="rw-label"
-                  errorClassName="rw-label rw-label-error"
-                >
-                  List publicly
-                </Label>
-
-                <CheckboxField name="listPublicly" className="rw-input" />
-
-                <Label
-                  name="parentId"
-                  className="rw-label"
-                  errorClassName="rw-label rw-label-error"
-                >
-                  Parent Id
-                </Label>
-
-                <TextField
-                  name="parentId"
-                  className="rw-input"
-                  errorClassName="rw-input rw-input-error"
-                  validation={{ required: true }}
-                />
-
-                <Label
-                  name="sortWeight"
-                  className="rw-label"
-                  errorClassName="rw-label rw-label-error"
-                >
-                  Sort Weight
-                </Label>
-
-                <TextField
-                  name="sortWeight"
-                  className="rw-input w-14"
-                  errorClassName="rw-input rw-input-error"
-                  validation={{ required: true }}
-                />
               </div>
 
-              {nftFields.map((field, index) => (
-                <fieldset key={field.id}>
-                  <EditNFT
-                    control={formMethods.control}
-                    updateNft={updateNft}
-                    index={index}
-                    value={field}
-                  />
-                  <button
-                    className="rw-button-group rw-button rw-button-blue"
-                    type="button"
-                    onClick={() => removeNft(index)}
-                  >
-                    Remove
-                  </button>
-                </fieldset>
-              ))}
-
-              <div className="rw-button-group">
-                <button
-                  type="button"
-                  className="rw-button rw-button-blue"
-                  onClick={() => {
-                    appendNft({
-                      tokenId: '',
-                      contractName: '',
-                      nftData: '',
-                      cloudinaryId: '',
-                    })
-                  }}
-                >
-                  Add NFT
-                </button>
-              </div>
+              <div className="rw-button-group"></div>
               {stepFields.map((field, index) => (
                 <fieldset key={field.id}>
                   <EditStep
                     control={formMethods.control}
                     updateStep={updateStep}
+                    removeStep={removeStep}
                     index={index}
                     value={field}
                   />
-                  <button
-                    className="rw-button-group rw-button rw-button-blue"
-                    type="button"
-                    onClick={() => removeStep(index)}
-                  >
-                    Remove
-                  </button>
                 </fieldset>
               ))}
 
@@ -666,10 +362,10 @@ export default function PuzzleForm() {
                     appendStep({
                       failMessage: '',
                       successMessage: '',
-                      challenge: '',
-                      resourceLinks: '',
-                      stepSortWeight: '',
+                      stepType: undefined,
                       solution: '',
+                      contractAddress: '',
+                      chainId: '',
                     })
                   }}
                 >
