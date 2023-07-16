@@ -219,8 +219,8 @@ __metadata:
   linkType: hard
 
 "@apollo/server@npm:^4.0.0":
-  version: 4.6.0
-  resolution: "@apollo/server@npm:4.6.0"
+  version: 4.7.4
+  resolution: "@apollo/server@npm:4.7.4"
   dependencies:
     "@apollo/cache-control-types": ^1.0.2
     "@apollo/server-gateway-interface": ^1.1.0
@@ -230,7 +230,7 @@ __metadata:
     "@apollo/utils.isnodelike": ^2.0.0
     "@apollo/utils.keyvaluecache": ^2.1.0
     "@apollo/utils.logger": ^2.0.0
-    "@apollo/utils.usagereporting": ^2.0.0
+    "@apollo/utils.usagereporting": ^2.1.0
     "@apollo/utils.withrequired": ^2.0.0
     "@graphql-tools/schema": ^9.0.0
     "@josephg/resolvable": ^1.0.0
@@ -250,7 +250,7 @@ __metadata:
     whatwg-mimetype: ^3.0.0
   peerDependencies:
     graphql: ^16.6.0
-  checksum: 06f642fb9eb327098207da07115b840f2bf54b3266ae0872efea6b6cabf73c09e1452127862dd86982b802036ff8ffe1074ffa94187b855faf7565a771592983
+  checksum: 838eeea4dea8e469f4bfe353879df96b1e0044dd50bddc747c5d4dc388c14303d890ca96e53e542d6d99938842a5df33b2a9d8724eea662e4f5e9a38d4f0ae62
   languageName: node
   linkType: hard
 
@@ -351,11 +351,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/utils.usagereporting@npm:^2.0.0":
-  version: 2.0.1
-  resolution: "@apollo/utils.usagereporting@npm:2.0.1"
+"@apollo/utils.usagereporting@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@apollo/utils.usagereporting@npm:2.1.0"
   dependencies:
-    "@apollo/usage-reporting-protobuf": ^4.0.0
+    "@apollo/usage-reporting-protobuf": ^4.1.0
     "@apollo/utils.dropunuseddefinitions": ^2.0.1
     "@apollo/utils.printwithreducedwhitespace": ^2.0.1
     "@apollo/utils.removealiases": 2.0.1
@@ -363,7 +363,7 @@ __metadata:
     "@apollo/utils.stripsensitiveliterals": ^2.0.1
   peerDependencies:
     graphql: 14.x || 15.x || 16.x
-  checksum: eac3ce29a29fcd109a588f2ce1d367ec0b13d138087835f2d054a06683fff13270ddfcc903fa614abc7f3c0e2ce5fd7a4c8eec5413412762074274d29d8959d2
+  checksum: 5c2b06a14c5094d0ee8eab7ff78449da1efff3bb4c82ef311b2bb90190437c6c59f2783702a428775f394f12455a53a9723e625e53e18e47b423df8cb9eb26d8
   languageName: node
   linkType: hard
 
@@ -10008,10 +10008,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/gtag.js@npm:^0.0.11":
-  version: 0.0.11
-  resolution: "@types/gtag.js@npm:0.0.11"
-  checksum: 0c436bca2bf41ee0d49501797c1498a49804535c1958c8b77d3476eb922019b8e58db02e26b8c2a8bccacf707b614b1bbf0b43bde41183f4153e1c90f73e1a90
+"@types/gtag.js@npm:^0.0.12":
+  version: 0.0.12
+  resolution: "@types/gtag.js@npm:0.0.12"
+  checksum: fee8f4c6e627301b89ab616c9e219bd53fa6ea1ffd1d0a8021e21363f0bdb2cf7eb1a5bcda0c6f1502186379bc7784ec29c932e21634f4e07f9e7a8c56887400
   languageName: node
   linkType: hard
 
@@ -29683,11 +29683,11 @@ __metadata:
   linkType: hard
 
 "semver@npm:2 || 3 || 4 || 5, semver@npm:^5.4.1, semver@npm:^5.5.0, semver@npm:^5.6.0, semver@npm:^5.7.0, semver@npm:^5.7.1":
-  version: 5.7.1
-  resolution: "semver@npm:5.7.1"
+  version: 5.7.2
+  resolution: "semver@npm:5.7.2"
   bin:
-    semver: ./bin/semver
-  checksum: d4884f2aeca28bff35d0bd40ff0a9b2dfc4b36a883bf0ea5dc15d10d9a01bdc9041035b05f825d4b5ac8a56e490703dbf0d986d054de82cc5e9bad3f02ca6e00
+    semver: bin/semver
+  checksum: e4cf10f86f168db772ae95d86ba65b3fd6c5967c94d97c708ccb463b778c2ee53b914cd7167620950fc07faf5a564e6efe903836639e512a1aa15fbc9667fa25
   languageName: node
   linkType: hard
 
@@ -33971,7 +33971,7 @@ __metadata:
     "@redwoodjs/router": 5.0.5
     "@redwoodjs/web": 5.0.5
     "@tailwindcss/forms": ^0.5.3
-    "@types/gtag.js": ^0.0.11
+    "@types/gtag.js": ^0.0.12
     autoprefixer: ^10.4.12
     boring-avatars: ^1.7.0
     buffer: ^6.0.3
