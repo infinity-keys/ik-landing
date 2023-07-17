@@ -66,16 +66,16 @@ const StepsLayout = ({
 
       <Suspense fallback={<LoadingIcon />}>
         {step && (
-          <div className="flex w-full max-w-5xl gap-8">
+          <div className="flex w-full max-w-lg flex-col md:max-w-5xl md:flex-row md:gap-8 md:px-6">
             <div className="flex-1">
               <img src={step.featuredImage} alt="" className="block w-full" />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 pb-6">
               <MarkdownCarousel>
                 {step.body.map((text, i) => {
                   if (!text) return null
                   return (
-                    <div key={i} className="p-12">
+                    <div key={i} className="markdown py-20 px-12">
                       <Markdown>{text}</Markdown>
                     </div>
                   )

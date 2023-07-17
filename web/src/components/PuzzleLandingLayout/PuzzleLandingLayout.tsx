@@ -53,7 +53,7 @@ const PuzzleLandingLayout = ({
         url={url}
       />
 
-      <div className="puzzle__main w-full px-4 text-center">
+      <div className="puzzle__main w-full text-center">
         <RewardableHeader
           name={rewardable.name}
           instructions={rewardable.explanation}
