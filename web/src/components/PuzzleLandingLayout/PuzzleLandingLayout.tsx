@@ -11,7 +11,6 @@ import Seo from 'src/components/Seo/Seo'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
-import Wrapper from '../Wrapper/Wrapper'
 
 interface PuzzleLandingLayoutProps extends PropsWithChildren {
   rewardable:
@@ -50,14 +49,14 @@ const PuzzleLandingLayout = ({
 
       <div className="puzzle__main w-full text-center">
         {stepParam ?? (
-          <Wrapper>
+          <div className="px-4">
             <RewardableHeader
               name={rewardable.name}
               instructions={rewardable.explanation}
               cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
               currentStep={stepParam}
             />
-          </Wrapper>
+          </div>
         )}
 
         {children}
