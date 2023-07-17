@@ -6,9 +6,9 @@ import {
   Form,
   useForm,
   Label,
-  TextField,
   SelectField,
   Submit,
+  TextField,
   useFieldArray,
   useWatch,
   Control,
@@ -48,6 +48,7 @@ const DisplayStepType: React.FC<DisplayStepTypeProps> = ({
   stepType,
   data,
 }) => {
+  console.log('Rendering DisplayStepType', stepType, data)
   switch (stepType) {
     case 'SIMPLE_TEXT':
       return (
@@ -63,7 +64,7 @@ const DisplayStepType: React.FC<DisplayStepTypeProps> = ({
         </div>
       )
     default:
-      return null
+      return <div>Unknown step type</div>
   }
 }
 
@@ -83,7 +84,7 @@ const DisplayStep = ({
 
   return (
     <div className="my-4 border-2 border-zinc-500 bg-gray-100 p-4">
-      <h3 className="font-bold italic">Step Currently in State:</h3>
+      <h3 className="font-bold italic">NFT Currently in State:</h3>
       <div className="font-bold">Fail message: {data?.failMessage}</div>
       <div className="font-bold">Success message: {data?.successMessage}</div>
       <DisplayStepType stepType={data.stepType} data={data as StepTypeData} />
@@ -183,10 +184,11 @@ const EditStep = ({
   const onSubmit = (data: Step) => {
     updateStep(index, data)
   }
-
   return (
     <div className="my-4 max-w-3xl border-2 border-zinc-500 bg-zinc-300 p-4">
-      {process.env.NODE_ENV === 'development' && <DevTool control={control} />}
+      {process.env.NODE_ENV === 'development' && (
+        <DevTool control={formMethods.control} />
+      )}
       <Form formMethods={formMethods} onSubmit={onSubmit}>
         <div>
           <DisplayStep control={control} index={index} />
@@ -212,20 +214,22 @@ const EditStep = ({
         </Label>
         <TextField
           className="w-full"
-          placeholder="Success message"
+          placeholder="Contract Name"
           {...register(`successMessage`, { required: true })}
         />
-        <Label
-          name="typeLabel"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Step Type
-        </Label>
-        <div className="select-field-items">
+
+        <div>
+          <Label
+            name="type"
+            className="rw-label"
+            errorClassName="rw-label rw-label-error"
+          >
+            Step Type
+          </Label>
           <SelectField
-            name="stepType"
-            validation={{ required: true }}
+            name="type"
+            className="rw-input"
+            errorClassName="rw-input rw-input-error"
             onChange={(e) => {
               setValue(
                 'stepType',
@@ -245,7 +249,9 @@ const EditStep = ({
 
         <Submit
           className="rw-button-group rw-button rw-button-blue"
-          onClick={handleSubmit(onSubmit)}
+          onClick={handleSubmit((data) => {
+            updateStep(index, data)
+          })}
         >
           Add Step to State
         </Submit>
@@ -277,6 +283,7 @@ export default function PuzzleForm() {
     control: formMethods.control,
     name: stepsFieldArrayName,
   })
+  // console.log(formMethods.getValues())
 
   const renderCount = useRef(1)
 
@@ -341,7 +348,6 @@ export default function PuzzleForm() {
                 />
               </div>
 
-              <div className="rw-button-group"></div>
               {stepFields.map((field, index) => (
                 <fieldset key={field.id}>
                   <EditStep
