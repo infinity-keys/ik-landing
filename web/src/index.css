@@ -141,7 +141,7 @@
     p,
     li,
     a {
-      @apply text-lg;
+      @apply text-base;
     }
 
     ol,
@@ -176,4 +176,12 @@
 
 .next-image-block span {
   display: block !important;
+}
+
+.slider-container {
+  height: 100%;
+}
+
+.slider-frame {
+  height: calc(100% - 60px) !important;
 }

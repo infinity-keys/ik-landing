@@ -79,7 +79,7 @@ export default async () => {
 
   const protagonistUser = ikUsersData.at(-1)
   const stepImageUrl =
-    'https://images.unsplash.com/photo-1688396068145-4bec246f615c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80'
+    'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/nft-181_eeo6d3'
 
   console.log(`created ${adminUsers.length} IK admin users`)
 
@@ -267,7 +267,10 @@ export default async () => {
                 category: 'SEEK',
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                body: [
+                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
+                  'this will be page two',
+                ],
                 requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
@@ -282,7 +285,10 @@ export default async () => {
                 category: 'SEEK',
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                body: [
+                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
+                  'this will be page two',
+                ],
                 requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
@@ -297,7 +303,10 @@ export default async () => {
                 category: 'SEEK',
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                body: [
+                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
+                  'this will be page two',
+                ],
                 requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
@@ -343,7 +352,10 @@ export default async () => {
                 category: 'SEEK',
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                body: [
+                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
+                  'this will be page two',
+                ],
                 requirements: ['ACCOUNT'],
                 stepNftCheck: {
                   create: {
@@ -365,7 +377,10 @@ export default async () => {
                 category: 'SEEK',
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                body: [
+                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
+                  'this will be page two',
+                ],
                 requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
@@ -380,7 +395,10 @@ export default async () => {
                 category: 'SEEK',
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                body: [
+                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
+                  'this will be page two',
+                ],
                 requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
@@ -395,7 +413,10 @@ export default async () => {
                 category: 'SEEK',
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                body: [
+                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
+                  'this will be page two',
+                ],
                 requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
@@ -439,7 +460,10 @@ export default async () => {
                 category: 'SEEK',
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                body: [
+                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
+                  'this will be page two',
+                ],
                 requirements: ['ACCOUNT'],
                 stepLensApi: {
                   create: {
@@ -455,7 +479,10 @@ export default async () => {
                 category: 'SEEK',
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                body: [
+                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
+                  'this will be page two',
+                ],
                 requirements: ['ACCOUNT'],
                 stepErc20Balance: {
                   create: {
@@ -473,7 +500,10 @@ export default async () => {
                 category: 'SEEK',
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                body: [
+                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
+                  'this will be page two',
+                ],
                 requirements: ['ACCOUNT'],
                 stepAssetTransfer: {
                   create: {

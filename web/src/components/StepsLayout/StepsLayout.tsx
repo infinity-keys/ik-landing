@@ -1,54 +1,51 @@
 import { PropsWithChildren, lazy, Suspense } from 'react'
 
-import { ThumbnailProgress } from '@infinity-keys/core'
-import clsx from 'clsx'
 import { FindAnonStepQuery, FindStepQuery } from 'types/graphql'
 
-import { routes, useParams } from '@redwoodjs/router'
+import { routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button/Button'
-import CollapsibleMarkdown from 'src/components/CollapsibleMarkdown/CollapsibleMarkdown'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-import ThumbnailMini from 'src/components/ThumbnailMini/ThumbnailMini'
+
+import Markdown from '../Markdown/Markdown'
+import MarkdownCarousel from '../MarkdownCarousel/MarkdownCarousel'
 
 interface StepsLayoutProps extends PropsWithChildren {
   currentStepId?: string
   hasBeenSolved: boolean
-  puzzle: FindAnonStepQuery['puzzle'] | FindStepQuery['puzzle']
-  step: FindAnonStepQuery['step'] | FindStepQuery['step']
+  puzzle: FindStepQuery['puzzle']
+  step: FindStepQuery['step']
   stepNum?: number
 }
 
-const SimpleTextInput = lazy(
-  () => import('src/components/SimpleTextInput/SimpleTextInput')
-)
+// const SimpleTextInput = lazy(
+//   () => import('src/components/SimpleTextInput/SimpleTextInput')
+// )
 
-const AccountCheckButton = lazy(
-  () => import('src/components/AccountCheckButton/AccountCheckButton')
-)
+// const AccountCheckButton = lazy(
+//   () => import('src/components/AccountCheckButton/AccountCheckButton')
+// )
 
-const StepLensApiButton = lazy(
-  () => import('src/components/StepLensApiButton/StepLensApiButton')
-)
+// const StepLensApiButton = lazy(
+//   () => import('src/components/StepLensApiButton/StepLensApiButton')
+// )
 
 const StepsLayout = ({
-  currentStepId,
   hasBeenSolved,
   puzzle,
   step,
   stepNum,
   children,
 }: StepsLayoutProps) => {
-  const { slug } = useParams()
   const { isAuthenticated } = useAuth()
 
   if (!puzzle) return null
   const showButton = !stepNum && puzzle?.rewardable
 
   return (
-    <div>
+    <div className="flex justify-center">
       {showButton && (
         <div className="mb-6">
           {isAuthenticated ? (
@@ -69,103 +66,57 @@ const StepsLayout = ({
 
       <Suspense fallback={<LoadingIcon />}>
         {step && (
-          <div>
-            <div className="mx-auto max-w-prose rounded-md bg-black/10">
-              {step.challenge && (
-                <div className="p-4">
-                  <CollapsibleMarkdown
-                    title="Challenge"
-                    content={step.challenge}
-                    defaultOpen
-                  />
-                </div>
-              )}
-
-              {step.resourceLinks && (
-                <div className={clsx('p-4', { 'pt-0': step.challenge })}>
-                  <CollapsibleMarkdown
-                    title="Hint"
-                    content={`${step.resourceLinks}`}
-                    defaultOpen={!step.challenge}
-                  />
-                </div>
-              )}
+          <div className="flex w-full max-w-5xl gap-8">
+            <div className="flex-1">
+              <img src={step.featuredImage} alt="" className="block w-full" />
             </div>
+            <div className="flex-1">
+              <MarkdownCarousel>
+                {step.body.map((text, i) => {
+                  if (!text) return null
+                  return (
+                    <div key={i} className="p-12">
+                      <Markdown>{text}</Markdown>
+                    </div>
+                  )
+                })}
+              </MarkdownCarousel>
+            </div>
+            {/* // <div>
+            //   {step.type === 'SIMPLE_TEXT' && (
+            //     <div className="pt-8">
+            //       <SimpleTextInput
+            //         count={step.stepSimpleText?.solutionCharCount || 0}
+            //         step={step}
+            //         puzzleId={puzzle.id}
+            //         isAnon={puzzle.isAnon}
+            //       />
+            //     </div>
+            //   )}
 
-            {step.type === 'SIMPLE_TEXT' && (
-              <div className="pt-8">
-                <SimpleTextInput
-                  count={step.stepSimpleText?.solutionCharCount || 0}
-                  step={step}
-                  puzzleId={puzzle.id}
-                  isAnon={puzzle.isAnon}
-                />
-              </div>
-            )}
+            //   {(step.type === 'NFT_CHECK' ||
+            //     step.type === 'FUNCTION_CALL' ||
+            //     step.type === 'COMETH_API' ||
+            //     step.type === 'ORIUM_API' ||
+            //     step.type === 'ASSET_TRANSFER' ||
+            //     step.type === 'TOKEN_ID_RANGE' ||
+            //     step.type === 'ERC20_BALANCE') && (
+            //     <div className="pt-8">
+            //       <AccountCheckButton step={step} puzzleId={puzzle.id} />
+            //     </div>
+            //   )}
 
-            {(step.type === 'NFT_CHECK' ||
-              step.type === 'FUNCTION_CALL' ||
-              step.type === 'COMETH_API' ||
-              step.type === 'ORIUM_API' ||
-              step.type === 'ASSET_TRANSFER' ||
-              step.type === 'TOKEN_ID_RANGE' ||
-              step.type === 'ERC20_BALANCE') && (
-              <div className="pt-8">
-                <AccountCheckButton step={step} puzzleId={puzzle.id} />
-              </div>
-            )}
-
-            {step.type === 'LENS_API' && (
-              <div className="pt-8">
-                <StepLensApiButton step={step} puzzleId={puzzle.id} />
-              </div>
-            )}
+            //   {step.type === 'LENS_API' && (
+            //     <div className="pt-8">
+            //       <StepLensApiButton step={step} puzzleId={puzzle.id} />
+            //     </div>
+            //   )}
+            // </div> */}
           </div>
         )}
       </Suspense>
 
       <div>{children}</div>
-
-      {(!step || !hasBeenSolved) && (
-        <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-4 sm:flex-row">
-          {puzzle.steps.map((stepData) => {
-            if (!stepData) return null
-
-            const { id, stepSortWeight, hasUserCompletedStep } = stepData
-            const routeParams = {
-              slug,
-              step: stepSortWeight,
-            }
-
-            const completed =
-              !isAuthenticated && 'hasAnonUserCompletedStep' in stepData
-                ? stepData.hasAnonUserCompletedStep
-                : hasUserCompletedStep
-
-            return (
-              <ThumbnailMini
-                id={id}
-                key={stepSortWeight}
-                name={`Step ${stepSortWeight.toString()}`}
-                progress={
-                  hasBeenSolved
-                    ? ThumbnailProgress.Completed
-                    : currentStepId === id
-                    ? ThumbnailProgress.Current
-                    : completed
-                    ? ThumbnailProgress.Completed
-                    : ThumbnailProgress.NotCompleted
-                }
-                to={
-                  isAuthenticated && !puzzle.isAnon
-                    ? routes.puzzleStep(routeParams)
-                    : routes.anonPuzzleStep(routeParams)
-                }
-              />
-            )
-          })}
-        </div>
-      )}
     </div>
   )
 }

@@ -20,11 +20,6 @@ export const QUERY = gql`
           id
         }
       }
-      steps {
-        id
-        stepSortWeight
-        hasUserCompletedStep
-      }
     }
     step: optionalStep(id: $stepId, puzzleId: $puzzleId, stepNum: $stepNum) {
       id
@@ -33,6 +28,10 @@ export const QUERY = gql`
       successMessage
       type
       resourceLinks
+      # new stuff
+      body
+      featuredImage
+      #
       stepSimpleText {
         solutionCharCount
       }
@@ -70,13 +69,8 @@ export const Success = ({
 }) => {
   const hasBeenSolved = puzzle.rewardable.userRewards.length > 0
 
-  const currentStepId = puzzle.steps.find(
-    (step) => !step?.hasUserCompletedStep
-  )?.id
-
   return (
     <StepsLayout
-      currentStepId={currentStepId}
       hasBeenSolved={hasBeenSolved}
       puzzle={puzzle}
       step={step}

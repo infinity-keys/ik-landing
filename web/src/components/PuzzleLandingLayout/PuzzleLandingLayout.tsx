@@ -63,63 +63,6 @@ const PuzzleLandingLayout = ({
 
         {children}
       </div>
-
-      {/* Allows user to navigate to every public parent of this puzzle */}
-      {rewardable.asChildPublicParentRewardables.length > 0 && (
-        <div className="text-center text-gray-200">
-          {stepParam && (
-            <p>
-              Return to:
-              <Link
-                to={rewardableLandingRoute({
-                  slug: rewardable.slug,
-                  type: rewardable.type,
-                })}
-                className="ml-2 mt-2 inline-block italic transition-colors hover:text-brand-accent-primary"
-              >
-                {rewardable.name}
-              </Link>
-            </p>
-          )}
-          <p>
-            Return to:
-            {rewardable.asChildPublicParentRewardables.map(
-              (rewardable, index) => {
-                if (!rewardable?.parentRewardable) return null
-
-                const {
-                  parentRewardable: { slug, name, type },
-                } = rewardable
-                return (
-                  <Fragment key={slug + type}>
-                    {/* prepend a comma to all but the first item */}
-                    {index ? ', ' : ''}
-                    <Link
-                      to={rewardableLandingRoute({ slug, type })}
-                      className="ml-2 mt-2 inline-block italic transition-colors hover:text-brand-accent-primary"
-                    >
-                      {name} {capitalize(type)}
-                    </Link>
-                  </Fragment>
-                )
-              }
-            )}
-          </p>
-        </div>
-      )}
-
-      <div className="flex flex-col items-center justify-center gap-4 px-4 pb-9 pt-16 sm:flex-row">
-        <DiscordHelpButton />
-
-        <LensShareButton
-          postBody={`Can you unlock the ${rewardable.name} puzzle?`}
-          url={url}
-          className="text-sm font-medium"
-        />
-        <TwitterShare
-          tweetBody={`Can you unlock the ${rewardable.name} puzzle? @InfinityKeys\n\n${url}`}
-        />
-      </div>
     </div>
   )
 }
