@@ -8,6 +8,7 @@ import LoginModal from 'src/components/LoginModal/LoginModal'
 import ProfileCell from 'src/components/ProfileCell'
 import ProgressDeleteButton from 'src/components/ProgressDeleteButton/ProgressDeleteButton'
 import Seo from 'src/components/Seo/Seo'
+import Wrapper from 'src/components/Wrapper/Wrapper'
 import useReconcileProgress from 'src/hooks/useReconcileProgress'
 import { clearRedirectTo } from 'src/providers/redirection'
 
@@ -34,7 +35,7 @@ const ProfilePage = () => {
   }, [redirectTo])
 
   return (
-    <div>
+    <Wrapper>
       <Seo title="Profile" />
       {isAuthenticated &&
         !progressLoading &&
@@ -70,7 +71,7 @@ const ProfilePage = () => {
           />
         </div>
       )}
-    </div>
+    </Wrapper>
   )
 }
 
