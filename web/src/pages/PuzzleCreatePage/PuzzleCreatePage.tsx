@@ -24,6 +24,8 @@ type SimpleText = {
   solution: string
 }
 
+const stepsFieldArrayName = 'stepsArray'
+
 type NftCheck = {
   contractAddress: string
   chainId: string
@@ -31,24 +33,20 @@ type NftCheck = {
 
 type StepTypeData = SimpleText | NftCheck
 
-type DisplayStepTypeProps = {
-  stepType: Step['stepType']
-  data: StepTypeData
-}
+// // functionality moved into the DisplayStepType component itself
+// type DisplayStepTypeProps = {
+//   stepType: Step['stepType']
+//   data: StepTypeData
+// }
 
-type PuzzleFormType = {
-  name: string
-  slug: string
-  stepsArray: Step[]
-}
-
-const stepsFieldArrayName = 'stepsArray'
-
-const DisplayStepType: React.FC<DisplayStepTypeProps> = ({
+const DisplayStepType = ({
   stepType,
   data,
+}: {
+  stepType: Step['stepType']
+  data: StepTypeData
 }) => {
-  console.log('Rendering DisplayStepType', stepType, data)
+  // console.log('Rendering DisplayStepType', stepType, data)
   switch (stepType) {
     case 'SIMPLE_TEXT':
       return (
@@ -67,6 +65,8 @@ const DisplayStepType: React.FC<DisplayStepTypeProps> = ({
       return <div>Unknown step type</div>
   }
 }
+
+DisplayStepType.displayName = 'DisplayStepType'
 
 const DisplayStep = ({
   control,
@@ -93,11 +93,9 @@ const DisplayStep = ({
 }
 
 const EditSimpleText = ({ value }: { value: Step }) => {
-  const formMethods = useForm<Step>({
+  const { register } = useForm<Step>({
     defaultValues: value,
   })
-
-  const { register } = formMethods
 
   return (
     <div className="simple-text">
@@ -109,6 +107,7 @@ const EditSimpleText = ({ value }: { value: Step }) => {
         Solution
       </Label>
       <TextField
+        // name="solution" // causes lint error
         className="w-full"
         placeholder="Solution"
         {...register('solution', { required: true })}
@@ -118,11 +117,9 @@ const EditSimpleText = ({ value }: { value: Step }) => {
 }
 
 const EditNftCheck = ({ value }: { value: Step }) => {
-  const formMethods = useForm<Step>({
+  const { register } = useForm<Step>({
     defaultValues: value,
   })
-
-  const { register } = formMethods
 
   return (
     <div className="nft-check">
@@ -133,12 +130,13 @@ const EditNftCheck = ({ value }: { value: Step }) => {
       >
         Contract Address
       </Label>
-
       <TextField
+        // name="contractAddress" // causes lint error
         className="w-full"
         placeholder="Contract Address"
         {...register('contractAddress', { required: true })}
       />
+
       <Label
         name="chainId"
         className="rw-label"
@@ -146,8 +144,8 @@ const EditNftCheck = ({ value }: { value: Step }) => {
       >
         Chain ID
       </Label>
-
       <TextField
+        // name="chainId" // causes lint error
         className="w-full"
         placeholder="Chain ID"
         {...register('chainId', { required: true })}
@@ -201,10 +199,12 @@ const EditStep = ({
           Fail message
         </Label>
         <TextField
+          name="failMessage" // causes lint error
           className="w-full"
           placeholder="Fail message"
-          {...register(`failMessage`, { required: true })}
+          // {...register(`failMessage`, { required: true })}
         />
+        {/* Blook wants a space here but Prettier won't allow it :( */}
         <Label
           name="successMessage"
           className="rw-label"
@@ -213,9 +213,10 @@ const EditStep = ({
           Success message
         </Label>
         <TextField
+          name="successMessage" // causes lint error
           className="w-full"
           placeholder="Contract Name"
-          {...register(`successMessage`, { required: true })}
+          // {...register(`successMessage`, { required: true })}
         />
 
         <div>
@@ -265,6 +266,12 @@ const EditStep = ({
       </Form>
     </div>
   )
+}
+
+type PuzzleFormType = {
+  name: string
+  slug: string
+  stepsArray: Step[]
 }
 
 export default function PuzzleForm() {
@@ -324,7 +331,6 @@ export default function PuzzleForm() {
                 >
                   Name
                 </Label>
-
                 <TextField
                   name="name"
                   className="rw-input"
@@ -339,7 +345,6 @@ export default function PuzzleForm() {
                 >
                   Slug
                 </Label>
-
                 <TextField
                   name="slug"
                   className="rw-input"
