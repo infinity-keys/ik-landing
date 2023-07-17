@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy } from 'react'
 
 import EnvelopeIcon from '@heroicons/react/20/solid/EnvelopeIcon'
 import ClipboardIcon from '@heroicons/react/24/outline/ClipboardIcon'
@@ -16,12 +16,7 @@ import { CellSuccessProps, CellFailureProps, useMutation } from '@redwoodjs/web'
 import { LoaderIcon, toast } from '@redwoodjs/web/toast'
 
 import Button from 'src/components/Button/Button'
-import ConnectAccountButton from 'src/components/ConnectAccountButton/ConnectAccountButton'
-import DisconnectAccountButton from 'src/components/DisconnectAccountButton/DisconnectAccountButton'
-import LensConnect from 'src/components/LensConnect/LensConnect'
-import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import { avatarGradient } from 'src/lib/theme/helpers'
-import DiscordIcon from 'src/svgs/DiscordIcon'
 
 export const QUERY = gql`
   query FindUserQuery {
@@ -46,6 +41,15 @@ export const QUERY = gql`
     }
   }
 `
+const LensConnect = lazy(() => import('src/components/LensConnect/LensConnect'))
+const DiscordIcon = lazy(() => import('src/svgs/DiscordIcon'))
+const LoadingIcon = lazy(() => import('src/components/LoadingIcon/LoadingIcon'))
+const ConnectAccountButton = lazy(
+  () => import('src/components/ConnectAccountButton/ConnectAccountButton')
+)
+const DisconnectAccountButton = lazy(
+  () => import('src/components/DisconnectAccountButton/DisconnectAccountButton')
+)
 
 const SYNC_DISCORD_ROLES_MUTATION = gql`
   mutation SyncDiscordRolesMutation {
