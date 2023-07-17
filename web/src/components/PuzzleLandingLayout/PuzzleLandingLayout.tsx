@@ -37,30 +37,32 @@ const PuzzleLandingLayout = ({
   )
 
   return (
-    <Wrapper>
-      <div className="pt-10">
-        <Seo
-          title={rewardable.name}
-          description={`Can you unlock the ${rewardable.name} puzzle?`}
-          imageUrl={
-            rewardable.nfts[0]?.cloudinaryId &&
-            cloudinaryUrl(rewardable.nfts[0]?.cloudinaryId, 500, 500, false, 1)
-          }
-          url={url}
-        />
+    <div className="pt-10">
+      <Seo
+        title={rewardable.name}
+        description={`Can you unlock the ${rewardable.name} puzzle?`}
+        imageUrl={
+          rewardable.nfts[0]?.cloudinaryId &&
+          cloudinaryUrl(rewardable.nfts[0]?.cloudinaryId, 500, 500, false, 1)
+        }
+        url={url}
+      />
 
-        <div className="puzzle__main w-full text-center">
-          <RewardableHeader
-            name={rewardable.name}
-            instructions={rewardable.explanation}
-            cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
-            currentStep={stepParam}
-          />
+      <div className="puzzle__main w-full text-center">
+        {stepParam ?? (
+          <Wrapper>
+            <RewardableHeader
+              name={rewardable.name}
+              instructions={rewardable.explanation}
+              cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
+              currentStep={stepParam}
+            />
+          </Wrapper>
+        )}
 
-          {children}
-        </div>
+        {children}
       </div>
-    </Wrapper>
+    </div>
   )
 }
 
