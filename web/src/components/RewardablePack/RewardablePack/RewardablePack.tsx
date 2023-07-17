@@ -1,3 +1,5 @@
+import { lazy } from 'react'
+
 import {
   buildUrlString,
   cloudinaryUrl,
@@ -12,11 +14,13 @@ import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
 import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'
-import Thumbnail from 'src/components/Thumbnail/Thumbnail'
 import TwitterShare from 'src/components/TwitterShare/TwitterShare'
 import useCurrentWidth from 'src/hooks/useCurrentWidth'
-import '@infinity-keys/react-lens-share-button/dist/style.css'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
+
+import '@infinity-keys/react-lens-share-button/dist/style.css'
+
+const Thumbnail = lazy(() => import('src/components/Thumbnail/Thumbnail'))
 
 interface Props {
   rewardable: NonNullable<FindRewardablePackBySlug['pack']>

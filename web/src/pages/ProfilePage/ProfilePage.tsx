@@ -1,15 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy } from 'react'
 
 import { useParams } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-import LoginModal from 'src/components/LoginModal/LoginModal'
 import ProfileCell from 'src/components/ProfileCell'
-import ProgressDeleteButton from 'src/components/ProgressDeleteButton/ProgressDeleteButton'
 import Seo from 'src/components/Seo/Seo'
 import useReconcileProgress from 'src/hooks/useReconcileProgress'
 import { clearRedirectTo } from 'src/providers/redirection'
+
+const LoginModal = lazy(() => import('src/components/LoginModal/LoginModal'))
+const ProgressDeleteButton = lazy(
+  () => import('src/components/ProgressDeleteButton/ProgressDeleteButton')
+)
 
 const ProfilePage = () => {
   const { isAuthenticated, loading, logOut, currentUser } = useAuth()
