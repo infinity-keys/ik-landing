@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react'
 
-import ArrowLeftIcon from '@heroicons/react/20/solid/ArrowLeftIcon'
-import ArrowRightIcon from '@heroicons/react/20/solid/ArrowRightIcon'
+import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftCircleIcon'
+import ArrowRightIcon from '@heroicons/react/24/outline/ArrowRightCircleIcon'
 import Carousel, { ControlProps } from 'nuka-carousel'
 
 const MarkdownCarousel = ({ children }: PropsWithChildren) => {
@@ -12,17 +12,17 @@ const MarkdownCarousel = ({ children }: PropsWithChildren) => {
       renderBottomRightControls={(props: ControlProps) => (
         <button
           onClick={props.nextSlide}
-          className="rounded-full bg-black/30 p-3 text-brand-accent-secondary transition-colors hover:bg-brand-accent-primary/20"
+          className="text-stone-50 transition-colors hover:text-brand-accent-secondary"
         >
-          <ArrowRightIcon className="h-4 w-4" />
+          <ArrowRightIcon className="h-7 w-7 fill-transparent" />
         </button>
       )}
       renderBottomLeftControls={(props: ControlProps) => (
         <button
           onClick={props.previousSlide}
-          className="rounded-full bg-black/30 p-3 text-brand-accent-secondary transition-colors hover:bg-brand-accent-primary/20"
+          className="text-stone-50 transition-colors hover:text-brand-accent-secondary"
         >
-          <ArrowLeftIcon className="h-4 w-4" />
+          <ArrowLeftIcon className="h-7 w-7 fill-transparent" />
         </button>
       )}
       defaultControlsConfig={{
