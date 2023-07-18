@@ -1,16 +1,13 @@
 import { PropsWithChildren, lazy, Suspense } from 'react'
 
-import { FindAnonStepQuery, FindStepQuery } from 'types/graphql'
+import { FindStepQuery } from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
-import Alert from 'src/components/Alert/Alert'
-import Button from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-
-import Markdown from '../Markdown/Markdown'
-import MarkdownCarousel from '../MarkdownCarousel/MarkdownCarousel'
+import Markdown from 'src/components/Markdown/Markdown'
+import MarkdownCarousel from 'src/components/MarkdownCarousel/MarkdownCarousel'
 
 interface StepsLayoutProps extends PropsWithChildren {
   currentStepId?: string
@@ -23,14 +20,21 @@ interface StepsLayoutProps extends PropsWithChildren {
 // const SimpleTextInput = lazy(
 //   () => import('src/components/SimpleTextInput/SimpleTextInput')
 // )
-
 // const AccountCheckButton = lazy(
 //   () => import('src/components/AccountCheckButton/AccountCheckButton')
 // )
-
 // const StepLensApiButton = lazy(
 //   () => import('src/components/StepLensApiButton/StepLensApiButton')
 // )
+// const ThumbnailMini = lazy(
+//   () => import('src/components/ThumbnailMini/ThumbnailMini')
+// )
+// const CollapsibleMarkdown = lazy(
+//   () => import('src/components/CollapsibleMarkdown/CollapsibleMarkdown')
+// )
+
+const Alert = lazy(() => import('src/components/Alert/Alert'))
+const Button = lazy(() => import('src/components/Button/Button'))
 
 const StepsLayout = ({
   hasBeenSolved,

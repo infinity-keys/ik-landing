@@ -12,10 +12,8 @@ import Button from 'src/components/Button/Button'
 import ProfileIcon from 'src/components/ProfileIcon/ProfileIcon'
 import WalletButton from 'src/components/WalletButton/WalletButton'
 import LogoFullSm from 'src/images/full-logo-sm.webp'
-import LogoHeader1x from 'src/images/header-logo-1x.webp'
-import LogoHeader2x from 'src/images/header-logo-2x.webp'
-import LogoHeaderSm1x from 'src/images/header-logo-sm-1x.webp'
-import LogoHeaderSm2x from 'src/images/header-logo-sm-2x.webp'
+import LogoHeader1x from 'src/images/IK-LOGO-1x.webp'
+import LogoHeader2x from 'src/images/IK-LOGO-2x.webp'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
@@ -64,16 +62,15 @@ const Header = () => {
           {/* Left logo */}
           <Link
             to={routes.play()}
-            className="inline-block max-w-[60px] sm:max-w-[150px]"
+            className="inline-block max-w-[100px] sm:max-w-[150px]"
             aria-label="return home"
           >
             <picture>
-              <source
-                srcSet={`${LogoHeader1x} 1x, ${LogoHeader2x} 2x`}
-                media="(min-width: 640px)"
+              <source srcSet={`${LogoHeader1x} 1x, ${LogoHeader2x} 2x`} />
+              <img
+                src={LogoHeader1x}
+                alt="Infinity Keys logo of a spooky eye in triangle."
               />
-              <source srcSet={`${LogoHeaderSm1x} 1x, ${LogoHeaderSm2x} 2x`} />
-              <img src={LogoHeaderSm1x} alt="" />
             </picture>
           </Link>
         </div>
@@ -147,12 +144,20 @@ const Header = () => {
                         Play
                       </Link>
                       <a
-                        href="https://docs.infinitykeys.io"
+                        href="https://docs.infinitykeys.io/infinity-keys-docs/start-here/what-is-infinity-keys"
                         target="_blank"
                         rel="noreferrer"
                         className="header-nav--link mt-3 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
-                        Info
+                        About
+                      </a>
+                      <a
+                        href="https://docs.infinitykeys.io/infinity-keys-docs/gameplay/how-to-play"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="header-nav--link mt-3 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
+                      >
+                        How to Play
                       </a>
                       {/* <a
                         href="https://blog.infinitykeys.io"
