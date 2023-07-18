@@ -33,12 +33,6 @@ type NftCheck = {
 
 type StepTypeData = SimpleText | NftCheck
 
-// // functionality moved into the DisplayStepType component itself
-// type DisplayStepTypeProps = {
-//   stepType: Step['stepType']
-//   data: StepTypeData
-// }
-
 const DisplayStepType = ({
   stepType,
   data,
@@ -46,21 +40,20 @@ const DisplayStepType = ({
   stepType: Step['stepType']
   data: StepTypeData
 }) => {
-  // console.log('Rendering DisplayStepType', stepType, data)
   switch (stepType) {
     case 'SIMPLE_TEXT':
-      return (
-        <div className="font-bold">
-          Solution: {(data as SimpleText).solution}
-        </div>
-      )
+      // discriminated union
+      return 'solution' in data ? (
+        <div className="font-bold">Solution: {data.solution}</div>
+      ) : null
     case 'NFT_CHECK':
-      return (
+      // discriminated union
+      return 'contractAddress' in data && 'chainId' in data ? (
         <div className="font-bold">
-          <div>Contract Address: {(data as NftCheck).contractAddress}</div>
-          <div>Chain ID: {(data as NftCheck).chainId}</div>
+          <div>Contract Address: {data.contractAddress}</div>
+          <div>Chain ID: {data.chainId}</div>
         </div>
-      )
+      ) : null
     default:
       return <div>Unknown step type</div>
   }
@@ -80,14 +73,15 @@ const DisplayStep = ({
     name: `${stepsFieldArrayName}.${index}`,
   })
 
-  if (!data?.failMessage) return null
+  // type guard
+  if (!data || !data.failMessage) return null
 
   return (
     <div className="my-4 border-2 border-zinc-500 bg-gray-100 p-4">
       <h3 className="font-bold italic">NFT Currently in State:</h3>
       <div className="font-bold">Fail message: {data?.failMessage}</div>
       <div className="font-bold">Success message: {data?.successMessage}</div>
-      <DisplayStepType stepType={data.stepType} data={data as StepTypeData} />
+      <DisplayStepType stepType={data.stepType} data={data} />
     </div>
   )
 }
@@ -182,6 +176,12 @@ const EditStep = ({
   const onSubmit = (data: Step) => {
     updateStep(index, data)
   }
+  // type guard
+  const isValidStepType = (
+    value: string
+  ): value is 'SIMPLE_TEXT' | 'NFT_CHECK' => {
+    return value === 'SIMPLE_TEXT' || value === 'NFT_CHECK'
+  }
   return (
     <div className="my-4 max-w-3xl border-2 border-zinc-500 bg-zinc-300 p-4">
       {process.env.NODE_ENV === 'development' && (
@@ -232,9 +232,10 @@ const EditStep = ({
             className="rw-input"
             errorClassName="rw-input rw-input-error"
             onChange={(e) => {
+              const stepType = e.target.value
               setValue(
                 'stepType',
-                e.target.value as 'SIMPLE_TEXT' | 'NFT_CHECK' | undefined
+                isValidStepType(stepType) ? stepType : undefined
               )
             }}
           >
