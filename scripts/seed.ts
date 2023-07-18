@@ -149,6 +149,7 @@ export default async () => {
       puzzle: {
         create: {
           isAnon: true,
+          requirements: ['ACCOUNT'],
           steps: {
             create: [
               {
@@ -159,7 +160,6 @@ export default async () => {
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
-                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Amazon',
@@ -196,6 +196,7 @@ export default async () => {
       puzzle: {
         create: {
           isAnon: false,
+          requirements: ['ACCOUNT'],
           steps: {
             create: [
               {
@@ -206,7 +207,6 @@ export default async () => {
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
-                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Tokyo',
@@ -221,7 +221,6 @@ export default async () => {
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
-                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Sushi',
@@ -258,6 +257,7 @@ export default async () => {
       puzzle: {
         create: {
           isAnon: false,
+          requirements: ['ACCOUNT'],
           steps: {
             create: [
               {
@@ -271,7 +271,6 @@ export default async () => {
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
                   'this will be page two',
                 ],
-                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Athens',
@@ -289,7 +288,6 @@ export default async () => {
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
                   'this will be page two',
                 ],
-                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Crete',
@@ -307,7 +305,6 @@ export default async () => {
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
                   'this will be page two',
                 ],
-                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Zeus',
@@ -342,6 +339,7 @@ export default async () => {
       puzzle: {
         create: {
           isAnon: false,
+          requirements: ['ACCOUNT'],
           steps: {
             create: [
               {
@@ -356,7 +354,6 @@ export default async () => {
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
                   'this will be page two',
                 ],
-                requirements: ['ACCOUNT'],
                 stepNftCheck: {
                   create: {
                     nftCheckData: {
@@ -381,7 +378,6 @@ export default async () => {
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
                   'this will be page two',
                 ],
-                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Suez',
@@ -399,7 +395,6 @@ export default async () => {
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
                   'this will be page two',
                 ],
-                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Giza',
@@ -417,7 +412,6 @@ export default async () => {
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
                   'this will be page two',
                 ],
-                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'Nile',
@@ -451,6 +445,7 @@ export default async () => {
       puzzle: {
         create: {
           isAnon: false,
+          requirements: ['ACCOUNT'],
           steps: {
             create: [
               {
@@ -464,7 +459,6 @@ export default async () => {
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
                   'this will be page two',
                 ],
-                requirements: ['ACCOUNT'],
                 stepLensApi: {
                   create: {
                     checkType: 'IS_FOLLOWING_USER',
@@ -483,7 +477,6 @@ export default async () => {
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
                   'this will be page two',
                 ],
-                requirements: ['ACCOUNT'],
                 stepErc20Balance: {
                   create: {
                     contractAddress:
@@ -504,7 +497,6 @@ export default async () => {
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
                   'this will be page two',
                 ],
-                requirements: ['ACCOUNT'],
                 stepAssetTransfer: {
                   create: {
                     toAddress: '0xc22834581ebc8527d974f8a1c97e1bea4ef910bc',
@@ -520,7 +512,6 @@ export default async () => {
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
-                requirements: ['ACCOUNT'],
                 stepOriumApi: {
                   create: {
                     checkType: 'HAS_CREATED_SCHOLARSHIP',
@@ -535,7 +526,6 @@ export default async () => {
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
-                requirements: ['ACCOUNT'],
                 stepNftCheck: {
                   create: {
                     nftCheckData: {
@@ -557,7 +547,6 @@ export default async () => {
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
-                requirements: ['ACCOUNT'],
                 stepSimpleText: {
                   create: {
                     solution: 'text',
@@ -572,7 +561,6 @@ export default async () => {
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
-                requirements: ['ACCOUNT'],
                 stepTokenIdRange: {
                   create: {
                     contractAddress:
@@ -591,7 +579,6 @@ export default async () => {
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
-                requirements: ['ACCOUNT'],
                 stepFunctionCall: {
                   create: {
                     methodIds: ['0x22c67519'],
@@ -608,7 +595,6 @@ export default async () => {
                 featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
-                requirements: ['ACCOUNT'],
                 stepComethApi: {
                   create: {},
                 },

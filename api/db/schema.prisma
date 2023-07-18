@@ -130,9 +130,20 @@ model Puzzle {
   rewardableId String     @unique
 
   // Users can fill out a form and submit answers when completing a puzzle
-  submissions Submission[]
+  submissions  Submission[]
+  /// What will the user need to complete this puzzle
+  requirements PuzzleRequirements[]
 
   steps Step[]
+}
+
+enum PuzzleRequirements {
+  HOLDERS
+  ACCOUNT
+  WALLET
+  GAS
+  WALK
+  PATIENCE
 }
 
 // All the types of Steps. Currently supports simple text guesses, but can
@@ -203,18 +214,8 @@ model Step {
   body          String[]
   hint          String
   category      StepCategory
-  requirements  StepRequirements[]
 
   @@unique([puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
-}
-
-enum StepRequirements {
-  HOLDERS
-  ACCOUNT
-  WALLET
-  GAS
-  WALK
-  PATIENCE
 }
 
 enum StepCategory {
