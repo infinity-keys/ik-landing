@@ -42,12 +42,10 @@ const DisplayStepType = ({
 }) => {
   switch (stepType) {
     case 'SIMPLE_TEXT':
-      // discriminated union
       return 'solution' in data ? (
         <div className="font-bold">Solution: {data.solution}</div>
       ) : null
     case 'NFT_CHECK':
-      // discriminated union
       return 'contractAddress' in data && 'chainId' in data ? (
         <div className="font-bold">
           <div>Contract Address: {data.contractAddress}</div>
@@ -55,7 +53,7 @@ const DisplayStepType = ({
         </div>
       ) : null
     default:
-      return <div>Unknown step type</div>
+      return null
   }
 }
 
@@ -73,8 +71,7 @@ const DisplayStep = ({
     name: `${stepsFieldArrayName}.${index}`,
   })
 
-  // type guard
-  if (!data || !data.failMessage) return null
+  if (!data) return null
 
   return (
     <div className="my-4 border-2 border-zinc-500 bg-gray-100 p-4">
@@ -101,7 +98,6 @@ const EditSimpleText = ({ value }: { value: Step }) => {
         Solution
       </Label>
       <TextField
-        // name="solution" // causes lint error
         className="w-full"
         placeholder="Solution"
         {...register('solution', { required: true })}
@@ -125,7 +121,6 @@ const EditNftCheck = ({ value }: { value: Step }) => {
         Contract Address
       </Label>
       <TextField
-        // name="contractAddress" // causes lint error
         className="w-full"
         placeholder="Contract Address"
         {...register('contractAddress', { required: true })}
@@ -139,7 +134,6 @@ const EditNftCheck = ({ value }: { value: Step }) => {
         Chain ID
       </Label>
       <TextField
-        // name="chainId" // causes lint error
         className="w-full"
         placeholder="Chain ID"
         {...register('chainId', { required: true })}
@@ -165,23 +159,14 @@ const EditStep = ({
     defaultValues: value,
   })
 
-  const { register, handleSubmit, setValue, watch } = formMethods
+  const { handleSubmit, watch } = formMethods
 
   const stepType = watch('stepType')
-
-  useEffect(() => {
-    register('stepType')
-  }, [register])
 
   const onSubmit = (data: Step) => {
     updateStep(index, data)
   }
-  // type guard
-  const isValidStepType = (
-    value: string
-  ): value is 'SIMPLE_TEXT' | 'NFT_CHECK' => {
-    return value === 'SIMPLE_TEXT' || value === 'NFT_CHECK'
-  }
+
   return (
     <div className="my-4 max-w-3xl border-2 border-zinc-500 bg-zinc-300 p-4">
       {process.env.NODE_ENV === 'development' && (
@@ -199,12 +184,11 @@ const EditStep = ({
           Fail message
         </Label>
         <TextField
-          name="failMessage" // causes lint error
+          name="failMessage"
           className="w-full"
           placeholder="Fail message"
-          // {...register(`failMessage`, { required: true })}
         />
-        {/* Blook wants a space here but Prettier won't allow it :( */}
+
         <Label
           name="successMessage"
           className="rw-label"
@@ -213,31 +197,23 @@ const EditStep = ({
           Success message
         </Label>
         <TextField
-          name="successMessage" // causes lint error
+          name="successMessage"
           className="w-full"
           placeholder="Contract Name"
-          // {...register(`successMessage`, { required: true })}
         />
 
         <div>
           <Label
-            name="type"
+            name="stepType"
             className="rw-label"
             errorClassName="rw-label rw-label-error"
           >
             Step Type
           </Label>
           <SelectField
-            name="type"
+            name="stepType"
             className="rw-input"
             errorClassName="rw-input rw-input-error"
-            onChange={(e) => {
-              const stepType = e.target.value
-              setValue(
-                'stepType',
-                isValidStepType(stepType) ? stepType : undefined
-              )
-            }}
           >
             <option value="">Select a step type</option>
             <option value="SIMPLE_TEXT">Simple Text</option>
@@ -291,7 +267,6 @@ export default function PuzzleForm() {
     control: formMethods.control,
     name: stepsFieldArrayName,
   })
-  // console.log(formMethods.getValues())
 
   const renderCount = useRef(1)
 
@@ -374,7 +349,7 @@ export default function PuzzleForm() {
                     appendStep({
                       failMessage: '',
                       successMessage: '',
-                      stepType: undefined,
+                      stepType: undefined, // start with undefined so that the select field is empty
                       solution: '',
                       contractAddress: '',
                       chainId: '',
