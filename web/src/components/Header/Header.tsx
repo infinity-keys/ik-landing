@@ -67,7 +67,10 @@ const Header = () => {
           >
             <picture>
               <source srcSet={`${LogoHeader1x} 1x, ${LogoHeader2x} 2x`} />
-              <img src={LogoHeader1x} alt="" />
+              <img
+                src={LogoHeader1x}
+                alt="Infinity Keys logo of a spooky eye in triangle."
+              />
             </picture>
           </Link>
         </div>

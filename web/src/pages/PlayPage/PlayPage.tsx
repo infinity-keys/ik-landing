@@ -115,6 +115,7 @@ const PlayPage = ({ count, page }: { count?: number; page?: number }) => {
 
                     <button
                       onClick={closeModal}
+                      type="button"
                       className="absolute left-full top-0 flex h-10 w-10 -translate-y-1/2 -translate-x-1/2 items-center justify-center rounded-full border-2 border-brand-accent-primary/20 bg-brand-gray-primary"
                     >
                       <XMarkIcon className="h-5 w-5" />
