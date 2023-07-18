@@ -6,7 +6,7 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import RewardablesGrid from 'src/components/RewardablesGrid'
 import { GridLandingRouteType } from 'src/lib/urlBuilders'
 
-export const REWARDABLES_GRID_FRAG = gql`
+export const QUERY = gql`
   fragment RewardablesGridFrag on Rewardable {
     id
     name
@@ -36,29 +36,23 @@ export const REWARDABLES_GRID_FRAG = gql`
       }
     }
   }
-`
-
-export const QUERY = () => {
-  return gql`
-    ${REWARDABLES_GRID_FRAG}
-    query FindRewardables(
-      $count: Int
-      $page: Int
-      $types: [RewardableType!]!
-      $sortType: RewardableSortType
-    ) {
-      rewardablesCollection(types: $types, page: $page, count: $count) {
-        rewardables {
-          ...RewardablesGridFrag
-        }
-        totalCount
-      }
-      labeled: rewardablesBySortType(sortType: $sortType) {
+  query FindRewardables(
+    $count: Int
+    $page: Int
+    $types: [RewardableType!]!
+    $sortType: RewardableSortType
+  ) {
+    rewardablesCollection(types: $types, page: $page, count: $count) {
+      rewardables {
         ...RewardablesGridFrag
       }
+      totalCount
     }
-  `
-}
+    labeled: rewardablesBySortType(sortType: $sortType) {
+      ...RewardablesGridFrag
+    }
+  }
+`
 
 export const Loading = () => <LoadingIcon />
 
