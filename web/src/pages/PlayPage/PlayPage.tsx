@@ -4,6 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 
+import Button from 'src/components/Button'
 import RewardablesCell from 'src/components/RewardablesCell'
 import Seo from 'src/components/Seo/Seo'
 
@@ -64,13 +65,13 @@ const PlayPage = ({ count, page }: { count?: number; page?: number }) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-xl transform transition-all">
+                <Dialog.Panel className="w-full max-w-2xl transform transition-all">
                   <div className="relative rounded-lg border-2 border-brand-accent-primary/20 bg-brand-gray-primary text-left align-middle">
-                    <div className="p-8">
+                    <div className="p-4 lg:p-8">
                       <p className="mb-8 text-center text-2xl font-bold text-white">
-                        Welcome to Infinity Keys
+                        Infinity Keys
                         <br />
-                        <span className="text-lg">(Alpha Version)</span>
+                        <span className="text-lg">(alpha version)</span>
                       </p>
                       <p className="mb-4">
                         Infinity Keys is gaming infrastructure for user-created
@@ -85,12 +86,20 @@ const PlayPage = ({ count, page }: { count?: number; page?: number }) => {
                         information about Infinity Keys tokens and experiences.
                       </p>
 
-                      <div className="mt-12 flex flex-col items-center justify-between gap-4 text-center text-sm text-brand-accent-secondary sm:flex-row">
+                      <div className="mx-auto max-w-[250px] pt-12">
+                        <Button
+                          fullWidth
+                          text="Play Now"
+                          onClick={closeModal}
+                        />
+                      </div>
+
+                      <div className="mt-8 flex flex-col items-center justify-between gap-4 text-center text-sm text-brand-accent-secondary sm:flex-row">
                         <a
                           href="https://twitter.com/InfinityKeys"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-block rounded bg-white/10 py-2 px-4 transition-colors hover:text-white"
+                          className="inline-block flex-1 rounded bg-white/10 py-2 px-4 transition-colors hover:text-white"
                         >
                           Follow Us on Twitter
                         </a>
@@ -98,7 +107,7 @@ const PlayPage = ({ count, page }: { count?: number; page?: number }) => {
                           href="https://discord.gg/infinitykeys"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-block rounded bg-white/10 py-2 px-4 transition-colors hover:text-white"
+                          className="inline-block flex-1 rounded bg-white/10 py-2 px-4 transition-colors hover:text-white"
                         >
                           Join our Discord
                         </a>
@@ -106,9 +115,9 @@ const PlayPage = ({ count, page }: { count?: number; page?: number }) => {
                           href="https://docs.infinitykeys.io/infinity-keys-docs/gameplay/how-to-play"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-block rounded bg-white/10 py-2 px-4 transition-colors hover:text-white"
+                          className="inline-block flex-1 rounded bg-white/10 py-2 px-4 transition-colors hover:text-white"
                         >
-                          Learn to Play
+                          Docs
                         </a>
                       </div>
                     </div>
