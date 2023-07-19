@@ -28,7 +28,7 @@ const MarkdownCarousel = ({ children }: PropsWithChildren) => {
       defaultControlsConfig={{
         pagingDotsClassName: 'mx-[2px]',
       }}
-      className="flex h-full flex-col justify-center border-t-2 border-b-2 border-stone-400"
+      className="border-y-2 border-stone-50"
     >
       {children}
     </Carousel>

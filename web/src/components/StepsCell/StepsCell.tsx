@@ -13,6 +13,7 @@ export const QUERY = gql`
     puzzle(id: $puzzleId) {
       id
       isAnon
+      coverImage
       rewardable {
         id
         successMessage
@@ -30,7 +31,6 @@ export const QUERY = gql`
       resourceLinks
       # new stuff
       body
-      featuredImage
       #
       stepSimpleText {
         solutionCharCount

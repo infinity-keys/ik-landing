@@ -27,17 +27,14 @@ describe.skip('steps', () => {
       input: {
         updatedAt: '2023-07-12T15:53:40.123Z',
         puzzleId: scenario.step.two.puzzleId,
-        featuredImage: 'String',
-        body: 'String',
+        body: ['String'],
         hint: 'String',
         category: 'SEEK',
-        requirements: 'HOLDERS',
       },
     })
 
     expect(result.updatedAt).toEqual(new Date('2023-07-12T15:53:40.123Z'))
     expect(result.puzzleId).toEqual(scenario.step.two.puzzleId)
-    expect(result.featuredImage).toEqual('String')
     expect(result.body).toEqual('String')
     expect(result.hint).toEqual('String')
     expect(result.category).toEqual('SEEK')

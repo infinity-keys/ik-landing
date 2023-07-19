@@ -22,7 +22,6 @@ export const schema = gql`
     stepErc20Balance: StepErc20Balance
     migrateLandingRoute: String
     attempts: [Attempt]!
-    featuredImage: String!
     body: [String]!
     hint: String!
     category: StepCategory!
@@ -75,7 +74,6 @@ export const schema = gql`
     puzzleId: String!
     type: StepType!
     migrateLandingRoute: String
-    featuredImage: String!
     body: [String]!
     hint: String!
     category: StepCategory!
@@ -91,7 +89,6 @@ export const schema = gql`
     puzzleId: String
     type: StepType
     migrateLandingRoute: String
-    featuredImage: String
     body: [String]
     hint: String
     category: StepCategory

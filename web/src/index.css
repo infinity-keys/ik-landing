@@ -61,30 +61,6 @@
     width: 45px !important;
     height: 45px !important;
     padding: 0;
-
-    /* 640+ */
-    @screen sm {
-      @apply text-4xl !important;
-      width: 90px !important;
-      height: 90px !important;
-    }
-    /* 768+ */
-    @screen md {
-      width: 90px !important;
-      height: 90px !important;
-    }
-    /* 1024+ */
-    @screen lg {
-      @apply mx-4 !important;
-      width: 125px !important;
-      height: 125px !important;
-    }
-    /* 1280+ */
-    @screen xl {
-    }
-    /* 1536+ */
-    @screen 2xl {
-    }
   }
 
   .discordIcon:hover {
@@ -181,11 +157,14 @@
 .next-image-block span {
   display: block !important;
 }
-
 .slider-container {
-  height: 100%;
+  @apply h-full pb-16;
 }
 
 .slider-frame {
-  height: calc(100% - 60px) !important;
+  @apply !h-full;
+}
+
+.slider-list {
+  @apply h-full;
 }

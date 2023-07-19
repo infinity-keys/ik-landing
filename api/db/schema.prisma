@@ -133,6 +133,8 @@ model Puzzle {
   submissions  Submission[]
   /// What will the user need to complete this puzzle
   requirements PuzzleRequirements[]
+  // @TODO: make required
+  coverImage   String?
 
   steps Step[]
 }
@@ -210,10 +212,9 @@ model Step {
   attempts Attempt[]
 
   // These are the new fields
-  featuredImage String
-  body          String[]
-  hint          String
-  category      StepCategory
+  body     String[]
+  hint     String
+  category StepCategory
 
   @@unique([puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
 }

@@ -6,9 +6,10 @@ export const standard = defineScenario<Prisma.PuzzleCreateArgs>({
   puzzle: {
     one: {
       data: {
+        requirements: 'HOLDERS',
         rewardable: {
           create: {
-            updatedAt: '2023-02-17T21:34:23.220Z',
+            updatedAt: '2023-07-19T16:32:18.815Z',
             name: 'String',
             slug: 'String',
             explanation: 'String',
@@ -16,8 +17,8 @@ export const standard = defineScenario<Prisma.PuzzleCreateArgs>({
             organization: {
               create: {
                 name: 'String',
-                slug: 'String2591777',
-                updatedAt: '2023-02-17T21:34:23.220Z',
+                slug: 'String2828704',
+                updatedAt: '2023-07-19T16:32:18.815Z',
               },
             },
           },
@@ -26,9 +27,10 @@ export const standard = defineScenario<Prisma.PuzzleCreateArgs>({
     },
     two: {
       data: {
+        requirements: 'HOLDERS',
         rewardable: {
           create: {
-            updatedAt: '2023-02-17T21:34:23.220Z',
+            updatedAt: '2023-07-19T16:32:18.815Z',
             name: 'String',
             slug: 'String',
             explanation: 'String',
@@ -36,8 +38,8 @@ export const standard = defineScenario<Prisma.PuzzleCreateArgs>({
             organization: {
               create: {
                 name: 'String',
-                slug: 'String9063469',
-                updatedAt: '2023-02-17T21:34:23.220Z',
+                slug: 'String8409011',
+                updatedAt: '2023-07-19T16:32:18.815Z',
               },
             },
           },

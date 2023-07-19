@@ -7,11 +7,9 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
     one: {
       data: {
         updatedAt: '2023-07-12T15:53:40.238Z',
-        featuredImage: 'String',
         body: 'String',
         hint: 'String',
         category: 'SEEK',
-        requirements: 'HOLDERS',
         puzzle: {
           create: {
             rewardable: {
@@ -37,11 +35,9 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
     two: {
       data: {
         updatedAt: '2023-07-12T15:53:40.238Z',
-        featuredImage: 'String',
         body: 'String',
         hint: 'String',
         category: 'SEEK',
-        requirements: 'HOLDERS',
         puzzle: {
           create: {
             rewardable: {

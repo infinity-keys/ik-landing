@@ -78,7 +78,7 @@ export default async () => {
   )
 
   const protagonistUser = ikUsersData.at(-1)
-  const stepImageUrl =
+  const coverImageUrl =
     'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/nft-181_eeo6d3'
 
   console.log(`created ${adminUsers.length} IK admin users`)
@@ -150,6 +150,7 @@ export default async () => {
         create: {
           isAnon: true,
           requirements: ['ACCOUNT'],
+          coverImage: coverImageUrl,
           steps: {
             create: [
               {
@@ -157,7 +158,6 @@ export default async () => {
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
                 stepSimpleText: {
@@ -197,6 +197,7 @@ export default async () => {
         create: {
           isAnon: false,
           requirements: ['ACCOUNT'],
+          coverImage: coverImageUrl,
           steps: {
             create: [
               {
@@ -204,7 +205,6 @@ export default async () => {
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
                 stepSimpleText: {
@@ -218,7 +218,6 @@ export default async () => {
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
                 stepSimpleText: {
@@ -258,6 +257,7 @@ export default async () => {
         create: {
           isAnon: false,
           requirements: ['ACCOUNT'],
+          coverImage: coverImageUrl,
           steps: {
             create: [
               {
@@ -265,7 +265,6 @@ export default async () => {
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: [
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
@@ -282,7 +281,6 @@ export default async () => {
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: [
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
@@ -299,7 +297,6 @@ export default async () => {
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: [
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
@@ -340,6 +337,7 @@ export default async () => {
         create: {
           isAnon: false,
           requirements: ['ACCOUNT'],
+          coverImage: coverImageUrl,
           steps: {
             create: [
               {
@@ -348,7 +346,6 @@ export default async () => {
                 stepSortWeight: 1,
                 type: 'NFT_CHECK',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: [
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
@@ -372,7 +369,6 @@ export default async () => {
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: [
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
@@ -389,7 +385,6 @@ export default async () => {
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: [
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
@@ -406,7 +401,6 @@ export default async () => {
                 stepSortWeight: 4,
                 type: 'SIMPLE_TEXT',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: [
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
@@ -446,6 +440,7 @@ export default async () => {
         create: {
           isAnon: false,
           requirements: ['ACCOUNT'],
+          coverImage: coverImageUrl,
           steps: {
             create: [
               {
@@ -453,7 +448,6 @@ export default async () => {
                 stepSortWeight: 1,
                 type: 'LENS_API',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: [
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
@@ -471,7 +465,6 @@ export default async () => {
                 stepSortWeight: 9,
                 type: 'ERC20_BALANCE',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: [
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
@@ -491,7 +484,6 @@ export default async () => {
                 stepSortWeight: 8,
                 type: 'ASSET_TRANSFER',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: [
                   'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
@@ -509,7 +501,6 @@ export default async () => {
                 stepSortWeight: 7,
                 type: 'ORIUM_API',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
                 stepOriumApi: {
@@ -523,7 +514,6 @@ export default async () => {
                 stepSortWeight: 2,
                 type: 'NFT_CHECK',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
                 stepNftCheck: {
@@ -544,7 +534,6 @@ export default async () => {
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
                 stepSimpleText: {
@@ -558,7 +547,6 @@ export default async () => {
                 stepSortWeight: 4,
                 type: 'TOKEN_ID_RANGE',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
                 stepTokenIdRange: {
@@ -576,7 +564,6 @@ export default async () => {
                 stepSortWeight: 5,
                 type: 'FUNCTION_CALL',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
                 stepFunctionCall: {
@@ -592,7 +579,6 @@ export default async () => {
                 stepSortWeight: 6,
                 type: 'COMETH_API',
                 category: 'SEEK',
-                featuredImage: stepImageUrl,
                 hint: 'Hint',
                 body: ['**bold** text about the deal', 'this will be page two'],
                 stepComethApi: {
