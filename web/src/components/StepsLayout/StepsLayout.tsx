@@ -66,14 +66,14 @@ const StepsLayout = ({
                 showModal={showModal}
                 setShowModal={setShowModal}
               >
-                {step.body.map((text, i) => {
+                {/* {step.body.map((text, i) => {
                   if (!text) return null
                   return (
                     <div key={i} className="markdown px-12 py-20">
                       <Markdown>{text}</Markdown>
                     </div>
                   )
-                })}
+                })} */}
 
                 {step.challenge && (
                   <div className="relative h-full text-center">

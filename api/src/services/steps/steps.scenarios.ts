@@ -6,15 +6,17 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
   step: {
     one: {
       data: {
-        updatedAt: '2023-07-12T15:53:40.238Z',
-        body: 'String',
-        hint: 'String',
+        updatedAt: '2023-07-20T17:30:29.806Z',
+        solutionHint: 'String',
+        defaultImage: 'String',
         category: 'SEEK',
         puzzle: {
           create: {
+            requirements: 'HOLDERS',
+            coverImage: 'String',
             rewardable: {
               create: {
-                updatedAt: '2023-07-12T15:53:40.238Z',
+                updatedAt: '2023-07-20T17:30:29.806Z',
                 name: 'String',
                 slug: 'String',
                 explanation: 'String',
@@ -22,8 +24,8 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
                 organization: {
                   create: {
                     name: 'String',
-                    slug: 'String2853175',
-                    updatedAt: '2023-07-12T15:53:40.238Z',
+                    slug: 'String5141186',
+                    updatedAt: '2023-07-20T17:30:29.806Z',
                   },
                 },
               },
@@ -34,15 +36,17 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
     },
     two: {
       data: {
-        updatedAt: '2023-07-12T15:53:40.238Z',
-        body: 'String',
-        hint: 'String',
+        updatedAt: '2023-07-20T17:30:29.806Z',
+        solutionHint: 'String',
+        defaultImage: 'String',
         category: 'SEEK',
         puzzle: {
           create: {
+            requirements: 'HOLDERS',
+            coverImage: 'String',
             rewardable: {
               create: {
-                updatedAt: '2023-07-12T15:53:40.238Z',
+                updatedAt: '2023-07-20T17:30:29.806Z',
                 name: 'String',
                 slug: 'String',
                 explanation: 'String',
@@ -50,8 +54,8 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
                 organization: {
                   create: {
                     name: 'String',
-                    slug: 'String5468217',
-                    updatedAt: '2023-07-12T15:53:40.238Z',
+                    slug: 'String3376490',
+                    updatedAt: '2023-07-20T17:30:29.806Z',
                   },
                 },
               },

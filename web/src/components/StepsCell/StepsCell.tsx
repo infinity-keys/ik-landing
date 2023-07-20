@@ -29,9 +29,6 @@ export const QUERY = gql`
       successMessage
       type
       resourceLinks
-      # new stuff
-      body
-      #
       stepSimpleText {
         solutionCharCount
       }

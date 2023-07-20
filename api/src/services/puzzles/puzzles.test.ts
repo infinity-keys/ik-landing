@@ -33,11 +33,13 @@ describe.skip('puzzles', () => {
       input: {
         rewardableId: scenario.puzzle.two.rewardableId,
         requirements: 'HOLDERS',
+        coverImage: 'String',
       },
     })
 
     expect(result.rewardableId).toEqual(scenario.puzzle.two.rewardableId)
     expect(result.requirements).toEqual('HOLDERS')
+    expect(result.coverImage).toEqual('String')
   })
 
   scenario('updates a puzzle', async (scenario: StandardScenario) => {

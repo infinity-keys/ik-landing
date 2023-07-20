@@ -6,7 +6,7 @@ export const schema = gql`
     rewardableId: String!
     submissions: [Submission]!
     requirements: [PuzzleRequirements]!
-    coverImage: String
+    coverImage: String!
     steps: [Step]!
   }
 
@@ -28,7 +28,7 @@ export const schema = gql`
     isAnon: Boolean!
     rewardableId: String!
     requirements: [PuzzleRequirements]!
-    coverImage: String
+    coverImage: String!
   }
 
   input UpdatePuzzleInput {
