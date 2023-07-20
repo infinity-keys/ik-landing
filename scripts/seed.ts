@@ -157,9 +157,25 @@ export default async () => {
                 challenge: 'What is the biggest river in Brazil?',
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
                 stepSimpleText: {
                   create: {
                     solution: 'Amazon',
@@ -204,9 +220,25 @@ export default async () => {
                 challenge: 'What is the capital of Japan?',
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
                 stepSimpleText: {
                   create: {
                     solution: 'Tokyo',
@@ -217,9 +249,26 @@ export default async () => {
                 challenge: 'What Japanese food has raw fish wrapped in rice?',
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
+
                 stepSimpleText: {
                   create: {
                     solution: 'Sushi',
@@ -264,12 +313,25 @@ export default async () => {
                 challenge: 'What is the capital of Greece?',
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: [
-                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
-                  'this will be page two',
-                ],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
                 stepSimpleText: {
                   create: {
                     solution: 'Athens',
@@ -280,12 +342,25 @@ export default async () => {
                 challenge: 'What is the biggest island in Greece?',
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: [
-                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
-                  'this will be page two',
-                ],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
                 stepSimpleText: {
                   create: {
                     solution: 'Crete',
@@ -296,12 +371,25 @@ export default async () => {
                 challenge: 'Who is head of the ancient Greek Olympian gods?',
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: [
-                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
-                  'this will be page two',
-                ],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
                 stepSimpleText: {
                   create: {
                     solution: 'Zeus',
@@ -345,12 +433,26 @@ export default async () => {
                   'You must have the Prerequiste NFT in order to enter Egypt',
                 stepSortWeight: 1,
                 type: 'NFT_CHECK',
+
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: [
-                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
-                  'this will be page two',
-                ],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
                 stepNftCheck: {
                   create: {
                     nftCheckData: {
@@ -368,12 +470,25 @@ export default async () => {
                 challenge: "What is the name of Egypt's main canal?",
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: [
-                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
-                  'this will be page two',
-                ],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
                 stepSimpleText: {
                   create: {
                     solution: 'Suez',
@@ -384,12 +499,25 @@ export default async () => {
                 challenge: 'Where are the great pyramids?',
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: [
-                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
-                  'this will be page two',
-                ],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
                 stepSimpleText: {
                   create: {
                     solution: 'Giza',
@@ -400,12 +528,25 @@ export default async () => {
                 challenge: "What is the name of Egypt's main river?",
                 stepSortWeight: 4,
                 type: 'SIMPLE_TEXT',
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: [
-                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
-                  'this will be page two',
-                ],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
                 stepSimpleText: {
                   create: {
                     solution: 'Nile',
@@ -447,12 +588,26 @@ export default async () => {
                 challenge: 'Follow chair and IK',
                 stepSortWeight: 1,
                 type: 'LENS_API',
+
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: [
-                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
-                  'this will be page two',
-                ],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
                 stepLensApi: {
                   create: {
                     checkType: 'IS_FOLLOWING_USER',
@@ -464,12 +619,26 @@ export default async () => {
                 challenge: 'Have you an ERC20?',
                 stepSortWeight: 9,
                 type: 'ERC20_BALANCE',
+
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: [
-                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
-                  'this will be page two',
-                ],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
                 stepErc20Balance: {
                   create: {
                     contractAddress:
@@ -483,12 +652,26 @@ export default async () => {
                 challenge: 'Have you transferred an asset?',
                 stepSortWeight: 8,
                 type: 'ASSET_TRANSFER',
+
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: [
-                  'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper inmersive VR games.',
-                  'this will be page two',
-                ],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
                 stepAssetTransfer: {
                   create: {
                     toAddress: '0xc22834581ebc8527d974f8a1c97e1bea4ef910bc',
@@ -500,9 +683,27 @@ export default async () => {
                 challenge: 'Have you created an Orium scholarship?',
                 stepSortWeight: 7,
                 type: 'ORIUM_API',
+
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
+
                 stepOriumApi: {
                   create: {
                     checkType: 'HAS_CREATED_SCHOLARSHIP',
@@ -513,9 +714,27 @@ export default async () => {
                 challenge: 'NFT check',
                 stepSortWeight: 2,
                 type: 'NFT_CHECK',
+
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
+
                 stepNftCheck: {
                   create: {
                     nftCheckData: {
@@ -533,9 +752,26 @@ export default async () => {
                 challenge: 'Simple Text (the password is text)',
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
+
                 stepSimpleText: {
                   create: {
                     solution: 'text',
@@ -546,9 +782,27 @@ export default async () => {
                 challenge: 'token id range',
                 stepSortWeight: 4,
                 type: 'TOKEN_ID_RANGE',
+
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
+
                 stepTokenIdRange: {
                   create: {
                     contractAddress:
@@ -563,9 +817,27 @@ export default async () => {
                 challenge: 'Have you pet a gotchi?',
                 stepSortWeight: 5,
                 type: 'FUNCTION_CALL',
+
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
+
                 stepFunctionCall: {
                   create: {
                     methodIds: ['0x22c67519'],
@@ -578,9 +850,26 @@ export default async () => {
                 challenge: 'Cometh API',
                 stepSortWeight: 6,
                 type: 'COMETH_API',
+                solutionHint: 'Hint',
+                defaultImage: coverImageUrl,
                 category: 'SEEK',
-                hint: 'Hint',
-                body: ['**bold** text about the deal', 'this will be page two'],
+                stepPage: {
+                  create: [
+                    {
+                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 1,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      sortWeight: 2,
+                      showStepGuideHint: true,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                  ],
+                },
+
                 stepComethApi: {
                   create: {},
                 },

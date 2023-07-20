@@ -133,8 +133,7 @@ model Puzzle {
   submissions  Submission[]
   /// What will the user need to complete this puzzle
   requirements PuzzleRequirements[]
-  // @TODO: make required
-  coverImage   String?
+  coverImage   String
 
   steps Step[]
 }
@@ -212,14 +211,31 @@ model Step {
   attempts Attempt[]
 
   // These are the new fields
-  body     String[]
-  hint     String
-  category StepCategory
+  solutionHint String
+  defaultImage String
+  stepPage     StepPage[]
+  category     StepGuideType
 
   @@unique([puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
 }
 
-enum StepCategory {
+model StepPage {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  step   Step   @relation(fields: [stepId], references: [id])
+  stepId String
+
+  body              String
+  image             String?
+  showStepGuideHint Boolean @default(false)
+  sortWeight        Int     @default(1)
+
+  @@unique([stepId, sortWeight(sort: Asc)])
+}
+
+enum StepGuideType {
   SEEK
   INFER
   REWIND
