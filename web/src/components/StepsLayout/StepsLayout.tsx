@@ -1,8 +1,8 @@
-import { PropsWithChildren, lazy, Suspense } from 'react'
+import { PropsWithChildren, lazy, Suspense, useState } from 'react'
 
+import { Transition } from '@headlessui/react'
+import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
 import { FindStepQuery } from 'types/graphql'
-
-import { routes } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
@@ -33,8 +33,8 @@ const StepLensApiButton = lazy(
 //   () => import('src/components/CollapsibleMarkdown/CollapsibleMarkdown')
 // )
 
-const Alert = lazy(() => import('src/components/Alert/Alert'))
-const Button = lazy(() => import('src/components/Button/Button'))
+// const Alert = lazy(() => import('src/components/Alert/Alert'))
+// const Button = lazy(() => import('src/components/Button/Button'))
 
 const StepsLayout = ({
   hasBeenSolved,
@@ -43,10 +43,9 @@ const StepsLayout = ({
   stepNum,
   children,
 }: StepsLayoutProps) => {
-  const { isAuthenticated } = useAuth()
+  const [showModal, setShowModal] = useState(false)
 
   if (!puzzle) return null
-  const showButton = !stepNum && puzzle?.rewardable
 
   return (
     <div className="flex justify-center pb-8">
@@ -62,8 +61,11 @@ const StepsLayout = ({
               />
             </div>
 
-            <div className="flex-1 md:max-w-[50%]">
-              <MarkdownCarousel>
+            <div className="relative flex-1 md:max-w-[50%]">
+              <MarkdownCarousel
+                showModal={showModal}
+                setShowModal={setShowModal}
+              >
                 {step.body.map((text, i) => {
                   if (!text) return null
                   return (
@@ -74,15 +76,20 @@ const StepsLayout = ({
                 })}
 
                 {step.challenge && (
-                  <div className="relative flex h-full flex-col justify-between px-12 text-center">
-                    <div className="markdown py-20">
-                      <Markdown>{step.challenge}</Markdown>
-                    </div>
-                    <div className="flex justify-center">
-                      <div className="max-w-[226px]">
-                        <TempSvg />
+                  <div className="relative h-full text-center">
+                    <div className="flex h-full flex-col justify-between px-12">
+                      <div className="markdown py-20">
+                        <Markdown>{step.challenge}</Markdown>
+                      </div>
+                      <div className="relative z-40 flex justify-center">
+                        <button onClick={() => setShowModal(!showModal)}>
+                          <span className="block max-w-[226px]">
+                            <TempSvg />
+                          </span>
+                        </button>
                       </div>
                     </div>
+                    <TempModal show={showModal} setShowModal={setShowModal} />
                   </div>
                 )}
 
@@ -131,6 +138,38 @@ const StepsLayout = ({
 
 export default StepsLayout
 
+const TempModal = ({
+  show,
+  setShowModal,
+}: {
+  show: boolean
+  setShowModal: (b: boolean) => void
+}) => {
+  return (
+    <Transition
+      show={show}
+      enter="transition-opacity duration-75"
+      enterFrom="opacity-0"
+      enterTo="opacity-100"
+      leave="transition-opacity duration-150"
+      leaveFrom="opacity-100"
+      leaveTo="opacity-0"
+    >
+      <div className="absolute top-0 z-10 flex h-full max-w-full items-center justify-center bg-stone-700">
+        <div className="px-12 py-20">
+          The passcode you are looking for can be found on the page.
+        </div>
+        <button
+          onClick={() => setShowModal(false)}
+          type="button"
+          className="absolute top-4 right-4 transition-colors hover:text-brand-accent-secondary"
+        >
+          <XCircleIcon className="h-7 w-7 fill-transparent" />
+        </button>
+      </div>
+    </Transition>
+  )
+}
 const TempSvg = () => {
   return (
     <svg
