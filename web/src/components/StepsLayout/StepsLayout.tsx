@@ -66,6 +66,34 @@ const StepsLayout = ({
                 showModal={showModal}
                 setShowModal={setShowModal}
               >
+                {step.stepPage.map((page) => {
+                  if (!page) return null
+
+                  return (
+                    <div key={page.id} className="relative h-full">
+                      <div className="flex h-full flex-col justify-between px-12">
+                        <div className="markdown py-20">
+                          <Markdown>{page.body}</Markdown>
+                        </div>
+                        {page.showStepGuideHint && (
+                          <div className="relative z-40 flex justify-center">
+                            <button onClick={() => setShowModal(!showModal)}>
+                              <span className="block max-w-[226px]">
+                                <TempSvg />
+                              </span>
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                      {page.showStepGuideHint && (
+                        <TempModal
+                          show={showModal}
+                          setShowModal={setShowModal}
+                        />
+                      )}
+                    </div>
+                  )
+                })}
                 {/* {step.body.map((text, i) => {
                   if (!text) return null
                   return (
@@ -75,7 +103,7 @@ const StepsLayout = ({
                   )
                 })} */}
 
-                {step.challenge && (
+                {/* {step.challenge && (
                   <div className="relative h-full text-center">
                     <div className="flex h-full flex-col justify-between px-12">
                       <div className="markdown py-20">
@@ -91,7 +119,7 @@ const StepsLayout = ({
                     </div>
                     <TempModal show={showModal} setShowModal={setShowModal} />
                   </div>
-                )}
+                )} */}
 
                 <div className="relative flex h-full flex-col justify-between px-12 text-center">
                   <div className="flex grow items-center justify-center py-20">

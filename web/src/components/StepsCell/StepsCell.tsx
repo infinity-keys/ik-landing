@@ -29,6 +29,13 @@ export const QUERY = gql`
       successMessage
       type
       resourceLinks
+      stepPage {
+        id
+        sortWeight
+        image
+        body
+        showStepGuideHint
+      }
       stepSimpleText {
         solutionCharCount
       }
@@ -65,7 +72,7 @@ export const Success = ({
   stepNum?: number
 }) => {
   const hasBeenSolved = puzzle.rewardable.userRewards.length > 0
-
+  console.log(step)
   return (
     <StepsLayout
       hasBeenSolved={hasBeenSolved}

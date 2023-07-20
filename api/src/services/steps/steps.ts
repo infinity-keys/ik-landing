@@ -79,6 +79,11 @@ export const Step: StepRelationResolvers = {
   attempts: (_obj, { root }) => {
     return db.step.findUnique({ where: { id: root?.id } }).attempts()
   },
+  stepPage: (_obj, { root }) => {
+    return db.step
+      .findUnique({ where: { id: root?.id } })
+      .stepPage({ orderBy: { sortWeight: 'asc' } })
+  },
   /*
    * These `completedStep` resolvers allow us to check via graphQL whether a
    * user has solved any given step. For authenticated users, there will be a
