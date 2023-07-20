@@ -31,8 +31,7 @@ export async function execute(interaction: CommandInteraction) {
 
   const collected = await message.awaitReactions({
     filter,
-    max: 5,
-    time: 10000,
+    time: 45000,
   })
 
   for (const reaction of collected.values()) {
