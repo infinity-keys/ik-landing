@@ -14107,6 +14107,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bson@npm:^5.4.0":
+  version: 5.4.0
+  resolution: "bson@npm:5.4.0"
+  checksum: 121e1a833d2c700a6263f8033d88d0b48a7b9f3a0b4ca6d062a463c77553bf70371c1813950a8acc237cf91d4bf9cb42348cbf8155827c91baa7aa2751fe3433
+  languageName: node
+  linkType: hard
+
 "buffer-alloc-unsafe@npm:^1.1.0":
   version: 1.1.0
   resolution: "buffer-alloc-unsafe@npm:1.1.0"
@@ -16795,6 +16802,7 @@ __metadata:
     discord.js: ^14.7.1
     dotenv: ^16.0.3
     eslint: ^8.36.0
+    mongodb: ^5.7.0
     nodemon: ^2.0.22
     ts-node: ^10.9.1
     typescript: ^4.9.5
@@ -24824,6 +24832,38 @@ __metadata:
     snappy:
       optional: true
   checksum: 5ff8342445a2d7d8dd25323e7f3264d935f65cbcd2c7ddc97be9e14da2da10c4a537867ab452259e04d8641784b0fb006eabc8f811cfeb50ca41d0d13a68caf2
+  languageName: node
+  linkType: hard
+
+"mongodb@npm:^5.7.0":
+  version: 5.7.0
+  resolution: "mongodb@npm:5.7.0"
+  dependencies:
+    bson: ^5.4.0
+    mongodb-connection-string-url: ^2.6.0
+    saslprep: ^1.0.3
+    socks: ^2.7.1
+  peerDependencies:
+    "@aws-sdk/credential-providers": ^3.201.0
+    "@mongodb-js/zstd": ^1.1.0
+    kerberos: ^2.0.1
+    mongodb-client-encryption: ">=2.3.0 <3"
+    snappy: ^7.2.2
+  dependenciesMeta:
+    saslprep:
+      optional: true
+  peerDependenciesMeta:
+    "@aws-sdk/credential-providers":
+      optional: true
+    "@mongodb-js/zstd":
+      optional: true
+    kerberos:
+      optional: true
+    mongodb-client-encryption:
+      optional: true
+    snappy:
+      optional: true
+  checksum: 9d1c24497cc4350830e1a5f784f9c0800df84116bbb975b9e4016e9214a8e0e8bce50b2c088ce60228cc8e8ebc4d4e22271c2df46016b5cbf52988748c7ac799
   languageName: node
   linkType: hard
 
