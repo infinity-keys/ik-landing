@@ -1,5 +1,3 @@
-import { useRef, useEffect } from 'react'
-
 import { DevTool } from '@hookform/devtools'
 
 import {
@@ -10,10 +8,8 @@ import {
   Submit,
   TextField,
   useFieldArray,
-  useWatch,
   UseFormRegister,
   UseFormWatch,
-  UseFieldArrayUpdate,
 } from '@redwoodjs/forms'
 
 const stepsArrayName = 'stepsArray'
@@ -42,12 +38,10 @@ function Step({
   index,
   register,
   watch,
-  update,
 }: {
   index: number
   register: UseFormRegister<PuzzleFormType>
   watch: UseFormWatch<PuzzleFormType>
-  update: UseFieldArrayUpdate<PuzzleFormType, 'stepsArray'>
 }) {
   // Watch for select val changing
   const stepTypeVal = watch(`${stepsArrayName}.${index}.type`)
@@ -80,15 +74,6 @@ function Step({
           className="block bg-inherit"
         />
       )}
-
-      <button
-        type="button"
-        onClick={() => {
-          // update goes here
-        }}
-      >
-        Update
-      </button>
     </fieldset>
   )
 }
@@ -105,15 +90,17 @@ export default function PuzzleForm() {
     },
   })
 
-  const { fields, append, update } = useFieldArray({
+  const { fields, append } = useFieldArray({
     control: formMethods.control,
     name: stepsArrayName,
   })
 
-  console.log(formMethods.getValues())
+  const onSubmit = (data: PuzzleFormType) => {
+    console.log(data)
+  }
 
   return (
-    <Form formMethods={formMethods}>
+    <Form formMethods={formMethods} onSubmit={onSubmit}>
       <TextField name="name" className="block bg-inherit" placeholder="name" />
       <TextField name="slug" className="block bg-inherit" placeholder="slug" />
 
@@ -125,7 +112,6 @@ export default function PuzzleForm() {
           register={formMethods.register}
           key={field.id}
           watch={formMethods.watch}
-          update={update}
         />
       ))}
 
@@ -137,6 +123,8 @@ export default function PuzzleForm() {
       >
         Add Step
       </button>
+
+      <Submit>Submit</Submit>
     </Form>
   )
 }
