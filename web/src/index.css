@@ -157,6 +157,7 @@
 .next-image-block span {
   display: block !important;
 }
+/*
 .slider-container {
   @apply h-full pb-16;
 }
@@ -167,4 +168,8 @@
 
 .slider-list {
   @apply h-full;
+}
+*/
+.slider-control-bottomcenter {
+  @apply absolute md:left-3/4 md:-translate-x-1/2;
 }

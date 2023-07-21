@@ -26,28 +26,30 @@ const MarkdownCarousel = ({
 
             props.nextSlide()
           }}
-          className="mr-8 text-stone-50 transition-colors hover:text-brand-accent-secondary"
+          className="mr-8 text-stone-50 transition-colors hover:text-brand-accent-secondary md:absolute md:right-8 md:bottom-2 md:mr-0"
         >
           <ArrowRightIcon className="h-7 w-7 fill-transparent" />
         </button>
       )}
-      renderBottomLeftControls={(props: ControlProps) => (
-        <button
-          onClick={() => {
-            if (showModal) {
-              setShowModal(false)
-            }
-            props.previousSlide()
-          }}
-          className="ml-8 text-stone-50 transition-colors hover:text-brand-accent-secondary"
-        >
-          <ArrowLeftIcon className="h-7 w-7 fill-transparent" />
-        </button>
-      )}
+      renderBottomLeftControls={(props: ControlProps) => {
+        return (
+          <button
+            onClick={() => {
+              if (showModal) {
+                setShowModal(false)
+              }
+              props.previousSlide()
+            }}
+            className="ml-8 text-stone-50 transition-colors hover:text-brand-accent-secondary md:absolute md:left-1/2 md:bottom-2"
+          >
+            <ArrowLeftIcon className="h-7 w-7 fill-transparent" />
+          </button>
+        )
+      }}
       defaultControlsConfig={{
         pagingDotsClassName: 'mx-[2px]',
       }}
-      className="border-y-2 border-stone-50 "
+      className="w-full max-w-lg border-b-2 border-stone-50 md:max-w-5xl md:border-b-0"
     >
       {children}
     </Carousel>
