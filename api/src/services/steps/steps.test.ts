@@ -29,7 +29,7 @@ describe.skip('steps', () => {
         puzzleId: scenario.step.two.puzzleId,
         solutionHint: 'String',
         defaultImage: 'String',
-        category: 'SEEK',
+        stepGuideType: 'SEEK',
       },
     })
 
@@ -37,7 +37,7 @@ describe.skip('steps', () => {
     expect(result.puzzleId).toEqual(scenario.step.two.puzzleId)
     expect(result.solutionHint).toEqual('String')
     expect(result.defaultImage).toEqual('String')
-    expect(result.category).toEqual('SEEK')
+    expect(result.stepGuideType).toEqual('SEEK')
   })
 
   scenario('updates a step', async (scenario: StandardScenario) => {

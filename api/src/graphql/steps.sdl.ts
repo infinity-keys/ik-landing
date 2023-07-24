@@ -26,7 +26,7 @@ export const schema = gql`
     defaultImage: String!
     solutionImage: String
     stepPage: [StepPage]!
-    category: StepGuideType!
+    stepGuideType: StepGuideType!
     hasUserCompletedStep: Boolean
     hasAnonUserCompletedStep: Boolean
   }
@@ -69,7 +69,7 @@ export const schema = gql`
     solutionHint: String!
     defaultImage: String!
     solutionImage: String
-    category: StepGuideType!
+    stepGuideType: StepGuideType!
   }
 
   input UpdateStepInput {
@@ -84,7 +84,7 @@ export const schema = gql`
     solutionHint: String
     defaultImage: String
     solutionImage: String
-    category: StepGuideType
+    stepGuideType: StepGuideType
   }
 
   type Mutation {

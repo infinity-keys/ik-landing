@@ -217,7 +217,7 @@ model Step {
   /// If this is not provided, the solution page will use the default image
   solutionImage String?
   stepPage      StepPage[]
-  category      StepGuideType
+  stepGuideType StepGuideType
 
   @@unique([puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
 }

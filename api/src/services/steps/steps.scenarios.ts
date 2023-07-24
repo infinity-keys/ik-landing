@@ -10,7 +10,7 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
         solutionHint: 'String',
         defaultImage: 'String',
         solutionImage: 'String',
-        category: 'SEEK',
+        stepGuideType: 'SEEK',
         puzzle: {
           create: {
             requirements: 'HOLDERS',
@@ -41,7 +41,7 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
         solutionHint: 'String',
         defaultImage: 'String',
         solutionImage: 'String',
-        category: 'SEEK',
+        stepGuideType: 'SEEK',
         puzzle: {
           create: {
             requirements: 'HOLDERS',

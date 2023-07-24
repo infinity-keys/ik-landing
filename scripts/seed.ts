@@ -159,7 +159,7 @@ export default async () => {
                 type: 'SIMPLE_TEXT',
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -222,7 +222,7 @@ export default async () => {
                 type: 'SIMPLE_TEXT',
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -251,7 +251,7 @@ export default async () => {
                 type: 'SIMPLE_TEXT',
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -315,7 +315,7 @@ export default async () => {
                 type: 'SIMPLE_TEXT',
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -344,7 +344,7 @@ export default async () => {
                 type: 'SIMPLE_TEXT',
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -373,7 +373,7 @@ export default async () => {
                 type: 'SIMPLE_TEXT',
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -436,7 +436,7 @@ export default async () => {
 
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -472,7 +472,7 @@ export default async () => {
                 type: 'SIMPLE_TEXT',
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -501,7 +501,7 @@ export default async () => {
                 type: 'SIMPLE_TEXT',
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -530,7 +530,7 @@ export default async () => {
                 type: 'SIMPLE_TEXT',
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -591,7 +591,7 @@ export default async () => {
 
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -622,7 +622,7 @@ export default async () => {
 
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -655,7 +655,7 @@ export default async () => {
 
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -686,7 +686,7 @@ export default async () => {
 
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -717,7 +717,7 @@ export default async () => {
 
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -754,7 +754,7 @@ export default async () => {
                 type: 'SIMPLE_TEXT',
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -785,7 +785,7 @@ export default async () => {
 
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -820,7 +820,7 @@ export default async () => {
 
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
@@ -852,7 +852,7 @@ export default async () => {
                 type: 'COMETH_API',
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
-                category: 'SEEK',
+                stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
