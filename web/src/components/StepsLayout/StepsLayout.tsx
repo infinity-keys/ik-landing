@@ -89,6 +89,7 @@ StepsLayoutProps) => {
                       key={page.id}
                       showOverlay={showOverlay}
                       setShowOverlay={setShowOverlay}
+                      overlayContent="The passcode you are looking for can be found on the page"
                       withOverlay={page.showStepGuideHint}
                     >
                       <Markdown>{page.body}</Markdown>
@@ -99,6 +100,7 @@ StepsLayoutProps) => {
                 <StepPageLayout
                   showOverlay={showOverlay}
                   setShowOverlay={setShowOverlay}
+                  overlayContent={step.solutionHint}
                   withOverlay={!!step.solutionHint}
                 >
                   {step.type === 'SIMPLE_TEXT' && (

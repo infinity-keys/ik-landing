@@ -4,20 +4,25 @@ import { Transition } from '@headlessui/react'
 import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
 import clsx from 'clsx'
 
+import Markdown from 'src/components/Markdown/Markdown'
+
 interface StepPageProps extends PropsWithChildren {
   withOverlay?: boolean
   showOverlay?: boolean
+  overlayContent?: string
   setShowOverlay?: (b: boolean) => void
 }
 
 const StepPageLayout = ({
   withOverlay = false,
   showOverlay,
+  overlayContent,
   setShowOverlay,
   children,
 }: StepPageProps) => {
   const hasModal =
     withOverlay &&
+    overlayContent &&
     typeof showOverlay !== 'undefined' &&
     typeof setShowOverlay !== 'undefined'
 
@@ -40,7 +45,9 @@ const StepPageLayout = ({
         )}
       </div>
       {hasModal && (
-        <TempModal show={showOverlay} setShowModal={setShowOverlay} />
+        <TempModal show={showOverlay} setShowModal={setShowOverlay}>
+          <Markdown>{overlayContent}</Markdown>
+        </TempModal>
       )}
     </div>
   )
@@ -48,13 +55,12 @@ const StepPageLayout = ({
 
 export default StepPageLayout
 
-const TempModal = ({
-  show,
-  setShowModal,
-}: {
+interface TempModalProps extends PropsWithChildren {
   show: boolean
   setShowModal: (b: boolean) => void
-}) => {
+}
+
+const TempModal = ({ show, setShowModal, children }: TempModalProps) => {
   return (
     <Transition
       show={show}
@@ -65,10 +71,8 @@ const TempModal = ({
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      <div className="absolute top-0 z-10 flex h-full max-w-full items-center justify-center bg-stone-700">
-        <div className="px-12 py-20">
-          The passcode you are looking for can be found on the page.
-        </div>
+      <div className="absolute top-0 z-10 flex h-full w-full items-center justify-center bg-stone-700">
+        <div className="px-12 py-20">{children}</div>
         <button
           onClick={() => setShowModal(false)}
           type="button"
