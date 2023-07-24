@@ -2,6 +2,7 @@ import { PropsWithChildren, lazy, Suspense, useState } from 'react'
 
 import { Transition } from '@headlessui/react'
 import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
+import clsx from 'clsx'
 import { FindStepQuery } from 'types/graphql'
 
 import { useAuth } from 'src/auth'
@@ -44,106 +45,130 @@ const StepsLayout = ({
   children,
 }: StepsLayoutProps) => {
   const [showModal, setShowModal] = useState(false)
+  const [slideIndex, setSlideIndex] = useState(0)
+  if (!puzzle || !step) return null
 
-  if (!puzzle) return null
+  const images = step.stepPage
+    .map((page) => page?.image)
+    .concat(step.solutionImage || step.defaultImage)
 
   return (
-    <div className="flex justify-center pb-8">
+    <div className="mx-auto flex max-w-lg flex-col justify-center pb-8 md:max-w-5xl md:flex-row md:gap-6 md:px-4 ">
       <Suspense fallback={<LoadingIcon />}>
-        {step?.stepPage && (
-          <MarkdownCarousel showModal={showModal} setShowModal={setShowModal}>
-            {step.stepPage.map((page) => {
-              if (!page) return null
-
-              return (
-                <div
-                  className="flex flex-col md:flex-row md:gap-8 md:px-4"
-                  key={page.id}
-                >
-                  <div className="flex-1 md:max-w-[50%]">
+        {step.stepPage && (
+          <>
+            <div className="relative aspect-[4/3] w-full flex-1 overflow-hidden md:max-w-[50%]">
+              {/* <div className="relative bg-orange-700 "> */}
+              {images.map((image, index) => {
+                return (
+                  <div
+                    key={'image-' + index}
+                    className={clsx(
+                      'absolute inset-0 flex items-center justify-center',
+                      index === slideIndex ? 'opacity-100' : 'opacity-0'
+                    )}
+                  >
                     <img
-                      // @TODO: remove || when field is required
-                      src={page.image || puzzle.coverImage}
+                      src={image || puzzle.coverImage}
                       alt=""
-                      className="block w-full"
+                      loading={index === 0 ? 'eager' : 'lazy'}
                     />
                   </div>
+                )
+              })}
+              {/* </div> */}
+            </div>
 
-                  <div className="relative flex-1 border-t-2 border-stone-50 md:max-w-[50%] md:border-y-2">
-                    <div key={page.id} className="relative h-full">
-                      <div className="flex h-full flex-col justify-between px-12">
-                        <div className="markdown py-20">
-                          <Markdown>{page.body}</Markdown>
+            <div className="relative mb-12 w-full flex-1 border-y-2 border-t-2 border-stone-50 md:max-w-[50%]">
+              <MarkdownCarousel
+                showModal={showModal}
+                setShowModal={setShowModal}
+                setSlideIndex={setSlideIndex}
+              >
+                {step.stepPage.map((page) => {
+                  if (!page) return null
+
+                  return (
+                    <div
+                      className="flexs flex-col md:flex-row md:gap-8"
+                      key={page.id}
+                    >
+                      <div className="relative h-full">
+                        <div className="flex h-full flex-col justify-between px-12">
+                          <div className="markdown py-20">
+                            <Markdown>{page.body}</Markdown>
+                          </div>
+                          {page.showStepGuideHint && (
+                            <div className="relative z-40 flex justify-center">
+                              <button onClick={() => setShowModal(!showModal)}>
+                                <span className="block max-w-[226px]">
+                                  <TempSvg />
+                                </span>
+                              </button>
+                            </div>
+                          )}
                         </div>
                         {page.showStepGuideHint && (
-                          <div className="relative z-40 flex justify-center">
-                            <button onClick={() => setShowModal(!showModal)}>
-                              <span className="block max-w-[226px]">
-                                <TempSvg />
-                              </span>
-                            </button>
-                          </div>
+                          <TempModal
+                            show={showModal}
+                            setShowModal={setShowModal}
+                          />
                         )}
                       </div>
-                      {page.showStepGuideHint && (
-                        <TempModal
-                          show={showModal}
-                          setShowModal={setShowModal}
-                        />
+                    </div>
+                  )
+                })}
+
+                {/* <div className="flexs flex-col md:flex-row md:gap-8 md:px-4">
+                  <div className="relative h-full">
+                    <div className="flex h-full flex-col justify-between px-12">
+                      <div className="py-20">
+                        {step.type === 'SIMPLE_TEXT' && (
+                          <SimpleTextInput
+                            count={step.stepSimpleText?.solutionCharCount || 0}
+                            step={step}
+                            puzzleId={puzzle.id}
+                            isAnon={puzzle.isAnon}
+                          />
+                        )}
+
+                        {(step.type === 'NFT_CHECK' ||
+                          step.type === 'FUNCTION_CALL' ||
+                          step.type === 'COMETH_API' ||
+                          step.type === 'ORIUM_API' ||
+                          step.type === 'ASSET_TRANSFER' ||
+                          step.type === 'TOKEN_ID_RANGE' ||
+                          step.type === 'ERC20_BALANCE') && (
+                          <AccountCheckButton
+                            step={step}
+                            puzzleId={puzzle.id}
+                          />
+                        )}
+
+                        {step.type === 'LENS_API' && (
+                          <StepLensApiButton step={step} puzzleId={puzzle.id} />
+                        )}
+                      </div>
+                      {step.solutionHint && (
+                        <div className="relative z-40 flex justify-center">
+                          <button onClick={() => setShowModal(!showModal)}>
+                            <span className="block max-w-[226px]">
+                              <TempSvg />
+                            </span>
+                          </button>
+                        </div>
                       )}
                     </div>
+                    {step.solutionHint && (
+                      <TempModal show={showModal} setShowModal={setShowModal} />
+                    )}
                   </div>
-                </div>
-              )
-            })}
-
-            {/* <div className="flex w-full max-w-lg flex-col md:max-w-5xl md:flex-row md:gap-8 md:px-6">
-              <div className="flex-1 md:max-w-[50%]">
-                <img
-                  // @TODO: remove || when field is required
-                  src={puzzle.coverImage}
-                  alt=""
-                  className="block w-full"
-                />
-              </div>
-              <div className="relative flex h-full flex-col justify-between px-12 text-center">
-                <div className="flex grow items-center justify-center py-20">
-                  {step.type === 'SIMPLE_TEXT' && (
-                    <SimpleTextInput
-                      count={step.stepSimpleText?.solutionCharCount || 0}
-                      step={step}
-                      puzzleId={puzzle.id}
-                      isAnon={puzzle.isAnon}
-                    />
-                  )}
-
-                  {(step.type === 'NFT_CHECK' ||
-                    step.type === 'FUNCTION_CALL' ||
-                    step.type === 'COMETH_API' ||
-                    step.type === 'ORIUM_API' ||
-                    step.type === 'ASSET_TRANSFER' ||
-                    step.type === 'TOKEN_ID_RANGE' ||
-                    step.type === 'ERC20_BALANCE') && (
-                    <AccountCheckButton step={step} puzzleId={puzzle.id} />
-                  )}
-
-                  {step.type === 'LENS_API' && (
-                    <StepLensApiButton step={step} puzzleId={puzzle.id} />
-                  )}
-                </div>
-
-                <div className="flex justify-center">
-                  <div className="max-w-[226px]">
-                    <TempSvg />
-                  </div>
-                </div>
-              </div>
-            </div> */}
-          </MarkdownCarousel>
+                </div> */}
+              </MarkdownCarousel>
+            </div>
+          </>
         )}
       </Suspense>
-
-      <div>{children}</div>
     </div>
   )
 }
@@ -215,109 +240,5 @@ const TempSvg = () => {
         clipRule="evenodd"
       />
     </svg>
-  )
-}
-
-const Old = () => {
-  return (
-    <div className="flex w-full max-w-lg flex-col md:max-w-5xl md:flex-row md:gap-8 md:px-6">
-      <div className="flex-1 md:max-w-[50%]">
-        <img
-          // @TODO: remove || when field is required
-          src={puzzle.coverImage || ''}
-          alt=""
-          className="block w-full"
-        />
-      </div>
-
-      <div className="relative flex-1 md:max-w-[50%]">
-        <MarkdownCarousel showModal={showModal} setShowModal={setShowModal}>
-          {step.stepPage.map((page) => {
-            if (!page) return null
-
-            return (
-              <div key={page.id} className="relative h-full">
-                <div className="flex h-full flex-col justify-between px-12">
-                  <div className="markdown py-20">
-                    <Markdown>{page.body}</Markdown>
-                  </div>
-                  {page.showStepGuideHint && (
-                    <div className="relative z-40 flex justify-center">
-                      <button onClick={() => setShowModal(!showModal)}>
-                        <span className="block max-w-[226px]">
-                          <TempSvg />
-                        </span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-                {page.showStepGuideHint && (
-                  <TempModal show={showModal} setShowModal={setShowModal} />
-                )}
-              </div>
-            )
-          })}
-          {/* {step.body.map((text, i) => {
-          if (!text) return null
-          return (
-            <div key={i} className="markdown px-12 py-20">
-              <Markdown>{text}</Markdown>
-            </div>
-          )
-        })} */}
-
-          {/* {step.challenge && (
-          <div className="relative h-full text-center">
-            <div className="flex h-full flex-col justify-between px-12">
-              <div className="markdown py-20">
-                <Markdown>{step.challenge}</Markdown>
-              </div>
-              <div className="relative z-40 flex justify-center">
-                <button onClick={() => setShowModal(!showModal)}>
-                  <span className="block max-w-[226px]">
-                    <TempSvg />
-                  </span>
-                </button>
-              </div>
-            </div>
-            <TempModal show={showModal} setShowModal={setShowModal} />
-          </div>
-        )} */}
-
-          <div className="relative flex h-full flex-col justify-between px-12 text-center">
-            <div className="flex grow items-center justify-center py-20">
-              {step.type === 'SIMPLE_TEXT' && (
-                <SimpleTextInput
-                  count={step.stepSimpleText?.solutionCharCount || 0}
-                  step={step}
-                  puzzleId={puzzle.id}
-                  isAnon={puzzle.isAnon}
-                />
-              )}
-
-              {(step.type === 'NFT_CHECK' ||
-                step.type === 'FUNCTION_CALL' ||
-                step.type === 'COMETH_API' ||
-                step.type === 'ORIUM_API' ||
-                step.type === 'ASSET_TRANSFER' ||
-                step.type === 'TOKEN_ID_RANGE' ||
-                step.type === 'ERC20_BALANCE') && (
-                <AccountCheckButton step={step} puzzleId={puzzle.id} />
-              )}
-
-              {step.type === 'LENS_API' && (
-                <StepLensApiButton step={step} puzzleId={puzzle.id} />
-              )}
-            </div>
-
-            <div className="flex justify-center">
-              <div className="max-w-[226px]">
-                <TempSvg />
-              </div>
-            </div>
-          </div>
-        </MarkdownCarousel>
-      </div>
-    </div>
   )
 }

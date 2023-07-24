@@ -24,6 +24,7 @@ export const schema = gql`
     attempts: [Attempt]!
     solutionHint: String!
     defaultImage: String!
+    solutionImage: String
     stepPage: [StepPage]!
     category: StepGuideType!
     hasUserCompletedStep: Boolean
@@ -67,6 +68,7 @@ export const schema = gql`
     migrateLandingRoute: String
     solutionHint: String!
     defaultImage: String!
+    solutionImage: String
     category: StepGuideType!
   }
 
@@ -81,6 +83,7 @@ export const schema = gql`
     migrateLandingRoute: String
     solutionHint: String
     defaultImage: String
+    solutionImage: String
     category: StepGuideType
   }
 

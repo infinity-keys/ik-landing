@@ -29,6 +29,9 @@ export const QUERY = gql`
       successMessage
       type
       resourceLinks
+      solutionImage
+      defaultImage
+      solutionHint
       stepPage {
         id
         sortWeight

@@ -9,6 +9,7 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
         updatedAt: '2023-07-20T17:30:29.806Z',
         solutionHint: 'String',
         defaultImage: 'String',
+        solutionImage: 'String',
         category: 'SEEK',
         puzzle: {
           create: {
@@ -39,6 +40,7 @@ export const standard = defineScenario<Prisma.StepCreateArgs>({
         updatedAt: '2023-07-20T17:30:29.806Z',
         solutionHint: 'String',
         defaultImage: 'String',
+        solutionImage: 'String',
         category: 'SEEK',
         puzzle: {
           create: {

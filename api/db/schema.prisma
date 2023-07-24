@@ -211,10 +211,13 @@ model Step {
   attempts Attempt[]
 
   // These are the new fields
-  solutionHint String
-  defaultImage String
-  stepPage     StepPage[]
-  category     StepGuideType
+  solutionHint  String
+  /// Image that will display on each step page if no step page image is provided
+  defaultImage  String
+  /// If this is not provided, the solution page will use the default image
+  solutionImage String?
+  stepPage      StepPage[]
+  category      StepGuideType
 
   @@unique([puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
 }
