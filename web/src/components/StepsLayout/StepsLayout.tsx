@@ -9,11 +9,8 @@ import MarkdownCarousel from 'src/components/MarkdownCarousel/MarkdownCarousel'
 import StepPageLayout from 'src/components/StepPageLayout/StepPageLayout'
 
 interface StepsLayoutProps extends PropsWithChildren {
-  currentStepId?: string
-  hasBeenSolved: boolean
   puzzle: FindStepQuery['puzzle']
   step: FindStepQuery['step']
-  stepNum?: number
 }
 
 const SimpleTextInput = lazy(
@@ -25,23 +22,8 @@ const AccountCheckButton = lazy(
 const StepLensApiButton = lazy(
   () => import('src/components/StepLensApiButton/StepLensApiButton')
 )
-// const ThumbnailMini = lazy(
-//   () => import('src/components/ThumbnailMini/ThumbnailMini')
-// )
-// const CollapsibleMarkdown = lazy(
-//   () => import('src/components/CollapsibleMarkdown/CollapsibleMarkdown')
-// )
 
-// const Alert = lazy(() => import('src/components/Alert/Alert'))
-// const Button = lazy(() => import('src/components/Button/Button'))
-
-const StepsLayout = ({
-  // hasBeenSolved,
-  puzzle,
-  step,
-}: // stepNum,
-// children,
-StepsLayoutProps) => {
+const StepsLayout = ({ puzzle, step }: StepsLayoutProps) => {
   const [showOverlay, setShowOverlay] = useState(false)
   const [slideIndex, setSlideIndex] = useState(0)
   if (!puzzle || !step) return null
@@ -89,8 +71,12 @@ StepsLayoutProps) => {
                       key={page.id}
                       showOverlay={showOverlay}
                       setShowOverlay={setShowOverlay}
-                      overlayContent="The passcode you are looking for can be found on the page"
-                      withOverlay={page.showStepGuideHint}
+                      overlayContent={
+                        page.showStepGuideHint
+                          ? // @TODO: This will become dynamic
+                            'The passcode you are looking for can be found on the page'
+                          : undefined
+                      }
                     >
                       <Markdown>{page.body}</Markdown>
                     </StepPageLayout>
@@ -101,7 +87,6 @@ StepsLayoutProps) => {
                   showOverlay={showOverlay}
                   setShowOverlay={setShowOverlay}
                   overlayContent={step.solutionHint}
-                  withOverlay={!!step.solutionHint}
                 >
                   {step.type === 'SIMPLE_TEXT' && (
                     <SimpleTextInput

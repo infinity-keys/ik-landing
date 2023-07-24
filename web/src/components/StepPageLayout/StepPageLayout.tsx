@@ -21,7 +21,6 @@ const StepPageLayout = ({
   children,
 }: StepPageProps) => {
   const hasModal =
-    withOverlay &&
     overlayContent &&
     typeof showOverlay !== 'undefined' &&
     typeof setShowOverlay !== 'undefined'
@@ -45,9 +44,28 @@ const StepPageLayout = ({
         )}
       </div>
       {hasModal && (
-        <TempModal show={showOverlay} setShowModal={setShowOverlay}>
-          <Markdown>{overlayContent}</Markdown>
-        </TempModal>
+        <Transition
+          show={showOverlay}
+          enter="transition-opacity duration-75"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-150"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="absolute top-0 z-10 flex h-full w-full items-center justify-center bg-stone-700 text-center">
+            <div className="px-12 py-20">
+              <Markdown>{overlayContent}</Markdown>
+            </div>
+            <button
+              onClick={() => setShowOverlay(false)}
+              type="button"
+              className="absolute top-4 right-4 transition-colors hover:text-brand-accent-secondary"
+            >
+              <XCircleIcon className="h-7 w-7 fill-transparent" />
+            </button>
+          </div>
+        </Transition>
       )}
     </div>
   )
@@ -55,35 +73,7 @@ const StepPageLayout = ({
 
 export default StepPageLayout
 
-interface TempModalProps extends PropsWithChildren {
-  show: boolean
-  setShowModal: (b: boolean) => void
-}
-
-const TempModal = ({ show, setShowModal, children }: TempModalProps) => {
-  return (
-    <Transition
-      show={show}
-      enter="transition-opacity duration-75"
-      enterFrom="opacity-0"
-      enterTo="opacity-100"
-      leave="transition-opacity duration-150"
-      leaveFrom="opacity-100"
-      leaveTo="opacity-0"
-    >
-      <div className="absolute top-0 z-10 flex h-full w-full items-center justify-center bg-stone-700">
-        <div className="px-12 py-20">{children}</div>
-        <button
-          onClick={() => setShowModal(false)}
-          type="button"
-          className="absolute top-4 right-4 transition-colors hover:text-brand-accent-secondary"
-        >
-          <XCircleIcon className="h-7 w-7 fill-transparent" />
-        </button>
-      </div>
-    </Transition>
-  )
-}
+// @TODO: remove this when the real SVGs are brought over
 const TempSvg = () => {
   return (
     <svg
