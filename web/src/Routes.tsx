@@ -19,6 +19,7 @@ import AllContextProviders from 'src/providers'
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
+      <Route path="/form-archetype" page={FormArchetypePage} name="formArchetype" />
       <AllContextProviders>
         {/* <Route path="/" page={UnderConstructionPage} name="underConstruction" /> */}
         {/* <Route path="/" page={HomePage} name="home" /> */}
@@ -29,6 +30,7 @@ const Routes = () => {
             <Route path="/rewardable" page={RewardablePage} name="rewardable" />
             <Route path="/puzzle" page={PuzzlePage} name="puzzle" />
             <Route path="/puzzle/create" page={PuzzleCreatePage} name="puzzleCreate" />
+            <Route path="/puzzle/archetype" page={FormArchetypePage} name="formArchetype" />
             {/* <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" /> */}
           </Set>
         </Private>
