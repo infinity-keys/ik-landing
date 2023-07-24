@@ -158,6 +158,7 @@
   display: block !important;
 }
 
-.slider-container {
+.slider-container,
+.slider-list {
   @apply h-full;
 }

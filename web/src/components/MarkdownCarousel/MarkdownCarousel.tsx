@@ -6,12 +6,12 @@ import Carousel, { ControlProps } from 'nuka-carousel'
 
 const MarkdownCarousel = ({
   children,
-  showModal,
-  setShowModal,
+  showOverlay,
+  setShowOverlay,
   setSlideIndex,
 }: PropsWithChildren & {
-  showModal: boolean
-  setShowModal: (b: boolean) => void
+  showOverlay: boolean
+  setShowOverlay: (b: boolean) => void
   setSlideIndex: (n: number) => void
 }) => {
   return (
@@ -22,8 +22,8 @@ const MarkdownCarousel = ({
       renderBottomRightControls={(props: ControlProps) => (
         <button
           onClick={() => {
-            if (showModal) {
-              setShowModal(false)
+            if (showOverlay) {
+              setShowOverlay(false)
             }
             setSlideIndex(
               props.currentSlide + 1 === props.slideCount
@@ -41,8 +41,8 @@ const MarkdownCarousel = ({
         return (
           <button
             onClick={() => {
-              if (showModal) {
-                setShowModal(false)
+              if (showOverlay) {
+                setShowOverlay(false)
               }
               setSlideIndex(props.currentSlide > 0 ? props.currentSlide - 1 : 0)
               props.previousSlide()
@@ -57,7 +57,7 @@ const MarkdownCarousel = ({
         pagingDotsClassName: 'mx-[2px]',
         containerClassName: 'relative -bottom-12',
       }}
-      className="h-full w-full"
+      className="!h-full w-full"
     >
       {children}
     </Carousel>

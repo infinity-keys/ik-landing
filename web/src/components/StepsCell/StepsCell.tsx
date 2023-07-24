@@ -32,6 +32,7 @@ export const QUERY = gql`
       solutionImage
       defaultImage
       solutionHint
+      category
       stepPage {
         id
         sortWeight
