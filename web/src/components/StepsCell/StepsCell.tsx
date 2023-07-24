@@ -71,19 +71,11 @@ export const Failure = ({
 export const Success = ({
   step,
   puzzle,
-  stepNum,
-}: CellSuccessProps<FindStepQuery, FindStepQueryVariables> & {
-  stepNum?: number
-}) => {
+}: CellSuccessProps<FindStepQuery, FindStepQueryVariables>) => {
   const hasBeenSolved = puzzle.rewardable.userRewards.length > 0
-  console.log(step)
+
   return (
-    <StepsLayout
-      hasBeenSolved={hasBeenSolved}
-      puzzle={puzzle}
-      step={step}
-      stepNum={stepNum}
-    >
+    <StepsLayout puzzle={puzzle} step={step}>
       {hasBeenSolved && (
         <div className="flex flex-col items-center justify-center">
           {puzzle.rewardable.successMessage && (
