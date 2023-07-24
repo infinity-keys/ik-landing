@@ -5,7 +5,6 @@ import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
 import clsx from 'clsx'
 import { FindStepQuery } from 'types/graphql'
 
-import { useAuth } from 'src/auth'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
 import MarkdownCarousel from 'src/components/MarkdownCarousel/MarkdownCarousel'
@@ -38,12 +37,12 @@ const StepLensApiButton = lazy(
 // const Button = lazy(() => import('src/components/Button/Button'))
 
 const StepsLayout = ({
-  hasBeenSolved,
+  // hasBeenSolved,
   puzzle,
   step,
-  stepNum,
-  children,
-}: StepsLayoutProps) => {
+}: // stepNum,
+// children,
+StepsLayoutProps) => {
   const [showModal, setShowModal] = useState(false)
   const [slideIndex, setSlideIndex] = useState(0)
   if (!puzzle || !step) return null
@@ -58,7 +57,6 @@ const StepsLayout = ({
         {step.stepPage && (
           <>
             <div className="relative aspect-[4/3] w-full flex-1 overflow-hidden md:max-w-[50%]">
-              {/* <div className="relative bg-orange-700 "> */}
               {images.map((image, index) => {
                 return (
                   <div
@@ -76,7 +74,6 @@ const StepsLayout = ({
                   </div>
                 )
               })}
-              {/* </div> */}
             </div>
 
             <div className="relative mb-12 w-full flex-1 border-y-2 border-t-2 border-stone-50 md:max-w-[50%]">
@@ -89,13 +86,15 @@ const StepsLayout = ({
                   if (!page) return null
 
                   return (
-                    <div
-                      className="flexs flex-col md:flex-row md:gap-8"
-                      key={page.id}
-                    >
+                    <div className="h-full" key={page.id}>
                       <div className="relative h-full">
                         <div className="flex h-full flex-col justify-between px-12">
-                          <div className="markdown py-20">
+                          <div
+                            className={clsx(
+                              'markdown',
+                              page.showStepGuideHint ? 'pt-20 pb-10' : 'py-20'
+                            )}
+                          >
                             <Markdown>{page.body}</Markdown>
                           </div>
                           {page.showStepGuideHint && (
@@ -119,10 +118,15 @@ const StepsLayout = ({
                   )
                 })}
 
-                {/* <div className="flexs flex-col md:flex-row md:gap-8 md:px-4">
+                <div className="h-full">
                   <div className="relative h-full">
                     <div className="flex h-full flex-col justify-between px-12">
-                      <div className="py-20">
+                      <div
+                        className={clsx(
+                          'markdown text-center',
+                          step.solutionHint ? 'pt-20 pb-10' : 'py-20'
+                        )}
+                      >
                         {step.type === 'SIMPLE_TEXT' && (
                           <SimpleTextInput
                             count={step.stepSimpleText?.solutionCharCount || 0}
@@ -163,7 +167,7 @@ const StepsLayout = ({
                       <TempModal show={showModal} setShowModal={setShowModal} />
                     )}
                   </div>
-                </div> */}
+                </div>
               </MarkdownCarousel>
             </div>
           </>
