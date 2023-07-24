@@ -1,29 +1,27 @@
 /*
   Warnings:
 
-  - You are about to drop the column `body` on the `Step` table. All the data in the column will be lost.
-  - You are about to drop the column `category` on the `Step` table. All the data in the column will be lost.
-  - You are about to drop the column `hint` on the `Step` table. All the data in the column will be lost.
-  - Made the column `coverImage` on table `Puzzle` required. This step will fail if there are existing NULL values in that column.
+  - Added the required column `coverImage` to the `Puzzle` table without a default value. This is not possible if the table is not empty.
   - Added the required column `defaultImage` to the `Step` table without a default value. This is not possible if the table is not empty.
   - Added the required column `solutionHint` to the `Step` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `stepGuideType` to the `Step` table without a default value. This is not possible if the table is not empty.
 
 */
+-- CreateEnum
+CREATE TYPE "PuzzleRequirements" AS ENUM ('HOLDERS', 'ACCOUNT', 'WALLET', 'GAS', 'WALK', 'PATIENCE');
+
 -- CreateEnum
 CREATE TYPE "StepGuideType" AS ENUM ('SEEK', 'INFER', 'REWIND', 'TRACK', 'COLLECT', 'ACTIVATE');
 
 -- AlterTable
-ALTER TABLE "Puzzle" ALTER COLUMN "coverImage" SET NOT NULL;
+ALTER TABLE "Puzzle" ADD COLUMN     "coverImage" TEXT NOT NULL,
+ADD COLUMN     "requirements" "PuzzleRequirements"[];
 
 -- AlterTable
-ALTER TABLE "Step" DROP COLUMN "body",
-DROP COLUMN "category",
-DROP COLUMN "hint",
-ADD COLUMN     "defaultImage" TEXT NOT NULL,
-ADD COLUMN     "solutionHint" TEXT NOT NULL;
-
--- DropEnum
-DROP TYPE "StepCategory";
+ALTER TABLE "Step" ADD COLUMN     "defaultImage" TEXT NOT NULL,
+ADD COLUMN     "solutionHint" TEXT NOT NULL,
+ADD COLUMN     "solutionImage" TEXT,
+ADD COLUMN     "stepGuideType" "StepGuideType" NOT NULL;
 
 -- CreateTable
 CREATE TABLE "StepPage" (
@@ -31,7 +29,6 @@ CREATE TABLE "StepPage" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "stepId" TEXT NOT NULL,
-    "category" "StepGuideType" NOT NULL,
     "body" TEXT NOT NULL,
     "image" TEXT,
     "showStepGuideHint" BOOLEAN NOT NULL DEFAULT false,
@@ -39,9 +36,6 @@ CREATE TABLE "StepPage" (
 
     CONSTRAINT "StepPage_pkey" PRIMARY KEY ("id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "StepPage_stepId_key" ON "StepPage"("stepId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "StepPage_stepId_sortWeight_key" ON "StepPage"("stepId", "sortWeight" ASC);
