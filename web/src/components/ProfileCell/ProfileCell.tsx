@@ -83,8 +83,6 @@ export const Success = ({
     syncDiscordRoles,
     { loading: discordSyncLoading, data: discordRolesData },
   ] = useMutation<SyncDiscordRolesMutation>(SYNC_DISCORD_ROLES_MUTATION)
-  // Immediately upon mount, reconcile progress, but also provide function to
-  // use on button click
 
   return (
     <div className="mt-12 flex flex-col gap-6 lg:mt-0 lg:flex-row">

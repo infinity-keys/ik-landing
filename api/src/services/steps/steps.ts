@@ -86,9 +86,7 @@ export const Step: StepRelationResolvers = {
   },
   /*
    * These `completedStep` resolvers allow us to check via graphQL whether a
-   * user has solved any given step. For authenticated users, there will be a
-   * `solve` entry in the db, and for anonymous users, the step id will be in
-   * their cookie.
+   * user has solved any given step.
    */
   hasUserCompletedStep: async (_obj, { root }) => {
     // Only authenticated users can hit the db
