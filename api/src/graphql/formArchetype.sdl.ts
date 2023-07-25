@@ -13,10 +13,10 @@ export const schema = gql`
     explanation: String
     successMessage: String
     listPublicly: Boolean
-    stepsArray: [CreateStepType!]!
+    stepsArray: [CreateBurdStepType!]!
   }
 
-  input CreateStepType {
+  input CreateBurdStepType {
     type: StepType!
     failMessage: String
     successMessage: String

@@ -641,7 +641,7 @@ export const userProgress: QueryResolvers['userProgress'] = () => {
   })
 }
 
-// Burd's sandbox one:
+// Richard Burd's Special Sandbox of a Service:
 export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   input,
 }) => {
@@ -650,15 +650,43 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
     data: {
       name: input.name,
       slug: input.slug,
-      explanation: input.explanation,
+      explanation: input.explanation || '',
       successMessage: input.successMessage,
-      listPublicly: input.listPublicly,
+      listPublicly: input.listPublicly || true,
       type: 'PUZZLE',
       puzzle: {
         create: {
+          isAnon: false,
           steps: {
-            create: input.stepsArray,
+            create: input.stepsArray.map((inputStep) => {
+              switch (inputStep.type) {
+                case 'SIMPLE_TEXT':
+                  return {
+                    challenge: '',
+                    stepSortWeight: 2,
+                    type: inputStep.type,
+                    stepSimpleText: {
+                      create: {
+                        solution: '',
+                      },
+                    },
+                  }
+                  break
+                case 'NFT_CHECK':
+                  return {}
+                  break
+
+                default:
+                  throw new Error('IONNO')
+                  break
+              }
+            }),
           },
+        },
+      },
+      organization: {
+        connect: {
+          id: 'cla9yay7y003k08la2z4j2xrv',
         },
       },
     },

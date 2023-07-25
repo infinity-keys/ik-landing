@@ -28,10 +28,17 @@ import {
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 
+// const CREATE_BURD_PUZZLE_MUTATION = gql`
+//   mutation BurdArchetypalPuzzleCreation($input: CreatePuzzleInput!) {
+//     createBurdPuzzle(input: $input) {
+//       success
+//     }
+//   }
+// `
 const CREATE_BURD_PUZZLE_MUTATION = gql`
   mutation BurdArchetypalPuzzleCreation($input: CreatePuzzleInput!) {
-    createBurdPuzzle(input: $input) {
-      success
+    createRewardable($input: CreateRewardableInput) {
+
     }
   }
 `
@@ -357,6 +364,8 @@ export default function PuzzleForm() {
     </Form>
   )
 }
+
+// TODOS: add validation + Add NFT Should be optional
 
 // // Console logged "data" looks like this:
 // explanation : "myexplan"
