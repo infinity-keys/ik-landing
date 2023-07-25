@@ -64,7 +64,7 @@ export async function execute(interaction: CommandInteraction) {
     const users = reaction.users.cache.map((user) => user.id)
     for (const userId of users) {
       if (commandUser !== userId) {
-        await eco.balance.add(10, userId, guild.id)
+        await eco.balance.add(1, userId, guild.id)
       }
     }
   }
