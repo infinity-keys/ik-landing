@@ -641,6 +641,33 @@ export const userProgress: QueryResolvers['userProgress'] = () => {
   })
 }
 
+// Burd's sandbox one:
+export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
+  input,
+}) => {
+  console.log('input', input)
+  await db.rewardable.create({
+    data: {
+      name: input.name,
+      slug: input.slug,
+      explanation: input.explanation,
+      successMessage: input.successMessage,
+      listPublicly: input.listPublicly,
+      type: 'PUZZLE',
+      puzzle: {
+        create: {
+          steps: {
+            create: input.stepsArray,
+          },
+        },
+      },
+    },
+  })
+  return {
+    success: true,
+  }
+}
+
 // @TODO: move to lookups
 const stepTypeLookup: {
   [key in StepType]: string

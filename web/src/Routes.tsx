@@ -19,7 +19,6 @@ import AllContextProviders from 'src/providers'
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
-      <Route path="/form-archetype" page={FormArchetypePage} name="formArchetype" />
       <AllContextProviders>
         {/* <Route path="/" page={UnderConstructionPage} name="underConstruction" /> */}
         {/* <Route path="/" page={HomePage} name="home" /> */}

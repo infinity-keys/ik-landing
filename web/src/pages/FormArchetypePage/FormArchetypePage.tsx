@@ -22,26 +22,34 @@ import {
   useFieldArray,
   UseFormRegister,
   UseFormWatch,
+  UseFormSetValue,
+  UseFormGetValues,
+  CheckboxField,
 } from '@redwoodjs/forms'
+import { useMutation } from '@redwoodjs/web'
 
-// const ADD_ARCHETYPAL_PUZZLE = gql`
-//   mutation AddArchetypalPuzzle {
-//     addArchetypalPuzzle {
-//       name
-//     }
-//   }
-// `
+const CREATE_BURD_PUZZLE_MUTATION = gql`
+  mutation BurdArchetypalPuzzleCreation($input: CreatePuzzleInput!) {
+    createBurdPuzzle(input: $input) {
+      success
+    }
+  }
+`
 
 const stepsArrayName = 'stepsArray'
 
 // const startingSteps: Step[] = [{ message: 'step 1' }, { message: 'step 2' }]
 const startingSteps: Step[] = []
 
-type StepType = 'SIMPLE_TEXT' | 'NFT_CHECK' // | undefined ?
+type StepType = 'SIMPLE_TEXT' | 'NFT_CHECK' | 'UNCHOSEN'
 
 type Step = {
   failMessage: string
-  type: StepType | undefined
+  successMessage: string
+  challenge: string
+  resourceLinks: string
+  stepSortWeight: string
+  type: StepType
 }
 
 type StepSimpleText = Step & {
@@ -58,29 +66,122 @@ function Step({
   index,
   register,
   watch,
+  setValue,
+  getValues,
 }: {
   index: number
   register: UseFormRegister<PuzzleFormType>
   watch: UseFormWatch<PuzzleFormType>
+  setValue: UseFormSetValue<PuzzleFormType>
+  getValues: UseFormGetValues<PuzzleFormType>
 }) {
   // Watch for select val changing
   const stepTypeVal = watch(`${stepsArrayName}.${index}.type`)
 
+  useEffect(() => {
+    if (stepTypeVal === 'SIMPLE_TEXT') {
+      setValue(`${stepsArrayName}.${index}`, {
+        type: 'SIMPLE_TEXT',
+        failMessage: getValues(`${stepsArrayName}.${index}.failMessage`),
+        successMessage: getValues(`${stepsArrayName}.${index}.successMessage`),
+        challenge: getValues(`${stepsArrayName}.${index}.challenge`),
+        resourceLinks: getValues(`${stepsArrayName}.${index}.resourceLinks`),
+        stepSortWeight: getValues(`${stepsArrayName}.${index}.stepSortWeight`),
+        solution: '',
+      })
+    }
+    if (stepTypeVal === 'NFT_CHECK') {
+      setValue(`${stepsArrayName}.${index}`, {
+        type: 'NFT_CHECK',
+        failMessage: getValues(`${stepsArrayName}.${index}.failMessage`),
+        successMessage: getValues(`${stepsArrayName}.${index}.successMessage`),
+        challenge: getValues(`${stepsArrayName}.${index}.challenge`),
+        resourceLinks: getValues(`${stepsArrayName}.${index}.resourceLinks`),
+        stepSortWeight: getValues(`${stepsArrayName}.${index}.stepSortWeight`),
+        nftId: '',
+      })
+    }
+  }, [index, setValue, getValues, stepTypeVal])
+
   return (
-    <fieldset className="flex text-stone-100">
+    <fieldset className="text-stone-100">
+      <Label
+        name="failMesssage"
+        className="rw-label text-stone-100"
+        errorClassName="rw-label rw-label-error"
+      >
+        Fail Message
+      </Label>
       <TextField
         placeholder="Fail Message"
         {...register(`${stepsArrayName}.${index}.failMessage`)}
         className="block bg-inherit text-stone-100"
       />
+
+      <Label
+        name="successMessage"
+        className="rw-label text-stone-100"
+        errorClassName="rw-label rw-label-error"
+      >
+        Success Message
+      </Label>
+      <TextField
+        placeholder="Success Message"
+        {...register(`${stepsArrayName}.${index}.successMessage`)}
+        className="block bg-inherit text-stone-100"
+      />
+
+      <Label
+        name="challenge"
+        className="rw-label text-stone-100"
+        errorClassName="rw-label rw-label-error"
+      >
+        Challenge
+      </Label>
+      <TextField
+        placeholder="Challenge"
+        {...register(`${stepsArrayName}.${index}.challenge`)}
+        className="block bg-inherit text-stone-100"
+      />
+
+      <Label
+        name="resourceLinks"
+        className="rw-label text-stone-100"
+        errorClassName="rw-label rw-label-error"
+      >
+        Resource Links
+      </Label>
+      <TextField
+        placeholder="Challenge"
+        {...register(`${stepsArrayName}.${index}.resourceLinks`)}
+        className="block bg-inherit text-stone-100"
+      />
+
+      <Label
+        name="stepSortWeight"
+        className="rw-label text-stone-100"
+        errorClassName="rw-label rw-label-error"
+      >
+        Step Sort Weight
+      </Label>
+      <TextField
+        placeholder="Challenge"
+        {...register(`${stepsArrayName}.${index}.stepSortWeight`)}
+        className="block bg-inherit text-stone-100"
+      />
       <div className="text-stone-800">
         <SelectField {...register(`${stepsArrayName}.${index}.type`)}>
-          {/* This default on the dropdown is not working */}
-          <option>Choose a Step Type</option>
+          <option value="UNCHOSEN">Choose a Step Type</option>
           <option value="SIMPLE_TEXT">Simple Text</option>
           <option value="NFT_CHECK">NFT check</option>
         </SelectField>
       </div>
+
+      {stepTypeVal === 'UNCHOSEN' && (
+        <h1>
+          <br></br>
+        </h1>
+      )}
 
       {stepTypeVal === 'SIMPLE_TEXT' && (
         <TextField
@@ -104,7 +205,10 @@ function Step({
 type PuzzleFormType = {
   name: string
   slug: string
-  stepsArray: (StepSimpleText | StepNftCheck)[]
+  explanation: string
+  successMessage: string
+  listPublicly: boolean
+  stepsArray: (StepSimpleText | StepNftCheck | Step)[]
 }
 
 export default function PuzzleForm() {
@@ -129,9 +233,24 @@ export default function PuzzleForm() {
     name: stepsArrayName,
   })
 
-  const onSubmit = (data: PuzzleFormType) => {
-    console.log(data)
+  const onSubmit = async (input: PuzzleFormType) => {
+    createArchetypalPuzzle({
+      variables: {
+        input,
+      },
+    })
+    console.log(input)
   }
+
+  const [createArchetypalPuzzle] = useMutation(CREATE_BURD_PUZZLE_MUTATION, {
+    onCompleted: (data) => {
+      console.log(data.createBurdPuzzle)
+      alert(`Rewardable created`)
+    },
+    onError: (error) => {
+      alert(`error: ${error.message}`)
+    },
+  })
 
   return (
     <Form formMethods={formMethods} onSubmit={onSubmit}>
@@ -151,15 +270,59 @@ export default function PuzzleForm() {
       <TextField
         name="name"
         className="block bg-inherit text-stone-100"
-        placeholder="name"
+        placeholder="Name"
       />
+
+      <Label
+        name="slug"
+        className="rw-label text-stone-100"
+        errorClassName="rw-label rw-label-error"
+      >
+        Slug
+      </Label>
       <TextField
         name="slug"
         className="block bg-inherit text-stone-100"
-        placeholder="slug"
+        placeholder="Slug"
       />
 
-      <h1 className="mt-8">Steps go below</h1>
+      <Label
+        name="explanation"
+        className="rw-label text-stone-100"
+        errorClassName="rw-label rw-label-error"
+      >
+        Explanation
+      </Label>
+      <TextField
+        name="explanation"
+        className="block bg-inherit text-stone-100"
+        placeholder="Explanation"
+      />
+
+      <Label
+        name="successMessage"
+        className="rw-label text-stone-100"
+        errorClassName="rw-label rw-label-error"
+      >
+        Success Message
+      </Label>
+      <TextField
+        name="successMessage"
+        className="block bg-inherit text-stone-100"
+        placeholder="Success Message"
+      />
+      <Label
+        name="listPublicly"
+        className="rw-label text-stone-100"
+        errorClassName="rw-label rw-label-error"
+      >
+        List Publicly
+      </Label>
+      <CheckboxField
+        name="listPublicly"
+        className="block bg-inherit text-stone-100"
+      />
+      <h1 className="mt-8">Steps go below this line _______________</h1>
 
       {fields.map((field, index) => (
         <Step
@@ -167,6 +330,8 @@ export default function PuzzleForm() {
           register={formMethods.register}
           key={field.id}
           watch={formMethods.watch}
+          setValue={formMethods.setValue}
+          getValues={formMethods.getValues}
         />
       ))}
 
@@ -175,7 +340,14 @@ export default function PuzzleForm() {
           type="button"
           className="rw-button rw-button-blue"
           onClick={() =>
-            append({ type: 'SIMPLE_TEXT', failMessage: '', solution: '' })
+            append({
+              type: 'UNCHOSEN',
+              failMessage: '',
+              successMessage: '',
+              challenge: '',
+              resourceLinks: '',
+              stepSortWeight: '',
+            })
           }
         >
           Add Step
@@ -186,15 +358,19 @@ export default function PuzzleForm() {
   )
 }
 
-// PROBLEM
-// Here's the return value of the console logged 'data':
-
-// name : "1"
-// slug : "2"
-// stepsArray : Array(2)
-// 0 : {type: 'NFT_CHECK', failMessage: '3', solution: '', nftId: '4'}
-// 1 : {type: 'SIMPLE_TEXT', failMessage: '5', solution: '6'}
-// length : 2
-
-// The problem here is that the first item in the array (0) should not have a 'solution' property,
-// just as the second item in the array (1) does not have a 'nftId' property.
+// // Console logged "data" looks like this:
+// explanation : "myexplan"
+// listPublicly : true
+// name : "myname"
+// slug : "myslug"
+// stepsArray : Array(1)
+//   0 :
+//     type: 'SIMPLE_TEXT',
+//     failMessage: 'myfail',
+//     successMessage: 'musuccess',
+//     challenge: 'muchall',
+//     resourceLinks: 'myresourcz'
+//     stepSortWeight: 'string shoulde be number'
+// length : 1
+// [[Prototype]] : Array(0)
+// successMessage : "mypuzsuccess"

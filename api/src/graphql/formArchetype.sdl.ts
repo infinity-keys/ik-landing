@@ -1,31 +1,27 @@
-// work in progress still
 export const schema = gql`
-  type Puzzle {
-    id: String!
-    name: String!
-    slug: String!
-    steps: [Step!]!
+  type CreateBurdPuzzleResponse {
+    success: Boolean!
+  }
+  type Mutation {
+    createBurdPuzzle(input: CreatePuzzleInput!): CreateBurdPuzzleResponse!
+      @requireAuth(roles: ["ADMIN"])
   }
 
   input CreatePuzzleInput {
     name: String!
     slug: String!
-    steps: [CreateStepInput!]!
+    explanation: String
+    successMessage: String
+    listPublicly: Boolean
+    stepsArray: [CreateStepType!]!
   }
 
-  input CreateStepInput {
+  input CreateStepType {
     type: StepType!
-    failMessage: String!
-    solution: String
-    nftId: String
-  }
-
-  enum StepType {
-    SIMPLE_TEXT
-    NFT_CHECK
-  }
-
-  type Mutation {
-    createPuzzle(input: CreatePuzzleInput!): Puzzle!
+    failMessage: String
+    successMessage: String
+    challenge: String
+    resourceLinks: String
+    stepSortWeight: Int
   }
 `
