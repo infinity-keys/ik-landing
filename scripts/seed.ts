@@ -136,8 +136,7 @@ export default async () => {
     data: {
       name: 'Puzzle 1 (Brazil)',
       slug: 'puzzle-1',
-      explanation:
-        'This is the first puzzle, it is about Brazil, it is anonymous so you can solve it without logging in',
+      explanation: 'This is the first puzzle, it is about Brazil',
       type: 'PUZZLE',
       orgId: ikOrg.id,
       // Connect the NFT to 'puzzle1' in this rewardable
@@ -148,7 +147,6 @@ export default async () => {
       },
       puzzle: {
         create: {
-          isAnon: true,
           requirements: ['ACCOUNT'],
           coverImage: coverImageUrl,
           steps: {
@@ -211,7 +209,6 @@ export default async () => {
       },
       puzzle: {
         create: {
-          isAnon: false,
           requirements: ['ACCOUNT'],
           coverImage: coverImageUrl,
           steps: {
@@ -304,7 +301,6 @@ export default async () => {
       },
       puzzle: {
         create: {
-          isAnon: false,
           requirements: ['ACCOUNT'],
           coverImage: coverImageUrl,
           steps: {
@@ -423,7 +419,6 @@ export default async () => {
       },
       puzzle: {
         create: {
-          isAnon: false,
           requirements: ['ACCOUNT'],
           coverImage: coverImageUrl,
           steps: {
@@ -579,7 +574,6 @@ export default async () => {
       },
       puzzle: {
         create: {
-          isAnon: false,
           requirements: ['ACCOUNT'],
           coverImage: coverImageUrl,
           steps: {
@@ -1145,10 +1139,6 @@ export default async () => {
 
   // TODOs:
   // 1. puzzles should be created that are not rewardable
-  // 2. Create a pack with 2 anon puzzles and a 3rd that requires sign in to solve,
-  //    ...this 3rd puzzle would have the rewardable attached to it.
-  // 3. Rewardable -> Puzzle -> Anon Steps 1-3 -> Step 4 requires sign in -> Reward at the end
-  // 4. Rewardable -> Puzzle -> No anonymous steps (1-3) -> Reward at the end
-  // 5. http://localhost:8910/profile should show 1 or more NFTs
+  // 2. http://localhost:8910/profile should show 1 or more NFTs
   // NOTE: `Submission` is outdated and will eventually be deleted; currently we use `Attempt` instead
 }

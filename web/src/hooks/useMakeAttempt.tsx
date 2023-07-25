@@ -9,7 +9,7 @@ import { useParams } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
-import { createAnonAttempt, redirectUser } from 'src/lib/attempt/makeAttempt'
+import { redirectUser } from 'src/lib/attempt/makeAttempt'
 
 const MAKE_ATTEMPT = gql`
   mutation MakeAttemptMutation($stepId: String!, $data: JSON!) {
@@ -43,16 +43,13 @@ const useMakeAttempt = () => {
     puzzleId,
     reqBody,
     redirectOnSuccess = true,
-    isAnon = false,
   }: {
     stepId: string
     puzzleId: string
     reqBody: string | object
     redirectOnSuccess?: boolean
-    isAnon?: boolean
   }) => {
-    // Can't play regular puzzles anonymously
-    if (!isAuthenticated && !isAnon) {
+    if (!isAuthenticated) {
       throw new Error('Must be logged in to play.')
     }
 
@@ -71,17 +68,6 @@ const useMakeAttempt = () => {
         if (!data) throw new Error('Error making attempt.')
         responseData = data.makeAttempt
       }
-
-      // Unauthenticated users hit the function to get cookies for anon puzzles
-      if (!isAuthenticated && isAnon) {
-        const data = await createAnonAttempt({
-          stepId,
-          stepParam,
-          puzzleId,
-          reqBody,
-        })
-        responseData = data
-      }
     } catch (e) {
       console.error(e)
       return { success: false, message: 'Error making attempt.' }
@@ -95,7 +81,6 @@ const useMakeAttempt = () => {
       if (redirectOnSuccess) {
         redirectUser({
           finalStep: responseData.finalStep,
-          isAnon,
           stepParam,
           slug,
         })

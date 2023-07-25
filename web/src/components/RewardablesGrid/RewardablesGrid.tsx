@@ -97,7 +97,6 @@ const RewardablesList = ({
                       href={rewardableLandingRoute({
                         type: rewardable.type,
                         slug: rewardable.slug,
-                        anonPuzzle: rewardable.puzzle?.isAnon,
                       })}
                       cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
                       progress={
@@ -159,7 +158,6 @@ const RewardablesList = ({
                         href={rewardableLandingRoute({
                           type: rewardable.type,
                           slug: rewardable.slug,
-                          anonPuzzle: rewardable.puzzle?.isAnon,
                         })}
                         cloudinaryId={rewardable.nfts[0]?.cloudinaryId}
                         progress={

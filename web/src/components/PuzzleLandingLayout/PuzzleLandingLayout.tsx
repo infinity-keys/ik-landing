@@ -1,10 +1,7 @@
 import { PropsWithChildren } from 'react'
 
 import { buildUrlString, cloudinaryUrl } from '@infinity-keys/core'
-import {
-  FindAnonRewardablePuzzleBySlug,
-  FindRewardablePuzzleBySlug,
-} from 'types/graphql'
+import { FindRewardablePuzzleBySlug } from 'types/graphql'
 
 import RewardableHeader from 'src/components/RewardableHeader/RewardableHeader'
 import Seo from 'src/components/Seo/Seo'
@@ -13,9 +10,7 @@ import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface PuzzleLandingLayoutProps extends PropsWithChildren {
-  rewardable:
-    | FindAnonRewardablePuzzleBySlug['rewardable']
-    | FindRewardablePuzzleBySlug['rewardable']
+  rewardable: FindRewardablePuzzleBySlug['rewardable']
   stepParam: string
 }
 
@@ -31,7 +26,6 @@ const PuzzleLandingLayout = ({
     rewardableLandingRoute({
       slug: rewardable.slug,
       type: rewardable.type,
-      anonPuzzle: rewardable.puzzle?.isAnon,
     })
   )
 

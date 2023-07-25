@@ -93,7 +93,6 @@ const StepsLayout = ({ puzzle, step }: StepsLayoutProps) => {
                       count={step.stepSimpleText?.solutionCharCount || 0}
                       step={step}
                       puzzleId={puzzle.id}
-                      isAnon={puzzle.isAnon}
                     />
                   )}
 

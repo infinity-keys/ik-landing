@@ -28,7 +28,6 @@ export const schema = gql`
     stepPage: [StepPage]!
     stepGuideType: StepGuideType!
     hasUserCompletedStep: Boolean
-    hasAnonUserCompletedStep: Boolean
   }
 
   enum StepType {

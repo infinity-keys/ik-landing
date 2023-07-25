@@ -47,19 +47,6 @@ export const rewardablesBySortType: QueryResolvers['rewardablesBySortType'] = ({
   })
 }
 
-export const rewardableBySlugWithAnonPuzzle: QueryResolvers['rewardableBySlugWithAnonPuzzle'] =
-  async ({ slug }) => {
-    return db.rewardable.findFirstOrThrow({
-      where: {
-        slug,
-        type: 'PUZZLE',
-        puzzle: {
-          isAnon: true,
-        },
-      },
-    })
-  }
-
 export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
   async ({ types, page = 1, count = 16 }) => {
     if (!page || !count) {
