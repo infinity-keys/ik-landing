@@ -3,25 +3,27 @@ export const schema = gql`
     success: Boolean!
   }
   type Mutation {
-    createBurdPuzzle(input: CreatePuzzleInput!): CreateBurdPuzzleResponse!
+    createBurdPuzzle(input: CreateBurdPuzzleInput!): CreateBurdPuzzleResponse!
       @requireAuth(roles: ["ADMIN"])
   }
 
-  input CreatePuzzleInput {
+  input CreateBurdPuzzleInput {
     name: String!
     slug: String!
-    explanation: String
+    explanation: String!
     successMessage: String
-    listPublicly: Boolean
-    stepsArray: [CreateStepType!]!
+    listPublicly: Boolean!
+    stepsArray: [CreateBurdStepType!]!
   }
 
-  input CreateStepType {
+  input CreateBurdStepType {
     type: StepType!
     failMessage: String
     successMessage: String
     challenge: String
     resourceLinks: String
     stepSortWeight: Int
+    # @TODO: this is temporary and should be replaced with actual step types
+    solution: String
   }
 `

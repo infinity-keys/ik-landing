@@ -656,9 +656,43 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
       type: 'PUZZLE',
       puzzle: {
         create: {
+          isAnon: false,
           steps: {
-            create: input.stepsArray,
+            // create: input.stepsArray,
+            create: [
+              // {
+              // @NOTE: This is how it's structured currently
+              //   type: 'SIMPLE_TEXT',
+              //   failMessage: 'f',
+              //   successMessage: 's',
+              //   challenge: 'c',
+              //   resourceLinks: 'r',
+              //   stepSortWeight: 1,
+              //   solution: 'solution',
+              // },
+              {
+                // @NOTE: This is how it needs to be structured to create step
+                type: 'SIMPLE_TEXT',
+                failMessage: 'f',
+                successMessage: 's',
+                challenge: 'c',
+                resourceLinks: 'r',
+                stepSortWeight: 1,
+                // @NOTE: this will have to be dynamic based on step type
+                stepSimpleText: {
+                  create: {
+                    solution: 'solution',
+                  },
+                },
+              },
+            ],
           },
+        },
+      },
+      // @TODO: Make dynamic before releasing it to the masses
+      organization: {
+        connect: {
+          id: 'cla9yay7y003k08la2z4j2xrv',
         },
       },
     },

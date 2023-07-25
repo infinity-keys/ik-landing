@@ -19,6 +19,7 @@ import {
   SelectField,
   Submit,
   TextField,
+  NumberField,
   useFieldArray,
   UseFormRegister,
   UseFormWatch,
@@ -29,7 +30,7 @@ import {
 import { useMutation } from '@redwoodjs/web'
 
 const CREATE_BURD_PUZZLE_MUTATION = gql`
-  mutation BurdArchetypalPuzzleCreation($input: CreatePuzzleInput!) {
+  mutation BurdArchetypalPuzzleCreation($input: CreateBurdPuzzleInput!) {
     createBurdPuzzle(input: $input) {
       success
     }
@@ -48,7 +49,7 @@ type Step = {
   successMessage: string
   challenge: string
   resourceLinks: string
-  stepSortWeight: string
+  stepSortWeight: number
   type: StepType
 }
 
@@ -164,7 +165,7 @@ function Step({
       >
         Step Sort Weight
       </Label>
-      <TextField
+      <NumberField
         placeholder="Challenge"
         {...register(`${stepsArrayName}.${index}.stepSortWeight`)}
         className="block bg-inherit text-stone-100"
@@ -346,7 +347,7 @@ export default function PuzzleForm() {
               successMessage: '',
               challenge: '',
               resourceLinks: '',
-              stepSortWeight: '',
+              stepSortWeight: 0,
             })
           }
         >
