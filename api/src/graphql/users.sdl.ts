@@ -8,6 +8,7 @@ export const schema = gql`
     authId: String
     username: String
     address: String
+    externalAddress: String
     email: String
     lensProfile: String
     avatar: String
@@ -46,6 +47,7 @@ export const schema = gql`
     authId: String
     username: String
     address: String
+    externalAddress: String
     email: String
     lensProfile: String
     avatar: String
@@ -60,10 +62,11 @@ export const schema = gql`
     authId: String
     username: String
     address: String
+    externalAddress: String
     email: String
     lensProfile: String
     avatar: String
-    roles: [SiteRole]
+    roles: [SiteRole]!
     refreshToken: String
     accessToken: String
   }
