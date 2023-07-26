@@ -1,13 +1,7 @@
-import { PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
-import cookie from 'cookie'
-
 import { ForbiddenError } from '@redwoodjs/graphql-server'
 import { context } from '@redwoodjs/graphql-server'
-import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types'
 
-import { PuzzlesData } from 'src/lib/cookie'
 import { db } from 'src/lib/db'
-import { decryptCookie } from 'src/lib/encoding/encoding'
 import { step } from 'src/services/steps/steps'
 
 export const getPuzzleWithSolves = async (id: string) => {

@@ -40,12 +40,10 @@ const useMakeAttempt = () => {
 
   const makeAttempt = async ({
     stepId,
-    puzzleId,
     reqBody,
     redirectOnSuccess = true,
   }: {
     stepId: string
-    puzzleId: string
     reqBody: string | object
     redirectOnSuccess?: boolean
   }) => {

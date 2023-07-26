@@ -1,5 +1,3 @@
-import { PUZZLE_COOKIE_NAME } from '@infinity-keys/constants'
-import cookie from 'cookie'
 import type {
   QueryResolvers,
   MutationResolvers,
@@ -8,9 +6,7 @@ import type {
 
 import { context } from '@redwoodjs/graphql-server'
 
-import { PuzzlesData } from 'src/lib/cookie'
 import { db } from 'src/lib/db'
-import { decryptCookie } from 'src/lib/encoding/encoding'
 
 export const steps: QueryResolvers['steps'] = () => {
   return db.step.findMany({
