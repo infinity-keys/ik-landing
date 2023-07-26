@@ -16,6 +16,7 @@ import { db } from 'src/lib/db'
 import { decryptAndDecompressText } from 'src/lib/encoding/encoding'
 import { verifyToken } from 'src/lib/jwt'
 import { logger } from 'src/lib/logger'
+import { createRewardable } from 'src/services/rewardables/rewardables'
 
 import anonPuzzles from '../../../../anonPuzzleData.json'
 
@@ -646,51 +647,12 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   input,
 }) => {
   console.log('input', input)
-  await db.rewardable.create({
-    data: {
-      name: input.name,
-      slug: input.slug,
-      explanation: input.explanation || '',
-      successMessage: input.successMessage,
-      listPublicly: input.listPublicly || true,
-      type: 'PUZZLE',
-      puzzle: {
-        create: {
-          isAnon: false,
-          steps: {
-            create: input.stepsArray.map((inputStep) => {
-              switch (inputStep.type) {
-                case 'SIMPLE_TEXT':
-                  return {
-                    challenge: '',
-                    stepSortWeight: 2,
-                    type: inputStep.type,
-                    stepSimpleText: {
-                      create: {
-                        solution: '',
-                      },
-                    },
-                  }
-                  break
-                case 'NFT_CHECK':
-                  return {}
-                  break
-
-                default:
-                  throw new Error('IONNO')
-                  break
-              }
-            }),
-          },
-        },
-      },
-      organization: {
-        connect: {
-          id: 'cla9yay7y003k08la2z4j2xrv',
-        },
-      },
-    },
+  const rewardable = await createRewardable({
+    input: input.rewardable,
   })
+  console.log(rewardable)
+  // we're not writing all this ourselves, we need to use existing services
+
   return {
     success: true,
   }

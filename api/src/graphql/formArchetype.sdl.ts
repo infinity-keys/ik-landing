@@ -3,25 +3,14 @@ export const schema = gql`
     success: Boolean!
   }
   type Mutation {
-    createBurdPuzzle(input: CreatePuzzleInput!): CreateBurdPuzzleResponse!
+    # I already have the types that exist for a step, so you don't need a
+    # CreateBurdStepType...
+    createBurdPuzzle(input: CreateBurdPuzzleInput!): CreateBurdPuzzleResponse!
       @requireAuth(roles: ["ADMIN"])
   }
 
-  input CreatePuzzleInput {
-    name: String!
-    slug: String!
-    explanation: String
-    successMessage: String
-    listPublicly: Boolean
-    stepsArray: [CreateBurdStepType!]!
-  }
-
-  input CreateBurdStepType {
-    type: StepType!
-    failMessage: String
-    successMessage: String
-    challenge: String
-    resourceLinks: String
-    stepSortWeight: Int
+  input CreateBurdPuzzleInput {
+    rewardable: CreateRewardableInput!
+    # steps: [CreateStepInput!]!
   }
 `

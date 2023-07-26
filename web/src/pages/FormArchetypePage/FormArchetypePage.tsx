@@ -11,6 +11,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 import { DevTool } from '@hookform/devtools'
+import { CreateBurdPuzzleInput } from 'types/graphql'
 
 import {
   Form,
@@ -35,15 +36,16 @@ import { useMutation } from '@redwoodjs/web'
 //     }
 //   }
 // `
-const CREATE_BURD_PUZZLE_MUTATION = gql`
-  mutation BurdArchetypalPuzzleCreation($input: CreatePuzzleInput!) {
-    createRewardable($input: CreateRewardableInput) {
 
+const CREATE_BURD_PUZZLE_MUTATION = gql`
+  mutation BurdArchetypalPuzzleCreation($input: CreateBurdPuzzleInput!) {
+    createBurdPuzzle(input: $input) {
+      success
     }
   }
 `
 
-const stepsArrayName = 'stepsArray'
+const stepsArrayName = 'steps'
 
 // const startingSteps: Step[] = [{ message: 'step 1' }, { message: 'step 2' }]
 const startingSteps: Step[] = []
@@ -215,7 +217,7 @@ type PuzzleFormType = {
   explanation: string
   successMessage: string
   listPublicly: boolean
-  stepsArray: (StepSimpleText | StepNftCheck | Step)[]
+  steps: (StepSimpleText | StepNftCheck | Step)[]
 }
 
 export default function PuzzleForm() {
@@ -240,10 +242,12 @@ export default function PuzzleForm() {
     name: stepsArrayName,
   })
 
-  const onSubmit = async (input: PuzzleFormType) => {
+  const onSubmit = async (input: CreateBurdPuzzleInput) => {
     createArchetypalPuzzle({
       variables: {
-        input,
+        input: {
+          rewardable: { ...input.rewardable, type: 'PUZZLE' },
+        },
       },
     })
     console.log(input)
@@ -268,65 +272,79 @@ export default function PuzzleForm() {
         <DevTool control={formMethods.control} />
       )}
       <Label
-        name="name"
+        name="rewardable.name"
         className="rw-label text-stone-100"
         errorClassName="rw-label rw-label-error"
       >
         Name
       </Label>
       <TextField
-        name="name"
+        name="rewardable.name"
         className="block bg-inherit text-stone-100"
         placeholder="Name"
       />
 
       <Label
-        name="slug"
+        name="rewardable.slug"
         className="rw-label text-stone-100"
         errorClassName="rw-label rw-label-error"
       >
         Slug
       </Label>
       <TextField
-        name="slug"
+        name="rewardable.slug"
         className="block bg-inherit text-stone-100"
         placeholder="Slug"
       />
 
       <Label
-        name="explanation"
+        name="rewardable.explanation"
         className="rw-label text-stone-100"
         errorClassName="rw-label rw-label-error"
       >
         Explanation
       </Label>
       <TextField
-        name="explanation"
+        name="rewardable.explanation"
         className="block bg-inherit text-stone-100"
         placeholder="Explanation"
       />
 
       <Label
-        name="successMessage"
+        name="rewardable.successMessage"
         className="rw-label text-stone-100"
         errorClassName="rw-label rw-label-error"
       >
         Success Message
       </Label>
       <TextField
-        name="successMessage"
+        name="rewardable.successMessage"
         className="block bg-inherit text-stone-100"
         placeholder="Success Message"
       />
+
       <Label
-        name="listPublicly"
+        name="rewardable.orgId"
+        className="rw-label text-stone-100"
+        errorClassName="rw-label rw-label-error"
+      >
+        Org Id
+      </Label>
+      <TextField
+        name="rewardable.orgId"
+        className="block bg-inherit text-stone-100"
+        defaultValue={'cla9yay7y003k08la2z4j2xrv'}
+      />
+
+      <Label
+        name="rewardable.listPublicly"
         className="rw-label text-stone-100"
         errorClassName="rw-label rw-label-error"
       >
         List Publicly
       </Label>
       <CheckboxField
-        name="listPublicly"
+        name="rewardable.listPublicly"
         className="block bg-inherit text-stone-100"
       />
       <h1 className="mt-8">Steps go below this line _______________</h1>
