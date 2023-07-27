@@ -1,4 +1,3 @@
-import { testPuzzle } from '@infinity-keys/constants'
 import { db } from 'api/src/lib/db'
 
 export default async () => {
@@ -80,6 +79,10 @@ export default async () => {
 
   const protagonistUser = ikUsersData.at(-1)
 
+  if (!protagonistUser) {
+    throw new Error('Missing users data')
+  }
+
   console.log(`created ${adminUsers.length} IK admin users`)
 
   // Create an NFT for puzzle1
@@ -132,10 +135,12 @@ export default async () => {
 
   const puzzle1 = await db.rewardable.create({
     data: {
-      ...testPuzzle.rewardable,
+      name: 'Puzzle 1 (Brazil)',
+      slug: 'puzzle-1',
+      explanation:
+        'This is the first puzzle, it is about Brazil, it is anonymous so you can solve it without logging in',
       type: 'PUZZLE',
       orgId: ikOrg.id,
-
       // Connect the NFT to 'puzzle1' in this rewardable
       nfts: {
         connect: {
@@ -146,7 +151,18 @@ export default async () => {
         create: {
           isAnon: true,
           steps: {
-            create: [testPuzzle.step],
+            create: [
+              {
+                challenge: 'What is the biggest river in Brazil?',
+                stepSortWeight: 1,
+                type: 'SIMPLE_TEXT',
+                stepSimpleText: {
+                  create: {
+                    solution: 'Amazon',
+                  },
+                },
+              },
+            ],
           },
         },
       },
@@ -494,7 +510,7 @@ export default async () => {
       },
       step: {
         connect: {
-          id: puzzle1.puzzle.steps[0].id,
+          id: puzzle1.puzzle?.steps[0].id,
         },
       },
     },
@@ -530,7 +546,7 @@ export default async () => {
       },
       step: {
         connect: {
-          id: puzzle2.puzzle.steps[0].id,
+          id: puzzle2.puzzle?.steps[0].id,
         },
       },
     },
@@ -582,7 +598,7 @@ export default async () => {
       },
       step: {
         connect: {
-          id: puzzle2.puzzle.steps[1].id,
+          id: puzzle2.puzzle?.steps[1].id,
         },
       },
     },
@@ -600,7 +616,7 @@ export default async () => {
       },
       step: {
         connect: {
-          id: puzzle2.puzzle.steps[1].id,
+          id: puzzle2.puzzle?.steps[1].id,
         },
       },
     },

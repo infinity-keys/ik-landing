@@ -1,16 +1,20 @@
 import React, { lazy } from 'react'
 
 import EnvelopeIcon from '@heroicons/react/20/solid/EnvelopeIcon'
+import WalletIcon from '@heroicons/react/20/solid/WalletIcon'
 import ClipboardIcon from '@heroicons/react/24/outline/ClipboardIcon'
 import { truncate } from '@infinity-keys/core'
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import { useActiveProfile } from '@lens-protocol/react-web'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 import Avatar from 'boring-avatars'
 import type {
   FindUserQuery,
   FindUserQueryVariables,
   SyncDiscordRolesMutation,
+  UpdateExternalWalletMutation,
 } from 'types/graphql'
+import { useAccount } from 'wagmi'
 
 import { CellSuccessProps, CellFailureProps, useMutation } from '@redwoodjs/web'
 import { LoaderIcon, toast } from '@redwoodjs/web/toast'
@@ -25,6 +29,7 @@ export const QUERY = gql`
       username
       email
       address
+      externalAddress
       lensProfile
       authId
       stepsSolvedCount
@@ -61,6 +66,14 @@ const SYNC_DISCORD_ROLES_MUTATION = gql`
   }
 `
 
+const UPDATE_EXTERNAL_WALLET_MUTATION = gql`
+  mutation UpdateExternalWalletMutation($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      externalAddress
+    }
+  }
+`
+
 export const Loading = () => <LoadingIcon />
 
 export const Empty = () => <div>Empty</div>
@@ -79,16 +92,32 @@ export const Success = ({
   handleLogOut: () => void
 }) => {
   const { data: lensProfile } = useActiveProfile()
+  const { address } = useAccount()
+  const { openConnectModal } = useConnectModal()
+
   const [
     syncDiscordRoles,
     { loading: discordSyncLoading, data: discordRolesData },
   ] = useMutation<SyncDiscordRolesMutation>(SYNC_DISCORD_ROLES_MUTATION)
+
+  const [updateExternalWallet, { loading: updateExternalWalletLoading }] =
+    useMutation<UpdateExternalWalletMutation>(UPDATE_EXTERNAL_WALLET_MUTATION, {
+      onCompleted: () => {
+        if (typeof queryResult?.refetch !== 'undefined') {
+          queryResult.refetch()
+        }
+      },
+      onError: () => {
+        toast.error('Error connecting wallet')
+      },
+    })
+
   // Immediately upon mount, reconcile progress, but also provide function to
   // use on button click
 
   return (
     <div className="mt-12 flex flex-col gap-6 lg:mt-0 lg:flex-row">
-      <div className="mx-auto lg:basis-2/3">
+      <div className="mx-auto w-full lg:basis-3/5">
         <div className="overflow-hidden rounded-lg bg-black/30">
           <div className="sm:items-centers flex flex-col justify-between bg-black/20 py-8 px-4 sm:flex-row sm:px-10">
             <div className="flex items-center">
@@ -174,6 +203,15 @@ export const Success = ({
               </div>
             )}
 
+            {user.externalAddress && (
+              <div className="flex items-center pb-4">
+                <WalletIcon className="h-5 w-5 text-white" />
+                <p className="ml-4 text-sm text-white/70">
+                  {truncate(user.externalAddress)}
+                </p>
+              </div>
+            )}
+
             {lensProfile?.handle && (
               <div className="flex items-center">
                 <LensIcon className="h-5 w-5 text-white" />
@@ -234,12 +272,12 @@ export const Success = ({
         )}
       </div>
 
-      <div className="overflow-hidden rounded-lg bg-black/30 lg:basis-1/3">
+      <div className="overflow-hidden rounded-lg bg-black/30 lg:basis-2/5">
         <div className="bg-black/30 py-8 px-4 sm:px-8">
-          <p className="">Connect social accounts:</p>
+          <p className="">Connect accounts:</p>
         </div>
 
-        <div className="flex flex-col gap-4 py-8 px-4 sm:px-8">
+        <div className="flex flex-col gap-4 py-8 px-4 text-sm sm:px-8">
           <div className="flex items-center justify-between">
             <p>Discord:</p>
             {user?.discordConnection?.id ? (
@@ -259,6 +297,54 @@ export const Success = ({
               variant="faded"
               border={false}
             />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <p>External Wallet:</p>
+
+            {updateExternalWalletLoading ? (
+              <LoaderIcon />
+            ) : address || user.externalAddress ? (
+              user.externalAddress ? (
+                <button
+                  className="overflow-hidden rounded-md p-2 text-sm text-gray-200 transition-colors hover:bg-white/10 hover:text-brand-accent-primary"
+                  onClick={() =>
+                    updateExternalWallet({
+                      variables: {
+                        input: {
+                          externalAddress: null,
+                        },
+                      },
+                    })
+                  }
+                >
+                  Disconnect
+                </button>
+              ) : (
+                <Button
+                  text="Connect"
+                  size="small"
+                  variant="faded"
+                  border={false}
+                  onClick={() =>
+                    updateExternalWallet({
+                      variables: {
+                        input: {
+                          externalAddress: address,
+                        },
+                      },
+                    })
+                  }
+                />
+              )
+            ) : (
+              <button
+                onClick={openConnectModal}
+                className="overflow-hidden rounded-md p-2 text-sm text-gray-200 transition-colors hover:bg-white/10 hover:text-brand-accent-primary"
+              >
+                Connect Wallet
+              </button>
+            )}
           </div>
         </div>
       </div>
