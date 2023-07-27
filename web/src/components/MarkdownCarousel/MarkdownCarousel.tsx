@@ -57,7 +57,8 @@ const MarkdownCarousel = ({
         pagingDotsClassName: 'mx-[2px]',
         containerClassName: 'relative -bottom-12',
       }}
-      className="!h-full w-full"
+      className="w-full"
+      style={{ height: '100%' }}
     >
       {children}
     </Carousel>
