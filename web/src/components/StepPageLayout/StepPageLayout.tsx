@@ -1,10 +1,18 @@
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, ReactElement } from 'react'
 
 import { Transition } from '@headlessui/react'
 import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
 import clsx from 'clsx'
+import { StepGuideType } from 'types/graphql'
 
 import Markdown from 'src/components/Markdown/Markdown'
+
+import ActivateIcon from '../OverlayIcons/ActivateIcon'
+import CollectIcon from '../OverlayIcons/CollectIcon'
+import RewindIcon from '../OverlayIcons/RewindIcon'
+import SeekIcon from '../OverlayIcons/SeekIcon'
+import SolveIcon from '../OverlayIcons/SolveIcon'
+import TrackIcon from '../OverlayIcons/TrackIcon'
 
 interface StepPageProps extends PropsWithChildren {
   withOverlay?: boolean
@@ -12,6 +20,41 @@ interface StepPageProps extends PropsWithChildren {
   overlayContent?: string
   setShowOverlay?: (b: boolean) => void
 }
+
+const overlayContent: {
+  [key in StepGuideType]: {
+    text: string
+    icon: ReactElement
+  }
+} = {
+  SEEK: {
+    text: 'The passcode you are looking for can be found on the page',
+    icon: <SeekIcon />,
+  },
+  ACTIVATE: {
+    text: 'Complete steps described to pass this test. No thinking required!',
+    icon: <ActivateIcon />,
+  },
+  COLLECT: {
+    text: "To complete this step, mint the digital collectible in the link. It's free!",
+    icon: <CollectIcon />,
+  },
+  REWIND: {
+    text: 'Missing something? Go back and look for helpful clues.',
+    icon: <RewindIcon />,
+  },
+  INFER: {
+    text: 'Unscramble a puzzle. The answer needs to be found and solved.',
+    icon: <SolveIcon />,
+  },
+  TRACK: {
+    text: 'Piece of cake! Just follow the accounts on the link to solve this step.',
+    icon: <TrackIcon />,
+  },
+  // all the other ones go here
+}
+
+console.log(overlayContent)
 
 const StepPageLayout = ({
   withOverlay = false,

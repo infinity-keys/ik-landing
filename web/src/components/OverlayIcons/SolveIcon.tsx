@@ -1,4 +1,4 @@
-const InferIcon = () => (
+const SolveIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 226 82"
@@ -24,4 +24,4 @@ const InferIcon = () => (
     />
   </svg>
 )
-export default InferIcon
+export default SolveIcon
