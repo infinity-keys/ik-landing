@@ -16,7 +16,6 @@ export async function execute(interaction: CommandInteraction) {
   }
   const { guild, member } = interaction
   const ecoUsers = await eco.users.all(member.user.id, guild.id)
-  console.log('users', ecoUsers)
   for (const ecoUser of ecoUsers) {
     await eco.database.delete(`${ecoUser.guildID}.${ecoUser.id}`)
   }

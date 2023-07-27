@@ -49,9 +49,7 @@ export async function execute(interaction: CommandInteraction) {
     fetchReply: true,
   })
 
-  const commandUser = interaction.user.id
   const filter = (reaction: MessageReaction) => {
-    console.log('reaction', reaction)
     return reaction.emoji.id === '1065702210777907210'
   }
 
@@ -63,7 +61,7 @@ export async function execute(interaction: CommandInteraction) {
   for (const reaction of collected.values()) {
     const users = reaction.users.cache.map((user) => user.id)
     for (const userId of users) {
-      if (commandUser !== userId) {
+      if (interaction.user.id !== userId) {
         await eco.balance.add(1, userId, guild.id)
       }
     }
