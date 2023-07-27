@@ -11,10 +11,9 @@ import { useAuth } from 'src/auth'
 import GridLayoutButtons from 'src/components/GridLayoutButtons/GridLayoutButtons'
 import GridPagination from 'src/components/GridPagination/GridPagination'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
+import Wrapper from 'src/components/Wrapper/Wrapper'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { GridLandingRouteType } from 'src/lib/urlBuilders'
-
-import Wrapper from '../Wrapper/Wrapper'
 
 const RewardablesList = ({
   rewardables,
@@ -68,12 +67,7 @@ const RewardablesList = ({
         {labeled && labeled?.length > 0 && (
           <div className="mb-8">
             <p className="py-4 text-3xl font-bold">Featured Puzzles</p>
-            <ul
-              className={clsx(
-                'grid grid-cols-1 gap-6 sm:grid-cols-2',
-                'md:grid-cols-3 lg:grid-cols-4'
-              )}
-            >
+            <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {labeled.map((rewardable) => {
                 if (!rewardable) return null
                 const solvedArray =
