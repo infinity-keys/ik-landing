@@ -131,13 +131,15 @@ model Puzzle {
 
   // Users can fill out a form and submit answers when completing a puzzle
   submissions  Submission[]
-  /// What will the user need to complete this puzzle
+  /// What will the user need to complete this puzzle (solve all steps)
   requirements PuzzleRequirements[]
+  /// The display image that shows on landing page and in grid
   coverImage   String
 
   steps Step[]
 }
 
+// What will the user need to complete this puzzle (solve all steps)
 enum PuzzleRequirements {
   HOLDERS
   ACCOUNT
@@ -216,7 +218,9 @@ model Step {
   defaultImage  String
   /// If this is not provided, the solution page will use the default image
   solutionImage String?
+  /// The content for each page of the step
   stepPage      StepPage[]
+  /// What kind of action does a user need to do to complete this step
   stepGuideType StepGuideType
 
   @@unique([puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
@@ -238,6 +242,8 @@ model StepPage {
   @@unique([stepId, sortWeight(sort: Asc)])
 }
 
+// What kind of action does a user need to do to complete this step
+/// https://docs.google.com/spreadsheets/d/1sshOIMalFdPXTQVCD8YjispSOrk4edf7cJhEP0iV2Lo/edit#gid=0
 enum StepGuideType {
   SEEK
   INFER
