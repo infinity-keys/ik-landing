@@ -2,7 +2,7 @@ import { FormEvent, useState } from 'react'
 
 import loRange from 'lodash/range'
 import RICIBs from 'react-individual-character-input-boxes'
-import { FindStepQuery } from 'types/graphql'
+import { FindStepBySlugQuery } from 'types/graphql'
 
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
@@ -12,7 +12,7 @@ import Lock from 'src/svgs/Lock'
 
 interface SimpleTextInputProps {
   count: number
-  step: FindStepQuery['step']
+  step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
   puzzleId: string
 }
 
@@ -57,8 +57,6 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
                 inputProps={loRange(count).map(() => ({
                   className: 'ik-code-input',
                 }))}
-                // eslint-disable-next-line jsx-a11y/no-autofocus
-                autoFocus
               />
 
               {failedAttempt && !errorMessage && (

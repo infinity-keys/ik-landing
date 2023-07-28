@@ -15,6 +15,7 @@ export const QUERY = gql`
         id
         type
         defaultImage
+        failMessage
         solutionHint
         solutionImage
         stepGuideType
@@ -23,6 +24,9 @@ export const QUERY = gql`
           image
           body
           showStepGuideHint
+        }
+        stepSimpleText {
+          solutionCharCount
         }
       }
     }
