@@ -48,7 +48,7 @@ const StepsLayout = ({ puzzle, step }: StepsLayoutProps) => {
                     )}
                   >
                     <img
-                      src={image || puzzle.coverImage}
+                      src={image || step.defaultImage}
                       alt=""
                       loading={index === 0 ? 'eager' : 'lazy'}
                     />
