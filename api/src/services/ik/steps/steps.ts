@@ -1,11 +1,38 @@
 import type { QueryResolvers } from 'types/graphql'
 
-import { getOptionalStepAuthenticated } from 'src/lib/steps'
+import { db } from 'src/lib/db'
 
-// this is requireAuth
-export const optionalStep: QueryResolvers['optionalStep'] = async ({
-  id,
-  puzzleId,
+export const stepBySlug: QueryResolvers['stepBySlug'] = async ({
+  slug,
+  stepNum,
 }) => {
-  return getOptionalStepAuthenticated({ id, puzzleId })
+  const rewardable = await db.rewardable.findUnique({
+    where: {
+      slug_type: {
+        slug,
+        type: 'PUZZLE',
+      },
+    },
+    select: {
+      puzzle: {
+        select: {
+          id: true,
+          steps: {
+            where: {
+              stepSortWeight: stepNum,
+            },
+          },
+        },
+      },
+    },
+  })
+
+  if (!rewardable?.puzzle?.steps[0]) {
+    throw new Error('Could not find step')
+  }
+
+  return {
+    step: rewardable.puzzle.steps[0],
+    puzzleId: rewardable.puzzle.id,
+  }
 }
