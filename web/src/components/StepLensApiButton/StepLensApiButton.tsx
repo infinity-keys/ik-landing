@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { useActiveProfile } from '@lens-protocol/react-web'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import { FindStepQuery } from 'types/graphql'
+import { FindStepBySlugQuery } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
 import Alert from 'src/components/Alert/Alert'
@@ -16,7 +16,7 @@ const StepLensApiButton = ({
   step,
   puzzleId,
 }: {
-  step: FindStepQuery['step']
+  step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
   puzzleId: string
 }) => {
   const { address } = useAccount()

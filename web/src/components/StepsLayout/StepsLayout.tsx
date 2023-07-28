@@ -10,7 +10,7 @@ import StepPageLayout from 'src/components/StepPageLayout/StepPageLayout'
 
 interface StepsLayoutProps extends PropsWithChildren {
   puzzleId: string
-  step: FindStepBySlugQuery['stepBySlug']['step']
+  step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
 }
 
 const SimpleTextInput = lazy(
@@ -29,7 +29,7 @@ const StepsLayout = ({ puzzleId, step }: StepsLayoutProps) => {
   if (!puzzleId || !step) return null
 
   const images = step.stepPage
-    .map((page) => page?.image)
+    .map((page) => page?.image || step.defaultImage)
     .concat(step.solutionImage || step.defaultImage)
 
   return (
@@ -48,7 +48,7 @@ const StepsLayout = ({ puzzleId, step }: StepsLayoutProps) => {
                     )}
                   >
                     <img
-                      src={image || step.defaultImage}
+                      src={image}
                       alt=""
                       loading={index === 0 ? 'eager' : 'lazy'}
                     />
