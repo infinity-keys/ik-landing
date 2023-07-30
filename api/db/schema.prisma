@@ -417,18 +417,19 @@ enum SiteRole {
 
 /// Identifiable player
 model User {
-  id           String   @id @default(cuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  lastLoggedIn DateTime @default(now())
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  lastLoggedIn    DateTime @default(now())
   /// Unique string used to cryptographically identify this person. NEVER MAKE PUBLIC
-  nonce        String   @default(cuid())
-  authId       String?  @unique
-  username     String?
-  address      String?  @unique // Torus wallet address
-  email        String?  @unique
-  lensProfile  String?
-  avatar       String?
+  nonce           String   @default(cuid())
+  authId          String?  @unique
+  username        String?
+  address         String?  @unique // Torus wallet address
+  externalAddress String?
+  email           String?  @unique
+  lensProfile     String?
+  avatar          String?
 
   // User's role on the site, as a whole
   roles SiteRole[] @default([ANONYMOUS])

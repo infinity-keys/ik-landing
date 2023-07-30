@@ -1,5 +1,3 @@
-import { testPuzzle } from '@infinity-keys/constants'
-
 beforeEach(() => {
   cy.visit('/')
 })
@@ -10,6 +8,6 @@ describe('Landing Page', () => {
   })
 
   it('finds the first puzzle', () => {
-    cy.contains(testPuzzle.rewardable.name)
+    cy.contains('Puzzle 1 (Brazil)')
   })
 })
