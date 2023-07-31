@@ -6,7 +6,9 @@ import { FindStepBySlugQuery } from 'types/graphql'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
 import MarkdownCarousel from 'src/components/MarkdownCarousel/MarkdownCarousel'
+import NeedHintIcon from 'src/components/OverlayIcons/NeedHintIcon'
 import StepPageLayout from 'src/components/StepPageLayout/StepPageLayout'
+import { overlayContent } from 'src/lib/stepOverlayContent'
 
 interface StepsLayoutProps extends PropsWithChildren {
   puzzleId: string
@@ -73,8 +75,7 @@ const StepsLayout = ({ puzzleId, step }: StepsLayoutProps) => {
                       setShowOverlay={setShowOverlay}
                       overlayContent={
                         page.showStepGuideHint
-                          ? // @TODO: This will become dynamic
-                            'The passcode you are looking for can be found on the page'
+                          ? overlayContent[step.stepGuideType]
                           : undefined
                       }
                     >
@@ -86,7 +87,11 @@ const StepsLayout = ({ puzzleId, step }: StepsLayoutProps) => {
                 <StepPageLayout
                   showOverlay={showOverlay}
                   setShowOverlay={setShowOverlay}
-                  overlayContent={step.solutionHint}
+                  overlayContent={
+                    step.solutionHint
+                      ? { text: step.solutionHint, icon: <NeedHintIcon /> }
+                      : undefined
+                  }
                 >
                   {step.type === 'SIMPLE_TEXT' && (
                     <SimpleTextInput
