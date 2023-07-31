@@ -1,8 +1,6 @@
-import { ForbiddenError } from '@redwoodjs/graphql-server'
 import { context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
-import { step } from 'src/services/steps/steps'
 
 export const getPuzzleWithSolves = async (id: string) => {
   return db.puzzle.findUnique({
