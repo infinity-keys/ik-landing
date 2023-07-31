@@ -4,11 +4,9 @@ import loRange from 'lodash/range'
 import RICIBs from 'react-individual-character-input-boxes'
 import { FindStepBySlugQuery } from 'types/graphql'
 
-import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
-import Lock from 'src/svgs/Lock'
 
 interface SimpleTextInputProps {
   count: number
@@ -43,10 +41,9 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
         <div className="z-10 flex justify-center">
           <div>
             <div className="flex py-5">
-              <div className="w-6">
-                <Lock />
-              </div>
-              <p className="pt-2 pl-4 text-base font-bold">Solve Puzzle</p>
+              <p className="pt-2 pl-4 text-base font-bold">
+                Input Your Answer:
+              </p>
             </div>
 
             <form className="magic-input" onSubmit={handleMakeAttempt}>
@@ -72,14 +69,6 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
               )}
 
               {errorMessage && <p className="">{errorMessage}</p>}
-
-              <div className="flex justify-center pt-8" data-cy="submit">
-                <Button
-                  text="Submit"
-                  type="submit"
-                  disabled={text.length !== count}
-                />
-              </div>
             </form>
           </div>
         </div>
