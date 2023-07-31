@@ -4,6 +4,6 @@ export const schema = gql`
     step: Step!
   }
   type Query {
-    stepBySlug(slug: String!, stepNum: Int!): StepBySlugResponse @requireAuth
+    optionalStep(id: String, puzzleId: String, stepNum: Int): Step @requireAuth
   }
 `
