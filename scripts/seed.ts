@@ -81,6 +81,10 @@ export default async () => {
   const coverImageUrl =
     'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/nft-181_eeo6d3'
 
+  if (!protagonistUser) {
+    throw new Error('Missing users data')
+  }
+
   console.log(`created ${adminUsers.length} IK admin users`)
 
   // Create an NFT for puzzle1
@@ -895,7 +899,7 @@ export default async () => {
       },
       step: {
         connect: {
-          id: puzzle1.puzzle.steps[0].id,
+          id: puzzle1.puzzle?.steps[0].id,
         },
       },
     },
@@ -931,7 +935,7 @@ export default async () => {
       },
       step: {
         connect: {
-          id: puzzle2.puzzle.steps[0].id,
+          id: puzzle2.puzzle?.steps[0].id,
         },
       },
     },
@@ -983,7 +987,7 @@ export default async () => {
       },
       step: {
         connect: {
-          id: puzzle2.puzzle.steps[1].id,
+          id: puzzle2.puzzle?.steps[1].id,
         },
       },
     },
@@ -1001,7 +1005,7 @@ export default async () => {
       },
       step: {
         connect: {
-          id: puzzle2.puzzle.steps[1].id,
+          id: puzzle2.puzzle?.steps[1].id,
         },
       },
     },
