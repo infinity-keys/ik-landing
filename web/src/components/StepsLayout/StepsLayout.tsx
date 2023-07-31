@@ -11,8 +11,7 @@ import StepPageLayout from 'src/components/StepPageLayout/StepPageLayout'
 import { overlayContent } from 'src/lib/stepOverlayContent'
 
 interface StepsLayoutProps extends PropsWithChildren {
-  puzzleId: string
-  step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
+  step: FindStepBySlugQuery['step']
 }
 
 const SimpleTextInput = lazy(
@@ -25,10 +24,10 @@ const StepLensApiButton = lazy(
   () => import('src/components/StepLensApiButton/StepLensApiButton')
 )
 
-const StepsLayout = ({ puzzleId, step }: StepsLayoutProps) => {
+const StepsLayout = ({ step }: StepsLayoutProps) => {
   const [showOverlay, setShowOverlay] = useState(false)
   const [slideIndex, setSlideIndex] = useState(0)
-  if (!puzzleId || !step) return null
+  if (!step) return null
 
   const images = step.stepPage
     .map((page) => page?.image || step.defaultImage)
@@ -97,7 +96,6 @@ const StepsLayout = ({ puzzleId, step }: StepsLayoutProps) => {
                     <SimpleTextInput
                       count={step.stepSimpleText?.solutionCharCount || 0}
                       step={step}
-                      puzzleId={puzzleId}
                     />
                   )}
 
@@ -108,11 +106,11 @@ const StepsLayout = ({ puzzleId, step }: StepsLayoutProps) => {
                     step.type === 'ASSET_TRANSFER' ||
                     step.type === 'TOKEN_ID_RANGE' ||
                     step.type === 'ERC20_BALANCE') && (
-                    <AccountCheckButton step={step} puzzleId={puzzleId} />
+                    <AccountCheckButton step={step} />
                   )}
 
                   {step.type === 'LENS_API' && (
-                    <StepLensApiButton step={step} puzzleId={puzzleId} />
+                    <StepLensApiButton step={step} />
                   )}
                 </StepPageLayout>
               </MarkdownCarousel>

@@ -11,10 +11,8 @@ import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
 const AccountCheckButton = ({
   step,
-  puzzleId,
 }: {
-  step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
-  puzzleId: string
+  step: FindStepBySlugQuery['step']
 }) => {
   const { address } = useAccount()
   const { loading, failedAttempt, errorMessage, makeAttempt } = useMakeAttempt()
@@ -26,7 +24,6 @@ const AccountCheckButton = ({
 
     await makeAttempt({
       stepId: step.id,
-      puzzleId,
       reqBody: {
         type: 'account-check',
         account: address,

@@ -12,13 +12,7 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
-const StepLensApiButton = ({
-  step,
-  puzzleId,
-}: {
-  step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
-  puzzleId: string
-}) => {
+const StepLensApiButton = ({ step }: { step: FindStepBySlugQuery['step'] }) => {
   const { address } = useAccount()
   const { openConnectModal } = useConnectModal()
   const { loading, failedAttempt, errorMessage, makeAttempt } = useMakeAttempt()
@@ -34,7 +28,6 @@ const StepLensApiButton = ({
 
     await makeAttempt({
       stepId: step.id,
-      puzzleId,
       reqBody: {
         type: 'lens-check',
         account: address,

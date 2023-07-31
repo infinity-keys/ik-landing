@@ -12,11 +12,10 @@ import Lock from 'src/svgs/Lock'
 
 interface SimpleTextInputProps {
   count: number
-  step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
-  puzzleId: string
+  step: FindStepBySlugQuery['step']
 }
 
-const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
+const SimpleTextInput = ({ count, step }: SimpleTextInputProps) => {
   const { loading, failedAttempt, makeAttempt, errorMessage } = useMakeAttempt()
   const [text, setText] = useState('')
 
@@ -27,7 +26,6 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
 
     await makeAttempt({
       stepId: step.id,
-      puzzleId,
       reqBody: {
         type: 'simple-text',
         simpleTextSolution: text,

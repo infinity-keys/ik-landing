@@ -16,7 +16,6 @@ export const stepBySlug: QueryResolvers['stepBySlug'] = async ({
     select: {
       puzzle: {
         select: {
-          id: true,
           steps: {
             where: {
               stepSortWeight: stepNum,
@@ -31,8 +30,5 @@ export const stepBySlug: QueryResolvers['stepBySlug'] = async ({
     throw new Error('Could not find step')
   }
 
-  return {
-    step: rewardable.puzzle.steps[0],
-    puzzleId: rewardable.puzzle.id,
-  }
+  return rewardable.puzzle.steps[0]
 }
