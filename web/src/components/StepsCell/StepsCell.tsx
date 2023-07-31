@@ -12,7 +12,6 @@ export const QUERY = gql`
   query FindStepQuery($puzzleId: String!, $stepId: String, $stepNum: Int) {
     puzzle(id: $puzzleId) {
       id
-      isAnon
       coverImage
       rewardable {
         id

@@ -50,7 +50,7 @@ const StepsLayout = ({ puzzle, step }: StepsLayoutProps) => {
                     )}
                   >
                     <img
-                      src={image || puzzle.coverImage}
+                      src={image || step.defaultImage}
                       alt=""
                       loading={index === 0 ? 'eager' : 'lazy'}
                     />
@@ -98,7 +98,6 @@ const StepsLayout = ({ puzzle, step }: StepsLayoutProps) => {
                       count={step.stepSimpleText?.solutionCharCount || 0}
                       step={step}
                       puzzleId={puzzle.id}
-                      isAnon={puzzle.isAnon}
                     />
                   )}
 

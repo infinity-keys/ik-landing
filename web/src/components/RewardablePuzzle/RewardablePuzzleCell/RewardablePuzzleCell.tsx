@@ -9,28 +9,12 @@ export const QUERY = gql`
   query FindRewardablePuzzleBySlug($slug: String!) {
     rewardable: rewardableBySlug(slug: $slug, type: PUZZLE) {
       id
-      type
       name
       slug
-      explanation
-      successMessage
-      asChildPublicParentRewardables {
-        parentRewardable {
-          slug
-          name
-          type
-        }
-      }
-      nfts {
-        cloudinaryId
-      }
       puzzle {
         id
-        isAnon
-        steps {
-          id
-          stepSortWeight
-        }
+        coverImage
+        requirements
       }
     }
   }

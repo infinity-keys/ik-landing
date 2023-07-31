@@ -7,7 +7,6 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
 import Seo from 'src/components/Seo/Seo'
 import Wrapper from 'src/components/Wrapper/Wrapper'
-import useReconcileProgress from 'src/hooks/useReconcileProgress'
 import { clearRedirectTo } from 'src/providers/redirection'
 
 const LoginModal = lazy(() => import('src/components/LoginModal/LoginModal'))
@@ -18,10 +17,7 @@ const ProgressDeleteButton = lazy(
 const ProfilePage = () => {
   const { isAuthenticated, loading, logOut, currentUser } = useAuth()
   const { redirectTo } = useParams()
-
-  const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
-
   const [deleteProgressLoading, setDeleteProgressLoading] = useState(false)
 
   const handleLogOut = () => {
@@ -40,23 +36,13 @@ const ProfilePage = () => {
   return (
     <Wrapper>
       <Seo title="Profile" />
-      {isAuthenticated &&
-        !progressLoading &&
-        !loading &&
-        !deleteProgressLoading && (
-          <div className="mx-auto w-full max-w-4xl pb-12">
-            <ProfileCell handleLogOut={handleLogOut} />
+      {isAuthenticated && !loading && !deleteProgressLoading && (
+        <div className="mx-auto w-full max-w-4xl pb-12">
+          <ProfileCell handleLogOut={handleLogOut} />
+        </div>
+      )}
 
-            <button
-              className="mx-auto mt-2 block italic text-gray-200 underline transition-colors hover:text-brand-accent-primary"
-              onClick={() => reconcilePuzzles()}
-            >
-              Sync your anonymous progress
-            </button>
-          </div>
-        )}
-
-      {loading || progressLoading ? (
+      {loading ? (
         <LoadingIcon />
       ) : (
         <div className="relative text-center">
