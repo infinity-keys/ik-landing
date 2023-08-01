@@ -29,14 +29,6 @@ import {
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 
-// const CREATE_BURD_PUZZLE_MUTATION = gql`
-//   mutation BurdArchetypalPuzzleCreation($input: CreatePuzzleInput!) {
-//     createBurdPuzzle(input: $input) {
-//       success
-//     }
-//   }
-// `
-
 const CREATE_BURD_PUZZLE_MUTATION = gql`
   mutation BurdArchetypalPuzzleCreation($input: CreateBurdPuzzleInput!) {
     createBurdPuzzle(input: $input) {
@@ -80,7 +72,7 @@ function Step({
 }: {
   index: number
   register: UseFormRegister<PuzzleFormType>
-  watch: UseFormWatch<PuzzleFormType>
+  watch: UseFormWatch<PuzzleFormType> // linting error: UseFormWatch<CreateBurdPuzzleInput>
   setValue: UseFormSetValue<PuzzleFormType>
   getValues: UseFormGetValues<PuzzleFormType>
 }) {
@@ -212,11 +204,13 @@ function Step({
 }
 
 type PuzzleFormType = {
-  name: string
-  slug: string
-  explanation: string
-  successMessage: string
-  listPublicly: boolean
+  rewardable: {
+    name: CreateBurdPuzzleInput['rewardable']['name']
+    slug: CreateBurdPuzzleInput['rewardable']['slug']
+    explanation: CreateBurdPuzzleInput['rewardable']['explanation']
+    successMessage: CreateBurdPuzzleInput['rewardable']['successMessage']
+    listPublicly: CreateBurdPuzzleInput['rewardable']['listPublicly']
+  }
   steps: (StepSimpleText | StepNftCheck | Step)[]
 }
 
@@ -242,11 +236,18 @@ export default function PuzzleForm() {
     name: stepsArrayName,
   })
 
-  const onSubmit = async (input: CreateBurdPuzzleInput) => {
+  // UseFormReturn<CreateBurdPuzzleInput>
+  const onSubmit = async (input: PuzzleFormType) => {
     createArchetypalPuzzle({
       variables: {
         input: {
-          rewardable: { ...input.rewardable, type: 'PUZZLE' },
+          rewardable: {
+            ...input.rewardable,
+            // name: input.name,
+            // slug: input.slug,
+            // explanation: input.explanation,
+            type: 'PUZZLE',
+          },
         },
       },
     })
