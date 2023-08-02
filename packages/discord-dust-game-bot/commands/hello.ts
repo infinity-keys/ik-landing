@@ -5,6 +5,7 @@ import {
 } from 'discord.js'
 
 import { eco } from '../ecoDB'
+require('dotenv').config()
 
 export const data = new SlashCommandBuilder()
   .setName('gm')
@@ -23,8 +24,10 @@ export async function execute(interaction: CommandInteraction) {
   const { guild } = interaction
 
   const filter = (reaction: MessageReaction) => {
-    return reaction.emoji.id === '1065702210777907210'
+    return reaction.emoji.id === process.env.EMOJI_REACTION_IK_ID
   }
+
+  console.log('emoji id', process.env.EMOJI_REACTION_IK_ID)
 
   const collected = await message.awaitReactions({
     filter,
@@ -32,9 +35,13 @@ export async function execute(interaction: CommandInteraction) {
   })
 
   for (const reaction of collected.values()) {
+    console.log('reaction', JSON.stringify(reaction, null, 2))
     const users = reaction.users.cache.map((user) => user.id)
+    console.log('users', users)
     for (const userId of users) {
       if (interaction.user.id !== userId) {
+        console.log('userid', userId)
+        console.log('guildid', guild.id)
         await eco.balance.add(1, userId, guild.id)
       }
     }
