@@ -15,9 +15,11 @@ import useMakeAttempt from 'src/hooks/useMakeAttempt'
 const StepLensApiButton = ({
   step,
   puzzleId,
+  onSuccess,
 }: {
   step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
   puzzleId: string
+  onSuccess?: () => void
 }) => {
   const { address } = useAccount()
   const { openConnectModal } = useConnectModal()
@@ -32,15 +34,19 @@ const StepLensApiButton = ({
     if (!lensProfile?.id)
       return setCustomErrorMessage('Please connect your Lens profile')
 
-    await makeAttempt({
+    const data = await makeAttempt({
       stepId: step.id,
       puzzleId,
+      redirectOnSuccess: false,
       reqBody: {
         type: 'lens-check',
         account: address,
         lensId: lensProfile.id,
       },
     })
+    if (data?.success && onSuccess) {
+      onSuccess()
+    }
   }
 
   return (

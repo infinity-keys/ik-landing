@@ -14,9 +14,15 @@ interface SimpleTextInputProps {
   count: number
   step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
   puzzleId: string
+  onSuccess?: () => void
 }
 
-const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
+const SimpleTextInput = ({
+  count,
+  step,
+  puzzleId,
+  onSuccess,
+}: SimpleTextInputProps) => {
   const { loading, failedAttempt, makeAttempt, errorMessage } = useMakeAttempt()
   const [text, setText] = useState('')
 
@@ -25,14 +31,19 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
     e.preventDefault()
     if (text.length !== count) return
 
-    await makeAttempt({
+    const data = await makeAttempt({
       stepId: step.id,
       puzzleId,
+      redirectOnSuccess: false,
       reqBody: {
         type: 'simple-text',
         simpleTextSolution: text,
       },
     })
+
+    if (data?.success && onSuccess) {
+      onSuccess()
+    }
   }
 
   return (

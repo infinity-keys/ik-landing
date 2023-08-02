@@ -7,6 +7,8 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import StepsLayout from 'src/components/StepsLayout/StepsLayout'
 
+import LoadingIcon from '../LoadingIcon/LoadingIcon'
+
 export const QUERY = gql`
   query FindStepBySlugQuery($slug: String!, $stepNum: Int!) {
     stepBySlug(slug: $slug, stepNum: $stepNum) {
@@ -16,6 +18,7 @@ export const QUERY = gql`
         type
         defaultImage
         failMessage
+        hasUserCompletedStep
         solutionHint
         solutionImage
         stepGuideType
@@ -28,12 +31,21 @@ export const QUERY = gql`
         stepSimpleText {
           solutionCharCount
         }
+        puzzle {
+          steps {
+            stepSortWeight
+            hasUserCompletedStep
+          }
+          rewardable {
+            slug
+          }
+        }
       }
     }
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => <LoadingIcon />
 
 export const Empty = () => <div>Empty</div>
 
@@ -45,6 +57,9 @@ export const Failure = ({
 
 export const Success = ({
   stepBySlug: { puzzleId, step },
+  queryResult,
 }: CellSuccessProps<FindStepBySlugQuery, FindStepBySlugQueryVariables>) => {
-  return <StepsLayout puzzleId={puzzleId} step={step} />
+  return (
+    <StepsLayout puzzleId={puzzleId} step={step} queryResult={queryResult} />
+  )
 }
