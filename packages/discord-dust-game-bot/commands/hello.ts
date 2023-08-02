@@ -24,9 +24,9 @@ export async function execute(interaction: CommandInteraction) {
   const { guild } = interaction
 
   const filter = (reaction: MessageReaction) => {
+    console.log('reaction', JSON.stringify(reaction, null, 2))
     return reaction.emoji.id === process.env.EMOJI_REACTION_IK_ID
   }
-
   console.log('emoji id', process.env.EMOJI_REACTION_IK_ID)
 
   let collected
