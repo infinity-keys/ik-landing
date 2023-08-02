@@ -12,5 +12,6 @@ export const schema = gql`
   input CreateBurdPuzzleInput {
     rewardable: CreateRewardableInput!
     # steps: [CreateStepInput!]!
+    # puzzle: CreatePuzzleInput!
   }
 `

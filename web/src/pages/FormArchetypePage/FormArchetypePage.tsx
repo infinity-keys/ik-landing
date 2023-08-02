@@ -12,6 +12,7 @@ if (process.env.NODE_ENV === 'development') {
 
 import { DevTool } from '@hookform/devtools'
 import { CreateBurdPuzzleInput } from 'types/graphql'
+// import { CreateStepInput } from 'types/graphql'
 
 import {
   Form,
@@ -238,6 +239,33 @@ export default function PuzzleForm() {
 
   // UseFormReturn<CreateBurdPuzzleInput>
   const onSubmit = async (input: PuzzleFormType) => {
+    // have to create the rewardable first,
+    // create the puzzle & connect it to the rewardable
+    // then create step, connect it to the puzzle-id
+    // Here is the order: (rewardable > puzzle > step > stepType)
+    // ... we could write Burd's custom mutation and do all this in one go
+    // const builtSteps = input.steps.map((step) => {
+    //   const stepInput: CreateStepInput = {
+    //     type: step.type, // set type
+    //     failMessage: step.failMessage,
+    //     successMessage: step.successMessage,
+    //   }
+
+    //   // Step type specific overrides
+    //   if (step.type === 'SIMPLE_TEXT') {
+    //     stepInput.stepSimpleText = {
+    //       solution: (step as SimpleTextStep).solution,
+    //     }
+    //   }
+
+    //   if (step.type === 'NFT_CHECK') {
+    //     stepInput.stepNftCheck = {
+    //       nftId: (step as NFTCheckStep).nftId,
+    //     }
+    //   }
+
+    //   return stepInput
+    // })
     createArchetypalPuzzle({
       variables: {
         input: {
