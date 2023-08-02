@@ -27,15 +27,21 @@ export async function execute(interaction: CommandInteraction) {
     return reaction.emoji.id === process.env.EMOJI_REACTION_IK_ID
   }
 
+  console.log('emoji id', process.env.EMOJI_REACTION_IK_ID)
+
   const collected = await message.awaitReactions({
     filter,
     time: 45000,
   })
 
   for (const reaction of collected.values()) {
+    console.log('reaction', JSON.stringify(reaction, null, 2))
     const users = reaction.users.cache.map((user) => user.id)
+    console.log('users', users)
     for (const userId of users) {
       if (interaction.user.id !== userId) {
+        console.log('userid', userId)
+        console.log('guildid', guild.id)
         await eco.balance.add(1, userId, guild.id)
       }
     }
