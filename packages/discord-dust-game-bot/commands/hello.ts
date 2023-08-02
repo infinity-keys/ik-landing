@@ -24,15 +24,21 @@ export async function execute(interaction: CommandInteraction) {
   const { guild } = interaction
 
   const filter = (reaction: MessageReaction) => {
+    console.log('reaction', JSON.stringify(reaction, null, 2))
     return reaction.emoji.id === process.env.EMOJI_REACTION_IK_ID
   }
-
   console.log('emoji id', process.env.EMOJI_REACTION_IK_ID)
 
-  const collected = await message.awaitReactions({
-    filter,
-    time: 45000,
-  })
+  let collected
+  try {
+    collected = await message.awaitReactions({
+      filter,
+      time: 45000,
+    })
+    console.log('collected', JSON.stringify(collected, null, 2))
+  } catch (error) {
+    console.log('error', error)
+  }
 
   for (const reaction of collected.values()) {
     console.log('reaction', JSON.stringify(reaction, null, 2))
