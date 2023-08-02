@@ -5,6 +5,7 @@ import {
 } from 'discord.js'
 
 import { eco } from '../ecoDB'
+require('dotenv').config()
 
 export const data = new SlashCommandBuilder()
   .setName('gm')
@@ -23,7 +24,7 @@ export async function execute(interaction: CommandInteraction) {
   const { guild } = interaction
 
   const filter = (reaction: MessageReaction) => {
-    return reaction.emoji.id === '1065702210777907210'
+    return reaction.emoji.id === process.env.EMOJI_REACTION_IK_ID
   }
 
   const collected = await message.awaitReactions({
