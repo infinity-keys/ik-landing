@@ -65,6 +65,24 @@ const StepsLayout = ({ puzzleId, step }: StepsLayoutProps) => {
                 setShowOverlay={setShowOverlay}
                 setSlideIndex={setSlideIndex}
               >
+                {step.stepPage.map((page) => {
+                  if (!page) return null
+
+                  return (
+                    <StepPageLayout
+                      key={page.id}
+                      showOverlay={showOverlay}
+                      setShowOverlay={setShowOverlay}
+                      overlayContent={
+                        page.showStepGuideHint
+                          ? overlayContent[step.stepGuideType]
+                          : undefined
+                      }
+                    >
+                      <Markdown>{page.body}</Markdown>
+                    </StepPageLayout>
+                  )
+                })}
                 <StepPageLayout
                   showOverlay={showOverlay}
                   setShowOverlay={setShowOverlay}
@@ -96,24 +114,6 @@ const StepsLayout = ({ puzzleId, step }: StepsLayoutProps) => {
                     <StepLensApiButton step={step} puzzleId={puzzleId} />
                   )}
                 </StepPageLayout>
-                {step.stepPage.map((page) => {
-                  if (!page) return null
-
-                  return (
-                    <StepPageLayout
-                      key={page.id}
-                      showOverlay={showOverlay}
-                      setShowOverlay={setShowOverlay}
-                      overlayContent={
-                        page.showStepGuideHint
-                          ? overlayContent[step.stepGuideType]
-                          : undefined
-                      }
-                    >
-                      <Markdown>{page.body}</Markdown>
-                    </StepPageLayout>
-                  )
-                })}
               </MarkdownCarousel>
             </div>
           </>
