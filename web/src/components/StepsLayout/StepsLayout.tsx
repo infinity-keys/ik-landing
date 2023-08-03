@@ -1,18 +1,20 @@
 import { PropsWithChildren, lazy, useState } from 'react'
 
+import CheckCircleIcon from '@heroicons/react/24/outline/CheckCircleIcon'
+import LockClosedIcon from '@heroicons/react/24/outline/LockClosedIcon'
+import LockOpenIcon from '@heroicons/react/24/outline/LockOpenIcon'
 import clsx from 'clsx'
 import { FindStepBySlugQuery } from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
 import { CellSuccessProps } from '@redwoodjs/web'
 
+import Button from 'src/components//Button/Button'
 import Markdown from 'src/components/Markdown/Markdown'
 import MarkdownCarousel from 'src/components/MarkdownCarousel/MarkdownCarousel'
 import NeedHintIcon from 'src/components/OverlayIcons/NeedHintIcon'
 import StepPageLayout from 'src/components/StepPageLayout/StepPageLayout'
 import { overlayContent } from 'src/lib/stepOverlayContent'
-
-import Button from '../Button'
 
 interface StepsLayoutProps extends PropsWithChildren {
   puzzleId: string
@@ -49,6 +51,11 @@ const StepsLayout = ({ puzzleId, step, queryResult }: StepsLayoutProps) => {
       })
     : undefined
 
+  const completedSteps = step.puzzle.steps.filter(
+    (step) => step?.hasUserCompletedStep
+  )
+  const uncompletedSteps = step.puzzle.steps.length - completedSteps.length
+
   return (
     <div className="mx-auto flex max-w-lg flex-col justify-center pb-8 md:max-w-5xl md:flex-row md:gap-6 md:px-4 ">
       {step.stepPage && (
@@ -77,9 +84,58 @@ const StepsLayout = ({ puzzleId, step, queryResult }: StepsLayoutProps) => {
             <div className="relative flex w-full flex-1 flex-col gap-4 text-center md:max-w-[50%]">
               <div className="flex-1 border-y-2 border-stone-50">
                 <div className="relative h-full">
-                  <div className="flex h-full flex-col justify-center gap-12 px-12 py-20">
+                  <div className="flex h-full flex-col justify-center gap-12 px-12 py-20 text-sm">
                     <div>
-                      <div className="flex justify-center">success</div>
+                      <p className="mb-4 font-bold text-white">Well done!</p>
+                      <div className="flex items-center justify-center">
+                        {step.puzzle.steps.map((curStep, index) => {
+                          if (!curStep) return null
+
+                          return (
+                            <>
+                              {curStep?.hasUserCompletedStep ? (
+                                // User has completed this step
+                                <CheckCircleIcon
+                                  key={curStep.id}
+                                  className={clsx(
+                                    'h-8 w-8 fill-transparent',
+                                    curStep.stepSortWeight ===
+                                      step.stepSortWeight
+                                      ? 'text-green-400'
+                                      : 'text-white'
+                                  )}
+                                />
+                              ) : curStep.id === nextStep?.id ? (
+                                // Next available step the user can play
+                                <LockOpenIcon
+                                  key={curStep.id}
+                                  className={clsx(
+                                    'h-8 w-8 fill-transparent text-white'
+                                  )}
+                                />
+                              ) : (
+                                // Steps not yet available to user
+                                <LockClosedIcon
+                                  key={curStep.id}
+                                  className={clsx(
+                                    'h-8 w-8 fill-transparent text-white/50'
+                                  )}
+                                />
+                              )}
+                              {index + 1 !== step.puzzle.steps.length && (
+                                <span className="h-[2px] max-w-[100px] flex-1 bg-white"></span>
+                              )}
+                            </>
+                          )
+                        })}
+                      </div>
+
+                      <p className="mt-4">
+                        {uncompletedSteps > 0
+                          ? `${uncompletedSteps} more
+                        ${uncompletedSteps > 1 ? 'steps' : 'step'} to go`
+                          : 'Puzzle completed!'}
+                      </p>
                     </div>
                   </div>
                 </div>
