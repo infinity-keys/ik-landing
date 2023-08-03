@@ -56,6 +56,8 @@ const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
   )
   const uncompletedSteps = step.puzzle.steps.length - completedSteps.length
   const isFinalStep = step.puzzle.steps.at(-1)?.id === step.id
+  const remainingStepsText = `${uncompletedSteps} more
+  ${uncompletedSteps > 1 ? 'steps' : 'step'} to go`
 
   return (
     <div className="mx-auto flex max-w-lg flex-col justify-center pb-8 md:max-w-5xl md:flex-row md:gap-6 md:px-4 ">
@@ -132,8 +134,7 @@ const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
 
                       <p className="mt-4">
                         {uncompletedSteps > 0
-                          ? `${uncompletedSteps} more
-                        ${uncompletedSteps > 1 ? 'steps' : 'step'} to go`
+                          ? remainingStepsText
                           : step.puzzle.rewardable.successMessage ||
                             'Puzzle Completed!'}
                       </p>
