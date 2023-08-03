@@ -41,6 +41,7 @@ export const QUERY = gql`
           }
           rewardable {
             slug
+            successMessage
           }
         }
       }
@@ -74,6 +75,10 @@ export const Success = ({
   queryResult,
 }: CellSuccessProps<FindStepBySlugQuery, FindStepBySlugQueryVariables>) => {
   return (
-    <StepsLayout puzzleId={puzzleId} step={step} queryResult={queryResult} />
+    <StepsLayout
+      puzzleId={puzzleId}
+      step={step}
+      refetch={queryResult?.refetch}
+    />
   )
 }

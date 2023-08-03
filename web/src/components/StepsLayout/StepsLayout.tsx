@@ -1,4 +1,4 @@
-import { PropsWithChildren, lazy, useState } from 'react'
+import { Fragment, PropsWithChildren, lazy, useState } from 'react'
 
 import CheckCircleIcon from '@heroicons/react/24/outline/CheckCircleIcon'
 import LockClosedIcon from '@heroicons/react/24/outline/LockClosedIcon'
@@ -19,7 +19,7 @@ import { overlayContent } from 'src/lib/stepOverlayContent'
 interface StepsLayoutProps extends PropsWithChildren {
   puzzleId: string
   step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
-  queryResult: CellSuccessProps['queryResult']
+  refetch?: NonNullable<CellSuccessProps['queryResult']>['refetch']
 }
 
 const SimpleTextInput = lazy(
@@ -32,7 +32,7 @@ const StepLensApiButton = lazy(
   () => import('src/components/StepLensApiButton/StepLensApiButton')
 )
 
-const StepsLayout = ({ puzzleId, step, queryResult }: StepsLayoutProps) => {
+const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
   const [showOverlay, setShowOverlay] = useState(false)
   const [slideIndex, setSlideIndex] = useState(0)
   if (!puzzleId || !step) return null
@@ -55,6 +55,7 @@ const StepsLayout = ({ puzzleId, step, queryResult }: StepsLayoutProps) => {
     (step) => step?.hasUserCompletedStep
   )
   const uncompletedSteps = step.puzzle.steps.length - completedSteps.length
+  const isFinalStep = step.puzzle.steps.at(-1)?.id === step.id
 
   return (
     <div className="mx-auto flex max-w-lg flex-col justify-center pb-8 md:max-w-5xl md:flex-row md:gap-6 md:px-4 ">
@@ -86,17 +87,18 @@ const StepsLayout = ({ puzzleId, step, queryResult }: StepsLayoutProps) => {
                 <div className="relative h-full">
                   <div className="flex h-full flex-col justify-center gap-12 px-12 py-20 text-sm">
                     <div>
-                      <p className="mb-4 font-bold text-white">Well done!</p>
+                      <p className="mb-4 font-bold text-white">
+                        {isFinalStep ? 'Hunt Finished' : 'Well done'}
+                      </p>
                       <div className="flex items-center justify-center">
                         {step.puzzle.steps.map((curStep, index) => {
                           if (!curStep) return null
 
                           return (
-                            <>
+                            <Fragment key={curStep.id}>
                               {curStep?.hasUserCompletedStep ? (
                                 // User has completed this step
                                 <CheckCircleIcon
-                                  key={curStep.id}
                                   className={clsx(
                                     'h-8 w-8 fill-transparent',
                                     curStep.stepSortWeight ===
@@ -108,7 +110,6 @@ const StepsLayout = ({ puzzleId, step, queryResult }: StepsLayoutProps) => {
                               ) : curStep.id === nextStep?.id ? (
                                 // Next available step the user can play
                                 <LockOpenIcon
-                                  key={curStep.id}
                                   className={clsx(
                                     'h-8 w-8 fill-transparent text-white'
                                   )}
@@ -116,16 +117,15 @@ const StepsLayout = ({ puzzleId, step, queryResult }: StepsLayoutProps) => {
                               ) : (
                                 // Steps not yet available to user
                                 <LockClosedIcon
-                                  key={curStep.id}
                                   className={clsx(
                                     'h-8 w-8 fill-transparent text-white/50'
                                   )}
                                 />
                               )}
                               {index + 1 !== step.puzzle.steps.length && (
-                                <span className="h-[2px] max-w-[100px] flex-1 bg-white"></span>
+                                <span className="h-[2px] max-w-[100px] flex-1 bg-white" />
                               )}
-                            </>
+                            </Fragment>
                           )
                         })}
                       </div>
@@ -134,7 +134,8 @@ const StepsLayout = ({ puzzleId, step, queryResult }: StepsLayoutProps) => {
                         {uncompletedSteps > 0
                           ? `${uncompletedSteps} more
                         ${uncompletedSteps > 1 ? 'steps' : 'step'} to go`
-                          : 'Puzzle completed!'}
+                          : step.puzzle.rewardable.successMessage ||
+                            'Puzzle Completed!'}
                       </p>
                     </div>
                   </div>
@@ -197,7 +198,7 @@ const StepsLayout = ({ puzzleId, step, queryResult }: StepsLayoutProps) => {
                       count={step.stepSimpleText?.solutionCharCount || 0}
                       step={step}
                       puzzleId={puzzleId}
-                      onSuccess={queryResult?.refetch}
+                      onSuccess={refetch}
                     />
                   )}
 
@@ -211,7 +212,7 @@ const StepsLayout = ({ puzzleId, step, queryResult }: StepsLayoutProps) => {
                     <AccountCheckButton
                       step={step}
                       puzzleId={puzzleId}
-                      onSuccess={queryResult?.refetch}
+                      onSuccess={refetch}
                     />
                   )}
 
@@ -219,7 +220,7 @@ const StepsLayout = ({ puzzleId, step, queryResult }: StepsLayoutProps) => {
                     <StepLensApiButton
                       step={step}
                       puzzleId={puzzleId}
-                      onSuccess={queryResult?.refetch}
+                      onSuccess={refetch}
                     />
                   )}
                 </StepPageLayout>
