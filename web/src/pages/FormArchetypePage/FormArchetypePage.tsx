@@ -27,6 +27,7 @@ import {
   UseFormSetValue,
   UseFormGetValues,
   CheckboxField,
+  NumberField,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 
@@ -166,7 +167,7 @@ function Step({
       >
         Step Sort Weight
       </Label>
-      <TextField
+      <NumberField
         placeholder="Challenge"
         {...register(`${stepsArrayName}.${index}.stepSortWeight`)}
         className="block bg-inherit text-stone-100"
