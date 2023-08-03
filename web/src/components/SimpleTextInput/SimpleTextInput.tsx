@@ -1,7 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
 
-// import loRange from 'lodash/range'
-// import RICIBs from 'react-individual-character-input-boxes'
 import { FindStepBySlugQuery } from 'types/graphql'
 
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
@@ -42,18 +40,10 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
     setInputValue(value)
   }
 
-  // const handleSubmit = (value: string) => {
-  //   setIsComplete(true)
-  //   // Here, you can handle the submission logic
-  //   console.log('Passcode submitted:', value)
-  // }
-
   // Creating a string that displays the current input and remaining asterisks
   useEffect(() => {
     setDisplayValue(inputValue + '*'.repeat(passcodeLength - inputValue.length))
   }, [inputValue, passcodeLength, setDisplayValue])
-  // const displayValue =
-  //   inputValue + '*'.repeat(passcodeLength - inputValue.length)
 
   return (
     <div>
@@ -69,15 +59,15 @@ const SimpleTextInput = ({ count, step, puzzleId }: SimpleTextInputProps) => {
             <form className="" onSubmit={handleMakeAttempt}>
               <div className="relative">
                 <input
-                  className="absolute rounded
-                   border-solid border-white bg-transparent p-0 text-start font-mono text-brand-gray-primary caret-white focus:border-none"
+                  className="
+                   rounded border-solid border-white bg-transparent py-2 px-4 font-mono tracking-[.8em] text-transparent caret-white focus:border-none"
                   type="text"
                   value={inputValue}
                   maxLength={passcodeLength}
                   onChange={handleInputChange}
                   disabled={isComplete}
                 />
-                <div className="pointer-events-none absolute inset-0 text-start font-mono tracking-[.5em]">
+                <div className=" pointer-events-none absolute inset-0 flex items-center px-4 py-2 font-mono tracking-[.8em]">
                   {displayValue}
                 </div>
               </div>
