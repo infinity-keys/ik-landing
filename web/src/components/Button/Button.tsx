@@ -10,6 +10,7 @@ export interface ButtonProps {
   textColor?: 'dark' | 'light'
   fullWidth?: boolean
   border?: boolean
+  shadow?: boolean
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium' | 'large'
   variant?: 'solid' | 'outline' | 'faded' | 'secondary' | 'warn'
@@ -28,6 +29,7 @@ export default function Button({
   size = 'medium',
   variant = 'solid',
   border = true,
+  shadow = true,
   onClick,
   disabled = false,
   responsive = false,
@@ -37,7 +39,7 @@ export default function Button({
     'ik-button inline-block border hover:border-white rounded-md font-medium text-center transition',
     // Sizing
     { 'block w-full': fullWidth },
-    // borders
+    // Borders
     { 'border-transparent': !border },
     { 'border-brand-accent-primary': border },
     // Text color
@@ -45,6 +47,8 @@ export default function Button({
       textColor === 'light' && 'text-white hover:text-brand-gray-primary',
       textColor === 'dark' && 'text-brand-gray-primary hover:text-white',
     ],
+    // Box Shadow
+    { 'shadow-[0_3px_0_0_rgba(68,64,60,1)]': shadow },
     // Variants
     [
       variant === 'solid' && {
