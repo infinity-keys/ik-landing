@@ -11,6 +11,14 @@
         "$value": "#ccbba0",
         "$type": "color"
       },
+      "ik-gold-tertiary": {
+        "$value": "#c7a47e",
+        "$type": "color"
+      },
+      "ik-gold-hover": {
+        "$value": "#ba8a56",
+        "$type": "color"
+      },
       "ik-gray-primary": {
         "$value": "#1e1e1c",
         "$type": "color"

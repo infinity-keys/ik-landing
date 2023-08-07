@@ -11,6 +11,7 @@ export interface ButtonProps {
   fullWidth?: boolean
   border?: boolean
   shadow?: boolean
+  shadowHover?: boolean
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium' | 'large'
   variant?: 'solid' | 'outline' | 'faded' | 'secondary' | 'warn'
@@ -30,13 +31,14 @@ export default function Button({
   variant = 'solid',
   border = true,
   shadow = true,
+  shadowHover = false,
   onClick,
-  disabled = false,
+  disabled = true,
   responsive = false,
   children,
 }: ButtonProps) {
   const classes = clsx(
-    'ik-button inline-block border hover:border-white rounded-md font-medium text-center transition',
+    'ik-button inline-block border hover:border-white rounded-md font-medium text-center transition px-12',
     // Sizing
     { 'block w-full': fullWidth },
     // Borders
@@ -44,16 +46,19 @@ export default function Button({
     { 'border-brand-accent-primary': border },
     // Text color
     [
-      textColor === 'light' && 'text-white hover:text-brand-gray-primary',
+      textColor === 'light' && 'text-white',
       textColor === 'dark' && 'text-brand-gray-primary hover:text-white',
     ],
     // Box Shadow
     { 'shadow-[0_3px_0_0_rgba(68,64,60,1)]': shadow },
+    { 'shadow-[0_3px_0_0_rgba(87,83,78,1)]': shadowHover },
     // Variants
     [
       variant === 'solid' && {
-        'bg-brand-accent-primary': true,
-        'bg-brand-accent-primary/50 border-brand-accent-primary hover:border-brand-accent-primary text-white/50 hover:text-white/50':
+        'bg-brand-accent-primary hover:border-brand-accent-hover hover:bg-brand-accent-hover': true,
+        'shadowHover': true,
+        'shadow': false,
+        'bg-brand-accent-tertiary border-brand-accent-tertiary hover:border-brand-accent-primary hover:bg-text-white/50 hover:text-stone-200':
           disabled,
       },
       variant === 'outline' && {
