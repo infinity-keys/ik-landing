@@ -89,8 +89,14 @@ const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
                 <div className="relative h-full">
                   <div className="flex h-full flex-col justify-center gap-12 px-12 py-20 text-sm">
                     <div>
-                      <p className="mb-8 font-bold text-white">
+                      <p className="mb-2 font-bold text-white">
                         {isFinalStep ? 'Hunt finished!' : 'Well done!'}
+                      </p>
+                      <p className="mb-10">
+                        {uncompletedSteps > 0
+                          ? remainingStepsText
+                          : step.puzzle.rewardable.successMessage ||
+                            'Puzzle Completed!'}
                       </p>
                       <div className="flex items-center justify-center">
                         {step.puzzle.steps.map((curStep, index) => {
@@ -110,13 +116,6 @@ const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
                           )
                         })}
                       </div>
-
-                      <p className="mt-10 md:mt-16">
-                        {uncompletedSteps > 0
-                          ? remainingStepsText
-                          : step.puzzle.rewardable.successMessage ||
-                            'Puzzle Completed!'}
-                      </p>
                     </div>
                   </div>
                 </div>
