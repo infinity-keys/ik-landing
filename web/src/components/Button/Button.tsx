@@ -11,7 +11,6 @@ export interface ButtonProps {
   fullWidth?: boolean
   border?: boolean
   shadow?: boolean
-  shadowHover?: boolean
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium' | 'large'
   variant?: 'solid' | 'outline' | 'faded' | 'secondary' | 'warn'
@@ -31,9 +30,8 @@ export default function Button({
   variant = 'solid',
   border = true,
   shadow = true,
-  shadowHover = false,
   onClick,
-  disabled = true,
+  disabled = false,
   responsive = false,
   children,
 }: ButtonProps) {
@@ -51,14 +49,11 @@ export default function Button({
     ],
     // Box Shadow
     { 'shadow-[0_3px_0_0_rgba(68,64,60,1)]': shadow },
-    { 'shadow-[0_3px_0_0_rgba(87,83,78,1)]': shadowHover },
     // Variants
     [
       variant === 'solid' && {
-        'bg-brand-accent-primary hover:border-brand-accent-hover hover:bg-brand-accent-hover': true,
-        'shadowHover': true,
-        'shadow': false,
-        'bg-brand-accent-tertiary border-brand-accent-tertiary hover:border-brand-accent-primary hover:bg-text-white/50 hover:text-stone-200':
+        'bg-brand-accent-primary hover:shadow-[0_3px_0_0_rgba(87,83,78,1)] hover:border-brand-accent-hover hover:bg-brand-accent-hover': true,
+        'bg-brand-accent-tertiary border-brand-accent-tertiary hover:border-brand-accent-tertiary hover:bg-brand-accent-tertiary hover:text-stone-200':
           disabled,
       },
       variant === 'outline' && {
