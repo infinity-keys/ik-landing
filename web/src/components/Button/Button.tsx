@@ -48,12 +48,16 @@ export default function Button({
       textColor === 'dark' && 'text-brand-gray-primary hover:text-white',
     ],
     // Box Shadow
-    { 'shadow-[0_3px_0_0_rgba(68,64,60,1)]': shadow },
+    {
+      'shadow-[0_3px_0_0_rgba(68,64,60,1)] transition-shadow hover:shadow-[rgba(87,83,78,1)]':
+        shadow,
+    },
     // Variants
     [
       variant === 'solid' && {
-        'bg-brand-accent-primary hover:shadow-[0_3px_0_0_rgba(87,83,78,1)] hover:border-brand-accent-hover hover:bg-brand-accent-hover': true,
-        'bg-brand-accent-tertiary border-brand-accent-tertiary hover:border-brand-accent-tertiary hover:bg-brand-accent-tertiary hover:text-stone-200':
+        'bg-brand-accent-primary  hover:border-brand-accent-hover hover:bg-brand-accent-hover':
+          true,
+        'bg-brand-accent-tertiary border-brand-accent-tertiary text-stone-200 hover:shadow-[rgba(68,64,60,1)] hover:border-brand-accent-tertiary hover:bg-brand-accent-tertiary hover:text-stone-200':
           disabled,
       },
       variant === 'outline' && {
