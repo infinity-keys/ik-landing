@@ -113,6 +113,10 @@
       @apply mt-4 font-bold;
     }
 
+    a > img {
+      @apply mx-auto block;
+    }
+
     h1,
     h2 {
       @apply my-5;
