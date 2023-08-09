@@ -4,7 +4,7 @@ import {
 } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
-import { Link, navigate, routes } from '@redwoodjs/router'
+import { Link, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
 
@@ -35,6 +35,11 @@ const AddRolesPage = () => {
     onError() {
       toast.error('Something went wrong checking your NFTs.')
     },
+    onCompleted({ addLensFormRole }) {
+      if (!addLensFormRole.success) {
+        toast('This wallet is missing a required NFT.')
+      }
+    },
   })
 
   return (
@@ -44,20 +49,33 @@ const AddRolesPage = () => {
       {loading ? (
         <LoadingIcon />
       ) : (
-        <div className="flex justify-center text-center">
+        <div className="mx-auto max-w-prose justify-center text-center">
           {(currentUser && currentUser.roles.includes('LENS_FORM')) ||
           data?.addLensFormRole.success ? (
             <div>
-              <p className="mb-2">
-                Please fill out our form to get your Lens account
+              <p className="mb-8">
+                Continue to our form to request your Lens account
               </p>
-              <Button to={routes.lensProfileForm()} text="Go to Form" />
+              <Button to={routes.lensProfileForm()} text="Continue to Form" />
             </div>
           ) : (
             <div>
-              <p className="mb-2">
-                Please collect the following NFTs to be eligible to claim your
-                Lens profile
+              <p className="mb-8">
+                Please collect the{' '}
+                <Link
+                  className="text-brand-accent-primary underline transition-colors hover:text-brand-accent-secondary"
+                  to={routes.puzzleLanding({ slug: 'lenscollector' })}
+                >
+                  Lens Collector
+                </Link>{' '}
+                or{' '}
+                <Link
+                  className="text-brand-accent-primary underline transition-colors hover:text-brand-accent-secondary"
+                  to={routes.puzzleLanding({ slug: 'cometh-cadets' })}
+                >
+                  Cometh Cadet
+                </Link>{' '}
+                NFT to be eligble to request your Lens profile.
               </p>
               <Button onClick={() => addRole()} text="Check NFTs" />
             </div>
