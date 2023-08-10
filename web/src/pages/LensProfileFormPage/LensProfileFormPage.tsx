@@ -1,3 +1,4 @@
+import { ETH_ADDRESS_REGEX, HTTP_REGEX } from '@infinity-keys/constants'
 import clsx from 'clsx'
 import { LensFormMutation, LensFormMutationVariables } from 'types/graphql'
 
@@ -107,7 +108,7 @@ const LensProfileFormPage = () => {
                 validation={{
                   required: true,
                   pattern: {
-                    value: /^0x[a-fA-F0-9]{40}$/,
+                    value: ETH_ADDRESS_REGEX,
                     message: 'Invalid Ethereum address',
                   },
                 }}
@@ -133,7 +134,7 @@ const LensProfileFormPage = () => {
                 validation={{
                   required: true,
                   pattern: {
-                    value: /^https?:\/\//,
+                    value: HTTP_REGEX,
                     message: 'Link must start with http:// or https://',
                   },
                 }}
@@ -157,7 +158,7 @@ const LensProfileFormPage = () => {
                 errorClassName="rounded border-red-400 bg-transparent"
                 validation={{
                   pattern: {
-                    value: /^https?:\/\//,
+                    value: HTTP_REGEX,
                     message: 'Link must start with http:// or https://',
                   },
                 }}

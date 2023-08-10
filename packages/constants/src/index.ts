@@ -7,7 +7,6 @@ export const PUZZLE_COOKIE_NAME = `ik-puzzles`
 export const ANONYMOUS_USER_ID = 'ANON'
 
 // Crypto stuff
-export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
 export const welcome = 'Thanks for playing :)'
 
 // Email stuff
@@ -142,3 +141,7 @@ export const avalancheChain: Chain = {
   },
   testnet: false,
 }
+
+// REGEX
+export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
+export const HTTP_REGEX = /^https?:\/\//
