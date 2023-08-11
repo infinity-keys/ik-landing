@@ -12,7 +12,7 @@ import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button'
 import Seo from 'src/components/Seo/Seo'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
-
+import { useLoginModal } from 'src/providers/loginModal/loginModal'
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface Props {
@@ -38,6 +38,7 @@ const Rewardable = ({ rewardable }: Props) => {
   const { isAuthenticated } = useAuth()
   const [showOverlay, setShowOverlay] = useState(false)
   const [currentOverlayContent, setCurrentOverlayContent] = useState(0)
+  const { setIsLoginModalOpen } = useLoginModal()
 
   if (!rewardable?.puzzle) {
     return null
@@ -142,7 +143,7 @@ const Rewardable = ({ rewardable }: Props) => {
                 <Button text="Start Quest" />
               )
             ) : (
-              <Button text="Login" />
+              <Button onClick={() => setIsLoginModalOpen(true)} text="Login" />
             )}
           </div>
         </div>

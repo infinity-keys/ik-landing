@@ -1,14 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import LoginModal from './LoginModal'
+import LoginForm from './LoginForm'
 
 //   Improve this test with help from the Redwood Testing Doc:
-//    https://redwoodjs.com/docs/testing#testing-components
+//   https://redwoodjs.com/docs/testing#testing-pages-layouts
 
-describe('LoginModal', () => {
+describe('LoginForm', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<LoginModal />)
+      render(<LoginForm />)
     }).not.toThrow()
   })
 })

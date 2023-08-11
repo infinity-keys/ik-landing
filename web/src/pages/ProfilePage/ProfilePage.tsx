@@ -9,7 +9,7 @@ import Seo from 'src/components/Seo/Seo'
 import Wrapper from 'src/components/Wrapper/Wrapper'
 import { clearRedirectTo } from 'src/providers/redirection'
 
-const LoginModal = lazy(() => import('src/components/LoginModal/LoginModal'))
+const LoginForm = lazy(() => import('src/components/LoginForm/LoginForm'))
 const ProgressDeleteButton = lazy(
   () => import('src/components/ProgressDeleteButton/ProgressDeleteButton')
 )
@@ -46,7 +46,7 @@ const ProfilePage = () => {
         <LoadingIcon />
       ) : (
         <div className="relative text-center">
-          {!isAuthenticated && <LoginModal />}
+          {!isAuthenticated && <LoginForm />}
 
           <p className="pt-2 text-center text-brand-accent-secondary">
             {errorMessage}
