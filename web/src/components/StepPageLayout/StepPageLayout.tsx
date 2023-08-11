@@ -40,7 +40,9 @@ const StepPageLayout = ({
         {hasModal && (
           <div className="relative z-40 flex justify-center">
             <button onClick={() => setShowOverlay(!showOverlay)}>
-              <span className="block max-w-[226px]">{overlayContent.icon}</span>
+              <span className="block max-w-[158px] md:max-w-[226px]">
+                {overlayContent.icon}
+              </span>
             </button>
           </div>
         )}
