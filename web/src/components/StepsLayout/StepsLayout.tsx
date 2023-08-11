@@ -1,19 +1,18 @@
 import { Fragment, PropsWithChildren, lazy, useState } from 'react'
 
-import CheckCircleIcon from '@heroicons/react/24/outline/CheckCircleIcon'
-import LockClosedIcon from '@heroicons/react/24/outline/LockClosedIcon'
-import LockOpenIcon from '@heroicons/react/24/outline/LockOpenIcon'
 import clsx from 'clsx'
 import { FindStepBySlugQuery } from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
 import { CellSuccessProps } from '@redwoodjs/web'
 
-import Button from 'src/components//Button/Button'
+import Button from 'src/components/Button/Button'
 import Markdown from 'src/components/Markdown/Markdown'
 import MarkdownCarousel from 'src/components/MarkdownCarousel/MarkdownCarousel'
 import NeedHintIcon from 'src/components/OverlayIcons/NeedHintIcon'
 import StepPageLayout from 'src/components/StepPageLayout/StepPageLayout'
+import CheckGreenIcon from 'src/components/StepProgressIcons/CheckGreenIcon'
+import LockedIcon from 'src/components/StepProgressIcons/LockedIcon'
 import { overlayContent } from 'src/lib/stepOverlayContent'
 
 interface StepsLayoutProps extends PropsWithChildren {
@@ -77,6 +76,7 @@ const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
                     src={image}
                     alt=""
                     loading={index === 0 ? 'eager' : 'lazy'}
+                    className="w-full"
                   />
                 </div>
               )
@@ -89,8 +89,14 @@ const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
                 <div className="relative h-full">
                   <div className="flex h-full flex-col justify-center gap-12 px-12 py-20 text-sm">
                     <div>
-                      <p className="mb-4 font-bold text-white">
-                        {isFinalStep ? 'Hunt Finished' : 'Well done'}
+                      <p className="mb-2 font-bold text-white">
+                        {isFinalStep ? 'Hunt finished!' : 'Well done!'}
+                      </p>
+                      <p className="mb-10">
+                        {uncompletedSteps > 0
+                          ? remainingStepsText
+                          : step.puzzle.rewardable.successMessage ||
+                            'Puzzle Completed!'}
                       </p>
                       <div className="flex items-center justify-center">
                         {step.puzzle.steps.map((curStep, index) => {
@@ -99,30 +105,9 @@ const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
                           return (
                             <Fragment key={curStep.id}>
                               {curStep?.hasUserCompletedStep ? (
-                                // User has completed this step
-                                <CheckCircleIcon
-                                  className={clsx(
-                                    'h-8 w-8 fill-transparent',
-                                    curStep.stepSortWeight ===
-                                      step.stepSortWeight
-                                      ? 'text-green-400'
-                                      : 'text-white'
-                                  )}
-                                />
-                              ) : curStep.id === nextStep?.id ? (
-                                // Next available step the user can play
-                                <LockOpenIcon
-                                  className={clsx(
-                                    'h-8 w-8 fill-transparent text-white'
-                                  )}
-                                />
+                                <CheckGreenIcon className="h-8 w-8" />
                               ) : (
-                                // Steps not yet available to user
-                                <LockClosedIcon
-                                  className={clsx(
-                                    'h-8 w-8 fill-transparent text-white/50'
-                                  )}
-                                />
+                                <LockedIcon className="h-8 w-8" />
                               )}
                               {index + 1 !== step.puzzle.steps.length && (
                                 <span className="h-[2px] max-w-[100px] flex-1 bg-white" />
@@ -131,13 +116,6 @@ const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
                           )
                         })}
                       </div>
-
-                      <p className="mt-4">
-                        {uncompletedSteps > 0
-                          ? remainingStepsText
-                          : step.puzzle.rewardable.successMessage ||
-                            'Puzzle Completed!'}
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -194,36 +172,38 @@ const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
                       : undefined
                   }
                 >
-                  {step.type === 'SIMPLE_TEXT' && (
-                    <SimpleTextInput
-                      count={step.stepSimpleText?.solutionCharCount || 0}
-                      step={step}
-                      puzzleId={puzzleId}
-                      onSuccess={refetch}
-                    />
-                  )}
+                  <div className="text-center">
+                    {step.type === 'SIMPLE_TEXT' && (
+                      <SimpleTextInput
+                        count={step.stepSimpleText?.solutionCharCount || 0}
+                        step={step}
+                        puzzleId={puzzleId}
+                        onSuccess={refetch}
+                      />
+                    )}
 
-                  {(step.type === 'NFT_CHECK' ||
-                    step.type === 'FUNCTION_CALL' ||
-                    step.type === 'COMETH_API' ||
-                    step.type === 'ORIUM_API' ||
-                    step.type === 'ASSET_TRANSFER' ||
-                    step.type === 'TOKEN_ID_RANGE' ||
-                    step.type === 'ERC20_BALANCE') && (
-                    <AccountCheckButton
-                      step={step}
-                      puzzleId={puzzleId}
-                      onSuccess={refetch}
-                    />
-                  )}
+                    {(step.type === 'NFT_CHECK' ||
+                      step.type === 'FUNCTION_CALL' ||
+                      step.type === 'COMETH_API' ||
+                      step.type === 'ORIUM_API' ||
+                      step.type === 'ASSET_TRANSFER' ||
+                      step.type === 'TOKEN_ID_RANGE' ||
+                      step.type === 'ERC20_BALANCE') && (
+                      <AccountCheckButton
+                        step={step}
+                        puzzleId={puzzleId}
+                        onSuccess={refetch}
+                      />
+                    )}
 
-                  {step.type === 'LENS_API' && (
-                    <StepLensApiButton
-                      step={step}
-                      puzzleId={puzzleId}
-                      onSuccess={refetch}
-                    />
-                  )}
+                    {step.type === 'LENS_API' && (
+                      <StepLensApiButton
+                        step={step}
+                        puzzleId={puzzleId}
+                        onSuccess={refetch}
+                      />
+                    )}
+                  </div>
                 </StepPageLayout>
               </MarkdownCarousel>
             </div>

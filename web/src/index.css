@@ -121,7 +121,7 @@
     p,
     li,
     a {
-      @apply text-base;
+      @apply text-sm md:text-base;
     }
 
     ol,
