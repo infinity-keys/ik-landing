@@ -162,7 +162,6 @@ const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
                     </StepPageLayout>
                   )
                 })}
-
                 <StepPageLayout
                   showOverlay={showOverlay}
                   setShowOverlay={setShowOverlay}

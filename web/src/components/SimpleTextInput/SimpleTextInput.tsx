@@ -1,14 +1,10 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 
-import loRange from 'lodash/range'
-import RICIBs from 'react-individual-character-input-boxes'
 import { FindStepBySlugQuery } from 'types/graphql'
 
-import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
-import Lock from 'src/svgs/Lock'
 
 interface SimpleTextInputProps {
   count: number
@@ -24,8 +20,12 @@ const SimpleTextInput = ({
   onSuccess,
 }: SimpleTextInputProps) => {
   const { loading, failedAttempt, makeAttempt, errorMessage } = useMakeAttempt()
-  const [text, setText] = useState('')
+  const [text] = useState('')
 
+  const passcodeLength = 8 // Set the length of the passcode here
+  const [inputValue, setInputValue] = useState('')
+  const [isComplete] = useState(false)
+  const [displayValue, setDisplayValue] = useState('')
   // This will use useMemo, possibly
   const handleMakeAttempt = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -46,6 +46,16 @@ const SimpleTextInput = ({
     }
   }
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setInputValue(value)
+  }
+
+  // Creating a string that displays the current input and remaining asterisks
+  useEffect(() => {
+    setDisplayValue(inputValue + '*'.repeat(passcodeLength - inputValue.length))
+  }, [inputValue, passcodeLength, setDisplayValue])
+
   return (
     <div>
       {loading ? (
@@ -54,21 +64,24 @@ const SimpleTextInput = ({
         <div className="z-10 flex justify-center">
           <div>
             <div className="flex py-5">
-              <div className="w-6">
-                <Lock />
-              </div>
-              <p className="pt-2 pl-4 text-base font-bold">Solve Puzzle</p>
+              <p className="pt-2 pl-4 text-lg">Input Your Answer:</p>
             </div>
 
-            <form className="magic-input" onSubmit={handleMakeAttempt}>
-              <RICIBs
-                amount={count}
-                handleOutputString={(t) => setText(t)}
-                inputRegExp={/^\S*$/}
-                inputProps={loRange(count).map(() => ({
-                  className: 'ik-code-input',
-                }))}
-              />
+            <form className="" onSubmit={handleMakeAttempt}>
+              <div className="relative">
+                <input
+                  className="
+                   rounded border-solid border-white bg-transparent py-2 px-4 font-mono tracking-[.8em] text-transparent caret-white focus:border-none"
+                  type="text"
+                  value={inputValue}
+                  maxLength={passcodeLength}
+                  onChange={handleInputChange}
+                  disabled={isComplete}
+                />
+                <div className=" pointer-events-none absolute inset-0 flex items-center px-4 py-2 font-mono tracking-[.8em]">
+                  {displayValue}
+                </div>
+              </div>
 
               {failedAttempt && !errorMessage && (
                 <div
@@ -83,14 +96,6 @@ const SimpleTextInput = ({
               )}
 
               {errorMessage && <p className="">{errorMessage}</p>}
-
-              <div className="flex justify-center pt-8" data-cy="submit">
-                <Button
-                  text="Submit"
-                  type="submit"
-                  disabled={text.length !== count}
-                />
-              </div>
             </form>
           </div>
         </div>
