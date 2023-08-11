@@ -6,10 +6,9 @@ import { FindStepBySlugQuery } from 'types/graphql'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
 import MarkdownCarousel from 'src/components/MarkdownCarousel/MarkdownCarousel'
+import NeedHintIcon from 'src/components/OverlayIcons/NeedHintIcon'
 import StepPageLayout from 'src/components/StepPageLayout/StepPageLayout'
 import { overlayContent } from 'src/lib/stepOverlayContent'
-
-import NeedHintIcon from '../OverlayIcons/NeedHintIcon'
 
 interface StepsLayoutProps extends PropsWithChildren {
   puzzleId: string
