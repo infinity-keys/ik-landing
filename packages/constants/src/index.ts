@@ -6,7 +6,6 @@ export const IK_CLAIMS_NAMESPACE = 'https://infinitykeys.io'
 export const PUZZLE_COOKIE_NAME = `ik-puzzles`
 
 // Crypto stuff
-export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
 export const welcome = 'Thanks for playing :)'
 
 // Email stuff
@@ -141,3 +140,7 @@ export const avalancheChain: Chain = {
   },
   testnet: false,
 }
+
+// REGEX
+export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
+export const HTTP_REGEX = /^https?:\/\//
