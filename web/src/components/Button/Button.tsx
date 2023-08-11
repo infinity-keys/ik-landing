@@ -7,6 +7,7 @@ import { Link } from '@redwoodjs/router'
 export interface ButtonProps {
   text: string
   to?: string
+  href?: string
   textColor?: 'dark' | 'light'
   fullWidth?: boolean
   border?: boolean
@@ -22,6 +23,7 @@ export interface ButtonProps {
 export default function Button({
   text,
   to,
+  href,
   textColor = 'light',
   fullWidth = false,
   type = 'submit',
@@ -81,6 +83,22 @@ export default function Button({
           {text}
         </span>
       </Link>
+    )
+  }
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={classes}
+      >
+        <span className="flex items-center justify-center">
+          {children}
+          {text}
+        </span>
+      </a>
     )
   }
 

@@ -5,6 +5,8 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import RewardablePuzzle from 'src/components/RewardablePuzzle/RewardablePuzzle'
 
+// @TODO: This query is skip auth, and the only thing we need when users are
+// logged out is the puzzle cover image.
 export const QUERY = gql`
   query FindRewardablePuzzleBySlug($slug: String!) {
     rewardable: rewardableBySlug(slug: $slug, type: PUZZLE) {
@@ -15,6 +17,10 @@ export const QUERY = gql`
         id
         coverImage
         requirements
+        steps {
+          stepSortWeight
+          hasUserCompletedStep
+        }
       }
     }
   }
