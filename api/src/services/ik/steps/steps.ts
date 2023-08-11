@@ -26,9 +26,11 @@ export const stepBySlug: QueryResolvers['stepBySlug'] = async ({
     },
   })
 
-  if (!rewardable?.puzzle?.steps[0]) {
+  const step = rewardable?.puzzle?.steps[0]
+
+  if (!step) {
     throw new Error('Could not find step')
   }
 
-  return rewardable.puzzle.steps[0]
+  return step
 }

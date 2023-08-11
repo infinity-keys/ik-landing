@@ -82,7 +82,6 @@ const StepsLayout = ({ step }: StepsLayoutProps) => {
                     </StepPageLayout>
                   )
                 })}
-
                 <StepPageLayout
                   showOverlay={showOverlay}
                   setShowOverlay={setShowOverlay}
