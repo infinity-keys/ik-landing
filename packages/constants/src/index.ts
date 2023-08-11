@@ -7,7 +7,6 @@ export const PUZZLE_COOKIE_NAME = `ik-puzzles`
 export const ANONYMOUS_USER_ID = 'ANON'
 
 // Crypto stuff
-export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
 export const welcome = 'Thanks for playing :)'
 
 // Email stuff
@@ -143,21 +142,6 @@ export const avalancheChain: Chain = {
   testnet: false,
 }
 
-export const testPuzzle = {
-  rewardable: {
-    name: 'Puzzle 1 (Brazil)',
-    slug: 'puzzle-1',
-    explanation:
-      'This is the first puzzle, it is about Brazil, it is anonymous so you can solve it without logging in',
-  },
-  step: {
-    challenge: 'What is the biggest river in Brazil?',
-    stepSortWeight: 1,
-    type: 'SIMPLE_TEXT',
-    stepSimpleText: {
-      create: {
-        solution: 'Amazon',
-      },
-    },
-  },
-}
+// REGEX
+export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
+export const HTTP_REGEX = /^https?:\/\//
