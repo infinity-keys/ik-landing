@@ -53,7 +53,7 @@ const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID_LENS_FORM
 const jwtClient = new google.auth.JWT(
   process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
   undefined,
-  process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY,
+  process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(/\\n/g, '\n'),
   ['https://www.googleapis.com/auth/spreadsheets']
 )
 
