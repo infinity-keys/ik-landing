@@ -83,7 +83,6 @@ const StepsLayout = ({ puzzleId, step }: StepsLayoutProps) => {
                     </StepPageLayout>
                   )
                 })}
-
                 <StepPageLayout
                   showOverlay={showOverlay}
                   setShowOverlay={setShowOverlay}
