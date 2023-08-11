@@ -23,6 +23,12 @@ const Routes = () => {
         {/* <Route path="/" page={UnderConstructionPage} name="underConstruction" /> */}
         {/* <Route path="/" page={HomePage} name="home" /> */}
 
+        <Private unauthenticated="addRoles" roles={['LENS_FORM', 'ADMIN']}>
+          <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
+            <Route path="/lens-profile-form" page={LensProfileFormPage} name="lensProfileForm" />
+          </Set>
+        </Private>
+
         <Private unauthenticated="profile" roles={'ADMIN'}>
           <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
             <Route path="/rewardable/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newRewardable" />
@@ -34,6 +40,7 @@ const Routes = () => {
           {/* @TODO: Replace HeaderLayout once we get a minimal header */}
           <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
             <Route path="/puzzle/{slug}/{step:Int}" page={StepPage} name="puzzleStep" />
+            <Route path="/add-roles" page={AddRolesPage} name="addRoles" />
             <Route path="/user/delete" page={DeletePage} name="delete" />
           </Set>
 

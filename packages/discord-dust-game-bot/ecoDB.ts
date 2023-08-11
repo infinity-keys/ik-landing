@@ -1,5 +1,4 @@
-export {}
-const Economy = require('discord-economy-super/mongodb')
+import Economy from 'discord-economy-super/mongodb'
 // const Economy = require('discord-economy-super')
 
 const eco = new Economy({
@@ -44,4 +43,5 @@ const eco = new Economy({
 eco.on('ready', async () => {
   console.log('Economy is ready!')
 })
-module.exports = eco
+// module.exports = eco
+export { eco }
