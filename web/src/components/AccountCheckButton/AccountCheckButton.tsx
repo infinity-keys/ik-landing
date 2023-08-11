@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { FindStepQuery } from 'types/graphql'
+import { FindStepBySlugQuery } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
 import Button from 'src/components/Button/Button'
@@ -13,7 +13,7 @@ const AccountCheckButton = ({
   step,
   puzzleId,
 }: {
-  step: FindStepQuery['step']
+  step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
   puzzleId: string
 }) => {
   const { address } = useAccount()

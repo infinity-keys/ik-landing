@@ -1,7 +1,7 @@
 import { PropsWithChildren, lazy, Suspense, useState } from 'react'
 
 import clsx from 'clsx'
-import { FindStepQuery } from 'types/graphql'
+import { FindStepBySlugQuery } from 'types/graphql'
 
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
@@ -11,8 +11,8 @@ import StepPageLayout from 'src/components/StepPageLayout/StepPageLayout'
 import { overlayContent } from 'src/lib/stepOverlayContent'
 
 interface StepsLayoutProps extends PropsWithChildren {
-  puzzle: FindStepQuery['puzzle']
-  step: FindStepQuery['step']
+  puzzleId: string
+  step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
 }
 
 const SimpleTextInput = lazy(
@@ -25,13 +25,13 @@ const StepLensApiButton = lazy(
   () => import('src/components/StepLensApiButton/StepLensApiButton')
 )
 
-const StepsLayout = ({ puzzle, step }: StepsLayoutProps) => {
+const StepsLayout = ({ puzzleId, step }: StepsLayoutProps) => {
   const [showOverlay, setShowOverlay] = useState(false)
   const [slideIndex, setSlideIndex] = useState(0)
-  if (!puzzle || !step) return null
+  if (!puzzleId || !step) return null
 
   const images = step.stepPage
-    .map((page) => page?.image)
+    .map((page) => page?.image || step.defaultImage)
     .concat(step.solutionImage || step.defaultImage)
 
   return (
@@ -50,7 +50,7 @@ const StepsLayout = ({ puzzle, step }: StepsLayoutProps) => {
                     )}
                   >
                     <img
-                      src={image || step.defaultImage}
+                      src={image}
                       alt=""
                       loading={index === 0 ? 'eager' : 'lazy'}
                     />
@@ -97,7 +97,7 @@ const StepsLayout = ({ puzzle, step }: StepsLayoutProps) => {
                     <SimpleTextInput
                       count={step.stepSimpleText?.solutionCharCount || 0}
                       step={step}
-                      puzzleId={puzzle.id}
+                      puzzleId={puzzleId}
                     />
                   )}
 
@@ -108,11 +108,11 @@ const StepsLayout = ({ puzzle, step }: StepsLayoutProps) => {
                     step.type === 'ASSET_TRANSFER' ||
                     step.type === 'TOKEN_ID_RANGE' ||
                     step.type === 'ERC20_BALANCE') && (
-                    <AccountCheckButton step={step} puzzleId={puzzle.id} />
+                    <AccountCheckButton step={step} puzzleId={puzzleId} />
                   )}
 
                   {step.type === 'LENS_API' && (
-                    <StepLensApiButton step={step} puzzleId={puzzle.id} />
+                    <StepLensApiButton step={step} puzzleId={puzzleId} />
                   )}
                 </StepPageLayout>
               </MarkdownCarousel>

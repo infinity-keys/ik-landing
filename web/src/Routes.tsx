@@ -33,7 +33,7 @@ const Routes = () => {
         <Private unauthenticated="profile">
           {/* @TODO: Replace HeaderLayout once we get a minimal header */}
           <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
-            <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleStep" />
+            <Route path="/puzzle/{slug}/{step:Int}" page={StepPage} name="puzzleStep" />
             <Route path="/user/delete" page={DeletePage} name="delete" />
           </Set>
 
