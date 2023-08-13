@@ -646,16 +646,26 @@ export const userProgress: QueryResolvers['userProgress'] = () => {
 export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   input,
 }) => {
-  console.log('input', input)
-  const rewardable = await createRewardable({
-    input: input.rewardable,
+  const rewardable = await db.rewardable.create({
+    data: {
+      name: input.rewardable.name,
+      explanation: input.rewardable.explanation,
+      type: input.rewardable.type,
+      organization: {
+        connect: {
+          id: input.rewardable.orgId,
+        },
+      },
+      slug: input.rewardable.slug,
+      puzzle: {
+        create: {
+          isAnon: input.puzzle.isAnon,
+        },
+      },
+    },
   })
-  console.log(rewardable)
-  // we're not writing all this ourselves, we need to use existing services
 
-  return {
-    success: true,
-  }
+  return rewardable
 }
 
 // @TODO: move to lookups

@@ -34,7 +34,7 @@ import { useMutation } from '@redwoodjs/web'
 const CREATE_BURD_PUZZLE_MUTATION = gql`
   mutation BurdArchetypalPuzzleCreation($input: CreateBurdPuzzleInput!) {
     createBurdPuzzle(input: $input) {
-      success
+      name
     }
   }
 `
