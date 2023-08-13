@@ -413,6 +413,7 @@ enum SiteRole {
   ADMIN
   VERIFIED
   ANONYMOUS
+  LENS_FORM
 }
 
 /// Identifiable player
