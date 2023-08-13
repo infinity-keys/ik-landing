@@ -16,7 +16,7 @@ import { db } from 'src/lib/db'
 import { decryptAndDecompressText } from 'src/lib/encoding/encoding'
 import { verifyToken } from 'src/lib/jwt'
 import { logger } from 'src/lib/logger'
-import { createRewardable } from 'src/services/rewardables/rewardables'
+// import { createRewardable } from 'src/services/rewardables/rewardables'
 
 import anonPuzzles from '../../../../anonPuzzleData.json'
 
