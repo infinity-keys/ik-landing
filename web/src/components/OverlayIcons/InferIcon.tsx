@@ -1,10 +1,5 @@
 const InferIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 226 82"
-    fill="none"
-    className="hidden w-full fill-transparent md:block"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 226 82" fill="none">
     <path
       stroke="#FAFAF9"
       strokeLinecap="round"
@@ -23,7 +18,5 @@ const InferIcon = () => (
       clipRule="evenodd"
     />
   </svg>
-
-  // placeholder for mini Infer icon
 )
 export default InferIcon
