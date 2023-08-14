@@ -642,45 +642,35 @@ export const userProgress: QueryResolvers['userProgress'] = () => {
   })
 }
 
-// Richard Burd's Special Sandbox of a Service:
+// Richard Burd's unique service:
 export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   input,
 }) => {
-  const { rewardable, puzzle, steps } = input
-
-  const rewardableData = {
-    name: rewardable.name,
-    explanation: rewardable.explanation,
-    type: rewardable.type,
-    organization: {
-      connect: {
-        id: rewardable.orgId,
-      },
-    },
-    slug: rewardable.slug,
-  }
-
-  const puzzleData = {
-    isAnon: puzzle.isAnon,
-    steps: {
-      create: steps
-        ? steps.map((stepInput) => ({
-            failMessage: stepInput.failMessage,
-          }))
-        : [],
-    },
-  }
-
-  const rewardableWithPuzzle = await db.rewardable.create({
+  const rewardable = await db.rewardable.create({
     data: {
-      ...rewardableData,
+      name: input.rewardable.name,
+      explanation: input.rewardable.explanation,
+      type: input.rewardable.type,
+      organization: {
+        connect: {
+          id: input.rewardable.orgId,
+        },
+      },
+      slug: input.rewardable.slug,
       puzzle: {
-        create: puzzleData,
+        create: {
+          isAnon: input.puzzle.isAnon,
+          steps: {
+            create: input.puzzle.steps.map((step) => ({
+              failMessage: step.failMessage,
+              stepSortWeight: step.stepSortWeight,
+            })),
+          },
+        },
       },
     },
   })
-
-  return rewardableWithPuzzle
+  return rewardable
 }
 
 // @TODO: move to lookups

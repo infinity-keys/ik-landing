@@ -1,4 +1,16 @@
 export const schema = gql`
+  type Mutation {
+    # I already have the types that exist for a step, so you don't need a
+    # CreateBurdStepType...
+    createBurdPuzzle(input: CreateBurdPuzzleInput!): Rewardable!
+      @requireAuth(roles: ["ADMIN"])
+  }
+
+  input CreateBurdPuzzleInput {
+    rewardable: CreateRewardableInput!
+    puzzle: BurdPuzzleInput!
+  }
+
   # replaced with "rewardable" below in "type Mutation"
   type CreateBurdPuzzleResponse {
     success: Boolean!
@@ -17,20 +29,6 @@ export const schema = gql`
   # eventually this needs the properties of: 'CreateStepInput'
   input BurdStepInput {
     failMessage: String!
-  }
-
-  # let's trigger a change to the file again!
-  # and again till this work!!!
-  input CreateBurdPuzzleInput {
-    rewardable: CreateRewardableInput!
-    puzzle: BurdPuzzleInput!
-    # steps: [BurdStepInput!]!
-  }
-
-  type Mutation {
-    # I already have the types that exist for a step, so you don't need a
-    # CreateBurdStepType...
-    createBurdPuzzle(input: CreateBurdPuzzleInput!): Rewardable!
-      @requireAuth(roles: ["ADMIN"])
+    stepSortWeight: Int!
   }
 `
