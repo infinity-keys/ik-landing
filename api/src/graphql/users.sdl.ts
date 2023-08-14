@@ -34,6 +34,7 @@ export const schema = gql`
     ADMIN
     VERIFIED
     ANONYMOUS
+    LENS_FORM
   }
 
   type Query {

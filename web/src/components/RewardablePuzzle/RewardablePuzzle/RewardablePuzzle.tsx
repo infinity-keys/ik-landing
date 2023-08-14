@@ -7,6 +7,8 @@ import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
 import { buildUrlString } from '@infinity-keys/core'
 import type { FindRewardablePuzzleBySlug } from 'types/graphql'
 
+import { routes } from '@redwoodjs/router'
+
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button'
@@ -51,6 +53,14 @@ const Rewardable = ({ rewardable }: Props) => {
       type: 'PUZZLE',
     })
   )
+
+  // NOTE: returns undefined if user has completed all steps
+  const currentStep = rewardable.puzzle.steps.find((step) => {
+    if (!step) {
+      return false
+    }
+    return !step.hasUserCompletedStep
+  })
 
   return (
     <>
@@ -138,9 +148,29 @@ const Rewardable = ({ rewardable }: Props) => {
           <div>
             {isAuthenticated ? (
               showOverlay ? (
-                <Button text="Ask on Discord" />
+                <Button
+                  text="Ask on Discord"
+                  href="https://discord.gg/infinitykeys"
+                />
               ) : (
-                <Button text="Start Quest" />
+                <Button
+                  text={
+                    typeof currentStep?.stepSortWeight === 'number'
+                      ? currentStep.stepSortWeight > 1
+                        ? 'Continue Quest'
+                        : 'Start Quest'
+                      : 'Claim Treasure'
+                  }
+                  to={
+                    currentStep?.stepSortWeight
+                      ? routes.puzzleStep({
+                          slug: rewardable.slug,
+                          step: currentStep?.stepSortWeight,
+                        })
+                      : // TODO: where do we take them if they have completed all steps
+                        routes.claim({ id: rewardable.id })
+                  }
+                />
               )
             ) : (
               <Button onClick={() => setIsLoginModalOpen(true)} text="Login" />

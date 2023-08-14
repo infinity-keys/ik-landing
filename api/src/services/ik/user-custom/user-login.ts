@@ -10,7 +10,7 @@ export const upsertUser: MutationResolvers['upsertUser'] = ({
     create: {
       email,
       authId,
-      siteRole: 'VERIFIED',
+      roles: ['VERIFIED'],
     },
     where: {
       authId,
