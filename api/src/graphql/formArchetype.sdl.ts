@@ -6,8 +6,17 @@ export const schema = gql`
 
   # we made this custon b.c. rewardableId is required
   # on input CreatePuzzleInput {} in puzzles.sdl.ts
+  # eventually this needs the properties of: 'CreatePuzzleInput'
   input BurdPuzzleInput {
     isAnon: Boolean!
+    steps: [BurdStepInput!]!
+  }
+
+  # we made this custom to follow the pattern above, just to
+  # get things working in the Redwood GraphQL playground
+  # eventually this needs the properties of: 'CreateStepInput'
+  input BurdStepInput {
+    failMessage: String!
   }
 
   # let's trigger a change to the file again!
@@ -15,7 +24,7 @@ export const schema = gql`
   input CreateBurdPuzzleInput {
     rewardable: CreateRewardableInput!
     puzzle: BurdPuzzleInput!
-    # steps: [CreateStepInput!]!
+    # steps: [BurdStepInput!]!
   }
 
   type Mutation {
@@ -25,5 +34,3 @@ export const schema = gql`
       @requireAuth(roles: ["ADMIN"])
   }
 `
-// DON'T FIGHT: you don't need to run types in dev mode after changing this
-// Actually this isn't true 4 now..

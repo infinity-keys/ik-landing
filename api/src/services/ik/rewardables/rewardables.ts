@@ -646,26 +646,41 @@ export const userProgress: QueryResolvers['userProgress'] = () => {
 export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   input,
 }) => {
-  const rewardable = await db.rewardable.create({
-    data: {
-      name: input.rewardable.name,
-      explanation: input.rewardable.explanation,
-      type: input.rewardable.type,
-      organization: {
-        connect: {
-          id: input.rewardable.orgId,
-        },
+  const { rewardable, puzzle, steps } = input
+
+  const rewardableData = {
+    name: rewardable.name,
+    explanation: rewardable.explanation,
+    type: rewardable.type,
+    organization: {
+      connect: {
+        id: rewardable.orgId,
       },
-      slug: input.rewardable.slug,
+    },
+    slug: rewardable.slug,
+  }
+
+  const puzzleData = {
+    isAnon: puzzle.isAnon,
+    steps: {
+      create: steps
+        ? steps.map((stepInput) => ({
+            failMessage: stepInput.failMessage,
+          }))
+        : [],
+    },
+  }
+
+  const rewardableWithPuzzle = await db.rewardable.create({
+    data: {
+      ...rewardableData,
       puzzle: {
-        create: {
-          isAnon: input.puzzle.isAnon,
-        },
+        create: puzzleData,
       },
     },
   })
 
-  return rewardable
+  return rewardableWithPuzzle
 }
 
 // @TODO: move to lookups
