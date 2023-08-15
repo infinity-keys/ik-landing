@@ -95,7 +95,7 @@ const SimpleTextInput = ({
             </div>
           )}
 
-          {!errorMessage && (
+          {errorMessage && (
             <p className="text-sm italic text-gray-150">{errorMessage}</p>
           )}
         </>
