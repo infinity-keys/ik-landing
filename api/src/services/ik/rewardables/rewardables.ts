@@ -657,19 +657,37 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
         },
       },
       slug: input.rewardable.slug,
-      puzzle: {
-        create: {
-          isAnon: input.puzzle.isAnon,
-          steps: {
-            create: input.puzzle.steps.map((step) => ({
-              failMessage: step.failMessage,
-              stepSortWeight: step.stepSortWeight,
-            })),
-          },
+      // puzzle: {
+      //   create: {
+      //     isAnon: input.puzzle.isAnon,
+      //     rewardableId: rewardable.id,
+      //     steps: {
+      //       create: input.puzzle.steps.map((step) => ({
+      //         failMessage: step.failMessage,
+      //         stepSortWeight: step.stepSortWeight,
+      //       })),
+      //     },
+      //   },
+      // },
+    },
+  })
+  await db.puzzle.create({
+    data: {
+      isAnon: input.puzzle.isAnon,
+      rewardable: {
+        connect: {
+          id: rewardable.id,
         },
+      },
+      steps: {
+        create: input.puzzle.steps.map((step) => ({
+          failMessage: step.failMessage,
+          stepSortWeight: step.stepSortWeight,
+        })),
       },
     },
   })
+
   return rewardable
 }
 

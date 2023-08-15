@@ -21,6 +21,7 @@ export const schema = gql`
   # eventually this needs the properties of: 'CreatePuzzleInput'
   input BurdPuzzleInput {
     isAnon: Boolean!
+    rewardableId: String
     steps: [BurdStepInput!]!
   }
 
