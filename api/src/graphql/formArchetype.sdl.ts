@@ -25,10 +25,16 @@ export const schema = gql`
     steps: [BurdStepInput!]!
   }
 
+  enum StepTypeEnum {
+    SIMPLE_TEXT
+    NFT_CHECK
+  }
+
   # we made this custom to follow the pattern above, just to
   # get things working in the Redwood GraphQL playground
   # eventually this needs the properties of: 'CreateStepInput'
   input BurdStepInput {
+    type: StepTypeEnum!
     failMessage: String!
     stepSortWeight: Int!
   }
