@@ -17,8 +17,7 @@ module.exports = {
           IK_TOKENS.brand.color['ik-gold-secondary'].$value,
         'brand-accent-tertiary':
           IK_TOKENS.brand.color['ik-gold-tertiary'].$value,
-        'brand-accent-hover':
-          IK_TOKENS.brand.color['ik-gold-hover'].$value,
+        'brand-accent-hover': IK_TOKENS.brand.color['ik-gold-hover'].$value,
         'brand-gray-primary': IK_TOKENS.brand.color['ik-gray-primary'].$value,
         'brand-gray-secondary':
           IK_TOKENS.brand.color['ik-gray-secondary'].$value,
