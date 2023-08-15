@@ -12,9 +12,11 @@ import { routes } from '@redwoodjs/router'
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button'
+import Markdown from 'src/components/Markdown/Markdown'
 import Seo from 'src/components/Seo/Seo'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useLoginModal } from 'src/providers/loginModal/loginModal'
+
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface Props {
@@ -56,11 +58,15 @@ const Rewardable = ({ rewardable }: Props) => {
 
   // NOTE: returns undefined if user has completed all steps
   const currentStep = rewardable.puzzle.steps.find((step) => {
-    if (!step) {
-      return false
-    }
-    return !step.hasUserCompletedStep
+    return !step ? false : !step.hasUserCompletedStep
   })
+
+  // If currentStep is undefined, make sure it's because they've completed all steps
+  const puzzleCompleted =
+    !currentStep &&
+    rewardable.puzzle.steps.every((step) => {
+      return step?.hasUserCompletedStep
+    })
 
   return (
     <>
@@ -83,26 +89,38 @@ const Rewardable = ({ rewardable }: Props) => {
               <div className="flex h-full flex-col justify-center gap-12 px-12 py-20">
                 {isAuthenticated ? (
                   <>
-                    <div className="markdown">
-                      <p className="mb-6 font-bold">Get Ready!</p>
-                      <p>Check the items below before you jump in.</p>
-                    </div>
+                    {puzzleCompleted ? (
+                      <div>
+                        <p className="mb-6 font-bold">Hunt Finished!</p>
+                        <Markdown>
+                          {rewardable.successMessage ||
+                            'You have completed this hunt. Continue to claim your reward.'}
+                        </Markdown>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="markdown">
+                          <p className="mb-6 font-bold">Get Ready!</p>
+                          <p>Check the items below before you jump in.</p>
+                        </div>
 
-                    <div className="relative grid grid-cols-3 gap-4">
-                      {iconData.map(({ label, icon }, index) => (
-                        <button
-                          key={label}
-                          onClick={() => {
-                            setCurrentOverlayContent(index)
-                            setShowOverlay(true)
-                          }}
-                          className="flex flex-col items-center justify-center transition-opacity hover:opacity-60"
-                        >
-                          <span className="mb-2 block">{icon}</span>
-                          {label}
-                        </button>
-                      ))}
-                    </div>
+                        <div className="relative grid grid-cols-3 gap-4">
+                          {iconData.map(({ label, icon }, index) => (
+                            <button
+                              key={label}
+                              onClick={() => {
+                                setCurrentOverlayContent(index)
+                                setShowOverlay(true)
+                              }}
+                              className="flex flex-col items-center justify-center transition-opacity hover:opacity-60"
+                            >
+                              <span className="mb-2 block">{icon}</span>
+                              {label}
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    )}
                   </>
                 ) : (
                   <div>
