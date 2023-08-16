@@ -30,6 +30,13 @@ export const schema = gql`
     NFT_CHECK
   }
 
+  # This already exists so eventually
+  input CreateStepSimpleTextInput {
+    stepId: String!
+    solution: String!
+    solutionCharCount: Int!
+  }
+
   # we made this custom to follow the pattern above, just to
   # get things working in the Redwood GraphQL playground
   # eventually this needs the properties of: 'CreateStepInput'
@@ -37,5 +44,6 @@ export const schema = gql`
     type: StepTypeEnum!
     failMessage: String!
     stepSortWeight: Int!
+    simpleTextInput: CreateStepSimpleTextInput
   }
 `
