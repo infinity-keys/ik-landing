@@ -35,7 +35,8 @@ const StepLensApiButton = lazy(
 const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
   const [showOverlay, setShowOverlay] = useState(false)
   const [slideIndex, setSlideIndex] = useState(0)
-  if (!step) return null
+
+  if (!step) return <div className="text-center">Step not found.</div>
 
   const images = step.stepPage
     .map((page) => page?.image || step.defaultImage)

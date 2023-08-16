@@ -17,12 +17,13 @@ export const QUERY = gql`
       type
       defaultImage
       failMessage
+      hasUserCompletedStep
       solutionHint
       solutionImage
       stepGuideType
-      hasUserCompletedStep
       stepSortWeight
       stepPage {
+        id
         image
         body
         showStepGuideHint
