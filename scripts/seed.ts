@@ -432,7 +432,6 @@ export default async () => {
                   'You must have the Prerequiste NFT in order to enter Egypt',
                 stepSortWeight: 1,
                 type: 'NFT_CHECK',
-
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
@@ -457,9 +456,9 @@ export default async () => {
                     nftCheckData: {
                       create: {
                         contractAddress:
-                          '0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9',
-                        chainId: 137,
-                        tokenId: 35,
+                          '0x54b743D6055e3BBBF13eb2C748A3783516156e5B',
+                        chainId: 10,
+                        tokenId: 1,
                       },
                     },
                   },

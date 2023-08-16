@@ -84,7 +84,7 @@ const Rewardable = ({ rewardable }: Props) => {
                 {isAuthenticated ? (
                   <>
                     <div className="markdown">
-                      <p className="mb-4 font-bold">Get Ready!</p>
+                      <p className="mb-6 font-bold">Get Ready!</p>
                       <p>Check the items below before you jump in.</p>
                     </div>
 
@@ -98,7 +98,7 @@ const Rewardable = ({ rewardable }: Props) => {
                           }}
                           className="flex flex-col items-center justify-center transition-opacity hover:opacity-60"
                         >
-                          <span className="block">{icon}</span>
+                          <span className="mb-2 block">{icon}</span>
                           {label}
                         </button>
                       ))}
