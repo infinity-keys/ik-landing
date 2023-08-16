@@ -45,7 +45,7 @@ const Rewardable = ({ rewardable }: Props) => {
   const { setIsLoginModalOpen } = useLoginModal()
 
   if (!rewardable?.puzzle) {
-    return null
+    return <div className="text-center">Could not find puzzle.</div>
   }
 
   // the full https url to this page
@@ -86,47 +86,43 @@ const Rewardable = ({ rewardable }: Props) => {
         <div className="relative flex w-full flex-1 flex-col gap-4 text-center md:max-w-[50%]">
           <div className="flex-1 border-y-2 border-stone-50">
             <div className="relative h-full">
-              <div className="flex h-full flex-col justify-center gap-12 px-12 py-20">
+              <div className="flex h-full flex-col justify-center px-12 py-20">
                 {isAuthenticated ? (
-                  <>
-                    {puzzleCompleted ? (
-                      <div>
-                        <p className="mb-6 font-bold">Hunt Finished!</p>
-                        <Markdown>
-                          {rewardable.successMessage ||
-                            'You have completed this hunt. Continue to claim your reward.'}
-                        </Markdown>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="markdown">
-                          <p className="mb-6 font-bold">Get Ready!</p>
-                          <p>Check the items below before you jump in.</p>
-                        </div>
-
-                        <div className="relative grid grid-cols-3 gap-4">
-                          {iconData.map(({ label, icon }, index) => (
-                            <button
-                              key={label}
-                              onClick={() => {
-                                setCurrentOverlayContent(index)
-                                setShowOverlay(true)
-                              }}
-                              className="flex flex-col items-center justify-center transition-opacity hover:opacity-60"
-                            >
-                              <span className="mb-2 block">{icon}</span>
-                              {label}
-                            </button>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <div>
-                    <div className="flex justify-center">
-                      <Alert text="Must be logged in to play." />
+                  puzzleCompleted ? (
+                    <div>
+                      <p className="mb-6 font-bold">Hunt Finished!</p>
+                      <Markdown>
+                        {rewardable.successMessage ||
+                          'You have completed this hunt. Continue to claim your reward.'}
+                      </Markdown>
                     </div>
+                  ) : (
+                    <div>
+                      <div className="mb-12">
+                        <p className="mb-6 font-bold">Get Ready!</p>
+                        <p>Check the items below before you jump in.</p>
+                      </div>
+
+                      <div className="relative grid grid-cols-3 gap-4">
+                        {iconData.map(({ label, icon }, index) => (
+                          <button
+                            key={label}
+                            onClick={() => {
+                              setCurrentOverlayContent(index)
+                              setShowOverlay(true)
+                            }}
+                            className="flex flex-col items-center justify-center transition-opacity hover:opacity-60"
+                          >
+                            <span className="mb-2 block">{icon}</span>
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                ) : (
+                  <div className="flex justify-center">
+                    <Alert text="Must be logged in to play." />
                   </div>
                 )}
               </div>
