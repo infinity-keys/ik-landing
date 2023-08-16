@@ -125,7 +125,7 @@
     p,
     li,
     a {
-      @apply text-base;
+      @apply text-sm md:text-base;
     }
 
     ol,
@@ -165,4 +165,8 @@
 .slider-container,
 .slider-list {
   @apply h-full;
+}
+
+.overlay-icon svg {
+  @apply w-full;
 }

@@ -1,17 +1,25 @@
-import { PropsWithChildren, lazy, Suspense, useState } from 'react'
+import { Fragment, PropsWithChildren, lazy, useState } from 'react'
 
 import clsx from 'clsx'
 import { FindStepBySlugQuery } from 'types/graphql'
 
-import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import { routes } from '@redwoodjs/router'
+import { CellSuccessProps } from '@redwoodjs/web'
+
+import Button from 'src/components/Button/Button'
 import Markdown from 'src/components/Markdown/Markdown'
 import MarkdownCarousel from 'src/components/MarkdownCarousel/MarkdownCarousel'
 import NeedHintIcon from 'src/components/OverlayIcons/NeedHintIcon'
 import StepPageLayout from 'src/components/StepPageLayout/StepPageLayout'
+import CheckGreenIcon from 'src/components/StepProgressIcons/CheckGreenIcon'
+import LockedIcon from 'src/components/StepProgressIcons/LockedIcon'
 import { overlayContent } from 'src/lib/stepOverlayContent'
+
+import NeedHintMiniIcon from '../OverlayIcons/NeedHintMiniIcon'
 
 interface StepsLayoutProps extends PropsWithChildren {
   step: FindStepBySlugQuery['step']
+  refetch?: NonNullable<CellSuccessProps['queryResult']>['refetch']
 }
 
 const SimpleTextInput = lazy(
@@ -24,7 +32,7 @@ const StepLensApiButton = lazy(
   () => import('src/components/StepLensApiButton/StepLensApiButton')
 )
 
-const StepsLayout = ({ step }: StepsLayoutProps) => {
+const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
   const [showOverlay, setShowOverlay] = useState(false)
   const [slideIndex, setSlideIndex] = useState(0)
   if (!step) return null
@@ -33,31 +41,104 @@ const StepsLayout = ({ step }: StepsLayoutProps) => {
     .map((page) => page?.image || step.defaultImage)
     .concat(step.solutionImage || step.defaultImage)
 
+  // @NOTE: returns undefined if user has completed all steps
+  const nextStep = step.hasUserCompletedStep
+    ? step.puzzle.steps.find((step) => {
+        if (!step) {
+          return false
+        }
+        return !step.hasUserCompletedStep
+      })
+    : undefined
+
+  const completedSteps = step.puzzle.steps.filter(
+    (step) => step?.hasUserCompletedStep
+  )
+  const uncompletedSteps = step.puzzle.steps.length - completedSteps.length
+  const isFinalStep = step.puzzle.steps.at(-1)?.id === step.id
+  const remainingStepsText = `${uncompletedSteps} more
+  ${uncompletedSteps > 1 ? 'steps' : 'step'} to go`
+
   return (
     <div className="mx-auto flex max-w-lg flex-col justify-center pb-8 md:max-w-5xl md:flex-row md:gap-6 md:px-4 ">
-      <Suspense fallback={<LoadingIcon />}>
-        {step.stepPage && (
-          <>
-            <div className="relative aspect-[4/3] w-full flex-1 overflow-hidden md:max-w-[50%]">
-              {images.map((image, index) => {
-                return (
-                  <div
-                    key={'image-' + index}
-                    className={clsx(
-                      'absolute inset-0 flex items-center justify-center',
-                      index === slideIndex ? 'opacity-100' : 'opacity-0'
-                    )}
-                  >
-                    <img
-                      src={image}
-                      alt=""
-                      loading={index === 0 ? 'eager' : 'lazy'}
-                    />
-                  </div>
-                )
-              })}
-            </div>
+      {step.stepPage && (
+        <>
+          <div className="relative aspect-[4/3] w-full flex-1 overflow-hidden md:max-w-[50%]">
+            {images.map((image, index) => {
+              return (
+                <div
+                  key={'image-' + index}
+                  className={clsx(
+                    'absolute inset-0 flex items-center justify-center',
+                    index === slideIndex ? 'opacity-100' : 'opacity-0'
+                  )}
+                >
+                  <img
+                    src={image}
+                    alt=""
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    className="w-full"
+                  />
+                </div>
+              )
+            })}
+          </div>
 
+          {step.hasUserCompletedStep ? (
+            <div className="relative flex w-full flex-1 flex-col gap-4 text-center md:max-w-[50%]">
+              <div className="flex-1 border-y-2 border-stone-50">
+                <div className="relative h-full">
+                  <div className="flex h-full flex-col justify-center gap-12 px-12 py-20 text-sm">
+                    <div>
+                      <p className="mb-2 font-bold text-white">
+                        {isFinalStep ? 'Hunt finished!' : 'Well done!'}
+                      </p>
+                      <p className="mb-10">
+                        {uncompletedSteps > 0
+                          ? remainingStepsText
+                          : step.puzzle.rewardable.successMessage ||
+                            'Puzzle Completed!'}
+                      </p>
+                      <div className="flex items-center justify-center">
+                        {step.puzzle.steps.map((curStep, index) => {
+                          if (!curStep) return null
+
+                          return (
+                            <Fragment key={curStep.id}>
+                              {curStep?.hasUserCompletedStep ? (
+                                <CheckGreenIcon className="h-8 w-8" />
+                              ) : (
+                                <LockedIcon className="h-8 w-8" />
+                              )}
+                              {index + 1 !== step.puzzle.steps.length && (
+                                <span className="h-[2px] max-w-[100px] flex-1 bg-white" />
+                              )}
+                            </Fragment>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <Button
+                  text="Continue"
+                  to={
+                    nextStep
+                      ? routes.puzzleStep({
+                          slug: step.puzzle.rewardable.slug,
+                          step: nextStep.stepSortWeight,
+                        })
+                      : routes.puzzleLanding({
+                          slug: step.puzzle.rewardable.slug,
+                        })
+                  }
+                />
+              </div>
+            </div>
+          ) : (
             <div className="relative mb-12 w-full flex-1 border-y-2 border-t-2 border-stone-50 md:max-w-[50%]">
               <MarkdownCarousel
                 showOverlay={showOverlay}
@@ -87,36 +168,43 @@ const StepsLayout = ({ step }: StepsLayoutProps) => {
                   setShowOverlay={setShowOverlay}
                   overlayContent={
                     step.solutionHint
-                      ? { text: step.solutionHint, icon: <NeedHintIcon /> }
+                      ? {
+                          text: step.solutionHint,
+                          icon: <NeedHintIcon />,
+                          mini: <NeedHintMiniIcon />,
+                        }
                       : undefined
                   }
                 >
-                  {step.type === 'SIMPLE_TEXT' && (
-                    <SimpleTextInput
-                      count={step.stepSimpleText?.solutionCharCount || 0}
-                      step={step}
-                    />
-                  )}
+                  <div className="text-center">
+                    {step.type === 'SIMPLE_TEXT' && (
+                      <SimpleTextInput
+                        count={step.stepSimpleText?.solutionCharCount || 0}
+                        step={step}
+                        onSuccess={refetch}
+                      />
+                    )}
 
-                  {(step.type === 'NFT_CHECK' ||
-                    step.type === 'FUNCTION_CALL' ||
-                    step.type === 'COMETH_API' ||
-                    step.type === 'ORIUM_API' ||
-                    step.type === 'ASSET_TRANSFER' ||
-                    step.type === 'TOKEN_ID_RANGE' ||
-                    step.type === 'ERC20_BALANCE') && (
-                    <AccountCheckButton step={step} />
-                  )}
+                    {(step.type === 'NFT_CHECK' ||
+                      step.type === 'FUNCTION_CALL' ||
+                      step.type === 'COMETH_API' ||
+                      step.type === 'ORIUM_API' ||
+                      step.type === 'ASSET_TRANSFER' ||
+                      step.type === 'TOKEN_ID_RANGE' ||
+                      step.type === 'ERC20_BALANCE') && (
+                      <AccountCheckButton step={step} onSuccess={refetch} />
+                    )}
 
-                  {step.type === 'LENS_API' && (
-                    <StepLensApiButton step={step} />
-                  )}
+                    {step.type === 'LENS_API' && (
+                      <StepLensApiButton step={step} onSuccess={refetch} />
+                    )}
+                  </div>
                 </StepPageLayout>
               </MarkdownCarousel>
             </div>
-          </>
-        )}
-      </Suspense>
+          )}
+        </>
+      )}
     </div>
   )
 }

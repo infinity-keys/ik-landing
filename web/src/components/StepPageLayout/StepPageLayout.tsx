@@ -9,22 +9,21 @@ import Markdown from 'src/components/Markdown/Markdown'
 interface OverlayContent {
   text: string
   icon: ReactElement
+  mini: ReactElement
 }
 interface StepPageProps extends PropsWithChildren {
-  withOverlay?: boolean
   showOverlay?: boolean
   overlayContent?: OverlayContent
   setShowOverlay?: (b: boolean) => void
 }
 
 const StepPageLayout = ({
-  withOverlay = false,
   showOverlay,
   overlayContent,
   setShowOverlay,
   children,
 }: StepPageProps) => {
-  const hasModal =
+  const hasOverlay =
     overlayContent &&
     typeof showOverlay !== 'undefined' &&
     typeof setShowOverlay !== 'undefined'
@@ -33,19 +32,27 @@ const StepPageLayout = ({
     <div className="relative h-full">
       <div className="flex h-full flex-col justify-between px-12">
         <div
-          className={clsx('markdown', withOverlay ? 'pt-20 pb-10' : 'py-20')}
+          className={clsx(
+            'markdown',
+            hasOverlay ? 'pt-16 pb-6 md:pb-10 md:pt-20' : 'py-16 md:py-20'
+          )}
         >
           {children}
         </div>
-        {hasModal && (
+        {hasOverlay && (
           <div className="relative z-40 flex justify-center">
             <button onClick={() => setShowOverlay(!showOverlay)}>
-              <span className="block max-w-[226px]">{overlayContent.icon}</span>
+              <span className="overlay-icon hidden max-w-[226px] text-transparent md:block">
+                {overlayContent.icon}
+              </span>
+              <span className=" overlay-icon block max-w-[158px] text-transparent md:hidden">
+                {overlayContent.mini}
+              </span>
             </button>
           </div>
         )}
       </div>
-      {hasModal && (
+      {hasOverlay && (
         <Transition
           show={showOverlay}
           enter="transition-opacity duration-75"
@@ -56,7 +63,7 @@ const StepPageLayout = ({
           leaveTo="opacity-0"
         >
           <div className="absolute top-0 z-10 flex h-full w-full items-center justify-center bg-stone-700 text-center">
-            <div className="px-12 py-20">
+            <div className="px-12 py-20 text-sm">
               <Markdown>{overlayContent.text}</Markdown>
             </div>
             <button

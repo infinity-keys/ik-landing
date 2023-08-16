@@ -12,7 +12,13 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
-const StepLensApiButton = ({ step }: { step: FindStepBySlugQuery['step'] }) => {
+const StepLensApiButton = ({
+  step,
+  onSuccess,
+}: {
+  step: FindStepBySlugQuery['step']
+  onSuccess?: () => void
+}) => {
   const { address } = useAccount()
   const { openConnectModal } = useConnectModal()
   const { loading, failedAttempt, errorMessage, makeAttempt } = useMakeAttempt()
@@ -26,14 +32,18 @@ const StepLensApiButton = ({ step }: { step: FindStepBySlugQuery['step'] }) => {
     if (!lensProfile?.id)
       return setCustomErrorMessage('Please connect your Lens profile')
 
-    await makeAttempt({
+    const data = await makeAttempt({
       stepId: step.id,
+      redirectOnSuccess: false,
       reqBody: {
         type: 'lens-check',
         account: address,
         lensId: lensProfile.id,
       },
     })
+    if (data?.success && onSuccess) {
+      onSuccess()
+    }
   }
 
   return (

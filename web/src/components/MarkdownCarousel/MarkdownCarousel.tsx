@@ -32,7 +32,7 @@ const MarkdownCarousel = ({
             )
             props.nextSlide()
           }}
-          className="mr-8 text-stone-50 transition-colors hover:text-brand-accent-secondary"
+          className="mr-6 p-2 text-stone-50 transition-colors hover:text-brand-accent-secondary"
         >
           <ArrowRightIcon className="h-7 w-7 fill-transparent" />
         </button>
@@ -47,14 +47,14 @@ const MarkdownCarousel = ({
               setSlideIndex(props.currentSlide > 0 ? props.currentSlide - 1 : 0)
               props.previousSlide()
             }}
-            className="ml-8 text-stone-50 transition-colors hover:text-brand-accent-secondary"
+            className="ml-6 p-2 text-stone-50 transition-colors hover:text-brand-accent-secondary"
           >
             <ArrowLeftIcon className="h-7 w-7 fill-transparent" />
           </button>
         )
       }}
       defaultControlsConfig={{
-        pagingDotsClassName: 'mx-[2px]',
+        pagingDotsClassName: 'mx-1 p-2 hover:text-brand-accent-primary',
         containerClassName: 'relative -bottom-12',
       }}
       className="w-full"

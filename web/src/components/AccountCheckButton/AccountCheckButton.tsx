@@ -11,8 +11,10 @@ import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
 const AccountCheckButton = ({
   step,
+  onSuccess,
 }: {
   step: FindStepBySlugQuery['step']
+  onSuccess?: () => void
 }) => {
   const { address } = useAccount()
   const { loading, failedAttempt, errorMessage, makeAttempt } = useMakeAttempt()
@@ -22,13 +24,18 @@ const AccountCheckButton = ({
     setCustomErrorMessage('')
     if (!step?.id) return setCustomErrorMessage('Missing step id')
 
-    await makeAttempt({
+    const data = await makeAttempt({
       stepId: step.id,
+      redirectOnSuccess: false,
       reqBody: {
         type: 'account-check',
         account: address,
       },
     })
+
+    if (data?.success && onSuccess) {
+      onSuccess()
+    }
   }
 
   return (

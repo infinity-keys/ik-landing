@@ -6,12 +6,15 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
-interface SimpleTextInputProps {
+const SimpleTextInput = ({
+  count,
+  step,
+  onSuccess,
+}: {
   count: number
   step: FindStepBySlugQuery['step']
-}
-
-const SimpleTextInput = ({ count, step }: SimpleTextInputProps) => {
+  onSuccess?: () => void
+}) => {
   const { loading, failedAttempt, makeAttempt, errorMessage } = useMakeAttempt()
   const [text] = useState('')
 
@@ -24,13 +27,18 @@ const SimpleTextInput = ({ count, step }: SimpleTextInputProps) => {
     e.preventDefault()
     if (text.length !== count) return
 
-    await makeAttempt({
+    const data = await makeAttempt({
       stepId: step.id,
+      redirectOnSuccess: false,
       reqBody: {
         type: 'simple-text',
         simpleTextSolution: text,
       },
     })
+
+    if (data?.success && onSuccess) {
+      onSuccess()
+    }
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
