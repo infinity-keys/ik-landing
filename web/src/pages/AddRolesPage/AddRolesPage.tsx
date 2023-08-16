@@ -68,14 +68,14 @@ const AddRolesPage = () => {
                 >
                   Lens Collector
                 </Link>{' '}
-                or{' '}
+                and{' '}
                 <Link
                   className="text-brand-accent-primary underline transition-colors hover:text-brand-accent-secondary"
                   to={routes.puzzleLanding({ slug: 'cometh-cadets' })}
                 >
                   Cometh Cadet
                 </Link>{' '}
-                NFT to be eligble to request your Lens profile.
+                NFTs to be eligible to request your Lens profile.
               </p>
               <Button onClick={() => addRole()} text="Check NFTs" />
             </div>
