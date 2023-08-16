@@ -10,6 +10,8 @@ import NeedHintIcon from 'src/components/OverlayIcons/NeedHintIcon'
 import StepPageLayout from 'src/components/StepPageLayout/StepPageLayout'
 import { overlayContent } from 'src/lib/stepOverlayContent'
 
+import NeedHintMiniIcon from '../OverlayIcons/NeedHintMiniIcon'
+
 interface StepsLayoutProps extends PropsWithChildren {
   puzzleId: string
   step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
@@ -88,7 +90,11 @@ const StepsLayout = ({ puzzleId, step }: StepsLayoutProps) => {
                   setShowOverlay={setShowOverlay}
                   overlayContent={
                     step.solutionHint
-                      ? { text: step.solutionHint, icon: <NeedHintIcon /> }
+                      ? {
+                          text: step.solutionHint,
+                          icon: <NeedHintIcon />,
+                          mini: <NeedHintMiniIcon />,
+                        }
                       : undefined
                   }
                 >

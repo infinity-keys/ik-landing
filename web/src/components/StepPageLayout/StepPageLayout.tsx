@@ -9,6 +9,7 @@ import Markdown from 'src/components/Markdown/Markdown'
 interface OverlayContent {
   text: string
   icon: ReactElement
+  mini: ReactElement
 }
 interface StepPageProps extends PropsWithChildren {
   withOverlay?: boolean
@@ -40,7 +41,12 @@ const StepPageLayout = ({
         {hasModal && (
           <div className="relative z-40 flex justify-center">
             <button onClick={() => setShowOverlay(!showOverlay)}>
-              <span className="block max-w-[226px]">{overlayContent.icon}</span>
+              <span className="overlay-icon hidden max-w-[226px] text-transparent md:block">
+                {overlayContent.icon}
+              </span>
+              <span className=" overlay-icon block max-w-[158px] text-transparent md:hidden">
+                {overlayContent.mini}
+              </span>
             </button>
           </div>
         )}
