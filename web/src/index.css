@@ -166,3 +166,7 @@
 .slider-list {
   @apply h-full;
 }
+
+.overlay-icon svg {
+  @apply w-full;
+}
