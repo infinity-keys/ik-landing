@@ -15,6 +15,8 @@ import CheckGreenIcon from 'src/components/StepProgressIcons/CheckGreenIcon'
 import LockedIcon from 'src/components/StepProgressIcons/LockedIcon'
 import { overlayContent } from 'src/lib/stepOverlayContent'
 
+import NeedHintMiniIcon from '../OverlayIcons/NeedHintMiniIcon'
+
 interface StepsLayoutProps extends PropsWithChildren {
   puzzleId: string
   step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
@@ -167,7 +169,11 @@ const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
                   setShowOverlay={setShowOverlay}
                   overlayContent={
                     step.solutionHint
-                      ? { text: step.solutionHint, icon: <NeedHintIcon /> }
+                      ? {
+                          text: step.solutionHint,
+                          icon: <NeedHintIcon />,
+                          mini: <NeedHintMiniIcon />,
+                        }
                       : undefined
                   }
                 >
