@@ -20,35 +20,26 @@ export const QUERY = gql`
       solutionHint
       solutionImage
       stepGuideType
+      hasUserCompletedStep
+      stepSortWeight
       stepPage {
-        id
-        type
-        defaultImage
-        failMessage
-        hasUserCompletedStep
-        solutionHint
-        solutionImage
-        stepGuideType
-        stepSortWeight
-        stepPage {
+        image
+        body
+        showStepGuideHint
+        sortWeight
+      }
+      stepSimpleText {
+        solutionCharCount
+      }
+      puzzle {
+        steps {
           id
-          image
-          body
-          showStepGuideHint
+          stepSortWeight
+          hasUserCompletedStep
         }
-        stepSimpleText {
-          solutionCharCount
-        }
-        puzzle {
-          steps {
-            id
-            stepSortWeight
-            hasUserCompletedStep
-          }
-          rewardable {
-            slug
-            successMessage
-          }
+        rewardable {
+          slug
+          successMessage
         }
       }
     }
