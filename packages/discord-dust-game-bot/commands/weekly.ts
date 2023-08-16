@@ -43,18 +43,23 @@ export async function execute(interaction: CommandInteraction) {
       return reaction.emoji.id === process.env.EMOJI_REACTION_IK_ID
     }
 
-    const collected = await message.awaitReactions({
-      filter,
-      time: 45000,
-    })
+    try {
+      const collected = await message.awaitReactions({
+        filter,
+        time: 45000,
+      })
 
-    for (const reaction of collected.values()) {
-      const users = reaction.users.cache.map((user) => user.id)
-      for (const userId of users) {
-        if (interaction.user.id !== userId) {
-          await eco.balance.add(1, userId, guild.id)
+      for (const reaction of collected.values()) {
+        const users = reaction.users.cache.map((user) => user.id)
+
+        for (const userId of users) {
+          if (interaction.user.id !== userId) {
+            await eco.balance.add(1, userId, guild.id)
+          }
         }
       }
+    } catch (error) {
+      console.log('error', error)
     }
   }
 

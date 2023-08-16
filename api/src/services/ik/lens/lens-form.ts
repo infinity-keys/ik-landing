@@ -22,16 +22,13 @@ export const addLensFormRole: MutationResolvers['addLensFormRole'] = async ({
     return { success: true }
   }
 
-  const { claimedTokens } = await checkBalance({
+  const { claimed } = await checkBalance({
     account: context.currentUser.address,
     externalAddress: externalAddress ?? undefined,
     tokenIds: LENS_ACCOUNT_TOKEN_IDS,
   })
 
-  // Users just need to have claimed one of these
-  const hasClaimed = claimedTokens?.some((b) => b)
-
-  if (!hasClaimed) {
+  if (!claimed) {
     return {
       success: false,
     }
