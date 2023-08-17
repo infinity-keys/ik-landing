@@ -62,7 +62,7 @@ const SimpleTextInput = ({
 
   // Creating a string that displays the current input and remaining asterisks
   useEffect(() => {
-    setDisplayValue(inputValue + '*'.repeat(count - inputValue.length))
+    setDisplayValue(`${inputValue}${'*'.repeat(count - inputValue.length)}`)
   }, [inputValue, count, setDisplayValue])
 
   return (
