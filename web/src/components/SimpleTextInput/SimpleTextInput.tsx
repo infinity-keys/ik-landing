@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import clsx from 'clsx'
 import sample from 'lodash/sample'
@@ -30,30 +30,35 @@ const SimpleTextInput = ({
   const [inputValue, setInputValue] = useState('')
   const [displayValue, setDisplayValue] = useState('')
 
-  // This will use useMemo, possibly
-  const handleMakeAttempt = async (text: string) => {
-    const data = await makeAttempt({
-      stepId: step.id,
-      redirectOnSuccess: false,
-      reqBody: {
-        type: 'simple-text',
-        simpleTextSolution: text,
-      },
-    })
+  const handleMakeAttempt = useCallback(
+    async (text: string) => {
+      const data = await makeAttempt({
+        stepId: step.id,
+        redirectOnSuccess: false,
+        reqBody: {
+          type: 'simple-text',
+          simpleTextSolution: text,
+        },
+      })
 
-    if (data?.success && onSuccess) {
-      onSuccess()
-    }
-  }
+      if (data?.success && onSuccess) {
+        onSuccess()
+      }
+    },
+    [makeAttempt, onSuccess, step.id]
+  )
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setInputValue(value)
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      setInputValue(value)
 
-    if (value.length === count) {
-      handleMakeAttempt(value)
-    }
-  }
+      if (value.length === count) {
+        handleMakeAttempt(value)
+      }
+    },
+    [setInputValue, handleMakeAttempt, count]
+  )
 
   // Creating a string that displays the current input and remaining asterisks
   useEffect(() => {
