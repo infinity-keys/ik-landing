@@ -6,19 +6,15 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Markdown from 'src/components/Markdown/Markdown'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
-interface SimpleTextInputProps {
-  count: number
-  step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
-  puzzleId: string
-  onSuccess?: () => void
-}
-
 const SimpleTextInput = ({
   count,
   step,
-  puzzleId,
   onSuccess,
-}: SimpleTextInputProps) => {
+}: {
+  count: number
+  step: FindStepBySlugQuery['step']
+  onSuccess?: () => void
+}) => {
   const { loading, failedAttempt, makeAttempt, errorMessage } = useMakeAttempt()
   const [text] = useState('')
 
@@ -33,7 +29,6 @@ const SimpleTextInput = ({
 
     const data = await makeAttempt({
       stepId: step.id,
-      puzzleId,
       redirectOnSuccess: false,
       reqBody: {
         type: 'simple-text',
