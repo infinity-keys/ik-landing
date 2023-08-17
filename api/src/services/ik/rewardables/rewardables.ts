@@ -666,12 +666,6 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
               type: step.type,
               failMessage: step.failMessage,
               stepSortWeight: step.stepSortWeight,
-              stepSimpleText: {
-                create: {
-                  solution: step.simpleTextInput?.solution,
-                  solutionCharCount: step.simpleTextInput?.solutionCharCount,
-                },
-              },
             })),
           },
         },
