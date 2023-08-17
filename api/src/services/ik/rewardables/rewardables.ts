@@ -93,7 +93,10 @@ export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
   }
 
 // @TODO: what is this return type?
-export const rewardableClaim = ({ id }) => {
+export const rewardableClaim = ({ id }: { id: string }) => {
+  if (!context?.currentUser?.id) {
+    throw new Error('Not logged in')
+  }
   return db.rewardable.findUnique({
     where: { id },
     select: {
@@ -155,6 +158,10 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
      * Convert v1 Puzzles to v2 Steps
      */
     const reconcileV1PuzzlesToV2Steps = async (ikV1Cookie: string) => {
+      if (!context?.currentUser?.id) {
+        logger.error('No user logged in, cannot reconcile progress')
+        return
+      }
       logger.info(`User ${context.currentUser.id} has ikV1 cookie, reconciling`)
       // Parse and verify the old JWT to figure out what (old) puzzles a user solved
       const verifiedIkV1Jwt = await verifyToken(ikV1Cookie)
@@ -230,6 +237,12 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
       // 5. Create new Attempts + Solves for each of the old puzzles that we
       // haven't solved yet
       const newSolves = filteredRoutes.map((puzzlePath) => {
+        if (!context?.currentUser?.id) {
+          throw new Error('Not logged in')
+        }
+        if (!puzzlePath) {
+          throw new Error('No puzzle path')
+        }
         return db.solve.create({
           data: {
             user: {
@@ -394,6 +407,9 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
      * IDs from the cookie in the DB. Catch and log.
      */
     const reconcileCookieRewardables = async (ikV2Cookie: string) => {
+      if (!context?.currentUser?.id) {
+        throw new Error('Not logged in')
+      }
       // Parse ik-puzzles cookie
       const v2CookieClearText = decryptAndDecompressText(ikV2Cookie)
       const parsedIkV2Cookie = PuzzlesData.parse(JSON.parse(v2CookieClearText))
@@ -455,6 +471,9 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
 
       // Add to db any that are missing
       const newSolves = stepsUnsolvedInDb.map((step) => {
+        if (!context?.currentUser?.id) {
+          throw new Error('No current user')
+        }
         return db.solve.create({
           data: {
             user: {
@@ -626,6 +645,9 @@ export const reconcileProgress: MutationResolvers['reconcileProgress'] =
  * All Steps solved by the current user
  */
 export const userProgress: QueryResolvers['userProgress'] = () => {
+  if (!context?.currentUser?.id) {
+    throw new Error('No current user')
+  }
   return db.step.findMany({
     select: { id: true, puzzleId: true, stepSortWeight: true },
     orderBy: { stepSortWeight: 'asc' },
@@ -685,6 +707,9 @@ const stepTypeLookup: {
   COMETH_API: 'stepComethApi',
   TOKEN_ID_RANGE: 'stepTokenIdRange',
   ORIUM_API: 'stepOriumApi',
+  ASSET_TRANSFER: 'stepAssetTransfer',
+  ERC20_BALANCE: 'stepErc20Balance',
+  LENS_API: 'stepLensApi',
 }
 
 export const createRewardablesStepsNfts: MutationResolvers['createRewardablesStepsNfts'] =
