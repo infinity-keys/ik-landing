@@ -7,13 +7,6 @@ import { FindStepBySlugQuery } from 'types/graphql'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
-interface SimpleTextInputProps {
-  count: number
-  step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
-  puzzleId: string
-  onSuccess?: () => void
-}
-
 const failMessages = [
   "That's not it chief...",
   "You're a few pixels away from greatness! Try again!",
@@ -27,9 +20,12 @@ const failMessages = [
 const SimpleTextInput = ({
   count,
   step,
-  puzzleId,
   onSuccess,
-}: SimpleTextInputProps) => {
+}: {
+  count: number
+  step: FindStepBySlugQuery['step']
+  onSuccess?: () => void
+}) => {
   const { loading, failedAttempt, makeAttempt, errorMessage } = useMakeAttempt()
   const [inputValue, setInputValue] = useState('')
   const [displayValue, setDisplayValue] = useState('')
@@ -38,7 +34,6 @@ const SimpleTextInput = ({
   const handleMakeAttempt = async (text: string) => {
     const data = await makeAttempt({
       stepId: step.id,
-      puzzleId,
       redirectOnSuccess: false,
       reqBody: {
         type: 'simple-text',

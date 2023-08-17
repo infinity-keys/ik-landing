@@ -12,36 +12,35 @@ import StepsLayout from 'src/components/StepsLayout/StepsLayout'
 
 export const QUERY = gql`
   query FindStepBySlugQuery($slug: String!, $stepNum: Int!) {
-    stepBySlug(slug: $slug, stepNum: $stepNum) {
-      puzzleId
-      step {
+    step: stepBySlug(slug: $slug, stepNum: $stepNum) {
+      id
+      type
+      defaultImage
+      failMessage
+      hasUserCompletedStep
+      solutionHint
+      solutionImage
+      stepGuideType
+      stepSortWeight
+      stepPage {
         id
-        type
-        defaultImage
-        hasUserCompletedStep
-        solutionHint
-        solutionImage
-        stepGuideType
-        stepSortWeight
-        stepPage {
+        image
+        body
+        showStepGuideHint
+        sortWeight
+      }
+      stepSimpleText {
+        solutionCharCount
+      }
+      puzzle {
+        steps {
           id
-          image
-          body
-          showStepGuideHint
+          stepSortWeight
+          hasUserCompletedStep
         }
-        stepSimpleText {
-          solutionCharCount
-        }
-        puzzle {
-          steps {
-            id
-            stepSortWeight
-            hasUserCompletedStep
-          }
-          rewardable {
-            slug
-            successMessage
-          }
+        rewardable {
+          slug
+          successMessage
         }
       }
     }
@@ -70,14 +69,8 @@ export const Failure = ({
 }
 
 export const Success = ({
-  stepBySlug: { puzzleId, step },
+  step,
   queryResult,
 }: CellSuccessProps<FindStepBySlugQuery, FindStepBySlugQueryVariables>) => {
-  return (
-    <StepsLayout
-      puzzleId={puzzleId}
-      step={step}
-      refetch={queryResult?.refetch}
-    />
-  )
+  return <StepsLayout step={step} refetch={queryResult?.refetch} />
 }

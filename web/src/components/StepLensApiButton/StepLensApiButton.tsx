@@ -14,11 +14,9 @@ import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
 const StepLensApiButton = ({
   step,
-  puzzleId,
   onSuccess,
 }: {
-  step: NonNullable<FindStepBySlugQuery['stepBySlug']>['step']
-  puzzleId: string
+  step: FindStepBySlugQuery['step']
   onSuccess?: () => void
 }) => {
   const { address } = useAccount()
@@ -36,7 +34,6 @@ const StepLensApiButton = ({
 
     const data = await makeAttempt({
       stepId: step.id,
-      puzzleId,
       redirectOnSuccess: false,
       reqBody: {
         type: 'lens-check',

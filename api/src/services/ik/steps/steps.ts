@@ -22,7 +22,6 @@ export const stepBySlug: QueryResolvers['stepBySlug'] = async ({
     select: {
       puzzle: {
         select: {
-          id: true,
           steps: {
             orderBy: {
               stepSortWeight: 'asc',
@@ -73,11 +72,7 @@ export const stepBySlug: QueryResolvers['stepBySlug'] = async ({
       (step) => !!step.attempts.length
     )
 
-    if (hasAllSteps)
-      return {
-        step: formattedStep,
-        puzzleId: rewardable.puzzle.id,
-      }
+    if (hasAllSteps) return formattedStep
 
     throw new ForbiddenError('Current step is unknown.')
   }
@@ -92,8 +87,5 @@ export const stepBySlug: QueryResolvers['stepBySlug'] = async ({
     )
   }
 
-  return {
-    step: formattedStep,
-    puzzleId: rewardable.puzzle.id,
-  }
+  return formattedStep
 }
