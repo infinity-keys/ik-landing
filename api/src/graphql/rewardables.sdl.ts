@@ -49,6 +49,8 @@ export const schema = gql`
     sortWeight: Int
     orgId: String!
     migrateId: String
+    # Manually added
+    puzzle: CreatePuzzleInput
   }
 
   input UpdateRewardableInput {

@@ -52,6 +52,9 @@ export const schema = gql`
     puzzleId: String!
     type: StepType!
     migrateLandingRoute: String
+    # Manually added
+    stepSimpleText: CreateStepSimpleTextInput
+    stepTokenIdRange: CreateStepTokenIdRangeInput
   }
 
   input UpdateStepInput {

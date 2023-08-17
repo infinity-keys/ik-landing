@@ -668,32 +668,61 @@ export const userProgress: QueryResolvers['userProgress'] = () => {
 export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   input,
 }) => {
+  if (!input.puzzle) {
+    throw new Error('No puzzle')
+  }
+
   const rewardable = await db.rewardable.create({
     data: {
-      name: input.rewardable.name,
-      explanation: input.rewardable.explanation,
-      type: input.rewardable.type,
-      organization: {
-        connect: {
-          id: input.rewardable.orgId,
-        },
-      },
-      slug: input.rewardable.slug,
-      listPublicly: input.rewardable.listPublicly,
+      name: input.name,
+      explanation: input.explanation,
+      type: input.type,
+      slug: input.slug,
+      listPublicly: input.listPublicly,
+      orgId: 'cla9yay7y003k08la2z4j2xrv',
       puzzle: {
         create: {
           isAnon: input.puzzle.isAnon,
           steps: {
-            create: input.puzzle.steps.map((step) => ({
-              type: step.type,
-              failMessage: step.failMessage,
-              stepSortWeight: step.stepSortWeight,
-            })),
+            create: [
+              {
+                failMessage: 'You failed',
+                successMessage: 'grats',
+                stepSortWeight: 0,
+                type: 'SIMPLE_TEXT',
+              },
+            ],
           },
         },
       },
     },
   })
+  // const rewardable = await db.rewardable.create({
+  //   data: {
+  //     name: input.rewardable.name,
+  //     explanation: input.rewardable.explanation,
+  //     type: input.rewardable.type,
+  //     organization: {
+  //       connect: {
+  //         id: input.rewardable.orgId,
+  //       },
+  //     },
+  //     slug: input.rewardable.slug,
+  //     listPublicly: input.rewardable.listPublicly,
+  //     puzzle: {
+  //       create: {
+  //         isAnon: input.puzzle.isAnon,
+  //         steps: {
+  //           create: input.puzzle.steps.map((step) => ({
+  //             type: step.type,
+  //             failMessage: step.failMessage,
+  //             stepSortWeight: step.stepSortWeight,
+  //           })),
+  //         },
+  //       },
+  //     },
+  //   },
+  // })
   return rewardable
 }
 

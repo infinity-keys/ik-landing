@@ -16,6 +16,7 @@ export const schema = gql`
   input CreatePuzzleInput {
     isAnon: Boolean!
     rewardableId: String!
+    steps: [CreateStepInput]
   }
 
   input UpdatePuzzleInput {

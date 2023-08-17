@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 import { DevTool } from '@hookform/devtools'
-import { CreateBurdPuzzleInput } from 'types/graphql'
+import { CreateRewardableInput } from 'types/graphql'
 // import { CreateStepInput } from 'types/graphql'
 
 import {
@@ -32,7 +32,7 @@ import {
 import { useMutation } from '@redwoodjs/web'
 
 const CREATE_BURD_PUZZLE_MUTATION = gql`
-  mutation BurdArchetypalPuzzleCreation($input: CreateBurdPuzzleInput!) {
+  mutation BurdArchetypalPuzzleCreation($input: CreateRewardableInput!) {
     createBurdPuzzle(input: $input) {
       name
     }
@@ -207,11 +207,11 @@ function Step({
 
 type PuzzleFormType = {
   rewardable: {
-    name: CreateBurdPuzzleInput['rewardable']['name']
-    slug: CreateBurdPuzzleInput['rewardable']['slug']
-    explanation: CreateBurdPuzzleInput['rewardable']['explanation']
-    successMessage: CreateBurdPuzzleInput['rewardable']['successMessage']
-    listPublicly: CreateBurdPuzzleInput['rewardable']['listPublicly']
+    name: CreateRewardableInput['name']
+    slug: CreateRewardableInput['slug']
+    explanation: CreateRewardableInput['explanation']
+    successMessage: CreateRewardableInput['successMessage']
+    listPublicly: CreateRewardableInput['listPublicly']
   }
   steps: (StepSimpleText | StepNftCheck | Step)[]
 }
