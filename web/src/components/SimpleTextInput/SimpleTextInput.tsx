@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 
 import clsx from 'clsx'
+import sample from 'lodash/sample'
 import { FindStepBySlugQuery } from 'types/graphql'
 
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-import Markdown from 'src/components/Markdown/Markdown'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
 interface SimpleTextInputProps {
@@ -13,6 +13,16 @@ interface SimpleTextInputProps {
   puzzleId: string
   onSuccess?: () => void
 }
+
+const failMessages = [
+  "That's not it chief...",
+  "You're a few pixels away from greatness! Try again!",
+  'Close but no banana! Give it another peel!',
+  'One more shot - victory dance awaits!',
+  "You're the master of almost! Retry like a champ!",
+  'A little more magic dust needed - go for it!',
+  'Keep going! Success hugs are waiting!',
+]
 
 const SimpleTextInput = ({
   count,
@@ -83,15 +93,12 @@ const SimpleTextInput = ({
             </div>
           </div>
 
-          {failedAttempt && !errorMessage && (
+          {failedAttempt && !errorMessage && inputValue.length === count && (
             <div
               className="relative flex justify-center pt-6 text-gray-150"
               data-cy="fail_message_check"
             >
-              <Markdown>
-                {step.failMessage ||
-                  "That's not it. Need help? [Join our discord](https://discord.gg/infinitykeys)"}
-              </Markdown>
+              <p>{sample(failMessages)}</p>
             </div>
           )}
 

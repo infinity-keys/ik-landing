@@ -81,8 +81,8 @@ const StepLensApiButton = ({
               data-cy="fail_message_check"
             >
               <Markdown>
-                {step?.failMessage ||
-                  'This wallet address has not completed the required action. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
+                This wallet address has not completed the required action. Need
+                help? [Join our discord](https://discord.gg/infinitykeys)
               </Markdown>
             </div>
           )}
