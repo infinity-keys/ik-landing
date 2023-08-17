@@ -1,6 +1,7 @@
 import { Fragment, PropsWithChildren, lazy, useState } from 'react'
 
 import clsx from 'clsx'
+import sample from 'lodash/sample'
 import { FindStepBySlugQuery } from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
@@ -10,12 +11,11 @@ import Button from 'src/components/Button/Button'
 import Markdown from 'src/components/Markdown/Markdown'
 import MarkdownCarousel from 'src/components/MarkdownCarousel/MarkdownCarousel'
 import NeedHintIcon from 'src/components/OverlayIcons/NeedHintIcon'
+import NeedHintMiniIcon from 'src/components/OverlayIcons/NeedHintMiniIcon'
 import StepPageLayout from 'src/components/StepPageLayout/StepPageLayout'
 import CheckGreenIcon from 'src/components/StepProgressIcons/CheckGreenIcon'
 import LockedIcon from 'src/components/StepProgressIcons/LockedIcon'
 import { overlayContent } from 'src/lib/stepOverlayContent'
-
-import NeedHintMiniIcon from '../OverlayIcons/NeedHintMiniIcon'
 
 interface StepsLayoutProps extends PropsWithChildren {
   puzzleId: string
@@ -32,6 +32,16 @@ const AccountCheckButton = lazy(
 const StepLensApiButton = lazy(
   () => import('src/components/StepLensApiButton/StepLensApiButton')
 )
+
+const successMessages = [
+  'You nailed it!',
+  'Look at you Sherlock...',
+  "You're as awesome as a unicorn riding a skateboard!",
+  'That was more satisfying than popping bubble wrap!',
+  'Correct, excellent work.',
+  'Bravo, smarty-pants!',
+  "Well, aren't you a fine slice of pizza!",
+]
 
 const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
   const [showOverlay, setShowOverlay] = useState(false)
@@ -92,7 +102,9 @@ const StepsLayout = ({ puzzleId, step, refetch }: StepsLayoutProps) => {
                   <div className="flex h-full flex-col justify-center gap-12 px-12 py-20 text-sm">
                     <div>
                       <p className="mb-2 font-bold text-white">
-                        {isFinalStep ? 'Hunt finished!' : 'Well done!'}
+                        {isFinalStep
+                          ? 'Hunt finished!'
+                          : sample(successMessages)}
                       </p>
                       <p className="mb-10">
                         {uncompletedSteps > 0

@@ -13,6 +13,7 @@ export const QUERY = gql`
       id
       name
       slug
+      successMessage
       puzzle {
         id
         coverImage

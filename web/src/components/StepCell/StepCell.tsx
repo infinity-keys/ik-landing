@@ -18,7 +18,6 @@ export const QUERY = gql`
         id
         type
         defaultImage
-        failMessage
         hasUserCompletedStep
         solutionHint
         solutionImage
