@@ -11,24 +11,26 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { StoryObj, Meta, StoryFn } from '@storybook/react'
 
 import Button from './Button'
 
-// export const generated: ComponentStory<typeof Button> = (args) => {
-//   return <Button {...args} />
-// }
-
-export const small: ComponentStory<typeof Button> = (args) => {
-  return <Button {...args} size="small" />
+export const small: StoryObj<typeof Button> = {
+  render: (args) => {
+    return <Button {...args} size="small" />
+  },
 }
 
-export const medium: ComponentStory<typeof Button> = (args) => {
-  return <Button {...args} size="medium" />
+export const medium: StoryObj<typeof Button> = {
+  render: (args) => {
+    return <Button {...args} size="medium" />
+  },
 }
 
-export const big: ComponentStory<typeof Button> = (args) => {
-  return <Button {...args} size="large" />
+export const big: StoryObj<typeof Button> = {
+  render: (args) => {
+    return <Button {...args} size="large" />
+  },
 }
 
 export default {
@@ -43,4 +45,4 @@ export default {
     },
     onClick: { action: 'clicked' },
   },
-} as ComponentMeta<typeof Button>
+} as Meta<typeof Button>

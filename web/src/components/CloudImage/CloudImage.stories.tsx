@@ -11,12 +11,14 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { StoryObj, Meta, StoryFn } from '@storybook/react'
 
 import CloudImage from './CloudImage'
 
-export const generated: ComponentStory<typeof CloudImage> = (args) => {
-  return <CloudImage {...args} />
+export const generated: StoryObj<typeof CloudImage> = {
+  render: (args) => {
+    return <CloudImage {...args} />
+  },
 }
 
 export default {
@@ -30,4 +32,4 @@ export default {
     circle: false,
     dpr: 23,
   },
-} as ComponentMeta<typeof CloudImage>
+} as Meta<typeof CloudImage>

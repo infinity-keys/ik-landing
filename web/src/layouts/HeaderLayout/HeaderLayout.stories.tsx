@@ -1,12 +1,14 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { StoryObj, Meta, StoryFn } from '@storybook/react'
 
 import HeaderLayout from './HeaderLayout'
 
-export const generated: ComponentStory<typeof HeaderLayout> = (args) => {
-  return <HeaderLayout {...args} />
+export const generated: StoryObj<typeof HeaderLayout> = {
+  render: (args) => {
+    return <HeaderLayout {...args} />
+  },
 }
 
 export default {
   title: 'Layouts/HeaderLayout',
   component: HeaderLayout,
-} as ComponentMeta<typeof HeaderLayout>
+} as Meta<typeof HeaderLayout>

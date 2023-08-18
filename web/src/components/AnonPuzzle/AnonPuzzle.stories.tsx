@@ -11,7 +11,7 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 
 import AnonPuzzle from './AnonPuzzle'
 
@@ -22,4 +22,4 @@ export const generated = () => {
 export default {
   title: 'Components/AnonPuzzle',
   component: AnonPuzzle,
-} as ComponentMeta<typeof AnonPuzzle>
+} as Meta<typeof AnonPuzzle>

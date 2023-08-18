@@ -11,12 +11,14 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { StoryObj, Meta, StoryFn } from '@storybook/react'
 
 import DummyThumbnail from './DummyThumbnail'
 
-export const generated: ComponentStory<typeof DummyThumbnail> = (args) => {
-  return <DummyThumbnail {...args} />
+export const generated: StoryObj<typeof DummyThumbnail> = {
+  render: (args) => {
+    return <DummyThumbnail {...args} />
+  },
 }
 
 export default {
@@ -26,4 +28,4 @@ export default {
     text: 'This is a thumbnail!',
     name: 'Name of Thumbnail',
   },
-} as ComponentMeta<typeof DummyThumbnail>
+} as Meta<typeof DummyThumbnail>

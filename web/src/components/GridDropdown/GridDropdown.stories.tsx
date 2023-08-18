@@ -11,12 +11,14 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { StoryObj, Meta, StoryFn } from '@storybook/react'
 
 import GridDropdown from './GridDropdown'
 
-export const generated: ComponentStory<typeof GridDropdown> = (args) => {
-  return <GridDropdown {...args} />
+export const generated: StoryObj<typeof GridDropdown> = {
+  render: (args) => {
+    return <GridDropdown {...args} />
+  },
 }
 
 export default {
@@ -30,4 +32,4 @@ export default {
   // is there a way to get an 'Action' reaction? Does is matter?
   // Will we use the `Actions` console?
   // onClick: { action: 'clicked' },
-} as ComponentMeta<typeof GridDropdown>
+} as Meta<typeof GridDropdown>
