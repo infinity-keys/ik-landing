@@ -63,7 +63,10 @@ export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
   }
 
 // @TODO: what is this return type?
-export const rewardableClaim = ({ id }) => {
+export const rewardableClaim = ({ id }: { id: string }) => {
+  if (!context?.currentUser?.id) {
+    throw new Error('Not logged in')
+  }
   return db.rewardable.findUnique({
     where: { id },
     select: {
@@ -112,6 +115,9 @@ export const rewardableClaim = ({ id }) => {
  * All Steps solved by the current user
  */
 export const userProgress: QueryResolvers['userProgress'] = () => {
+  if (!context?.currentUser?.id) {
+    throw new Error('No current user')
+  }
   return db.step.findMany({
     select: { id: true, puzzleId: true, stepSortWeight: true },
     orderBy: { stepSortWeight: 'asc' },
@@ -138,6 +144,9 @@ const stepTypeLookup: {
   COMETH_API: 'stepComethApi',
   TOKEN_ID_RANGE: 'stepTokenIdRange',
   ORIUM_API: 'stepOriumApi',
+  ASSET_TRANSFER: 'stepAssetTransfer',
+  ERC20_BALANCE: 'stepErc20Balance',
+  LENS_API: 'stepLensApi',
 }
 
 export const createRewardablesStepsNfts: MutationResolvers['createRewardablesStepsNfts'] =

@@ -27,6 +27,7 @@ const tokenToRolesLookup: {
   '154': '1096866085157994558',
   '174': '1114587675521990656',
   '122': '1090981608275853344',
+  '183': '1141798764915462296',
 }
 
 export const syncDiscordRoles: MutationResolvers['syncDiscordRoles'] =
