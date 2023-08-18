@@ -11,7 +11,7 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { StoryObj, Meta, StoryFn } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import CloudImage from './CloudImage'
 

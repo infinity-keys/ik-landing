@@ -1,4 +1,4 @@
-import type { StoryObj, Meta, StoryFn } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import HeaderLayout from './HeaderLayout'
 
