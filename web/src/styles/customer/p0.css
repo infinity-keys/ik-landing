@@ -25,12 +25,12 @@
   --p0-dark: #1e1e1e;
 
   @apply bg-cover bg-center bg-no-repeat;
-  background-image: url('web/public/customer/p0/pn_pattern.jpg');
+  background-image: url('/customer/p0/pn_pattern.jpg');
 
   /* This is a div that's usually hidden in the page*/
   .pack__image-anchor {
     @apply mt-20 inline-block h-20 w-72 bg-center bg-no-repeat;
-    background-image: url('web/public/customer/p0/pn_logo_w.svg');
+    background-image: url('/customer/p0/pn_logo_w.svg');
   }
 
   /* Text right below logo from above */
