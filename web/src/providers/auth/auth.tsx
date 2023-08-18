@@ -17,7 +17,7 @@ export const logIn = async ({
     if (!code || !state || !type)
       throw new Error('logIn() code, type, or state not provided.')
 
-    const response = await fetch(`${global.RWJS_API_URL}/auth`, {
+    const response = await fetch(`${globalThis.RWJS_API_URL}/auth`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code, state, type, method: 'login' }),

@@ -19,7 +19,7 @@ import AllContextProviders from 'src/providers'
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
-      <AllContextProviders>
+      <Set wrap={AllContextProviders}>
         {/* <Route path="/" page={UnderConstructionPage} name="underConstruction" /> */}
         {/* <Route path="/" page={HomePage} name="home" /> */}
 
@@ -77,7 +77,7 @@ const Routes = () => {
 
         {/* NotFoundPage can't be in a set */}
         <Route notfound page={NotFoundPage} />
-      </AllContextProviders>
+      </Set>
     </Router>
   )
 }

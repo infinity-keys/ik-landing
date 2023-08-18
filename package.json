@@ -16,8 +16,8 @@
     "cypress:run": "yarn workspace cypress cypress run --headless --browser chrome"
   },
   "devDependencies": {
-    "@redwoodjs/auth-dbauth-setup": "5.0.5",
-    "@redwoodjs/core": "5.0.5",
+    "@redwoodjs/auth-dbauth-setup": "6.1.0",
+    "@redwoodjs/core": "6.1.0",
     "prettier": "^2.8.8",
     "start-server-and-test": "^2.0.0",
     "zod": "^3.19.1"
