@@ -170,3 +170,7 @@
 .overlay-icon svg {
   @apply w-full;
 }
+
+.puzzle-landing-icon--active svg {
+  @apply drop-shadow-[0_0_3px_rgba(255,255,255,0.4)];
+}

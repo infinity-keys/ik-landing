@@ -1,11 +1,12 @@
 import { useState } from 'react'
 
 import { Transition } from '@headlessui/react'
-import ClockIcon from '@heroicons/react/24/outline/ClockIcon'
-import LightBulbIcon from '@heroicons/react/24/outline/LightBulbIcon'
 import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
 import { buildUrlString } from '@infinity-keys/core'
-import type { FindRewardablePuzzleBySlug } from 'types/graphql'
+import type {
+  FindRewardablePuzzleBySlug,
+  PuzzleRequirements,
+} from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
 
@@ -14,6 +15,7 @@ import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button'
 import Markdown from 'src/components/Markdown/Markdown'
 import Seo from 'src/components/Seo/Seo'
+import { requirementsLookup } from 'src/lib/puzzleRequirements'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useLoginModal } from 'src/providers/loginModal/loginModal'
 
@@ -23,25 +25,11 @@ interface Props {
   rewardable: FindRewardablePuzzleBySlug['rewardable']
 }
 
-const iconData = [
-  {
-    label: 'Lens Account',
-    icon: <LightBulbIcon className="h-10 w-10 fill-transparent" />,
-  },
-  {
-    label: 'Patience',
-    icon: <ClockIcon className="h-10 w-10 fill-transparent stroke-1" />,
-  },
-  {
-    label: 'Wallet',
-    icon: <LightBulbIcon className="h-10 w-10 fill-transparent" />,
-  },
-]
-
 const Rewardable = ({ rewardable }: Props) => {
   const { isAuthenticated } = useAuth()
   const [showOverlay, setShowOverlay] = useState(false)
-  const [currentOverlayContent, setCurrentOverlayContent] = useState(0)
+  const [currentOverlayContent, setCurrentOverlayContent] =
+    useState<PuzzleRequirements | null>(null)
   const { setIsLoginModalOpen } = useLoginModal()
 
   if (!rewardable?.puzzle) {
@@ -99,24 +87,29 @@ const Rewardable = ({ rewardable }: Props) => {
                   ) : (
                     <div>
                       <div className="mb-12">
-                        <p className="mb-6 font-bold">Get Ready!</p>
+                        <p className="mb-1 font-bold">Get Ready!</p>
                         <p>Check the items below before you jump in.</p>
                       </div>
 
-                      <div className="relative grid grid-cols-3 gap-4">
-                        {iconData.map(({ label, icon }, index) => (
-                          <button
-                            key={label}
-                            onClick={() => {
-                              setCurrentOverlayContent(index)
-                              setShowOverlay(true)
-                            }}
-                            className="flex flex-col items-center justify-center transition-opacity hover:opacity-60"
-                          >
-                            <span className="mb-2 block">{icon}</span>
-                            {label}
-                          </button>
-                        ))}
+                      <div className="relative flex flex-wrap justify-center gap-10">
+                        {rewardable.puzzle.requirements.map((req) =>
+                          req ? (
+                            <button
+                              key={req}
+                              onClick={() => {
+                                setCurrentOverlayContent(req)
+                                setShowOverlay(true)
+                              }}
+                              className="bg-blacks flex flex-col items-center text-sm transition-opacity hover:opacity-60 md:text-base"
+                            >
+                              <span className="puzzle-landing-icon mx-auto mb-2 block h-8 w-8 text-transparent md:h-12 md:w-12">
+                                {requirementsLookup[req].icon}
+                              </span>
+
+                              {requirementsLookup[req].labelElement}
+                            </button>
+                          ) : null
+                        )}
                       </div>
                     </div>
                   )
@@ -138,13 +131,17 @@ const Rewardable = ({ rewardable }: Props) => {
               >
                 <div className="absolute top-0 flex h-full w-full items-center justify-center bg-stone-700 text-center">
                   <div className="flex flex-col items-center px-12 py-20">
-                    {iconData[currentOverlayContent].icon}
-                    <p className="mt-2 mb-4">
-                      {iconData[currentOverlayContent].label}
-                    </p>
+                    <div className="mb-12">
+                      <div className="puzzle-landing-icon--active mx-auto mb-2 h-12 w-12 text-transparent">
+                        {currentOverlayContent &&
+                          requirementsLookup[currentOverlayContent].icon}
+                      </div>
+                      {currentOverlayContent &&
+                        requirementsLookup[currentOverlayContent].labelElement}
+                    </div>
                     <p>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Temporibus totam animi nihil alias unde?
+                      {currentOverlayContent &&
+                        requirementsLookup[currentOverlayContent].text}
                     </p>
                   </div>
                   <button
