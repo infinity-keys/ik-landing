@@ -10,12 +10,12 @@ export const schema = gql`
   }
 
   enum PuzzleRequirements {
-    HOLDERS
-    ACCOUNT
-    WALLET
-    GAS
-    WALK
+    HOLDERS_ONLY
+    SOCIAL_ACCOUNT
+    WALLET_GAS
+    TRAVEL
     PATIENCE
+    WORDPLAY
   }
 
   type Query {
