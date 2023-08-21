@@ -100,7 +100,7 @@ const Rewardable = ({ rewardable }: Props) => {
                                 setCurrentOverlayContent(req)
                                 setShowOverlay(true)
                               }}
-                              className="bg-blacks flex flex-col items-center text-sm transition-opacity hover:opacity-60 md:text-base"
+                              className="flex flex-col items-center text-sm transition-opacity hover:opacity-60 md:text-base"
                             >
                               <span className="puzzle-landing-icon mx-auto mb-2 block h-8 w-8 text-transparent md:h-12 md:w-12">
                                 {requirementsLookup[req].icon}
