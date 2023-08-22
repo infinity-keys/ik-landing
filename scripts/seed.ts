@@ -151,7 +151,7 @@ export default async () => {
       },
       puzzle: {
         create: {
-          requirements: ['ACCOUNT'],
+          requirements: ['SOCIAL_ACCOUNT', 'WALLET_GAS', 'HOLDERS_ONLY'],
           coverImage: coverImageUrl,
           steps: {
             create: [
@@ -213,7 +213,7 @@ export default async () => {
       },
       puzzle: {
         create: {
-          requirements: ['ACCOUNT'],
+          requirements: ['SOCIAL_ACCOUNT'],
           coverImage: coverImageUrl,
           steps: {
             create: [
@@ -305,7 +305,7 @@ export default async () => {
       },
       puzzle: {
         create: {
-          requirements: ['ACCOUNT'],
+          requirements: ['SOCIAL_ACCOUNT'],
           coverImage: coverImageUrl,
           steps: {
             create: [
@@ -423,7 +423,7 @@ export default async () => {
       },
       puzzle: {
         create: {
-          requirements: ['ACCOUNT'],
+          requirements: ['SOCIAL_ACCOUNT'],
           coverImage: coverImageUrl,
           steps: {
             create: [
@@ -577,7 +577,7 @@ export default async () => {
       },
       puzzle: {
         create: {
-          requirements: ['ACCOUNT'],
+          requirements: ['SOCIAL_ACCOUNT'],
           coverImage: coverImageUrl,
           steps: {
             create: [
