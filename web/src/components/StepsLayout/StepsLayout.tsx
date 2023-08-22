@@ -48,20 +48,15 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
   const [slideIndex, setSlideIndex] = useState(0)
   const { pageHeading, setPageHeading } = useGlobalInfo()
 
-  useEffect(() => {
-    if (step.puzzle.rewardable?.name) {
-      const rewardableName = step.puzzle.rewardable?.name
-      const currentStep = step.stepSortWeight
-      const totalSteps = step.puzzle.steps.length
+  const rewardableName = step.puzzle.rewardable?.name
+  const currentStepNum = step.stepSortWeight
+  const totalSteps = step.puzzle.steps.length
 
-      setPageHeading(`${rewardableName} ${currentStep}-${totalSteps}`)
+  useEffect(() => {
+    if (rewardableName) {
+      setPageHeading(`${rewardableName} ${currentStepNum}-${totalSteps}`)
     }
-  }, [
-    setPageHeading,
-    step.puzzle.rewardable?.name,
-    step.stepSortWeight,
-    step.puzzle.steps,
-  ])
+  }, [setPageHeading, rewardableName, currentStepNum, totalSteps])
 
   if (!step) return <div className="text-center">Step not found.</div>
 
@@ -82,7 +77,7 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
   const completedSteps = step.puzzle.steps.filter(
     (step) => step?.hasUserCompletedStep
   )
-  const uncompletedSteps = step.puzzle.steps.length - completedSteps.length
+  const uncompletedSteps = totalSteps - completedSteps.length
   const isFinalStep = step.puzzle.steps.at(-1)?.id === step.id
   const remainingStepsText = `${uncompletedSteps} more
   ${uncompletedSteps > 1 ? 'steps' : 'step'} to go`
