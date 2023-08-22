@@ -10,7 +10,6 @@ import { Link, routes, useLocation } from '@redwoodjs/router'
 import { LoaderIcon } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
-import Button from 'src/components/Button/Button'
 import ProfileIcon from 'src/components/ProfileIcon/ProfileIcon'
 import WalletButton from 'src/components/WalletButton/WalletButton'
 import LogoFullSm from 'src/images/full-logo-sm.webp'
@@ -49,7 +48,7 @@ const socialLinks = [
 ]
 
 const Header = () => {
-  const { loading, isAuthenticated, logOut } = useAuth()
+  const { loading } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const { pathname } = useLocation()
   const { pageHeading } = useGlobalInfo()
@@ -196,36 +195,6 @@ const Header = () => {
                       <NavTitle text="Connect" />
                       <div className="mt-7 flex items-center justify-center gap-2">
                         <WalletButton />
-                      </div>
-
-                      <NavTitle text="Profile" />
-                      <div className="mt-7 flex items-center justify-center gap-2">
-                        {isAuthenticated ? (
-                          <>
-                            <Button
-                              to={routes.profile()}
-                              text="View Profile"
-                              size="small"
-                              variant="faded"
-                              border={false}
-                            />
-                            <Button
-                              onClick={logOut}
-                              text="Log Out"
-                              size="small"
-                              variant="faded"
-                              border={false}
-                            />
-                          </>
-                        ) : (
-                          <Button
-                            onClick={logOut}
-                            text="Log In"
-                            size="small"
-                            variant="faded"
-                            border={false}
-                          />
-                        )}
                       </div>
 
                       {/* Social Icons */}
