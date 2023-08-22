@@ -665,12 +665,34 @@ export const userProgress: QueryResolvers['userProgress'] = () => {
 }
 
 // Richard Burd's unique service:
+// Eventually this becomes "create rewardable"
 export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   input,
 }) => {
   if (!input.puzzle) {
     throw new Error('No puzzle')
   }
+
+  if (!input.puzzle.steps) {
+    throw new Error('No steps')
+  }
+
+  const steps = input.puzzle.steps.map((step) => {
+    if (step.type === 'SIMPLE_TEXT' && step.stepSimpleText) {
+      return {
+        failMessage: step.failMessage,
+        successMessage: step.successMessage,
+        stepSortWeight: step.stepSortWeight,
+        type: 'SIMPLE_TEXT',
+        stepSimpleText: {
+          create: {
+            solution: step.stepSimpleText.solution,
+          },
+        },
+      }
+    }
+    throw new Error(`Step type ${step.type} not implemented yet`)
+  })
 
   const rewardable = await db.rewardable.create({
     data: {
@@ -684,14 +706,7 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
         create: {
           isAnon: input.puzzle.isAnon,
           steps: {
-            create: [
-              {
-                failMessage: 'You failed',
-                successMessage: 'grats',
-                stepSortWeight: 0,
-                type: 'SIMPLE_TEXT',
-              },
-            ],
+            create: steps,
           },
         },
       },
