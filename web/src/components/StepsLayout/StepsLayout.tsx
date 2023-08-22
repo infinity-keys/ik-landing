@@ -58,8 +58,6 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
     }
   }, [setPageHeading, rewardableName, currentStepNum, totalSteps])
 
-  if (!step) return <div className="text-center">Step not found.</div>
-
   const images = step.stepPage
     .map((page) => page?.image || step.defaultImage)
     .concat(step.solutionImage || step.defaultImage)
