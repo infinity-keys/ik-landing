@@ -71,7 +71,11 @@ const ProfileIcon = () => {
           </Menu>
         </div>
       ) : (
-        <Button text="Login" onClick={() => setIsLoginModalOpen(true)} />
+        <Button
+          size="small"
+          text="Login"
+          onClick={() => setIsLoginModalOpen(true)}
+        />
       )}
     </>
   )

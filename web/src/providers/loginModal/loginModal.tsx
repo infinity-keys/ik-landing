@@ -23,11 +23,7 @@ export const LoginModalProvider = ({ children }: PropsWithChildren) => {
   const { pathname } = useLocation()
 
   return (
-    <LoginModalContext.Provider
-      value={{
-        setIsLoginModalOpen,
-      }}
-    >
+    <LoginModalContext.Provider value={{ setIsLoginModalOpen }}>
       {children}
       {isLoginModalOpen && (
         <LoginModal

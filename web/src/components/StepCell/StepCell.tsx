@@ -39,6 +39,7 @@ export const QUERY = gql`
           hasUserCompletedStep
         }
         rewardable {
+          name
           slug
           successMessage
         }
