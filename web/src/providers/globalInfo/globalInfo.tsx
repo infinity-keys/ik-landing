@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useState,
-  useContext,
-  PropsWithChildren,
-  useMemo,
-} from 'react'
+import { createContext, useState, useContext, PropsWithChildren } from 'react'
 
 const GlobalInfoContext = createContext<{
   pageHeading: string
@@ -24,16 +18,13 @@ export function useGlobalInfo() {
 export const GlobalInfoProvider = ({ children }: PropsWithChildren) => {
   const [pageHeading, setPageHeading] = useState('')
 
-  const contextValue = useMemo(() => {
-    return {
-      // Additional states will go here
-      pageHeading,
-      setPageHeading,
-    }
-  }, [pageHeading, setPageHeading])
-
   return (
-    <GlobalInfoContext.Provider value={contextValue}>
+    <GlobalInfoContext.Provider
+      value={{
+        pageHeading,
+        setPageHeading,
+      }}
+    >
       {children}
     </GlobalInfoContext.Provider>
   )

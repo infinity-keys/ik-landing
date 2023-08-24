@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useState,
-  useContext,
-  PropsWithChildren,
-  useMemo,
-} from 'react'
+import { createContext, useState, useContext, PropsWithChildren } from 'react'
 
 import { useLocation } from '@redwoodjs/router'
 
@@ -28,15 +22,8 @@ export const LoginModalProvider = ({ children }: PropsWithChildren) => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const { pathname } = useLocation()
 
-  const contextValue = useMemo(() => {
-    return {
-      isLoginModalOpen,
-      setIsLoginModalOpen,
-    }
-  }, [isLoginModalOpen, setIsLoginModalOpen])
-
   return (
-    <LoginModalContext.Provider value={contextValue}>
+    <LoginModalContext.Provider value={{ setIsLoginModalOpen }}>
       {children}
       {isLoginModalOpen && (
         <LoginModal
