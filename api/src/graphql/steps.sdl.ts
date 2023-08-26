@@ -54,7 +54,11 @@ export const schema = gql`
     migrateLandingRoute: String
     # Manually added
     stepSimpleText: CreateStepSimpleTextInput
-    stepTokenIdRange: CreateStepTokenIdRangeInput
+    stepNftCheck: CreateStepNftCheckInput
+    # stepFunctionCall: CreateStepFunctionCallInput
+    # stepComethApi: CreateStepComethApiInput
+    # stepTokenIdRange: CreateStepTokenIdRangeInput
+    # stepOriumApi: CreateStepOriumApiInput
   }
 
   input UpdateStepInput {
