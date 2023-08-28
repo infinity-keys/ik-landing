@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 
 import RewardablePackPage from './RewardablePackPage'
 
@@ -9,4 +9,4 @@ export const generated = () => {
 export default {
   title: 'Pages/RewardablePackPage',
   component: RewardablePackPage,
-} as ComponentMeta<typeof RewardablePackPage>
+} as Meta<typeof RewardablePackPage>

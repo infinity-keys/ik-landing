@@ -11,7 +11,7 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 
 import ThumbnailMini from './ThumbnailMini'
 
@@ -22,4 +22,4 @@ export const generated = () => {
 export default {
   title: 'Components/ThumbnailMini',
   component: ThumbnailMini,
-} as ComponentMeta<typeof ThumbnailMini>
+} as Meta<typeof ThumbnailMini>
