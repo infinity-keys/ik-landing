@@ -1,13 +1,14 @@
 // This page is temporary, just to test out the form
 // BROWSER LOCATION: http://localhost:8910/puzzle/archetype
 
-// only used in dev mode
 let useEffect: typeof import('react').useEffect
 let useRef: typeof import('react').useRef
 
-// only used in dev mode
 if (process.env.NODE_ENV === 'development') {
-  ;({ useRef, useEffect } = require('react'))
+  import('react').then((React) => {
+    useEffect = React.useEffect
+    useRef = React.useRef
+  })
 }
 
 import { DevTool } from '@hookform/devtools'
