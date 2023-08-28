@@ -19,7 +19,7 @@
   /* This is a div that's usually hidden in the page*/
   .pack__image-anchor {
     @apply mt-20 inline-block h-56 w-52 bg-center bg-no-repeat;
-    background-image: url('web/public/customer/saga/saga_logo.png');
+    background-image: url('/customer/saga/saga_logo.png');
   }
 
   /* Text right below logo from above */

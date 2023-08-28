@@ -11,14 +11,16 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import GridDropdownGenerated from '../GridDropdown/GridDropdown.stories'
 
 import GridLayoutButtons from './GridLayoutButtons'
 
-export const generated: ComponentStory<typeof GridLayoutButtons> = (args) => {
-  return <GridLayoutButtons {...args} />
+export const generated: StoryObj<typeof GridLayoutButtons> = {
+  render: (args) => {
+    return <GridLayoutButtons {...args} />
+  },
 }
 
 export default {
@@ -28,4 +30,4 @@ export default {
     currentCount: GridDropdownGenerated.args?.currentCount,
     rewardableType: GridDropdownGenerated.args?.rewardableType,
   },
-} as ComponentMeta<typeof GridLayoutButtons>
+} as Meta<typeof GridLayoutButtons>

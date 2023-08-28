@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 
 import DeletePage from './DeletePage'
 
@@ -9,4 +9,4 @@ export const generated = () => {
 export default {
   title: 'Pages/DeletePage',
   component: DeletePage,
-} as ComponentMeta<typeof DeletePage>
+} as Meta<typeof DeletePage>
