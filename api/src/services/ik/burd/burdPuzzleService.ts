@@ -27,6 +27,32 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
         stepSimpleText: {
           create: {
             solution: step.stepSimpleText.solution,
+            solutionCharCount: step.stepSimpleText.solution.length,
+          },
+        },
+      }
+    }
+    if (step.type === 'NFT_CHECK' && step.stepNftCheck) {
+      return {
+        failMessage: step.failMessage,
+        successMessage: step.successMessage,
+        challenge: step.challenge,
+        stepSortWeight: step.stepSortWeight,
+        resourceLinks: step.resourceLinks,
+        type: 'NFT_CHECK',
+        stepNftCheck: {
+          create: {
+            requireAllNfts: step.stepNftCheck.requireAllNfts,
+            nftCheckData: {
+              create: step.stepNftCheck.nftCheckData.map((nftCheckDatum) => {
+                return {
+                  contractAddress: nftCheckDatum.contractAddress,
+                  tokenId: nftCheckDatum.tokenId,
+                  chainId: nftCheckDatum.chainId,
+                  poapEventId: nftCheckDatum.poapEventId,
+                }
+              }),
+            },
           },
         },
       }
