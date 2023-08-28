@@ -11,7 +11,7 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 
 import LensConnect from './LensConnect'
 
@@ -22,4 +22,4 @@ export const generated = () => {
 export default {
   title: 'Components/LensConnect',
   component: LensConnect,
-} as ComponentMeta<typeof LensConnect>
+} as Meta<typeof LensConnect>

@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 
 import AddRolesPage from './AddRolesPage'
 
@@ -9,4 +9,4 @@ export const generated = () => {
 export default {
   title: 'Pages/AddRolesPage',
   component: AddRolesPage,
-} as ComponentMeta<typeof AddRolesPage>
+} as Meta<typeof AddRolesPage>

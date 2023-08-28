@@ -11,14 +11,14 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import CollapsibleMarkdown from './CollapsibleMarkdown'
 
-export const singleContentItem: ComponentStory<typeof CollapsibleMarkdown> = (
-  args
-) => {
-  return <CollapsibleMarkdown {...args} />
+export const singleContentItem: StoryObj<typeof CollapsibleMarkdown> = {
+  render: (args) => {
+    return <CollapsibleMarkdown {...args} />
+  },
 }
 
 export const collapsibleCarousel = {
@@ -32,7 +32,7 @@ export const collapsibleCarousel = {
     alt: 'alt text',
     marginTop: true,
   },
-} as ComponentMeta<typeof CollapsibleMarkdown>
+} as Meta<typeof CollapsibleMarkdown>
 
 export default {
   title: 'Components/CollapsibleMarkdown',
@@ -44,4 +44,4 @@ export default {
     alt: 'alt text',
     marginTop: true,
   },
-} as ComponentMeta<typeof CollapsibleMarkdown>
+} as Meta<typeof CollapsibleMarkdown>

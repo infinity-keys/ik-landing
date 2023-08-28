@@ -11,7 +11,7 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { ComponentMeta } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 
 import DiscordHelpButton from './DiscordHelpButton'
 
@@ -22,4 +22,4 @@ export const generated = () => {
 export default {
   title: 'Components/DiscordHelpButton',
   component: DiscordHelpButton,
-} as ComponentMeta<typeof DiscordHelpButton>
+} as Meta<typeof DiscordHelpButton>
