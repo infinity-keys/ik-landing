@@ -4,6 +4,7 @@ import { db } from 'src/lib/db'
 
 // Richard Burd's unique service:
 // Eventually this becomes "create rewardable"
+
 export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   input,
 }) => {
@@ -53,6 +54,68 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
                 }
               }),
             },
+          },
+        },
+      }
+    }
+    if (step.type === 'FUNCTION_CALL' && step.stepFunctionCall) {
+      return {
+        failMessage: step.failMessage,
+        successMessage: step.successMessage,
+        challenge: step.challenge,
+        stepSortWeight: step.stepSortWeight,
+        resourceLinks: step.resourceLinks,
+        type: 'FUNCTION_CALL',
+        stepFunctionCall: {
+          create: {
+            methodIds: step.stepFunctionCall.methodIds,
+            contractAddress: step.stepFunctionCall.contractAddress,
+          },
+        },
+      }
+    }
+    if (step.type === 'COMETH_API' && step.stepComethApi) {
+      return {
+        failMessage: step.failMessage,
+        successMessage: step.successMessage,
+        challenge: step.challenge,
+        stepSortWeight: step.stepSortWeight,
+        resourceLinks: step.resourceLinks,
+        type: 'COMETH_API',
+        stepComethApi: {
+          // No addition info currently needed for the Cometh API check
+        },
+      }
+    }
+    if (step.type === 'TOKEN_ID_RANGE' && step.stepTokenIdRange) {
+      return {
+        failMessage: step.failMessage,
+        successMessage: step.successMessage,
+        challenge: step.challenge,
+        stepSortWeight: step.stepSortWeight,
+        resourceLinks: step.resourceLinks,
+        type: 'TOKEN_ID_RANGE',
+        stepTokenIdRange: {
+          create: {
+            contractAddress: step.stepTokenIdRange.contractAddress,
+            chainId: step.stepTokenIdRange.chainId,
+            startIds: step.stepTokenIdRange.startIds,
+            endIds: step.stepTokenIdRange.endIds,
+          },
+        },
+      }
+    }
+    if (step.type === 'ORIUM_API' && step.stepOriumApi) {
+      return {
+        failMessage: step.failMessage,
+        successMessage: step.successMessage,
+        challenge: step.challenge,
+        stepSortWeight: step.stepSortWeight,
+        resourceLinks: step.resourceLinks,
+        type: 'ORIUM_API',
+        stepOriumApi: {
+          create: {
+            checkType: step.stepOriumApi.checkType,
           },
         },
       }

@@ -55,10 +55,10 @@ export const schema = gql`
     # Manually added
     stepSimpleText: CreateStepSimpleTextInput
     stepNftCheck: CreateStepNftCheckInput
-    # stepFunctionCall: CreateStepFunctionCallInput
-    # stepComethApi: CreateStepComethApiInput
-    # stepTokenIdRange: CreateStepTokenIdRangeInput
-    # stepOriumApi: CreateStepOriumApiInput
+    stepFunctionCall: CreateStepFunctionCallInput
+    stepComethApi: CreateStepComethApiInput
+    stepTokenIdRange: CreateStepTokenIdRangeInput
+    stepOriumApi: CreateStepOriumApiInput
   }
 
   input UpdateStepInput {
