@@ -243,31 +243,60 @@ export default function PuzzleForm() {
     name: stepsArrayName,
   })
 
+  // name: input.name,
+  // explanation: input.explanation,
+  // type: input.type,
+  // slug: input.slug,
+  // listPublicly: input.listPublicly,
+  // orgId: 'cla9yay7y003k08la2z4j2xrv',
+
   const onSubmit = async (input: PuzzleFormType) => {
     createArchetypalPuzzle({
       variables: {
         input: {
-          // explanation: input.rewardable.explanation,
-          // listPublicly: input.rewardable.listPublicly,
-          // // migrateId?: input.rewardable.migrateId,
-          // name: input.rewardable.name,
-          // // orgId: 'this is hard wired for now',
-          // puzzle: {
-          //   steps: [
-          //     {
-          //       challenge: input.steps[0].challenge,
-          //       failMessage: input.steps[0].failMessage,
-          //       resourceLinks?: input.steps[0].resourceLinks,
-          //       stepSortWeight?: input.steps[0].stepSortWeight,
-          //       successMessage: input.steps[0].successMessage,
-          //       type: input.steps[0].type,
-          //     },
-          //   ];
-          // }
-          // slug: input.rewardable.slug,
-          // sortWeight?: input.rewardable.sortWeight,
-          // successMessage?: input.rewardable.successMessage,
-          // type: 'PUZZLE', // hard coded for now
+          name: input.rewardable.name,
+          explanation: input.rewardable.explanation,
+          type: 'PUZZLE', // hard coded for now
+          slug: input.rewardable.slug,
+          listPublicly: input.rewardable.listPublicly,
+          orgId: 'bacnend shall handle this!', // hard coded for now
+          puzzle: {
+            isAnon: false,
+            rewardableId: 'ignore me',
+            steps: input.steps.map((step) => {
+              if (step.type === 'SIMPLE_TEXT' && 'solution' in step) {
+                return {
+                  puzzleId: 'ignore me',
+                  type: 'SIMPLE_TEXT', // discriminator
+                  failMessage: step.failMessage,
+                  successMessage: step.successMessage,
+                  challenge: step.challenge,
+                  resourceLinks: step.resourceLinks,
+                  stepSortWeight: parseInt(step.stepSortWeight, 10),
+                  // solution: step.solution,
+                  stepSimpleText: {
+                    stepId: 'ignore me',
+                    solution: step.solution,
+                    solutionCharCount: step.solution.length,
+                  },
+                }
+              }
+              // else if (step.type === 'NFT_CHECK') {
+              //   return {
+              //     type: step.type,
+              //     failMessage: step.failMessage,
+              //     successMessage: step.successMessage,
+              //     challenge: step.challenge,
+              //     resourceLinks: step.resourceLinks,
+              //     stepSortWeight: parseInt(step.stepSortWeight, 10),
+              //     // nftId: step.nftId,
+              //   }
+              // }
+              else {
+                throw new Error('Step type not recognized')
+              }
+            }),
+          },
         },
       },
     })
@@ -406,22 +435,3 @@ export default function PuzzleForm() {
     </Form>
   )
 }
-
-// TODOS: add validation + Add NFT Should be optional
-
-// // Console logged "data" looks like this:
-// explanation : "myexplan"
-// listPublicly : true
-// name : "myname"
-// slug : "myslug"
-// stepsArray : Array(1)
-//   0 :
-//     type: 'SIMPLE_TEXT',
-//     failMessage: 'myfail',
-//     successMessage: 'musuccess',
-//     challenge: 'muchall',
-//     resourceLinks: 'myresourcz'
-//     stepSortWeight: 'string shoulde be number'
-// length : 1
-// [[Prototype]] : Array(0)
-// successMessage : "mypuzsuccess"
