@@ -12,7 +12,11 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 import { DevTool } from '@hookform/devtools'
-import { CreateRewardableInput } from 'types/graphql'
+import {
+  CreateRewardableInput,
+  MutationcreateBurdPuzzleArgs,
+  CreateBurdPuzzleMutation,
+} from 'types/graphql'
 // import { CreateStepInput } from 'types/graphql'
 
 import {
@@ -33,7 +37,7 @@ import {
 import { useMutation } from '@redwoodjs/web'
 
 const CREATE_BURD_PUZZLE_MUTATION = gql`
-  mutation BurdArchetypalPuzzleCreation($input: CreateRewardableInput!) {
+  mutation CreateBurdPuzzleMutation($input: CreateRewardableInput!) {
     createBurdPuzzle(input: $input) {
       name
     }
@@ -239,58 +243,47 @@ export default function PuzzleForm() {
     name: stepsArrayName,
   })
 
-  // UseFormReturn<CreateBurdPuzzleInput>
   const onSubmit = async (input: PuzzleFormType) => {
-    // have to create the rewardable first,
-    // create the puzzle & connect it to the rewardable
-    // then create step, connect it to the puzzle-id
-    // Here is the order: (rewardable > puzzle > step > stepType)
-    // ... we could write Burd's custom mutation and do all this in one go
-    // const builtSteps = input.steps.map((step) => {
-    //   const stepInput: CreateStepInput = {
-    //     type: step.type, // set type
-    //     failMessage: step.failMessage,
-    //     successMessage: step.successMessage,
-    //   }
-
-    //   // Step type specific overrides
-    //   if (step.type === 'SIMPLE_TEXT') {
-    //     stepInput.stepSimpleText = {
-    //       solution: (step as SimpleTextStep).solution,
-    //     }
-    //   }
-
-    //   if (step.type === 'NFT_CHECK') {
-    //     stepInput.stepNftCheck = {
-    //       nftId: (step as NFTCheckStep).nftId,
-    //     }
-    //   }
-
-    //   return stepInput
-    // })
     createArchetypalPuzzle({
       variables: {
         input: {
-          rewardable: {
-            ...input.rewardable,
-            // name: input.name,
-            // slug: input.slug,
-            // explanation: input.explanation,
-            type: 'PUZZLE',
-          },
+          // explanation: input.rewardable.explanation,
+          // listPublicly: input.rewardable.listPublicly,
+          // // migrateId?: input.rewardable.migrateId,
+          // name: input.rewardable.name,
+          // // orgId: 'this is hard wired for now',
+          // puzzle: {
+          //   steps: [
+          //     {
+          //       challenge: input.steps[0].challenge,
+          //       failMessage: input.steps[0].failMessage,
+          //       resourceLinks?: input.steps[0].resourceLinks,
+          //       stepSortWeight?: input.steps[0].stepSortWeight,
+          //       successMessage: input.steps[0].successMessage,
+          //       type: input.steps[0].type,
+          //     },
+          //   ];
+          // }
+          // slug: input.rewardable.slug,
+          // sortWeight?: input.rewardable.sortWeight,
+          // successMessage?: input.rewardable.successMessage,
+          // type: 'PUZZLE', // hard coded for now
         },
       },
     })
     console.log(input)
   }
 
-  const [createArchetypalPuzzle] = useMutation(CREATE_BURD_PUZZLE_MUTATION, {
+  const [createArchetypalPuzzle] = useMutation<
+    CreateBurdPuzzleMutation,
+    MutationcreateBurdPuzzleArgs
+  >(CREATE_BURD_PUZZLE_MUTATION, {
     onCompleted: (data) => {
       console.log(data.createBurdPuzzle)
-      alert(`Rewardable created`)
+      alert(`Rewardable created via Burd's Form!`)
     },
     onError: (error) => {
-      alert(`error: ${error.message}`)
+      alert(`Error with Burd's form: ${error.message}`)
     },
   })
 
