@@ -17,13 +17,17 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   }
 
   const steps = input.puzzle.steps.map((step) => {
+    const stepCommon = {
+      failMessage: step.failMessage,
+      successMessage: step.successMessage,
+      challenge: step.challenge,
+      stepSortWeight: step.stepSortWeight,
+      resourceLinks: step.resourceLinks,
+    }
+
     if (step.type === 'SIMPLE_TEXT' && step.stepSimpleText) {
       return {
-        failMessage: step.failMessage,
-        successMessage: step.successMessage,
-        challenge: step.challenge,
-        stepSortWeight: step.stepSortWeight,
-        resourceLinks: step.resourceLinks,
+        ...stepCommon,
         type: 'SIMPLE_TEXT',
         stepSimpleText: {
           create: {
@@ -35,11 +39,7 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
     }
     if (step.type === 'NFT_CHECK' && step.stepNftCheck) {
       return {
-        failMessage: step.failMessage,
-        successMessage: step.successMessage,
-        challenge: step.challenge,
-        stepSortWeight: step.stepSortWeight,
-        resourceLinks: step.resourceLinks,
+        ...stepCommon,
         type: 'NFT_CHECK',
         stepNftCheck: {
           create: {
@@ -60,11 +60,7 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
     }
     if (step.type === 'FUNCTION_CALL' && step.stepFunctionCall) {
       return {
-        failMessage: step.failMessage,
-        successMessage: step.successMessage,
-        challenge: step.challenge,
-        stepSortWeight: step.stepSortWeight,
-        resourceLinks: step.resourceLinks,
+        ...stepCommon,
         type: 'FUNCTION_CALL',
         stepFunctionCall: {
           create: {
@@ -76,11 +72,7 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
     }
     if (step.type === 'COMETH_API' && step.stepComethApi) {
       return {
-        failMessage: step.failMessage,
-        successMessage: step.successMessage,
-        challenge: step.challenge,
-        stepSortWeight: step.stepSortWeight,
-        resourceLinks: step.resourceLinks,
+        ...stepCommon,
         type: 'COMETH_API',
         stepComethApi: {
           // No addition info currently needed for the Cometh API check
@@ -89,11 +81,7 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
     }
     if (step.type === 'TOKEN_ID_RANGE' && step.stepTokenIdRange) {
       return {
-        failMessage: step.failMessage,
-        successMessage: step.successMessage,
-        challenge: step.challenge,
-        stepSortWeight: step.stepSortWeight,
-        resourceLinks: step.resourceLinks,
+        ...stepCommon,
         type: 'TOKEN_ID_RANGE',
         stepTokenIdRange: {
           create: {
@@ -107,11 +95,7 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
     }
     if (step.type === 'ORIUM_API' && step.stepOriumApi) {
       return {
-        failMessage: step.failMessage,
-        successMessage: step.successMessage,
-        challenge: step.challenge,
-        stepSortWeight: step.stepSortWeight,
-        resourceLinks: step.resourceLinks,
+        ...stepCommon,
         type: 'ORIUM_API',
         stepOriumApi: {
           create: {

@@ -67,7 +67,11 @@ type StepSimpleText = Step & {
 
 type StepNftCheck = Step & {
   type: 'NFT_CHECK'
-  nftId: string
+  nftId: string // this needs to be replaced with the values below
+  // contractAddress: string
+  // chainId: string
+  // tokenId: string
+  // poapEventId: string
 }
 
 function Step({
@@ -106,7 +110,11 @@ function Step({
         challenge: getValues(`${stepsArrayName}.${index}.challenge`),
         resourceLinks: getValues(`${stepsArrayName}.${index}.resourceLinks`),
         stepSortWeight: getValues(`${stepsArrayName}.${index}.stepSortWeight`),
-        nftId: '',
+        nftId: '', // this needs to be replaced with the values below
+        // contractAddress: '',
+        // chainId: '',
+        // tokenId: '',
+        // poapEventId: '',
       })
     }
   }, [index, setValue, getValues, stepTypeVal])
@@ -199,6 +207,13 @@ function Step({
         />
       )}
 
+      {/*
+      this ".nftId" below needs to be replaced with these values:
+      1.) contractAddress
+      2.) chainId
+      3.) tokenId
+      4.) poapEventId
+      */}
       {stepTypeVal === 'NFT_CHECK' && (
         <TextField
           placeholder="NFT ID"
@@ -243,13 +258,6 @@ export default function PuzzleForm() {
     name: stepsArrayName,
   })
 
-  // name: input.name,
-  // explanation: input.explanation,
-  // type: input.type,
-  // slug: input.slug,
-  // listPublicly: input.listPublicly,
-  // orgId: 'cla9yay7y003k08la2z4j2xrv',
-
   const onSubmit = async (input: PuzzleFormType) => {
     createArchetypalPuzzle({
       variables: {
@@ -264,16 +272,18 @@ export default function PuzzleForm() {
             isAnon: false,
             rewardableId: 'ignore me',
             steps: input.steps.map((step) => {
+              const commonStepFields = {
+                puzzleId: 'ignore me',
+                failMessage: step.failMessage,
+                successMessage: step.successMessage,
+                challenge: step.challenge,
+                stepSortWeight: parseInt(step.stepSortWeight, 10),
+                resourceLinks: step.resourceLinks,
+              }
               if (step.type === 'SIMPLE_TEXT' && 'solution' in step) {
                 return {
-                  puzzleId: 'ignore me',
                   type: 'SIMPLE_TEXT', // discriminator
-                  failMessage: step.failMessage,
-                  successMessage: step.successMessage,
-                  challenge: step.challenge,
-                  resourceLinks: step.resourceLinks,
-                  stepSortWeight: parseInt(step.stepSortWeight, 10),
-                  // solution: step.solution,
+                  ...commonStepFields,
                   stepSimpleText: {
                     stepId: 'ignore me',
                     solution: step.solution,
@@ -283,13 +293,21 @@ export default function PuzzleForm() {
               }
               // else if (step.type === 'NFT_CHECK') {
               //   return {
-              //     type: step.type,
-              //     failMessage: step.failMessage,
-              //     successMessage: step.successMessage,
-              //     challenge: step.challenge,
-              //     resourceLinks: step.resourceLinks,
-              //     stepSortWeight: parseInt(step.stepSortWeight, 10),
-              //     // nftId: step.nftId,
+              //     type: 'NFT_CHECK', // discriminator
+              //     ...commonStepFields,
+              //     stepNftCheck: {
+              //       stepId: 'ignore me',
+              //       requireAllNfts: false, // hard coded for now
+              //       nftCheckData: {
+              //       step.stepNftCheck.nftCheckData.map((nftCheckDatum) => {
+              //         return {
+              //           contractAddress: nftCheckDatum.contractAddress,
+              //           tokenId: nftCheckDatum.tokenId,
+              //           chainId: nftCheckDatum.chainId,
+              //           poapEventId: nftCheckDatum.poapEventId,
+              //         },
+              //       })
+              //     },
               //   }
               // }
               else {
