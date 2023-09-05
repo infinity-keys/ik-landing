@@ -53,7 +53,7 @@ const stepsArrayName = 'steps'
 // const startingSteps: Step[] = [{ message: 'step 1' }, { message: 'step 2' }]
 const startingSteps: Step[] = []
 
-type StepType = 'SIMPLE_TEXT' | 'NFT_CHECK' | 'UNCHOSEN'
+type StepType = 'SIMPLE_TEXT' | 'NFT_CHECK' | 'FUNCTION_CALL' | 'UNCHOSEN'
 
 type Step = {
   failMessage: string
@@ -80,6 +80,12 @@ type NftCheckDatum = {
   chainId: string
   tokenId: string
   poapEventId: string
+}
+
+type StepFunctionCall = Step & {
+  type: 'FUNCTION_CALL'
+  methodIds: string[]
+  contractAddress: string
 }
 
 function Step({
@@ -125,6 +131,18 @@ function Step({
           chainId: '',
           poapEventId: '',
         },
+      })
+    }
+    if (stepTypeVal === 'FUNCTION_CALL') {
+      setValue(`${stepsArrayName}.${index}`, {
+        type: 'FUNCTION_CALL',
+        failMessage: getValues(`${stepsArrayName}.${index}.failMessage`),
+        successMessage: getValues(`${stepsArrayName}.${index}.successMessage`),
+        challenge: getValues(`${stepsArrayName}.${index}.challenge`),
+        resourceLinks: getValues(`${stepsArrayName}.${index}.resourceLinks`),
+        stepSortWeight: getValues(`${stepsArrayName}.${index}.stepSortWeight`),
+        methodIds: [],
+        contractAddress: '',
       })
     }
   }, [index, setValue, getValues, stepTypeVal])
@@ -200,6 +218,7 @@ function Step({
           <option value="UNCHOSEN">Choose a Step Type</option>
           <option value="SIMPLE_TEXT">Simple Text</option>
           <option value="NFT_CHECK">NFT check</option>
+          <option value="FUNCTION_CALL">Function Call</option>
         </SelectField>
       </div>
 
@@ -217,13 +236,6 @@ function Step({
         />
       )}
 
-      {/*
-      this ".nftId" below needs to be replaced with these values:
-      1.) contractAddress
-      2.) chainId
-      3.) tokenId
-      4.) poapEventId
-      */}
       {stepTypeVal === 'NFT_CHECK' && (
         <div>
           <Label
@@ -262,6 +274,21 @@ function Step({
           />
         </div>
       )}
+
+      {stepTypeVal === 'FUNCTION_CALL' && (
+        <div>
+          <TextField
+            placeholder="Method Ids"
+            {...register(`${stepsArrayName}.${index}.methodIds`)}
+            className="block bg-inherit text-stone-100"
+          />
+          <TextField
+            placeholder="Contract Address"
+            {...register(`${stepsArrayName}.${index}.contractAddress`)}
+            className="block bg-inherit text-stone-100"
+          />
+        </div>
+      )}
     </fieldset>
   )
 }
@@ -274,7 +301,7 @@ type PuzzleFormType = {
     successMessage: CreateRewardableInput['successMessage']
     listPublicly: CreateRewardableInput['listPublicly']
   }
-  steps: (StepSimpleText | StepNftCheck | Step)[]
+  steps: (StepSimpleText | StepNftCheck | StepFunctionCall | Step)[]
 }
 
 export default function PuzzleForm() {
@@ -340,7 +367,6 @@ export default function PuzzleForm() {
                     requireAllNfts: false, // hard coded for now
                     nftCheckData: [
                       {
-                        // nftId: 'ignore me', // not sure this is needed
                         contractAddress: step.nftCheckData.contractAddress,
                         chainId: parseInt(step.nftCheckData.chainId),
                         tokenId: parseInt(step.nftCheckData.tokenId),
@@ -348,6 +374,16 @@ export default function PuzzleForm() {
                         stepNftCheckId: 'ignore me',
                       },
                     ],
+                  },
+                }
+              } else if (step.type === 'FUNCTION_CALL' && 'methodIds' in step) {
+                return {
+                  type: 'FUNCTION_CALL', // discriminator
+                  ...commonStepFields,
+                  stepFunctionCall: {
+                    stepId: 'ignore me',
+                    methodIds: step.methodIds,
+                    contractAddress: step.contractAddress,
                   },
                 }
               } else {
