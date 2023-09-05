@@ -8,6 +8,10 @@ if (process.env.NODE_ENV === 'development') {
   import('react').then((React) => {
     useEffect = React.useEffect
     useRef = React.useRef
+
+    // Slight delay to allow useRef to initialize, w/o it we get a warning
+    // in the browser that says 'useRef' is not a function.
+    setTimeout(() => {}, 50)
   })
 }
 
@@ -67,11 +71,15 @@ type StepSimpleText = Step & {
 
 type StepNftCheck = Step & {
   type: 'NFT_CHECK'
-  nftId: string // this needs to be replaced with the values below
-  // contractAddress: string
-  // chainId: string
-  // tokenId: string
-  // poapEventId: string
+  requireAllNfts: boolean
+  nftCheckData: NftCheckDatum
+}
+
+type NftCheckDatum = {
+  contractAddress: string
+  chainId: string
+  tokenId: string
+  poapEventId: string
 }
 
 function Step({
@@ -110,11 +118,13 @@ function Step({
         challenge: getValues(`${stepsArrayName}.${index}.challenge`),
         resourceLinks: getValues(`${stepsArrayName}.${index}.resourceLinks`),
         stepSortWeight: getValues(`${stepsArrayName}.${index}.stepSortWeight`),
-        nftId: '', // this needs to be replaced with the values below
-        // contractAddress: '',
-        // chainId: '',
-        // tokenId: '',
-        // poapEventId: '',
+        requireAllNfts: false,
+        nftCheckData: {
+          contractAddress: '',
+          tokenId: '',
+          chainId: '',
+          poapEventId: '',
+        },
       })
     }
   }, [index, setValue, getValues, stepTypeVal])
@@ -215,11 +225,42 @@ function Step({
       4.) poapEventId
       */}
       {stepTypeVal === 'NFT_CHECK' && (
-        <TextField
-          placeholder="NFT ID"
-          {...register(`${stepsArrayName}.${index}.nftId`)}
-          className="block bg-inherit"
-        />
+        <div>
+          <Label
+            name="requireAllNfts"
+            className="rw-label text-stone-100"
+            errorClassName="rw-label rw-label-error"
+          >
+            Require All NFTs
+          </Label>
+          <CheckboxField
+            {...register(`${stepsArrayName}.${index}.requireAllNfts`)}
+            className="block bg-inherit text-stone-100"
+          />
+          {/* nftCheckData */}
+          <TextField
+            placeholder="Contract Address"
+            {...register(
+              `${stepsArrayName}.${index}.nftCheckData.contractAddress`
+            )}
+            className="block bg-inherit text-stone-100"
+          />
+          <TextField
+            placeholder="Chain Id"
+            {...register(`${stepsArrayName}.${index}.nftCheckData.chainId`)}
+            className="block bg-inherit text-stone-100"
+          />
+          <TextField
+            placeholder="Token Id"
+            {...register(`${stepsArrayName}.${index}.nftCheckData.tokenId`)}
+            className="block bg-inherit text-stone-100"
+          />
+          <TextField
+            placeholder="POAP Event Id"
+            {...register(`${stepsArrayName}.${index}.nftCheckData.poapEventId`)}
+            className="block bg-inherit text-stone-100"
+          />
+        </div>
       )}
     </fieldset>
   )
@@ -290,27 +331,26 @@ export default function PuzzleForm() {
                     solutionCharCount: step.solution.length,
                   },
                 }
-              }
-              // else if (step.type === 'NFT_CHECK') {
-              //   return {
-              //     type: 'NFT_CHECK', // discriminator
-              //     ...commonStepFields,
-              //     stepNftCheck: {
-              //       stepId: 'ignore me',
-              //       requireAllNfts: false, // hard coded for now
-              //       nftCheckData: {
-              //       step.stepNftCheck.nftCheckData.map((nftCheckDatum) => {
-              //         return {
-              //           contractAddress: nftCheckDatum.contractAddress,
-              //           tokenId: nftCheckDatum.tokenId,
-              //           chainId: nftCheckDatum.chainId,
-              //           poapEventId: nftCheckDatum.poapEventId,
-              //         },
-              //       })
-              //     },
-              //   }
-              // }
-              else {
+              } else if (step.type === 'NFT_CHECK' && 'nftCheckData' in step) {
+                return {
+                  type: 'NFT_CHECK', // discriminator
+                  ...commonStepFields,
+                  stepNftCheck: {
+                    stepId: 'ignore me',
+                    requireAllNfts: false, // hard coded for now
+                    nftCheckData: [
+                      {
+                        // nftId: 'ignore me', // not sure this is needed
+                        contractAddress: step.nftCheckData.contractAddress,
+                        chainId: parseInt(step.nftCheckData.chainId),
+                        tokenId: parseInt(step.nftCheckData.tokenId),
+                        poapEventId: step.nftCheckData.poapEventId,
+                        stepNftCheckId: 'ignore me',
+                      },
+                    ],
+                  },
+                }
+              } else {
                 throw new Error('Step type not recognized')
               }
             }),
