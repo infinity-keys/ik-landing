@@ -53,7 +53,14 @@ const stepsArrayName = 'steps'
 // const startingSteps: Step[] = [{ message: 'step 1' }, { message: 'step 2' }]
 const startingSteps: Step[] = []
 
-type StepType = 'SIMPLE_TEXT' | 'NFT_CHECK' | 'FUNCTION_CALL' | 'UNCHOSEN'
+type StepType =
+  | 'SIMPLE_TEXT'
+  | 'NFT_CHECK'
+  | 'FUNCTION_CALL'
+  | 'COMETH_API'
+  | 'TOKEN_ID_RANGE'
+  // | 'ORIUM_API'
+  | 'UNCHOSEN'
 
 type Step = {
   failMessage: string
@@ -88,6 +95,28 @@ type StepFunctionCall = Step & {
   contractAddress: string
 }
 
+type StepComethApi = Step & {
+  type: 'COMETH_API'
+  stepId: string
+}
+
+type StepTokenIdRange = Step & {
+  type: 'TOKEN_ID_RANGE'
+  stepId: string
+  contractAddress: string
+  chainId: string
+  startIds: number[]
+  endIds: number[]
+}
+
+// type StepOriumApi = Step & {
+//   type: 'ORIUM_API'
+//   stepId: string
+
+//   // some kindof tuple goes here
+//   checkType:
+// }
+
 function Step({
   index,
   register,
@@ -105,25 +134,24 @@ function Step({
   const stepTypeVal = watch(`${stepsArrayName}.${index}.type`)
 
   useEffect(() => {
+    const commonStepFields = {
+      failMessage: getValues(`${stepsArrayName}.${index}.failMessage`),
+      successMessage: getValues(`${stepsArrayName}.${index}.successMessage`),
+      challenge: getValues(`${stepsArrayName}.${index}.challenge`),
+      resourceLinks: getValues(`${stepsArrayName}.${index}.resourceLinks`),
+      stepSortWeight: getValues(`${stepsArrayName}.${index}.stepSortWeight`),
+    }
     if (stepTypeVal === 'SIMPLE_TEXT') {
       setValue(`${stepsArrayName}.${index}`, {
         type: 'SIMPLE_TEXT',
-        failMessage: getValues(`${stepsArrayName}.${index}.failMessage`),
-        successMessage: getValues(`${stepsArrayName}.${index}.successMessage`),
-        challenge: getValues(`${stepsArrayName}.${index}.challenge`),
-        resourceLinks: getValues(`${stepsArrayName}.${index}.resourceLinks`),
-        stepSortWeight: getValues(`${stepsArrayName}.${index}.stepSortWeight`),
+        ...commonStepFields,
         solution: '',
       })
     }
     if (stepTypeVal === 'NFT_CHECK') {
       setValue(`${stepsArrayName}.${index}`, {
         type: 'NFT_CHECK',
-        failMessage: getValues(`${stepsArrayName}.${index}.failMessage`),
-        successMessage: getValues(`${stepsArrayName}.${index}.successMessage`),
-        challenge: getValues(`${stepsArrayName}.${index}.challenge`),
-        resourceLinks: getValues(`${stepsArrayName}.${index}.resourceLinks`),
-        stepSortWeight: getValues(`${stepsArrayName}.${index}.stepSortWeight`),
+        ...commonStepFields,
         requireAllNfts: false,
         nftCheckData: {
           contractAddress: '',
@@ -136,13 +164,27 @@ function Step({
     if (stepTypeVal === 'FUNCTION_CALL') {
       setValue(`${stepsArrayName}.${index}`, {
         type: 'FUNCTION_CALL',
-        failMessage: getValues(`${stepsArrayName}.${index}.failMessage`),
-        successMessage: getValues(`${stepsArrayName}.${index}.successMessage`),
-        challenge: getValues(`${stepsArrayName}.${index}.challenge`),
-        resourceLinks: getValues(`${stepsArrayName}.${index}.resourceLinks`),
-        stepSortWeight: getValues(`${stepsArrayName}.${index}.stepSortWeight`),
+        ...commonStepFields,
         methodIds: [],
         contractAddress: '',
+      })
+    }
+    if (stepTypeVal === 'COMETH_API') {
+      setValue(`${stepsArrayName}.${index}`, {
+        type: 'COMETH_API',
+        ...commonStepFields,
+        stepId: '',
+      })
+    }
+    if (stepTypeVal === 'TOKEN_ID_RANGE') {
+      setValue(`${stepsArrayName}.${index}`, {
+        type: 'TOKEN_ID_RANGE',
+        ...commonStepFields,
+        stepId: '',
+        contractAddress: '',
+        chainId: '',
+        startIds: [],
+        endIds: [],
       })
     }
   }, [index, setValue, getValues, stepTypeVal])
@@ -219,6 +261,8 @@ function Step({
           <option value="SIMPLE_TEXT">Simple Text</option>
           <option value="NFT_CHECK">NFT check</option>
           <option value="FUNCTION_CALL">Function Call</option>
+          <option value="COMETH_API">Cometh API</option>
+          <option value="TOKEN_ID_RANGE">Token ID Range</option>
         </SelectField>
       </div>
 
@@ -289,6 +333,46 @@ function Step({
           />
         </div>
       )}
+
+      {stepTypeVal === 'TOKEN_ID_RANGE' && (
+        <div>
+          <TextField
+            placeholder="Step Id"
+            {...register(`${stepsArrayName}.${index}.stepId`)}
+            className="block bg-inherit text-stone-100"
+          />
+          <TextField
+            placeholder="Contract Address"
+            {...register(`${stepsArrayName}.${index}.contractAddress`)}
+            className="block bg-inherit text-stone-100"
+          />
+          <TextField
+            placeholder="Chain Id"
+            {...register(`${stepsArrayName}.${index}.chainId`)}
+            className="block bg-inherit text-stone-100"
+          />
+          <TextField
+            placeholder="Start Ids"
+            {...register(`${stepsArrayName}.${index}.startIds`)}
+            className="block bg-inherit text-stone-100"
+          />
+          <TextField
+            placeholder="End Ids"
+            {...register(`${stepsArrayName}.${index}.endIds`)}
+            className="block bg-inherit text-stone-100"
+          />
+        </div>
+      )}
+
+      {stepTypeVal === 'COMETH_API' && (
+        <div>
+          <TextField
+            placeholder="Step Id"
+            {...register(`${stepsArrayName}.${index}.stepId`)}
+            className="block bg-inherit text-stone-100"
+          />
+        </div>
+      )}
     </fieldset>
   )
 }
@@ -301,7 +385,14 @@ type PuzzleFormType = {
     successMessage: CreateRewardableInput['successMessage']
     listPublicly: CreateRewardableInput['listPublicly']
   }
-  steps: (StepSimpleText | StepNftCheck | StepFunctionCall | Step)[]
+  steps: (
+    | StepSimpleText
+    | StepNftCheck
+    | StepFunctionCall
+    | StepComethApi
+    | StepTokenIdRange
+    | Step
+  )[]
 }
 
 export default function PuzzleForm() {
@@ -384,6 +475,30 @@ export default function PuzzleForm() {
                     stepId: 'ignore me',
                     methodIds: step.methodIds,
                     contractAddress: step.contractAddress,
+                  },
+                }
+              } else if (step.type === 'COMETH_API' && 'stepId' in step) {
+                return {
+                  type: 'COMETH_API', // discriminator
+                  ...commonStepFields,
+                  stepComethApi: {
+                    stepId: 'ignore me',
+                  },
+                }
+              } else if (
+                step.type === 'TOKEN_ID_RANGE' &&
+                'startIds' in step &&
+                'endIds' in step
+              ) {
+                return {
+                  type: 'TOKEN_ID_RANGE', // discriminator
+                  ...commonStepFields,
+                  stepTokenIdRange: {
+                    stepId: 'ignore me',
+                    contractAddress: step.contractAddress,
+                    chainId: step.chainId,
+                    startIds: step.startIds.map(Number),
+                    endIds: step.endIds.map(Number),
                   },
                 }
               } else {
