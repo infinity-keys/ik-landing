@@ -14,12 +14,13 @@ if (process.env.NODE_ENV === 'development') {
     setTimeout(() => {}, 50)
   })
 }
-
+// web/src/pages/FormArchetypePage/FormArchetypePage.tsx
 import { DevTool } from '@hookform/devtools'
 import {
   CreateRewardableInput,
   MutationcreateBurdPuzzleArgs,
   CreateBurdPuzzleMutation,
+  OriumCheckType,
 } from 'types/graphql'
 // import { CreateStepInput } from 'types/graphql'
 
@@ -59,7 +60,7 @@ type StepType =
   | 'FUNCTION_CALL'
   | 'COMETH_API'
   | 'TOKEN_ID_RANGE'
-  // | 'ORIUM_API'
+  | 'ORIUM_API'
   | 'UNCHOSEN'
 
 type Step = {
@@ -109,13 +110,11 @@ type StepTokenIdRange = Step & {
   endIds: number[]
 }
 
-// type StepOriumApi = Step & {
-//   type: 'ORIUM_API'
-//   stepId: string
-
-//   // some kindof tuple goes here
-//   checkType:
-// }
+type StepOriumApi = Step & {
+  type: 'ORIUM_API'
+  stepId: string
+  checkType: OriumCheckType // imported from 'types/graphql'
+}
 
 function Step({
   index,
@@ -188,6 +187,15 @@ function Step({
       })
     }
   }, [index, setValue, getValues, stepTypeVal])
+
+  // We want to grab the enum OriumCheckType from 'types/graphql'
+  // but when we do that we get a linting error so the three options are
+  // re-declared in this constant below to make TypeScript happy
+  const oriumCheckTypeOptions = [
+    'HAS_CREATED_VAULT',
+    'HAS_DEPOSITED_NFT',
+    'HAS_CREATED_SCHOLARSHIP',
+  ]
 
   return (
     <fieldset className="text-stone-100">
@@ -263,6 +271,7 @@ function Step({
           <option value="FUNCTION_CALL">Function Call</option>
           <option value="COMETH_API">Cometh API</option>
           <option value="TOKEN_ID_RANGE">Token ID Range</option>
+          <option value="ORIUM_API">Orium API</option>
         </SelectField>
       </div>
 
@@ -334,6 +343,16 @@ function Step({
         </div>
       )}
 
+      {stepTypeVal === 'COMETH_API' && (
+        <div>
+          <TextField
+            placeholder="Step Id"
+            {...register(`${stepsArrayName}.${index}.stepId`)}
+            className="block bg-inherit text-stone-100"
+          />
+        </div>
+      )}
+
       {stepTypeVal === 'TOKEN_ID_RANGE' && (
         <div>
           <TextField
@@ -364,13 +383,29 @@ function Step({
         </div>
       )}
 
-      {stepTypeVal === 'COMETH_API' && (
+      {stepTypeVal === 'ORIUM_API' && (
         <div>
           <TextField
             placeholder="Step Id"
             {...register(`${stepsArrayName}.${index}.stepId`)}
             className="block bg-inherit text-stone-100"
           />
+          <label
+            htmlFor={`${stepsArrayName}.${index}.checkType`}
+            className="rw-label text-stone-100"
+          >
+            Check Type
+          </label>
+          <SelectField
+            name={`${stepsArrayName}.${index}.checkType`}
+            className="block bg-inherit text-stone-100"
+          >
+            {oriumCheckTypeOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </SelectField>
         </div>
       )}
     </fieldset>
@@ -391,6 +426,7 @@ type PuzzleFormType = {
     | StepFunctionCall
     | StepComethApi
     | StepTokenIdRange
+    | StepOriumApi
     | Step
   )[]
 }
@@ -499,6 +535,19 @@ export default function PuzzleForm() {
                     chainId: step.chainId,
                     startIds: step.startIds.map(Number),
                     endIds: step.endIds.map(Number),
+                  },
+                }
+              } else if (
+                step.type === 'ORIUM_API' &&
+                'stepId' in step &&
+                'checkType' in step
+              ) {
+                return {
+                  type: 'ORIUM_API', // discriminator
+                  ...commonStepFields,
+                  stepOriumApi: {
+                    stepId: 'ignore me',
+                    checkType: step.checkType,
                   },
                 }
               } else {
