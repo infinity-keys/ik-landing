@@ -1,5 +1,5 @@
-// This page is temporary, just to test out the form
 // BROWSER LOCATION: http://localhost:8910/puzzle/archetype
+// web/src/pages/FormArchetypePage/FormArchetypePage.tsx
 
 let useEffect: typeof import('react').useEffect
 let useRef: typeof import('react').useRef
@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'development') {
     setTimeout(() => {}, 50)
   })
 }
-// web/src/pages/FormArchetypePage/FormArchetypePage.tsx
+
 import { DevTool } from '@hookform/devtools'
 import {
   CreateRewardableInput,
@@ -22,11 +22,13 @@ import {
   CreateBurdPuzzleMutation,
   OriumCheckType,
 } from 'types/graphql'
-// import { CreateStepInput } from 'types/graphql'
 
 import {
   Form,
+  FormError,
+  FieldError,
   useForm,
+  UseFormReturn,
   Label,
   SelectField,
   Submit,
@@ -51,7 +53,6 @@ const CREATE_BURD_PUZZLE_MUTATION = gql`
 
 const stepsArrayName = 'steps'
 
-// const startingSteps: Step[] = [{ message: 'step 1' }, { message: 'step 2' }]
 const startingSteps: Step[] = []
 
 type StepType =
@@ -83,6 +84,8 @@ type StepNftCheck = Step & {
   nftCheckData: NftCheckDatum
 }
 
+// we tried importing this directly from 'types/graphql'
+// but that generated several linting errors below
 type NftCheckDatum = {
   contractAddress: string
   chainId: string
@@ -113,7 +116,8 @@ type StepTokenIdRange = Step & {
 type StepOriumApi = Step & {
   type: 'ORIUM_API'
   stepId: string
-  checkType: OriumCheckType // imported from 'types/graphql'
+  // OriumCheckType is imported from 'types/graphql'
+  checkType: OriumCheckType
 }
 
 function Step({
@@ -125,7 +129,8 @@ function Step({
 }: {
   index: number
   register: UseFormRegister<PuzzleFormType>
-  watch: UseFormWatch<PuzzleFormType> // linting error: UseFormWatch<CreateBurdPuzzleInput>
+  // creates linting error: UseFormWatch<CreateBurdPuzzleInput>
+  watch: UseFormWatch<PuzzleFormType>
   setValue: UseFormSetValue<PuzzleFormType>
   getValues: UseFormGetValues<PuzzleFormType>
 }) {
@@ -302,7 +307,6 @@ function Step({
             {...register(`${stepsArrayName}.${index}.requireAllNfts`)}
             className="block bg-inherit text-stone-100"
           />
-          {/* nftCheckData */}
           <TextField
             placeholder="Contract Address"
             {...register(
@@ -442,11 +446,13 @@ export default function PuzzleForm() {
     }
   })
 
-  const formMethods = useForm<PuzzleFormType>({
+  const formMethods: UseFormReturn<PuzzleFormType> = useForm<PuzzleFormType>({
     defaultValues: {
       [stepsArrayName]: startingSteps,
     },
   })
+
+  const { errors } = formMethods.formState
 
   const { fields, append } = useFieldArray({
     control: formMethods.control,
@@ -560,8 +566,8 @@ export default function PuzzleForm() {
     })
     console.log(input)
   }
-
-  const [createArchetypalPuzzle] = useMutation<
+  // added in the { loading, error } below to mimic the RewardablePuzzleForm.tsx
+  const [createArchetypalPuzzle, { loading, error }] = useMutation<
     CreateBurdPuzzleMutation,
     MutationcreateBurdPuzzleArgs
   >(CREATE_BURD_PUZZLE_MUTATION, {
@@ -574,13 +580,47 @@ export default function PuzzleForm() {
     },
   })
 
+  // left off here, Bloom says to look into react-hook-forms "field validators"
+
+  // Using this default: <FieldError name="rewardable.name" className="rw-field-error" />
+  // Creates this message: "rewardable.name is required" - this is not customer friendly
+  // Thus we have a custom error message function
+  function requiredFieldError(fieldName: string) {
+    return (
+      <div className="rw-field-error">
+        I&apos;m sorry, but {fieldName} is required!
+      </div>
+    )
+  }
+
+  function requiredSlugFormatError(slug: string) {
+    const slugPattern = /^[a-z0-9]+(-[a-z0-9]+)*$/
+
+    if (!slugPattern.test(slug)) {
+      return (
+        <div className="rw-field-error">
+          I&apos;m sorry, but {slug} is not a valid slug; use lowercase letters
+          and/or numbers seperated by dashes
+        </div>
+      )
+    }
+  }
+
   return (
     <Form formMethods={formMethods} onSubmit={onSubmit}>
-      <div className="m-4 inline-block bg-pink-200 p-2 text-lg text-red-800">
-        Times this component has rendered: <b>{renderCount.current}</b>
-      </div>
+      <FormError
+        error={error}
+        wrapperClassName="rw-form-error-wrapper"
+        titleClassName="rw-form-error-title"
+        listClassName="rw-form-error-list"
+      />
       {process.env.NODE_ENV === 'development' && (
-        <DevTool control={formMethods.control} />
+        <div>
+          <div className="m-4 inline-block bg-pink-200 p-2 text-lg text-red-800">
+            Times this component has rendered: <b>{renderCount.current}</b>
+          </div>
+          <DevTool control={formMethods.control} />
+        </div>
       )}
       <Label
         name="rewardable.name"
@@ -593,7 +633,10 @@ export default function PuzzleForm() {
         name="rewardable.name"
         className="block bg-inherit text-stone-100"
         placeholder="Name"
+        validation={{ required: true }}
       />
+      {errors.rewardable?.name?.type === 'required' &&
+        requiredFieldError('Name')}
 
       <Label
         name="rewardable.slug"
@@ -606,7 +649,11 @@ export default function PuzzleForm() {
         name="rewardable.slug"
         className="block bg-inherit text-stone-100"
         placeholder="Slug"
+        validation={{ required: true }}
       />
+      {errors.rewardable?.slug?.type === 'required' &&
+        requiredFieldError('Slug')}
+      {requiredSlugFormatError(formMethods.getValues('rewardable.slug'))}
 
       <Label
         name="rewardable.explanation"
@@ -619,7 +666,9 @@ export default function PuzzleForm() {
         name="rewardable.explanation"
         className="block bg-inherit text-stone-100"
         placeholder="Explanation"
+        validation={{ required: true }}
       />
+      <FieldError name="rewardable.explanation" className="rw-field-error" />
 
       <Label
         name="rewardable.successMessage"
@@ -689,7 +738,9 @@ export default function PuzzleForm() {
           Add Step
         </button>
       </div>
-      <Submit>Submit</Submit>
+      <Submit disabled={loading} className="rw-button rw-button-blue">
+        Submit
+      </Submit>
     </Form>
   )
 }
