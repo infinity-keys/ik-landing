@@ -26,7 +26,7 @@ import {
 import {
   Form,
   FormError,
-  FieldError,
+  // FieldError,
   useForm,
   UseFormReturn,
   Label,
@@ -202,6 +202,20 @@ function Step({
     'HAS_CREATED_SCHOLARSHIP',
   ]
 
+  // // Using this default: <FieldError /> from react-hook-form creates dumb
+  // // error messages like this: "steps.1.failMessage is required"
+  // // Thus we have a custom error message function.
+  // // TODO: this function is duplicated in the Puzzle form below, DRY it up
+  // function requiredFieldError(fieldName: string) {
+  //   return (
+  //     <div className="rw-field-error">
+  //       I&apos;m sorry, but {fieldName} is required!
+  //     </div>
+  //   )
+  // }
+  //////////////////// LEFT OFF IN THIS SECTION RIGHT HERE! ////////////////////
+  //// TODO: we need a way to say that you cannot save a puzzle unless you first
+  ////////// add a Step to that puzzle (check with Bloom/Tawnee on this)
   return (
     <fieldset className="text-stone-100">
       <Label
@@ -215,8 +229,26 @@ function Step({
         placeholder="Fail Message"
         {...register(`${stepsArrayName}.${index}.failMessage`)}
         className="block bg-inherit text-stone-100"
+        validation={{ required: true }}
       />
+      {/* custom error messages goes here, but this prematurely fires the error before the user clicks 'submit' */}
+      {/* {watch(`${stepsArrayName}.${index}.failMessage`) === '' &&
+        requiredFieldError('a Fail Message')} */}
 
+      {/* this doesn't work either and produces this linting error:
+        "Property 'steps' does not exist on type 'typeof ErrorCode'.ts(2339) any"
+      */}
+      {/* {errors.steps?.[index]?.failMessage?.type === 'required' &&
+        requiredFieldError('a Fail Message')} */}
+
+      {/*
+        This is the react-hook-form default but it returns this message:
+          "steps.1.failMessage is required" - but the user won't know WTF that means
+        <FieldError
+          name={`${stepsArrayName}.${index}.failMessage`}
+          className="rw-field-error"
+        />
+      */}
       <Label
         name="successMessage"
         className="rw-label text-stone-100"
@@ -593,6 +625,7 @@ export default function PuzzleForm() {
     )
   }
 
+  // This checks to see if the slug is formatted correctly
   function requiredSlugFormatError(slug: string) {
     const slugPattern = /^[a-z0-9]+(-[a-z0-9]+)*$/
 
@@ -635,8 +668,13 @@ export default function PuzzleForm() {
         placeholder="Name"
         validation={{ required: true }}
       />
+      {/*
+        This is the react-hook-form default but it returns this message:
+          "rewardable.name is required" - but the user won't know WTF that means
+        <FieldError name="rewardable.name" className="rw-field-error" />
+      */}
       {errors.rewardable?.name?.type === 'required' &&
-        requiredFieldError('Name')}
+        requiredFieldError('a Name')}
 
       <Label
         name="rewardable.slug"
@@ -648,7 +686,7 @@ export default function PuzzleForm() {
       <TextField
         name="rewardable.slug"
         className="block bg-inherit text-stone-100"
-        placeholder="Slug"
+        placeholder="a Slug"
         validation={{ required: true }}
       />
       {errors.rewardable?.slug?.type === 'required' &&
@@ -668,7 +706,8 @@ export default function PuzzleForm() {
         placeholder="Explanation"
         validation={{ required: true }}
       />
-      <FieldError name="rewardable.explanation" className="rw-field-error" />
+      {errors.rewardable?.explanation?.type === 'required' &&
+        requiredFieldError('an Explanation')}
 
       <Label
         name="rewardable.successMessage"
@@ -681,7 +720,10 @@ export default function PuzzleForm() {
         name="rewardable.successMessage"
         className="block bg-inherit text-stone-100"
         placeholder="Success Message"
+        validation={{ required: true }}
       />
+      {errors.rewardable?.successMessage?.type === 'required' &&
+        requiredFieldError('an Explanation')}
 
       <Label
         name="rewardable.orgId"
@@ -693,8 +735,16 @@ export default function PuzzleForm() {
       <TextField
         name="rewardable.orgId"
         className="block bg-inherit text-stone-100"
+        // TODO: Currently this is hardwired to IK's Org ID, but it needs
+        // to eventually say something like this for version 1.0:
+        // if (currentUser.organizations?.id.includes('cla9yay7y003k08la2z4j2xrv')) {
+        //   defaultValue={'cla9yay7y003k08la2z4j2xrv'}
+        // } else { defaultValue={''} }
         defaultValue={'cla9yay7y003k08la2z4j2xrv'}
+        validation={{ required: true }}
       />
+      {errors.rewardable?.successMessage?.type === 'required' &&
+        requiredFieldError('an Organizational ID')}
 
       <Label
         name="rewardable.listPublicly"
