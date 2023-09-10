@@ -126,6 +126,7 @@ function Step({
   watch,
   setValue,
   getValues,
+  remove,
 }: {
   index: number
   register: UseFormRegister<PuzzleFormType>
@@ -133,6 +134,7 @@ function Step({
   watch: UseFormWatch<PuzzleFormType>
   setValue: UseFormSetValue<PuzzleFormType>
   getValues: UseFormGetValues<PuzzleFormType>
+  remove: (index: number) => void
 }) {
   // Watch for select val changing
   const stepTypeVal = watch(`${stepsArrayName}.${index}.type`)
@@ -216,6 +218,7 @@ function Step({
   //////////////////// LEFT OFF IN THIS SECTION RIGHT HERE! ////////////////////
   //// TODO: we need a way to say that you cannot save a puzzle unless you first
   ////////// add a Step to that puzzle (check with Bloom/Tawnee on this)
+
   return (
     <fieldset className="text-stone-100">
       <Label
@@ -444,6 +447,13 @@ function Step({
           </SelectField>
         </div>
       )}
+      <button
+        type="button"
+        className="rw-button rw-button-red"
+        onClick={() => remove(index)}
+      >
+        Delete this Step
+      </button>
     </fieldset>
   )
 }
@@ -486,7 +496,7 @@ export default function PuzzleForm() {
 
   const { errors } = formMethods.formState
 
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control: formMethods.control,
     name: stepsArrayName,
   })
@@ -767,6 +777,7 @@ export default function PuzzleForm() {
           watch={formMethods.watch}
           setValue={formMethods.setValue}
           getValues={formMethods.getValues}
+          remove={remove}
         />
       ))}
 
@@ -788,6 +799,21 @@ export default function PuzzleForm() {
           Add Step
         </button>
       </div>
+
+      {/* <div className="rw-button-group">
+        {fields.length > 0 && (
+          <button
+            type="button"
+            className="rw-button rw-button-blue"
+            onClick={() => {
+              remove(fields.length - 1)
+            }}
+          >
+            Remove Last Step
+          </button>
+        )}
+      </div> */}
+
       <Submit disabled={loading} className="rw-button rw-button-blue">
         Submit
       </Submit>
