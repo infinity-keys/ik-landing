@@ -3,11 +3,13 @@
 
 let useEffect: typeof import('react').useEffect
 let useRef: typeof import('react').useRef
+let useState: typeof import('react').useState
 
 if (process.env.NODE_ENV === 'development') {
   import('react').then((React) => {
     useEffect = React.useEffect
     useRef = React.useRef
+    useState = React.useState
 
     // Slight delay to allow useRef to initialize, w/o it we get a warning
     // in the browser that says 'useRef' is not a function.
@@ -26,7 +28,7 @@ import {
 import {
   Form,
   FormError,
-  // FieldError,
+  FieldErrors,
   useForm,
   UseFormReturn,
   Label,
@@ -127,6 +129,7 @@ function Step({
   setValue,
   getValues,
   remove,
+  errors,
 }: {
   index: number
   register: UseFormRegister<PuzzleFormType>
@@ -135,6 +138,7 @@ function Step({
   setValue: UseFormSetValue<PuzzleFormType>
   getValues: UseFormGetValues<PuzzleFormType>
   remove: (index: number) => void
+  errors: FieldErrors<PuzzleFormType>
 }) {
   // Watch for select val changing
   const stepTypeVal = watch(`${stepsArrayName}.${index}.type`)
@@ -208,21 +212,21 @@ function Step({
   // // error messages like this: "steps.1.failMessage is required"
   // // Thus we have a custom error message function.
   // // TODO: this function is duplicated in the Puzzle form below, DRY it up
-  // function requiredFieldError(fieldName: string) {
-  //   return (
-  //     <div className="rw-field-error">
-  //       I&apos;m sorry, but {fieldName} is required!
-  //     </div>
-  //   )
-  // }
-  //////////////////// LEFT OFF IN THIS SECTION RIGHT HERE! ////////////////////
+  function requiredFieldError(fieldName: string) {
+    return (
+      <div className="rw-field-error">
+        I&apos;m sorry, but {fieldName} is required!
+      </div>
+    )
+  }
+
   //// TODO: we need a way to say that you cannot save a puzzle unless you first
   ////////// add a Step to that puzzle (check with Bloom/Tawnee on this)
 
   return (
     <fieldset className="text-stone-100">
       <Label
-        name="failMesssage"
+        name={`failMesssage.${index}`}
         className="rw-label text-stone-100"
         errorClassName="rw-label rw-label-error"
       >
@@ -234,16 +238,8 @@ function Step({
         className="block bg-inherit text-stone-100"
         validation={{ required: true }}
       />
-      {/* custom error messages goes here, but this prematurely fires the error before the user clicks 'submit' */}
-      {/* {watch(`${stepsArrayName}.${index}.failMessage`) === '' &&
-        requiredFieldError('a Fail Message')} */}
-
-      {/* this doesn't work either and produces this linting error:
-        "Property 'steps' does not exist on type 'typeof ErrorCode'.ts(2339) any"
-      */}
-      {/* {errors.steps?.[index]?.failMessage?.type === 'required' &&
-        requiredFieldError('a Fail Message')} */}
-
+      {errors[stepsArrayName]?.[index]?.failMessage?.type === 'required' &&
+        requiredFieldError('Fail Message')}
       {/*
         This is the react-hook-form default but it returns this message:
           "steps.1.failMessage is required" - but the user won't know WTF that means
@@ -253,7 +249,7 @@ function Step({
         />
       */}
       <Label
-        name="successMessage"
+        name={`successMessage.${index}`}
         className="rw-label text-stone-100"
         errorClassName="rw-label rw-label-error"
       >
@@ -263,10 +259,13 @@ function Step({
         placeholder="Success Message"
         {...register(`${stepsArrayName}.${index}.successMessage`)}
         className="block bg-inherit text-stone-100"
+        validation={{ required: true }}
       />
+      {errors[stepsArrayName]?.[index]?.successMessage?.type === 'required' &&
+        requiredFieldError('Success Message')}
 
       <Label
-        name="challenge"
+        name={`challenge.${index}`}
         className="rw-label text-stone-100"
         errorClassName="rw-label rw-label-error"
       >
@@ -276,10 +275,13 @@ function Step({
         placeholder="Challenge"
         {...register(`${stepsArrayName}.${index}.challenge`)}
         className="block bg-inherit text-stone-100"
+        validation={{ required: true }}
       />
+      {errors[stepsArrayName]?.[index]?.challenge?.type === 'required' &&
+        requiredFieldError('Challenge')}
 
       <Label
-        name="resourceLinks"
+        name={`resourceLinks.${index}`}
         className="rw-label text-stone-100"
         errorClassName="rw-label rw-label-error"
       >
@@ -289,10 +291,13 @@ function Step({
         placeholder="Challenge"
         {...register(`${stepsArrayName}.${index}.resourceLinks`)}
         className="block bg-inherit text-stone-100"
+        validation={{ required: true }}
       />
+      {errors[stepsArrayName]?.[index]?.resourceLinks?.type === 'required' &&
+        requiredFieldError('Resource Links')}
 
       <Label
-        name="stepSortWeight"
+        name={`stepSortWeight.${index}`}
         className="rw-label text-stone-100"
         errorClassName="rw-label rw-label-error"
       >
@@ -302,7 +307,11 @@ function Step({
         placeholder="Challenge"
         {...register(`${stepsArrayName}.${index}.stepSortWeight`)}
         className="block bg-inherit text-stone-100"
+        validation={{ required: true }}
       />
+      {errors[stepsArrayName]?.[index]?.stepSortWeight?.type === 'required' &&
+        requiredFieldError('Step Sort Weight')}
+
       <div className="text-stone-800">
         <SelectField {...register(`${stepsArrayName}.${index}.type`)}>
           <option value="UNCHOSEN">Choose a Step Type</option>
@@ -326,6 +335,7 @@ function Step({
           placeholder="Solution"
           {...register(`${stepsArrayName}.${index}.solution`)}
           className="block bg-inherit text-stone-100"
+          validation={{ required: true }}
         />
       )}
 
@@ -478,8 +488,13 @@ type PuzzleFormType = {
 }
 
 export default function PuzzleForm() {
+  // manages what happens when a user forgets to include at least one step
+  // for the puzzle they are creating
+  const [hasNoSteps, setHasNoSteps] = useState(false)
+
   // only used in dev mode
   const renderCount = useRef(1)
+
   // only used in dev mode
   useEffect(() => {
     {
@@ -494,7 +509,9 @@ export default function PuzzleForm() {
     },
   })
 
-  const { errors } = formMethods.formState
+  const { errors } = formMethods.formState as {
+    errors: FieldErrors<PuzzleFormType>
+  }
 
   const { fields, append, remove } = useFieldArray({
     control: formMethods.control,
@@ -502,6 +519,16 @@ export default function PuzzleForm() {
   })
 
   const onSubmit = async (input: PuzzleFormType) => {
+    if (input.steps.length === 0) {
+      // alternatively, we could trash the useState and just have an alert:
+      // alert('A new puzzle must have at least one step!')
+      setHasNoSteps(true)
+      return
+    }
+
+    // Reset the error state if there are steps
+    setHasNoSteps(false)
+
     createArchetypalPuzzle({
       variables: {
         input: {
@@ -778,6 +805,7 @@ export default function PuzzleForm() {
           setValue={formMethods.setValue}
           getValues={formMethods.getValues}
           remove={remove}
+          errors={errors}
         />
       ))}
 
@@ -813,6 +841,13 @@ export default function PuzzleForm() {
           </button>
         )}
       </div> */}
+
+      {/* Conditionally render the error message */}
+      {hasNoSteps && (
+        <div className="rw-field-error">
+          You must have at least one step in a puzzle!
+        </div>
+      )}
 
       <Submit disabled={loading} className="rw-button rw-button-blue">
         Submit
