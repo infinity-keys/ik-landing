@@ -1,6 +1,7 @@
 // BROWSER LOCATION: http://localhost:8910/puzzle/archetype
 // web/src/pages/FormArchetypePage/FormArchetypePage.tsx
 
+// provides type safety by explicitly stating the type of each hook
 let useEffect: typeof import('react').useEffect
 let useRef: typeof import('react').useRef
 let useState: typeof import('react').useState
@@ -11,8 +12,8 @@ if (process.env.NODE_ENV === 'development') {
     useRef = React.useRef
     useState = React.useState
 
-    // Slight delay to allow useRef to initialize, w/o it we get a warning
-    // in the browser that says 'useRef' is not a function.
+    // Slight delay to allow 'useRef()' to initialize, w/o it we get a warning
+    // in the browser that says: "'useRef' is not a function."
     setTimeout(() => {}, 50)
   })
 }
@@ -122,6 +123,19 @@ type StepOriumApi = Step & {
   checkType: OriumCheckType
 }
 
+// Bloom says to look into react-hook-forms "field validators" and use those,
+// Using this default: <FieldError /> from react-hook-form creates cryptic (for
+// user) error messages like this one: "steps.1.failMessage is required"
+// thus we have a custom error message function instead so as to not confuse users.
+// NOTE: this is in parent scope & is used in both the 'Puzzle' and 'Step' forms
+function requiredFieldError(fieldName: string) {
+  return (
+    <div className="rw-field-error">
+      I&apos;m sorry, but {fieldName} is required!
+    </div>
+  )
+}
+
 function Step({
   index,
   register,
@@ -207,21 +221,6 @@ function Step({
     'HAS_DEPOSITED_NFT',
     'HAS_CREATED_SCHOLARSHIP',
   ]
-
-  // // Using this default: <FieldError /> from react-hook-form creates dumb
-  // // error messages like this: "steps.1.failMessage is required"
-  // // Thus we have a custom error message function.
-  // // TODO: this function is duplicated in the Puzzle form below, DRY it up
-  function requiredFieldError(fieldName: string) {
-    return (
-      <div className="rw-field-error">
-        I&apos;m sorry, but {fieldName} is required!
-      </div>
-    )
-  }
-
-  //// TODO: we need a way to say that you cannot save a puzzle unless you first
-  ////////// add a Step to that puzzle (check with Bloom/Tawnee on this)
 
   return (
     <fieldset className="text-stone-100">
@@ -331,12 +330,17 @@ function Step({
       )}
 
       {stepTypeVal === 'SIMPLE_TEXT' && (
-        <TextField
-          placeholder="Solution"
-          {...register(`${stepsArrayName}.${index}.solution`)}
-          className="block bg-inherit text-stone-100"
-          validation={{ required: true }}
-        />
+        <div>
+          <TextField
+            placeholder="Solution"
+            {...register(`${stepsArrayName}.${index}.solution`)}
+            className="block bg-inherit text-stone-100"
+            validation={{ required: true }}
+          />
+          {/* // left off here; this error message works, but it has a linting error */}
+          {/* {errors[stepsArrayName]?.[index]?.solution?.type === 'required' &&
+            requiredFieldError('a solution for the simple text')} */}
+        </div>
       )}
 
       {stepTypeVal === 'NFT_CHECK' && (
@@ -488,12 +492,12 @@ type PuzzleFormType = {
 }
 
 export default function PuzzleForm() {
-  // manages what happens when a user forgets to include at least one step
-  // for the puzzle they are creating
+  // manages what happens when a user forgets to include at least one step for
+  // the puzzle that they are creating with this form
   const [hasNoSteps, setHasNoSteps] = useState(false)
 
   // only used in dev mode
-  const renderCount = useRef(1)
+  const renderCount = useRef(process.env.NODE_ENV === 'development' ? 1 : 0)
 
   // only used in dev mode
   useEffect(() => {
@@ -635,7 +639,7 @@ export default function PuzzleForm() {
     })
     console.log(input)
   }
-  // added in the { loading, error } below to mimic the RewardablePuzzleForm.tsx
+
   const [createArchetypalPuzzle, { loading, error }] = useMutation<
     CreateBurdPuzzleMutation,
     MutationcreateBurdPuzzleArgs
@@ -648,19 +652,6 @@ export default function PuzzleForm() {
       alert(`Error with Burd's form: ${error.message}`)
     },
   })
-
-  // left off here, Bloom says to look into react-hook-forms "field validators"
-
-  // Using this default: <FieldError name="rewardable.name" className="rw-field-error" />
-  // Creates this message: "rewardable.name is required" - this is not customer friendly
-  // Thus we have a custom error message function
-  function requiredFieldError(fieldName: string) {
-    return (
-      <div className="rw-field-error">
-        I&apos;m sorry, but {fieldName} is required!
-      </div>
-    )
-  }
 
   // This checks to see if the slug is formatted correctly
   function requiredSlugFormatError(slug: string) {
@@ -827,20 +818,6 @@ export default function PuzzleForm() {
           Add Step
         </button>
       </div>
-
-      {/* <div className="rw-button-group">
-        {fields.length > 0 && (
-          <button
-            type="button"
-            className="rw-button rw-button-blue"
-            onClick={() => {
-              remove(fields.length - 1)
-            }}
-          >
-            Remove Last Step
-          </button>
-        )}
-      </div> */}
 
       {/* Conditionally render the error message */}
       {hasNoSteps && (
