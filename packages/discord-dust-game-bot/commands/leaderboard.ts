@@ -1,7 +1,8 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { CommandInteraction, MessageReaction, EmbedBuilder } from 'discord.js'
+import { CommandInteraction, EmbedBuilder } from 'discord.js'
 
 import { eco } from '../ecoDB'
+import { filter } from '../lib/filter'
 require('dotenv').config()
 
 export const data = new SlashCommandBuilder()
@@ -49,16 +50,6 @@ export async function execute(interaction: CommandInteraction) {
     embeds: [embedLeader],
     fetchReply: true,
   })
-
-  const filter = (reaction: MessageReaction) => {
-    return (
-      reaction.emoji.id === process.env.EMOJI_REACTION_IK_ID ||
-      reaction.emoji.id === '1065285126935805962' ||
-      reaction.emoji.id === '1106277546498199602' ||
-      reaction.emoji.id === '1083028535314239610' ||
-      reaction.emoji.id === '1083028536568320111'
-    )
-  }
 
   try {
     const collected = await message.awaitReactions({

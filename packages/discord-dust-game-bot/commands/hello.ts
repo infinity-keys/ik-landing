@@ -1,10 +1,7 @@
-import {
-  CommandInteraction,
-  MessageReaction,
-  SlashCommandBuilder,
-} from 'discord.js'
+import { CommandInteraction, SlashCommandBuilder } from 'discord.js'
 
 import { eco } from '../ecoDB'
+import { filter } from '../lib/filter'
 require('dotenv').config()
 
 export const data = new SlashCommandBuilder()
@@ -23,23 +20,11 @@ export async function execute(interaction: CommandInteraction) {
 
   const { guild } = interaction
 
-  const filter = (reaction: MessageReaction) => {
-    return (
-      reaction.emoji.id === process.env.EMOJI_REACTION_IK_ID ||
-      reaction.emoji.id === '1065285126935805962' ||
-      reaction.emoji.id === '1106277546498199602' ||
-      reaction.emoji.id === '1083028535314239610' ||
-      reaction.emoji.id === '1083028536568320111'
-    )
-  }
-
   try {
     const collected = await message.awaitReactions({
       filter,
       time: 45000,
     })
-
-    console.log('collection', collected)
 
     for (const reaction of collected.values()) {
       const users = reaction.users.cache.map((user) => user.id)
@@ -50,8 +35,6 @@ export async function execute(interaction: CommandInteraction) {
         }
       }
     }
-
-    console.log('collected', collected.values)
   } catch (error) {
     console.log('error', error)
   }
