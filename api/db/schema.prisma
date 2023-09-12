@@ -123,6 +123,9 @@ model Bundle {
 model Puzzle {
   id String @id @default(cuid())
 
+  /// Can this rewardable be played/accessed by anonymous/non-authed users?
+  isAnon Boolean @default(false)
+
   rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
   rewardableId String     @unique
 

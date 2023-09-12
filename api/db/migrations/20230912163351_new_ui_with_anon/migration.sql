@@ -1,9 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `isAnon` on the `Puzzle` table. All the data in the column will be lost.
-
-*/
 -- CreateEnum
 CREATE TYPE "PuzzleRequirements" AS ENUM ('HOLDERS_ONLY', 'SOCIAL_ACCOUNT', 'WALLET_GAS', 'TRAVEL', 'PATIENCE', 'WORDPLAY');
 
@@ -11,8 +5,7 @@ CREATE TYPE "PuzzleRequirements" AS ENUM ('HOLDERS_ONLY', 'SOCIAL_ACCOUNT', 'WAL
 CREATE TYPE "StepGuideType" AS ENUM ('SEEK', 'INFER', 'REWIND', 'TRACK', 'COLLECT', 'ACTIVATE');
 
 -- AlterTable
-ALTER TABLE "Puzzle" DROP COLUMN "isAnon",
-ADD COLUMN     "coverImage" TEXT,
+ALTER TABLE "Puzzle" ADD COLUMN     "coverImage" TEXT,
 ADD COLUMN     "requirements" "PuzzleRequirements"[];
 
 -- AlterTable
