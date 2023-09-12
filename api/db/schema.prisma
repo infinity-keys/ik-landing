@@ -131,7 +131,7 @@ model Puzzle {
   /// What will the user need to complete this puzzle (solve all steps)
   requirements PuzzleRequirements[]
   /// The display image that shows on landing page and in grid
-  coverImage   String
+  coverImage   String?
 
   steps Step[]
 }
@@ -210,15 +210,15 @@ model Step {
   attempts Attempt[]
 
   // These are the new fields
-  solutionHint  String
+  solutionHint  String?
   /// Image that will display on each step page if no step page image is provided
-  defaultImage  String
+  defaultImage  String?
   /// If this is not provided, the solution page will use the default image
   solutionImage String?
   /// The content for each page of the step
   stepPage      StepPage[]
   /// What kind of action does a user need to do to complete this step
-  stepGuideType StepGuideType
+  stepGuideType StepGuideType?
 
   @@unique([puzzleId, stepSortWeight(sort: Asc)]) // Fetches sorted by default
 }
