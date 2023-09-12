@@ -149,7 +149,6 @@ export default async () => {
       },
       puzzle: {
         create: {
-          isAnon: true,
           steps: {
             create: [
               {
@@ -191,7 +190,6 @@ export default async () => {
       },
       puzzle: {
         create: {
-          isAnon: false,
           steps: {
             create: [
               {
@@ -243,7 +241,6 @@ export default async () => {
       },
       puzzle: {
         create: {
-          isAnon: false,
           steps: {
             create: [
               {
@@ -303,7 +300,6 @@ export default async () => {
       },
       puzzle: {
         create: {
-          isAnon: false,
           steps: {
             create: [
               {
@@ -380,7 +376,6 @@ export default async () => {
       },
       puzzle: {
         create: {
-          isAnon: false,
           steps: {
             create: [
               {
