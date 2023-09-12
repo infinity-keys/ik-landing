@@ -21,6 +21,12 @@ services:
         source: /*
         destination: /index.html
 
+  - name: redwoodjs-storybook
+    type: web
+    env: static
+    buildCommand: yarn rw storybook --build
+    staticPublishPath: ./web/storybook-static
+
   - name: redwoodjs-api
     type: web
     env: node
