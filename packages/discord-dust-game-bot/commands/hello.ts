@@ -1,10 +1,7 @@
-import {
-  CommandInteraction,
-  MessageReaction,
-  SlashCommandBuilder,
-} from 'discord.js'
+import { CommandInteraction, SlashCommandBuilder } from 'discord.js'
 
 import { eco } from '../ecoDB'
+import { filter } from '../lib/filter'
 require('dotenv').config()
 
 export const data = new SlashCommandBuilder()
@@ -22,10 +19,6 @@ export async function execute(interaction: CommandInteraction) {
   })
 
   const { guild } = interaction
-
-  const filter = (reaction: MessageReaction) => {
-    return reaction.emoji.id === process.env.EMOJI_REACTION_IK_ID
-  }
 
   try {
     const collected = await message.awaitReactions({
