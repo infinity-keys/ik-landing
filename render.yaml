@@ -24,7 +24,7 @@ services:
   - name: redwoodjs-storybook
     type: web
     env: static
-    buildCommand: yarn rw storybook --build
+    buildCommand: yarn && yarn rw storybook --build
     staticPublishPath: ./web/storybook-static
 
   - name: redwoodjs-api

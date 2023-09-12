@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 
 import clsx from 'clsx'
+import useSound from 'use-sound'
 
 import { Link } from '@redwoodjs/router'
 
@@ -38,7 +39,7 @@ export default function Button({
   children,
 }: ButtonProps) {
   const classes = clsx(
-    'ik-button inline-block border hover:border-white rounded-md font-medium text-center transition px-12',
+    'ik-button inline-block border hover:border-white rounded-md font-medium text-center transition px-12 active:translate-y-[3px]',
     // Sizing
     { 'block w-full': fullWidth },
     // Borders
@@ -51,7 +52,7 @@ export default function Button({
     ],
     // Box Shadow
     {
-      'shadow-[0_3px_0_0_rgba(68,64,60,1)] transition-shadow hover:shadow-[rgba(87,83,78,1)]':
+      'shadow-[0_3px_0_0_rgba(68,64,60,1)] active:shadow-[0_0px_0_0_rgba(68,64,60,1)] hover:shadow-[rgba(87,83,78,1)]':
         shadow,
     },
     // Variants
@@ -82,6 +83,7 @@ export default function Button({
       },
     ]
   )
+  const [play] = useSound('/sounds/click2.mp3')
 
   if (to) {
     return (
@@ -110,17 +112,22 @@ export default function Button({
     )
   }
 
-  return (
-    <button
-      className={classes}
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      <span className="flex items-center justify-center">
-        {children}
-        {text}
-      </span>
-    </button>
-  )
+  if (onClick) {
+    return (
+      <button
+        className={classes}
+        type={type}
+        onMouseDown={() => play()}
+        onClick={() => {
+          onClick()
+        }}
+        disabled={disabled}
+      >
+        <span className="flex items-center justify-center">
+          {children}
+          {text}
+        </span>
+      </button>
+    )
+  }
 }

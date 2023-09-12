@@ -21009,6 +21009,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"howler@npm:^2.1.3":
+  version: 2.2.3
+  resolution: "howler@npm:2.2.3"
+  checksum: bf0181c81257a8e3e84825c1f09c576bed575ac906807eda955a98eb8f287df59e9e2bb1c4ad101a31e9815c2e17b7733d9544774de84ac6ee3f389dd2ae0f5a
+  languageName: node
+  linkType: hard
+
 "hpack.js@npm:^2.1.6":
   version: 2.1.6
   resolution: "hpack.js@npm:2.1.6"
@@ -33141,6 +33148,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"use-sound@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "use-sound@npm:4.0.1"
+  dependencies:
+    howler: ^2.1.3
+  peerDependencies:
+    react: ">=16.8"
+  checksum: a38119eec94f1bc95771eb7b3b0e01471abc221afdae01a3f1c1cda6d872c95dfe48caf8cd89f913d3958e71718081ccbb1978049431e01df165e0ead18efa8d
+  languageName: node
+  linkType: hard
+
 "use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.2.0":
   version: 1.2.0
   resolution: "use-sync-external-store@npm:1.2.0"
@@ -33744,6 +33762,7 @@ __metadata:
     tailwindcss: ^3.1.8
     tsparticles: ^2.5.3
     use-device-pixel-ratio: ^1.1.0
+    use-sound: ^4.0.1
     wagmi: ^0.6.7
   languageName: unknown
   linkType: soft

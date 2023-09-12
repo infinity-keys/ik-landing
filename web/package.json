@@ -48,6 +48,7 @@
     "react-particles": "^2.5.3",
     "tsparticles": "^2.5.3",
     "use-device-pixel-ratio": "^1.1.0",
+    "use-sound": "^4.0.1",
     "wagmi": "^0.6.7"
   },
   "devDependencies": {
