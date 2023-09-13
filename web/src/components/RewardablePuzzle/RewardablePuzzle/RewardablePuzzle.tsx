@@ -116,13 +116,15 @@ const Rewardable = ({ rewardable }: Props) => {
                                   setCurrentOverlayContent(req)
                                   setShowOverlay(true)
                                 }}
-                                className="flex flex-col items-center text-sm transition-opacity hover:opacity-60 md:text-base"
+                                className="flex flex-col items-center text-sm leading-none transition-opacity hover:opacity-60 md:text-base"
                               >
                                 <span className="puzzle-landing-icon mx-auto mb-2 block h-8 w-8 text-transparent md:h-12 md:w-12">
                                   {requirementsLookup[req].icon}
                                 </span>
 
-                                {requirementsLookup[req].labelElement}
+                                <span className="leading-none">
+                                  {requirementsLookup[req].labelElement}
+                                </span>
                               </button>
                             ) : null
                           )}
@@ -152,9 +154,15 @@ const Rewardable = ({ rewardable }: Props) => {
                           {currentOverlayContent &&
                             requirementsLookup[currentOverlayContent].icon}
                         </div>
-                        {currentOverlayContent &&
-                          requirementsLookup[currentOverlayContent]
-                            .labelElement}
+
+                        {currentOverlayContent && (
+                          <p className="leading-none">
+                            {
+                              requirementsLookup[currentOverlayContent]
+                                .labelElement
+                            }
+                          </p>
+                        )}
                       </div>
                       <p>
                         {currentOverlayContent &&

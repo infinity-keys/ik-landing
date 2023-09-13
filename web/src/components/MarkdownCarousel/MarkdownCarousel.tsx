@@ -34,7 +34,7 @@ const MarkdownCarousel = ({
           }}
           className="mr-6 p-2 text-stone-50 transition-colors hover:text-brand-accent-secondary"
         >
-          <ArrowRightIcon className="h-7 w-7 fill-transparent" />
+          <ArrowRightIcon className="h-8 w-8 fill-transparent" />
         </button>
       )}
       renderBottomLeftControls={(props: ControlProps) => {
@@ -49,13 +49,13 @@ const MarkdownCarousel = ({
             }}
             className="ml-6 p-2 text-stone-50 transition-colors hover:text-brand-accent-secondary"
           >
-            <ArrowLeftIcon className="h-7 w-7 fill-transparent" />
+            <ArrowLeftIcon className="h-8 w-8 fill-transparent" />
           </button>
         )
       }}
       defaultControlsConfig={{
         pagingDotsClassName: 'mx-1 p-2 hover:text-brand-accent-primary',
-        containerClassName: 'relative -bottom-12',
+        containerClassName: 'relative -bottom-16',
       }}
       className="w-full"
       style={{ height: '100%' }}

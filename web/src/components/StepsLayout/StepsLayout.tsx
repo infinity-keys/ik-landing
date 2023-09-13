@@ -166,7 +166,7 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
                 </div>
               </div>
             ) : (
-              <div className="relative mb-12 w-full flex-1 border-y-2 border-t-2 border-stone-50 md:max-w-[50%]">
+              <div className="relative mb-16 w-full flex-1 border-y-2 border-t-2 border-stone-50 md:max-w-[50%]">
                 <MarkdownCarousel
                   showOverlay={showOverlay}
                   setShowOverlay={setShowOverlay}
