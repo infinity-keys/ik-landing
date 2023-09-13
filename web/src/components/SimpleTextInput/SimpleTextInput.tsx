@@ -105,7 +105,7 @@ const SimpleTextInput = ({
 
             <div
               className={clsx(
-                'flex w-full max-w-[260px] cursor-text overflow-x-scroll rounded border-2 border-solid px-4 py-2',
+                'flex w-full max-w-[260px] cursor-text overflow-x-scroll rounded-md border-2 border-solid px-4 py-2',
                 inputTextLeft ? 'justify-start' : 'justify-center',
                 failedAttempt && !errorMessage
                   ? 'border-red-400'
