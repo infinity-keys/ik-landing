@@ -13,7 +13,7 @@ const Wrapper: FC<PropsWithChildren<WrapperProps>> = ({
   full = false,
   customClasses = [],
 }) => (
-  <div className={clsx(customClasses, 'bg-brand-gray-primary text-gray-100')}>
+  <div className={clsx(customClasses)}>
     <div
       className={clsx(
         'flex min-h-screen flex-col items-center md:justify-center',

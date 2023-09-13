@@ -42,6 +42,10 @@
     @apply bg-brand-gray-primary;
   }
 
+  body {
+    @apply text-stone-50;
+  }
+
   svg {
     @apply fill-current;
   }
