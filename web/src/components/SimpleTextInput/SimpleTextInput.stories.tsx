@@ -16,7 +16,14 @@ import type { Meta } from '@storybook/react'
 import SimpleTextInput from './SimpleTextInput'
 
 export const generated = () => {
-  return <SimpleTextInput />
+  return (
+    <SimpleTextInput
+      count={8}
+      step={{
+        id: 'string',
+      }}
+    />
+  )
 }
 
 export default {
