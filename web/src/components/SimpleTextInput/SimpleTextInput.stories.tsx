@@ -11,22 +11,21 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { Meta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import SimpleTextInput from './SimpleTextInput'
 
-export const generated = () => {
-  return (
-    <SimpleTextInput
-      count={8}
-      step={{
-        id: 'string',
-      }}
-    />
-  )
+const meta: Meta<typeof SimpleTextInput> = {
+  component: SimpleTextInput,
 }
 
-export default {
-  title: 'Components/SimpleTextInput',
-  component: SimpleTextInput,
-} as Meta<typeof SimpleTextInput>
+export default meta
+
+type Story = StoryObj<typeof SimpleTextInput>
+
+export const WithCount: Story = {
+  args: {
+    count: 8,
+    step: { id: 'string' },
+  },
+}

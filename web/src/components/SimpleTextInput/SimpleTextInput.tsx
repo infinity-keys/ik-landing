@@ -99,7 +99,10 @@ const SimpleTextInput = ({
       ) : (
         <>
           <div className="flex flex-col items-center justify-center">
-            <p className="pb-5 text-lg">Input Your Answer:</p>
+            <label htmlFor="input" className="pb-5 text-lg">
+              Input Your Answer:
+            </label>
+
             <div
               className={clsx(
                 'flex w-full max-w-[260px] cursor-text overflow-x-scroll rounded border-2 border-solid px-4 py-2',
@@ -128,6 +131,7 @@ const SimpleTextInput = ({
                     'border-none bg-transparent p-0 font-mono tracking-[.8em] text-transparent caret-white focus:!border-none focus:!outline-none focus:ring-0'
                   )}
                   type="text"
+                  id="input"
                   ref={inputRef}
                   maxLength={count}
                   size={count * LETTER_SPACING_MULTIPLIER}
