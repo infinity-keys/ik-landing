@@ -73,7 +73,7 @@ const Rewardable = ({ rewardable }: Props) => {
         url={url}
       />
       <div className="mx-auto max-w-lg md:max-w-5xl md:px-4">
-        <h1 className="mb-14 hidden text-4xl font-bold md:block">
+        <h1 className="mb-14 hidden text-3xl font-semibold md:block">
           {pageHeading}
         </h1>
 
@@ -93,8 +93,10 @@ const Rewardable = ({ rewardable }: Props) => {
                 <div className="flex h-full flex-col justify-center px-12 py-20">
                   {isAuthenticated ? (
                     puzzleCompleted ? (
-                      <div>
-                        <p className="mb-6 font-bold">Hunt Finished!</p>
+                      <div className="text-sm md:text-base">
+                        <p className="mb-4 text-base font-medium md:text-xl">
+                          Hunt Finished!
+                        </p>
                         <Markdown>
                           {rewardable.successMessage ||
                             'You have completed this hunt. Continue to claim your reward.'}
@@ -103,8 +105,12 @@ const Rewardable = ({ rewardable }: Props) => {
                     ) : (
                       <div>
                         <div className="mb-12">
-                          <p className="mb-1 font-bold">Get Ready!</p>
-                          <p>Check the items below before you jump in.</p>
+                          <p className="mb-1 text-lg font-medium md:text-xl">
+                            Get Ready!
+                          </p>
+                          <p className="text-sm md:text-base">
+                            Check the items below before you jump in.
+                          </p>
                         </div>
 
                         <div className="relative flex flex-wrap justify-center gap-10">
@@ -122,7 +128,7 @@ const Rewardable = ({ rewardable }: Props) => {
                                   {requirementsLookup[req].icon}
                                 </span>
 
-                                <span className="leading-none">
+                                <span className="text-sm leading-none md:text-base">
                                   {requirementsLookup[req].labelElement}
                                 </span>
                               </button>
@@ -156,7 +162,7 @@ const Rewardable = ({ rewardable }: Props) => {
                         </div>
 
                         {currentOverlayContent && (
-                          <p className="leading-none">
+                          <p className="text-sm leading-none md:text-base">
                             {
                               requirementsLookup[currentOverlayContent]
                                 .labelElement
@@ -164,7 +170,7 @@ const Rewardable = ({ rewardable }: Props) => {
                           </p>
                         )}
                       </div>
-                      <p>
+                      <p className="text-sm md:text-base">
                         {currentOverlayContent &&
                           requirementsLookup[currentOverlayContent].text}
                       </p>

@@ -32,7 +32,7 @@ const MarkdownCarousel = ({
             )
             props.nextSlide()
           }}
-          className="mr-6 p-2 text-stone-50 transition-colors hover:text-brand-accent-secondary"
+          className="mr-6 p-2 text-stone-50 transition-colors hover:text-stone-400"
         >
           <ArrowRightIcon className="h-8 w-8 fill-transparent" />
         </button>
@@ -47,7 +47,7 @@ const MarkdownCarousel = ({
               setSlideIndex(props.currentSlide > 0 ? props.currentSlide - 1 : 0)
               props.previousSlide()
             }}
-            className="ml-6 p-2 text-stone-50 transition-colors hover:text-brand-accent-secondary"
+            className="ml-6 p-2 text-stone-50 transition-colors hover:text-stone-400"
           >
             <ArrowLeftIcon className="h-8 w-8 fill-transparent" />
           </button>
