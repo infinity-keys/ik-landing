@@ -196,3 +196,11 @@
 .puzzle-landing-icon--active svg {
   @apply drop-shadow-[0_0_3px_rgba(255,255,255,0.4)];
 }
+
+svg.paging-dot {
+  @apply scale-[1.375] text-stone-50;
+}
+
+.paging-item.active svg {
+  @apply scale-[2];
+}
