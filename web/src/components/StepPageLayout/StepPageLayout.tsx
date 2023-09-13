@@ -63,7 +63,7 @@ const StepPageLayout = ({
           leaveTo="opacity-0"
         >
           <div className="absolute top-0 z-10 flex h-full w-full items-center justify-center bg-stone-700 text-center">
-            <div className="px-12 py-20 text-sm">
+            <div className="px-12 py-20 text-sm md:text-base">
               <Markdown>{overlayContent.text}</Markdown>
             </div>
             <button

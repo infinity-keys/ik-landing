@@ -82,7 +82,7 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
 
   return (
     <div className="mx-auto max-w-lg md:max-w-5xl md:px-4">
-      <h1 className="mb-14 hidden text-4xl font-bold md:block">
+      <h1 className="mb-14 hidden text-3xl font-semibold md:block">
         {pageHeading}
       </h1>
       <div className="flex  flex-col justify-center pb-8 md:flex-row md:gap-6">
@@ -115,12 +115,12 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
                   <div className="relative h-full">
                     <div className="flex h-full flex-col justify-center gap-12 px-12 py-20 text-sm">
                       <div>
-                        <p className="mb-2 font-bold text-white">
+                        <p className="mb-2 text-base font-medium md:text-xl">
                           {isFinalStep
                             ? 'Hunt finished!'
                             : sample(successMessages)}
                         </p>
-                        <p className="mb-10">
+                        <p className="mb-10 text-sm md:text-base">
                           {uncompletedSteps > 0
                             ? remainingStepsText
                             : step.puzzle.rewardable.successMessage ||

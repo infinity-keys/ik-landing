@@ -67,7 +67,7 @@ const Header = () => {
           {/* On puzzle or step pages, the rewardable name should replace logo on mobile */}
           <h1
             className={clsx(
-              'text-xl font-bold text-white',
+              'text-xl font-medium',
               withPageHeading ? 'block md:hidden' : 'hidden'
             )}
           >
