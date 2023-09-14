@@ -13,8 +13,8 @@ import MarkdownCarousel from 'src/components/MarkdownCarousel/MarkdownCarousel'
 import NeedHintIcon from 'src/components/OverlayIcons/NeedHintIcon'
 import NeedHintMiniIcon from 'src/components/OverlayIcons/NeedHintMiniIcon'
 import StepPageLayout from 'src/components/StepPageLayout/StepPageLayout'
-import CheckGreenIcon from 'src/components/StepProgressIcons/CheckGreenIcon'
 import LockedIcon from 'src/components/StepProgressIcons/LockedIcon'
+import UnlockedIcon from 'src/components/StepProgressIcons/UnlockedIcon'
 import { overlayContent } from 'src/lib/stepOverlayContent'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
 
@@ -129,16 +129,27 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
                         <div className="flex items-center justify-center">
                           {step.puzzle.steps.map((curStep, index) => {
                             if (!curStep) return null
+                            const isCompleted = curStep.hasUserCompletedStep
 
                             return (
                               <Fragment key={curStep.id}>
-                                {curStep?.hasUserCompletedStep ? (
-                                  <CheckGreenIcon className="h-8 w-8" />
-                                ) : (
-                                  <LockedIcon className="h-8 w-8" />
-                                )}
+                                <div
+                                  className={clsx(
+                                    'flex h-12 w-12 items-center justify-center rounded text-transparent',
+                                    isCompleted
+                                      ? 'bg-green-650'
+                                      : 'bg-stone-700'
+                                  )}
+                                >
+                                  {isCompleted ? (
+                                    <UnlockedIcon />
+                                  ) : (
+                                    <LockedIcon />
+                                  )}
+                                </div>
+
                                 {index + 1 !== step.puzzle.steps.length && (
-                                  <span className="h-[2px] max-w-[100px] flex-1 bg-white" />
+                                  <span className="h-1 max-w-[26px] flex-1 bg-stone-700" />
                                 )}
                               </Fragment>
                             )

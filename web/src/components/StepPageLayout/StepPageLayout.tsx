@@ -2,7 +2,6 @@ import { PropsWithChildren, ReactElement } from 'react'
 
 import { Transition } from '@headlessui/react'
 import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
-import clsx from 'clsx'
 
 import Markdown from 'src/components/Markdown/Markdown'
 
