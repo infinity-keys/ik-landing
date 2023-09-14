@@ -90,7 +90,7 @@ const Rewardable = ({ rewardable }: Props) => {
           <div className="relative flex w-full flex-1 flex-col gap-4 text-center md:max-w-[50%]">
             <div className="flex-1 border-y-2 border-stone-50">
               <div className="relative h-full">
-                <div className="flex h-full flex-col justify-center px-12 py-20">
+                <div className="flex h-full min-h-[320px] flex-col justify-center px-12 py-6 md:min-h-[412px]">
                   {isAuthenticated ? (
                     puzzleCompleted ? (
                       <div className="text-sm md:text-base">

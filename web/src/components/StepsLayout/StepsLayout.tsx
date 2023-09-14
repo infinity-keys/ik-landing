@@ -85,7 +85,7 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
       <h1 className="mb-14 hidden text-3xl font-semibold md:block">
         {pageHeading}
       </h1>
-      <div className="flex  flex-col justify-center pb-8 md:flex-row md:gap-6">
+      <div className="flex flex-col justify-center pb-8 md:flex-row md:gap-6">
         {step.stepPage && (
           <>
             <div className="relative aspect-[4/3] w-full flex-1 overflow-hidden md:max-w-[50%]">
@@ -113,7 +113,7 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
               <div className="relative flex w-full flex-1 flex-col gap-4 text-center md:max-w-[50%]">
                 <div className="flex-1 border-y-2 border-stone-50">
                   <div className="relative h-full">
-                    <div className="flex h-full flex-col justify-center gap-12 px-12 py-20 text-sm">
+                    <div className="flex h-full min-h-[320px] flex-col justify-center gap-12 px-12 py-6 text-sm md:min-h-[412px]">
                       <div>
                         <p className="mb-2 text-base font-medium md:text-xl">
                           {isFinalStep
@@ -166,7 +166,7 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
                 </div>
               </div>
             ) : (
-              <div className="relative mb-16 w-full flex-1 border-y-2 border-t-2 border-stone-50 md:max-w-[50%]">
+              <div className="relative mb-16 flex-1 border-y-2 border-t-2 border-stone-50 md:max-w-[50%]">
                 <MarkdownCarousel
                   showOverlay={showOverlay}
                   setShowOverlay={setShowOverlay}
@@ -203,7 +203,7 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
                         : undefined
                     }
                   >
-                    <div className="text-center">
+                    <div className="w-full text-center">
                       {step.type === 'SIMPLE_TEXT' && (
                         <SimpleTextInput
                           count={step.stepSimpleText?.solutionCharCount || 0}
