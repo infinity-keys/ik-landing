@@ -10,7 +10,12 @@ const HomePage = () => {
       <Seo title="Home" />
       <Section>
         <h1 className="text-center text-5xl font-semibold">
-          There’s treasure everywhere.
+          <Fade inline duration={1.2}>
+            There&apos;s treasure
+          </Fade>{' '}
+          <Fade inline duration={1.2} delay={0.8} x={-5}>
+            everywhere.
+          </Fade>
         </h1>
       </Section>
     </div>
