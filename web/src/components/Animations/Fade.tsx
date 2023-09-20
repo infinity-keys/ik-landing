@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
 
-import { m as motion, useReducedMotion } from 'framer-motion'
+import { Variants, m as motion, useReducedMotion } from 'framer-motion'
 
 interface FadeProps extends PropsWithChildren {
   delay?: number
@@ -30,7 +30,7 @@ const Fade = ({
 }: FadeProps) => {
   const prefersReducedMotion = useReducedMotion()
 
-  const variants = {
+  const variants: Variants = {
     hidden: { opacity: noOpacityAnim ? 1 : 0, y, x },
     visible: {
       opacity: 1,
