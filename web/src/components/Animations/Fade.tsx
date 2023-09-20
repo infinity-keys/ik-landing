@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
 
-import { m as motion } from 'framer-motion'
+import { m as motion, useReducedMotion } from 'framer-motion'
 
 interface FadeProps extends PropsWithChildren {
   delay?: number
@@ -28,6 +28,8 @@ const Fade = ({
   inline,
   children,
 }: FadeProps) => {
+  const prefersReducedMotion = useReducedMotion()
+
   const variants = {
     hidden: { opacity: noOpacityAnim ? 1 : 0, y, x },
     visible: {
@@ -52,15 +54,17 @@ const Fade = ({
     },
   }
 
-  const commonProps = {
-    variants,
-    initial: 'hidden',
-    whileInView: 'visible',
-    viewport: { once: triggerOnce, amount: threshold },
-  }
+  const commonProps = prefersReducedMotion
+    ? {}
+    : {
+        variants,
+        initial: 'hidden',
+        whileInView: 'visible',
+        viewport: { once: triggerOnce, amount: threshold },
+      }
 
   return inline ? (
-    <motion.span style={{ display: 'inline-block' }} {...commonProps}>
+    <motion.span className="inline-block" {...commonProps}>
       {children}
     </motion.span>
   ) : (
