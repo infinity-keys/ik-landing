@@ -76,7 +76,7 @@ const HomePage = () => {
       <Section>
         <div className="mx-auto max-w-5xl">
           <h2 className="pl-2 pb-10 text-3xl font-semibold">How It Works</h2>
-          <div className="flex justify-center gap-6">
+          <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center lg:gap-6">
             {benefits.map((data, index) => (
               <BenefitCard {...data} key={data.title} delay={index * 0.3} />
             ))}
