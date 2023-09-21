@@ -1,11 +1,16 @@
 import Fade from 'src/components/Animations/Fade'
 import BenefitCard from 'src/components/BenefitCard/BenefitCard'
+import OpportunityCard from 'src/components/OpportunityCard/OpportunityCard'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import beaker from 'src/images/beaker.webp'
 import circle from 'src/images/Big-Circle.webp'
+import computer from 'src/images/computer.webp'
+import controller from 'src/images/controller.webp'
 import medal from 'src/images/medal.webp'
+import puzzle from 'src/images/puzzle.webp'
 import watch from 'src/images/watch.webp'
+
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 export type BenefitCardProps = {
@@ -54,6 +59,30 @@ const benefits: Array<BenefitCardProps> = [
       'Customize story and art',
       'Game discovery engine',
     ],
+  },
+]
+
+export type OpportunityCardProps = {
+  image: string
+  title: string
+  description: string
+}
+
+const opportunity: Array<OpportunityCardProps> = [
+  {
+    image: computer,
+    title: '$231B',
+    description: 'Expected NFT space market cap in 2030',
+  },
+  {
+    image: controller,
+    title: '$133B',
+    description: 'Expected web3 gaming sector market cap in 2033',
+  },
+  {
+    image: puzzle,
+    title: '$2B',
+    description: 'Retroactive NFT utility at low 2023 values',
   },
 ]
 
@@ -118,18 +147,57 @@ const HomePage = () => {
         </div>
       </div>
 
-      <Section>
-        <div className="mx-auto max-w-5xl">
-          <h2 className="pl-2 pb-10 text-3xl font-semibold lg:text-5xl">
-            How It Works
-          </h2>
-          <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center lg:gap-6">
+      <section className="py-16 md:py-28">
+        <div className="px-4">
+          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-16">
+            <Fade>
+              <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
+                How It Works
+              </h2>
+            </Fade>
+            <Fade>
+              <p className="max-w-xl text-sm lg:text-lg">
+                A net positive value loop incentives creators, sponsors, and
+                players without draining economic value from the system
+              </p>
+            </Fade>
+          </div>
+        </div>
+
+        <div className="bg-white/5 py-14 lg:py-24">
+          <div className="mx-auto flex max-w-5xl flex-col items-center gap-2 px-4 md:flex-row md:justify-center lg:gap-6 lg:px-8">
             {benefits.map((data, index) => (
               <BenefitCard {...data} key={data.title} delay={index * 0.3} />
             ))}
           </div>
         </div>
-      </Section>
+      </section>
+
+      <section className="py-16 md:py-28">
+        <div className="px-4">
+          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-16">
+            <Fade>
+              <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
+                Opportunity
+              </h2>
+            </Fade>
+            <Fade>
+              <p className="max-w-xl text-sm lg:text-lg">
+                Infinity Keys taps into the UCG and web3 gaming sectors giving
+                projects and creators more attention and audience
+              </p>
+            </Fade>
+          </div>
+        </div>
+
+        <div className="bg-white/5 py-14 lg:py-24">
+          <div className="mx-auto flex max-w-5xl flex-col items-center gap-20 px-4 md:flex-row md:justify-center md:gap-6 lg:px-8">
+            {opportunity.map((data, index) => (
+              <OpportunityCard {...data} key={data.title} delay={index * 0.3} />
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
