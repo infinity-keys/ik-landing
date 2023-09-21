@@ -212,10 +212,8 @@ const HomePage = () => {
         </div>
 
         <div className="bg-white/5 py-14 lg:py-24">
-          <div className="mx-auto max-w-5xl px-4 lg:px-8">
-            <Fade>
-              <HomeContactForm />
-            </Fade>
+          <div className="mx-auto flex min-h-[542px] max-w-5xl items-center justify-center px-4 lg:px-8">
+            <HomeContactForm />
           </div>
         </div>
       </section>
