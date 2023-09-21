@@ -3,6 +3,7 @@ import BenefitCard from 'src/components/BenefitCard/BenefitCard'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import beaker from 'src/images/beaker.webp'
+import circle from 'src/images/Big-Circle.webp'
 import medal from 'src/images/medal.webp'
 import watch from 'src/images/watch.webp'
 import '@infinity-keys/react-lens-share-button/dist/style.css'
@@ -60,18 +61,46 @@ const HomePage = () => {
   return (
     <div>
       <Seo title="Home" />
-      <Section>
+
+      <div className="relative z-10 mx-auto max-w-[1440px] overflow-hidden pb-16">
         <div className="min-h-screen">
-          <h1 className="text-center text-5xl font-semibold">
-            <Fade inline duration={1.2}>
-              There&apos;s treasure
-            </Fade>{' '}
-            <Fade inline duration={1.2} delay={0.8} x={-5}>
-              everywhere.
-            </Fade>
-          </h1>
+          <Section>
+            <div className="mt-16 max-w-2xl">
+              <h1 className="text-shadow-lg text-8xl font-semibold">
+                <Fade inline duration={1.8}>
+                  Infinity Keys
+                </Fade>
+              </h1>
+              <Fade delay={0.8}>
+                <p className="text-shadow-lg mt-4 max-w-lg text-4xl">
+                  is a no-code creator platform for games, collectors, and
+                  digital keys
+                </p>
+              </Fade>
+            </div>
+          </Section>
         </div>
-      </Section>
+
+        <div className="absolute top-32 right-4 z-[-1]">
+          <img src={circle} alt="" className="pointer-events-none block" />
+
+          <img
+            src={medal}
+            alt=""
+            className="absolute top-1/3 left-32 w-48 translate-y-16"
+          />
+          <img
+            src={watch}
+            alt=""
+            className="absolute top-32 right-32 w-48 translate-y-16"
+          />
+          <img
+            src={beaker}
+            alt=""
+            className="absolute bottom-1/4 left-1/2 w-48 translate-y-32 -translate-x-8"
+          />
+        </div>
+      </div>
 
       <Section>
         <div className="mx-auto max-w-5xl">
