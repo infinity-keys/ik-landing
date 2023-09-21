@@ -190,3 +190,7 @@
 .next-image-block span {
   display: block !important;
 }
+
+.text-shadow-lg {
+  text-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
+}
