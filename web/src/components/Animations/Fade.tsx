@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
 
-import { m as motion, useReducedMotion } from 'framer-motion'
+import { Variants, m as motion, useReducedMotion } from 'framer-motion'
 
 interface FadeProps extends PropsWithChildren {
   delay?: number
@@ -30,7 +30,12 @@ const Fade = ({
 }: FadeProps) => {
   const prefersReducedMotion = useReducedMotion()
 
-  const variants = {
+  const TRANSFORM_TRANSITION = {
+    ease: [0.185, -0.01, 0, 1],
+    duration: duration || transformDuration,
+  }
+
+  const variants: Variants = {
     hidden: { opacity: noOpacityAnim ? 1 : 0, y, x },
     visible: {
       opacity: 1,
@@ -39,14 +44,8 @@ const Fade = ({
       transition: {
         duration,
         delay,
-        y: {
-          ease: [0.185, -0.01, 0, 1],
-          duration: duration || transformDuration,
-        },
-        x: {
-          ease: [0.185, -0.01, 0, 1],
-          duration: duration || transformDuration,
-        },
+        y: TRANSFORM_TRANSITION,
+        x: TRANSFORM_TRANSITION,
         opacity: {
           duration: duration || opacityDuration,
         },
