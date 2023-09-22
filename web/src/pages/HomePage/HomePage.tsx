@@ -274,7 +274,7 @@ const HomePage = () => {
         <div className="">
           <div className="mb-4 flex justify-center gap-4">
             <Link
-              to={routes.home()}
+              to={routes.play()}
               className="text-xl transition-colors hover:text-stone-400"
             >
               Play
@@ -282,6 +282,8 @@ const HomePage = () => {
             <a
               href="https://docs.infinitykeys.io"
               className="text-xl transition-colors hover:text-stone-400"
+              target="_blank"
+              rel="noreferrer"
             >
               Docs
             </a>
