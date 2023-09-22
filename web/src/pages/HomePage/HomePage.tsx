@@ -1,5 +1,8 @@
+import { useState } from 'react'
+
 import Fade from 'src/components/Animations/Fade'
 import BenefitCard from 'src/components/BenefitCard/BenefitCard'
+import Button from 'src/components/Button'
 import HomeContactForm from 'src/components/HomeContactForm/HomeContactForm'
 import OpportunityCard from 'src/components/OpportunityCard/OpportunityCard'
 import Section from 'src/components/Section/Section'
@@ -36,19 +39,6 @@ const benefits: Array<BenefitCardProps> = [
     ],
   },
   {
-    icon: medal,
-    title: 'Sponsors',
-    description:
-      'Independent creators build keyhunt puzzle games featuring your collections.',
-    list: [
-      'Retroactive NFT Utility ',
-      '(re)Engage communities ',
-      'Offset creator incentive costs ',
-      'Decentralized content ',
-      'User discovery engine',
-    ],
-  },
-  {
     icon: beaker,
     title: 'Creators',
     description:
@@ -59,6 +49,19 @@ const benefits: Array<BenefitCardProps> = [
       'Use any digital asset',
       'Customize story and art',
       'Game discovery engine',
+    ],
+  },
+  {
+    icon: medal,
+    title: 'Sponsors',
+    description:
+      'Independent creators build keyhunt puzzle games featuring your collections.',
+    list: [
+      'Retroactive NFT Utility ',
+      '(re)Engage communities ',
+      'Offset creator incentive costs ',
+      'Decentralized content ',
+      'User discovery engine',
     ],
   },
 ]
@@ -88,6 +91,8 @@ const opportunity: Array<OpportunityCardProps> = [
 ]
 
 const HomePage = () => {
+  const [isFormVisible, setIsFormVisible] = useState(false)
+
   return (
     <div>
       <Seo title="Home" />
@@ -106,8 +111,8 @@ const HomePage = () => {
                   className="text-shadow-lg mt-4 max-w-lg text-2xl lg:text-4xl"
                   data-cy="description"
                 >
-                  is a no-code creator platform for games, collectors, and
-                  digital keys
+                  is a no-code creator platform for games & collecting digital
+                  keys
                 </p>
               </Fade>
             </div>
@@ -202,20 +207,39 @@ const HomePage = () => {
 
       <section className="pt-8 md:pt-20">
         <div className="px-4">
-          <div className="mx-auto max-w-md pb-8 sm:max-w-none md:pb-20 lg:px-8">
+          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
             <Fade>
-              <h2 className="max-w-sm text-3xl font-semibold sm:max-w-none sm:text-center lg:text-5xl">
-                There’s treasure everywhere
+              <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
+                There&apos;s treasure everywhere
               </h2>
+            </Fade>
+
+            <Fade>
+              <p className="max-w-xl text-sm lg:text-lg">
+                Let&apos;s talk on how to re engage your audience, take your
+                project to the next level, or simple build some really cool shit
+                together.
+              </p>
+              {!isFormVisible && (
+                <div className="pt-12">
+                  <Button
+                    text="Get in Touch"
+                    variant="rounded"
+                    onClick={() => setIsFormVisible(true)}
+                  />
+                </div>
+              )}
             </Fade>
           </div>
         </div>
 
-        <div className="bg-white/5 py-14 lg:py-24">
-          <div className="mx-auto flex min-h-[542px] max-w-5xl items-center justify-center px-4 lg:px-8">
-            <HomeContactForm />
+        {isFormVisible && (
+          <div className="bg-white/5 py-14 lg:py-24">
+            <div className="mx-auto flex min-h-[542px] max-w-5xl items-center justify-center px-4 lg:min-h-[354px] lg:px-8">
+              <HomeContactForm />
+            </div>
           </div>
-        </div>
+        )}
       </section>
     </div>
   )
