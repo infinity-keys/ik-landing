@@ -209,17 +209,12 @@ const HomePage = () => {
         <div className="px-4">
           <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
             <Fade>
-              <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
+              <h2 className="text-3xl font-semibold lg:text-5xl">
                 There&apos;s treasure everywhere
               </h2>
             </Fade>
 
             <Fade>
-              <p className="max-w-xl text-sm lg:text-lg">
-                Let&apos;s talk on how to re engage your audience, take your
-                project to the next level, or simple build some really cool shit
-                together.
-              </p>
               {!isFormVisible && (
                 <div className="pt-12">
                   <Button
