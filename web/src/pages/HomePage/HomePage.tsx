@@ -243,7 +243,7 @@ const HomePage = () => {
           <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
             <Fade>
               <h2 className="text-3xl font-semibold lg:text-5xl">
-                There&apos;s treasure everywhere
+                There&apos;s treasure everywhere.
               </h2>
             </Fade>
 
