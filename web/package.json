@@ -29,6 +29,7 @@
     "@redwoodjs/forms": "6.1.0",
     "@redwoodjs/router": "6.1.0",
     "@redwoodjs/web": "6.1.0",
+    "@snickerdoodlelabs/web-integration": "^1.0.1",
     "@tailwindcss/forms": "^0.5.3",
     "boring-avatars": "^1.7.0",
     "buffer": "^6.0.3",
@@ -47,6 +48,7 @@
     "react-individual-character-input-boxes": "1.2.1",
     "react-markdown": "^8.0.3",
     "react-particles": "^2.5.3",
+    "reflect-metadata": "^0.1.13",
     "tsparticles": "^2.5.3",
     "use-device-pixel-ratio": "^1.1.0",
     "wagmi": "^0.6.7"
