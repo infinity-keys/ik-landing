@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   Form,
@@ -25,6 +25,14 @@ type FormData = {
 const HomeContactForm = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccessful, setIsSuccessful] = useState<boolean | null>(null)
+
+  const ref = React.useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [])
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true)
@@ -77,15 +85,15 @@ const HomeContactForm = () => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full" ref={ref}>
       <Fade>
         <Form
           onSubmit={onSubmit}
-          className="mx-auto flex w-full max-w-md flex-col gap-6 text-sm"
+          className="mx-auto flex w-full max-w-md flex-col gap-6 text-sm md:grid md:max-w-none md:grid-cols-2"
         >
           <HiddenField name="honeypot" />
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 lg:basis-1/2">
             <Label name="Name *" errorClassName="label error" />
             <TextField
               name="name"
@@ -97,7 +105,7 @@ const HomeContactForm = () => {
             <FieldError name="name" className="text-red-300" />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 lg:basis-1/2">
             <Label
               name="Email *"
               className="label"
@@ -145,7 +153,7 @@ const HomeContactForm = () => {
             <FieldError name="social" className="error-message" />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="col-span-2 flex flex-col gap-4">
             <Label
               name="Tell us more about partnership opportunities"
               errorClassName="label error"
