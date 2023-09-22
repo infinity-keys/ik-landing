@@ -21,6 +21,7 @@ import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
+import { Link, routes } from '@redwoodjs/router'
 
 export type BenefitCardProps = {
   icon: string
@@ -272,14 +273,14 @@ const HomePage = () => {
       <footer className="bg-white/5 px-4 py-16">
         <div className="">
           <div className="mb-4 flex justify-center gap-4">
-            <a
-              href="/"
+            <Link
+              to={routes.home()}
               className="text-xl transition-colors hover:text-stone-400"
             >
               Play
-            </a>
+            </Link>
             <a
-              href="/"
+              href="https://docs.infinitykeys.io"
               className="text-xl transition-colors hover:text-stone-400"
             >
               Docs
