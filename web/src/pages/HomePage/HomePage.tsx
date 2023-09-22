@@ -1,5 +1,6 @@
 import Fade from 'src/components/Animations/Fade'
 import BenefitCard from 'src/components/BenefitCard/BenefitCard'
+import HomeContactForm from 'src/components/HomeContactForm/HomeContactForm'
 import OpportunityCard from 'src/components/OpportunityCard/OpportunityCard'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
@@ -147,9 +148,9 @@ const HomePage = () => {
         </div>
       </div>
 
-      <section className="py-16 md:py-28">
+      <section className="pt-8 md:pt-20">
         <div className="px-4">
-          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-16">
+          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
             <Fade>
               <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
                 How It Works
@@ -173,9 +174,9 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="py-16 md:py-28">
+      <section className="pt-8 md:pt-20">
         <div className="px-4">
-          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-16">
+          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
             <Fade>
               <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
                 Opportunity
@@ -195,6 +196,24 @@ const HomePage = () => {
             {opportunity.map((data, index) => (
               <OpportunityCard {...data} key={data.title} delay={index * 0.3} />
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="pt-8 md:pt-20">
+        <div className="px-4">
+          <div className="mx-auto max-w-md pb-8 sm:max-w-none md:pb-20 lg:px-8">
+            <Fade>
+              <h2 className="max-w-sm text-3xl font-semibold sm:max-w-none sm:text-center lg:text-5xl">
+                There’s treasure everywhere
+              </h2>
+            </Fade>
+          </div>
+        </div>
+
+        <div className="bg-white/5 py-14 lg:py-24">
+          <div className="mx-auto flex min-h-[542px] max-w-5xl items-center justify-center px-4 lg:px-8">
+            <HomeContactForm />
           </div>
         </div>
       </section>
