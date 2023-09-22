@@ -61,7 +61,7 @@ const Header = () => {
         <div className="flex items-center" data-cy="ik logo">
           {/* Left logo */}
           <Link
-            to={routes.play()}
+            to={routes.home()}
             className="inline-block max-w-[100px] sm:max-w-[150px]"
             aria-label="return home"
           >

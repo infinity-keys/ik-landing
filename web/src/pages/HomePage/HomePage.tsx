@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { LensIcon } from '@infinity-keys/react-lens-share-button'
+
 import Fade from 'src/components/Animations/Fade'
 import BenefitCard from 'src/components/BenefitCard/BenefitCard'
 import Button from 'src/components/Button'
@@ -14,8 +16,12 @@ import controller from 'src/images/controller.webp'
 import medal from 'src/images/medal.webp'
 import puzzle from 'src/images/puzzle.webp'
 import watch from 'src/images/watch.webp'
+import DiscordIcon from 'src/svgs/DiscordIcon'
+import RedditIcon from 'src/svgs/RedditIcon'
+import TwitterIcon from 'src/svgs/TwitterIcon'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
+import { Link, routes } from '@redwoodjs/router'
 
 export type BenefitCardProps = {
   icon: string
@@ -87,6 +93,33 @@ const opportunity: Array<OpportunityCardProps> = [
     image: puzzle,
     title: '$2B',
     description: 'Retroactive NFT utility at low 2023 values',
+  },
+]
+
+const socialLinks = [
+  {
+    href: 'https://lenster.xyz/u/infinitykeys',
+    testing: 'lens',
+    ariaLabel: 'visit IK Lenster.',
+    icon: <LensIcon height={32} width={32} />,
+  },
+  {
+    href: 'https://twitter.com/InfinityKeys',
+    testing: 'twitter',
+    ariaLabel: 'visit IK Twitter.',
+    icon: <TwitterIcon />,
+  },
+  {
+    href: 'https://discord.com/invite/infinitykeys',
+    testing: 'discord',
+    ariaLabel: 'visit IK Discord.',
+    icon: <DiscordIcon />,
+  },
+  {
+    href: 'https://www.reddit.com/r/infinitykeys/',
+    testing: 'reddit',
+    ariaLabel: 'visit the IK subreddit.',
+    icon: <RedditIcon />,
   },
 ]
 
@@ -236,6 +269,42 @@ const HomePage = () => {
           </div>
         )}
       </section>
+
+      <footer className="bg-white/5 px-4 py-16">
+        <div className="">
+          <div className="mb-4 flex justify-center gap-4">
+            <Link
+              to={routes.play()}
+              className="text-xl transition-colors hover:text-stone-400"
+            >
+              Play
+            </Link>
+            <a
+              href="https://docs.infinitykeys.io"
+              className="text-xl transition-colors hover:text-stone-400"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Docs
+            </a>
+          </div>
+          <div className="flex justify-center gap-8">
+            {socialLinks.map(({ href, testing, ariaLabel, icon }) => (
+              <a
+                key={href}
+                className="text-white/40 transition-colors hover:text-brand-accent-primary"
+                data-cy={testing}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={ariaLabel}
+              >
+                {icon}
+              </a>
+            ))}
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
