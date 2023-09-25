@@ -2,7 +2,6 @@ import { PropsWithChildren, ReactElement } from 'react'
 
 import { Transition } from '@headlessui/react'
 import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
-import clsx from 'clsx'
 
 import Markdown from 'src/components/Markdown/Markdown'
 
@@ -29,15 +28,10 @@ const StepPageLayout = ({
     typeof setShowOverlay !== 'undefined'
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full min-h-[320px] md:min-h-[412px]">
       <div className="flex h-full flex-col justify-between px-12">
-        <div
-          className={clsx(
-            'markdown',
-            hasOverlay ? 'pt-16 pb-6 md:pb-10 md:pt-20' : 'py-16 md:py-20'
-          )}
-        >
-          {children}
+        <div className="markdown flex w-full flex-1 items-center py-6">
+          <div className="w-full">{children}</div>
         </div>
         {hasOverlay && (
           <div className="relative z-40 flex justify-center">
@@ -63,7 +57,7 @@ const StepPageLayout = ({
           leaveTo="opacity-0"
         >
           <div className="absolute top-0 z-10 flex h-full w-full items-center justify-center bg-stone-700 text-center">
-            <div className="px-12 py-20 text-sm">
+            <div className="px-12 py-20 text-sm md:text-base">
               <Markdown>{overlayContent.text}</Markdown>
             </div>
             <button

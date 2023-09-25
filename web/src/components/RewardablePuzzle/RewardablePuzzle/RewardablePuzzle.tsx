@@ -73,7 +73,7 @@ const Rewardable = ({ rewardable }: Props) => {
         url={url}
       />
       <div className="mx-auto max-w-lg md:max-w-5xl md:px-4">
-        <h1 className="mb-14 hidden text-4xl font-bold md:block">
+        <h1 className="mb-14 hidden text-3xl font-semibold md:block">
           {pageHeading}
         </h1>
 
@@ -90,11 +90,13 @@ const Rewardable = ({ rewardable }: Props) => {
           <div className="relative flex w-full flex-1 flex-col gap-4 text-center md:max-w-[50%]">
             <div className="flex-1 border-y-2 border-stone-50">
               <div className="relative h-full">
-                <div className="flex h-full flex-col justify-center px-12 py-20">
+                <div className="flex h-full min-h-[320px] flex-col justify-center px-12 py-6 md:min-h-[412px]">
                   {isAuthenticated ? (
                     puzzleCompleted ? (
-                      <div>
-                        <p className="mb-6 font-bold">Hunt Finished!</p>
+                      <div className="text-sm md:text-base">
+                        <p className="mb-4 text-base font-medium md:text-xl">
+                          Hunt Finished!
+                        </p>
                         <Markdown>
                           {rewardable.successMessage ||
                             'You have completed this hunt. Continue to claim your reward.'}
@@ -103,8 +105,12 @@ const Rewardable = ({ rewardable }: Props) => {
                     ) : (
                       <div>
                         <div className="mb-12">
-                          <p className="mb-1 font-bold">Get Ready!</p>
-                          <p>Check the items below before you jump in.</p>
+                          <p className="mb-1 text-lg font-medium md:text-xl">
+                            Get Ready!
+                          </p>
+                          <p className="text-sm md:text-base">
+                            Check the items below before you jump in.
+                          </p>
                         </div>
 
                         <div className="relative flex flex-wrap justify-center gap-10">
@@ -116,13 +122,15 @@ const Rewardable = ({ rewardable }: Props) => {
                                   setCurrentOverlayContent(req)
                                   setShowOverlay(true)
                                 }}
-                                className="flex flex-col items-center text-sm transition-opacity hover:opacity-60 md:text-base"
+                                className="flex flex-col items-center text-sm leading-none transition-opacity hover:opacity-60 md:text-base"
                               >
                                 <span className="puzzle-landing-icon mx-auto mb-2 block h-8 w-8 text-transparent md:h-12 md:w-12">
                                   {requirementsLookup[req].icon}
                                 </span>
 
-                                {requirementsLookup[req].labelElement}
+                                <span className="text-sm leading-none md:text-base">
+                                  {requirementsLookup[req].labelElement}
+                                </span>
                               </button>
                             ) : null
                           )}
@@ -152,11 +160,17 @@ const Rewardable = ({ rewardable }: Props) => {
                           {currentOverlayContent &&
                             requirementsLookup[currentOverlayContent].icon}
                         </div>
-                        {currentOverlayContent &&
-                          requirementsLookup[currentOverlayContent]
-                            .labelElement}
+
+                        {currentOverlayContent && (
+                          <p className="text-sm leading-none md:text-base">
+                            {
+                              requirementsLookup[currentOverlayContent]
+                                .labelElement
+                            }
+                          </p>
+                        )}
                       </div>
-                      <p>
+                      <p className="text-sm md:text-base">
                         {currentOverlayContent &&
                           requirementsLookup[currentOverlayContent].text}
                       </p>

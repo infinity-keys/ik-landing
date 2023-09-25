@@ -36,6 +36,12 @@ module.exports = {
           300: '#475171',
           500: '#303B5B',
         },
+        green: {
+          650: '#0E7B0C',
+        },
+      },
+      dropShadow: {
+        icon: '0px 0px 6px rgba(255, 255, 255, 0.50)',
       },
       fontFamily: {
         sans: ['Poppins', 'sans-serif'],
