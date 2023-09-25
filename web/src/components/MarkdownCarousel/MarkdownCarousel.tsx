@@ -54,8 +54,8 @@ const MarkdownCarousel = ({
         )
       }}
       defaultControlsConfig={{
-        pagingDotsClassName: 'mx-1 p-2 hover:text-brand-accent-primary',
-        containerClassName: 'relative -bottom-16',
+        pagingDotsClassName: 'mx-[2px] p-2',
+        containerClassName: 'relative -bottom-16 ',
       }}
       className="w-full"
       style={{ height: '100%' }}
