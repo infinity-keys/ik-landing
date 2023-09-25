@@ -2,6 +2,8 @@ import { useState } from 'react'
 
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 
+import { Link, routes } from '@redwoodjs/router'
+
 import Fade from 'src/components/Animations/Fade'
 import BenefitCard from 'src/components/BenefitCard/BenefitCard'
 import Button from 'src/components/Button'
@@ -21,7 +23,6 @@ import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
-import { Link, routes } from '@redwoodjs/router'
 
 export type BenefitCardProps = {
   icon: string
