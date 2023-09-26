@@ -186,11 +186,11 @@ const HomePage = () => {
           <Section>
             <div className="relative z-20 mt-16 max-w-2xl">
               <h1 className="text-shadow-lg text-3xl font-semibold lg:text-8xl">
-                <Fade inline duration={1.8}>
+                <Fade inline duration={1.8} key={heroDataIndex}>
                   {isSelected ? heroData[heroDataIndex].title : 'Infinity Keys'}
                 </Fade>
               </h1>
-              <Fade delay={0.8}>
+              <Fade delay={isSelected ? 0.4 : 0.8} key={heroDataIndex}>
                 <p
                   className="text-shadow-lg mt-4 max-w-lg text-2xl lg:text-4xl"
                   data-cy="description"
