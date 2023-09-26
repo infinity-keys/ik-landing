@@ -1,8 +1,13 @@
 import { useState } from 'react'
 
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
+import clsx from 'clsx'
+import { m as motion, Variants } from 'framer-motion'
+
+import { Link, routes } from '@redwoodjs/router'
 
 import Fade from 'src/components/Animations/Fade'
+import Scale from 'src/components/Animations/Scale'
 import BenefitCard from 'src/components/BenefitCard/BenefitCard'
 import Button from 'src/components/Button'
 import HomeContactForm from 'src/components/HomeContactForm/HomeContactForm'
@@ -13,6 +18,9 @@ import beaker from 'src/images/beaker.webp'
 import circle from 'src/images/Big-Circle.webp'
 import computer from 'src/images/computer.webp'
 import controller from 'src/images/controller.webp'
+import heroBeaker from 'src/images/hero-beaker.webp'
+import heroMedal from 'src/images/hero-medal.webp'
+import heroWatch from 'src/images/hero-watch.webp'
 import medal from 'src/images/medal.webp'
 import puzzle from 'src/images/puzzle.webp'
 import watch from 'src/images/watch.webp'
@@ -21,7 +29,6 @@ import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
-import { Link, routes } from '@redwoodjs/router'
 
 export type BenefitCardProps = {
   icon: string
@@ -123,8 +130,51 @@ const socialLinks = [
   },
 ]
 
+const heroData: Array<{
+  image: string
+  title: string
+  description: string
+}> = [
+  {
+    image: heroWatch,
+    title: 'Players',
+    description: 'Solve puzzles, collect keys & claim treasure',
+  },
+  {
+    image: heroBeaker,
+    title: 'Creators',
+    description: 'Launch no-code keyhunts featuring any digital assets',
+  },
+  {
+    image: heroMedal,
+    title: 'Sponsors',
+    description: 'Post bounties to incentivize creator-built games',
+  },
+]
+
+const transition = {
+  originY: 0.6,
+  transition: {
+    ease: [0.185, -0.01, 0, 1],
+    duration: 1,
+  },
+}
+
+const variants: Variants = {
+  show: {
+    scale: 1,
+    ...transition,
+  },
+  hide: {
+    scale: 0.6,
+    ...transition,
+  },
+}
+
 const HomePage = () => {
   const [isFormVisible, setIsFormVisible] = useState(false)
+  const [heroDataIndex, setHeroDataIndex] = useState<number | null>(null)
+  const isSelected = typeof heroDataIndex === 'number'
 
   return (
     <div>
@@ -135,54 +185,128 @@ const HomePage = () => {
           <Section>
             <div className="relative z-20 mt-16 max-w-2xl">
               <h1 className="text-shadow-lg text-3xl font-semibold lg:text-8xl">
-                <Fade inline duration={1.8}>
-                  Infinity Keys
+                <Fade inline duration={1.8} key={heroDataIndex}>
+                  {isSelected ? heroData[heroDataIndex].title : 'Infinity Keys'}
                 </Fade>
               </h1>
-              <Fade delay={0.8}>
+              <Fade delay={isSelected ? 0.4 : 0.8} key={heroDataIndex}>
                 <p
-                  className="text-shadow-lg mt-4 max-w-lg text-2xl lg:text-4xl"
+                  className="text-shadow-lg mt-4 max-w-xs text-2xl lg:max-w-lg lg:text-4xl"
                   data-cy="description"
                 >
-                  is a no-code creator platform for games & collecting digital
-                  keys
+                  {isSelected
+                    ? heroData[heroDataIndex].description
+                    : 'is a no-code creator platform for games & collecting digital keys'}
                 </p>
               </Fade>
             </div>
           </Section>
         </div>
 
-        <div className="absolute top-1/3 -left-8 -right-8 z-10 mx-auto max-w-2xl lg:right-4 lg:top-32 lg:bottom-auto lg:left-auto lg:max-w-none">
-          <img src={circle} alt="" className="pointer-events-none block" />
+        <div className="absolute bottom-24 -left-8 -right-8 z-10 mx-auto max-w-2xl lg:right-4 lg:top-32 lg:bottom-auto lg:left-auto lg:max-w-none">
+          <motion.img
+            src={circle}
+            alt=""
+            className="pointer-events-none block max-h-[calc(90vh)]"
+            variants={variants}
+            animate={isSelected ? 'hide' : 'show'}
+          />
 
-          <div className="group absolute top-[36%] left-[13%] w-24 md:w-36 lg:w-48">
-            <Fade>
-              <img
-                src={medal}
-                alt=""
-                className="transition-transform ease-in-out group-hover:scale-90"
-              />
-            </Fade>
-          </div>
+          {!isSelected && (
+            <>
+              <div className="group absolute top-[36%] left-[13%] w-24 max-w-[20vh] md:w-36 lg:w-48">
+                <Fade>
+                  <button onClick={() => setHeroDataIndex(2)}>
+                    <img
+                      src={medal}
+                      alt=""
+                      className="pointer-events-none transition-transform duration-500 ease-in-out group-hover:scale-90 "
+                    />
+                  </button>
+                </Fade>
+              </div>
 
-          <div className="group absolute top-[20%] right-[14%] w-24 md:w-36 lg:w-48">
-            <Fade delay={0.3}>
-              <img
-                src={watch}
-                alt=""
-                className="transition-transform ease-in-out group-hover:scale-90"
-              />
-            </Fade>
-          </div>
-          <div className="group absolute bottom-[12%] left-[46%] w-24 md:w-36 lg:w-48">
-            <Fade delay={0.6}>
-              <img
-                src={beaker}
-                alt=""
-                className="transition-transform ease-in-out group-hover:scale-90"
-              />
-            </Fade>
-          </div>
+              <div className="group absolute top-[20%] right-[14%] w-24 max-w-[20vh] md:w-36 lg:w-48">
+                <Fade delay={0.3}>
+                  <button onClick={() => setHeroDataIndex(0)}>
+                    <img
+                      src={watch}
+                      alt=""
+                      className="pointer-events-none transition-transform duration-500 ease-in-out group-hover:scale-90"
+                    />
+                  </button>
+                </Fade>
+              </div>
+
+              <div className="group absolute bottom-[12%] left-[46%] w-24 max-w-[20vh] md:w-36 lg:w-48">
+                <Fade delay={0.6}>
+                  <button onClick={() => setHeroDataIndex(1)}>
+                    <img
+                      src={beaker}
+                      alt=""
+                      className="pointer-events-none transition-transform duration-500 ease-in-out group-hover:scale-90"
+                    />
+                  </button>
+                </Fade>
+              </div>
+            </>
+          )}
+
+          {typeof heroDataIndex === 'number' && (
+            <div className="absolute bottom-1/2 w-full translate-y-[58%] text-center">
+              <button
+                onClick={() => setHeroDataIndex(null)}
+                className="w-[60%]"
+              >
+                <Fade inline>
+                  <span
+                    className={clsx(
+                      'block',
+                      heroData[heroDataIndex].title !== 'Players' && 'hidden'
+                    )}
+                  >
+                    <Scale withHover inline scaleInitial={0.9}>
+                      <img
+                        src={heroData[heroDataIndex].image}
+                        alt=""
+                        className="pointer-events-none w-full max-w-[150px] sm:max-w-[170px] lg:max-h-[60vh] lg:max-w-[270px] "
+                      />
+                    </Scale>
+                  </span>
+
+                  <span
+                    className={clsx(
+                      'block',
+                      heroData[heroDataIndex].title !== 'Sponsors' && 'hidden'
+                    )}
+                  >
+                    <Scale withHover inline scaleInitial={0.9}>
+                      <img
+                        src={heroData[heroDataIndex].image}
+                        alt=""
+                        className="pointer-events-none w-full max-w-md lg:max-h-[50vh] lg:max-w-xl"
+                      />
+                    </Scale>
+                  </span>
+
+                  <span
+                    className={clsx(
+                      'block',
+                      heroData[heroDataIndex].title !== 'Creators' && 'hidden'
+                    )}
+                  >
+                    <Scale withHover inline scaleInitial={0.9}>
+                      <img
+                        src={heroData[heroDataIndex].image}
+                        alt=""
+                        className="pointer-events-none w-full max-w-[170px] sm:max-w-[220px] lg:max-h-[65vh] lg:max-w-xs"
+                      />
+                    </Scale>
+                  </span>
+                </Fade>
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
