@@ -354,7 +354,7 @@ const HomePage = () => {
         </div>
 
         <div className="bg-white/5 py-14 lg:py-24">
-          <div className="mx-auto flex max-w-5xl flex-col items-center gap-20 px-4 md:flex-row md:justify-center md:gap-6 lg:px-8">
+          <div className="mx-auto flex max-w-5xl flex-col items-center gap-20 px-4 md:flex-row md:items-stretch md:justify-center md:gap-6 lg:px-8">
             {opportunity.map((data, index) => (
               <OpportunityCard {...data} key={data.title} delay={index * 0.3} />
             ))}
