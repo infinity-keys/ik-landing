@@ -38,7 +38,7 @@ const BenefitCard = ({
   const prefersReducedMotion = useReducedMotion()
 
   return (
-    <div className="w-full max-w-xs flex-1">
+    <div className="w-full max-w-sm flex-1">
       <Fade delay={delay} y={10}>
         <div className="flex flex-1 flex-col items-stretch rounded-xl border-2 border-stone-50 bg-white/5 py-6 px-8 md:px-6">
           <div className="flex flex-col items-center">
