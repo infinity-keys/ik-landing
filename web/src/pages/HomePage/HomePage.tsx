@@ -204,30 +204,30 @@ const HomePage = () => {
           </Section>
         </div>
 
-        <div className="absolute top-1/3 -left-8 -right-8 z-10 mx-auto max-w-2xl lg:right-4 lg:top-32 lg:bottom-auto lg:left-auto lg:max-w-none">
+        <div className="absolute bottom-24 -left-8 -right-8 z-10 mx-auto max-w-2xl lg:right-4 lg:top-32 lg:bottom-auto lg:left-auto lg:max-w-none">
           <motion.img
             src={circle}
             alt=""
-            className="pointer-events-none block"
+            className="pointer-events-none block max-h-[calc(90vh)]"
             variants={variants}
             animate={isSelected ? 'hide' : 'show'}
           />
 
           {!isSelected && (
             <>
-              <div className="group absolute top-[36%] left-[13%] w-24 md:w-36 lg:w-48">
+              <div className="group absolute top-[36%] left-[13%] w-24 max-w-[20vh] md:w-36 lg:w-48">
                 <Fade>
                   <button onClick={() => setHeroDataIndex(2)}>
                     <img
                       src={medal}
                       alt=""
-                      className="pointer-events-none transition-transform duration-500 ease-in-out group-hover:scale-90"
+                      className="pointer-events-none transition-transform duration-500 ease-in-out group-hover:scale-90 "
                     />
                   </button>
                 </Fade>
               </div>
 
-              <div className="group absolute top-[20%] right-[14%] w-24 md:w-36 lg:w-48">
+              <div className="group absolute top-[20%] right-[14%] w-24 max-w-[20vh] md:w-36 lg:w-48">
                 <Fade delay={0.3}>
                   <button onClick={() => setHeroDataIndex(0)}>
                     <img
@@ -239,7 +239,7 @@ const HomePage = () => {
                 </Fade>
               </div>
 
-              <div className="group absolute bottom-[12%] left-[46%] w-24 md:w-36 lg:w-48">
+              <div className="group absolute bottom-[12%] left-[46%] w-24 max-w-[20vh] md:w-36 lg:w-48">
                 <Fade delay={0.6}>
                   <button onClick={() => setHeroDataIndex(1)}>
                     <img
@@ -266,7 +266,7 @@ const HomePage = () => {
                     <img
                       src={heroData[heroDataIndex].image}
                       alt=""
-                      className="pointer-events-none w-full max-w-[150px] sm:max-w-[170px] lg:max-w-[290px]"
+                      className="pointer-events-none w-full max-w-[150px] sm:max-w-[170px] lg:max-h-[70vh] lg:max-w-[290px] "
                     />
                   </Scale>
                 </button>
@@ -282,7 +282,7 @@ const HomePage = () => {
                     <img
                       src={heroData[heroDataIndex].image}
                       alt=""
-                      className="pointer-events-none w-full max-w-md lg:max-w-xl"
+                      className="pointer-events-none w-full max-w-md lg:max-h-[50vh] lg:max-w-xl"
                     />
                   </Scale>
                 </button>
@@ -298,7 +298,7 @@ const HomePage = () => {
                     <img
                       src={heroData[heroDataIndex].image}
                       alt=""
-                      className="pointer-events-none w-full max-w-[170px] sm:max-w-[220px] lg:max-w-xs"
+                      className="pointer-events-none w-full max-w-[170px] sm:max-w-[220px] lg:max-h-[65vh] lg:max-w-xs"
                     />
                   </Scale>
                 </button>
