@@ -12,7 +12,7 @@ const OpportunityCard = ({
   delay?: number
 }) => {
   return (
-    <div className=" w-full max-w-xs flex-1 flex-col items-center text-center">
+    <div className=" w-full max-w-sm flex-1 flex-col items-center text-center">
       <Fade delay={delay}>
         <div className="flex flex-col items-center text-center">
           <Scale delay={delay} scaleInitial={0.9}>
