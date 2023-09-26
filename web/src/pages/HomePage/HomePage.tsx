@@ -152,23 +152,22 @@ const heroData: Array<{
   },
 ]
 
+const transition = {
+  originY: 0.6,
+  transition: {
+    ease: [0.185, -0.01, 0, 1],
+    duration: 1,
+  },
+}
+
 const variants: Variants = {
   show: {
     scale: 1,
-    originY: 0.6,
-    transition: {
-      ease: [0.185, -0.01, 0, 1],
-      duration: 1,
-    },
+    ...transition,
   },
   hide: {
     scale: 0.6,
-    originY: 0.6,
-
-    transition: {
-      ease: [0.185, -0.01, 0, 1],
-      duration: 1,
-    },
+    ...transition,
   },
 }
 
@@ -192,7 +191,7 @@ const HomePage = () => {
               </h1>
               <Fade delay={isSelected ? 0.4 : 0.8} key={heroDataIndex}>
                 <p
-                  className="text-shadow-lg mt-4 max-w-lg text-2xl lg:text-4xl"
+                  className="text-shadow-lg mt-4 max-w-xs text-2xl lg:max-w-lg lg:text-4xl"
                   data-cy="description"
                 >
                   {isSelected
@@ -254,55 +253,58 @@ const HomePage = () => {
           )}
 
           {typeof heroDataIndex === 'number' && (
-            <div className="absolute bottom-[7%] w-full text-center">
-              <Fade>
-                <button
-                  onClick={() => setHeroDataIndex(null)}
-                  className={clsx(
-                    heroData[heroDataIndex].title !== 'Players' && 'hidden'
-                  )}
-                >
-                  <Scale withHover inline scaleInitial={0.9}>
-                    <img
-                      src={heroData[heroDataIndex].image}
-                      alt=""
-                      className="pointer-events-none w-full max-w-[150px] sm:max-w-[170px] lg:max-h-[70vh] lg:max-w-[290px] "
-                    />
-                  </Scale>
-                </button>
+            <div className="absolute bottom-1/2 w-full translate-y-[58%] text-center">
+              <button
+                onClick={() => setHeroDataIndex(null)}
+                className="w-[60%]"
+              >
+                <Fade inline>
+                  <span
+                    className={clsx(
+                      'block',
+                      heroData[heroDataIndex].title !== 'Players' && 'hidden'
+                    )}
+                  >
+                    <Scale withHover inline scaleInitial={0.9}>
+                      <img
+                        src={heroData[heroDataIndex].image}
+                        alt=""
+                        className="pointer-events-none w-full max-w-[150px] sm:max-w-[170px] lg:max-h-[60vh] lg:max-w-[270px] "
+                      />
+                    </Scale>
+                  </span>
 
-                <button
-                  onClick={() => setHeroDataIndex(null)}
-                  className={clsx(
-                    'px-12 sm:-translate-y-12 lg:-translate-y-24',
-                    heroData[heroDataIndex].title !== 'Sponsors' && 'hidden'
-                  )}
-                >
-                  <Scale withHover inline scaleInitial={0.9}>
-                    <img
-                      src={heroData[heroDataIndex].image}
-                      alt=""
-                      className="pointer-events-none w-full max-w-md lg:max-h-[50vh] lg:max-w-xl"
-                    />
-                  </Scale>
-                </button>
+                  <span
+                    className={clsx(
+                      'block',
+                      heroData[heroDataIndex].title !== 'Sponsors' && 'hidden'
+                    )}
+                  >
+                    <Scale withHover inline scaleInitial={0.9}>
+                      <img
+                        src={heroData[heroDataIndex].image}
+                        alt=""
+                        className="pointer-events-none w-full max-w-md lg:max-h-[50vh] lg:max-w-xl"
+                      />
+                    </Scale>
+                  </span>
 
-                <button
-                  onClick={() => setHeroDataIndex(null)}
-                  className={clsx(
-                    'sm:-translate-y-10',
-                    heroData[heroDataIndex].title !== 'Creators' && 'hidden'
-                  )}
-                >
-                  <Scale withHover inline scaleInitial={0.9}>
-                    <img
-                      src={heroData[heroDataIndex].image}
-                      alt=""
-                      className="pointer-events-none w-full max-w-[170px] sm:max-w-[220px] lg:max-h-[65vh] lg:max-w-xs"
-                    />
-                  </Scale>
-                </button>
-              </Fade>
+                  <span
+                    className={clsx(
+                      'block',
+                      heroData[heroDataIndex].title !== 'Creators' && 'hidden'
+                    )}
+                  >
+                    <Scale withHover inline scaleInitial={0.9}>
+                      <img
+                        src={heroData[heroDataIndex].image}
+                        alt=""
+                        className="pointer-events-none w-full max-w-[170px] sm:max-w-[220px] lg:max-h-[65vh] lg:max-w-xs"
+                      />
+                    </Scale>
+                  </span>
+                </Fade>
+              </button>
             </div>
           )}
         </div>

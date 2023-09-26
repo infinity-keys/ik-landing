@@ -40,7 +40,7 @@ const BenefitCard = ({
   return (
     <div className="w-full max-w-xs flex-1">
       <Fade delay={delay} y={10}>
-        <div className="flex flex-1 flex-col items-stretch rounded-xl border-2 border-stone-50 bg-white/5 py-6 px-8 md:px-6 lg:px-12">
+        <div className="flex flex-1 flex-col items-stretch rounded-xl border-2 border-stone-50 bg-white/5 py-6 px-8 md:px-6">
           <div className="flex flex-col items-center">
             <Scale delay={delay + 0.3}>
               <Scale withHover>
@@ -50,13 +50,13 @@ const BenefitCard = ({
             <h3 className="text-xl font-medium">{title}</h3>
           </div>
 
-          <div className="flex min-h-[220px] pt-12 pb-4 leading-6 md:pt-8 lg:pt-12">
+          <div className="flex min-h-[220px] justify-center pt-12 pb-4 leading-6 md:pt-8 lg:pt-12">
             {showList ? (
               <motion.ul
                 variants={prefersReducedMotion ? {} : ListVariants}
                 initial="initial"
                 animate="animate"
-                className="list-disc pl-2 text-sm leading-6"
+                className="max-w-[240px] list-disc pl-2 text-sm leading-6"
                 transition={{
                   staggerChildren: prefersReducedMotion ? 0 : 0.1,
                 }}
@@ -69,7 +69,9 @@ const BenefitCard = ({
               </motion.ul>
             ) : (
               <Fade>
-                <p className="text-sm">{description}</p>
+                <p className="max-w-[220px] text-center text-sm">
+                  {description}
+                </p>
               </Fade>
             )}
           </div>
