@@ -16,13 +16,11 @@ const OpportunityCard = ({
       <Fade delay={delay}>
         <div className="flex flex-col items-center text-center">
           <Scale delay={delay} scaleInitial={0.9}>
-            <img
-              src={image}
-              alt=""
-              className="mb-16 max-h-[200px] max-w-[250px]"
-            />
+            <div className="mb-16 flex h-[175px] max-w-[175px] items-end">
+              <img src={image} alt="" className="" />
+            </div>
           </Scale>
-          <h3 className="text-6xl font-bold">{title}</h3>
+          <h3 className="mb-2 text-5xl font-bold">{title}</h3>
           <p className="text-xl font-medium">{description}</p>
         </div>
       </Fade>
