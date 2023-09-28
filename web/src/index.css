@@ -204,3 +204,7 @@ svg.paging-dot {
 .paging-item.active svg {
   @apply scale-[2];
 }
+
+.text-shadow-lg {
+  text-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
+}

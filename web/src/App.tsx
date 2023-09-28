@@ -5,6 +5,7 @@ import {
   RainbowKitProvider,
   getDefaultWallets,
 } from '@rainbow-me/rainbowkit'
+import { LazyMotion, domAnimation } from 'framer-motion'
 import loMerge from 'lodash/merge'
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi'
 import { infuraProvider } from 'wagmi/providers/infura'
@@ -89,15 +90,17 @@ const App = () => {
             <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
               <AuthProvider>
                 <RedwoodApolloProvider useAuth={useAuth}>
-                  <Routes />
-                  <CookieConsentBanner />
-                  <Toaster
-                    position="bottom-right"
-                    toastOptions={{
-                      className:
-                        'bg-black/40 border border-brand-accent-primary text-white',
-                    }}
-                  />
+                  <LazyMotion features={domAnimation}>
+                    <Routes />
+                    <CookieConsentBanner />
+                    <Toaster
+                      position="bottom-right"
+                      toastOptions={{
+                        className:
+                          'bg-black/40 border border-brand-accent-primary text-white',
+                      }}
+                    />
+                  </LazyMotion>
                 </RedwoodApolloProvider>
               </AuthProvider>
             </RedwoodProvider>
