@@ -227,20 +227,20 @@ const HomePage = () => {
                 </Fade>
               </div>
 
-              <div className="group absolute top-[20%] right-[14%] w-24 max-w-[20vh] md:w-36 lg:w-48">
-                <Fade delay={0.3}>
-                  <button onClick={() => setHeroDataIndex(0)}>
-                    {/* <img
+              <div className="group absolute top-[20%] right-[14%] h-48 w-24 max-w-[20vh] md:w-36 lg:w-48">
+                {/* <Fade delay={0.3}> */}
+                <button
+                  onClick={() => setHeroDataIndex(0)}
+                  className="block h-full w-full"
+                >
+                  {/* <img
                       src={watch}
                       alt=""
                       className="pointer-events-none transition-transform duration-500 ease-in-out group-hover:scale-90"
                     /> */}
-                    <Spline
-                      scene="https://my.spline.design/iksweb-6d9be1440a95ccf262cd34def08e894b"
-                      className="h-24 w-24"
-                    />
-                  </button>
-                </Fade>
+                  <Spline scene="https://prod.spline.design/bq9iCh9hvjsevZE0/scene.splinecode" />
+                </button>
+                {/* </Fade> */}
               </div>
 
               <div className="group absolute bottom-[12%] left-[46%] w-24 max-w-[20vh] md:w-36 lg:w-48">
@@ -314,8 +314,6 @@ const HomePage = () => {
           )}
         </div>
       </div>
-
-      <Spline scene="https://my.spline.design/iksweb-6d9be1440a95ccf262cd34def08e894b" />
 
       <section className="pt-8 md:pt-20">
         <div className="px-4">
