@@ -9056,6 +9056,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@splinetool/react-spline@npm:^2.2.6":
+  version: 2.2.6
+  resolution: "@splinetool/react-spline@npm:2.2.6"
+  dependencies:
+    lodash.debounce: ^4.0.8
+    react-merge-refs: ^2.0.1
+  peerDependencies:
+    "@splinetool/runtime": "*"
+    react: ">=17.0.0"
+    react-dom: ">=17.0.0"
+  checksum: 7a7e95fe2c77657d2583fd4d83010a8f2c355b7288f58eaab99f24562364fd4e6a543ff48fafeafa08d1d4edf5317682c2116f7badc9bd80f291fb5ddfaf8344
+  languageName: node
+  linkType: hard
+
+"@splinetool/runtime@npm:^0.9.457":
+  version: 0.9.457
+  resolution: "@splinetool/runtime@npm:0.9.457"
+  dependencies:
+    on-change: ^4.0.0
+    semver-compare: ^1.0.0
+  checksum: b17ffaeaed3f59a218e25af18b33a4a1eff924e4662f915b4367c6c79409f68892169128d8ec3356e00cfc835bfaa756c2e65074be754ba537d3059616d348ec
+  languageName: node
+  linkType: hard
+
 "@spruceid/siwe-parser@npm:1.1.3, @spruceid/siwe-parser@npm:^1.1.3":
   version: 1.1.3
   resolution: "@spruceid/siwe-parser@npm:1.1.3"
@@ -26268,6 +26292,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"on-change@npm:^4.0.0":
+  version: 4.0.2
+  resolution: "on-change@npm:4.0.2"
+  checksum: f803698daa72b988db1d92f900aa54bda42d7bcee07512f538d413489d377d4d6e78d09057b5f9f013a69551c285112299b0b9d93e00c8f8f77f8f3e9c07b0e4
+  languageName: node
+  linkType: hard
+
 "on-exit-leak-free@npm:^0.2.0":
   version: 0.2.0
   resolution: "on-exit-leak-free@npm:0.2.0"
@@ -28835,6 +28866,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-merge-refs@npm:^2.0.1":
+  version: 2.1.1
+  resolution: "react-merge-refs@npm:2.1.1"
+  checksum: b68cbc4ea51fd96f77247733388738630769d928f32958e63262ce43dff10c6b20f18a0483c6a640a1ffba48f32be26059d4ee9711881cacc63297b01311c8f6
+  languageName: node
+  linkType: hard
+
 "react-particles@npm:^2.5.3":
   version: 2.5.3
   resolution: "react-particles@npm:2.5.3"
@@ -30092,6 +30130,13 @@ __metadata:
   dependencies:
     node-forge: ^1
   checksum: 4a2509c8a5bd49c3630a799de66b317352b52746bec981133d4f8098365da35d2344f0fbedf14aacf2cd1e88682048e2df11ad9dc59331d3b1c0a5ec3e6e16ad
+  languageName: node
+  linkType: hard
+
+"semver-compare@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "semver-compare@npm:1.0.0"
+  checksum: 9ef4d8b81847556f0865f46ddc4d276bace118c7cb46811867af82e837b7fc473911981d5a0abc561fa2db487065572217e5b06e18701c4281bcdd2a1affaff1
   languageName: node
   linkType: hard
 
@@ -34291,6 +34336,8 @@ __metadata:
     "@redwoodjs/vite": 6.1.0
     "@redwoodjs/web": 6.1.0
     "@snickerdoodlelabs/web-integration": ^1.0.1
+    "@splinetool/react-spline": ^2.2.6
+    "@splinetool/runtime": ^0.9.457
     "@tailwindcss/forms": ^0.5.3
     "@types/gtag.js": ^0.0.12
     autoprefixer: ^10.4.12

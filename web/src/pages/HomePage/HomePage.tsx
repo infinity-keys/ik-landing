@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
+import Spline from '@splinetool/react-spline'
 import clsx from 'clsx'
 import { m as motion, Variants } from 'framer-motion'
 
@@ -229,10 +230,14 @@ const HomePage = () => {
               <div className="group absolute top-[20%] right-[14%] w-24 max-w-[20vh] md:w-36 lg:w-48">
                 <Fade delay={0.3}>
                   <button onClick={() => setHeroDataIndex(0)}>
-                    <img
+                    {/* <img
                       src={watch}
                       alt=""
                       className="pointer-events-none transition-transform duration-500 ease-in-out group-hover:scale-90"
+                    /> */}
+                    <Spline
+                      scene="https://my.spline.design/iksweb-6d9be1440a95ccf262cd34def08e894b"
+                      className="h-24 w-24"
                     />
                   </button>
                 </Fade>
@@ -309,6 +314,8 @@ const HomePage = () => {
           )}
         </div>
       </div>
+
+      <Spline scene="https://my.spline.design/iksweb-6d9be1440a95ccf262cd34def08e894b" />
 
       <section className="pt-8 md:pt-20">
         <div className="px-4">
