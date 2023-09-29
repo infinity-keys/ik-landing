@@ -6,6 +6,7 @@ import { m as motion, Variants } from 'framer-motion'
 
 import { Link, routes } from '@redwoodjs/router'
 
+import { useAuth } from 'src/auth'
 import Fade from 'src/components/Animations/Fade'
 import Scale from 'src/components/Animations/Scale'
 import BenefitCard from 'src/components/BenefitCard/BenefitCard'
@@ -14,6 +15,7 @@ import HomeContactForm from 'src/components/HomeContactForm/HomeContactForm'
 import OpportunityCard from 'src/components/OpportunityCard/OpportunityCard'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
+import Snick from 'src/components/Snick/Snick'
 import beaker from 'src/images/beaker.webp'
 import circle from 'src/images/Big-Circle.webp'
 import computer from 'src/images/computer.webp'
@@ -174,6 +176,7 @@ const variants: Variants = {
 const HomePage = () => {
   const [isFormVisible, setIsFormVisible] = useState(false)
   const [heroDataIndex, setHeroDataIndex] = useState<number | null>(null)
+  const { currentUser } = useAuth()
   const isSelected = typeof heroDataIndex === 'number'
 
   return (
@@ -309,6 +312,12 @@ const HomePage = () => {
           )}
         </div>
       </div>
+
+      {currentUser && currentUser.roles.includes('ADMIN') && (
+        <div className="flex justify-center pt-20">
+          <Snick />
+        </div>
+      )}
 
       <section className="pt-8 md:pt-20">
         <div className="px-4">
