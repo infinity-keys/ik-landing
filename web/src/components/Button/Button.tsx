@@ -12,7 +12,7 @@ export interface ButtonProps {
   border?: boolean
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium' | 'large'
-  variant?: 'solid' | 'outline' | 'faded' | 'secondary' | 'warn'
+  variant?: 'solid' | 'outline' | 'faded' | 'secondary' | 'warn' | 'rounded'
   onClick?: () => void
   disabled?: boolean
   responsive?: boolean
@@ -47,6 +47,9 @@ export default function Button({
     ],
     // Variants
     [
+      variant === 'rounded' && {
+        'border-2 rounded-full hover:text-white': true,
+      },
       variant === 'solid' && {
         'bg-brand-accent-primary': true,
         'bg-brand-accent-primary/50 border-brand-accent-primary hover:border-brand-accent-primary text-white/50 hover:text-white/50':

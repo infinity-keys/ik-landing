@@ -3444,12 +3444,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/is-prop-valid@npm:^0.8.2":
+  version: 0.8.8
+  resolution: "@emotion/is-prop-valid@npm:0.8.8"
+  dependencies:
+    "@emotion/memoize": 0.7.4
+  checksum: f6be625f067c7fa56a12a4edaf090715616dc4fc7803c87212831f38c969350107b9709b1be54100e53153b18d9fa068eb4bf4f9ac66a37a8edf1bac9b64e279
+  languageName: node
+  linkType: hard
+
 "@emotion/is-prop-valid@npm:^1.1.0, @emotion/is-prop-valid@npm:^1.2.1":
   version: 1.2.1
   resolution: "@emotion/is-prop-valid@npm:1.2.1"
   dependencies:
     "@emotion/memoize": ^0.8.1
   checksum: 7c2aabdf0ca9986ca25abc9dae711348308cf18d418d64ffa4c8ffd2114806c47f2e06ba8ee769f38ec67d65bd59ec73f34d94023e81baa1c43510ac86ccd5e6
+  languageName: node
+  linkType: hard
+
+"@emotion/memoize@npm:0.7.4":
+  version: 0.7.4
+  resolution: "@emotion/memoize@npm:0.7.4"
+  checksum: b2376548fc147b43afd1ff005a80a1a025bd7eb4fb759fdb23e96e5ff290ee8ba16628a332848d600fb91c3cdc319eee5395fa33d8875e5d5a8c4ce18cddc18e
   languageName: node
   linkType: hard
 
@@ -8909,6 +8925,80 @@ __metadata:
   dependencies:
     "@sinonjs/commons": ^2.0.0
   checksum: 24555ed94053319fa18d4efa0923b295a445a00d2515d260b9e4e2b5943bd8b5b55fee85baabb2819a13ca1f57dbc1949265a350f592eef9e2535ec9de711ebc
+  languageName: node
+  linkType: hard
+
+"@snickerdoodlelabs/common-utils@npm:^1.0.0, @snickerdoodlelabs/common-utils@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@snickerdoodlelabs/common-utils@npm:1.0.2"
+  dependencies:
+    "@snickerdoodlelabs/objects": ^1.0.3
+    axios: ^0.27.2
+    ethers: ^5.6.6
+    inversify: ^6.0.1
+    neverthrow: ^5.1.0
+    neverthrow-result-utils: ^2.0.2
+    oauth-1.0a: ^2.2.6
+    pino: ^8.1.0
+    tweetnacl: ^1.0.3
+    uuid: ^8.3.0
+  checksum: 23f87a5b856cb8b6ae7655fe3d35c9a53c80e4329f445ba98563f0fdde1c335d887824b5deb039a4c2d0203569f52cd235a563aead6e686e1e4290c704c4d01d
+  languageName: node
+  linkType: hard
+
+"@snickerdoodlelabs/objects@npm:^1.0.0, @snickerdoodlelabs/objects@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@snickerdoodlelabs/objects@npm:1.0.3"
+  dependencies:
+    ethers: ^5.6.6
+    neverthrow: ^5.1.0
+    rxjs: ^7.5.5
+    ts-brand: ^0.0.2
+  checksum: 28cb4e340c00bea2ff7d9a09a55490b5f3cc49eb9ab0861989093b2ae2c59e2cee53d8679f4bdaa8aceaa82da2499f1111d73414cf58ce10185c7461c5800f64
+  languageName: node
+  linkType: hard
+
+"@snickerdoodlelabs/objects@npm:^1.1.0":
+  version: 1.1.1
+  resolution: "@snickerdoodlelabs/objects@npm:1.1.1"
+  dependencies:
+    ethers: ^5.6.6
+    neverthrow: ^5.1.0
+    rxjs: ^7.5.5
+    ts-brand: ^0.0.2
+    utility-types: ^3.10.0
+  checksum: ff062656e9a13cd1accd026cfc3bcee0ba1bdfac56305b8db64bde8abecef8be2c24141cdc4856253e7e6aa034ed2a4c865071eee0893c58c820bbad150db45f
+  languageName: node
+  linkType: hard
+
+"@snickerdoodlelabs/utils@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@snickerdoodlelabs/utils@npm:1.0.0"
+  dependencies:
+    "@snickerdoodlelabs/common-utils": ^1.0.0
+    "@snickerdoodlelabs/objects": ^1.0.0
+    inversify: ^6.0.1
+    neverthrow: ^5.1.0
+    neverthrow-result-utils: ^2.0.2
+    postmate: ^1.5.2
+  checksum: 6778bdce591bfadc939beb77a4cfa7d4499e58f260ed8b826e2384f6d0516b4b46e1c7dc37d1ec1be77ff37ca3bab48555a57897e97d78e721c8d2d02124bc78
+  languageName: node
+  linkType: hard
+
+"@snickerdoodlelabs/web-integration@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@snickerdoodlelabs/web-integration@npm:1.1.0"
+  dependencies:
+    "@snickerdoodlelabs/common-utils": ^1.0.2
+    "@snickerdoodlelabs/objects": ^1.1.0
+    "@snickerdoodlelabs/utils": ^1.0.0
+    ethers: ^5.6.6
+    inversify: ^6.0.1
+    neverthrow: ^5.1.0
+    neverthrow-result-utils: ^2.0.2
+    postmate: ^1.5.2
+    reflect-metadata: ^0.1.13
+  checksum: 3683decfb9437a762230352999dc297502916a8fcf13f6e797e522c5c9a6df9a200a8716c86e3961a475e511bf8eea0b20903a3b400e6d130d5a2169b3f423cc
   languageName: node
   linkType: hard
 
@@ -18821,7 +18911,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^5.7.1, ethers@npm:^5.7.2":
+"ethers@npm:^5.6.6, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -19883,6 +19973,27 @@ __metadata:
   dependencies:
     map-cache: ^0.2.2
   checksum: 5891d1c1d1d5e1a7fb3ccf28515c06731476fa88f7a50f4ede8a0d8d239a338448e7f7cc8b73db48da19c229fa30066104fe6489862065a4f1ed591c42fbeabf
+  languageName: node
+  linkType: hard
+
+"framer-motion@npm:^10.16.4":
+  version: 10.16.4
+  resolution: "framer-motion@npm:10.16.4"
+  dependencies:
+    "@emotion/is-prop-valid": ^0.8.2
+    tslib: ^2.4.0
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  dependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: a50f2124fbb585ec0a73d8ba7538cef3fb5deec463ae813d7e15c0893aa55d2f0919d432a33770cab38a1df81fa2c7e29a4834f2ba6e3713bc9c29dd6a98f3af
   languageName: node
   linkType: hard
 
@@ -21547,6 +21658,13 @@ __metadata:
   dependencies:
     loose-envify: ^1.0.0
   checksum: 5af133a917c0bcf65e84e7f23e779e7abc1cd49cb7fdc62d00d1de74b0d8c1b5ee74ac7766099fb3be1b05b26dfc67bab76a17030d2fe7ea2eef867434362dfc
+  languageName: node
+  linkType: hard
+
+"inversify@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "inversify@npm:6.0.1"
+  checksum: 2d0b67663e7ab8b08704e1a2c0ab7a181c412ab0bec5c3d6144946d77ec38a7f213b88f81a92a717f856910baed50b34e75754f25fc3d2160ec74bd62285bf97
   languageName: node
   linkType: hard
 
@@ -25307,6 +25425,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"neverthrow-result-utils@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "neverthrow-result-utils@npm:2.0.2"
+  dependencies:
+    delay: ^5.0.0
+    neverthrow: ^5.1.0
+  checksum: fbe98645da125c99bc19d967639bb18daec561d6efddcbd00311b5639534a35d492a3d7fa1e481c75ad739f3d5b4d6641563c95f50bacf87c1db13b62945e8e1
+  languageName: node
+  linkType: hard
+
+"neverthrow@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "neverthrow@npm:5.1.0"
+  checksum: 25d7ec6376a7978c3db6b7aed14f0d6b5f563d914b1dd63e7493c390cff8e44a0c90488d740d5381129193c53561af4e5794ef6d4513a681890d33c4d112fd15
+  languageName: node
+  linkType: hard
+
 "new-github-issue-url@npm:0.2.1":
   version: 0.2.1
   resolution: "new-github-issue-url@npm:0.2.1"
@@ -25696,6 +25831,13 @@ __metadata:
   version: 2.2.2
   resolution: "nwsapi@npm:2.2.2"
   checksum: f7c4fedb0dc0786204ee99f440e9827d6e01a0c0322e93b5c9a9a382dd0bd9650d98ca3d1967a77554e3ec1f9a46a20cfea80a41fb00e91c5101c53d8b2c9aed
+  languageName: node
+  linkType: hard
+
+"oauth-1.0a@npm:^2.2.6":
+  version: 2.2.6
+  resolution: "oauth-1.0a@npm:2.2.6"
+  checksum: c540db3717cfe7e73509a29fc9163469af0cf1d7133b49989f0a47e23944efe8ca4ad375ff44bb118b26417f612b83b824e7c662ccd210eeb97169d4a846cf0b
   languageName: node
   linkType: hard
 
@@ -26554,6 +26696,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pino-abstract-transport@npm:v1.1.0":
+  version: 1.1.0
+  resolution: "pino-abstract-transport@npm:1.1.0"
+  dependencies:
+    readable-stream: ^4.0.0
+    split2: ^4.0.0
+  checksum: 6e9b9d5a2c0a37f91ecaf224d335daae1ae682b1c79a05b06ef9e0f0a5d289f8e597992217efc857796dae6f1067e9b4882f95c6228ff433ddc153532cae8aca
+  languageName: node
+  linkType: hard
+
 "pino-datadog@npm:^2.0.2":
   version: 2.0.2
   resolution: "pino-datadog@npm:2.0.2"
@@ -26625,6 +26777,27 @@ __metadata:
   bin:
     pino: bin.js
   checksum: 0288488d0426b68d1e3a7e0f11eda6b3e8e4d7cd9f8aa6e090afe03e604fa5039be62397528d78d6f30735e6416a54b4e07881107ef80c125076191399283688
+  languageName: node
+  linkType: hard
+
+"pino@npm:^8.1.0":
+  version: 8.15.1
+  resolution: "pino@npm:8.15.1"
+  dependencies:
+    atomic-sleep: ^1.0.0
+    fast-redact: ^3.1.1
+    on-exit-leak-free: ^2.1.0
+    pino-abstract-transport: v1.1.0
+    pino-std-serializers: ^6.0.0
+    process-warning: ^2.0.0
+    quick-format-unescaped: ^4.0.3
+    real-require: ^0.2.0
+    safe-stable-stringify: ^2.3.1
+    sonic-boom: ^3.1.0
+    thread-stream: ^2.0.0
+  bin:
+    pino: bin.js
+  checksum: d2a5392da372d279f2ff0465d6a6f2033303d7cf8d2020938ae5e00e750a006388148edb8bad2c3f41227e365c3b179fb692d220566fe79e32ac5ed051bd4183
   languageName: node
   linkType: hard
 
@@ -27529,6 +27702,13 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: 7dc843c26fec9d26a6f3abae3525c160de2fb22ee2163ac3f1fdb15a5651342893e38ffd6c26fddac8e42c9aa629dc80ea20bf5a796c954150cf9295adf8b09c
+  languageName: node
+  linkType: hard
+
+"postmate@npm:^1.5.2":
+  version: 1.5.2
+  resolution: "postmate@npm:1.5.2"
+  checksum: a6ef50768bd99b56f8bf8f961fcadca4b96c2748b1639d225d9bb9b15b2cd5af6c4aed91e2c05c41c666fdfc0010d1011ea0e3f9b97c7d1c7b687ee83227ebd5
   languageName: node
   linkType: hard
 
@@ -31656,6 +31836,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-brand@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "ts-brand@npm:0.0.2"
+  checksum: 43f391ff8b8e22dbb3294caa1a74b9f5d44de83b50d75d06a6bacd1bd73d5e117f5785757b733e0ca828c7dc75af5e45912028096a4ad2fcd03d8d6540875788
+  languageName: node
+  linkType: hard
+
 "ts-command-line-args@npm:^2.2.0":
   version: 2.3.1
   resolution: "ts-command-line-args@npm:2.3.1"
@@ -33219,6 +33406,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"utility-types@npm:^3.10.0":
+  version: 3.10.0
+  resolution: "utility-types@npm:3.10.0"
+  checksum: 79a6f7ea0cdd4fcafcec8c6e68e1e0cfa657e414b6f1696552d89ae70a3634b12ac6c16b7a0a3bfdb0a222ebc3d9a7649f2de434a78f2d65d318b50f314a85e4
+  languageName: node
+  linkType: hard
+
 "utils-merge@npm:1.0.1":
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
@@ -33235,7 +33429,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^8.3.2":
+"uuid@npm:^8.3.0, uuid@npm:^8.3.2":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
   bin:
@@ -33718,6 +33912,7 @@ __metadata:
     "@redwoodjs/router": 6.1.0
     "@redwoodjs/vite": 6.1.0
     "@redwoodjs/web": 6.1.0
+    "@snickerdoodlelabs/web-integration": ^1.1.0
     "@tailwindcss/forms": ^0.5.3
     "@types/gtag.js": ^0.0.12
     autoprefixer: ^10.4.12
@@ -33726,6 +33921,7 @@ __metadata:
     cloudinary-build-url: ^0.2.4
     clsx: ^1.2.1
     ethers: ^5.7.1
+    framer-motion: ^10.16.4
     humanize-string: 2.1.0
     loaders.css: ^0.1.2
     lodash: ^4.17.21
@@ -33741,6 +33937,7 @@ __metadata:
     react-individual-character-input-boxes: 1.2.1
     react-markdown: ^8.0.3
     react-particles: ^2.5.3
+    reflect-metadata: ^0.1.13
     tailwindcss: ^3.1.8
     tsparticles: ^2.5.3
     use-device-pixel-ratio: ^1.1.0

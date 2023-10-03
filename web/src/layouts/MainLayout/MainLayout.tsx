@@ -4,7 +4,7 @@ const MainLayout = ({ children }: { children?: React.ReactNode }) => {
   return (
     <>
       <SkipNavContent id="main-content" />
-      <main>{children}</main>
+      <main className="text-gray-100">{children}</main>
     </>
   )
 }

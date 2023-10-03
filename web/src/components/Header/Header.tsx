@@ -18,6 +18,8 @@ import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
+import Snick from '../Snick/Snick'
+
 const socialLinks = [
   {
     href: 'https://lenster.xyz/u/infinitykeys',
@@ -56,12 +58,12 @@ const Header = () => {
   }, [pathname])
 
   return (
-    <div className="fixed top-0 left-0 z-20 w-full bg-brand-gray-primary px-4 sm:px-6 lg:px-8">
+    <div className="fixed top-0 left-0 z-30 w-full bg-brand-gray-primary px-4 sm:px-6 lg:px-8">
       <div className="flex h-20 items-center justify-between">
         <div className="flex items-center" data-cy="ik logo">
           {/* Left logo */}
           <Link
-            to={routes.play()}
+            to={routes.home()}
             className="inline-block max-w-[100px] sm:max-w-[150px]"
             aria-label="return home"
           >
@@ -74,6 +76,8 @@ const Header = () => {
             </picture>
           </Link>
         </div>
+
+        <Snick />
 
         <div className="flex gap-4">
           {loading ? <LoaderIcon /> : <ProfileIcon />}

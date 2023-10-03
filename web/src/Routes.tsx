@@ -19,6 +19,7 @@ import AllContextProviders from 'src/providers'
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
+      <Route path="/snickerdoodle" page={SnickerdoodlePage} name="snickerdoodle" />
       <Set wrap={AllContextProviders}>
         {/* <Route path="/" page={UnderConstructionPage} name="underConstruction" /> */}
         {/* <Route path="/" page={HomePage} name="home" /> */}
@@ -61,12 +62,13 @@ const Routes = () => {
           <Route path="/puzzles/{count:Int}/{page:Int}" page={RewardablePuzzleRewardablePuzzlesPage} name="puzzlesPagination" />
           <Route path="/packs" page={RewardablePackRewardablePacksPage} name="packs" />
           <Route path="/packs/{count:Int}/{page:Int}" page={RewardablePackRewardablePacksPage} name="packsPagination" />
-          <Route path="/" page={PlayPage} name="play" />
+          <Route path="/play" page={PlayPage} name="play" />
           <Route path="/{count:Int}/{page:Int}" page={PlayPage} name="playPagination" />
           <Route path="/connect-accounts" page={ConnectAccountsPage} name="connectAccounts" />
         </Set>
 
         <Set wrap={[HeaderLayout, MainLayout]}>
+          <Route path="/" page={HomePage} name="home" />
           <Route path="/privacy-policy" page={PrivacyPolicyPage} name="privacyPolicy" />
         </Set>
 
