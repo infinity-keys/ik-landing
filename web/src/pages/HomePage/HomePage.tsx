@@ -6,7 +6,6 @@ import { m as motion, Variants } from 'framer-motion'
 
 import { Link, routes } from '@redwoodjs/router'
 
-import { useAuth } from 'src/auth'
 import Fade from 'src/components/Animations/Fade'
 import Scale from 'src/components/Animations/Scale'
 import BenefitCard from 'src/components/BenefitCard/BenefitCard'
@@ -176,7 +175,6 @@ const variants: Variants = {
 const HomePage = () => {
   const [isFormVisible, setIsFormVisible] = useState(false)
   const [heroDataIndex, setHeroDataIndex] = useState<number | null>(null)
-  const { currentUser } = useAuth()
   const isSelected = typeof heroDataIndex === 'number'
 
   return (
@@ -313,11 +311,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      {currentUser && currentUser.roles.includes('ADMIN') && (
-        <div className="flex justify-center pt-20">
-          <Snick />
-        </div>
-      )}
+      <Snick />
 
       <section className="pt-8 md:pt-20">
         <div className="px-4">
