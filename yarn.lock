@@ -5693,12 +5693,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@infinity-keys/constants@workspace:packages/constants"
   dependencies:
-    "@rainbow-me/rainbowkit": ^0.8.0
+    "@rainbow-me/rainbowkit": ^1.0.11
     "@rollup/plugin-typescript": ^9.0.2
     "@types/node": ^18.11.9
     rollup-plugin-typescript-paths: ^1.4.0
     tslib: ^2.4.1
-    typescript: ^4.6.4
+    typescript: ^5.2.2
+    viem: ^1.15.0
     vite: ^4.0.5
   languageName: unknown
   linkType: soft
@@ -5733,7 +5734,7 @@ __metadata:
     nanoid: ^4.0.0
     rollup-plugin-typescript-paths: ^1.4.0
     tslib: ^2.4.1
-    typescript: ^4.6.4
+    typescript: ^5.2.2
     uuid: ^9.0.0
     vite: ^4.0.5
     zod: ^3.19.1
@@ -8229,25 +8230,6 @@ __metadata:
   dependencies:
     "@babel/runtime": ^7.13.10
   checksum: 4c5159661340acc31b11e1f2ebd87a1521d39bfa287544dd2cd75b399539a4b625d38a1501c90ceae21fcca18ed164b0c3735817ff140ae334098192c110e571
-  languageName: node
-  linkType: hard
-
-"@rainbow-me/rainbowkit@npm:^0.8.0":
-  version: 0.8.0
-  resolution: "@rainbow-me/rainbowkit@npm:0.8.0"
-  dependencies:
-    "@vanilla-extract/css": 1.9.1
-    "@vanilla-extract/dynamic": 2.0.2
-    "@vanilla-extract/sprinkles": 1.5.0
-    clsx: 1.1.1
-    qrcode: 1.5.0
-    react-remove-scroll: 2.5.4
-  peerDependencies:
-    ethers: ">=5.5.1"
-    react: ">=17"
-    react-dom: ">=17"
-    wagmi: 0.8.x
-  checksum: d3ba49c0f7c5b0542a0890adc4c79d50cbc5f591c23edbd715f343a6a17e5c96ea56d8a853007418833ec8fc32e87ec099bbdcdb58c570d4e98219e8b4a15e0f
   languageName: node
   linkType: hard
 
@@ -33553,6 +33535,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^5.2.2":
+  version: 5.2.2
+  resolution: "typescript@npm:5.2.2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 91ae3e6193d0ddb8656d4c418a033f0f75dec5e077ebbc2bd6d76439b93f35683936ee1bdc0e9cf94ec76863aa49f27159b5788219b50e1cd0cd6d110aa34b07
+  languageName: node
+  linkType: hard
+
 "typescript@npm:~4.8.4":
   version: 4.8.4
   resolution: "typescript@npm:4.8.4"
@@ -33580,6 +33572,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: c134abcd9fc5c393db30498db18d8e89453efae14e11a39c1adb6238138d4c152472e497499b8a67b0c87ca6eafcb26b0eb02f962f240c233c2e0ad3785f8742
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^5.2.2#~builtin<compat/typescript>":
+  version: 5.2.2
+  resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=77c9e2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 303979762f9b8932c53f8149e866521a1265168b5c0fde8cc8ad83ac3d0e8ede8096cb02dff5f2de048e7f118a6f61902f81da12d5972c7fb582f09f2f18d169
   languageName: node
   linkType: hard
 
@@ -34386,6 +34388,28 @@ __metadata:
     typescript:
       optional: true
   checksum: ab8e42397791890f5383541448e1e82e367dc4e553f901c50735f64894ea81c16e8f0c61708f954908a9cdba657dcb1a6f465fb5a8593a225b37541b01dd77ba
+  languageName: node
+  linkType: hard
+
+"viem@npm:^1.15.0":
+  version: 1.15.0
+  resolution: "viem@npm:1.15.0"
+  dependencies:
+    "@adraffy/ens-normalize": 1.9.4
+    "@noble/curves": 1.2.0
+    "@noble/hashes": 1.3.2
+    "@scure/bip32": 1.3.2
+    "@scure/bip39": 1.2.1
+    "@types/ws": ^8.5.5
+    abitype: 0.9.8
+    isomorphic-ws: 5.0.0
+    ws: 8.13.0
+  peerDependencies:
+    typescript: ">=5.0.4"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 4ae9214aafcedc40368175664f73fbbee449b44239500b926c3ab7b7311a665c4b6456e92d13c534a3167a181d6e3517204446309ffff2f1d5258ccb887b8c6d
   languageName: node
   linkType: hard
 
