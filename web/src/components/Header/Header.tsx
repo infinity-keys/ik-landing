@@ -18,6 +18,8 @@ import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
+import Snick from '../Snick/Snick'
+
 const socialLinks = [
   {
     href: 'https://lenster.xyz/u/infinitykeys',
@@ -74,6 +76,8 @@ const Header = () => {
             </picture>
           </Link>
         </div>
+
+        <Snick />
 
         <div className="flex gap-4">
           {loading ? <LoaderIcon /> : <ProfileIcon />}

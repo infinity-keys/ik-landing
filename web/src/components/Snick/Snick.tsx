@@ -1,7 +1,8 @@
-import 'reflect-metadata'
 import { EVMAccountAddress, Signature } from '@snickerdoodlelabs/objects'
 import { SnickerdoodleWebIntegration } from '@snickerdoodlelabs/web-integration'
 import { useAccount, useSignMessage } from 'wagmi'
+
+import { useAuth } from 'src/auth'
 
 const webIntegrationConfig = {}
 
@@ -11,6 +12,7 @@ const Snickerdoodle = () => {
     message: myMessage,
   })
   const { address, isConnected } = useAccount()
+  const { currentUser } = useAuth()
 
   // This option shows how to authenticate a user account with a custom EIP-191
   // compatible message signature that your app may already be asking the user to sign
@@ -43,15 +45,13 @@ const Snickerdoodle = () => {
     }
   }, [data])
 
-  if (isConnected) {
-    return (
-      <button className="button-64" onClick={() => signMessage()}>
-        Sign
-      </button>
-    )
-  } else {
-    return <></>
-  }
+  return isConnected && currentUser && currentUser.roles.includes('ADMIN') ? (
+    <div className="flex justify-center p-12 text-white">
+      <button onClick={() => signMessage()}>Sign</button>
+    </div>
+  ) : (
+    <></>
+  )
 }
 
 export default Snickerdoodle
