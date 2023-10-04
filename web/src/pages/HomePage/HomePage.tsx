@@ -315,6 +315,10 @@ const HomePage = () => {
         </div>
       </div>
 
+      <div className="bg-black py-20">
+        <Spline scene="https://prod.spline.design/bq9iCh9hvjsevZE0/scene.splinecode" />
+      </div>
+
       <section className="pt-8 md:pt-20">
         <div className="px-4">
           <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
