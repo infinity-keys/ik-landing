@@ -24,6 +24,7 @@ const Snickerdoodle = () => {
       webIntegration
         .initialize()
         .andThen((proxy) => {
+          console.log(proxy.account.getAccounts())
           return proxy.account.addAccountWithExternalSignature(
             EVMAccountAddress(address),
             myMessage,
