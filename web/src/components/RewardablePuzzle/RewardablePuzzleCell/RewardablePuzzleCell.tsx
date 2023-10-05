@@ -1,8 +1,9 @@
 import type { FindRewardablePuzzleBySlug } from 'types/graphql'
 
-import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
+import type { CellSuccessProps } from '@redwoodjs/web'
 
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import OldFormatMessage from 'src/components/OldFormatMessage/OldFormatMessage'
 import RewardablePuzzle from 'src/components/RewardablePuzzle/RewardablePuzzle'
 
 // @TODO: This query is skip auth, and the only thing we need when users are
@@ -31,9 +32,9 @@ export const Loading = () => <LoadingIcon />
 
 export const Empty = () => <div>Rewardable not found</div>
 
-export const Failure = ({ error }: CellFailureProps) => (
-  <div className="rw-cell-error">{error?.message}</div>
-)
+export const Failure = () => {
+  return <OldFormatMessage />
+}
 
 export const Success = ({
   rewardable,
