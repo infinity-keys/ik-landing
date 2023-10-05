@@ -96,6 +96,38 @@
     }
   }
 
+  /* ----- Form stylings begin here (by Burd) ----- */
+
+  /* Default Form labels  */
+  fieldset.ik-child-form {
+    @apply pl-56 text-orange-900;
+  }
+
+  /* Error Form labels  */
+  fieldset.ik-form {
+    @apply pl-56 text-indigo-700;
+  }
+
+  /* firm field error */
+  .ik-field-error {
+    @apply mt-1 block text-xs font-semibold uppercase text-teal-600;
+  }
+
+  /* NOTE: this will apply to all children of "<fieldset/>"  */
+  /* fieldset.ik-child-form * {
+    @apply mt-6 block text-left font-semibold text-orange-600;
+  } */
+
+  .ik-label {
+    @apply mt-6 block text-left font-semibold text-orange-600;
+  }
+
+  .ik-label.ik-label-error {
+    @apply text-lime-600;
+  }
+
+  /* ----- Form stylings end here ----- */
+
   .discordIcon:hover {
     color: #5865f2;
   }

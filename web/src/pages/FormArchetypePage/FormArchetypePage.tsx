@@ -1,22 +1,28 @@
 // BROWSER LOCATION: http://localhost:8910/puzzle/archetype
 // web/src/pages/FormArchetypePage/FormArchetypePage.tsx
 
+import { useState, useRef, useEffect } from 'react'
+
+// // NOTE: This section is slated for removal /////////////////////////////////
 // provides type safety by explicitly stating the type of each hook
-let useEffect: typeof import('react').useEffect
-let useRef: typeof import('react').useRef
-let useState: typeof import('react').useState
+// prevents linting error in conditional below but does not word in
+// production mode
+// let useEffect: typeof import('react').useEffect
+// let useRef: typeof import('react').useRef
+// let useState: typeof import('react').useState
 
-if (process.env.NODE_ENV === 'development') {
-  import('react').then((React) => {
-    useEffect = React.useEffect
-    useRef = React.useRef
-    useState = React.useState
+// if (process.env.NODE_ENV === 'development') {
+//   import('react').then((React) => {
+//     useEffect = React.useEffect
+//     useRef = React.useRef
+//     useState = React.useState
 
-    // Slight delay to allow 'useRef()' to initialize, w/o it we get a warning
-    // in the browser that says: "'useRef' is not a function."
-    setTimeout(() => {}, 50)
-  })
-}
+//     // Slight delay to allow 'useRef()' to initialize, w/o it we get a warning
+//     // in the browser that says: "'useRef' is not a function."
+//     setTimeout(() => {}, 50)
+//   })
+// }
+// // NOTE: end of section slated for removal //////////////////////////////////
 
 import { DevTool } from '@hookform/devtools'
 import {
@@ -53,11 +59,15 @@ const CREATE_BURD_PUZZLE_MUTATION = gql`
     }
   }
 `
-
+// Set as a constant in case we need to change this string value later on
 const stepsArrayName = 'steps'
 
+// New puzzles start with no steps in an empty array
 const startingSteps: Step[] = []
 
+// The type definitions below are used in the Step component that follows
+// They do not get used in the PuzzleForm component further down as it has
+// its own type definition above it
 type StepType =
   | 'SIMPLE_TEXT'
   | 'NFT_CHECK'
@@ -123,19 +133,20 @@ type StepOriumApi = Step & {
   checkType: OriumCheckType
 }
 
-// Bloom says to look into react-hook-forms "field validators" and use those,
-// Using this default: <FieldError /> from react-hook-form creates cryptic (for
-// user) error messages like this one: "steps.1.failMessage is required"
+// Using the default: <FieldError /> field validator from react-hook-form creates
+// cryptic (for the user) error messages like this: "steps.1.failMessage is required"
+// because the default field validator is not configured for nested arrays of objects
 // thus we have a custom error message function instead so as to not confuse users.
 // NOTE: this is in parent scope & is used in both the 'Puzzle' and 'Step' forms
 function requiredFieldError(fieldName: string) {
   return (
-    <div className="rw-field-error">
+    <div className="ik-field-error">
       I&apos;m sorry, but {fieldName} is required!
     </div>
   )
 }
 
+// This is the component that renders each step in the form
 function Step({
   index,
   register,
@@ -157,6 +168,7 @@ function Step({
   // Watch for select val changing
   const stepTypeVal = watch(`${stepsArrayName}.${index}.type`)
 
+  // This is a custom hook that sets the default values for each step
   useEffect(() => {
     const commonStepFields = {
       failMessage: getValues(`${stepsArrayName}.${index}.failMessage`),
@@ -223,11 +235,11 @@ function Step({
   ]
 
   return (
-    <fieldset className="text-stone-100">
+    <fieldset className="ik-child-form">
       <Label
         name={`failMesssage.${index}`}
-        className="rw-label text-stone-100"
-        errorClassName="rw-label rw-label-error"
+        className="ik-label"
+        errorClassName="ik-label ik-label-error"
       >
         Fail Message
       </Label>
@@ -262,7 +274,6 @@ function Step({
       />
       {errors[stepsArrayName]?.[index]?.successMessage?.type === 'required' &&
         requiredFieldError('Success Message')}
-
       <Label
         name={`challenge.${index}`}
         className="rw-label text-stone-100"
@@ -278,7 +289,6 @@ function Step({
       />
       {errors[stepsArrayName]?.[index]?.challenge?.type === 'required' &&
         requiredFieldError('Challenge')}
-
       <Label
         name={`resourceLinks.${index}`}
         className="rw-label text-stone-100"
@@ -294,7 +304,6 @@ function Step({
       />
       {errors[stepsArrayName]?.[index]?.resourceLinks?.type === 'required' &&
         requiredFieldError('Resource Links')}
-
       <Label
         name={`stepSortWeight.${index}`}
         className="rw-label text-stone-100"
@@ -310,7 +319,6 @@ function Step({
       />
       {errors[stepsArrayName]?.[index]?.stepSortWeight?.type === 'required' &&
         requiredFieldError('Step Sort Weight')}
-
       <div className="text-stone-800">
         <SelectField {...register(`${stepsArrayName}.${index}.type`)}>
           <option value="UNCHOSEN">Choose a Step Type</option>
@@ -322,13 +330,11 @@ function Step({
           <option value="ORIUM_API">Orium API</option>
         </SelectField>
       </div>
-
       {stepTypeVal === 'UNCHOSEN' && (
         <h1>
           <br></br>
         </h1>
       )}
-
       {stepTypeVal === 'SIMPLE_TEXT' && (
         <div>
           <TextField
@@ -342,7 +348,6 @@ function Step({
             requiredFieldError('a solution for the simple text')} */}
         </div>
       )}
-
       {stepTypeVal === 'NFT_CHECK' && (
         <div>
           <Label
@@ -380,7 +385,6 @@ function Step({
           />
         </div>
       )}
-
       {stepTypeVal === 'FUNCTION_CALL' && (
         <div>
           <TextField
@@ -395,7 +399,6 @@ function Step({
           />
         </div>
       )}
-
       {stepTypeVal === 'COMETH_API' && (
         <div>
           <TextField
@@ -405,7 +408,6 @@ function Step({
           />
         </div>
       )}
-
       {stepTypeVal === 'TOKEN_ID_RANGE' && (
         <div>
           <TextField
@@ -435,7 +437,6 @@ function Step({
           />
         </div>
       )}
-
       {stepTypeVal === 'ORIUM_API' && (
         <div>
           <TextField
@@ -472,6 +473,8 @@ function Step({
   )
 }
 
+// This type definition is used in the PuzzleForm component below
+// It does not get used in the Step component above
 type PuzzleFormType = {
   rewardable: {
     name: CreateRewardableInput['name']
@@ -659,7 +662,7 @@ export default function PuzzleForm() {
 
     if (!slugPattern.test(slug)) {
       return (
-        <div className="rw-field-error">
+        <div className="ik-field-error">
           I&apos;m sorry, but {slug} is not a valid slug; use lowercase letters
           and/or numbers seperated by dashes
         </div>
