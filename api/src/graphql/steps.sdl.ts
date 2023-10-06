@@ -22,8 +22,8 @@ export const schema = gql`
     stepErc20Balance: StepErc20Balance
     migrateLandingRoute: String
     attempts: [Attempt]!
-    solutionHint: String!
-    defaultImage: String!
+    solutionHint: String
+    defaultImage: String
     solutionImage: String
     stepPage: [StepPage]!
     stepGuideType: StepGuideType!

@@ -3,7 +3,9 @@ import { ReactElement } from 'react'
 import { PuzzleRequirements } from 'types/graphql'
 
 import AccountIcon from 'src/components/PuzzleIcons/AccountIcon'
+import DetailIcon from 'src/components/PuzzleIcons/DetailIcon'
 import HoldersOnlyIcon from 'src/components/PuzzleIcons/HoldersOnlyIcon'
+import InteractiveObjectIcon from 'src/components/PuzzleIcons/InteractiveObjectIcon'
 import PatienceIcon from 'src/components/PuzzleIcons/PatienceIcon'
 import TravelIcon from 'src/components/PuzzleIcons/TravelIcon'
 import WalletGasIcon from 'src/components/PuzzleIcons/WalletGasIcon'
@@ -80,5 +82,27 @@ export const requirementsLookup: {
       </span>
     ),
     icon: <WordPlayIcon />,
+  },
+  DETAIL: {
+    text: 'This mission requires close inspection.',
+    labelElement: (
+      <span>
+        An Eye
+        <br />
+        for Detail
+      </span>
+    ),
+    icon: <DetailIcon />,
+  },
+  INTERACTIVE_OBJECT: {
+    text: 'This mission requires manipulating objects.',
+    labelElement: (
+      <span>
+        Interactive
+        <br />
+        Object
+      </span>
+    ),
+    icon: <InteractiveObjectIcon />,
   },
 }

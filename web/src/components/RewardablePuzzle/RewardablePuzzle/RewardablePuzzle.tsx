@@ -128,7 +128,7 @@ const Rewardable = ({ rewardable }: Props) => {
                                   {requirementsLookup[req].icon}
                                 </span>
 
-                                <span className="text-sm leading-none md:text-base">
+                                <span className="text-sm leading-none md:text-base md:leading-none">
                                   {requirementsLookup[req].labelElement}
                                 </span>
                               </button>
@@ -162,7 +162,7 @@ const Rewardable = ({ rewardable }: Props) => {
                         </div>
 
                         {currentOverlayContent && (
-                          <p className="text-sm leading-none md:text-base">
+                          <p className="text-sm leading-none md:text-base md:leading-none">
                             {
                               requirementsLookup[currentOverlayContent]
                                 .labelElement
