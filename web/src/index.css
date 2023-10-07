@@ -108,8 +108,8 @@
     @apply pl-56 text-indigo-700;
   }
 
-  /* firm field error */
-  .ik-field-error {
+  /* form field error */
+  .ik-form-field-error {
     @apply mt-1 block text-xs font-semibold uppercase text-teal-600;
   }
 
@@ -118,15 +118,61 @@
     @apply mt-6 block text-left font-semibold text-orange-600;
   } */
 
-  .ik-label {
+  .ik-form-label {
     @apply mt-6 block text-left font-semibold text-orange-600;
   }
 
-  .ik-label.ik-label-error {
+  .ik-form-label.ik-form-label-error {
     @apply text-lime-600;
   }
 
+  .ik-label.ik-label-error {
+    @apply text-amber-400;
+  }
+
   /* ----- Form stylings end here ----- */
+
+  /* Block, Element Modifiers for IK Forms start here */
+
+  .form {
+    /* styles applied to all such elements can go here */
+    /* otherwise repeditive TailwindCSS classes are used */
+    /* this exists to search & select classes to change them */
+  }
+
+  .form__label {
+    /* styles applied to all such elements can go here */
+    /* otherwise repeditive TailwindCSS classes are used */
+    /* this exists to search & select classes to change them */
+  }
+
+  .form__label--error {
+    /* styles applied to all such elements can go here */
+    /* otherwise repeditive TailwindCSS classes are used */
+    /* this exists to search & select classes to change them */
+  }
+
+  .form__text-field {
+    /* styles applied to all such elements can go here */
+    /* otherwise repeditive TailwindCSS classes are used */
+    /* this exists to search & select classes to change them */
+  }
+
+  .form__text-field:focus {
+    box-shadow: 0 0 3px 2px #8d8996;
+  }
+
+  .form__text-field::placeholder {
+    color: #8d8996;
+  }
+
+  .form__error {
+    /* styles applied to all such elements can go here */
+    /* otherwise repeditive TailwindCSS classes are used */
+    /* this exists to search & select classes to change them */
+  }
+
+  /* Block, Element Modifiers for IK Forms end here */
 
   .discordIcon:hover {
     color: #5865f2;

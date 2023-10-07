@@ -140,7 +140,7 @@ type StepOriumApi = Step & {
 // NOTE: this is in parent scope & is used in both the 'Puzzle' and 'Step' forms
 function requiredFieldError(fieldName: string) {
   return (
-    <div className="ik-field-error">
+    <div className="ik-form-field-error">
       I&apos;m sorry, but {fieldName} is required!
     </div>
   )
@@ -238,8 +238,8 @@ function Step({
     <fieldset className="ik-child-form">
       <Label
         name={`failMesssage.${index}`}
-        className="ik-label"
-        errorClassName="ik-label ik-label-error"
+        className="ik-form-label"
+        errorClassName="ik-form-label ik-form-label-error"
       >
         Fail Message
       </Label>
@@ -662,7 +662,7 @@ export default function PuzzleForm() {
 
     if (!slugPattern.test(slug)) {
       return (
-        <div className="ik-field-error">
+        <div className="ik-form-field-error">
           I&apos;m sorry, but {slug} is not a valid slug; use lowercase letters
           and/or numbers seperated by dashes
         </div>
@@ -671,167 +671,175 @@ export default function PuzzleForm() {
   }
 
   return (
-    <Form formMethods={formMethods} onSubmit={onSubmit}>
-      <FormError
-        error={error}
-        wrapperClassName="rw-form-error-wrapper"
-        titleClassName="rw-form-error-title"
-        listClassName="rw-form-error-list"
-      />
-      {process.env.NODE_ENV === 'development' && (
-        <div>
-          <div className="m-4 inline-block bg-pink-200 p-2 text-lg text-red-800">
-            Times this component has rendered: <b>{renderCount.current}</b>
-          </div>
-          <DevTool control={formMethods.control} />
-        </div>
-      )}
-      <Label
-        name="rewardable.name"
-        className="rw-label text-stone-100"
-        errorClassName="rw-label rw-label-error"
-      >
-        Name
-      </Label>
-      <TextField
-        name="rewardable.name"
-        className="block bg-inherit text-stone-100"
-        placeholder="Name"
-        validation={{ required: true }}
-      />
-      {/*
+    <div className="form max-w-2xl">
+      <div className="rounded-t-xl bg-stone-500 p-2 text-center text-3xl tracking-wide">
+        Create a new puzzle
+      </div>
+      <div className="rounded-b-xl bg-stone-300 p-8">
+        <Form formMethods={formMethods} onSubmit={onSubmit}>
+          <FormError error={error} />
+          {process.env.NODE_ENV === 'development' && (
+            <div>
+              <div className="mb-8 inline-block rounded-xl bg-rose-700 p-2 text-lg text-red-200">
+                Times this component has rendered: <b>{renderCount.current}</b>
+              </div>
+              <DevTool control={formMethods.control} />
+            </div>
+          )}
+          <Label
+            name="rewardable.name"
+            className="form__label text-2xl font-bold text-slate-700"
+            errorClassName="form__label--error text-red-500"
+          >
+            Name {/* burd left off here */}
+          </Label>
+          <TextField
+            name="rewardable.name"
+            className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            placeholder="Name"
+            validation={{ required: true }}
+          />
+          {/*
         This is the react-hook-form default but it returns this message:
           "rewardable.name is required" - but the user won't know WTF that means
         <FieldError name="rewardable.name" className="rw-field-error" />
       */}
-      {errors.rewardable?.name?.type === 'required' &&
-        requiredFieldError('a Name')}
-
-      <Label
-        name="rewardable.slug"
-        className="rw-label text-stone-100"
-        errorClassName="rw-label rw-label-error"
-      >
-        Slug
-      </Label>
-      <TextField
-        name="rewardable.slug"
-        className="block bg-inherit text-stone-100"
-        placeholder="a Slug"
-        validation={{ required: true }}
-      />
-      {errors.rewardable?.slug?.type === 'required' &&
-        requiredFieldError('Slug')}
-      {requiredSlugFormatError(formMethods.getValues('rewardable.slug'))}
-
-      <Label
-        name="rewardable.explanation"
-        className="rw-label text-stone-100"
-        errorClassName="rw-label rw-label-error"
-      >
-        Explanation
-      </Label>
-      <TextField
-        name="rewardable.explanation"
-        className="block bg-inherit text-stone-100"
-        placeholder="Explanation"
-        validation={{ required: true }}
-      />
-      {errors.rewardable?.explanation?.type === 'required' &&
-        requiredFieldError('an Explanation')}
-
-      <Label
-        name="rewardable.successMessage"
-        className="rw-label text-stone-100"
-        errorClassName="rw-label rw-label-error"
-      >
-        Success Message
-      </Label>
-      <TextField
-        name="rewardable.successMessage"
-        className="block bg-inherit text-stone-100"
-        placeholder="Success Message"
-        validation={{ required: true }}
-      />
-      {errors.rewardable?.successMessage?.type === 'required' &&
-        requiredFieldError('an Explanation')}
-
-      <Label
-        name="rewardable.orgId"
-        className="rw-label text-stone-100"
-        errorClassName="rw-label rw-label-error"
-      >
-        Org Id
-      </Label>
-      <TextField
-        name="rewardable.orgId"
-        className="block bg-inherit text-stone-100"
-        // TODO: Currently this is hardwired to IK's Org ID, but it needs
-        // to eventually say something like this for version 1.0:
-        // if (currentUser.organizations?.id.includes('cla9yay7y003k08la2z4j2xrv')) {
-        //   defaultValue={'cla9yay7y003k08la2z4j2xrv'}
-        // } else { defaultValue={''} }
-        defaultValue={'cla9yay7y003k08la2z4j2xrv'}
-        validation={{ required: true }}
-      />
-      {errors.rewardable?.successMessage?.type === 'required' &&
-        requiredFieldError('an Organizational ID')}
-
-      <Label
-        name="rewardable.listPublicly"
-        className="rw-label text-stone-100"
-        errorClassName="rw-label rw-label-error"
-      >
-        List Publicly
-      </Label>
-      <CheckboxField
-        name="rewardable.listPublicly"
-        className="block bg-inherit text-stone-100"
-      />
-      <h1 className="mt-8">Steps go below this line _______________</h1>
-
-      {fields.map((field, index) => (
-        <Step
-          index={index}
-          register={formMethods.register}
-          key={field.id}
-          watch={formMethods.watch}
-          setValue={formMethods.setValue}
-          getValues={formMethods.getValues}
-          remove={remove}
-          errors={errors}
-        />
-      ))}
-
-      <div className="rw-button-group">
-        <button
-          type="button"
-          className="rw-button rw-button-blue"
-          onClick={() =>
-            append({
-              type: 'UNCHOSEN',
-              failMessage: '',
-              successMessage: '',
-              challenge: '',
-              resourceLinks: '',
-              stepSortWeight: '',
-            })
-          }
-        >
-          Add Step
-        </button>
+          {errors.rewardable?.name?.type === 'required' &&
+            requiredFieldError('a Name')}
+          <Label
+            name="rewardable.slug"
+            className="rw-label text-stone-100"
+            errorClassName="rw-label rw-label-error"
+          >
+            Slug
+          </Label>
+          <TextField
+            name="rewardable.slug"
+            className="block bg-inherit text-stone-100"
+            placeholder="a Slug"
+            validation={{ required: true }}
+          />
+          {/*
+        This is the react-hook-form default but it returns this message:
+          "rewardable.name is required" - but the user won't know WTF that means
+        <FieldError name="rewardable.name" className="rw-field-error" />
+      */}
+          {errors.rewardable?.slug?.type === 'required' &&
+            requiredFieldError('Slug')}
+          {requiredSlugFormatError(formMethods.getValues('rewardable.slug'))}
+          <Label
+            name="rewardable.explanation"
+            className="rw-label text-stone-100"
+            errorClassName="rw-label rw-label-error"
+          >
+            Explanation
+          </Label>
+          <TextField
+            name="rewardable.explanation"
+            className="block bg-inherit text-stone-100"
+            placeholder="Explanation"
+            validation={{ required: true }}
+          />
+          {/*
+        This is the react-hook-form default but it returns this message:
+          "rewardable.name is required" - but the user won't know WTF that means
+        <FieldError name="rewardable.explanation" className="rw-field-error" />
+      */}
+          {errors.rewardable?.explanation?.type === 'required' &&
+            requiredFieldError('an Explanation')}
+          <Label
+            name="rewardable.successMessage"
+            className="rw-label text-stone-100"
+            errorClassName="rw-label rw-label-error"
+          >
+            Success Message
+          </Label>
+          <TextField
+            name="rewardable.successMessage"
+            className="block bg-inherit text-stone-100"
+            placeholder="Success Message"
+            validation={{ required: true }}
+          />
+          {/*
+        This is the react-hook-form default but it returns this message:
+          "rewardable.name is required" - but the user won't know WTF that means
+        <FieldError name="rewardable.successMessage" className="rw-field-error" />
+      */}
+          {errors.rewardable?.successMessage?.type === 'required' &&
+            requiredFieldError('an Explanation')}
+          <Label
+            name="rewardable.orgId"
+            className="rw-label text-stone-100"
+            errorClassName="rw-label rw-label-error"
+          >
+            Org Id
+          </Label>
+          <TextField
+            name="rewardable.orgId"
+            className="block bg-inherit text-stone-100"
+            // TODO: Currently this is hardwired to IK's Org ID, but it needs
+            // to eventually say something like this for version 1.0:
+            // if (currentUser.organizations?.id.includes('cla9yay7y003k08la2z4j2xrv')) {
+            //   defaultValue={'cla9yay7y003k08la2z4j2xrv'}
+            // } else { defaultValue={''} }
+            defaultValue={'cla9yay7y003k08la2z4j2xrv'}
+            validation={{ required: true }}
+          />
+          {errors.rewardable?.successMessage?.type === 'required' &&
+            requiredFieldError('an Organizational ID')}
+          <Label
+            name="rewardable.listPublicly"
+            className="rw-label text-stone-100"
+            errorClassName="rw-label rw-label-error"
+          >
+            List Publicly
+          </Label>
+          <CheckboxField
+            name="rewardable.listPublicly"
+            className="block bg-inherit text-stone-100"
+          />
+          <h1 className="mt-8">Steps go below this line _______________</h1>
+          {fields.map((field, index) => (
+            <Step
+              index={index}
+              register={formMethods.register}
+              key={field.id}
+              watch={formMethods.watch}
+              setValue={formMethods.setValue}
+              getValues={formMethods.getValues}
+              remove={remove}
+              errors={errors}
+            />
+          ))}
+          <div className="rw-button-group">
+            <button
+              type="button"
+              className="rw-button rw-button-blue"
+              onClick={() =>
+                append({
+                  type: 'UNCHOSEN',
+                  failMessage: '',
+                  successMessage: '',
+                  challenge: '',
+                  resourceLinks: '',
+                  stepSortWeight: '',
+                })
+              }
+            >
+              Add Step
+            </button>
+          </div>
+          {/* Conditionally render the error message */}
+          {hasNoSteps && (
+            <div className="rw-field-error">
+              You must have at least one step in a puzzle!
+            </div>
+          )}
+          <Submit disabled={loading} className="rw-button rw-button-blue">
+            Submit
+          </Submit>
+        </Form>
       </div>
-
-      {/* Conditionally render the error message */}
-      {hasNoSteps && (
-        <div className="rw-field-error">
-          You must have at least one step in a puzzle!
-        </div>
-      )}
-
-      <Submit disabled={loading} className="rw-button rw-button-blue">
-        Submit
-      </Submit>
-    </Form>
+    </div>
   )
 }
