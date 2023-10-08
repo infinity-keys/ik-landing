@@ -140,7 +140,7 @@ type StepOriumApi = Step & {
 // NOTE: this is in parent scope & is used in both the 'Puzzle' and 'Step' forms
 function requiredFieldError(fieldName: string) {
   return (
-    <div className="ik-form-field-error">
+    <div className="form__error pt-1 font-medium text-rose-800">
       I&apos;m sorry, but {fieldName} is required!
     </div>
   )
@@ -686,118 +686,116 @@ export default function PuzzleForm() {
               <DevTool control={formMethods.control} />
             </div>
           )}
-          <Label
-            name="rewardable.name"
-            className="form__label text-2xl font-bold text-slate-700"
-            errorClassName="form__label--error text-red-500"
-          >
-            Name {/* burd left off here */}
-          </Label>
-          <TextField
-            name="rewardable.name"
-            className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
-            placeholder="Name"
-            validation={{ required: true }}
-          />
-          {/*
-        This is the react-hook-form default but it returns this message:
-          "rewardable.name is required" - but the user won't know WTF that means
-        <FieldError name="rewardable.name" className="rw-field-error" />
-      */}
-          {errors.rewardable?.name?.type === 'required' &&
-            requiredFieldError('a Name')}
-          <Label
-            name="rewardable.slug"
-            className="rw-label text-stone-100"
-            errorClassName="rw-label rw-label-error"
-          >
-            Slug
-          </Label>
-          <TextField
-            name="rewardable.slug"
-            className="block bg-inherit text-stone-100"
-            placeholder="a Slug"
-            validation={{ required: true }}
-          />
-          {/*
-        This is the react-hook-form default but it returns this message:
-          "rewardable.name is required" - but the user won't know WTF that means
-        <FieldError name="rewardable.name" className="rw-field-error" />
-      */}
-          {errors.rewardable?.slug?.type === 'required' &&
-            requiredFieldError('Slug')}
-          {requiredSlugFormatError(formMethods.getValues('rewardable.slug'))}
-          <Label
-            name="rewardable.explanation"
-            className="rw-label text-stone-100"
-            errorClassName="rw-label rw-label-error"
-          >
-            Explanation
-          </Label>
-          <TextField
-            name="rewardable.explanation"
-            className="block bg-inherit text-stone-100"
-            placeholder="Explanation"
-            validation={{ required: true }}
-          />
-          {/*
-        This is the react-hook-form default but it returns this message:
-          "rewardable.name is required" - but the user won't know WTF that means
-        <FieldError name="rewardable.explanation" className="rw-field-error" />
-      */}
-          {errors.rewardable?.explanation?.type === 'required' &&
-            requiredFieldError('an Explanation')}
-          <Label
-            name="rewardable.successMessage"
-            className="rw-label text-stone-100"
-            errorClassName="rw-label rw-label-error"
-          >
-            Success Message
-          </Label>
-          <TextField
-            name="rewardable.successMessage"
-            className="block bg-inherit text-stone-100"
-            placeholder="Success Message"
-            validation={{ required: true }}
-          />
-          {/*
-        This is the react-hook-form default but it returns this message:
-          "rewardable.name is required" - but the user won't know WTF that means
-        <FieldError name="rewardable.successMessage" className="rw-field-error" />
-      */}
-          {errors.rewardable?.successMessage?.type === 'required' &&
-            requiredFieldError('an Explanation')}
-          <Label
-            name="rewardable.orgId"
-            className="rw-label text-stone-100"
-            errorClassName="rw-label rw-label-error"
-          >
-            Org Id
-          </Label>
-          <TextField
-            name="rewardable.orgId"
-            className="block bg-inherit text-stone-100"
-            // TODO: Currently this is hardwired to IK's Org ID, but it needs
-            // to eventually say something like this for version 1.0:
-            // if (currentUser.organizations?.id.includes('cla9yay7y003k08la2z4j2xrv')) {
-            //   defaultValue={'cla9yay7y003k08la2z4j2xrv'}
-            // } else { defaultValue={''} }
-            defaultValue={'cla9yay7y003k08la2z4j2xrv'}
-            validation={{ required: true }}
-          />
-          {errors.rewardable?.successMessage?.type === 'required' &&
-            requiredFieldError('an Organizational ID')}
-          <Label
-            name="rewardable.listPublicly"
-            className="rw-label text-stone-100"
-            errorClassName="rw-label rw-label-error"
-          >
-            List Publicly
-          </Label>
-          <CheckboxField
-            name="rewardable.listPublicly"
-            className="block bg-inherit text-stone-100"
-          />
+          <div id="name" className="form__entry mb-12">
+            <Label
+              name="rewardable.name"
+              className="form__label text-2xl font-bold text-slate-700"
+              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Name</div>
+            </Label>
+            <TextField
+              name="rewardable.name"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              placeholder="Name"
+              validation={{ required: true }}
+            />
+            {/*
+              This is the react-hook-form default but it returns this message:
+              "rewardable.name is required" - but the user won't know WTF that means
+              <FieldError name="rewardable.name" className="rw-field-error" />
+            */}
+            {errors.rewardable?.name?.type === 'required' &&
+              requiredFieldError('a Name')}
+          </div>
+          <div id="slug" className="form__entry mb-12">
+            <Label
+              name="rewardable.slug"
+              className="form__label text-2xl font-bold text-slate-700"
+              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Slug</div>
+            </Label>
+            <TextField
+              name="rewardable.slug"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              placeholder="a Slug"
+              validation={{ required: true }}
+            />
+            {errors.rewardable?.slug?.type === 'required' &&
+              requiredFieldError('a Slug')}
+            {requiredSlugFormatError(formMethods.getValues('rewardable.slug'))}
+          </div>
+          <div id="explanation" className="form__entry mb-12">
+            <Label
+              name="rewardable.explanation"
+              className="form__label text-2xl font-bold text-slate-700"
+              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Explanation</div>
+            </Label>
+            <TextField
+              name="rewardable.explanation"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              placeholder="Explanation"
+              validation={{ required: true }}
+            />
+            {errors.rewardable?.explanation?.type === 'required' &&
+              requiredFieldError('an Explanation')}
+          </div>
+          <div id="success__message" className="form__entry mb-12">
+            <Label
+              name="rewardable.successMessage"
+              className="form__label text-2xl font-bold text-slate-700"
+              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Success Message</div>
+            </Label>
+            <TextField
+              name="rewardable.successMessage"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              placeholder="Success Message"
+              validation={{ required: true }}
+            />
+            {errors.rewardable?.successMessage?.type === 'required' &&
+              requiredFieldError('a Success Message')}
+          </div>
+          <div id="org__id" className="form__entry mb-12">
+            <Label
+              name="rewardable.orgId"
+              className="form__label text-2xl font-bold text-slate-700"
+              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Org Id</div>
+            </Label>
+            <TextField
+              name="rewardable.orgId"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              // TODO: Currently this is hardwired to IK's Org ID, but it needs
+              // to eventually say something like this for version 1.0:
+              // if (currentUser.organizations?.id.includes('cla9yay7y003k08la2z4j2xrv')) {
+              //   defaultValue={'cla9yay7y003k08la2z4j2xrv'}
+              // } else { defaultValue={''} }
+              defaultValue={'cla9yay7y003k08la2z4j2xrv'}
+              // validation={{ required: true }}
+            />
+            {/* {errors.rewardable?.orgId?.type === 'required' &&
+              requiredFieldError('an Organizational ID')} */}
+          </div>
+          <div id="list__publicaly" className="form__entry mb-12">
+            <Label
+              name="rewardable.listPublicly"
+              className="form__label text-2xl font-bold text-slate-700"
+              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              List Publicly
+            </Label>
+
+            <CheckboxField
+              name="rewardable.listPublicly"
+              className="form__text-field box-border block bg-stone-200 text-slate-700"
+            />
+          </div>
           <h1 className="mt-8">Steps go below this line _______________</h1>
           {fields.map((field, index) => (
             <Step
