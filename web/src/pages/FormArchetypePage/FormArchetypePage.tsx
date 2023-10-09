@@ -235,23 +235,29 @@ function Step({
   ]
 
   return (
-    <fieldset className="ik-child-form">
-      <Label
-        name={`failMesssage.${index}`}
-        className="ik-form-label"
-        errorClassName="ik-form-label ik-form-label-error"
-      >
-        Fail Message
-      </Label>
-      <TextField
-        placeholder="Fail Message"
-        {...register(`${stepsArrayName}.${index}.failMessage`)}
-        className="block bg-inherit text-stone-100"
-        validation={{ required: true }}
-      />
-      {errors[stepsArrayName]?.[index]?.failMessage?.type === 'required' &&
-        requiredFieldError('Fail Message')}
-      {/*
+    <fieldset className="ik-child-form mb-8 rounded-lg border-2 border-gray-500 bg-zinc-100 p-4">
+      <div className="form__label text-center text-4xl font-extrabold tracking-widest text-slate-700">
+        Step {index + 1}
+      </div>
+      <div id="step-fail-message" className="form__entry mb-12">
+        <Label
+          name={`failMesssage.${index}`}
+          className="form__label text-2xl font-bold text-slate-700"
+          // this errorClassName is not working for the <Step /> component...
+          // ...only the <Puzzle /> component, possibly because the former is nested
+          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+        >
+          <div className="form__entry-name mb-1">Fail Message</div>
+        </Label>
+        <TextField
+          placeholder="Fail Message"
+          {...register(`${stepsArrayName}.${index}.failMessage`)}
+          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+          validation={{ required: true }}
+        />
+        {errors[stepsArrayName]?.[index]?.failMessage?.type === 'required' &&
+          requiredFieldError('Fail Message')}
+        {/*
         This is the react-hook-form default but it returns this message:
           "steps.1.failMessage is required" - but the user won't know WTF that means
         <FieldError
@@ -259,67 +265,84 @@ function Step({
           className="rw-field-error"
         />
       */}
-      <Label
-        name={`successMessage.${index}`}
-        className="rw-label text-stone-100"
-        errorClassName="rw-label rw-label-error"
-      >
-        Success Message
-      </Label>
-      <TextField
-        placeholder="Success Message"
-        {...register(`${stepsArrayName}.${index}.successMessage`)}
-        className="block bg-inherit text-stone-100"
-        validation={{ required: true }}
-      />
-      {errors[stepsArrayName]?.[index]?.successMessage?.type === 'required' &&
-        requiredFieldError('Success Message')}
-      <Label
-        name={`challenge.${index}`}
-        className="rw-label text-stone-100"
-        errorClassName="rw-label rw-label-error"
-      >
-        Challenge
-      </Label>
-      <TextField
-        placeholder="Challenge"
-        {...register(`${stepsArrayName}.${index}.challenge`)}
-        className="block bg-inherit text-stone-100"
-        validation={{ required: true }}
-      />
-      {errors[stepsArrayName]?.[index]?.challenge?.type === 'required' &&
-        requiredFieldError('Challenge')}
-      <Label
-        name={`resourceLinks.${index}`}
-        className="rw-label text-stone-100"
-        errorClassName="rw-label rw-label-error"
-      >
-        Resource Links
-      </Label>
-      <TextField
-        placeholder="Challenge"
-        {...register(`${stepsArrayName}.${index}.resourceLinks`)}
-        className="block bg-inherit text-stone-100"
-        validation={{ required: true }}
-      />
-      {errors[stepsArrayName]?.[index]?.resourceLinks?.type === 'required' &&
-        requiredFieldError('Resource Links')}
-      <Label
-        name={`stepSortWeight.${index}`}
-        className="rw-label text-stone-100"
-        errorClassName="rw-label rw-label-error"
-      >
-        Step Sort Weight
-      </Label>
-      <NumberField
-        placeholder="Challenge"
-        {...register(`${stepsArrayName}.${index}.stepSortWeight`)}
-        className="block bg-inherit text-stone-100"
-        validation={{ required: true }}
-      />
-      {errors[stepsArrayName]?.[index]?.stepSortWeight?.type === 'required' &&
-        requiredFieldError('Step Sort Weight')}
-      <div className="text-stone-800">
+      </div>
+      <div id="step-success-message" className="form__entry mb-12">
+        <Label
+          name={`successMessage.${index}`}
+          className="form__label text-2xl font-bold text-slate-700"
+          // this errorClassName is not working for the <Step /> component...
+          // ...only the <Puzzle /> component, possibly because the former is nested
+          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+        >
+          <div className="form__entry-name mb-1">Success Message</div>
+        </Label>
+        <TextField
+          placeholder="Success Message"
+          {...register(`${stepsArrayName}.${index}.successMessage`)}
+          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+          validation={{ required: true }}
+        />
+        {errors[stepsArrayName]?.[index]?.successMessage?.type === 'required' &&
+          requiredFieldError('Success Message')}
+      </div>
+      <div id="step-challenge" className="form__entry mb-12">
+        <Label
+          name={`challenge.${index}`}
+          className="form__label text-2xl font-bold text-slate-700"
+          // this errorClassName is not working for the <Step /> component...
+          // ...only the <Puzzle /> component, possibly because the former is nested
+          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+        >
+          <div className="form__entry-name mb-1">Challenge</div>
+        </Label>
+        <TextField
+          placeholder="Challenge"
+          {...register(`${stepsArrayName}.${index}.challenge`)}
+          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+          validation={{ required: true }}
+        />
+        {errors[stepsArrayName]?.[index]?.challenge?.type === 'required' &&
+          requiredFieldError('Challenge')}
+      </div>
+      <div id="step-resource-links" className="form__entry mb-12">
+        <Label
+          name={`resourceLinks.${index}`}
+          className="form__label text-2xl font-bold text-slate-700"
+          // this errorClassName is not working for the <Step /> component...
+          // ...only the <Puzzle /> component, possibly because the former is nested
+          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+        >
+          <div className="form__entry-name mb-1">Resource Links</div>
+        </Label>
+        <TextField
+          placeholder="Resource Links"
+          {...register(`${stepsArrayName}.${index}.resourceLinks`)}
+          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+          validation={{ required: true }}
+        />
+        {errors[stepsArrayName]?.[index]?.resourceLinks?.type === 'required' &&
+          requiredFieldError('Resource Links')}
+      </div>
+      <div id="step-fail-message" className="form__entry mb-12">
+        <Label
+          name={`stepSortWeight.${index}`}
+          className="form__label text-2xl font-bold text-slate-700"
+          // this errorClassName is not working for the <Step /> component...
+          // ...only the <Puzzle /> component, possibly because the former is nested
+          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+        >
+          <div className="form__entry-name mb-1">Step Sort Weight</div>
+        </Label>
+        <NumberField
+          placeholder="Challenge"
+          {...register(`${stepsArrayName}.${index}.stepSortWeight`)}
+          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+          validation={{ required: true }}
+        />
+        {errors[stepsArrayName]?.[index]?.stepSortWeight?.type === 'required' &&
+          requiredFieldError('Step Sort Weight')}
+      </div>
+      <div className="my-8 text-stone-800">
         <SelectField {...register(`${stepsArrayName}.${index}.type`)}>
           <option value="UNCHOSEN">Choose a Step Type</option>
           <option value="SIMPLE_TEXT">Simple Text</option>
@@ -336,123 +359,283 @@ function Step({
         </h1>
       )}
       {stepTypeVal === 'SIMPLE_TEXT' && (
-        <div>
-          <TextField
-            placeholder="Solution"
-            {...register(`${stepsArrayName}.${index}.solution`)}
-            className="block bg-inherit text-stone-100"
-            validation={{ required: true }}
-          />
-          {/* // left off here; this error message works, but it has a linting error */}
-          {/* {errors[stepsArrayName]?.[index]?.solution?.type === 'required' &&
+        <div className="step__type">
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Simple Text</div>
+            </Label>
+            <TextField
+              placeholder="Simple Text"
+              {...register(`${stepsArrayName}.${index}.solution`)}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              validation={{ required: true }}
+            />
+            {/* // left off here; this error message works, but it has a linting error */}
+            {/* {errors[stepsArrayName]?.[index]?.solution?.type === 'required' &&
             requiredFieldError('a solution for the simple text')} */}
+          </div>
         </div>
       )}
       {stepTypeVal === 'NFT_CHECK' && (
-        <div>
-          <Label
-            name="requireAllNfts"
-            className="rw-label text-stone-100"
-            errorClassName="rw-label rw-label-error"
-          >
-            Require All NFTs
-          </Label>
-          <CheckboxField
-            {...register(`${stepsArrayName}.${index}.requireAllNfts`)}
-            className="block bg-inherit text-stone-100"
-          />
-          <TextField
-            placeholder="Contract Address"
-            {...register(
-              `${stepsArrayName}.${index}.nftCheckData.contractAddress`
-            )}
-            className="block bg-inherit text-stone-100"
-          />
-          <TextField
-            placeholder="Chain Id"
-            {...register(`${stepsArrayName}.${index}.nftCheckData.chainId`)}
-            className="block bg-inherit text-stone-100"
-          />
-          <TextField
-            placeholder="Token Id"
-            {...register(`${stepsArrayName}.${index}.nftCheckData.tokenId`)}
-            className="block bg-inherit text-stone-100"
-          />
-          <TextField
-            placeholder="POAP Event Id"
-            {...register(`${stepsArrayName}.${index}.nftCheckData.poapEventId`)}
-            className="block bg-inherit text-stone-100"
-          />
+        <div className="step__type">
+          <div className="form__entry mb-12">
+            <Label
+              name="requireAllNfts"
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Require All NFTs</div>
+            </Label>
+            <CheckboxField
+              {...register(`${stepsArrayName}.${index}.requireAllNfts`)}
+              className="form__text-field mt-1 mb-10 box-border block bg-stone-200 text-slate-700"
+            />
+          </div>
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Contract Address</div>
+            </Label>
+            <TextField
+              placeholder="Contract Address"
+              {...register(
+                `${stepsArrayName}.${index}.nftCheckData.contractAddress`
+              )}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            />
+          </div>
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Chain Id</div>
+            </Label>
+            <TextField
+              placeholder="Chain Id"
+              {...register(`${stepsArrayName}.${index}.nftCheckData.chainId`)}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            />
+          </div>
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Token Id</div>
+            </Label>
+            <TextField
+              placeholder="Token Id"
+              {...register(`${stepsArrayName}.${index}.nftCheckData.tokenId`)}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            />
+          </div>
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">POAP Event Id</div>
+            </Label>
+            <TextField
+              placeholder="POAP Event Id"
+              {...register(
+                `${stepsArrayName}.${index}.nftCheckData.poapEventId`
+              )}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            />
+          </div>
         </div>
       )}
       {stepTypeVal === 'FUNCTION_CALL' && (
-        <div>
-          <TextField
-            placeholder="Method Ids"
-            {...register(`${stepsArrayName}.${index}.methodIds`)}
-            className="block bg-inherit text-stone-100"
-          />
-          <TextField
-            placeholder="Contract Address"
-            {...register(`${stepsArrayName}.${index}.contractAddress`)}
-            className="block bg-inherit text-stone-100"
-          />
+        <div className="step__type">
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Method Ids</div>
+            </Label>
+            <TextField
+              placeholder="Method Ids"
+              {...register(`${stepsArrayName}.${index}.methodIds`)}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            />
+          </div>
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Contract Address</div>
+            </Label>
+            <TextField
+              placeholder="Contract Address"
+              {...register(`${stepsArrayName}.${index}.contractAddress`)}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            />
+          </div>
         </div>
       )}
       {stepTypeVal === 'COMETH_API' && (
-        <div>
-          <TextField
-            placeholder="Step Id"
-            {...register(`${stepsArrayName}.${index}.stepId`)}
-            className="block bg-inherit text-stone-100"
-          />
+        <div className="step__type">
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Step Id</div>
+            </Label>
+            <TextField
+              placeholder="Step Id"
+              {...register(`${stepsArrayName}.${index}.stepId`)}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            />
+          </div>
         </div>
       )}
       {stepTypeVal === 'TOKEN_ID_RANGE' && (
-        <div>
-          <TextField
-            placeholder="Step Id"
-            {...register(`${stepsArrayName}.${index}.stepId`)}
-            className="block bg-inherit text-stone-100"
-          />
-          <TextField
-            placeholder="Contract Address"
-            {...register(`${stepsArrayName}.${index}.contractAddress`)}
-            className="block bg-inherit text-stone-100"
-          />
-          <TextField
-            placeholder="Chain Id"
-            {...register(`${stepsArrayName}.${index}.chainId`)}
-            className="block bg-inherit text-stone-100"
-          />
-          <TextField
-            placeholder="Start Ids"
-            {...register(`${stepsArrayName}.${index}.startIds`)}
-            className="block bg-inherit text-stone-100"
-          />
-          <TextField
-            placeholder="End Ids"
-            {...register(`${stepsArrayName}.${index}.endIds`)}
-            className="block bg-inherit text-stone-100"
-          />
+        <div className="step__type">
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Step Id</div>
+            </Label>
+            <TextField
+              placeholder="Step Id"
+              {...register(`${stepsArrayName}.${index}.stepId`)}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            />
+          </div>
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Contract Address</div>
+            </Label>
+            <TextField
+              placeholder="Contract Address"
+              {...register(`${stepsArrayName}.${index}.contractAddress`)}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            />
+          </div>
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Chain Id</div>
+            </Label>
+            <TextField
+              placeholder="Chain Id"
+              {...register(`${stepsArrayName}.${index}.chainId`)}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            />
+          </div>
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Start Ids</div>
+            </Label>
+            <TextField
+              placeholder="Start Ids"
+              {...register(`${stepsArrayName}.${index}.startIds`)}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            />
+          </div>
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">End Ids</div>
+            </Label>
+            <TextField
+              placeholder="End Ids"
+              {...register(`${stepsArrayName}.${index}.endIds`)}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            />
+          </div>
         </div>
       )}
       {stepTypeVal === 'ORIUM_API' && (
-        <div>
-          <TextField
-            placeholder="Step Id"
-            {...register(`${stepsArrayName}.${index}.stepId`)}
-            className="block bg-inherit text-stone-100"
-          />
+        <div className="step__type">
+          <div className="form__entry mb-12">
+            <Label
+              name={stepTypeVal}
+              className="form__label text-2xl font-bold text-slate-700"
+              // this errorClassName is not working for the <Step /> component...
+              // ...only the <Puzzle /> component, possibly because the former is nested
+              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Step Id</div>
+            </Label>
+            <TextField
+              placeholder="Step Id"
+              {...register(`${stepsArrayName}.${index}.stepId`)}
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+            />
+          </div>
           <label
             htmlFor={`${stepsArrayName}.${index}.checkType`}
-            className="rw-label text-stone-100"
+            className="form__label text-2xl font-bold text-slate-700"
           >
-            Check Type
+            <div className="form__entry-name mb-1">Check Type</div>
           </label>
           <SelectField
             name={`${stepsArrayName}.${index}.checkType`}
-            className="block bg-inherit text-stone-100"
+            className="block bg-inherit font-semibold text-stone-700"
           >
             {oriumCheckTypeOptions.map((option) => (
               <option key={option} value={option}>
@@ -462,13 +645,15 @@ function Step({
           </SelectField>
         </div>
       )}
-      <button
-        type="button"
-        className="rw-button rw-button-red"
-        onClick={() => remove(index)}
-      >
-        Delete this Step
-      </button>
+      <div className="mt-16 flex justify-center">
+        <button
+          type="button"
+          className="rw-button rw-button-red"
+          onClick={() => remove(index)}
+        >
+          Delete this Step
+        </button>
+      </div>
     </fieldset>
   )
 }
@@ -671,7 +856,7 @@ export default function PuzzleForm() {
   }
 
   return (
-    <div className="form max-w-2xl">
+    <div className="form my-11 max-w-2xl">
       <div className="rounded-t-xl bg-stone-500 p-2 text-center text-3xl tracking-wide">
         Create a new puzzle
       </div>
@@ -686,7 +871,7 @@ export default function PuzzleForm() {
               <DevTool control={formMethods.control} />
             </div>
           )}
-          <div id="name" className="form__entry mb-12">
+          <div id="puzzle-name" className="form__entry mb-12">
             <Label
               name="rewardable.name"
               className="form__label text-2xl font-bold text-slate-700"
@@ -708,7 +893,7 @@ export default function PuzzleForm() {
             {errors.rewardable?.name?.type === 'required' &&
               requiredFieldError('a Name')}
           </div>
-          <div id="slug" className="form__entry mb-12">
+          <div id="puzzle-slug" className="form__entry mb-12">
             <Label
               name="rewardable.slug"
               className="form__label text-2xl font-bold text-slate-700"
@@ -743,7 +928,7 @@ export default function PuzzleForm() {
             {errors.rewardable?.explanation?.type === 'required' &&
               requiredFieldError('an Explanation')}
           </div>
-          <div id="success__message" className="form__entry mb-12">
+          <div id="puzzle-success-message" className="form__entry mb-12">
             <Label
               name="rewardable.successMessage"
               className="form__label text-2xl font-bold text-slate-700"
@@ -760,7 +945,7 @@ export default function PuzzleForm() {
             {errors.rewardable?.successMessage?.type === 'required' &&
               requiredFieldError('a Success Message')}
           </div>
-          <div id="org__id" className="form__entry mb-12">
+          <div id="puzzle-org-id" className="form__entry mb-12">
             <Label
               name="rewardable.orgId"
               className="form__label text-2xl font-bold text-slate-700"
@@ -782,7 +967,7 @@ export default function PuzzleForm() {
             {/* {errors.rewardable?.orgId?.type === 'required' &&
               requiredFieldError('an Organizational ID')} */}
           </div>
-          <div id="list__publicaly" className="form__entry mb-12">
+          <div id="puzzle-list-publicaly" className="form__entry mb-12">
             <Label
               name="rewardable.listPublicly"
               className="form__label text-2xl font-bold text-slate-700"
@@ -796,7 +981,7 @@ export default function PuzzleForm() {
               className="form__text-field box-border block bg-stone-200 text-slate-700"
             />
           </div>
-          <h1 className="mt-8">Steps go below this line _______________</h1>
+
           {fields.map((field, index) => (
             <Step
               index={index}
