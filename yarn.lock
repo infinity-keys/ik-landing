@@ -9217,6 +9217,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@snickerdoodlelabs/objects@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@snickerdoodlelabs/objects@npm:1.1.2"
+  dependencies:
+    ethers: ^5.6.6
+    neverthrow: ^5.1.0
+    rxjs: ^7.5.5
+    ts-brand: ^0.0.2
+    utility-types: ^3.10.0
+  checksum: cda7726d519a94e1897ae90deca94d62bdf2e58c1ce6494373e45cbf7a50b1f53acc259d046e75d9ac4e8b27802a5ee6775d24b57a18f176cb36b6bbdabccd86
+  languageName: node
+  linkType: hard
+
 "@snickerdoodlelabs/utils@npm:^1.0.0":
   version: 1.0.0
   resolution: "@snickerdoodlelabs/utils@npm:1.0.0"
@@ -34396,6 +34409,7 @@ __metadata:
     "@redwoodjs/router": 6.1.0
     "@redwoodjs/vite": 6.1.0
     "@redwoodjs/web": 6.1.0
+    "@snickerdoodlelabs/objects": ^1.1.2
     "@snickerdoodlelabs/web-integration": ^1.1.0
     "@tailwindcss/forms": ^0.5.3
     "@types/gtag.js": ^0.0.12
