@@ -19,6 +19,7 @@ import AllContextProviders from 'src/providers'
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
+      <Route path="/snickerdoodle" page={SnickerdoodlePage} name="snickerdoodle" />
       <Set wrap={AllContextProviders}>
         {/* <Route path="/" page={UnderConstructionPage} name="underConstruction" /> */}
         {/* <Route path="/" page={HomePage} name="home" /> */}
