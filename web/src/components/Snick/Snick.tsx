@@ -19,6 +19,7 @@ const Snickerdoodle = () => {
   // This option shows how to authenticate a user account with a custom EIP-191
   // compatible message signature that your app may already be asking the user to sign
   React.useEffect(() => {
+    console.log({ isInit })
     if (!isInit && isConnected && address && data) {
       setIsInit(true)
       const webIntegration = new SnickerdoodleWebIntegration(
@@ -54,7 +55,14 @@ const Snickerdoodle = () => {
     currentUser &&
     currentUser.roles.includes('ADMIN')
   ) {
-    return <button onClick={() => signMessage()}>Personal Sign</button>
+    return (
+      <button
+        className="absolute top-24 z-50 text-white"
+        onClick={() => signMessage()}
+      >
+        Personal Sign
+      </button>
+    )
   } else if (
     isConnected &&
     isInit &&
@@ -64,7 +72,7 @@ const Snickerdoodle = () => {
     return (
       <>
         {isSuccess && (
-          <div>
+          <div className="absolute top-24 z-50 text-white">
             Signature:{' '}
             {data?.slice(0, 12) +
               '...' +
