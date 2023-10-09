@@ -54,11 +54,7 @@ const Snickerdoodle = () => {
     currentUser &&
     currentUser.roles.includes('ADMIN')
   ) {
-    return (
-      <button className="button-64" onClick={() => signMessage()}>
-        Personal Sign
-      </button>
-    )
+    return <button onClick={() => signMessage()}>Personal Sign</button>
   } else if (
     isConnected &&
     isInit &&
