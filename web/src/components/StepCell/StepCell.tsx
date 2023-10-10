@@ -8,6 +8,7 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Button from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import OldFormatMessage from 'src/components/OldFormatMessage/OldFormatMessage'
 import StepsLayout from 'src/components/StepsLayout/StepsLayout'
 
 export const QUERY = gql`
@@ -73,5 +74,9 @@ export const Success = ({
   step,
   queryResult,
 }: CellSuccessProps<FindStepBySlugQuery, FindStepBySlugQueryVariables>) => {
-  return <StepsLayout step={step} refetch={queryResult?.refetch} />
+  return step.stepPage?.length ? (
+    <StepsLayout step={step} refetch={queryResult?.refetch} />
+  ) : (
+    <OldFormatMessage />
+  )
 }

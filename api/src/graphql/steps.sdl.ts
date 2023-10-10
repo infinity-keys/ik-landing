@@ -25,8 +25,8 @@ export const schema = gql`
     solutionHint: String
     defaultImage: String
     solutionImage: String
-    stepPage: [StepPage]!
-    stepGuideType: StepGuideType!
+    stepPage: [StepPage]
+    stepGuideType: StepGuideType
     hasUserCompletedStep: Boolean
   }
 
