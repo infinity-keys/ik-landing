@@ -6,9 +6,8 @@ import type {
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import OldFormatMessage from 'src/components/OldFormatMessage/OldFormatMessage'
 import StepsLayout from 'src/components/StepsLayout/StepsLayout'
-
-import OldFormatMessage from '../OldFormatMessage/OldFormatMessage'
 
 export const QUERY = gql`
   query FindStepBySlugQuery($slug: String!, $stepNum: Int!) {

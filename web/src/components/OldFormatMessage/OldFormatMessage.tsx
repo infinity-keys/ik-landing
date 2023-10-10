@@ -23,7 +23,7 @@ const OldFormatMessage = () => {
         >
           Society Puzzle
         </Link>
-        .Or peek at our Venture Studio creation @{' '}
+        . Or peek at our Venture Studio creation @{' '}
         <a
           className="text-brand-accent-secondary underline"
           href="https://scene.infinitykeys.io/"
