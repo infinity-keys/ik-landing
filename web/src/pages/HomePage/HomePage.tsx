@@ -1,13 +1,12 @@
 import { useState } from 'react'
 
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
-import clsx from 'clsx'
-import { m as motion, Variants } from 'framer-motion'
+import Spline from '@splinetool/react-spline'
+import { Variants } from 'framer-motion'
 
 import { Link, routes } from '@redwoodjs/router'
 
 import Fade from 'src/components/Animations/Fade'
-import Scale from 'src/components/Animations/Scale'
 import BenefitCard from 'src/components/BenefitCard/BenefitCard'
 import Button from 'src/components/Button'
 import HomeContactForm from 'src/components/HomeContactForm/HomeContactForm'
@@ -15,7 +14,6 @@ import OpportunityCard from 'src/components/OpportunityCard/OpportunityCard'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import beaker from 'src/images/beaker.webp'
-import circle from 'src/images/Big-Circle.webp'
 import computer from 'src/images/computer.webp'
 import controller from 'src/images/controller.webp'
 import heroBeaker from 'src/images/hero-beaker.webp'
@@ -180,30 +178,41 @@ const HomePage = () => {
     <div>
       <Seo title="Home" />
 
-      <div className="relative mx-auto max-w-[1440px] overflow-hidden pb-16">
-        <div className="min-h-screen">
-          <Section>
-            <div className="relative z-20 mt-16 max-w-2xl">
-              <h1 className="text-shadow-lg text-3xl font-semibold lg:text-8xl">
-                <Fade inline duration={1.8} key={heroDataIndex}>
-                  {isSelected ? heroData[heroDataIndex].title : 'Infinity Keys'}
+      <div className="relative">
+        <div className="relative mx-auto max-w-[1440px] overflow-hidden pb-16">
+          <div className="min-h-screen">
+            <Section>
+              <div className="relative z-20 mt-16 max-w-2xl">
+                <h1 className="text-shadow-lg text-3xl font-semibold lg:text-8xl">
+                  <Fade inline duration={1.8} key={heroDataIndex}>
+                    {isSelected
+                      ? heroData[heroDataIndex].title
+                      : 'Infinity Keys'}
+                  </Fade>
+                </h1>
+                <Fade delay={isSelected ? 0.4 : 0.8} key={heroDataIndex}>
+                  <p
+                    className="text-shadow-lg mt-4 max-w-xs text-2xl lg:max-w-lg lg:text-4xl"
+                    data-cy="description"
+                  >
+                    {isSelected
+                      ? heroData[heroDataIndex].description
+                      : 'is a no-code creator platform for games & collecting digital keys'}
+                  </p>
                 </Fade>
-              </h1>
-              <Fade delay={isSelected ? 0.4 : 0.8} key={heroDataIndex}>
-                <p
-                  className="text-shadow-lg mt-4 max-w-xs text-2xl lg:max-w-lg lg:text-4xl"
-                  data-cy="description"
-                >
-                  {isSelected
-                    ? heroData[heroDataIndex].description
-                    : 'is a no-code creator platform for games & collecting digital keys'}
-                </p>
-              </Fade>
-            </div>
-          </Section>
+              </div>
+            </Section>
+          </div>
+        </div>
+        <div className="absolute bottom-0 right-0 top-0 w-full max-w-5xl">
+          <Spline scene="https://prod.spline.design/PLAfCk5FVS07KdX2/scene.splinecode" />
+          <Spline
+            scene="https://prod.spline.design/i0u04yRZBTL3OO5h/scene.splinecode"
+            className="absolute top-0"
+          />
         </div>
 
-        <div className="absolute bottom-24 -left-8 -right-8 z-10 mx-auto max-w-2xl lg:right-4 lg:top-32 lg:bottom-auto lg:left-auto lg:max-w-none">
+        {/* <div className="absolute bottom-24 -left-8 -right-8 z-10 mx-auto max-w-2xl lg:right-4 lg:top-32 lg:bottom-auto lg:left-auto lg:max-w-none">
           <motion.img
             src={circle}
             alt=""
@@ -307,7 +316,7 @@ const HomePage = () => {
               </button>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
 
       <section className="pt-8 md:pt-20">
