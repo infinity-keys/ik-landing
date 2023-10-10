@@ -14,7 +14,6 @@ import HomeContactForm from 'src/components/HomeContactForm/HomeContactForm'
 import OpportunityCard from 'src/components/OpportunityCard/OpportunityCard'
 import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
-import Snick from 'src/components/Snick/Snick'
 import beaker from 'src/images/beaker.webp'
 import circle from 'src/images/Big-Circle.webp'
 import computer from 'src/images/computer.webp'
@@ -310,8 +309,6 @@ const HomePage = () => {
           )}
         </div>
       </div>
-
-      <Snick />
 
       <section className="pt-8 md:pt-20">
         <div className="px-4">
