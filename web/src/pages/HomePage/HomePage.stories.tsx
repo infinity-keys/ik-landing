@@ -3,7 +3,11 @@ import type { Meta } from '@storybook/react'
 import HomePage from './HomePage'
 
 export const generated = () => {
-  return <HomePage />
+  return (
+    <div className="text-white">
+      <HomePage />
+    </div>
+  )
 }
 
 export default {
