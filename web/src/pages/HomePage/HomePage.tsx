@@ -184,22 +184,20 @@ const HomePage = () => {
             <Section>
               <div className="relative z-20 mt-16 max-w-2xl">
                 <h1 className="text-shadow-lg text-3xl font-semibold lg:text-8xl">
-                  <Fade inline duration={1.8} key={heroDataIndex}>
-                    {isSelected
-                      ? heroData[heroDataIndex].title
-                      : 'Infinity Keys'}
-                  </Fade>
+                  {/* <Fade inline duration={1.8} key={heroDataIndex}> */}
+                  {isSelected ? heroData[heroDataIndex].title : 'Infinity Keys'}
+                  {/* </Fade> */}
                 </h1>
-                <Fade delay={isSelected ? 0.4 : 0.8} key={heroDataIndex}>
-                  <p
-                    className="text-shadow-lg mt-4 max-w-xs text-2xl lg:max-w-lg lg:text-4xl"
-                    data-cy="description"
-                  >
-                    {isSelected
-                      ? heroData[heroDataIndex].description
-                      : 'is a no-code creator platform for games & collecting digital keys'}
-                  </p>
-                </Fade>
+                {/* <Fade delay={isSelected ? 0.4 : 0.8} key={heroDataIndex}> */}
+                <p
+                  className="text-shadow-lg mt-4 max-w-xs text-2xl lg:max-w-lg lg:text-4xl"
+                  data-cy="description"
+                >
+                  {isSelected
+                    ? heroData[heroDataIndex].description
+                    : 'is a no-code creator platform for games & collecting digital keys'}
+                </p>
+                {/* </Fade> */}
               </div>
             </Section>
           </div>
@@ -322,17 +320,17 @@ const HomePage = () => {
       <section className="pt-8 md:pt-20">
         <div className="px-4">
           <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
-            <Fade>
-              <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
-                How It Works
-              </h2>
-            </Fade>
-            <Fade>
-              <p className="max-w-xl text-sm lg:text-lg">
-                A net positive value loop incentives creators, sponsors, and
-                players without draining economic value from the system
-              </p>
-            </Fade>
+            {/* <Fade> */}
+            <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
+              How It Works
+            </h2>
+            {/* </Fade> */}
+            {/* <Fade> */}
+            <p className="max-w-xl text-sm lg:text-lg">
+              A net positive value loop incentives creators, sponsors, and
+              players without draining economic value from the system
+            </p>
+            {/* </Fade> */}
           </div>
         </div>
 
