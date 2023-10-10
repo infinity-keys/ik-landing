@@ -1,6 +1,6 @@
 import type { FindRewardablePuzzleBySlug } from 'types/graphql'
 
-import type { CellSuccessProps } from '@redwoodjs/web'
+import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import OldFormatMessage from 'src/components/OldFormatMessage/OldFormatMessage'
@@ -32,12 +32,16 @@ export const Loading = () => <LoadingIcon />
 
 export const Empty = () => <div>Rewardable not found</div>
 
-export const Failure = () => {
-  return <OldFormatMessage />
-}
+export const Failure = ({ error }: CellFailureProps) => (
+  <div className="rw-cell-error">{error?.message}</div>
+)
 
 export const Success = ({
   rewardable,
 }: CellSuccessProps<FindRewardablePuzzleBySlug>) => {
-  return <RewardablePuzzle rewardable={rewardable} />
+  return rewardable.puzzle?.coverImage ? (
+    <RewardablePuzzle rewardable={rewardable} />
+  ) : (
+    <OldFormatMessage />
+  )
 }

@@ -3,7 +3,7 @@ import type {
   FindStepBySlugQueryVariables,
 } from 'types/graphql'
 
-import type { CellSuccessProps } from '@redwoodjs/web'
+import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import StepsLayout from 'src/components/StepsLayout/StepsLayout'
@@ -52,13 +52,17 @@ export const Loading = () => <LoadingIcon />
 
 export const Empty = () => <div>Empty</div>
 
-export const Failure = () => {
-  return <OldFormatMessage />
-}
+export const Failure = ({ error }: CellFailureProps) => (
+  <div className="rw-cell-error">{error?.message}</div>
+)
 
 export const Success = ({
   step,
   queryResult,
 }: CellSuccessProps<FindStepBySlugQuery, FindStepBySlugQueryVariables>) => {
-  return <StepsLayout step={step} refetch={queryResult?.refetch} />
+  return step.stepPage?.length ? (
+    <StepsLayout step={step} refetch={queryResult?.refetch} />
+  ) : (
+    <OldFormatMessage />
+  )
 }
