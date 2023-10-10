@@ -205,7 +205,7 @@ const HomePage = () => {
         <div className="absolute bottom-0 right-0 top-0 w-full max-w-5xl">
           <Spline scene="https://prod.spline.design/PLAfCk5FVS07KdX2/scene.splinecode" />
           <Spline
-            scene="https://prod.spline.design/i0u04yRZBTL3OO5h/scene.splinecode"
+            scene="https://prod.spline.design/1edLAZItIIhfK7xa/scene.splinecode"
             className="absolute top-0"
           />
         </div>
