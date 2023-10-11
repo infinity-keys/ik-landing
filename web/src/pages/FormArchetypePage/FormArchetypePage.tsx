@@ -709,7 +709,7 @@ export default function PuzzleForm() {
           type: 'PUZZLE', // hard coded for now
           slug: input.rewardable.slug,
           listPublicly: input.rewardable.listPublicly,
-          orgId: 'bacnend shall handle this!', // hard coded for now
+          orgId: 'backend shall handle this!', // hard coded for now
           puzzle: {
             isAnon: false,
             rewardableId: 'ignore me',
