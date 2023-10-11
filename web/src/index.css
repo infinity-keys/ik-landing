@@ -99,25 +99,25 @@
   /* Block, Element Modifiers (BEM) for IK Forms start here */
   .form {
     /* styles applied to all such elements can go here */
-    /* otherwise repeditive TailwindCSS classes are used */
+    /* otherwise repetitive TailwindCSS classes are used */
     /* this exists to search & select classes to change them */
   }
 
   .form__label {
     /* styles applied to all such elements can go here */
-    /* otherwise repeditive TailwindCSS classes are used */
+    /* otherwise repetitive TailwindCSS classes are used */
     /* this exists to search & select classes to change them */
   }
 
   .form__label--error {
     /* styles applied to all such elements can go here */
-    /* otherwise repeditive TailwindCSS classes are used */
+    /* otherwise repetitive TailwindCSS classes are used */
     /* this exists to search & select classes to change them */
   }
 
   .form__text-field {
     /* styles applied to all such elements can go here */
-    /* otherwise repeditive TailwindCSS classes are used */
+    /* otherwise repetitive TailwindCSS classes are used */
     /* this exists to search & select classes to change them */
   }
 
@@ -128,21 +128,15 @@
     @apply border-neutral-900;
   }
 
-  .form__text-field::placeholder {
-    /* TailwindCSS cannot be used directly on */
-    /* the react-hook-form <TextField /> component */
-    @apply text-zinc-400;
-  }
-
   .form__error {
     /* styles applied to all such elements can go here */
-    /* otherwise repeditive TailwindCSS classes are used */
+    /* otherwise repetitive TailwindCSS classes are used */
     /* this exists to search & select classes to change them */
   }
 
   .form__entry-name {
     /* styles applied to all such elements can go here */
-    /* otherwise repeditive TailwindCSS classes are used */
+    /* otherwise repetitive TailwindCSS classes are used */
     /* this exists to search & select classes to change them */
   }
   /* Block, Element Modifiers (BEM) for IK Forms end here */

@@ -3,29 +3,9 @@
 
 import { useState, useRef, useEffect } from 'react'
 
-// // NOTE: This section is slated for removal /////////////////////////////////
-// provides type safety by explicitly stating the type of each hook
-// prevents linting error in conditional below but does not word in
-// production mode
-// let useEffect: typeof import('react').useEffect
-// let useRef: typeof import('react').useRef
-// let useState: typeof import('react').useState
-
-// if (process.env.NODE_ENV === 'development') {
-//   import('react').then((React) => {
-//     useEffect = React.useEffect
-//     useRef = React.useRef
-//     useState = React.useState
-
-//     // Slight delay to allow 'useRef()' to initialize, w/o it we get a warning
-//     // in the browser that says: "'useRef' is not a function."
-//     setTimeout(() => {}, 50)
-//   })
-// }
-// // NOTE: end of section slated for removal //////////////////////////////////
-
 import { DevTool } from '@hookform/devtools'
 import {
+  // StepType: can't import this because UNCHOSEN is not in the enum
   CreateRewardableInput,
   MutationcreateBurdPuzzleArgs,
   CreateBurdPuzzleMutation,
@@ -75,7 +55,7 @@ type StepType =
   | 'COMETH_API'
   | 'TOKEN_ID_RANGE'
   | 'ORIUM_API'
-  | 'UNCHOSEN'
+  | 'UNCHOSEN' // cannot import StepType from types/graphql, this is not in the enum
 
 type Step = {
   failMessage: string
@@ -252,7 +232,7 @@ function Step({
         <TextField
           placeholder="Fail Message"
           {...register(`${stepsArrayName}.${index}.failMessage`)}
-          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
           validation={{ required: true }}
         />
         {errors[stepsArrayName]?.[index]?.failMessage?.type === 'required' &&
@@ -279,7 +259,7 @@ function Step({
         <TextField
           placeholder="Success Message"
           {...register(`${stepsArrayName}.${index}.successMessage`)}
-          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
           validation={{ required: true }}
         />
         {errors[stepsArrayName]?.[index]?.successMessage?.type === 'required' &&
@@ -298,7 +278,7 @@ function Step({
         <TextField
           placeholder="Challenge"
           {...register(`${stepsArrayName}.${index}.challenge`)}
-          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
           validation={{ required: true }}
         />
         {errors[stepsArrayName]?.[index]?.challenge?.type === 'required' &&
@@ -317,7 +297,7 @@ function Step({
         <TextField
           placeholder="Resource Links"
           {...register(`${stepsArrayName}.${index}.resourceLinks`)}
-          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
           validation={{ required: true }}
         />
         {errors[stepsArrayName]?.[index]?.resourceLinks?.type === 'required' &&
@@ -336,7 +316,7 @@ function Step({
         <NumberField
           placeholder="Challenge"
           {...register(`${stepsArrayName}.${index}.stepSortWeight`)}
-          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
           validation={{ required: true }}
         />
         {errors[stepsArrayName]?.[index]?.stepSortWeight?.type === 'required' &&
@@ -373,7 +353,7 @@ function Step({
             <TextField
               placeholder="Simple Text"
               {...register(`${stepsArrayName}.${index}.solution`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               validation={{ required: true }}
             />
             {/* // left off here; this error message works, but it has a linting error */}
@@ -414,7 +394,7 @@ function Step({
               {...register(
                 `${stepsArrayName}.${index}.nftCheckData.contractAddress`
               )}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
           <div className="form__entry mb-12">
@@ -430,7 +410,7 @@ function Step({
             <TextField
               placeholder="Chain Id"
               {...register(`${stepsArrayName}.${index}.nftCheckData.chainId`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
           <div className="form__entry mb-12">
@@ -446,7 +426,7 @@ function Step({
             <TextField
               placeholder="Token Id"
               {...register(`${stepsArrayName}.${index}.nftCheckData.tokenId`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
           <div className="form__entry mb-12">
@@ -464,7 +444,7 @@ function Step({
               {...register(
                 `${stepsArrayName}.${index}.nftCheckData.poapEventId`
               )}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
         </div>
@@ -484,7 +464,7 @@ function Step({
             <TextField
               placeholder="Method Ids"
               {...register(`${stepsArrayName}.${index}.methodIds`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
           <div className="form__entry mb-12">
@@ -500,7 +480,7 @@ function Step({
             <TextField
               placeholder="Contract Address"
               {...register(`${stepsArrayName}.${index}.contractAddress`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
         </div>
@@ -520,7 +500,7 @@ function Step({
             <TextField
               placeholder="Step Id"
               {...register(`${stepsArrayName}.${index}.stepId`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
         </div>
@@ -540,7 +520,7 @@ function Step({
             <TextField
               placeholder="Step Id"
               {...register(`${stepsArrayName}.${index}.stepId`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
           <div className="form__entry mb-12">
@@ -556,7 +536,7 @@ function Step({
             <TextField
               placeholder="Contract Address"
               {...register(`${stepsArrayName}.${index}.contractAddress`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
           <div className="form__entry mb-12">
@@ -572,7 +552,7 @@ function Step({
             <TextField
               placeholder="Chain Id"
               {...register(`${stepsArrayName}.${index}.chainId`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
           <div className="form__entry mb-12">
@@ -588,7 +568,7 @@ function Step({
             <TextField
               placeholder="Start Ids"
               {...register(`${stepsArrayName}.${index}.startIds`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
           <div className="form__entry mb-12">
@@ -604,7 +584,7 @@ function Step({
             <TextField
               placeholder="End Ids"
               {...register(`${stepsArrayName}.${index}.endIds`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
         </div>
@@ -624,7 +604,7 @@ function Step({
             <TextField
               placeholder="Step Id"
               {...register(`${stepsArrayName}.${index}.stepId`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
           <label
@@ -825,15 +805,13 @@ export default function PuzzleForm() {
         },
       },
     })
-    console.log(input)
   }
 
   const [createArchetypalPuzzle, { loading, error }] = useMutation<
     CreateBurdPuzzleMutation,
     MutationcreateBurdPuzzleArgs
   >(CREATE_BURD_PUZZLE_MUTATION, {
-    onCompleted: (data) => {
-      console.log(data.createBurdPuzzle)
+    onCompleted: () => {
       alert(`Rewardable created via Burd's Form!`)
     },
     onError: (error) => {
@@ -881,7 +859,7 @@ export default function PuzzleForm() {
             </Label>
             <TextField
               name="rewardable.name"
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               placeholder="Name"
               validation={{ required: true }}
             />
@@ -903,7 +881,7 @@ export default function PuzzleForm() {
             </Label>
             <TextField
               name="rewardable.slug"
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               placeholder="a Slug"
               validation={{ required: true }}
             />
@@ -921,7 +899,7 @@ export default function PuzzleForm() {
             </Label>
             <TextField
               name="rewardable.explanation"
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               placeholder="Explanation"
               validation={{ required: true }}
             />
@@ -938,7 +916,7 @@ export default function PuzzleForm() {
             </Label>
             <TextField
               name="rewardable.successMessage"
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               placeholder="Success Message"
               validation={{ required: true }}
             />
@@ -955,7 +933,7 @@ export default function PuzzleForm() {
             </Label>
             <TextField
               name="rewardable.orgId"
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               // TODO: Currently this is hardwired to IK's Org ID, but it needs
               // to eventually say something like this for version 1.0:
               // if (currentUser.organizations?.id.includes('cla9yay7y003k08la2z4j2xrv')) {
