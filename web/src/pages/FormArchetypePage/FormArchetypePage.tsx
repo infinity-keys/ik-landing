@@ -10,6 +10,7 @@ import {
   MutationcreateBurdPuzzleArgs,
   CreateBurdPuzzleMutation,
   OriumCheckType,
+  StepType as StepTypeOriginal,
 } from 'types/graphql'
 
 import {
@@ -48,14 +49,15 @@ const startingSteps: Step[] = []
 // The type definitions below are used in the Step component that follows
 // They do not get used in the PuzzleForm component further down as it has
 // its own type definition above it
-type StepType =
-  | 'SIMPLE_TEXT'
-  | 'NFT_CHECK'
-  | 'FUNCTION_CALL'
-  | 'COMETH_API'
-  | 'TOKEN_ID_RANGE'
-  | 'ORIUM_API'
-  | 'UNCHOSEN' // cannot import StepType from types/graphql, this is not in the enum
+// type StepType =
+//   | 'SIMPLE_TEXT'
+//   | 'NFT_CHECK'
+//   | 'FUNCTION_CALL'
+//   | 'COMETH_API'
+//   | 'TOKEN_ID_RANGE'
+//   | 'ORIUM_API'
+//   | 'UNCHOSEN' // cannot import StepType from types/graphql, this is not in the enum
+type StepType = StepTypeOriginal | 'UNCHOSEN'
 
 type Step = {
   failMessage: string
