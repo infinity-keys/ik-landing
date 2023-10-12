@@ -1,19 +1,21 @@
 import { Fragment, useEffect, useState } from 'react'
 
 import { Dialog, Transition } from '@headlessui/react'
+import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon'
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
+import clsx from 'clsx'
 
 import { Link, routes, useLocation } from '@redwoodjs/router'
 import { LoaderIcon } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
-import Button from 'src/components/Button/Button'
 import ProfileIcon from 'src/components/ProfileIcon/ProfileIcon'
 import WalletButton from 'src/components/WalletButton/WalletButton'
 import LogoFullSm from 'src/images/full-logo-sm.webp'
 import LogoHeader1x from 'src/images/IK-LOGO-1x.webp'
 import LogoHeader2x from 'src/images/IK-LOGO-2x.webp'
+import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
@@ -49,6 +51,9 @@ const Header = () => {
   const { loading } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const { pathname } = useLocation()
+  const { pageHeading } = useGlobalInfo()
+
+  const withPageHeading = pathname.includes('/puzzle/') && pageHeading
 
   // Close menu when route changes (ie, user click internal link)
   useEffect(() => {
@@ -56,38 +61,55 @@ const Header = () => {
   }, [pathname])
 
   return (
-    <div className="fixed top-0 left-0 z-30 w-full bg-brand-gray-primary px-4 sm:px-6 lg:px-8">
-      <div className="flex h-20 items-center justify-between">
-        <div className="flex items-center" data-cy="ik logo">
-          {/* Left logo */}
-          <Link
-            to={routes.home()}
-            className="inline-block max-w-[100px] sm:max-w-[150px]"
-            aria-label="return home"
+    <div className="fixed top-0 left-0 z-20 w-full bg-brand-gray-primary px-4 sm:px-6 lg:px-8">
+      <div className="container">
+        <div className="flex h-20 items-center justify-between">
+          {/* On puzzle or step pages, the rewardable name should replace logo on mobile */}
+          <h1
+            className={clsx(
+              'text-xl font-medium',
+              withPageHeading ? 'block md:hidden' : 'hidden'
+            )}
           >
-            <picture>
-              <source srcSet={`${LogoHeader1x} 1x, ${LogoHeader2x} 2x`} />
-              <img
-                src={LogoHeader1x}
-                alt="Infinity Keys logo of a spooky eye in triangle."
-              />
-            </picture>
-          </Link>
-        </div>
+            {pageHeading}
+          </h1>
+          <div
+            className={clsx(
+              'items-center',
+              withPageHeading ? 'hidden md:flex' : 'flex'
+            )}
+            data-cy="ik logo"
+          >
+            {/* Left logo */}
+            <Link
+              to={routes.home()}
+              className="inline-block max-w-[100px] sm:max-w-[150px]"
+              aria-label="return home"
+            >
+              <picture>
+                <source srcSet={`${LogoHeader1x} 1x, ${LogoHeader2x} 2x`} />
+                <img
+                  src={LogoHeader1x}
+                  alt="Infinity Keys logo of a spooky eye in triangle."
+                />
+              </picture>
+            </Link>
+          </div>
 
-        <div className="flex gap-4">
-          {loading ? <LoaderIcon /> : <ProfileIcon />}
+          <div className="flex gap-4">
+            {loading ? <LoaderIcon /> : <ProfileIcon />}
 
-          {/* Menu open button */}
-          <Button
-            onClick={() => setIsOpen(true)}
-            text="Menu"
-            variant="faded"
-            border={false}
-          />
+            {/* Menu open button */}
+            <button
+              onClick={() => setIsOpen(true)}
+              aria-label="Open menu."
+              className="text-white"
+            >
+              <Bars3Icon className="h-6 w-6" />
+            </button>
+          </div>
         </div>
       </div>
-
       {/* Modal Menu */}
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
@@ -143,6 +165,7 @@ const Header = () => {
                       >
                         Play
                       </Link>
+
                       <a
                         href="https://docs.infinitykeys.io/infinity-keys-docs/start-here/what-is-infinity-keys"
                         target="_blank"

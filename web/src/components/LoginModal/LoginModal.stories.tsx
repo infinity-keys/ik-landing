@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react'
 
-import LoginPage from './LoginModal'
+import LoginModal from './LoginModal'
 
 export const generated = () => {
-  return <LoginPage />
+  return <LoginModal />
 }
 
 export default {

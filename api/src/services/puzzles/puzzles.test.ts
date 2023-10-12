@@ -30,20 +30,26 @@ describe.skip('puzzles', () => {
 
   scenario('creates a puzzle', async (scenario: StandardScenario) => {
     const result = await createPuzzle({
-      input: { rewardableId: scenario.puzzle.two.rewardableId },
+      input: {
+        rewardableId: scenario.puzzle.two.rewardableId,
+        requirements: 'HOLDERS',
+        coverImage: 'String',
+      },
     })
 
     expect(result.rewardableId).toEqual(scenario.puzzle.two.rewardableId)
+    expect(result.requirements).toEqual('HOLDERS')
+    expect(result.coverImage).toEqual('String')
   })
 
   scenario('updates a puzzle', async (scenario: StandardScenario) => {
     const original = (await puzzle({ id: scenario.puzzle.one.id })) as Puzzle
     const result = await updatePuzzle({
       id: original.id,
-      input: { rewardableId: scenario.puzzle.two.rewardableId },
+      input: { requirements: 'PATIENCE' },
     })
 
-    expect(result.rewardableId).toEqual(scenario.puzzle.two.rewardableId)
+    expect(result.requirements).toEqual('PATIENCE')
   })
 
   scenario('deletes a puzzle', async (scenario: StandardScenario) => {

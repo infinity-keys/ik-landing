@@ -15,15 +15,19 @@ export const schema = gql`
     stepNftCheck: StepNftCheck
     stepFunctionCall: StepFunctionCall
     stepComethApi: StepComethApi
-    stepOriumApi: StepOriumApi
-    stepLensApi: StepLensApi
     stepTokenIdRange: StepTokenIdRange
+    stepOriumApi: StepOriumApi
     stepAssetTransfer: StepAssetTransfer
+    stepLensApi: StepLensApi
     stepErc20Balance: StepErc20Balance
     migrateLandingRoute: String
     attempts: [Attempt]!
+    solutionHint: String
+    defaultImage: String
+    solutionImage: String
+    stepPage: [StepPage]
+    stepGuideType: StepGuideType
     hasUserCompletedStep: Boolean
-    hasAnonUserCompletedStep: Boolean
   }
 
   enum StepType {
@@ -36,6 +40,15 @@ export const schema = gql`
     LENS_API
     ASSET_TRANSFER
     ERC20_BALANCE
+  }
+
+  enum StepGuideType {
+    SEEK
+    INFER
+    REWIND
+    TRACK
+    COLLECT
+    ACTIVATE
   }
 
   type Query {
@@ -52,6 +65,10 @@ export const schema = gql`
     puzzleId: String!
     type: StepType!
     migrateLandingRoute: String
+    solutionHint: String!
+    defaultImage: String!
+    solutionImage: String
+    stepGuideType: StepGuideType!
   }
 
   input UpdateStepInput {
@@ -63,6 +80,10 @@ export const schema = gql`
     puzzleId: String
     type: StepType
     migrateLandingRoute: String
+    solutionHint: String
+    defaultImage: String
+    solutionImage: String
+    stepGuideType: StepGuideType
   }
 
   type Mutation {
