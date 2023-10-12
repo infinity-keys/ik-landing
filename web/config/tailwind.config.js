@@ -11,6 +11,9 @@ module.exports = {
       center: true,
     },
     extend: {
+      maxWidth: {
+        '8xl': '1440px',
+      },
       colors: {
         'brand-accent-primary': IK_TOKENS.brand.color['ik-gold-primary'].$value,
         'brand-accent-secondary':

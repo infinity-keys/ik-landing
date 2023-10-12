@@ -171,6 +171,19 @@ const variants: Variants = {
   },
 }
 
+const Container = ({ pySm = false, children }) => {
+  return (
+    <div
+      className={clsx(
+        'mx-auto max-w-8xl px-4 lg:px-12 ',
+        pySm ? 'py-8 lg:py-20' : 'py-14 lg:py-24'
+      )}
+    >
+      {children}
+    </div>
+  )
+}
+
 const HomePage = () => {
   const [isFormVisible, setIsFormVisible] = useState(false)
   const [heroDataIndex, setHeroDataIndex] = useState<number | null>(null)
@@ -180,9 +193,9 @@ const HomePage = () => {
     <div>
       <Seo title="Home" />
 
-      <div className="relative mx-auto max-w-[1440px] overflow-hidden pb-16">
+      <div className="relative mx-auto max-w-8xl overflow-hidden pb-16">
         <div className="min-h-screen">
-          <Section>
+          <section className="mx-auto max-w-8xl px-4">
             <div className="relative z-20 mt-16 max-w-2xl">
               <h1 className="text-shadow-lg text-3xl font-semibold lg:text-8xl">
                 <Fade inline duration={1.8} key={heroDataIndex}>
@@ -200,7 +213,7 @@ const HomePage = () => {
                 </p>
               </Fade>
             </div>
-          </Section>
+          </section>
         </div>
 
         <div className="absolute bottom-24 -left-8 -right-8 z-10 mx-auto max-w-2xl lg:right-4 lg:top-32 lg:bottom-auto lg:left-auto lg:max-w-none">
@@ -312,7 +325,7 @@ const HomePage = () => {
 
       <section className="pt-8 md:pt-20">
         <div className="px-4">
-          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
+          <div className="mx-auto max-w-8xl pb-8 lg:px-8 lg:pb-20">
             <Fade>
               <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
                 How It Works
@@ -328,7 +341,7 @@ const HomePage = () => {
         </div>
 
         <div className="bg-white/5 py-14 lg:py-24">
-          <div className="mx-auto flex max-w-5xl flex-col items-center gap-2 px-4 md:flex-row md:justify-center lg:gap-6 lg:px-8">
+          <div className="mx-auto flex max-w-8xl flex-col items-center gap-2 px-4 md:flex-row md:justify-between lg:gap-6 lg:px-8">
             {benefits.map((data, index) => (
               <BenefitCard {...data} key={data.title} delay={index * 0.3} />
             ))}
@@ -338,7 +351,7 @@ const HomePage = () => {
 
       <section className="pt-8 md:pt-20">
         <div className="px-4">
-          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
+          <div className="mx-auto max-w-xs pb-8 md:max-w-8xl lg:px-8 lg:pb-20">
             <Fade>
               <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
                 Opportunity
@@ -354,7 +367,7 @@ const HomePage = () => {
         </div>
 
         <div className="bg-white/5 py-14 lg:py-24">
-          <div className="mx-auto flex max-w-5xl flex-col items-center gap-20 px-4 md:flex-row md:items-stretch md:justify-center md:gap-6 lg:px-8">
+          <div className="mx-auto flex max-w-8xl flex-col items-center gap-20 px-4 md:flex-row md:items-stretch md:justify-between md:gap-6 lg:px-8">
             {opportunity.map((data, index) => (
               <OpportunityCard {...data} key={data.title} delay={index * 0.3} />
             ))}
@@ -364,7 +377,7 @@ const HomePage = () => {
 
       <section className="pt-8 md:pt-20">
         <div className="px-4">
-          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
+          <div className="mx-auto max-w-xs pb-8 md:max-w-8xl lg:px-8 lg:pb-20">
             <Fade>
               <h2 className="text-3xl font-semibold lg:text-5xl">
                 There&apos;s treasure everywhere.
