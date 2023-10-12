@@ -4,8 +4,8 @@ export const schema = gql`
     rewardable: Rewardable!
     rewardableId: String!
     submissions: [Submission]!
-    requirements: [PuzzleRequirements]!
-    coverImage: String!
+    requirements: [PuzzleRequirements]
+    coverImage: String
     steps: [Step]!
   }
 
