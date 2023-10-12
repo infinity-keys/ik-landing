@@ -144,6 +144,8 @@ enum PuzzleRequirements {
   TRAVEL
   PATIENCE
   WORDPLAY
+  DETAIL
+  INTERACTIVE_OBJECT
 }
 
 // All the types of Steps. Currently supports simple text guesses, but can

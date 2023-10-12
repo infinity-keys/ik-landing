@@ -1,5 +1,6 @@
 import { Fragment, PropsWithChildren, lazy, useEffect, useState } from 'react'
 
+import Spline from '@splinetool/react-spline'
 import clsx from 'clsx'
 import sample from 'lodash/sample'
 import { FindStepBySlugQuery } from 'types/graphql'
@@ -89,24 +90,29 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
         {step.stepPage && (
           <>
             <div className="relative aspect-[4/3] w-full flex-1 overflow-hidden md:max-w-[50%]">
-              {images.map((image, index) => {
-                return (
-                  <div
-                    key={'image-' + index}
-                    className={clsx(
-                      'absolute inset-0 flex items-center justify-center',
-                      index === slideIndex ? 'opacity-100' : 'opacity-0'
-                    )}
-                  >
-                    <img
-                      src={image}
-                      alt=""
-                      loading={index === 0 ? 'eager' : 'lazy'}
-                      className="w-full"
-                    />
-                  </div>
-                )
-              })}
+              {step.puzzle.rewardable.slug ===
+              process.env.SPLINE_PUZZLE_SLUG ? (
+                <Spline scene="https://prod.spline.design/wNPv9pIE4aOGShZZ/scene.splinecode" />
+              ) : (
+                images.map((image, index) => {
+                  return image ? (
+                    <div
+                      key={'image-' + index}
+                      className={clsx(
+                        'absolute inset-0 flex items-center justify-center',
+                        index === slideIndex ? 'opacity-100' : 'opacity-0'
+                      )}
+                    >
+                      <img
+                        src={image}
+                        alt=""
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                        className="w-full"
+                      />
+                    </div>
+                  ) : null
+                })
+              )}
             </div>
 
             {step.hasUserCompletedStep ? (

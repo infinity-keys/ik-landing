@@ -16,6 +16,8 @@ export const schema = gql`
     TRAVEL
     PATIENCE
     WORDPLAY
+    DETAIL
+    INTERACTIVE_OBJECT
   }
 
   type Query {
