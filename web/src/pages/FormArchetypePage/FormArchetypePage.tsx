@@ -5,12 +5,16 @@ import { useState, useRef, useEffect } from 'react'
 
 import { DevTool } from '@hookform/devtools'
 import {
-  // StepType: can't import this because UNCHOSEN is not in the enum
   CreateRewardableInput,
   MutationcreateBurdPuzzleArgs,
   CreateBurdPuzzleMutation,
-  OriumCheckType,
-  StepType as StepTypeOriginal,
+  CreateStepInput,
+  CreateStepSimpleTextInput,
+  CreateStepNftCheckInput,
+  CreateStepFunctionCallInput,
+  CreateStepComethApiInput,
+  CreateStepTokenIdRangeInput,
+  CreateStepOriumApiInput,
 } from 'types/graphql'
 
 import {
@@ -40,80 +44,20 @@ const CREATE_BURD_PUZZLE_MUTATION = gql`
     }
   }
 `
+
+type CreateAllStepTypesInput =
+  | (CreateStepInput & CreateStepSimpleTextInput)
+  | (CreateStepInput & CreateStepNftCheckInput)
+  | (CreateStepInput & CreateStepFunctionCallInput)
+  | (CreateStepInput & CreateStepComethApiInput)
+  | (CreateStepInput & CreateStepTokenIdRangeInput)
+  | (CreateStepInput & CreateStepOriumApiInput)
+
 // Set as a constant in case we need to change this string value later on
 const stepsArrayName = 'steps'
 
 // New puzzles start with no steps in an empty array
-const startingSteps: Step[] = []
-
-// The type definitions below are used in the Step component that follows
-// They do not get used in the PuzzleForm component further down as it has
-// its own type definition above it
-// type StepType =
-//   | 'SIMPLE_TEXT'
-//   | 'NFT_CHECK'
-//   | 'FUNCTION_CALL'
-//   | 'COMETH_API'
-//   | 'TOKEN_ID_RANGE'
-//   | 'ORIUM_API'
-//   | 'UNCHOSEN' // cannot import StepType from types/graphql, this is not in the enum
-type StepType = StepTypeOriginal | 'UNCHOSEN'
-
-type Step = {
-  failMessage: string
-  successMessage: string
-  challenge: string
-  resourceLinks: string
-  stepSortWeight: string
-  type: StepType
-}
-
-type StepSimpleText = Step & {
-  type: 'SIMPLE_TEXT'
-  solution: string
-}
-
-type StepNftCheck = Step & {
-  type: 'NFT_CHECK'
-  requireAllNfts: boolean
-  nftCheckData: NftCheckDatum
-}
-
-// we tried importing this directly from 'types/graphql'
-// but that generated several linting errors below
-type NftCheckDatum = {
-  contractAddress: string
-  chainId: string
-  tokenId: string
-  poapEventId: string
-}
-
-type StepFunctionCall = Step & {
-  type: 'FUNCTION_CALL'
-  methodIds: string[]
-  contractAddress: string
-}
-
-type StepComethApi = Step & {
-  type: 'COMETH_API'
-  stepId: string
-}
-
-type StepTokenIdRange = Step & {
-  type: 'TOKEN_ID_RANGE'
-  stepId: string
-  contractAddress: string
-  chainId: string
-  startIds: number[]
-  endIds: number[]
-}
-
-type StepOriumApi = Step & {
-  type: 'ORIUM_API'
-  stepId: string
-  // OriumCheckType is imported from 'types/graphql'
-  checkType: OriumCheckType
-}
+const startingSteps: CreateAllStepTypesInput[] = []
 
 // Using the default: <FieldError /> field validator from react-hook-form creates
 // cryptic (for the user) error messages like this: "steps.1.failMessage is required"
@@ -640,6 +584,10 @@ function Step({
   )
 }
 
+// type StepUnchosen = Step & {
+//   type: 'UNCHOSEN'
+// }
+
 // This type definition is used in the PuzzleForm component below
 // It does not get used in the Step component above
 type PuzzleFormType = {
@@ -650,15 +598,7 @@ type PuzzleFormType = {
     successMessage: CreateRewardableInput['successMessage']
     listPublicly: CreateRewardableInput['listPublicly']
   }
-  steps: (
-    | StepSimpleText
-    | StepNftCheck
-    | StepFunctionCall
-    | StepComethApi
-    | StepTokenIdRange
-    | StepOriumApi
-    | Step
-  )[]
+  steps: CreateAllStepTypesInput[]
 }
 
 export default function PuzzleForm() {
@@ -721,7 +661,7 @@ export default function PuzzleForm() {
                 failMessage: step.failMessage,
                 successMessage: step.successMessage,
                 challenge: step.challenge,
-                stepSortWeight: parseInt(step.stepSortWeight, 10),
+                stepSortWeight: step.stepSortWeight,
                 resourceLinks: step.resourceLinks,
               }
               if (step.type === 'SIMPLE_TEXT' && 'solution' in step) {
@@ -741,15 +681,26 @@ export default function PuzzleForm() {
                   stepNftCheck: {
                     stepId: 'ignore me',
                     requireAllNfts: false, // hard coded for now
-                    nftCheckData: [
-                      {
-                        contractAddress: step.nftCheckData.contractAddress,
-                        chainId: parseInt(step.nftCheckData.chainId),
-                        tokenId: parseInt(step.nftCheckData.tokenId),
-                        poapEventId: step.nftCheckData.poapEventId,
-                        stepNftCheckId: 'ignore me',
-                      },
-                    ],
+                    nftCheckData: step.nftCheckData.map((nftCheckData) => {
+                      if (
+                        nftCheckData.chainId === undefined ||
+                        nftCheckData.tokenId === undefined ||
+                        nftCheckData.chainId === null ||
+                        nftCheckData.tokenId === null
+                      ) {
+                        throw new Error('No chainId or tokenId provided')
+                      }
+
+                      // @TODO: chainId and tokenId can be empty if POAP exists,
+                      // REVISIT THIS!
+                      return {
+                        chainId: nftCheckData.chainId,
+                        contractAddress: nftCheckData.contractAddress,
+                        poapEventId: nftCheckData.poapEventId,
+                        tokenId: nftCheckData.tokenId,
+                        // stepNftCheckId: 'ignore me',
+                      }
+                    }),
                   },
                 }
               } else if (step.type === 'FUNCTION_CALL' && 'methodIds' in step) {
@@ -980,12 +931,16 @@ export default function PuzzleForm() {
               className="rw-button rw-button-blue"
               onClick={() =>
                 append({
-                  type: 'UNCHOSEN',
+                  type: 'SIMPLE_TEXT',
                   failMessage: '',
                   successMessage: '',
                   challenge: '',
                   resourceLinks: '',
-                  stepSortWeight: '',
+                  stepSortWeight: 0,
+                  solution: '',
+                  solutionCharCount: 0,
+                  puzzleId: 'ignore me',
+                  stepId: 'ignore me',
                 })
               }
             >
