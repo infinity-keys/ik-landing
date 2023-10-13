@@ -180,10 +180,10 @@ const Container = ({
   bgLight?: boolean
 }) => {
   return (
-    <div className={clsx('px-4 lg:px-12', { 'bg-white/5': bgLight })}>
+    <div className={clsx({ 'bg-white/5': bgLight })}>
       <div
         className={clsx(
-          'mx-auto max-w-xs md:max-w-8xl',
+          'mx-auto max-w-xs px-4 md:max-w-8xl lg:px-12',
           pySm ? 'py-8 lg:py-20' : 'py-14 lg:py-24'
         )}
       >
@@ -204,14 +204,14 @@ const HomePage = () => {
 
       <div className="relative mx-auto max-w-8xl overflow-hidden pb-16">
         <div className="min-h-screen">
-          <Section>
-            <div className="relative z-20 mt-16 max-w-2xl">
+          <Container>
+            <div className="relative z-20 mt-8 max-w-2xl md:mt-32">
               <h1 className="text-shadow-lg text-3xl font-semibold lg:text-8xl">
                 <Fade inline duration={1.8} key={heroDataIndex}>
                   {isSelected ? heroData[heroDataIndex].title : 'Infinity Keys'}
                 </Fade>
               </h1>
-              <Fade delay={isSelected ? 0.4 : 0.8} key={heroDataIndex}>
+              <Fade delay={isSelected ? 0.4 : 0.6} key={heroDataIndex}>
                 <p
                   className="text-shadow-lg mt-4 max-w-xs text-2xl lg:max-w-lg lg:text-4xl"
                   data-cy="description"
@@ -221,8 +221,32 @@ const HomePage = () => {
                     : 'is a no-code creator platform for games & collecting digital keys'}
                 </p>
               </Fade>
+              {!isSelected && (
+                <Fade delay={0.9}>
+                  <div className="mt-8 flex gap-2">
+                    <Button
+                      variant="rounded"
+                      shadow={false}
+                      onClick={() => setIsFormVisible(true)}
+                      text=""
+                    >
+                      <span className="hidden md:inline">Beta&nbsp;</span>
+                      Waitlist
+                    </Button>
+
+                    <Button
+                      variant="roundedWhite"
+                      shadow={false}
+                      text=""
+                      to={routes.puzzleLanding({ slug: 'the-society' })}
+                    >
+                      <span className="hidden md:inline">Play&nbsp;</span>Demo
+                    </Button>
+                  </div>
+                </Fade>
+              )}
             </div>
-          </Section>
+          </Container>
         </div>
 
         <div className="absolute bottom-24 -left-8 -right-8 z-10 mx-auto max-w-2xl lg:right-4 lg:top-32 lg:bottom-auto lg:left-auto lg:max-w-none">

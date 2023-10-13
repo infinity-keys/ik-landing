@@ -160,10 +160,10 @@ const Header = () => {
                       {/* Navigation links */}
                       <NavTitle text="Navigation" />
                       <Link
-                        to={routes.play()}
+                        to={routes.puzzleLanding({ slug: 'the-society' })}
                         className="header-nav--link mt-5 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
-                        Play
+                        Play Demo
                       </Link>
 
                       <a
