@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from 'react'
+import { PropsWithChildren, useRef, useState } from 'react'
 
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import clsx from 'clsx'
@@ -28,7 +28,6 @@ import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
-import Section from 'src/components/Section/Section'
 
 export type BenefitCardProps = {
   icon: string
@@ -197,7 +196,14 @@ const HomePage = () => {
   const [isFormVisible, setIsFormVisible] = useState(false)
   const [heroDataIndex, setHeroDataIndex] = useState<number | null>(null)
   const isSelected = typeof heroDataIndex === 'number'
+  const formRef = useRef<{ scrollToElement: () => void }>()
 
+  const handleScrollToForm = () => {
+    setIsFormVisible(true)
+    if (formRef.current) {
+      formRef.current.scrollToElement()
+    }
+  }
   return (
     <div>
       <Seo title="Home" />
@@ -227,7 +233,7 @@ const HomePage = () => {
                     <Button
                       variant="rounded"
                       shadow={false}
-                      onClick={() => setIsFormVisible(true)}
+                      onClick={handleScrollToForm}
                       text=""
                     >
                       <span className="hidden md:inline">Beta&nbsp;</span>
@@ -418,7 +424,8 @@ const HomePage = () => {
                 <Button
                   text="Get in Touch"
                   variant="rounded"
-                  onClick={() => setIsFormVisible(true)}
+                  shadow={false}
+                  onClick={handleScrollToForm}
                 />
               </div>
             )}
@@ -428,7 +435,7 @@ const HomePage = () => {
         {isFormVisible && (
           <Container bgLight>
             <div className="mx-auto flex min-h-[542px] max-w-2xl items-center justify-center lg:min-h-[354px]">
-              <HomeContactForm />
+              <HomeContactForm ref={formRef} />
             </div>
           </Container>
         )}
