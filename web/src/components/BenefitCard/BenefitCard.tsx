@@ -58,7 +58,7 @@ const BenefitCard = ({
                 animate="animate"
                 className="max-w-[240px] list-disc pl-2 text-sm leading-6"
                 transition={{
-                  staggerChildren: prefersReducedMotion ? 0 : 0.1,
+                  staggerChildren: prefersReducedMotion ? 0 : 0.05,
                 }}
               >
                 {list.map((item) => (
@@ -81,11 +81,12 @@ const BenefitCard = ({
               text={''}
               variant="rounded"
               fullWidth
+              shadow={false}
               onClick={() => setShowList(!showList)}
             >
               {showList ? (
                 <Fade inline x={3} key="list">
-                  <span className="block w-7">
+                  <span className="block w-6">
                     <ArrowLeftIcon />
                   </span>
                 </Fade>
