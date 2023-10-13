@@ -1,11 +1,23 @@
 export const schema = gql`
   type Puzzle {
     id: String!
-    isAnon: Boolean!
     rewardable: Rewardable!
     rewardableId: String!
     submissions: [Submission]!
+    requirements: [PuzzleRequirements]
+    coverImage: String
     steps: [Step]!
+  }
+
+  enum PuzzleRequirements {
+    HOLDERS_ONLY
+    SOCIAL_ACCOUNT
+    WALLET_GAS
+    TRAVEL
+    PATIENCE
+    WORDPLAY
+    DETAIL
+    INTERACTIVE_OBJECT
   }
 
   type Query {
@@ -14,13 +26,15 @@ export const schema = gql`
   }
 
   input CreatePuzzleInput {
-    isAnon: Boolean!
     rewardableId: String!
+    requirements: [PuzzleRequirements]!
+    coverImage: String!
   }
 
   input UpdatePuzzleInput {
-    isAnon: Boolean
     rewardableId: String
+    requirements: [PuzzleRequirements]!
+    coverImage: String
   }
 
   type Mutation {

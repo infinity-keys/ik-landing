@@ -35,9 +35,6 @@ export const QUERY = gql`
           type
         }
       }
-      puzzle {
-        isAnon
-      }
       nfts {
         cloudinaryId
       }
@@ -152,7 +149,6 @@ export const Success = ({
               to={rewardableLandingRoute({
                 type: rewardable.type,
                 slug: rewardable.slug,
-                anonPuzzle: rewardable.puzzle?.isAnon,
               })}
               text={`Return to ${rewardable.name} ${capitalize(
                 rewardable.type

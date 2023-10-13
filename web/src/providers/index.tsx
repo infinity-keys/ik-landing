@@ -1,5 +1,7 @@
 import { PropsWithChildren } from 'react'
 
+import { GlobalInfoProvider } from 'src/providers/globalInfo/globalInfo'
+import { LoginModalProvider } from 'src/providers/loginModal/loginModal'
 import { OAuthProvider } from 'src/providers/oAuth'
 import { RedirectionProvider } from 'src/providers/redirection'
 
@@ -9,7 +11,11 @@ const AllContextProviders = ({ children }: PropsWithChildren) => {
 
   return (
     <OAuthProvider>
-      <RedirectionProvider>{children}</RedirectionProvider>
+      <RedirectionProvider>
+        <GlobalInfoProvider>
+          <LoginModalProvider>{children}</LoginModalProvider>
+        </GlobalInfoProvider>
+      </RedirectionProvider>
     </OAuthProvider>
   )
 }

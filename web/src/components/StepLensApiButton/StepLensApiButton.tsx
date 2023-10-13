@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { useActiveProfile } from '@lens-protocol/react-web'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import { FindStepQuery } from 'types/graphql'
+import { FindStepBySlugQuery } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
 import Alert from 'src/components/Alert/Alert'
@@ -14,10 +14,10 @@ import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
 const StepLensApiButton = ({
   step,
-  puzzleId,
+  onSuccess,
 }: {
-  step: FindStepQuery['step']
-  puzzleId: string
+  step: FindStepBySlugQuery['step']
+  onSuccess?: () => void
 }) => {
   const { address } = useAccount()
   const { openConnectModal } = useConnectModal()
@@ -32,15 +32,18 @@ const StepLensApiButton = ({
     if (!lensProfile?.id)
       return setCustomErrorMessage('Please connect your Lens profile')
 
-    await makeAttempt({
+    const data = await makeAttempt({
       stepId: step.id,
-      puzzleId,
+      redirectOnSuccess: false,
       reqBody: {
         type: 'lens-check',
         account: address,
         lensId: lensProfile.id,
       },
     })
+    if (data?.success && onSuccess) {
+      onSuccess()
+    }
   }
 
   return (
@@ -75,8 +78,8 @@ const StepLensApiButton = ({
               data-cy="fail_message_check"
             >
               <Markdown>
-                {step?.failMessage ||
-                  'This wallet address has not completed the required action. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
+                This wallet address has not completed the required action. Need
+                help? [Join our discord](https://discord.gg/infinitykeys)
               </Markdown>
             </div>
           )}
