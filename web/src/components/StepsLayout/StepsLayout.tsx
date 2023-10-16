@@ -168,7 +168,6 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
 
                 <div>
                   <Button
-                    text="Continue"
                     to={
                       nextStep
                         ? routes.puzzleStep({
@@ -179,7 +178,9 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
                             slug: step.puzzle.rewardable.slug,
                           })
                     }
-                  />
+                  >
+                    Continue
+                  </Button>
                 </div>
               </div>
             ) : (

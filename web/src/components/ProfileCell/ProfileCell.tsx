@@ -151,7 +151,7 @@ export const Success = ({
             </div>
 
             <div className="mt-8 sm:mt-0">
-              <Button onClick={handleLogOut} text="Log Out" />
+              <Button onClick={handleLogOut}>Log Out</Button>
             </div>
           </div>
 
@@ -319,7 +319,6 @@ export const Success = ({
                 </button>
               ) : (
                 <Button
-                  text="Connect"
                   size="small"
                   variant="faded"
                   border={false}
@@ -332,7 +331,9 @@ export const Success = ({
                       },
                     })
                   }
-                />
+                >
+                  Connect
+                </Button>
               )
             ) : (
               <button

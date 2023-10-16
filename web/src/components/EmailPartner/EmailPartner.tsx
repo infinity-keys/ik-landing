@@ -33,10 +33,11 @@ const EmailPartner = () => {
           <Button
             type="submit"
             disabled={state.submitting}
-            text="Get in Touch"
             variant="secondary"
             fullWidth
-          />
+          >
+            Get in Touch
+          </Button>
         </div>
       </div>
     </form>

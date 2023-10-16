@@ -34,9 +34,10 @@ const EmailNewsletter = () => {
             type="submit"
             variant="secondary"
             disabled={state.submitting}
-            text="Subscribe"
             fullWidth
-          />
+          >
+            Subscribe
+          </Button>
         </div>
       </div>
     </form>

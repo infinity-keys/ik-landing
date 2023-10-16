@@ -32,6 +32,7 @@ export default function Button({
   onClick,
   disabled = false,
   responsive = false,
+  children,
 }: ButtonProps) {
   const classes = clsx(
     'ik-button inline-block border hover:border-white rounded-md font-bold text-center transition px-12 active:translate-y-[3px]',
@@ -85,7 +86,7 @@ export default function Button({
   if (to) {
     return (
       <Link to={to} className={classes}>
-        <span className="flex items-center justify-center"></span>
+        <span className="flex items-center justify-center">{children}</span>
       </Link>
     )
   }
@@ -98,7 +99,7 @@ export default function Button({
         rel="noopener noreferrer"
         className={classes}
       >
-        <span className="flex items-center justify-center"></span>
+        <span className="flex items-center justify-center">{children}</span>
       </a>
     )
   }
@@ -110,7 +111,7 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
     >
-      <span className="flex items-center justify-center"></span>
+      <span className="flex items-center justify-center">{children}</span>
     </button>
   )
 }

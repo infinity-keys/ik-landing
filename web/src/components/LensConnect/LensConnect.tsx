@@ -124,8 +124,9 @@ const LensConnect = (props: Partial<ButtonProps>) => {
                 {...props}
                 disabled={connectToLensPending}
                 onClick={onLoginClick}
-                text={props.text || 'Connect to Lens'}
-              />
+              >
+                {props.text || 'Connect to Lens'}
+              </Button>
             )}
           </div>
         )
