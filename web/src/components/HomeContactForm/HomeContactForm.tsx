@@ -168,7 +168,9 @@ const HomeContactForm = () => {
           </div>
 
           <div>
-            <Button text="Submit" type="submit" variant="rounded" />
+            <Button type="submit" variant="rounded">
+              Submit
+            </Button>
           </div>
         </Form>
       </Fade>

@@ -1,11 +1,10 @@
-import { ReactNode } from 'react'
+import { PropsWithChildren } from 'react'
 
 import clsx from 'clsx'
 
 import { Link } from '@redwoodjs/router'
 
-export interface ButtonProps {
-  text: string
+export interface ButtonProps extends PropsWithChildren {
   to?: string
   href?: string
   textColor?: 'dark' | 'light'
@@ -18,11 +17,9 @@ export interface ButtonProps {
   onClick?: () => void
   disabled?: boolean
   responsive?: boolean
-  children?: ReactNode
 }
 
 export default function Button({
-  text,
   to,
   href,
   textColor = 'light',
@@ -35,7 +32,6 @@ export default function Button({
   onClick,
   disabled = false,
   responsive = false,
-  children,
 }: ButtonProps) {
   const classes = clsx(
     'ik-button inline-block border hover:border-white rounded-md font-bold text-center transition px-12 active:translate-y-[3px]',
@@ -89,10 +85,7 @@ export default function Button({
   if (to) {
     return (
       <Link to={to} className={classes}>
-        <span className="flex items-center justify-center">
-          {children}
-          {text}
-        </span>
+        <span className="flex items-center justify-center"></span>
       </Link>
     )
   }
@@ -105,10 +98,7 @@ export default function Button({
         rel="noopener noreferrer"
         className={classes}
       >
-        <span className="flex items-center justify-center">
-          {children}
-          {text}
-        </span>
+        <span className="flex items-center justify-center"></span>
       </a>
     )
   }
@@ -120,10 +110,7 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
     >
-      <span className="flex items-center justify-center">
-        {children}
-        {text}
-      </span>
+      <span className="flex items-center justify-center"></span>
     </button>
   )
 }

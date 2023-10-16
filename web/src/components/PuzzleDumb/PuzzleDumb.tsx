@@ -108,7 +108,9 @@ const PuzzleDumb = ({ answer = '' }: PuzzleProps) => {
             data-cy="success_message_check"
           >
             <p className="pb-4 text-xl">Success!</p>
-            <Button text="Enter" fullWidth to={routes.play()} size="large" />
+            <Button fullWidth to={routes.play()} size="large">
+              Enter
+            </Button>
           </div>
         ) : (
           <LoadingIcon />
