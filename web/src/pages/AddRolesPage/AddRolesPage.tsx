@@ -56,7 +56,7 @@ const AddRolesPage = () => {
               <p className="mb-8">
                 Continue to our form to request your Lens account
               </p>
-              <Button to={routes.lensProfileForm()} text="Continue to Form" />
+              <Button to={routes.lensProfileForm()}>Continue to Form</Button>
             </div>
           ) : (
             <div>
@@ -77,7 +77,7 @@ const AddRolesPage = () => {
                 </Link>{' '}
                 NFTs to be eligible to request your Lens profile.
               </p>
-              <Button onClick={() => addRole()} text="Check NFTs" />
+              <Button onClick={() => addRole()}>Check NFTs</Button>
             </div>
           )}
         </div>

@@ -128,17 +128,14 @@ export const Success = ({
         </div>
       )}
 
-      {canMint && <Button text="Claim NFT" onClick={claim} />}
+      {canMint && <Button onClick={claim}>Claim NFT</Button>}
 
       {canConnect && (
         <div className="pt-12">
           <p className="pb-2">Want us to check your external wallet too?</p>
-          <Button
-            text="Connect Wallet"
-            variant="faded"
-            border={false}
-            onClick={openConnectModal}
-          />
+          <Button variant="faded" border={false} onClick={openConnectModal}>
+            Connect Wallet
+          </Button>
         </div>
       )}
 
@@ -150,10 +147,9 @@ export const Success = ({
                 type: rewardable.type,
                 slug: rewardable.slug,
               })}
-              text={`Return to ${rewardable.name} ${capitalize(
-                rewardable.type
-              )}`}
-            />
+            >{`Return to ${rewardable.name} ${capitalize(
+              rewardable.type
+            )}`}</Button>
           </div>
 
           {explorerUrl && (

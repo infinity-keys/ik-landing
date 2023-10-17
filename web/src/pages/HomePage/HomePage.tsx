@@ -257,7 +257,6 @@ const HomePage = () => {
                         variant="rounded"
                         shadow={false}
                         onClick={handleScrollToForm}
-                        text=""
                       >
                         <span className="hidden md:inline">Beta&nbsp;</span>
                         Waitlist
@@ -266,7 +265,6 @@ const HomePage = () => {
                       <Button
                         variant="roundedWhite"
                         shadow={false}
-                        text=""
                         to={routes.puzzleLanding({ slug: 'the-society' })}
                       >
                         <span className="hidden md:inline">Play&nbsp;</span>
@@ -355,11 +353,12 @@ const HomePage = () => {
             {!isFormVisible && (
               <div className="pt-12">
                 <Button
-                  text="Get in Touch"
                   variant="rounded"
                   shadow={false}
                   onClick={handleScrollToForm}
-                />
+                >
+                  Get in Touch
+                </Button>
               </div>
             )}
           </Fade>

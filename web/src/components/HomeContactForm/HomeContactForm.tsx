@@ -190,12 +190,9 @@ const HomeContactForm = forwardRef((_props, ref) => {
           </div>
 
           <div>
-            <Button
-              text="Submit"
-              type="submit"
-              variant="rounded"
-              shadow={false}
-            />
+            <Button type="submit" variant="rounded" shadow={false}>
+              Submit
+            </Button>
           </div>
         </Form>
       </Fade>
