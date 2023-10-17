@@ -3,6 +3,7 @@ import { PropsWithChildren, useRef, useState } from 'react'
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import Spline from '@splinetool/react-spline'
 import clsx from 'clsx'
+import { m as motion } from 'framer-motion'
 
 import { Link, routes } from '@redwoodjs/router'
 
@@ -217,26 +218,34 @@ const HomePage = () => {
         <div className="min-h-screen">
           <Container noXs>
             <div className="flex flex-col md:flex-row">
-              <div className="relative z-20 mt-8 max-w-2xl flex-1 md:mt-32">
-                <h1 className="text-shadow-lg text-3xl font-semibold lg:text-8xl">
-                  <Fade inline duration={1.8} key={heroDataIndex}>
-                    {isSelected
-                      ? heroData[heroDataIndex].title
-                      : 'Infinity Keys'}
+              <div className="relative z-20 mt-12 max-w-2xl flex-1 md:mt-32">
+                <div className="mx-auto max-w-xs px-4 md:max-w-none lg:px-0">
+                  <h1 className="text-shadow-lg text-3xl font-semibold lg:text-8xl">
+                    <Fade inline duration={1.8} key={heroDataIndex}>
+                      {isSelected
+                        ? heroData[heroDataIndex].title
+                        : 'Infinity Keys'}
+                    </Fade>
+                  </h1>
+                  <Fade delay={isSelected ? 0.4 : 0.6} key={heroDataIndex}>
+                    <p
+                      className="text-shadow-lg mt-4 min-h-[96px] max-w-xs text-2xl lg:max-w-lg lg:text-4xl"
+                      data-cy="description"
+                    >
+                      {isSelected
+                        ? heroData[heroDataIndex].description
+                        : 'is a no-code creator platform for games & collecting digital keys'}
+                    </p>
                   </Fade>
-                </h1>
-                <Fade delay={isSelected ? 0.4 : 0.6} key={heroDataIndex}>
-                  <p
-                    className="text-shadow-lg mt-4 max-w-xs text-2xl lg:max-w-lg lg:text-4xl"
-                    data-cy="description"
+
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: isSelected ? 0 : 1 }}
+                    transition={{
+                      duration: isSelected ? 0.1 : 0.9,
+                      delay: isSelected ? 0 : 0.9,
+                    }}
                   >
-                    {isSelected
-                      ? heroData[heroDataIndex].description
-                      : 'is a no-code creator platform for games & collecting digital keys'}
-                  </p>
-                </Fade>
-                {!isSelected && (
-                  <Fade delay={0.9}>
                     <div className="mt-8 flex gap-2">
                       <Button
                         variant="rounded"
@@ -258,11 +267,11 @@ const HomePage = () => {
                         Demo
                       </Button>
                     </div>
-                  </Fade>
-                )}
+                  </motion.div>
+                </div>
               </div>
 
-              <div className="md:max-w-nones relative mt-8 aspect-square max-w-xl flex-1">
+              <div className="relative mt-8 aspect-square max-w-xl flex-1">
                 <Spline
                   scene="https://prod.spline.design/PLAfCk5FVS07KdX2/scene.splinecode"
                   className=""
