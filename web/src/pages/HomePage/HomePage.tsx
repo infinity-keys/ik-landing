@@ -1,21 +1,18 @@
-import { useState } from 'react'
+import { PropsWithChildren, Suspense, useRef, useState, lazy } from 'react'
 
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import clsx from 'clsx'
-import { m as motion, Variants } from 'framer-motion'
+import { m as motion } from 'framer-motion'
 
 import { Link, routes } from '@redwoodjs/router'
 
 import Fade from 'src/components/Animations/Fade'
-import Scale from 'src/components/Animations/Scale'
 import BenefitCard from 'src/components/BenefitCard/BenefitCard'
 import Button from 'src/components/Button'
 import HomeContactForm from 'src/components/HomeContactForm/HomeContactForm'
 import OpportunityCard from 'src/components/OpportunityCard/OpportunityCard'
-import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
 import beaker from 'src/images/beaker.webp'
-import circle from 'src/images/Big-Circle.webp'
 import computer from 'src/images/computer.webp'
 import controller from 'src/images/controller.webp'
 import heroBeaker from 'src/images/hero-beaker.webp'
@@ -29,6 +26,8 @@ import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
+
+const Spline = lazy(() => import('@splinetool/react-spline'))
 
 export type BenefitCardProps = {
   icon: string
@@ -130,268 +129,247 @@ const socialLinks = [
   },
 ]
 
-const heroData: Array<{
+type HeroData = {
   image: string
+  // These are the ids that come from the Spline objects
+  id: string
   title: string
   description: string
-}> = [
-  {
-    image: heroWatch,
-    title: 'Players',
-    description: 'Solve puzzles, collect keys & claim treasure',
-  },
-  {
+}
+
+type HeroDataKey = 'BEAKER' | 'COMPASS' | 'MEDAL'
+
+const heroDataLookup: {
+  [key in HeroDataKey]: HeroData
+} = {
+  BEAKER: {
     image: heroBeaker,
+    id: 'a544d2c8-4724-4307-a7b6-02bc4e26af9c',
     title: 'Creators',
     description: 'Launch no-code keyhunts featuring any digital assets',
   },
-  {
+  COMPASS: {
+    image: heroWatch,
+    id: 'd2785602-5804-46c5-be6d-8858a22eddcc',
+    title: 'Players',
+    description: 'Solve puzzles, collect keys & claim treasure',
+  },
+  MEDAL: {
     image: heroMedal,
+    id: '08443abf-b225-42ac-bb7a-7a4e416cf4c3',
     title: 'Sponsors',
     description: 'Post bounties to incentivize creator-built games',
   },
-]
-
-const transition = {
-  originY: 0.6,
-  transition: {
-    ease: [0.185, -0.01, 0, 1],
-    duration: 1,
-  },
 }
 
-const variants: Variants = {
-  show: {
-    scale: 1,
-    ...transition,
-  },
-  hide: {
-    scale: 0.6,
-    ...transition,
-  },
+const Container = ({
+  pySm = false,
+  bgLight = false,
+  noXs = false,
+  children,
+}: PropsWithChildren & {
+  pySm?: boolean
+  bgLight?: boolean
+  noXs?: boolean
+}) => {
+  return (
+    <div className={clsx({ 'bg-white/5': bgLight })}>
+      <div
+        className={clsx(
+          'mx-auto px-4 md:max-w-8xl lg:px-12',
+          pySm ? 'py-8 lg:py-20' : 'py-14 lg:py-24',
+          !noXs && 'max-w-xs'
+        )}
+      >
+        {children}
+      </div>
+    </div>
+  )
 }
 
 const HomePage = () => {
   const [isFormVisible, setIsFormVisible] = useState(false)
-  const [heroDataIndex, setHeroDataIndex] = useState<number | null>(null)
-  const isSelected = typeof heroDataIndex === 'number'
+  const [heroDataIndex, setHeroDataIndex] = useState<HeroDataKey | null>(null)
+  const isSelected = heroDataIndex !== null
+  const formRef = useRef<{ scrollToElement: () => void }>()
+
+  const handleScrollToForm = () => {
+    setIsFormVisible(true)
+    if (formRef.current) {
+      formRef.current.scrollToElement()
+    }
+  }
+
+  function onMouseDown(targetId: string) {
+    switch (targetId) {
+      case heroDataLookup.BEAKER.id:
+        setHeroDataIndex('BEAKER')
+        break
+      case heroDataLookup.COMPASS.id:
+        setHeroDataIndex('COMPASS')
+        break
+      case heroDataLookup.MEDAL.id:
+        setHeroDataIndex('MEDAL')
+        break
+      default:
+        setHeroDataIndex(null)
+    }
+  }
 
   return (
     <div>
       <Seo title="Home" />
 
-      <div className="relative mx-auto max-w-[1440px] overflow-hidden pb-16">
+      <div className="relative mx-auto max-w-8xl overflow-hidden">
         <div className="min-h-screen">
-          <Section>
-            <div className="relative z-20 mt-16 max-w-2xl">
-              <h1 className="text-shadow-lg text-3xl font-semibold lg:text-8xl">
-                <Fade inline duration={1.8} key={heroDataIndex}>
-                  {isSelected ? heroData[heroDataIndex].title : 'Infinity Keys'}
-                </Fade>
-              </h1>
-              <Fade delay={isSelected ? 0.4 : 0.8} key={heroDataIndex}>
-                <p
-                  className="text-shadow-lg mt-4 max-w-xs text-2xl lg:max-w-lg lg:text-4xl"
-                  data-cy="description"
-                >
-                  {isSelected
-                    ? heroData[heroDataIndex].description
-                    : 'is a no-code creator platform for games & collecting digital keys'}
-                </p>
-              </Fade>
+          <Container noXs>
+            <div className="flex flex-col md:flex-row">
+              <div className="relative z-20 mt-12 max-w-2xl flex-1 md:mt-32">
+                <div className="mx-auto max-w-xs px-4 md:max-w-none lg:px-0">
+                  <h1 className="text-shadow-lg text-3xl font-semibold lg:text-6xl">
+                    <Fade inline duration={1.8} key={heroDataIndex}>
+                      {isSelected
+                        ? heroDataLookup[heroDataIndex].title
+                        : 'Infinity Keys'}
+                    </Fade>
+                  </h1>
+                  <Fade delay={isSelected ? 0.4 : 0.6} key={heroDataIndex}>
+                    <p
+                      className="text-shadow-lg mt-4 min-h-[96px] max-w-xs text-2xl lg:max-w-lg lg:text-4xl"
+                      data-cy="description"
+                    >
+                      {isSelected
+                        ? heroDataLookup[heroDataIndex].description
+                        : 'is a no-code creator platform for games & collecting digital keys'}
+                    </p>
+                  </Fade>
+
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: isSelected ? 0 : 1 }}
+                    transition={{
+                      duration: isSelected ? 0.1 : 0.9,
+                      delay: isSelected ? 0 : 0.9,
+                    }}
+                  >
+                    <div className="mt-8 flex gap-2">
+                      <Button
+                        variant="rounded"
+                        shadow={false}
+                        onClick={handleScrollToForm}
+                      >
+                        <span className="hidden md:inline">Beta&nbsp;</span>
+                        Waitlist
+                      </Button>
+
+                      <Button
+                        variant="roundedWhite"
+                        shadow={false}
+                        to={routes.puzzleLanding({ slug: 'the-society' })}
+                      >
+                        <span className="hidden md:inline">Play&nbsp;</span>
+                        Demo
+                      </Button>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+
+              <div className="relative mx-auto mt-8 aspect-square w-full max-w-xl flex-1">
+                <Suspense>
+                  <Spline
+                    scene="https://prod.spline.design/PLAfCk5FVS07KdX2/scene.splinecode"
+                    className="absolute inset-0"
+                  />
+                  <Spline
+                    scene="https://prod.spline.design/ChhWrS5PwiyDUGhr/scene.splinecode"
+                    className="absolute inset-0"
+                    onMouseDown={(e) => onMouseDown(e.target.id)}
+                  />
+                </Suspense>
+              </div>
             </div>
-          </Section>
-        </div>
-
-        <div className="absolute bottom-24 -left-8 -right-8 z-10 mx-auto max-w-2xl lg:right-4 lg:top-32 lg:bottom-auto lg:left-auto lg:max-w-none">
-          <motion.img
-            src={circle}
-            alt=""
-            className="pointer-events-none block max-h-[calc(90vh)]"
-            variants={variants}
-            animate={isSelected ? 'hide' : 'show'}
-          />
-
-          {!isSelected && (
-            <>
-              <div className="group absolute top-[36%] left-[13%] w-24 max-w-[20vh] md:w-36 lg:w-48">
-                <Fade>
-                  <button onClick={() => setHeroDataIndex(2)}>
-                    <img
-                      src={medal}
-                      alt=""
-                      className="pointer-events-none transition-transform duration-500 ease-in-out group-hover:scale-90 "
-                    />
-                  </button>
-                </Fade>
-              </div>
-
-              <div className="group absolute top-[20%] right-[14%] w-24 max-w-[20vh] md:w-36 lg:w-48">
-                <Fade delay={0.3}>
-                  <button onClick={() => setHeroDataIndex(0)}>
-                    <img
-                      src={watch}
-                      alt=""
-                      className="pointer-events-none transition-transform duration-500 ease-in-out group-hover:scale-90"
-                    />
-                  </button>
-                </Fade>
-              </div>
-
-              <div className="group absolute bottom-[12%] left-[46%] w-24 max-w-[20vh] md:w-36 lg:w-48">
-                <Fade delay={0.6}>
-                  <button onClick={() => setHeroDataIndex(1)}>
-                    <img
-                      src={beaker}
-                      alt=""
-                      className="pointer-events-none transition-transform duration-500 ease-in-out group-hover:scale-90"
-                    />
-                  </button>
-                </Fade>
-              </div>
-            </>
-          )}
-
-          {typeof heroDataIndex === 'number' && (
-            <div className="absolute bottom-1/2 w-full translate-y-[58%] text-center">
-              <button
-                onClick={() => setHeroDataIndex(null)}
-                className="w-[60%]"
-              >
-                <Fade inline>
-                  <span
-                    className={clsx(
-                      'block',
-                      heroData[heroDataIndex].title !== 'Players' && 'hidden'
-                    )}
-                  >
-                    <Scale withHover inline scaleInitial={0.9}>
-                      <img
-                        src={heroData[heroDataIndex].image}
-                        alt=""
-                        className="pointer-events-none w-full max-w-[150px] sm:max-w-[170px] lg:max-h-[60vh] lg:max-w-[270px] "
-                      />
-                    </Scale>
-                  </span>
-
-                  <span
-                    className={clsx(
-                      'block',
-                      heroData[heroDataIndex].title !== 'Sponsors' && 'hidden'
-                    )}
-                  >
-                    <Scale withHover inline scaleInitial={0.9}>
-                      <img
-                        src={heroData[heroDataIndex].image}
-                        alt=""
-                        className="pointer-events-none w-full max-w-md lg:max-h-[50vh] lg:max-w-xl"
-                      />
-                    </Scale>
-                  </span>
-
-                  <span
-                    className={clsx(
-                      'block',
-                      heroData[heroDataIndex].title !== 'Creators' && 'hidden'
-                    )}
-                  >
-                    <Scale withHover inline scaleInitial={0.9}>
-                      <img
-                        src={heroData[heroDataIndex].image}
-                        alt=""
-                        className="pointer-events-none w-full max-w-[170px] sm:max-w-[220px] lg:max-h-[65vh] lg:max-w-xs"
-                      />
-                    </Scale>
-                  </span>
-                </Fade>
-              </button>
-            </div>
-          )}
+          </Container>
         </div>
       </div>
 
-      <section className="pt-8 md:pt-20">
-        <div className="px-4">
-          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
-            <Fade>
-              <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
-                How It Works
-              </h2>
-            </Fade>
-            <Fade>
-              <p className="max-w-xl text-sm lg:text-lg">
-                A net positive value loop incentives creators, sponsors, and
-                players without draining economic value from the system
-              </p>
-            </Fade>
-          </div>
-        </div>
+      <section>
+        <Container pySm>
+          <Fade>
+            <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
+              How It Works
+            </h2>
+          </Fade>
+          <Fade>
+            <p className="max-w-xl text-sm lg:text-lg">
+              A net positive value loop incentives creators, sponsors, and
+              players without draining economic value from the system
+            </p>
+          </Fade>
+        </Container>
 
-        <div className="bg-white/5 py-14 lg:py-24">
-          <div className="mx-auto flex max-w-5xl flex-col items-center gap-2 px-4 md:flex-row md:justify-center lg:gap-6 lg:px-8">
+        <Container bgLight>
+          <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center lg:gap-6">
             {benefits.map((data, index) => (
               <BenefitCard {...data} key={data.title} delay={index * 0.3} />
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
-      <section className="pt-8 md:pt-20">
-        <div className="px-4">
-          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
-            <Fade>
-              <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
-                Opportunity
-              </h2>
-            </Fade>
-            <Fade>
-              <p className="max-w-xl text-sm lg:text-lg">
-                Infinity Keys taps into the UCG and web3 gaming sectors giving
-                projects and creators more attention and audience
-              </p>
-            </Fade>
-          </div>
-        </div>
+      <section>
+        <Container pySm>
+          <Fade>
+            <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
+              Opportunity
+            </h2>
+          </Fade>
+          <Fade>
+            <p className="max-w-xl text-sm lg:text-lg">
+              Infinity Keys taps into the UCG and web3 gaming sectors giving
+              projects and creators more attention and audience
+            </p>
+          </Fade>
+        </Container>
 
-        <div className="bg-white/5 py-14 lg:py-24">
-          <div className="mx-auto flex max-w-5xl flex-col items-center gap-20 px-4 md:flex-row md:items-stretch md:justify-center md:gap-6 lg:px-8">
+        <Container bgLight>
+          <div className="flex flex-col items-center gap-20 md:flex-row md:items-stretch md:justify-between md:gap-6">
             {opportunity.map((data, index) => (
               <OpportunityCard {...data} key={data.title} delay={index * 0.3} />
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
-      <section className="pt-8 md:pt-20">
-        <div className="px-4">
-          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
-            <Fade>
-              <h2 className="text-3xl font-semibold lg:text-5xl">
-                There&apos;s treasure everywhere.
-              </h2>
-            </Fade>
+      <section>
+        <Container pySm>
+          <Fade>
+            <h2 className="text-3xl font-semibold lg:text-5xl">
+              There&apos;s treasure everywhere.
+            </h2>
+          </Fade>
 
-            <Fade>
-              {!isFormVisible && (
-                <div className="pt-12">
-                  <Button
-                    variant="rounded"
-                    onClick={() => setIsFormVisible(true)}
-                  >
-                    Get in Touch
-                  </Button>
-                </div>
-              )}
-            </Fade>
-          </div>
-        </div>
+          <Fade>
+            {!isFormVisible && (
+              <div className="pt-12">
+                <Button
+                  variant="rounded"
+                  shadow={false}
+                  onClick={handleScrollToForm}
+                >
+                  Get in Touch
+                </Button>
+              </div>
+            )}
+          </Fade>
+        </Container>
 
         {isFormVisible && (
-          <div className="bg-white/5 py-14 lg:py-24">
-            <div className="mx-auto flex min-h-[542px] max-w-5xl items-center justify-center px-4 lg:min-h-[354px] lg:px-8">
-              <HomeContactForm />
+          <Container bgLight>
+            <div className="mx-auto flex min-h-[542px] max-w-2xl items-center justify-center lg:min-h-[354px]">
+              <HomeContactForm ref={formRef} />
             </div>
-          </div>
+          </Container>
         )}
       </section>
 
