@@ -190,19 +190,11 @@ const Rewardable = ({ rewardable }: Props) => {
             <div>
               {isAuthenticated ? (
                 showOverlay ? (
-                  <Button
-                    text="Ask on Discord"
-                    href="https://discord.gg/infinitykeys"
-                  />
+                  <Button href="https://discord.gg/infinitykeys">
+                    Ask on Discord
+                  </Button>
                 ) : (
                   <Button
-                    text={
-                      typeof currentStep?.stepSortWeight === 'number'
-                        ? currentStep.stepSortWeight > 1
-                          ? 'Continue Quest'
-                          : 'Start Quest'
-                        : 'Claim Treasure'
-                    }
                     to={
                       currentStep?.stepSortWeight
                         ? routes.puzzleStep({
@@ -212,13 +204,16 @@ const Rewardable = ({ rewardable }: Props) => {
                         : // TODO: where do we take them if they have completed all steps
                           routes.claim({ id: rewardable.id })
                     }
-                  />
+                  >
+                    {typeof currentStep?.stepSortWeight === 'number'
+                      ? currentStep.stepSortWeight > 1
+                        ? 'Continue Quest'
+                        : 'Start Quest'
+                      : 'Claim Treasure'}
+                  </Button>
                 )
               ) : (
-                <Button
-                  onClick={() => setIsLoginModalOpen(true)}
-                  text="Login"
-                />
+                <Button onClick={() => setIsLoginModalOpen(true)}>Login</Button>
               )}
             </div>
           </div>

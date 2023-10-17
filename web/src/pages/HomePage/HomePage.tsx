@@ -375,10 +375,11 @@ const HomePage = () => {
               {!isFormVisible && (
                 <div className="pt-12">
                   <Button
-                    text="Get in Touch"
                     variant="rounded"
                     onClick={() => setIsFormVisible(true)}
-                  />
+                  >
+                    Get in Touch
+                  </Button>
                 </div>
               )}
             </Fade>

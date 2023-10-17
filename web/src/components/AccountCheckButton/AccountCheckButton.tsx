@@ -45,7 +45,7 @@ const AccountCheckButton = ({
       ) : (
         <div>
           {address ? (
-            <Button text="Check Wallet" onClick={handleClick} />
+            <Button onClick={handleClick}>Check Wallet</Button>
           ) : (
             <WalletButton />
           )}

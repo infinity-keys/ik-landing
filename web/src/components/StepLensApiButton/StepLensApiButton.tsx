@@ -53,11 +53,11 @@ const StepLensApiButton = ({
       ) : (
         <div>
           {address && lensProfile?.id ? (
-            <Button text="Check Wallet" onClick={handleClick} />
+            <Button onClick={handleClick}>Check Wallet</Button>
           ) : !address ? (
             <div className="flex flex-col items-center justify-center gap-4">
               <Alert text="Please connect your wallet to continue" />
-              <Button text="Connect Wallet" onClick={openConnectModal} />
+              <Button onClick={openConnectModal}>Connect Wallet</Button>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center gap-4">
