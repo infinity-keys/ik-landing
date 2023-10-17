@@ -1,7 +1,7 @@
-import { PropsWithChildren, useRef, useState } from 'react'
+import { PropsWithChildren, Suspense, useRef, useState, lazy } from 'react'
 
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
-import Spline from '@splinetool/react-spline'
+// import Spline from '@splinetool/react-spline'
 import clsx from 'clsx'
 import { m as motion } from 'framer-motion'
 
@@ -27,6 +27,8 @@ import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
+
+const Spline = lazy(() => import('@splinetool/react-spline'))
 
 export type BenefitCardProps = {
   icon: string
@@ -220,7 +222,7 @@ const HomePage = () => {
             <div className="flex flex-col md:flex-row">
               <div className="relative z-20 mt-12 max-w-2xl flex-1 md:mt-32">
                 <div className="mx-auto max-w-xs px-4 md:max-w-none lg:px-0">
-                  <h1 className="text-shadow-lg text-3xl font-semibold lg:text-8xl">
+                  <h1 className="text-shadow-lg text-3xl font-semibold lg:text-6xl">
                     <Fade inline duration={1.8} key={heroDataIndex}>
                       {isSelected
                         ? heroData[heroDataIndex].title
@@ -271,17 +273,18 @@ const HomePage = () => {
                 </div>
               </div>
 
-              <div className="relative mt-8 aspect-square max-w-xl flex-1">
-                <Spline
-                  scene="https://prod.spline.design/PLAfCk5FVS07KdX2/scene.splinecode"
-                  className=""
-                  onMouseDown={onMouseDown}
-                />
-                <Spline
-                  scene="https://prod.spline.design/ChhWrS5PwiyDUGhr/scene.splinecode"
-                  className="absolute inset-0 "
-                  onMouseDown={onMouseDown}
-                />
+              <div className="relative mx-auto mt-8 aspect-square w-full max-w-xl flex-1">
+                <Suspense>
+                  <Spline
+                    scene="https://prod.spline.design/PLAfCk5FVS07KdX2/scene.splinecode"
+                    className="absolute inset-0"
+                  />
+                  <Spline
+                    scene="https://prod.spline.design/ChhWrS5PwiyDUGhr/scene.splinecode"
+                    className="absolute inset-0"
+                    onMouseDown={onMouseDown}
+                  />
+                </Suspense>
               </div>
             </div>
           </Container>
