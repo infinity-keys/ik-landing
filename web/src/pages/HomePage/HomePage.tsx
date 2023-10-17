@@ -1,7 +1,6 @@
 import { PropsWithChildren, Suspense, useRef, useState, lazy } from 'react'
 
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
-// import Spline from '@splinetool/react-spline'
 import clsx from 'clsx'
 import { m as motion } from 'framer-motion'
 
@@ -130,27 +129,38 @@ const socialLinks = [
   },
 ]
 
-const heroData: Array<{
+type HeroData = {
   image: string
+  // These are the ids that come from the Spline objects
+  id: string
   title: string
   description: string
-}> = [
-  {
-    image: heroWatch,
-    title: 'Players',
-    description: 'Solve puzzles, collect keys & claim treasure',
-  },
-  {
+}
+
+type HeroDataKey = 'BEAKER' | 'COMPASS' | 'MEDAL'
+
+const heroDataLookup: {
+  [key in HeroDataKey]: HeroData
+} = {
+  BEAKER: {
     image: heroBeaker,
+    id: 'a544d2c8-4724-4307-a7b6-02bc4e26af9c',
     title: 'Creators',
     description: 'Launch no-code keyhunts featuring any digital assets',
   },
-  {
+  COMPASS: {
+    image: heroWatch,
+    id: 'd2785602-5804-46c5-be6d-8858a22eddcc',
+    title: 'Players',
+    description: 'Solve puzzles, collect keys & claim treasure',
+  },
+  MEDAL: {
     image: heroMedal,
+    id: '08443abf-b225-42ac-bb7a-7a4e416cf4c3',
     title: 'Sponsors',
     description: 'Post bounties to incentivize creator-built games',
   },
-]
+}
 
 const Container = ({
   pySm = false,
@@ -179,8 +189,8 @@ const Container = ({
 
 const HomePage = () => {
   const [isFormVisible, setIsFormVisible] = useState(false)
-  const [heroDataIndex, setHeroDataIndex] = useState<number | null>(null)
-  const isSelected = typeof heroDataIndex === 'number'
+  const [heroDataIndex, setHeroDataIndex] = useState<HeroDataKey | null>(null)
+  const isSelected = heroDataIndex !== null
   const formRef = useRef<{ scrollToElement: () => void }>()
 
   const handleScrollToForm = () => {
@@ -190,26 +200,20 @@ const HomePage = () => {
     }
   }
 
-  function onMouseDown(e) {
-    // "a544d2c8-4724-4307-a7b6-02bc4e26af9c" beaker
-    // "d2785602-5804-46c5-be6d-8858a22eddcc" compass
-    // "08443abf-b225-42ac-bb7a-7a4e416cf4c3" medal
-    if (e.target.id === 'a544d2c8-4724-4307-a7b6-02bc4e26af9c') {
-      setHeroDataIndex(0)
-      return
+  function onMouseDown(targetId: string) {
+    switch (targetId) {
+      case heroDataLookup.BEAKER.id:
+        setHeroDataIndex('BEAKER')
+        break
+      case heroDataLookup.COMPASS.id:
+        setHeroDataIndex('COMPASS')
+        break
+      case heroDataLookup.MEDAL.id:
+        setHeroDataIndex('MEDAL')
+        break
+      default:
+        setHeroDataIndex(null)
     }
-
-    if (e.target.id === 'd2785602-5804-46c5-be6d-8858a22eddcc') {
-      setHeroDataIndex(1)
-      return
-    }
-
-    if (e.target.id === '08443abf-b225-42ac-bb7a-7a4e416cf4c3') {
-      setHeroDataIndex(2)
-      return
-    }
-
-    setHeroDataIndex(null)
   }
 
   return (
@@ -225,7 +229,7 @@ const HomePage = () => {
                   <h1 className="text-shadow-lg text-3xl font-semibold lg:text-6xl">
                     <Fade inline duration={1.8} key={heroDataIndex}>
                       {isSelected
-                        ? heroData[heroDataIndex].title
+                        ? heroDataLookup[heroDataIndex].title
                         : 'Infinity Keys'}
                     </Fade>
                   </h1>
@@ -235,7 +239,7 @@ const HomePage = () => {
                       data-cy="description"
                     >
                       {isSelected
-                        ? heroData[heroDataIndex].description
+                        ? heroDataLookup[heroDataIndex].description
                         : 'is a no-code creator platform for games & collecting digital keys'}
                     </p>
                   </Fade>
@@ -282,7 +286,7 @@ const HomePage = () => {
                   <Spline
                     scene="https://prod.spline.design/ChhWrS5PwiyDUGhr/scene.splinecode"
                     className="absolute inset-0"
-                    onMouseDown={onMouseDown}
+                    onMouseDown={(e) => onMouseDown(e.target.id)}
                   />
                 </Suspense>
               </div>
