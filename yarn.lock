@@ -9062,13 +9062,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@splinetool/runtime@npm:^0.9.468":
-  version: 0.9.468
-  resolution: "@splinetool/runtime@npm:0.9.468"
+"@splinetool/runtime@npm:^0.9.484":
+  version: 0.9.484
+  resolution: "@splinetool/runtime@npm:0.9.484"
   dependencies:
     on-change: ^4.0.0
     semver-compare: ^1.0.0
-  checksum: 25a2ea57474a3ca333e7647874b54a601112ba3a41d0daa7788f1670365358f18f88dc271f3617d34c23f2cce58779668dbe1d04e897bf405188905d9270c2f5
+  checksum: fab50f1d0720d5663670f7ec9b20789114ef462129c51b9e61efff119079e174242f5a25d7c82dc201a9ccf9d5b6c149f62bce1391e283d63b16d8839333ad08
   languageName: node
   linkType: hard
 
@@ -33994,7 +33994,7 @@ __metadata:
     "@snickerdoodlelabs/objects": ^1.1.2
     "@snickerdoodlelabs/web-integration": ^1.1.0
     "@splinetool/react-spline": ^2.2.6
-    "@splinetool/runtime": ^0.9.468
+    "@splinetool/runtime": ^0.9.484
     "@tailwindcss/forms": ^0.5.3
     "@types/gtag.js": ^0.0.12
     autoprefixer: ^10.4.12

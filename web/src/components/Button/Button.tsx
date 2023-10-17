@@ -13,7 +13,14 @@ export interface ButtonProps extends PropsWithChildren {
   shadow?: boolean
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium' | 'large'
-  variant?: 'solid' | 'outline' | 'faded' | 'secondary' | 'warn' | 'rounded'
+  variant?:
+    | 'solid'
+    | 'outline'
+    | 'faded'
+    | 'secondary'
+    | 'warn'
+    | 'rounded'
+    | 'roundedWhite'
   onClick?: () => void
   disabled?: boolean
   responsive?: boolean
@@ -35,7 +42,8 @@ export default function Button({
   children,
 }: ButtonProps) {
   const classes = clsx(
-    'ik-button inline-block border hover:border-white rounded-md font-bold text-center transition px-12 active:translate-y-[3px]',
+    'ik-button inline-block border hover:border-white rounded-md text-center transition px-12 active:translate-y-[3px]',
+    { 'font-bold': variant !== 'rounded' && variant !== 'roundedWhite' },
     // Sizing
     { 'block w-full': fullWidth },
     // Borders
@@ -53,8 +61,14 @@ export default function Button({
     },
     // Variants
     [
+      variant.includes('rounded') && {
+        'border-2 rounded-full font-regular': true,
+      },
       variant === 'rounded' && {
-        'border-2 rounded-full hover:text-white': true,
+        'hover:text-white': true,
+      },
+      variant === 'roundedWhite' && {
+        'hover:border-brand-accent-primary hover:text-white border-white': true,
       },
       variant === 'solid' && {
         'bg-brand-accent-primary  hover:border-brand-accent-hover hover:bg-brand-accent-hover':

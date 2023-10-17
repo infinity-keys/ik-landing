@@ -1,4 +1,10 @@
-import { useEffect, useState } from 'react'
+import {
+  useEffect,
+  useState,
+  forwardRef,
+  useRef,
+  useImperativeHandle,
+} from 'react'
 
 import {
   Form,
@@ -22,16 +28,26 @@ type FormData = {
   message?: string
 }
 
-const HomeContactForm = () => {
+const HomeContactForm = forwardRef((_props, ref) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccessful, setIsSuccessful] = useState<boolean | null>(null)
 
-  const ref = React.useRef<HTMLDivElement>(null)
+  const localRef = useRef<HTMLDivElement>(null)
+
+  const handleScroll = () => {
+    if (localRef.current) {
+      localRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  useImperativeHandle(ref, () => ({
+    scrollToElement: () => {
+      handleScroll()
+    },
+  }))
 
   useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollIntoView({ behavior: 'smooth' })
-    }
+    handleScroll()
   }, [])
 
   const onSubmit = async (data: FormData) => {
@@ -50,6 +66,12 @@ const HomeContactForm = () => {
         body: JSON.stringify(submission),
         headers: { 'Content-Type': 'application/json' },
       })
+
+      if (!res.ok) {
+        toast.error('An error occurred while submitting the form')
+        setIsSuccessful(false)
+        return
+      }
 
       const json = await res.json()
 
@@ -85,7 +107,7 @@ const HomeContactForm = () => {
   }
 
   return (
-    <div className="w-full" ref={ref}>
+    <div className="w-full" ref={localRef}>
       <Fade>
         <Form
           onSubmit={onSubmit}
@@ -168,7 +190,7 @@ const HomeContactForm = () => {
           </div>
 
           <div>
-            <Button type="submit" variant="rounded">
+            <Button type="submit" variant="rounded" shadow={false}>
               Submit
             </Button>
           </div>
@@ -176,6 +198,6 @@ const HomeContactForm = () => {
       </Fade>
     </div>
   )
-}
+})
 
 export default HomeContactForm
