@@ -60,11 +60,12 @@ const LoginForm = ({ redirectPath }: { redirectPath?: string }) => {
     <div className="w-full max-w-[200px]">
       <Button
         onClick={() => onSubmitSignUp(type)}
-        text={text}
         variant="faded"
         border={false}
         fullWidth
-      />
+      >
+        {text}
+      </Button>
     </div>
   )
 

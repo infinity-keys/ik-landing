@@ -62,7 +62,9 @@ const Footer = () => {
             </div>
             {/* right */}
             <div className="mb-4 flex gap-4 sm:mb-0 sm:ml-6">
-              <Button text="Play" to={routes.play()} variant="outline" />
+              <Button to={routes.play()} variant="outline">
+                Play
+              </Button>
             </div>
           </div>
         </nav>

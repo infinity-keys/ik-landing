@@ -111,11 +111,9 @@ const WalletEmail = ({
           {nftId ? (
             <>
               <div className="mb-10">
-                <Button
-                  text="Claim NFT Treasure"
-                  to={`/claim/${name}`}
-                  fullWidth={true}
-                />
+                <Button to={`/claim/${name}`} fullWidth={true}>
+                  Claim NFT Treasure
+                </Button>
               </div>
               <p className="mb-8 text-center">- or -</p>
             </>
@@ -145,12 +143,9 @@ const WalletEmail = ({
               {...register('email')}
             />
             <input type="hidden" {...register('puzzleId')} value={puzzleId} />
-            <Button
-              text={nftId ? 'Claim NFT with Email' : 'Submit'}
-              fullWidth={true}
-              type="submit"
-              disabled={!isValid}
-            />
+            <Button fullWidth={true} type="submit" disabled={!isValid}>
+              {nftId ? 'Claim NFT with Email' : 'Submit'}
+            </Button>
           </form>
           <div className="mt-6 flex">
             <div className="flex w-full items-center justify-center">

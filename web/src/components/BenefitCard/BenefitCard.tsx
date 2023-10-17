@@ -78,7 +78,6 @@ const BenefitCard = ({
 
           <div className="mx-auto flex w-full max-w-[120px]">
             <Button
-              text={''}
               variant="rounded"
               fullWidth
               onClick={() => setShowList(!showList)}

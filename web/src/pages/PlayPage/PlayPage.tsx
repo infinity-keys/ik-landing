@@ -87,11 +87,9 @@ const PlayPage = ({ count, page }: { count?: number; page?: number }) => {
                       </p>
 
                       <div className="mx-auto max-w-[250px] pt-12">
-                        <Button
-                          fullWidth
-                          text="Play Now"
-                          onClick={closeModal}
-                        />
+                        <Button fullWidth onClick={closeModal}>
+                          Play Now
+                        </Button>
                       </div>
 
                       <div className="mt-8 flex flex-col items-center justify-between gap-4 text-center text-sm text-brand-accent-secondary sm:flex-row">
