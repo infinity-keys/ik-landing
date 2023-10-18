@@ -51,7 +51,7 @@ const MarkdownCarousel = ({
               if (showOverlay) {
                 setShowOverlay(false)
               }
-              setSlideIndex(isFirstSlide ? props.currentSlide - 1 : 0)
+              setSlideIndex(!isFirstSlide ? props.currentSlide - 1 : 0)
               props.previousSlide()
             }}
             disabled={isFirstSlide}
