@@ -61,7 +61,7 @@ const Header = () => {
   }, [pathname])
 
   return (
-    <div className="fixed top-0 left-0 z-20 w-full bg-brand-gray-primary px-4 sm:px-6 lg:px-8">
+    <div className="fixed top-0 left-0 z-50 w-full bg-brand-gray-primary px-4 sm:px-6 lg:px-8">
       <div className="container">
         <div className="flex h-20 items-center justify-between">
           {/* On puzzle or step pages, the rewardable name should replace logo on mobile */}
@@ -160,10 +160,10 @@ const Header = () => {
                       {/* Navigation links */}
                       <NavTitle text="Navigation" />
                       <Link
-                        to={routes.play()}
+                        to={routes.puzzleLanding({ slug: 'the-society' })}
                         className="header-nav--link mt-5 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
-                        Play
+                        Play Demo
                       </Link>
 
                       <a

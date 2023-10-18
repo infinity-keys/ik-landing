@@ -30,7 +30,7 @@ const UPDATE_LENS_PROFILE = gql`
   }
 `
 
-const LensConnect = (props: Partial<ButtonProps>) => {
+const LensConnect = (props: Partial<ButtonProps> & { text: string }) => {
   const { isConnected, connector } = useAccount()
   const {
     execute: connectToLens,
