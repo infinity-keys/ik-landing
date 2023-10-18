@@ -90,7 +90,7 @@ export default function Button({
     [
       responsive && 'py-1 px-2 text-base sm:py-2 sm:px-4 sm:text-lg',
       !responsive && {
-        'py-1 px-2 text-base': size === 'small',
+        'py-1 px-2 text-sm': size === 'small',
         'py-2 px-6 text-base': size === 'medium',
         'py-2 px-8 text-2xl': size === 'large',
       },

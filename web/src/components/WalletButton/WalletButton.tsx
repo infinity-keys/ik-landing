@@ -58,8 +58,10 @@ export default function WalletButton({
                     }}
                     type="button"
                     size={size}
+                    variant="rounded"
+                    shadow={false}
                   >
-                    {isSmall ? 'Connect' : 'Connect Wallet'}
+                    Connect
                   </Button>
                 )
               }
@@ -68,50 +70,22 @@ export default function WalletButton({
                   <Button
                     onClick={openChainModal}
                     type="button"
-                    variant={isSmall ? 'faded' : 'solid'}
-                    border={false}
+                    variant="rounded"
+                    shadow={false}
+                    size={size}
                   >
-                    {isSmall ? (
-                      <ShieldExclamationIcon className="h-8 w-8 fill-transparent stroke-red-600" />
-                    ) : (
-                      'Wrong Network'
-                    )}
+                    <ShieldExclamationIcon className="h-6 w-12 fill-transparent stroke-red-600" />
                   </Button>
                 )
               }
               return (
                 <div className="flex gap-2">
                   <Button
-                    onClick={openChainModal}
-                    type="button"
-                    variant="faded"
-                    size="small"
-                    border={false}
-                  >
-                    {chain.hasIcon && (
-                      <span
-                        className={clsx('mr-2 flex shrink-0', {
-                          'mr-4': !isSmall,
-                        })}
-                      >
-                        {chain.iconUrl && (
-                          <img
-                            width={24}
-                            height={24}
-                            alt={`${chain.name} icon` ?? 'Chain icon'}
-                            src={chain.iconUrl}
-                          />
-                        )}
-                      </span>
-                    )}
-                    {chain.name || 'Unknown'}
-                  </Button>
-                  <Button
                     onClick={openAccountModal}
                     type="button"
-                    variant="faded"
-                    size="small"
-                    border={false}
+                    variant="rounded"
+                    size={size}
+                    shadow={false}
                   >
                     {account.displayName}
                   </Button>

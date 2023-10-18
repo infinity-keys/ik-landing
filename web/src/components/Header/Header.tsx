@@ -7,15 +7,15 @@ import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import clsx from 'clsx'
 
 import { Link, routes, useLocation } from '@redwoodjs/router'
-import { LoaderIcon } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
-import ProfileIcon from 'src/components/ProfileIcon/ProfileIcon'
+import Button from 'src/components/Button/Button'
 import WalletButton from 'src/components/WalletButton/WalletButton'
 import LogoFullSm from 'src/images/full-logo-sm.webp'
 import LogoHeader1x from 'src/images/IK-LOGO-1x.webp'
 import LogoHeader2x from 'src/images/IK-LOGO-2x.webp'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
+import { useLoginModal } from 'src/providers/loginModal/loginModal'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
@@ -47,63 +47,121 @@ const socialLinks = [
   },
 ]
 
-const Header = () => {
-  const { loading } = useAuth()
-  const [isOpen, setIsOpen] = useState(false)
+const DesktopNav = () => {
+  const { isAuthenticated } = useAuth()
+  const { setIsLoginModalOpen } = useLoginModal()
+
+  return (
+    <nav className="hidden w-full max-w-lg justify-around gap-4 lg:flex xl:max-w-xl">
+      <Link to="/#works">How It Works</Link>
+      <a
+        href="https://docs.infinitykeys.io/infinity-keys-docs/start-here/what-is-infinity-keys"
+        target="_blank"
+        rel="noreferrer"
+      >
+        About
+      </a>
+      <a
+        href="https://mirror.xyz/0xD4076B05a720d263993BC5801d74692D1588C68A"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Blog
+      </a>
+      <Link to={routes.puzzleLanding({ slug: 'the-society' })}>Play Demo</Link>
+      {isAuthenticated ? (
+        <Link to={routes.profile()}>Profile</Link>
+      ) : (
+        <button
+          onClick={() => {
+            setIsLoginModalOpen(true)
+          }}
+        >
+          Login
+        </button>
+      )}
+    </nav>
+  )
+}
+
+const Logos = () => {
   const { pathname } = useLocation()
   const { pageHeading } = useGlobalInfo()
 
   const withPageHeading = pathname.includes('/puzzle/') && pageHeading
+  return (
+    <>
+      <h1
+        className={clsx(
+          'text-xl font-medium',
+          withPageHeading ? 'block md:hidden' : 'hidden'
+        )}
+      >
+        {pageHeading}
+      </h1>
+      <div
+        className={clsx(
+          'items-center',
+          withPageHeading ? 'hidden md:flex' : 'flex'
+        )}
+        data-cy="ik logo"
+      >
+        {/* Left logo */}
+        <Link
+          to={routes.home()}
+          className="inline-block max-w-[100px] sm:max-w-[150px]"
+          aria-label="return home"
+        >
+          <picture>
+            <source srcSet={`${LogoHeader1x} 1x, ${LogoHeader2x} 2x`} />
+            <img
+              src={LogoHeader1x}
+              alt="Infinity Keys logo of a spooky eye in triangle."
+            />
+          </picture>
+        </Link>
+      </div>
+    </>
+  )
+}
+
+const Header = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const { pathname, hash } = useLocation()
+  const { isAuthenticated } = useAuth()
 
   // Close menu when route changes (ie, user click internal link)
   useEffect(() => {
     setIsOpen(false)
-  }, [pathname])
+  }, [pathname, hash])
 
   return (
-    <div className="fixed top-0 left-0 z-50 w-full bg-brand-gray-primary px-4 sm:px-6 lg:px-8">
-      <div className="container">
+    <div className="fixed top-0 left-0 z-50 w-full bg-brand-gray-primary">
+      <div className="mx-auto max-w-8xl px-4 lg:px-12">
         <div className="flex h-20 items-center justify-between">
           {/* On puzzle or step pages, the rewardable name should replace logo on mobile */}
-          <h1
-            className={clsx(
-              'text-xl font-medium',
-              withPageHeading ? 'block md:hidden' : 'hidden'
-            )}
-          >
-            {pageHeading}
-          </h1>
-          <div
-            className={clsx(
-              'items-center',
-              withPageHeading ? 'hidden md:flex' : 'flex'
-            )}
-            data-cy="ik logo"
-          >
-            {/* Left logo */}
-            <Link
-              to={routes.home()}
-              className="inline-block max-w-[100px] sm:max-w-[150px]"
-              aria-label="return home"
-            >
-              <picture>
-                <source srcSet={`${LogoHeader1x} 1x, ${LogoHeader2x} 2x`} />
-                <img
-                  src={LogoHeader1x}
-                  alt="Infinity Keys logo of a spooky eye in triangle."
-                />
-              </picture>
-            </Link>
-          </div>
+          <Logos />
+          <DesktopNav />
 
-          <div className="flex gap-4">
-            {loading ? <LoaderIcon /> : <ProfileIcon />}
+          <div className="flex shrink-0 gap-4">
+            <div className="hidden lg:block">
+              <WalletButton size="small" />
+            </div>
+
+            <Button
+              variant="rounded"
+              size="small"
+              shadow={false}
+              to="/#waitlist"
+            >
+              Join Waitlist
+            </Button>
 
             {/* Menu open button */}
             <button
               onClick={() => setIsOpen(true)}
               aria-label="Open menu."
-              className="text-white"
+              className="text-white lg:hidden"
             >
               <Bars3Icon className="h-6 w-6" />
             </button>
@@ -114,7 +172,7 @@ const Header = () => {
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-30"
+          className="relative z-[60]"
           onClose={() => setIsOpen(false)}
         >
           {/* Backdrop */}
@@ -160,41 +218,67 @@ const Header = () => {
                       {/* Navigation links */}
                       <NavTitle text="Navigation" />
                       <Link
-                        to={routes.puzzleLanding({ slug: 'the-society' })}
-                        className="header-nav--link mt-5 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
+                        to="/#works"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
-                        Play Demo
+                        How It Works
                       </Link>
 
                       <a
                         href="https://docs.infinitykeys.io/infinity-keys-docs/start-here/what-is-infinity-keys"
                         target="_blank"
                         rel="noreferrer"
-                        className="header-nav--link mt-3 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
+                        className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
                         About
                       </a>
+
                       <a
-                        href="https://docs.infinitykeys.io/infinity-keys-docs/gameplay/how-to-play"
+                        href="https://mirror.xyz/0xD4076B05a720d263993BC5801d74692D1588C68A"
                         target="_blank"
                         rel="noreferrer"
-                        className="header-nav--link mt-3 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
-                      >
-                        How to Play
-                      </a>
-                      {/* <a
-                        href="https://blog.infinitykeys.io"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="header-nav--link mt-3 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
+                        className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
                         Blog
-                      </a> */}
+                      </a>
+
+                      <Link
+                        to={routes.puzzleLanding({ slug: 'the-society' })}
+                        className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
+                      >
+                        Play Demo
+                      </Link>
 
                       {/* Wallet and profile buttons */}
                       <NavTitle text="Connect" />
-                      <div className="mt-7 flex items-center justify-center gap-2">
-                        <WalletButton />
+                      <div className="mt-7 flex items-center justify-center gap-4">
+                        <WalletButton size="small" />
+
+                        {isAuthenticated ? (
+                          <Button
+                            variant="rounded"
+                            shadow={false}
+                            size="small"
+                            to={routes.profile()}
+                          >
+                            Profile
+                          </Button>
+                        ) : (
+                          <Button
+                            to={routes.profile()}
+                            // onClick={() => {
+                            //   setIsOpen(false)
+                            //   setIsLoginModalOpen(true)
+                            // }}
+                            variant="rounded"
+                            shadow={false}
+                            size="small"
+                          >
+                            Login
+                          </Button>
+                        )}
                       </div>
 
                       {/* Social Icons */}
