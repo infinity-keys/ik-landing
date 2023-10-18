@@ -140,7 +140,12 @@ const Header = () => {
               <WalletButton size="small" />
             </div>
 
-            <Button variant="rounded" size="small" shadow={false}>
+            <Button
+              variant="rounded"
+              size="small"
+              shadow={false}
+              to="/#waitlist"
+            >
               Join Waitlist
             </Button>
 

@@ -167,6 +167,10 @@ const HomePage = () => {
     if (hash === '#works' && workRef.current) {
       workRef.current.scrollIntoView({ behavior: 'smooth' })
     }
+
+    if (hash === '#waitlist') {
+      handleScrollToForm()
+    }
   }, [hash])
 
   return (
