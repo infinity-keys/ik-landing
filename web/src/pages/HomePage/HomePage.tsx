@@ -128,20 +128,20 @@ const socialLinks = [
 const Container = ({
   pySm = false,
   bgLight = false,
-  noXs = false,
+  noPx = false,
   children,
 }: PropsWithChildren & {
   pySm?: boolean
   bgLight?: boolean
-  noXs?: boolean
+  noPx?: boolean
 }) => {
   return (
     <div className={clsx({ 'bg-white/5': bgLight })}>
       <div
         className={clsx(
-          'mx-auto px-4 md:max-w-8xl lg:px-12',
+          'mx-auto max-w-xs md:max-w-8xl',
           pySm ? 'py-8 lg:py-20' : 'py-14 lg:py-24',
-          !noXs && 'max-w-xs'
+          !noPx && 'px-4 lg:px-12'
         )}
       >
         {children}
@@ -165,34 +165,20 @@ const HomePage = () => {
     <div>
       <Seo title="Home" />
 
-      <div className="relative flex min-h-screen items-center overflow-hidden">
-        <div className="absolute -top-[10%] -right-8 z-0 w-full max-w-3xl">
-          <Fade delay={0.9}>
-            <picture>
-              <source srcSet={`${heroLogo} 1x, ${heroLogoLg} 2x`} />
-              <img
-                src={heroLogo}
-                alt="Infinity Keys logo of a spooky eye in triangle."
-                className="block w-full"
-              />
-            </picture>
-          </Fade>
-        </div>
-
-        <Container>
-          <div className="relative z-10 max-w-md">
-            <h1 className="text-shadow-lg text-3xl font-semibold lg:text-6xl">
+      <div className="relative mt-20 flex max-w-8xl flex-col items-center overflow-x-hidden md:mt-0 md:min-h-screen md:flex-row md:justify-between">
+        <Container noPx pySm>
+          <div className="relative z-10 max-w-xs pr-4 pl-4 md:pr-0 lg:max-w-md lg:pl-12">
+            <h1 className="text-shadow-lg text-3xl font-semibold lg:text-5xl xl:text-6xl">
               <Fade inline duration={1.2}>
                 Your NFTs
-              </Fade>
-              <br />
+              </Fade>{' '}
               <Fade inline delay={0.6} duration={1.2}>
                 are <span className="text-brand-accent-primary">the Keys</span>
               </Fade>
             </h1>
 
             <Fade delay={0.9}>
-              <p className="text-shadow-lg mt-4 text-2xl leading-tight">
+              <p className="text-shadow-lg mt-4 text-lg leading-tight lg:text-2xl">
                 Infinity Keys is for creators to build no-code NFT collecting
                 games.
               </p>
@@ -221,6 +207,19 @@ const HomePage = () => {
             </Fade>
           </div>
         </Container>
+
+        <div className="relative z-0 w-full md:max-w-xl lg:-mt-20 lg:max-w-3xl xl:max-w-4xl">
+          <Fade delay={0.9}>
+            <picture>
+              <source srcSet={`${heroLogo} 1x, ${heroLogoLg} 2x`} />
+              <img
+                src={heroLogo}
+                alt="Infinity Keys logo of a spooky eye in triangle."
+                className="block w-full"
+              />
+            </picture>
+          </Fade>
+        </div>
       </div>
 
       <section>
