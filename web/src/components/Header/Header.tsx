@@ -52,10 +52,22 @@ const DesktopNav = () => {
 
   return (
     <nav className="hidden w-full max-w-lg justify-around gap-4 lg:flex xl:max-w-xl">
-      <a href="/">How It Works</a>
-      <a href="/">About</a>
-      <a href="/">Blog</a>
-      <a href="/">Play Demo</a>
+      <Link to="/#works">How It Works</Link>
+      <a
+        href="https://docs.infinitykeys.io/infinity-keys-docs/start-here/what-is-infinity-keys"
+        target="_blank"
+        rel="noreferrer"
+      >
+        About
+      </a>
+      <a
+        href="https://mirror.xyz/0xD4076B05a720d263993BC5801d74692D1588C68A"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Blog
+      </a>
+      <Link to={routes.puzzleLanding({ slug: 'the-society' })}>Play Demo</Link>
       {isAuthenticated ? (
         <>{loading ? <LoaderIcon /> : <a href="/">Profile</a>}</>
       ) : (
@@ -108,12 +120,12 @@ const Logos = () => {
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
 
   // Close menu when route changes (ie, user click internal link)
   useEffect(() => {
     setIsOpen(false)
-  }, [pathname])
+  }, [pathname, hash])
 
   return (
     <div className="fixed top-0 left-0 z-50 w-full bg-brand-gray-primary">
@@ -192,14 +204,14 @@ const Header = () => {
                     <nav className="mt-7 flex flex-col items-center p-6">
                       {/* Navigation links */}
                       <NavTitle text="Navigation" />
-                      <a
-                        href="https://docs.infinitykeys.io/infinity-keys-docs/start-here/what-is-infinity-keys"
+                      <Link
+                        to="/#works"
                         target="_blank"
                         rel="noreferrer"
                         className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
                         How It Works
-                      </a>
+                      </Link>
 
                       <a
                         href="https://docs.infinitykeys.io/infinity-keys-docs/start-here/what-is-infinity-keys"
@@ -211,7 +223,7 @@ const Header = () => {
                       </a>
 
                       <a
-                        href="https://docs.infinitykeys.io/infinity-keys-docs/start-here/what-is-infinity-keys"
+                        href="https://mirror.xyz/0xD4076B05a720d263993BC5801d74692D1588C68A"
                         target="_blank"
                         rel="noreferrer"
                         className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
