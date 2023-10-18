@@ -7,7 +7,6 @@ import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import clsx from 'clsx'
 
 import { Link, routes, useLocation } from '@redwoodjs/router'
-import { LoaderIcon } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
@@ -16,6 +15,7 @@ import LogoFullSm from 'src/images/full-logo-sm.webp'
 import LogoHeader1x from 'src/images/IK-LOGO-1x.webp'
 import LogoHeader2x from 'src/images/IK-LOGO-2x.webp'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
+import { useLoginModal } from 'src/providers/loginModal/loginModal'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
@@ -48,7 +48,8 @@ const socialLinks = [
 ]
 
 const DesktopNav = () => {
-  const { loading, isAuthenticated } = useAuth()
+  const { isAuthenticated } = useAuth()
+  const { setIsLoginModalOpen } = useLoginModal()
 
   return (
     <nav className="hidden w-full max-w-lg justify-around gap-4 lg:flex xl:max-w-xl">
@@ -69,9 +70,15 @@ const DesktopNav = () => {
       </a>
       <Link to={routes.puzzleLanding({ slug: 'the-society' })}>Play Demo</Link>
       {isAuthenticated ? (
-        <>{loading ? <LoaderIcon /> : <a href="/">Profile</a>}</>
+        <Link to={routes.profile()}>Profile</Link>
       ) : (
-        <a href="/">Login</a>
+        <button
+          onClick={() => {
+            setIsLoginModalOpen(true)
+          }}
+        >
+          Login
+        </button>
       )}
     </nav>
   )
@@ -121,6 +128,7 @@ const Logos = () => {
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   const { pathname, hash } = useLocation()
+  const { isAuthenticated } = useAuth()
 
   // Close menu when route changes (ie, user click internal link)
   useEffect(() => {
@@ -136,7 +144,7 @@ const Header = () => {
           <DesktopNav />
 
           <div className="flex shrink-0 gap-4">
-            <div className="hidden md:block">
+            <div className="hidden lg:block">
               <WalletButton size="small" />
             </div>
 
@@ -248,7 +256,29 @@ const Header = () => {
                       <div className="mt-7 flex items-center justify-center gap-4">
                         <WalletButton size="small" />
 
-                        <a href="/">Login</a>
+                        {isAuthenticated ? (
+                          <Button
+                            variant="rounded"
+                            shadow={false}
+                            size="small"
+                            to={routes.profile()}
+                          >
+                            Profile
+                          </Button>
+                        ) : (
+                          <Button
+                            to={routes.profile()}
+                            // onClick={() => {
+                            //   setIsOpen(false)
+                            //   setIsLoginModalOpen(true)
+                            // }}
+                            variant="rounded"
+                            shadow={false}
+                            size="small"
+                          >
+                            Login
+                          </Button>
+                        )}
                       </div>
 
                       {/* Social Icons */}
