@@ -16,9 +16,6 @@ import computer from 'src/images/computer.webp'
 import controller from 'src/images/controller.webp'
 import heroLogo from 'src/images/full-logo-2x.webp'
 import heroLogoLg from 'src/images/full-logo-lg.webp'
-import heroBeaker from 'src/images/hero-beaker.webp'
-import heroMedal from 'src/images/hero-medal.webp'
-import heroWatch from 'src/images/hero-watch.webp'
 import medal from 'src/images/medal.webp'
 import puzzle from 'src/images/puzzle.webp'
 import watch from 'src/images/watch.webp'
@@ -127,39 +124,6 @@ const socialLinks = [
     icon: <RedditIcon />,
   },
 ]
-
-type HeroData = {
-  image: string
-  // These are the ids that come from the Spline objects
-  id: string
-  title: string
-  description: string
-}
-
-type HeroDataKey = 'BEAKER' | 'COMPASS' | 'MEDAL'
-
-const heroDataLookup: {
-  [key in HeroDataKey]: HeroData
-} = {
-  BEAKER: {
-    image: heroBeaker,
-    id: 'a544d2c8-4724-4307-a7b6-02bc4e26af9c',
-    title: 'Creators',
-    description: 'Launch no-code keyhunts featuring any digital assets',
-  },
-  COMPASS: {
-    image: heroWatch,
-    id: 'd2785602-5804-46c5-be6d-8858a22eddcc',
-    title: 'Players',
-    description: 'Solve puzzles, collect keys & claim treasure',
-  },
-  MEDAL: {
-    image: heroMedal,
-    id: '08443abf-b225-42ac-bb7a-7a4e416cf4c3',
-    title: 'Sponsors',
-    description: 'Post bounties to incentivize creator-built games',
-  },
-}
 
 const Container = ({
   pySm = false,
