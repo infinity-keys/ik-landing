@@ -1,9 +1,9 @@
-import { PropsWithChildren, useRef, useState } from 'react'
+import { PropsWithChildren, useLayoutEffect, useRef, useState } from 'react'
 
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import clsx from 'clsx'
 
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes, useLocation } from '@redwoodjs/router'
 
 import Fade from 'src/components/Animations/Fade'
 import BenefitCard from 'src/components/BenefitCard/BenefitCard'
@@ -153,6 +153,8 @@ const Container = ({
 const HomePage = () => {
   const [isFormVisible, setIsFormVisible] = useState(false)
   const formRef = useRef<{ scrollToElement: () => void }>()
+  const workRef = useRef<HTMLElement>(null)
+  const { hash } = useLocation()
 
   const handleScrollToForm = () => {
     setIsFormVisible(true)
@@ -160,6 +162,16 @@ const HomePage = () => {
       formRef.current.scrollToElement()
     }
   }
+
+  useLayoutEffect(() => {
+    if (hash === '#works' && workRef.current) {
+      workRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+
+    if (hash === '#waitlist') {
+      handleScrollToForm()
+    }
+  }, [hash])
 
   return (
     <div>
@@ -222,7 +234,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      <section>
+      <section ref={workRef}>
         <Container pySm>
           <Fade>
             <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
