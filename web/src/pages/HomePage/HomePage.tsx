@@ -11,14 +11,14 @@ import Button from 'src/components/Button'
 import HomeContactForm from 'src/components/HomeContactForm/HomeContactForm'
 import OpportunityCard from 'src/components/OpportunityCard/OpportunityCard'
 import Seo from 'src/components/Seo/Seo'
-import beaker from 'src/images/beaker.webp'
+import compass from 'src/images/compass.webp'
 import computer from 'src/images/computer.webp'
 import controller from 'src/images/controller.webp'
 import heroLogo from 'src/images/full-logo-2x.webp'
 import heroLogoLg from 'src/images/full-logo-lg.webp'
-import medal from 'src/images/medal.webp'
+import key from 'src/images/key.webp'
 import puzzle from 'src/images/puzzle.webp'
-import watch from 'src/images/watch.webp'
+import union from 'src/images/union.webp'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
@@ -34,7 +34,7 @@ export type BenefitCardProps = {
 
 const benefits: Array<BenefitCardProps> = [
   {
-    icon: watch,
+    icon: key,
     title: 'Players',
     description:
       'Seek adventure and collect artifacts in creator-built keyhunt puzzle games.',
@@ -47,7 +47,7 @@ const benefits: Array<BenefitCardProps> = [
     ],
   },
   {
-    icon: beaker,
+    icon: compass,
     title: 'Creators',
     description:
       'Use no-code keyhunt tools to take players on your creative adventures.',
@@ -60,7 +60,7 @@ const benefits: Array<BenefitCardProps> = [
     ],
   },
   {
-    icon: medal,
+    icon: union,
     title: 'Sponsors',
     description:
       'Independent creators build keyhunt puzzle games featuring your collections.',

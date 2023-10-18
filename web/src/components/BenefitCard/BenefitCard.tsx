@@ -44,7 +44,7 @@ const BenefitCard = ({
           <div className="flex flex-col items-center">
             <Scale delay={delay + 0.3}>
               <Scale withHover>
-                <img src={icon} alt="" className="mb-4 w-14" />
+                <img src={icon} alt="" className="mb-4 h-14 w-14" />
               </Scale>
             </Scale>
             <h3 className="text-xl font-medium">{title}</h3>
