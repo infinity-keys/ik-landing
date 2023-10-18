@@ -1,8 +1,7 @@
-import { PropsWithChildren, Suspense, useRef, useState, lazy } from 'react'
+import { PropsWithChildren, useRef, useState } from 'react'
 
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import clsx from 'clsx'
-import { m as motion } from 'framer-motion'
 
 import { Link, routes } from '@redwoodjs/router'
 
@@ -15,9 +14,8 @@ import Seo from 'src/components/Seo/Seo'
 import beaker from 'src/images/beaker.webp'
 import computer from 'src/images/computer.webp'
 import controller from 'src/images/controller.webp'
-import heroBeaker from 'src/images/hero-beaker.webp'
-import heroMedal from 'src/images/hero-medal.webp'
-import heroWatch from 'src/images/hero-watch.webp'
+import heroLogo from 'src/images/full-logo-2x.webp'
+import heroLogoLg from 'src/images/full-logo-lg.webp'
 import medal from 'src/images/medal.webp'
 import puzzle from 'src/images/puzzle.webp'
 import watch from 'src/images/watch.webp'
@@ -26,8 +24,6 @@ import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
-
-const Spline = lazy(() => import('@splinetool/react-spline'))
 
 export type BenefitCardProps = {
   icon: string
@@ -129,56 +125,23 @@ const socialLinks = [
   },
 ]
 
-type HeroData = {
-  image: string
-  // These are the ids that come from the Spline objects
-  id: string
-  title: string
-  description: string
-}
-
-type HeroDataKey = 'BEAKER' | 'COMPASS' | 'MEDAL'
-
-const heroDataLookup: {
-  [key in HeroDataKey]: HeroData
-} = {
-  BEAKER: {
-    image: heroBeaker,
-    id: 'a544d2c8-4724-4307-a7b6-02bc4e26af9c',
-    title: 'Creators',
-    description: 'Launch no-code keyhunts featuring any digital assets',
-  },
-  COMPASS: {
-    image: heroWatch,
-    id: 'd2785602-5804-46c5-be6d-8858a22eddcc',
-    title: 'Players',
-    description: 'Solve puzzles, collect keys & claim treasure',
-  },
-  MEDAL: {
-    image: heroMedal,
-    id: '08443abf-b225-42ac-bb7a-7a4e416cf4c3',
-    title: 'Sponsors',
-    description: 'Post bounties to incentivize creator-built games',
-  },
-}
-
 const Container = ({
   pySm = false,
   bgLight = false,
-  noXs = false,
+  noPx = false,
   children,
 }: PropsWithChildren & {
   pySm?: boolean
   bgLight?: boolean
-  noXs?: boolean
+  noPx?: boolean
 }) => {
   return (
     <div className={clsx({ 'bg-white/5': bgLight })}>
       <div
         className={clsx(
-          'mx-auto px-4 md:max-w-8xl lg:px-12',
+          'mx-auto max-w-xs md:max-w-8xl',
           pySm ? 'py-8 lg:py-20' : 'py-14 lg:py-24',
-          !noXs && 'max-w-xs'
+          !noPx && 'px-4 lg:px-12'
         )}
       >
         {children}
@@ -189,8 +152,6 @@ const Container = ({
 
 const HomePage = () => {
   const [isFormVisible, setIsFormVisible] = useState(false)
-  const [heroDataIndex, setHeroDataIndex] = useState<HeroDataKey | null>(null)
-  const isSelected = heroDataIndex !== null
   const formRef = useRef<{ scrollToElement: () => void }>()
 
   const handleScrollToForm = () => {
@@ -200,96 +161,64 @@ const HomePage = () => {
     }
   }
 
-  function onMouseDown(targetId: string) {
-    switch (targetId) {
-      case heroDataLookup.BEAKER.id:
-        setHeroDataIndex('BEAKER')
-        break
-      case heroDataLookup.COMPASS.id:
-        setHeroDataIndex('COMPASS')
-        break
-      case heroDataLookup.MEDAL.id:
-        setHeroDataIndex('MEDAL')
-        break
-      default:
-        setHeroDataIndex(null)
-    }
-  }
-
   return (
     <div>
       <Seo title="Home" />
 
-      <div className="relative mx-auto max-w-8xl overflow-hidden">
-        <div className="min-h-screen">
-          <Container noXs>
-            <div className="flex flex-col md:flex-row">
-              <div className="relative z-20 mt-12 max-w-2xl flex-1 md:mt-32">
-                <div className="mx-auto max-w-xs px-4 md:max-w-none lg:px-0">
-                  <h1 className="text-shadow-lg text-3xl font-semibold lg:text-6xl">
-                    <Fade inline duration={1.8} key={heroDataIndex}>
-                      {isSelected
-                        ? heroDataLookup[heroDataIndex].title
-                        : 'Infinity Keys'}
-                    </Fade>
-                  </h1>
-                  <Fade delay={isSelected ? 0.4 : 0.6} key={heroDataIndex}>
-                    <p
-                      className="text-shadow-lg mt-4 min-h-[96px] max-w-xs text-2xl lg:max-w-lg lg:text-4xl"
-                      data-cy="description"
-                    >
-                      {isSelected
-                        ? heroDataLookup[heroDataIndex].description
-                        : 'is a no-code creator platform for games & collecting digital keys'}
-                    </p>
-                  </Fade>
+      <div className="relative mt-20 flex max-w-8xl flex-col items-center overflow-x-hidden md:mt-0 md:min-h-screen md:flex-row md:justify-between">
+        <Container noPx pySm>
+          <div className="relative z-10 max-w-xs pr-4 pl-4 md:pr-0 lg:max-w-md lg:pl-12">
+            <h1 className="text-shadow-lg text-3xl font-semibold lg:text-5xl xl:text-6xl">
+              <Fade inline duration={1.2}>
+                Your NFTs
+              </Fade>{' '}
+              <Fade inline delay={0.6} duration={1.2}>
+                are <span className="text-brand-accent-primary">the Keys</span>
+              </Fade>
+            </h1>
 
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: isSelected ? 0 : 1 }}
-                    transition={{
-                      duration: isSelected ? 0.1 : 0.9,
-                      delay: isSelected ? 0 : 0.9,
-                    }}
-                  >
-                    <div className="mt-8 flex gap-2">
-                      <Button
-                        variant="rounded"
-                        shadow={false}
-                        onClick={handleScrollToForm}
-                      >
-                        <span className="hidden md:inline">Beta&nbsp;</span>
-                        Waitlist
-                      </Button>
+            <Fade delay={0.9}>
+              <p className="text-shadow-lg mt-4 text-lg leading-tight lg:text-2xl">
+                Infinity Keys is for creators to build no-code NFT collecting
+                games.
+              </p>
+            </Fade>
 
-                      <Button
-                        variant="roundedWhite"
-                        shadow={false}
-                        to={routes.puzzleLanding({ slug: 'the-society' })}
-                      >
-                        <span className="hidden md:inline">Play&nbsp;</span>
-                        Demo
-                      </Button>
-                    </div>
-                  </motion.div>
-                </div>
+            <Fade delay={1.2}>
+              <div className="mt-8 flex gap-2">
+                <Button
+                  variant="rounded"
+                  shadow={false}
+                  onClick={handleScrollToForm}
+                >
+                  <span className="hidden md:inline">Join&nbsp;</span>
+                  Waitlist
+                </Button>
+
+                <Button
+                  variant="roundedWhite"
+                  shadow={false}
+                  to={routes.puzzleLanding({ slug: 'the-society' })}
+                >
+                  <span className="hidden md:inline">Play&nbsp;</span>
+                  Demo
+                </Button>
               </div>
+            </Fade>
+          </div>
+        </Container>
 
-              <div className="relative mx-auto mt-8 aspect-square w-full max-w-xl flex-1">
-                <Suspense>
-                  <Spline
-                    scene="https://prod.spline.design/PLAfCk5FVS07KdX2/scene.splinecode"
-                    className="absolute inset-0"
-                  />
-                  <Spline
-                    scene="https://prod.spline.design/ChhWrS5PwiyDUGhr/scene.splinecode"
-                    className="absolute inset-0"
-                    onMouseDown={(e) => onMouseDown(e.target.id)}
-                  />
-                </Suspense>
-              </div>
-            </div>
-          </Container>
+        <div className="relative z-0 w-full md:max-w-xl lg:-mt-20 lg:max-w-3xl xl:max-w-4xl">
+          <Fade delay={0.9}>
+            <picture>
+              <source srcSet={`${heroLogo} 1x, ${heroLogoLg} 2x`} />
+              <img
+                src={heroLogo}
+                alt="Infinity Keys logo of a spooky eye in triangle."
+                className="block w-full"
+              />
+            </picture>
+          </Fade>
         </div>
       </div>
 
