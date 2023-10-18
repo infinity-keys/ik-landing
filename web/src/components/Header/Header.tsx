@@ -10,7 +10,7 @@ import { Link, routes, useLocation } from '@redwoodjs/router'
 import { LoaderIcon } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
-import ProfileIcon from 'src/components/ProfileIcon/ProfileIcon'
+import Button from 'src/components/Button/Button'
 import WalletButton from 'src/components/WalletButton/WalletButton'
 import LogoFullSm from 'src/images/full-logo-sm.webp'
 import LogoHeader1x from 'src/images/IK-LOGO-1x.webp'
@@ -47,13 +47,68 @@ const socialLinks = [
   },
 ]
 
-const Header = () => {
-  const { loading } = useAuth()
-  const [isOpen, setIsOpen] = useState(false)
+const DesktopNav = () => {
+  const { loading, isAuthenticated } = useAuth()
+
+  return (
+    <nav className="hidden w-full max-w-lg justify-around gap-4 lg:flex xl:max-w-xl">
+      <a href="/">How It Works</a>
+      <a href="/">About</a>
+      <a href="/">Blog</a>
+      <a href="/">Play Demo</a>
+      {isAuthenticated ? (
+        <>{loading ? <LoaderIcon /> : <a href="/">Profile</a>}</>
+      ) : (
+        <a href="/">Login</a>
+      )}
+    </nav>
+  )
+}
+
+const Logos = () => {
   const { pathname } = useLocation()
   const { pageHeading } = useGlobalInfo()
 
   const withPageHeading = pathname.includes('/puzzle/') && pageHeading
+  return (
+    <>
+      <h1
+        className={clsx(
+          'text-xl font-medium',
+          withPageHeading ? 'block md:hidden' : 'hidden'
+        )}
+      >
+        {pageHeading}
+      </h1>
+      <div
+        className={clsx(
+          'items-center',
+          withPageHeading ? 'hidden md:flex' : 'flex'
+        )}
+        data-cy="ik logo"
+      >
+        {/* Left logo */}
+        <Link
+          to={routes.home()}
+          className="inline-block max-w-[100px] sm:max-w-[150px]"
+          aria-label="return home"
+        >
+          <picture>
+            <source srcSet={`${LogoHeader1x} 1x, ${LogoHeader2x} 2x`} />
+            <img
+              src={LogoHeader1x}
+              alt="Infinity Keys logo of a spooky eye in triangle."
+            />
+          </picture>
+        </Link>
+      </div>
+    </>
+  )
+}
+
+const Header = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const { pathname } = useLocation()
 
   // Close menu when route changes (ie, user click internal link)
   useEffect(() => {
@@ -61,49 +116,27 @@ const Header = () => {
   }, [pathname])
 
   return (
-    <div className="fixed top-0 left-0 z-50 w-full bg-brand-gray-primary px-4 sm:px-6 lg:px-8">
-      <div className="container">
+    <div className="fixed top-0 left-0 z-50 w-full bg-brand-gray-primary">
+      <div className="mx-auto max-w-8xl px-4 lg:px-12">
         <div className="flex h-20 items-center justify-between">
           {/* On puzzle or step pages, the rewardable name should replace logo on mobile */}
-          <h1
-            className={clsx(
-              'text-xl font-medium',
-              withPageHeading ? 'block md:hidden' : 'hidden'
-            )}
-          >
-            {pageHeading}
-          </h1>
-          <div
-            className={clsx(
-              'items-center',
-              withPageHeading ? 'hidden md:flex' : 'flex'
-            )}
-            data-cy="ik logo"
-          >
-            {/* Left logo */}
-            <Link
-              to={routes.home()}
-              className="inline-block max-w-[100px] sm:max-w-[150px]"
-              aria-label="return home"
-            >
-              <picture>
-                <source srcSet={`${LogoHeader1x} 1x, ${LogoHeader2x} 2x`} />
-                <img
-                  src={LogoHeader1x}
-                  alt="Infinity Keys logo of a spooky eye in triangle."
-                />
-              </picture>
-            </Link>
-          </div>
+          <Logos />
+          <DesktopNav />
 
-          <div className="flex gap-4">
-            {loading ? <LoaderIcon /> : <ProfileIcon />}
+          <div className="flex shrink-0 gap-4">
+            <div className="hidden md:block">
+              <WalletButton size="small" />
+            </div>
+
+            <Button variant="rounded" size="small" shadow={false}>
+              Join Waitlist
+            </Button>
 
             {/* Menu open button */}
             <button
               onClick={() => setIsOpen(true)}
               aria-label="Open menu."
-              className="text-white"
+              className="text-white lg:hidden"
             >
               <Bars3Icon className="h-6 w-6" />
             </button>
@@ -114,7 +147,7 @@ const Header = () => {
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-30"
+          className="relative z-[60]"
           onClose={() => setIsOpen(false)}
         >
           {/* Backdrop */}
@@ -159,42 +192,46 @@ const Header = () => {
                     <nav className="mt-7 flex flex-col items-center p-6">
                       {/* Navigation links */}
                       <NavTitle text="Navigation" />
-                      <Link
-                        to={routes.puzzleLanding({ slug: 'the-society' })}
-                        className="header-nav--link mt-5 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
+                      <a
+                        href="https://docs.infinitykeys.io/infinity-keys-docs/start-here/what-is-infinity-keys"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
-                        Play Demo
-                      </Link>
+                        How It Works
+                      </a>
 
                       <a
                         href="https://docs.infinitykeys.io/infinity-keys-docs/start-here/what-is-infinity-keys"
                         target="_blank"
                         rel="noreferrer"
-                        className="header-nav--link mt-3 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
+                        className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
                         About
                       </a>
+
                       <a
-                        href="https://docs.infinitykeys.io/infinity-keys-docs/gameplay/how-to-play"
+                        href="https://docs.infinitykeys.io/infinity-keys-docs/start-here/what-is-infinity-keys"
                         target="_blank"
                         rel="noreferrer"
-                        className="header-nav--link mt-3 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
-                      >
-                        How to Play
-                      </a>
-                      {/* <a
-                        href="https://blog.infinitykeys.io"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="header-nav--link mt-3 py-2 px-4 text-2xl font-medium text-white transition-colors hover:text-brand-accent-primary"
+                        className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
                         Blog
-                      </a> */}
+                      </a>
+
+                      <Link
+                        to={routes.puzzleLanding({ slug: 'the-society' })}
+                        className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
+                      >
+                        Play Demo
+                      </Link>
 
                       {/* Wallet and profile buttons */}
                       <NavTitle text="Connect" />
-                      <div className="mt-7 flex items-center justify-center gap-2">
-                        <WalletButton />
+                      <div className="mt-7 flex items-center justify-center gap-4">
+                        <WalletButton size="small" />
+
+                        <a href="/">Login</a>
                       </div>
 
                       {/* Social Icons */}
