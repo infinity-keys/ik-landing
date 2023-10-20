@@ -191,8 +191,7 @@ const HomePage = () => {
 
             <Fade delay={0.9}>
               <p className="text-shadow-lg mt-4 text-lg leading-tight lg:text-2xl">
-                Infinity Keys is for creators to build no-code NFT collecting
-                games.
+                Infinity Keys creators build no-code NFT collecting games.
               </p>
             </Fade>
 
