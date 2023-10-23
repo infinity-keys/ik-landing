@@ -127,7 +127,6 @@ const socialLinks = [
 
 const Container = ({
   pySm = false,
-  bgLight = false,
   noPx = false,
   children,
 }: PropsWithChildren & {
@@ -136,16 +135,14 @@ const Container = ({
   noPx?: boolean
 }) => {
   return (
-    <div className={clsx({ 'bg-white/5': bgLight })}>
-      <div
-        className={clsx(
-          'mx-auto max-w-xs md:max-w-8xl',
-          pySm ? 'py-8 lg:py-20' : 'py-14 lg:py-24',
-          !noPx && 'px-4 lg:px-12'
-        )}
-      >
-        {children}
-      </div>
+    <div
+      className={clsx(
+        'mx-auto max-w-xs md:max-w-8xl',
+        pySm ? 'py-8 lg:py-20' : 'py-14 lg:py-24',
+        !noPx && 'px-4 lg:px-12'
+      )}
+    >
+      {children}
     </div>
   )
 }
@@ -237,20 +234,6 @@ const HomePage = () => {
       </div>
 
       <section ref={workRef}>
-        <Container pySm>
-          <Fade>
-            <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
-              How It Works
-            </h2>
-          </Fade>
-          <Fade>
-            <p className="max-w-xl text-sm lg:text-lg">
-              A net positive value loop incentives creators, sponsors, and
-              players without draining economic value from the system
-            </p>
-          </Fade>
-        </Container>
-
         <Container bgLight>
           <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center lg:gap-6">
             {benefits.map((data, index) => (
