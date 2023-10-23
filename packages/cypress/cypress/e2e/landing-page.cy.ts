@@ -4,6 +4,6 @@ beforeEach(() => {
 
 describe('Landing Page', () => {
   it('loads the landing page', () => {
-    cy.get('[data-cy="description"]').contains('platform')
+    cy.get('[data-cy="description"]').contains('Infinity Keys')
   })
 })
