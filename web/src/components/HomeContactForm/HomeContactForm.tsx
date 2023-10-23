@@ -7,7 +7,9 @@ import {
 } from 'react'
 
 import clsx from 'clsx'
-import { identity, isEmpty, pickBy } from 'lodash'
+import identity from 'lodash/identity'
+import isEmpty from 'lodash/isEmpty'
+import pickBy from 'lodash/pickBy'
 
 import {
   Form,
@@ -63,6 +65,7 @@ const HomeContactForm = forwardRef((_props, ref) => {
     const { describe, ...rest } = data
     // Get only the selected boxes
     const submissionTypes = pickBy(describe, identity)
+    console.log('submissionTypes: ', submissionTypes)
 
     // At least one checkbox needs to be selected
     if (isEmpty(submissionTypes)) {
@@ -70,6 +73,7 @@ const HomeContactForm = forwardRef((_props, ref) => {
       return
     }
     setIsLoading(true)
+    return
 
     const submission = {
       ...rest,
@@ -166,7 +170,7 @@ const HomeContactForm = forwardRef((_props, ref) => {
                 <span
                   className={clsx(
                     'ml-2 italic text-red-400',
-                    checkboxError ? 'inline' : 'overflow-x-hiddenden'
+                    checkboxError ? 'inline' : 'hidden'
                   )}
                 >
                   please choose one
