@@ -128,20 +128,27 @@ const socialLinks = [
 const Container = ({
   pySm = false,
   noPx = false,
+  noPt = false,
   bgLight = false,
   children,
 }: PropsWithChildren & {
   pySm?: boolean
   bgLight?: boolean
   noPx?: boolean
+  noPt?: boolean
 }) => {
   return (
     <div className={clsx({ 'bg-white/5': bgLight })}>
       <div
         className={clsx(
           'mx-auto max-w-xs md:max-w-8xl',
-          pySm ? 'py-8 lg:py-20' : 'py-14 lg:py-24',
-          !noPx && 'px-4 lg:px-12'
+          // pySm ? 'py-8 lg:py-20' : 'py-14 lg:py-24',
+          !noPx && 'px-4 lg:px-12',
+          {
+            'py-8 lg:py-20': pySm && !noPt,
+            'py-14 lg:py-24': !pySm && !noPt,
+            'pb-14 lg:pb-24': noPt,
+          }
         )}
       >
         {children}
@@ -236,8 +243,8 @@ const HomePage = () => {
         </div>
       </div>
 
-      <section ref={workRef}>
-        <Container>
+      <section ref={workRef} className="relative z-40 -mt-[100px]">
+        <Container noPt>
           <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center lg:gap-6">
             {benefits.map((data, index) => (
               <BenefitCard {...data} key={data.title} delay={index * 0.3} />
