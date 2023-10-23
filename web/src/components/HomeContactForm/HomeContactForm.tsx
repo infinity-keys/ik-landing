@@ -6,13 +6,16 @@ import {
   useImperativeHandle,
 } from 'react'
 
+import clsx from 'clsx'
+import { identity, isEmpty, pickBy } from 'lodash'
+
 import {
   Form,
   Label,
   TextField,
-  TextAreaField,
   FieldError,
   HiddenField,
+  CheckboxField,
 } from '@redwoodjs/forms'
 import { LoaderIcon, toast } from '@redwoodjs/web/dist/toast'
 
@@ -20,16 +23,21 @@ import Fade from '../Animations/Fade'
 import Button from '../Button'
 
 type FormData = {
-  name: string
   email: string
-  website?: string
-  social?: string
   honeypot?: string
-  message?: string
+  describe: Record<string, boolean>
 }
+
+// Custom StaticForms fields need to start with "$"
+const checkboxOptions = [
+  'describe.$player',
+  'describe.$creator',
+  'describe.$sponsor',
+]
 
 const HomeContactForm = forwardRef((_props, ref) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [checkboxError, setCheckboxError] = useState(false)
   const [isSuccessful, setIsSuccessful] = useState<boolean | null>(null)
 
   const localRef = useRef<HTMLDivElement>(null)
@@ -51,10 +59,21 @@ const HomeContactForm = forwardRef((_props, ref) => {
   }, [])
 
   const onSubmit = async (data: FormData) => {
+    setCheckboxError(false)
+    const { describe, ...rest } = data
+    // Get only the selected boxes
+    const submissionTypes = pickBy(describe, identity)
+
+    // At least one checkbox needs to be selected
+    if (isEmpty(submissionTypes)) {
+      setCheckboxError(true)
+      return
+    }
     setIsLoading(true)
 
     const submission = {
-      ...data,
+      ...rest,
+      ...submissionTypes,
       replyTo: '@',
       accessKey: process.env.STATIC_FORMS_ACCESS_TOKEN,
       subject: 'Partner Homepage Submission',
@@ -111,86 +130,75 @@ const HomeContactForm = forwardRef((_props, ref) => {
       <Fade>
         <Form
           onSubmit={onSubmit}
-          className="mx-auto flex w-full max-w-md flex-col gap-6 text-sm md:grid md:max-w-none md:grid-cols-2"
+          className="mx-auto w-full text-sm md:max-w-none"
         >
-          <HiddenField name="honeypot" />
+          <div className="flex flex-col gap-6 md:grid  md:grid-cols-2">
+            <HiddenField name="honeypot" />
 
-          <div className="flex flex-col gap-4 lg:basis-1/2">
-            <Label name="Name *" errorClassName="label error" />
-            <TextField
-              name="name"
-              className="rounded border-stone-50 bg-transparent py-1 placeholder:text-sm placeholder:text-white/50"
-              errorClassName="border-red-500 rounded border-stone-50 bg-transparent py-1 placeholder:text-sm placeholder:text-white/50"
-              validation={{ required: true }}
-              placeholder="Enter Your Name"
-            />
-            <FieldError name="name" className="text-red-300" />
+            <div className="flex flex-col gap-4 lg:basis-1/2">
+              <Label
+                name="Email *"
+                className="label"
+                errorClassName="label error"
+                htmlFor="email"
+              />
+              <TextField
+                name="email"
+                className="rounded border-stone-50 bg-transparent py-1 placeholder:text-sm placeholder:text-white/50"
+                errorClassName="border-red-500 rounded border-stone-50 bg-transparent py-1 placeholder:text-sm placeholder:text-white/50"
+                validation={{
+                  required: true,
+                  pattern: {
+                    message: 'Please enter a valid email',
+                    value: /[^@]+@[^\.]+\..+/,
+                  },
+                }}
+                placeholder="Enter Your Email"
+              />
+              <FieldError name="email" className="error-message" />
+            </div>
+
+            <div className="flex flex-col gap-4 lg:basis-1/2">
+              <p>What describes you best? *</p>
+              <div className="flex gap-4" role="group">
+                {checkboxOptions.map((name) => (
+                  <div key={name} className="">
+                    <CheckboxField
+                      name={name}
+                      id={name}
+                      className="border-1 mr-2 rounded border-white/30 bg-transparent p-3"
+                    />
+                    <Label
+                      name={`I'm a ${name.split('describe.$')[1]}`}
+                      htmlFor={name}
+                      className="label"
+                    />
+                  </div>
+                ))}
+              </div>
+              <p className={clsx(checkboxError ? 'opacity-100' : 'opacity-0')}>
+                Please choose one
+              </p>
+            </div>
+
+            {/* <div className="flex flex-col gap-4 lg:basis-1/2">
+              <p>Join the Illuminati?</p>
+              <div className="flex gap-4" role="group">
+                <CheckboxField
+                  name="ill"
+                  id="ill"
+                  className="border-1 mr-2 rounded border-white/30 bg-transparent p-3"
+                />
+              </div>
+            </div> */}
           </div>
-
-          <div className="flex flex-col gap-4 lg:basis-1/2">
-            <Label
-              name="Email *"
-              className="label"
-              errorClassName="label error"
-            />
-            <TextField
-              name="email"
-              className="rounded border-stone-50 bg-transparent py-1 placeholder:text-sm placeholder:text-white/50"
-              errorClassName="border-red-500 rounded border-stone-50 bg-transparent py-1 placeholder:text-sm placeholder:text-white/50"
-              validation={{
-                required: true,
-                pattern: {
-                  message: 'Please enter a valid email',
-                  value: /[^@]+@[^\.]+\..+/,
-                },
-              }}
-              placeholder="Enter Your Email"
-            />
-            <FieldError name="email" className="error-message" />
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <Label name="Company Website" errorClassName="label error" />
-            <TextField
-              name="website"
-              className="rounded border-stone-50 bg-transparent py-1 placeholder:text-sm placeholder:text-white/50"
-              errorClassName="border-red-500 rounded border-stone-50 bg-transparent py-1 placeholder:text-sm placeholder:text-white/50"
-              placeholder="www.yourwebsite.com"
-            />
-            <FieldError name="website" className="error-message" />
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <Label
-              name="Discord/Telegram/Linkedin"
-              errorClassName="label error"
-              placeholder="Enter Your Email"
-            />
-            <TextField
-              name="social"
-              className="rounded border-stone-50 bg-transparent py-1 placeholder:text-sm placeholder:text-white/50"
-              errorClassName="border-red-500 rounded border-stone-50 bg-transparent py-1 placeholder:text-sm placeholder:text-white/50"
-              placeholder="Enter Your Username"
-            />
-            <FieldError name="social" className="error-message" />
-          </div>
-
-          <div className="col-span-2 flex flex-col gap-4">
-            <Label
-              name="Tell us more about partnership opportunities"
-              errorClassName="label error"
-            />
-            <TextAreaField
-              name="message"
-              className="resize-none rounded border-stone-50 bg-transparent py-1 placeholder:text-sm placeholder:text-white/50 focus:border-brand-accent-secondary focus:ring-brand-accent-secondary"
-              errorClassName="border-red-500 rounded border-stone-50 bg-transparent py-1 resize-none placeholder:text-sm placeholder:text-white/50"
-              placeholder="Message"
-            />
-            <FieldError name="message" className="error-message" />
-          </div>
-
           <div>
-            <Button type="submit" variant="rounded" shadow={false}>
+            <Button
+              type="submit"
+              variant="rounded"
+              shadow={false}
+              disabled={false}
+            >
               Submit
             </Button>
           </div>
