@@ -21,8 +21,8 @@ import {
 } from '@redwoodjs/forms'
 import { LoaderIcon, toast } from '@redwoodjs/web/dist/toast'
 
-import Fade from '../Animations/Fade'
-import Button from '../Button'
+import Fade from 'src/components/Animations/Fade'
+import Button from 'src/components/Button/Button'
 
 type FormData = {
   email: string
