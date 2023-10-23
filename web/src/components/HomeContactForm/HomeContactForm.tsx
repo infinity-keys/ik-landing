@@ -65,7 +65,6 @@ const HomeContactForm = forwardRef((_props, ref) => {
     const { describe, ...rest } = data
     // Get only the selected boxes
     const submissionTypes = pickBy(describe, identity)
-    console.log('submissionTypes: ', submissionTypes)
 
     // At least one checkbox needs to be selected
     if (isEmpty(submissionTypes)) {
