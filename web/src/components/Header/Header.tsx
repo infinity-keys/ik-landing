@@ -147,15 +147,16 @@ const Header = () => {
             <div className="hidden lg:block">
               <WalletButton size="small" />
             </div>
-
-            <Button
-              variant="rounded"
-              size="small"
-              shadow={false}
-              to="/#waitlist"
-            >
-              Join Waitlist
-            </Button>
+            <div className="text-center">
+              <Button
+                variant="rounded"
+                size="small"
+                shadow={false}
+                to="/#waitlist"
+              >
+                Join Waitlist
+              </Button>
+            </div>
 
             {/* Menu open button */}
             <button
