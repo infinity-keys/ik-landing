@@ -130,18 +130,21 @@ const HomeContactForm = forwardRef((_props, ref) => {
       <Fade>
         <Form
           onSubmit={onSubmit}
-          className="mx-auto w-full text-sm md:max-w-none"
+          className="mx-auto w-full max-w-md text-sm lg:max-w-none"
         >
-          <div className="flex flex-col gap-6 md:grid  md:grid-cols-2">
+          <div className="flex flex-col gap-12 lg:grid lg:grid-cols-2 lg:gap-8">
             <HiddenField name="honeypot" />
 
             <div className="flex flex-col gap-4 lg:basis-1/2">
-              <Label
-                name="Email *"
-                className="label"
-                errorClassName="label error"
-                htmlFor="email"
-              />
+              <div>
+                <Label
+                  name="Email *"
+                  className="label"
+                  errorClassName="label error"
+                  htmlFor="email"
+                />
+                <FieldError name="email" className="ml-2 italic text-red-400" />
+              </div>
               <TextField
                 name="email"
                 className="rounded border-stone-50 bg-transparent py-1 placeholder:text-sm placeholder:text-white/50"
@@ -155,12 +158,21 @@ const HomeContactForm = forwardRef((_props, ref) => {
                 }}
                 placeholder="Enter Your Email"
               />
-              <FieldError name="email" className="error-message" />
             </div>
 
             <div className="flex flex-col gap-4 lg:basis-1/2">
-              <p>What describes you best? *</p>
-              <div className="flex gap-4" role="group">
+              <p>
+                What describes you best? *
+                <span
+                  className={clsx(
+                    'ml-2 italic text-red-400',
+                    checkboxError ? 'inline' : 'overflow-x-hiddenden'
+                  )}
+                >
+                  please choose one
+                </span>
+              </p>
+              <div className="flex flex-col gap-4 md:flex-row">
                 {checkboxOptions.map((name) => (
                   <div key={name} className="">
                     <CheckboxField
@@ -176,29 +188,11 @@ const HomeContactForm = forwardRef((_props, ref) => {
                   </div>
                 ))}
               </div>
-              <p className={clsx(checkboxError ? 'opacity-100' : 'opacity-0')}>
-                Please choose one
-              </p>
             </div>
-
-            {/* <div className="flex flex-col gap-4 lg:basis-1/2">
-              <p>Join the Illuminati?</p>
-              <div className="flex gap-4" role="group">
-                <CheckboxField
-                  name="ill"
-                  id="ill"
-                  className="border-1 mr-2 rounded border-white/30 bg-transparent p-3"
-                />
-              </div>
-            </div> */}
           </div>
-          <div>
-            <Button
-              type="submit"
-              variant="rounded"
-              shadow={false}
-              disabled={false}
-            >
+
+          <div className="mt-8">
+            <Button type="submit" variant="rounded" shadow={false}>
               Submit
             </Button>
           </div>
