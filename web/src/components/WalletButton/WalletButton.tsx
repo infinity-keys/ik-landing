@@ -1,20 +1,13 @@
 import ShieldExclamationIcon from '@heroicons/react/24/outline/ShieldExclamationIcon'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import clsx from 'clsx'
 
 import Button from 'src/components/Button/Button'
-import useCurrentWidth from 'src/hooks/useCurrentWidth'
-
-const BREAK_POINT = 1024
 
 export default function WalletButton({
   size = 'medium',
 }: {
   size?: 'small' | 'medium' | 'large'
 }) {
-  const width = useCurrentWidth()
-  const isSmall = width < BREAK_POINT
-
   return (
     <ConnectButton.Custom>
       {({
