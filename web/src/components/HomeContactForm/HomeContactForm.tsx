@@ -73,7 +73,6 @@ const HomeContactForm = forwardRef((_props, ref) => {
       return
     }
     setIsLoading(true)
-    return
 
     const submission = {
       ...rest,
@@ -134,7 +133,7 @@ const HomeContactForm = forwardRef((_props, ref) => {
       <Fade>
         <Form
           onSubmit={onSubmit}
-          className="mx-auto w-full max-w-md text-sm lg:max-w-none"
+          className="mx-auto max-w-md text-sm lg:max-w-4xl"
         >
           <div className="flex flex-col gap-12 lg:grid lg:grid-cols-2 lg:gap-8">
             <HiddenField name="honeypot" />
