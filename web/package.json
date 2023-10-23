@@ -60,7 +60,7 @@
     "@redwoodjs/vite": "6.1.0",
     "@types/gtag.js": "^0.0.12",
     "autoprefixer": "^10.4.12",
-    "postcss": "^8.4.16",
+    "postcss": "^8.4.31",
     "postcss-loader": "^7.0.1",
     "postcss-preset-env": "^7.8.2",
     "prettier-plugin-tailwindcss": "^0.1.13",
