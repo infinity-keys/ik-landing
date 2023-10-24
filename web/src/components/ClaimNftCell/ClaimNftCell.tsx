@@ -195,6 +195,12 @@ export const Success = ({
           </p>
         </div>
       )}
+
+      <div className="mt-8">
+        <Button variant="rounded" shadow={false} to="/#waitlist">
+          Join Waitlist
+        </Button>
+      </div>
     </div>
   )
 }
