@@ -35,7 +35,7 @@ export default function Button({
   children,
 }: ButtonProps) {
   const classes = clsx(
-    'ik-button border-2 text-center transition text-white',
+    'ik-button text-shadow-sm border-2 text-center transition text-white',
     round ? 'rounded-full' : 'rounded-md',
     fullWidth ? 'block w-full' : 'inline-block',
     borderWhite ? 'border-white' : 'border-brand-accent-primary',
