@@ -58,12 +58,7 @@ const LoginForm = ({ redirectPath }: { redirectPath?: string }) => {
 
   const getButton = (type: SocialProviderType, text: string) => (
     <div className="w-full max-w-[200px]">
-      <Button
-        onClick={() => onSubmitSignUp(type)}
-        variant="faded"
-        border={false}
-        fullWidth
-      >
+      <Button onClick={() => onSubmitSignUp(type)} fullWidth>
         {text}
       </Button>
     </div>

@@ -151,7 +151,9 @@ export const Success = ({
             </div>
 
             <div className="mt-8 sm:mt-0">
-              <Button onClick={handleLogOut}>Log Out</Button>
+              <Button onClick={handleLogOut} size="small" solid>
+                Log Out
+              </Button>
             </div>
           </div>
 
@@ -288,12 +290,7 @@ export const Success = ({
           </div>
           <div className="flex items-center justify-between">
             <p>Lens:</p>
-            <LensConnect
-              text="Connect"
-              size="small"
-              variant="faded"
-              border={false}
-            />
+            <LensConnect text="Connect" size="small" />
           </div>
 
           <div className="flex items-center justify-between">
@@ -320,8 +317,6 @@ export const Success = ({
               ) : (
                 <Button
                   size="small"
-                  variant="faded"
-                  border={false}
                   onClick={() =>
                     updateExternalWallet({
                       variables: {

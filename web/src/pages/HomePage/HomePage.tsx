@@ -207,18 +207,13 @@ const HomePage = () => {
 
             <Fade delay={1.2}>
               <div className="mt-8 flex gap-2">
-                <Button
-                  variant="rounded"
-                  shadow={false}
-                  onClick={handleScrollToForm}
-                >
+                <Button round solid onClick={handleScrollToForm}>
                   <span className="hidden md:inline">Join&nbsp;</span>
                   Waitlist
                 </Button>
 
                 <Button
-                  variant="roundedWhite"
-                  shadow={false}
+                  round
                   to={routes.puzzleLanding({ slug: 'the-society' })}
                 >
                   <span className="hidden md:inline">Play&nbsp;</span>
@@ -288,12 +283,8 @@ const HomePage = () => {
           <Fade>
             {!isFormVisible && (
               <div className="pt-12">
-                <Button
-                  variant="rounded"
-                  shadow={false}
-                  onClick={handleScrollToForm}
-                >
-                  Get in Touch
+                <Button round solid onClick={handleScrollToForm}>
+                  Join Waitlist
                 </Button>
               </div>
             )}
