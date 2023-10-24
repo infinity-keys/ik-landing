@@ -13,6 +13,12 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 18
+      - key: SKIP_INSTALL_DEPS
+        value: true
+      - key: SPLINE_PUZZLE_SLUG
+        value: the-society
+      - key: STATIC_FORMS_EMAIL
+        value: partner@infinitykeys.io
     routes:
       - type: rewrite
         source: /.redwood/functions/*
