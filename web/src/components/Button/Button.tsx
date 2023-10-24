@@ -5,34 +5,33 @@ import clsx from 'clsx'
 import { Link } from '@redwoodjs/router'
 
 export interface ButtonProps extends PropsWithChildren {
-  to?: string
   href?: string
-  fullWidth?: boolean
+  onClick?: () => void
+  to?: string
   bold?: boolean
   borderWhite?: boolean
-  solid?: boolean
+  disabled?: boolean
+  fullWidth?: boolean
   round?: boolean
   shadow?: boolean
-  type?: 'button' | 'submit' | 'reset'
+  solid?: boolean
   size?: 'small' | 'medium' | 'large'
-  onClick?: () => void
-  disabled?: boolean
-  responsive?: boolean
+  type?: 'button' | 'submit' | 'reset'
 }
 
 export default function Button({
-  to,
   href,
   onClick,
+  to,
+  bold = false,
+  borderWhite = false,
+  disabled = false,
   fullWidth = false,
   round = false,
-  solid = false,
-  borderWhite = false,
-  bold = false,
   shadow = false,
-  disabled = false,
-  type = 'submit',
+  solid = false,
   size = 'medium',
+  type = 'submit',
   children,
 }: ButtonProps) {
   const classes = clsx(
