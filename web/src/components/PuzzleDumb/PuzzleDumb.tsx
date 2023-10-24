@@ -190,7 +190,7 @@ const PuzzleDumb = ({ answer = '' }: PuzzleProps) => {
 
         {/* Submit Button */}
         <div data-cy="submit" className="flex justify-center">
-          <Button type="submit" disabled={!canSubmit} variant="solid">
+          <Button type="submit" disabled={!canSubmit} solid>
             Submit
           </Button>
         </div>

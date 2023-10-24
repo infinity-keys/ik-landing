@@ -38,7 +38,7 @@ const ConnectAccountButton = ({
   }
 
   return (
-    <Button onClick={fetchAuthUrl} size="small" variant="faded" border={false}>
+    <Button onClick={fetchAuthUrl} size="small">
       {text}
     </Button>
   )

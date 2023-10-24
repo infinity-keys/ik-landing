@@ -190,11 +190,19 @@ const Rewardable = ({ rewardable }: Props) => {
             <div>
               {isAuthenticated ? (
                 showOverlay ? (
-                  <Button href="https://discord.gg/infinitykeys">
+                  <Button
+                    solid
+                    shadow
+                    bold
+                    href="https://discord.gg/infinitykeys"
+                  >
                     Ask on Discord
                   </Button>
                 ) : (
                   <Button
+                    solid
+                    shadow
+                    bold
                     to={
                       currentStep?.stepSortWeight
                         ? routes.puzzleStep({
@@ -213,7 +221,14 @@ const Rewardable = ({ rewardable }: Props) => {
                   </Button>
                 )
               ) : (
-                <Button onClick={() => setIsLoginModalOpen(true)}>Login</Button>
+                <Button
+                  bold
+                  solid
+                  shadow
+                  onClick={() => setIsLoginModalOpen(true)}
+                >
+                  Login
+                </Button>
               )}
             </div>
           </div>
