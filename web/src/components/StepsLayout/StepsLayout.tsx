@@ -168,6 +168,9 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
 
                 <div>
                   <Button
+                    solid
+                    shadow
+                    bold
                     to={
                       nextStep
                         ? routes.puzzleStep({

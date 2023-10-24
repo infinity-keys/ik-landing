@@ -51,8 +51,7 @@ export default function WalletButton({
                     }}
                     type="button"
                     size={size}
-                    variant="rounded"
-                    shadow={false}
+                    round
                   >
                     Connect
                   </Button>
@@ -63,8 +62,7 @@ export default function WalletButton({
                   <Button
                     onClick={openChainModal}
                     type="button"
-                    variant="rounded"
-                    shadow={false}
+                    round
                     size={size}
                   >
                     <ShieldExclamationIcon className="h-6 w-12 fill-transparent stroke-red-600" />
@@ -76,9 +74,8 @@ export default function WalletButton({
                   <Button
                     onClick={openAccountModal}
                     type="button"
-                    variant="rounded"
+                    round
                     size={size}
-                    shadow={false}
                   >
                     {account.displayName}
                   </Button>

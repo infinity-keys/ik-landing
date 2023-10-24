@@ -76,9 +76,7 @@ const DeletePage = ({ jwt }) => {
               related to your completed puzzles and NFTs will be lost.
             </Text>
             <div className="mt-7">
-              <Button onClick={() => handleClick(jwt)} variant="warn">
-                Delete My Data
-              </Button>
+              <Button onClick={() => handleClick(jwt)}>Delete My Data</Button>
             </div>
           </>
         )}
