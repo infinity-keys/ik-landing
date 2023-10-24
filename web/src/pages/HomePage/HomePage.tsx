@@ -302,7 +302,7 @@ const HomePage = () => {
 
         {isFormVisible && (
           <Container bgLight>
-            <div className="mx-auto flex min-h-[542px] max-w-2xl items-center justify-center lg:min-h-[354px]">
+            <div className="flex items-center justify-center">
               <HomeContactForm ref={formRef} />
             </div>
           </Container>
