@@ -127,21 +127,28 @@ const socialLinks = [
 
 const Container = ({
   pySm = false,
-  bgLight = false,
   noPx = false,
+  noPt = false,
+  bgLight = false,
   children,
 }: PropsWithChildren & {
   pySm?: boolean
   bgLight?: boolean
   noPx?: boolean
+  noPt?: boolean
 }) => {
   return (
     <div className={clsx({ 'bg-white/5': bgLight })}>
       <div
         className={clsx(
           'mx-auto max-w-xs md:max-w-8xl',
-          pySm ? 'py-8 lg:py-20' : 'py-14 lg:py-24',
-          !noPx && 'px-4 lg:px-12'
+          // pySm ? 'py-8 lg:py-20' : 'py-14 lg:py-24',
+          !noPx && 'px-4 lg:px-12',
+          {
+            'py-8 lg:py-20': pySm && !noPt,
+            'py-14 lg:py-24': !pySm && !noPt,
+            'pb-14 lg:pb-24': noPt,
+          }
         )}
       >
         {children}
@@ -236,22 +243,8 @@ const HomePage = () => {
         </div>
       </div>
 
-      <section ref={workRef}>
-        <Container pySm>
-          <Fade>
-            <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
-              How It Works
-            </h2>
-          </Fade>
-          <Fade>
-            <p className="max-w-xl text-sm lg:text-lg">
-              A net positive value loop incentives creators, sponsors, and
-              players without draining economic value from the system
-            </p>
-          </Fade>
-        </Container>
-
-        <Container bgLight>
+      <section ref={workRef} className="relative z-40 -mt-[100px]">
+        <Container noPt>
           <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center lg:gap-6">
             {benefits.map((data, index) => (
               <BenefitCard {...data} key={data.title} delay={index * 0.3} />
