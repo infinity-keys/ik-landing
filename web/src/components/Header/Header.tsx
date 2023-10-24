@@ -148,12 +148,7 @@ const Header = () => {
               <WalletButton size="small" />
             </div>
             <div className="text-center">
-              <Button
-                variant="rounded"
-                size="small"
-                shadow={false}
-                to="/#waitlist"
-              >
+              <Button size="small" to="/#waitlist" round solid>
                 Join Waitlist
               </Button>
             </div>
@@ -258,25 +253,11 @@ const Header = () => {
                         <WalletButton size="small" />
 
                         {isAuthenticated ? (
-                          <Button
-                            variant="rounded"
-                            shadow={false}
-                            size="small"
-                            to={routes.profile()}
-                          >
+                          <Button round size="small" to={routes.profile()}>
                             Profile
                           </Button>
                         ) : (
-                          <Button
-                            to={routes.profile()}
-                            // onClick={() => {
-                            //   setIsOpen(false)
-                            //   setIsLoginModalOpen(true)
-                            // }}
-                            variant="rounded"
-                            shadow={false}
-                            size="small"
-                          >
+                          <Button to={routes.profile()} round size="small">
                             Login
                           </Button>
                         )}
