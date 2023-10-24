@@ -40,7 +40,7 @@ const BenefitCard = ({
   return (
     <div className="w-full max-w-xs flex-1 backdrop-blur-md">
       <Fade delay={delay} y={10} threshold={0}>
-        <div className="flex flex-1 flex-col items-stretch rounded-xl border-2 border-stone-50 bg-white/5 py-6 px-8  md:px-6">
+        <div className="flex flex-1 flex-col items-stretch rounded-xl border-2 border-stone-50 bg-white/5 py-6 px-8 md:px-6">
           <div className="flex flex-col items-center">
             <Scale delay={delay + 0.3}>
               <Scale withHover>
