@@ -77,12 +77,7 @@ const BenefitCard = ({
           </div>
 
           <div className="mx-auto flex w-full max-w-[120px]">
-            <Button
-              variant="rounded"
-              fullWidth
-              shadow={false}
-              onClick={() => setShowList(!showList)}
-            >
+            <Button round fullWidth onClick={() => setShowList(!showList)}>
               {showList ? (
                 <Fade inline x={3} key="list">
                   <span className="block w-6">

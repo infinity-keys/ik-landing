@@ -133,9 +133,7 @@ export const Success = ({
       {canConnect && (
         <div className="pt-12">
           <p className="pb-2">Want us to check your external wallet too?</p>
-          <Button variant="faded" border={false} onClick={openConnectModal}>
-            Connect Wallet
-          </Button>
+          <Button onClick={openConnectModal}>Connect Wallet</Button>
         </div>
       )}
 
@@ -197,7 +195,7 @@ export const Success = ({
       )}
 
       <div className="mt-8">
-        <Button variant="rounded" shadow={false} to="/#waitlist">
+        <Button round solid to="/#waitlist">
           Join Waitlist
         </Button>
       </div>
