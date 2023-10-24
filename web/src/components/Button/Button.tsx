@@ -39,8 +39,8 @@ export default function Button({
     round ? 'rounded-full' : 'rounded-md',
     fullWidth ? 'block w-full' : 'inline-block',
     borderWhite ? 'border-white' : 'border-brand-accent-primary',
-    disabled && 'opacity-80 cursor-default',
     {
+      'opacity-80 cursor-default': disabled,
       'font-bold': bold,
       'shadow-[0_3px_0_0_rgba(68,64,60,1)]': shadow,
       'bg-brand-accent-primary': solid,
