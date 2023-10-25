@@ -238,7 +238,10 @@ const HomePage = () => {
         </div>
       </div>
 
-      <section ref={workRef} className="relative z-40 -mt-[100px]">
+      <section
+        ref={workRef}
+        className="relative z-40 -mt-[100px] bg-gradient-to-b from-white/0 to-white/5"
+      >
         <Container noPt>
           <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center lg:gap-6">
             {benefits.map((data, index) => (
