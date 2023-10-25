@@ -1,29 +1,22 @@
-import { google } from 'googleapis'
 import type { MutationResolvers } from 'types/graphql'
 
-const sheets = google.sheets('v4')
+import { appendToSheet } from 'src/lib/googleSheets'
+import { logger } from 'src/lib/logger'
+
 const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID_WAITLIST_FORM
-const jwtClient = new google.auth.JWT(
-  process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-  undefined,
-  process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-  ['https://www.googleapis.com/auth/spreadsheets']
-)
 
 export const addWaitlistForm: MutationResolvers['addWaitlistForm'] = async ({
   input,
 }) => {
-  await jwtClient.authorize()
+  try {
+    if (!SPREADSHEET_ID) {
+      throw new Error('Missing SPREADSHEET_ID id in `waitlistForm`')
+    }
 
-  const now = new Date(Date.now())
+    const now = new Date(Date.now())
 
-  const response = await sheets.spreadsheets.values.append({
-    auth: jwtClient,
-    spreadsheetId: SPREADSHEET_ID,
-    range: 'Submissions',
-    valueInputOption: 'RAW',
-    insertDataOption: 'INSERT_ROWS',
-    requestBody: {
+    const response = await appendToSheet({
+      spreadsheetId: SPREADSHEET_ID,
       values: [
         [
           input.email,
@@ -33,10 +26,15 @@ export const addWaitlistForm: MutationResolvers['addWaitlistForm'] = async ({
           now.toISOString(),
         ],
       ],
-    },
-  })
+    })
 
-  return {
-    success: response.statusText === 'OK',
+    return {
+      success: response.statusText === 'OK',
+    }
+  } catch (e) {
+    logger.error('Error in `/waitlistForm`', e)
+    return {
+      success: false,
+    }
   }
 }
