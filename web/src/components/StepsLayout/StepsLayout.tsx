@@ -127,8 +127,7 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
                         <p className="mb-10 text-sm md:text-base">
                           {uncompletedSteps > 0
                             ? remainingStepsText
-                            : step.puzzle.rewardable.successMessage ||
-                              'Complete!'}
+                            : step.puzzle.rewardable.successMessage || ''}
                         </p>
                         <div className="flex items-center justify-center">
                           {step.puzzle.steps.map((curStep, index) => {
