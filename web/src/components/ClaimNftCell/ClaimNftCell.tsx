@@ -35,9 +35,6 @@ export const QUERY = gql`
           type
         }
       }
-      puzzle {
-        isAnon
-      }
       nfts {
         cloudinaryId
       }
@@ -131,17 +128,12 @@ export const Success = ({
         </div>
       )}
 
-      {canMint && <Button text="Claim NFT" onClick={claim} />}
+      {canMint && <Button onClick={claim}>Claim</Button>}
 
       {canConnect && (
         <div className="pt-12">
           <p className="pb-2">Want us to check your external wallet too?</p>
-          <Button
-            text="Connect Wallet"
-            variant="faded"
-            border={false}
-            onClick={openConnectModal}
-          />
+          <Button onClick={openConnectModal}>Connect Wallet</Button>
         </div>
       )}
 
@@ -152,12 +144,10 @@ export const Success = ({
               to={rewardableLandingRoute({
                 type: rewardable.type,
                 slug: rewardable.slug,
-                anonPuzzle: rewardable.puzzle?.isAnon,
               })}
-              text={`Return to ${rewardable.name} ${capitalize(
-                rewardable.type
-              )}`}
-            />
+            >{`Return to ${rewardable.name} ${capitalize(
+              rewardable.type
+            )}`}</Button>
           </div>
 
           {explorerUrl && (
@@ -203,6 +193,12 @@ export const Success = ({
           </p>
         </div>
       )}
+
+      <div className="mt-8">
+        <Button round solid to="/#waitlist">
+          Join Waitlist
+        </Button>
+      </div>
     </div>
   )
 }

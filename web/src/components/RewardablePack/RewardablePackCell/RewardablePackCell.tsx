@@ -26,7 +26,6 @@ export const QUERY = gql`
           name
           slug
           puzzle {
-            isAnon
             steps {
               hasUserCompletedStep
             }

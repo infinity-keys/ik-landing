@@ -1,97 +1,165 @@
-import { FormEvent, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 
-import loRange from 'lodash/range'
-import RICIBs from 'react-individual-character-input-boxes'
-import { FindStepQuery } from 'types/graphql'
+import clsx from 'clsx'
+import sample from 'lodash/sample'
+import { FindStepBySlugQuery } from 'types/graphql'
 
-import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-import Markdown from 'src/components/Markdown/Markdown'
 import useMakeAttempt from 'src/hooks/useMakeAttempt'
-import Lock from 'src/svgs/Lock'
 
-interface SimpleTextInputProps {
-  count: number
-  step: FindStepQuery['step']
-  puzzleId: string
-  isAnon?: boolean
-}
+const FAIL_MESSAGES = [
+  "That's not it chief...",
+  "You're a few pixels away from greatness! Try again!",
+  'Close but no banana! Give it another peel!',
+  'One more shot - victory dance awaits!',
+  "You're the master of almost! Retry like a champ!",
+  'A little more magic dust needed - go for it!',
+  'Keep going! Success hugs are waiting!',
+]
+
+const DEFAULT_TEXT_SIZE = 16
+const DEFAULT_CHAR_LIMIT = 10
+const LARGE_TEXT_CHAR_LIMIT = 6
+const LETTER_SPACING_MULTIPLIER = 2.2
 
 const SimpleTextInput = ({
   count,
   step,
-  puzzleId,
-  isAnon = false,
-}: SimpleTextInputProps) => {
+  onSuccess,
+}: {
+  count: number
+  step: FindStepBySlugQuery['step']
+  onSuccess?: () => void
+}) => {
   const { loading, failedAttempt, makeAttempt, errorMessage } = useMakeAttempt()
-  const [text, setText] = useState('')
+  const [inputValue, setInputValue] = useState('')
+  const [displayValue, setDisplayValue] = useState('')
+  const [inputTextLeft, setInputTextLeft] = useState(false)
 
-  // This will use useMemo, possibly
-  const handleMakeAttempt = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (text.length !== count) return
+  const inputRef = useRef<HTMLInputElement>(null)
 
-    await makeAttempt({
-      stepId: step.id,
-      puzzleId,
-      isAnon,
-      reqBody: {
-        type: 'simple-text',
-        simpleTextSolution: text,
-      },
-    })
-  }
+  const handleMakeAttempt = useCallback(
+    async (text: string) => {
+      const data = await makeAttempt({
+        stepId: step.id,
+        redirectOnSuccess: false,
+        reqBody: {
+          type: 'simple-text',
+          simpleTextSolution: text,
+        },
+      })
+
+      if (data?.success && onSuccess) {
+        onSuccess()
+      }
+    },
+    [makeAttempt, onSuccess, step.id]
+  )
+
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      setInputValue(value)
+
+      if (value.length === count) {
+        handleMakeAttempt(value)
+      }
+    },
+    [setInputValue, handleMakeAttempt, count]
+  )
+
+  useEffect(() => {
+    if (inputRef.current) {
+      const size = window
+        .getComputedStyle(inputRef.current, null)
+        .getPropertyValue('font-size')
+
+      // Is the user's text size larger than default?
+      const largeText = parseInt(size.split('px')[0], 10) > DEFAULT_TEXT_SIZE
+
+      // If a password is longer than 10 characters (or 6 for larger text sizes),
+      // it will overflow the container and needS to be left aligned for proper
+      // scrolling.
+      const leftAlign =
+        count > DEFAULT_CHAR_LIMIT ||
+        (largeText && count > LARGE_TEXT_CHAR_LIMIT)
+      setInputTextLeft(leftAlign)
+    }
+  }, [count, inputTextLeft, setInputTextLeft])
+
+  // Creating a string that displays the current input and remaining asterisks
+  useEffect(() => {
+    setDisplayValue(`${inputValue}${'*'.repeat(count - inputValue.length)}`)
+  }, [inputValue, count, setDisplayValue])
 
   return (
     <div>
       {loading ? (
         <LoadingIcon />
       ) : (
-        <div className="z-10 flex justify-center">
-          <div>
-            <div className="flex py-5">
-              <div className="w-6">
-                <Lock />
-              </div>
-              <p className="pt-2 pl-4 text-base font-bold">Solve Puzzle</p>
-            </div>
+        <>
+          <div className="flex flex-col items-center justify-center">
+            <label htmlFor="input" className="pb-5 text-lg">
+              Input Your Answer:
+            </label>
 
-            <form className="magic-input" onSubmit={handleMakeAttempt}>
-              <RICIBs
-                amount={count}
-                handleOutputString={(t) => setText(t)}
-                inputRegExp={/^\S*$/}
-                inputProps={loRange(count).map(() => ({
-                  className: 'ik-code-input',
-                }))}
-                // eslint-disable-next-line jsx-a11y/no-autofocus
-                autoFocus
-              />
-
-              {failedAttempt && !errorMessage && (
-                <div
-                  className={'relative flex justify-center pt-6 text-gray-150'}
-                  data-cy="fail_message_check"
-                >
-                  <Markdown>
-                    {step.failMessage ||
-                      "That's not it. Need help? [Join our discord](https://discord.gg/infinitykeys)"}
-                  </Markdown>
-                </div>
+            <div
+              className={clsx(
+                'flex w-full max-w-[260px] cursor-text overflow-x-scroll rounded-md border-2 border-solid px-4 py-2',
+                inputTextLeft ? 'justify-start' : 'justify-center',
+                failedAttempt && !errorMessage
+                  ? 'border-red-400'
+                  : 'border-stone-50'
               )}
-
-              {errorMessage && <p className="">{errorMessage}</p>}
-
-              <div className="flex justify-center pt-8" data-cy="submit">
-                <Button
-                  text="Submit"
-                  type="submit"
-                  disabled={text.length !== count}
+              tabIndex={0}
+              role="button"
+              onClick={() => inputRef.current?.focus()}
+              onFocus={(e) => {
+                if (e.relatedTarget !== inputRef.current) {
+                  inputRef.current?.focus()
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  inputRef.current?.focus()
+                }
+              }}
+            >
+              <div className="relative">
+                <input
+                  className={clsx(
+                    'border-none bg-transparent p-0 font-mono tracking-[.8em] text-transparent caret-white focus:!border-none focus:!outline-none focus:ring-0'
+                  )}
+                  type="text"
+                  id="input"
+                  ref={inputRef}
+                  maxLength={count}
+                  size={count * LETTER_SPACING_MULTIPLIER}
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  onClick={(e) => e.stopPropagation()}
+                  onFocus={(e) => e.stopPropagation()}
                 />
+                <div className="pointer-events-none absolute inset-0 flex items-center font-mono tracking-[.8em]">
+                  {displayValue}
+                </div>
               </div>
-            </form>
+            </div>
           </div>
-        </div>
+
+          {failedAttempt && !errorMessage && inputValue.length === count && (
+            <div
+              className="relative flex justify-center pt-6 text-gray-150"
+              data-cy="fail_message_check"
+            >
+              <p>{sample(FAIL_MESSAGES)}</p>
+            </div>
+          )}
+
+          {errorMessage && (
+            <p className="text-sm italic text-gray-150">{errorMessage}</p>
+          )}
+        </>
       )}
     </div>
   )

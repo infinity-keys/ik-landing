@@ -1,20 +1,27 @@
-import { PropsWithChildren, lazy, Suspense } from 'react'
+import { Fragment, PropsWithChildren, lazy, useEffect, useState } from 'react'
 
-import { ThumbnailProgress } from '@infinity-keys/core'
+import Spline from '@splinetool/react-spline'
 import clsx from 'clsx'
-import { FindAnonStepQuery, FindStepQuery } from 'types/graphql'
+import sample from 'lodash/sample'
+import { FindStepBySlugQuery } from 'types/graphql'
 
-import { routes, useParams } from '@redwoodjs/router'
+import { routes } from '@redwoodjs/router'
+import { CellSuccessProps } from '@redwoodjs/web'
 
-import { useAuth } from 'src/auth'
-import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import Button from 'src/components/Button/Button'
+import Markdown from 'src/components/Markdown/Markdown'
+import MarkdownCarousel from 'src/components/MarkdownCarousel/MarkdownCarousel'
+import NeedHintIcon from 'src/components/OverlayIcons/NeedHintIcon'
+import NeedHintMiniIcon from 'src/components/OverlayIcons/NeedHintMiniIcon'
+import StepPageLayout from 'src/components/StepPageLayout/StepPageLayout'
+import LockedIcon from 'src/components/StepProgressIcons/LockedIcon'
+import UnlockedIcon from 'src/components/StepProgressIcons/UnlockedIcon'
+import { overlayContent } from 'src/lib/stepOverlayContent'
+import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
 
 interface StepsLayoutProps extends PropsWithChildren {
-  currentStepId?: string
-  hasBeenSolved: boolean
-  puzzle: FindAnonStepQuery['puzzle'] | FindStepQuery['puzzle']
-  step: FindAnonStepQuery['step'] | FindStepQuery['step']
-  stepNum?: number
+  step: FindStepBySlugQuery['step']
+  refetch?: NonNullable<CellSuccessProps['queryResult']>['refetch']
 }
 
 const SimpleTextInput = lazy(
@@ -26,149 +33,224 @@ const AccountCheckButton = lazy(
 const StepLensApiButton = lazy(
   () => import('src/components/StepLensApiButton/StepLensApiButton')
 )
-const ThumbnailMini = lazy(
-  () => import('src/components/ThumbnailMini/ThumbnailMini')
-)
-const CollapsibleMarkdown = lazy(
-  () => import('src/components/CollapsibleMarkdown/CollapsibleMarkdown')
-)
 
-const Alert = lazy(() => import('src/components/Alert/Alert'))
-const Button = lazy(() => import('src/components/Button/Button'))
+const successMessages = [
+  'You nailed it!',
+  'Look at you Sherlock...',
+  "You're as awesome as a unicorn riding a skateboard!",
+  'That was more satisfying than popping bubble wrap!',
+  'Correct, excellent work.',
+  'Bravo, smarty-pants!',
+  "Well, aren't you a fine slice of pizza!",
+]
 
-const StepsLayout = ({
-  currentStepId,
-  hasBeenSolved,
-  puzzle,
-  step,
-  stepNum,
-  children,
-}: StepsLayoutProps) => {
-  const { slug } = useParams()
-  const { isAuthenticated } = useAuth()
+const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
+  const [showOverlay, setShowOverlay] = useState(false)
+  const [slideIndex, setSlideIndex] = useState(0)
+  const { pageHeading, setPageHeading } = useGlobalInfo()
 
-  if (!puzzle) return null
-  const showButton = !stepNum && puzzle?.rewardable
+  const rewardableName = step.puzzle.rewardable?.name
+  const currentStepNum = step.stepSortWeight
+  const totalSteps = step.puzzle.steps.length
+
+  useEffect(() => {
+    if (rewardableName) {
+      setPageHeading(`${rewardableName} ${currentStepNum}-${totalSteps}`)
+    }
+  }, [setPageHeading, rewardableName, currentStepNum, totalSteps])
+
+  const images = step.stepPage
+    .map((page) => page?.image || step.defaultImage)
+    .concat(step.solutionImage || step.defaultImage)
+
+  // @NOTE: returns undefined if user has completed all steps
+  const nextStep = step.hasUserCompletedStep
+    ? step.puzzle.steps.find((step) => {
+        if (!step) {
+          return false
+        }
+        return !step.hasUserCompletedStep
+      })
+    : undefined
+
+  const completedSteps = step.puzzle.steps.filter(
+    (step) => step?.hasUserCompletedStep
+  )
+  const uncompletedSteps = totalSteps - completedSteps.length
+  const isFinalStep = step.puzzle.steps.at(-1)?.id === step.id
+  const remainingStepsText = `${uncompletedSteps} more
+  ${uncompletedSteps > 1 ? 'steps' : 'step'} to go`
 
   return (
-    <div>
-      {showButton && (
-        <div className="mb-6">
-          {isAuthenticated ? (
-            <Button
-              {...(hasBeenSolved
-                ? { to: routes.claim({ id: puzzle.rewardable.id }) }
-                : {})}
-              text="Claim"
-              disabled={!hasBeenSolved}
-            />
-          ) : (
-            <div className="flex justify-center">
-              <Alert text="Please sign in to claim" />
-            </div>
-          )}
-        </div>
-      )}
-
-      <Suspense fallback={<LoadingIcon />}>
-        {step && (
-          <div>
-            <div className="mx-auto max-w-prose rounded-md bg-black/10">
-              {step.challenge && (
-                <div className="p-4">
-                  <CollapsibleMarkdown
-                    title="Challenge"
-                    content={step.challenge}
-                    defaultOpen
-                  />
-                </div>
-              )}
-
-              {step.resourceLinks && (
-                <div className={clsx('p-4', { 'pt-0': step.challenge })}>
-                  <CollapsibleMarkdown
-                    title="Hint"
-                    content={`${step.resourceLinks}`}
-                    defaultOpen={!step.challenge}
-                  />
-                </div>
+    <div className="mx-auto max-w-lg md:max-w-5xl md:px-4">
+      <h1 className="mb-14 hidden text-3xl font-semibold md:block">
+        {pageHeading}
+      </h1>
+      <div className="flex flex-col justify-center pb-8 md:flex-row md:gap-6">
+        {step.stepPage && (
+          <>
+            <div className="relative aspect-[4/3] w-full flex-1 overflow-hidden md:max-w-[50%]">
+              {step.puzzle.rewardable.slug ===
+              process.env.SPLINE_PUZZLE_SLUG ? (
+                <Spline scene="https://prod.spline.design/wNPv9pIE4aOGShZZ/scene.splinecode" />
+              ) : (
+                images.map((image, index) => {
+                  return image ? (
+                    <div
+                      key={'image-' + index}
+                      className={clsx(
+                        'absolute inset-0 flex items-center justify-center',
+                        index === slideIndex ? 'opacity-100' : 'opacity-0'
+                      )}
+                    >
+                      <img
+                        src={image}
+                        alt=""
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                        className="w-full"
+                      />
+                    </div>
+                  ) : null
+                })
               )}
             </div>
 
-            {step.type === 'SIMPLE_TEXT' && (
-              <div className="pt-8">
-                <SimpleTextInput
-                  count={step.stepSimpleText?.solutionCharCount || 0}
-                  step={step}
-                  puzzleId={puzzle.id}
-                  isAnon={puzzle.isAnon}
-                />
-              </div>
-            )}
+            {step.hasUserCompletedStep ? (
+              <div className="relative flex w-full flex-1 flex-col gap-4 text-center md:max-w-[50%]">
+                <div className="flex-1 border-y-2 border-stone-50">
+                  <div className="relative h-full">
+                    <div className="flex h-full min-h-[320px] flex-col justify-center gap-12 px-12 py-6 text-sm md:min-h-[412px]">
+                      <div>
+                        <p className="mb-2 text-base font-medium md:text-xl">
+                          {isFinalStep ? 'Complete!' : sample(successMessages)}
+                        </p>
+                        <p className="mb-10 text-sm md:text-base">
+                          {uncompletedSteps > 0
+                            ? remainingStepsText
+                            : step.puzzle.rewardable.successMessage || ''}
+                        </p>
+                        <div className="flex items-center justify-center">
+                          {step.puzzle.steps.map((curStep, index) => {
+                            if (!curStep) return null
+                            const isCompleted = curStep.hasUserCompletedStep
 
-            {(step.type === 'NFT_CHECK' ||
-              step.type === 'FUNCTION_CALL' ||
-              step.type === 'COMETH_API' ||
-              step.type === 'ORIUM_API' ||
-              step.type === 'ASSET_TRANSFER' ||
-              step.type === 'TOKEN_ID_RANGE' ||
-              step.type === 'ERC20_BALANCE') && (
-              <div className="pt-8">
-                <AccountCheckButton step={step} puzzleId={puzzle.id} />
-              </div>
-            )}
+                            return (
+                              <Fragment key={curStep.id}>
+                                <div
+                                  className={clsx(
+                                    'flex h-12 w-12 items-center justify-center rounded text-transparent',
+                                    isCompleted
+                                      ? 'bg-green-650'
+                                      : 'bg-stone-700'
+                                  )}
+                                >
+                                  {isCompleted ? (
+                                    <UnlockedIcon />
+                                  ) : (
+                                    <LockedIcon />
+                                  )}
+                                </div>
 
-            {step.type === 'LENS_API' && (
-              <div className="pt-8">
-                <StepLensApiButton step={step} puzzleId={puzzle.id} />
+                                {index + 1 !== step.puzzle.steps.length && (
+                                  <span className="h-1 max-w-[26px] flex-1 bg-stone-700" />
+                                )}
+                              </Fragment>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <Button
+                    solid
+                    shadow
+                    bold
+                    to={
+                      nextStep
+                        ? routes.puzzleStep({
+                            slug: step.puzzle.rewardable.slug,
+                            step: nextStep.stepSortWeight,
+                          })
+                        : routes.puzzleLanding({
+                            slug: step.puzzle.rewardable.slug,
+                          })
+                    }
+                  >
+                    Continue
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="relative mb-16 flex-1 border-y-2 border-t-2 border-stone-50 md:max-w-[50%]">
+                <MarkdownCarousel
+                  showOverlay={showOverlay}
+                  setShowOverlay={setShowOverlay}
+                  setSlideIndex={setSlideIndex}
+                >
+                  {step.stepPage.map((page) => {
+                    if (!page) return null
+
+                    return (
+                      <StepPageLayout
+                        key={page.id}
+                        showOverlay={showOverlay}
+                        setShowOverlay={setShowOverlay}
+                        overlayContent={
+                          page.showStepGuideHint
+                            ? overlayContent[step.stepGuideType]
+                            : undefined
+                        }
+                      >
+                        <Markdown>{page.body}</Markdown>
+                      </StepPageLayout>
+                    )
+                  })}
+                  <StepPageLayout
+                    showOverlay={showOverlay}
+                    setShowOverlay={setShowOverlay}
+                    overlayContent={
+                      step.solutionHint
+                        ? {
+                            text: step.solutionHint,
+                            icon: <NeedHintIcon />,
+                            mini: <NeedHintMiniIcon />,
+                          }
+                        : undefined
+                    }
+                  >
+                    <div className="w-full text-center">
+                      {step.type === 'SIMPLE_TEXT' && (
+                        <SimpleTextInput
+                          count={step.stepSimpleText?.solutionCharCount || 0}
+                          step={step}
+                          onSuccess={refetch}
+                        />
+                      )}
+
+                      {(step.type === 'NFT_CHECK' ||
+                        step.type === 'FUNCTION_CALL' ||
+                        step.type === 'COMETH_API' ||
+                        step.type === 'ORIUM_API' ||
+                        step.type === 'ASSET_TRANSFER' ||
+                        step.type === 'TOKEN_ID_RANGE' ||
+                        step.type === 'ERC20_BALANCE') && (
+                        <AccountCheckButton step={step} onSuccess={refetch} />
+                      )}
+
+                      {step.type === 'LENS_API' && (
+                        <StepLensApiButton step={step} onSuccess={refetch} />
+                      )}
+                    </div>
+                  </StepPageLayout>
+                </MarkdownCarousel>
               </div>
             )}
-          </div>
+          </>
         )}
-      </Suspense>
-
-      <div>{children}</div>
-
-      {(!step || !hasBeenSolved) && (
-        <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-4 sm:flex-row">
-          {puzzle.steps.map((stepData) => {
-            if (!stepData) return null
-
-            const { id, stepSortWeight, hasUserCompletedStep } = stepData
-            const routeParams = {
-              slug,
-              step: stepSortWeight,
-            }
-
-            const completed =
-              !isAuthenticated && 'hasAnonUserCompletedStep' in stepData
-                ? stepData.hasAnonUserCompletedStep
-                : hasUserCompletedStep
-
-            return (
-              <ThumbnailMini
-                id={id}
-                key={stepSortWeight}
-                name={`Step ${stepSortWeight.toString()}`}
-                progress={
-                  hasBeenSolved
-                    ? ThumbnailProgress.Completed
-                    : currentStepId === id
-                    ? ThumbnailProgress.Current
-                    : completed
-                    ? ThumbnailProgress.Completed
-                    : ThumbnailProgress.NotCompleted
-                }
-                to={
-                  isAuthenticated && !puzzle.isAnon
-                    ? routes.puzzleStep(routeParams)
-                    : routes.anonPuzzleStep(routeParams)
-                }
-              />
-            )
-          })}
-        </div>
-      )}
+      </div>
     </div>
   )
 }
