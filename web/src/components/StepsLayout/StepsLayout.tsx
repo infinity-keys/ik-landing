@@ -122,15 +122,12 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
                     <div className="flex h-full min-h-[320px] flex-col justify-center gap-12 px-12 py-6 text-sm md:min-h-[412px]">
                       <div>
                         <p className="mb-2 text-base font-medium md:text-xl">
-                          {isFinalStep
-                            ? 'Hunt finished!'
-                            : sample(successMessages)}
+                          {isFinalStep ? 'Complete!' : sample(successMessages)}
                         </p>
                         <p className="mb-10 text-sm md:text-base">
                           {uncompletedSteps > 0
                             ? remainingStepsText
-                            : step.puzzle.rewardable.successMessage ||
-                              'Puzzle Completed!'}
+                            : step.puzzle.rewardable.successMessage || ''}
                         </p>
                         <div className="flex items-center justify-center">
                           {step.puzzle.steps.map((curStep, index) => {
@@ -168,7 +165,9 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
 
                 <div>
                   <Button
-                    text="Continue"
+                    solid
+                    shadow
+                    bold
                     to={
                       nextStep
                         ? routes.puzzleStep({
@@ -179,7 +178,9 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
                             slug: step.puzzle.rewardable.slug,
                           })
                     }
-                  />
+                  >
+                    Continue
+                  </Button>
                 </div>
               </div>
             ) : (

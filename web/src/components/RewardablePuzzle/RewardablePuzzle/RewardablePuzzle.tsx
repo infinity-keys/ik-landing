@@ -94,12 +94,8 @@ const Rewardable = ({ rewardable }: Props) => {
                   {isAuthenticated ? (
                     puzzleCompleted ? (
                       <div className="text-sm md:text-base">
-                        <p className="mb-4 text-base font-medium md:text-xl">
-                          Hunt Finished!
-                        </p>
                         <Markdown>
-                          {rewardable.successMessage ||
-                            'You have completed this hunt. Continue to claim your reward.'}
+                          {rewardable.successMessage || 'Claim your reward.'}
                         </Markdown>
                       </div>
                     ) : (
@@ -191,18 +187,18 @@ const Rewardable = ({ rewardable }: Props) => {
               {isAuthenticated ? (
                 showOverlay ? (
                   <Button
-                    text="Ask on Discord"
+                    solid
+                    shadow
+                    bold
                     href="https://discord.gg/infinitykeys"
-                  />
+                  >
+                    Ask on Discord
+                  </Button>
                 ) : (
                   <Button
-                    text={
-                      typeof currentStep?.stepSortWeight === 'number'
-                        ? currentStep.stepSortWeight > 1
-                          ? 'Continue Quest'
-                          : 'Start Quest'
-                        : 'Claim Treasure'
-                    }
+                    solid
+                    shadow
+                    bold
                     to={
                       currentStep?.stepSortWeight
                         ? routes.puzzleStep({
@@ -212,13 +208,23 @@ const Rewardable = ({ rewardable }: Props) => {
                         : // TODO: where do we take them if they have completed all steps
                           routes.claim({ id: rewardable.id })
                     }
-                  />
+                  >
+                    {typeof currentStep?.stepSortWeight === 'number'
+                      ? currentStep.stepSortWeight > 1
+                        ? 'Continue Quest'
+                        : 'Start'
+                      : 'Claim Treasure'}
+                  </Button>
                 )
               ) : (
                 <Button
+                  bold
+                  solid
+                  shadow
                   onClick={() => setIsLoginModalOpen(true)}
-                  text="Login"
-                />
+                >
+                  Login
+                </Button>
               )}
             </div>
           </div>

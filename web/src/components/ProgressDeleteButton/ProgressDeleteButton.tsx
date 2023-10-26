@@ -40,11 +40,9 @@ const ProgressDeleteButton = ({
 
   return (
     <div>
-      <Button
-        onClick={handleClick}
-        disabled={disabled}
-        text={'Clear my progress'}
-      />
+      <Button onClick={handleClick} disabled={disabled}>
+        {'Clear my progress'}
+      </Button>
     </div>
   )
 }

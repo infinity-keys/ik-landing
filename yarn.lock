@@ -241,8 +241,8 @@ __metadata:
   linkType: hard
 
 "@apollo/server@npm:^4.7.4":
-  version: 4.9.1
-  resolution: "@apollo/server@npm:4.9.1"
+  version: 4.9.3
+  resolution: "@apollo/server@npm:4.9.3"
   dependencies:
     "@apollo/cache-control-types": ^1.0.3
     "@apollo/server-gateway-interface": ^1.1.1
@@ -272,7 +272,7 @@ __metadata:
     whatwg-mimetype: ^3.0.0
   peerDependencies:
     graphql: ^16.6.0
-  checksum: 78012f54e868376a6293ac99e7111f4ada10a73a6a87e83b2d5d3f4d1b8f05958d4ab0c08efdbd3f4c9eeec2c3bc35a9131b2d7975396ae268d37a257e5dfea1
+  checksum: 983412052c8584b623637a49e526d3ac6e1a80aa74b47180503e89b3ca0345207864fe5dd632ddab649057ccc253a63032f3b189d45db15f6b6b0b50d07570ec
   languageName: node
   linkType: hard
 
@@ -9069,13 +9069,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@splinetool/runtime@npm:^0.9.468":
-  version: 0.9.468
-  resolution: "@splinetool/runtime@npm:0.9.468"
+"@splinetool/runtime@npm:^0.9.484":
+  version: 0.9.484
+  resolution: "@splinetool/runtime@npm:0.9.484"
   dependencies:
     on-change: ^4.0.0
     semver-compare: ^1.0.0
-  checksum: 25a2ea57474a3ca333e7647874b54a601112ba3a41d0daa7788f1670365358f18f88dc271f3617d34c23f2cce58779668dbe1d04e897bf405188905d9270c2f5
+  checksum: fab50f1d0720d5663670f7ec9b20789114ef462129c51b9e61efff119079e174242f5a25d7c82dc201a9ccf9d5b6c149f62bce1391e283d63b16d8839333ad08
   languageName: node
   linkType: hard
 
@@ -13516,7 +13516,7 @@ __metadata:
     alchemy-sdk: ^2.8.3
     cloudinary-build-url: ^0.2.4
     cookie: ^0.5.0
-    crypto-js: ^4.1.1
+    crypto-js: ^4.2.0
     discord.js: ^14.7.1
     googleapis: ^123.0.0
     jose: ^4.10.0
@@ -16528,6 +16528,13 @@ __metadata:
   version: 4.1.1
   resolution: "crypto-js@npm:4.1.1"
   checksum: 50cc66a35f2738171d9a6d80c85ba7d00cb6440b756db035ba9ccd03032c0a803029a62969ecd4c844106c980af87687c64b204dd967989379c4f354fb482d37
+  languageName: node
+  linkType: hard
+
+"crypto-js@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "crypto-js@npm:4.2.0"
+  checksum: 8fbdf9d56f47aea0794ab87b0eb9833baf80b01a7c5c1b0edc7faf25f662fb69ab18dc2199e2afcac54670ff0cd9607a9045a3f7a80336cccd18d77a55b9fdf0
   languageName: node
   linkType: hard
 
@@ -27745,7 +27752,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.2.14, postcss@npm:^8.3.6, postcss@npm:^8.4.14, postcss@npm:^8.4.16, postcss@npm:^8.4.21, postcss@npm:^8.4.23, postcss@npm:^8.4.24, postcss@npm:^8.4.27":
+"postcss@npm:^8.2.14, postcss@npm:^8.3.6, postcss@npm:^8.4.14, postcss@npm:^8.4.21, postcss@npm:^8.4.23, postcss@npm:^8.4.24, postcss@npm:^8.4.27":
   version: 8.4.28
   resolution: "postcss@npm:8.4.28"
   dependencies:
@@ -27753,6 +27760,17 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: 7dc843c26fec9d26a6f3abae3525c160de2fb22ee2163ac3f1fdb15a5651342893e38ffd6c26fddac8e42c9aa629dc80ea20bf5a796c954150cf9295adf8b09c
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.31":
+  version: 8.4.31
+  resolution: "postcss@npm:8.4.31"
+  dependencies:
+    nanoid: ^3.3.6
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 748b82e6e5fc34034dcf2ae88ea3d11fd09f69b6c50ecdd3b4a875cfc7cdca435c958b211e2cb52355422ab6fccb7d8f2f2923161d7a1b281029e4a913d59acf
   languageName: node
   linkType: hard
 
@@ -34000,7 +34018,7 @@ __metadata:
     "@snickerdoodlelabs/objects": ^1.1.2
     "@snickerdoodlelabs/web-integration": ^1.1.0
     "@splinetool/react-spline": ^2.2.6
-    "@splinetool/runtime": ^0.9.468
+    "@splinetool/runtime": ^0.9.484
     "@tailwindcss/forms": ^0.5.3
     "@types/gtag.js": ^0.0.12
     autoprefixer: ^10.4.12
@@ -34014,7 +34032,7 @@ __metadata:
     loaders.css: ^0.1.2
     lodash: ^4.17.21
     nuka-carousel: ^6.0.3
-    postcss: ^8.4.16
+    postcss: ^8.4.31
     postcss-loader: ^7.0.1
     postcss-preset-env: ^7.8.2
     prettier-plugin-tailwindcss: ^0.1.13

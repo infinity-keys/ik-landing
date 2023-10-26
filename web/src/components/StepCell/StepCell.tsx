@@ -62,10 +62,9 @@ export const Failure = ({
   return (
     <div className="p-4 text-center">
       <p className="pb-4">{error?.message}</p>
-      <Button
-        text={slug ? 'Return to Puzzle' : 'Return to Play Page'}
-        to={slug ? routes.puzzleLanding({ slug }) : routes.play()}
-      />
+      <Button to={slug ? routes.puzzleLanding({ slug }) : routes.play()}>
+        {slug ? 'Return to Puzzle' : 'Return to Play Page'}
+      </Button>
     </div>
   )
 }

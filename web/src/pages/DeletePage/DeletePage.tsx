@@ -60,7 +60,7 @@ const DeletePage = ({ jwt }) => {
             <div className="mb-4">
               <Text>{successMessage}</Text>
             </div>
-            <Button to={routes.play()} text="Return Home" />
+            <Button to={routes.play()}>Return Home</Button>
           </>
         )}
 
@@ -76,11 +76,7 @@ const DeletePage = ({ jwt }) => {
               related to your completed puzzles and NFTs will be lost.
             </Text>
             <div className="mt-7">
-              <Button
-                onClick={() => handleClick(jwt)}
-                text="Delete My Data"
-                variant="warn"
-              />
+              <Button onClick={() => handleClick(jwt)}>Delete My Data</Button>
             </div>
           </>
         )}
