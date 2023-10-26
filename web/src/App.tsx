@@ -9,7 +9,7 @@ import { LazyMotion, domAnimation } from 'framer-motion'
 import loMerge from 'lodash/merge'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { optimism } from 'wagmi/chains'
-// import { infuraProvider } from 'wagmi/providers/infura'
+import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { publicProvider } from 'wagmi/providers/public'
 
@@ -61,7 +61,7 @@ export const IKTheme = loMerge(darkTheme(), {
 export const { chains, publicClient } = configureChains(
   [optimism],
   [
-    // infuraProvider(),
+    alchemyProvider({ apiKey: process.env.ALCHEMY_API || '' }),
     publicProvider(),
     jsonRpcProvider({
       rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }),
