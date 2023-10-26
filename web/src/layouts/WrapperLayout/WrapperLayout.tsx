@@ -16,6 +16,7 @@ const WrapperLayout = ({ children }: { children?: React.ReactNode }) => {
         baseClass,
         baseClass ? `${baseClass}--${pathArray[1]}` : '',
       ]}
+      full
     >
       <div className="w-full pt-20">{children}</div>
     </Wrapper>

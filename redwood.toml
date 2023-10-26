@@ -9,7 +9,7 @@
   title = "Infinity Keys"
   port = 8910
   apiUrl = "/.redwood/functions"
-  includeEnvironmentVariables = ['NODE_ENV', 'STATIC_FORMS_ACCESS_TOKEN', 'STATIC_FORMS_EMAIL'] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
+  includeEnvironmentVariables = ['NODE_ENV', 'STATIC_FORMS_ACCESS_TOKEN', 'STATIC_FORMS_EMAIL', 'SPLINE_PUZZLE_SLUG'] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
 [api]
   port = 8911
 [browser]

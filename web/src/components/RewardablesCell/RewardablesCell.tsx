@@ -14,7 +14,6 @@ export const QUERY = gql`
     type
     sortType
     puzzle {
-      isAnon
       steps {
         id
         stepSortWeight

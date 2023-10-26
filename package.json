@@ -8,9 +8,9 @@
     ]
   },
   "scripts": {
-    "build": "yarn workspaces foreach run build && yarn rw prisma generate && yarn rw exec generateAnonPuzzleData",
-    "build-ci": "yarn workspaces foreach run build && yarn rw prisma generate && yarn rw prisma migrate reset --force && yarn rw exec generateAnonPuzzleData",
-    "dev": "(yarn workspaces foreach run build-dev & yarn workspace @infinity-keys/react-lens-share-button build & yarn rw exec generateAnonPuzzleData) && rw dev",
+    "build": "yarn workspaces foreach run build && yarn rw prisma generate",
+    "build-ci": "yarn workspaces foreach run build && yarn rw prisma generate && yarn rw prisma migrate reset --force",
+    "dev": "(yarn workspaces foreach run build-dev & yarn workspace @infinity-keys/react-lens-share-button build) && rw dev",
     "seed": "rw prisma migrate reset -f",
     "cypress:open": "start-server-and-test dev http://localhost:8910 \"yarn workspace cypress cypress:open\"",
     "cypress:run": "yarn workspace cypress cypress run --headless --browser chrome"

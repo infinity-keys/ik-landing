@@ -123,9 +123,6 @@ model Bundle {
 model Puzzle {
   id String @id @default(cuid())
 
-  /// Can this rewardable be played/accessed by anonymous/non-authed users?
-  isAnon Boolean @default(false)
-
   rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
   rewardableId String     @unique
 
@@ -147,6 +144,8 @@ enum PuzzleRequirements {
   TRAVEL
   PATIENCE
   WORDPLAY
+  DETAIL
+  INTERACTIVE_OBJECT
 }
 
 // All the types of Steps. Currently supports simple text guesses, but can

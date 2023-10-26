@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { FindStepQuery } from 'types/graphql'
+import { FindStepBySlugQuery } from 'types/graphql'
 import { useAccount } from 'wagmi'
 
 import Button from 'src/components/Button/Button'
@@ -11,10 +11,10 @@ import useMakeAttempt from 'src/hooks/useMakeAttempt'
 
 const AccountCheckButton = ({
   step,
-  puzzleId,
+  onSuccess,
 }: {
-  step: FindStepQuery['step']
-  puzzleId: string
+  step: FindStepBySlugQuery['step']
+  onSuccess?: () => void
 }) => {
   const { address } = useAccount()
   const { loading, failedAttempt, errorMessage, makeAttempt } = useMakeAttempt()
@@ -24,14 +24,18 @@ const AccountCheckButton = ({
     setCustomErrorMessage('')
     if (!step?.id) return setCustomErrorMessage('Missing step id')
 
-    await makeAttempt({
+    const data = await makeAttempt({
       stepId: step.id,
-      puzzleId,
+      redirectOnSuccess: false,
       reqBody: {
         type: 'account-check',
         account: address,
       },
     })
+
+    if (data?.success && onSuccess) {
+      onSuccess()
+    }
   }
 
   return (
@@ -41,7 +45,7 @@ const AccountCheckButton = ({
       ) : (
         <div>
           {address ? (
-            <Button text="Check Wallet" onClick={handleClick} />
+            <Button onClick={handleClick}>Check Wallet</Button>
           ) : (
             <WalletButton />
           )}
@@ -58,8 +62,8 @@ const AccountCheckButton = ({
               data-cy="fail_message_check"
             >
               <Markdown>
-                {step?.failMessage ||
-                  'This wallet address has not completed the required action. Need help? [Join our discord](https://discord.gg/infinitykeys)'}
+                This wallet address has not completed the required action. Need
+                help? [Join our discord](https://discord.gg/infinitykeys)
               </Markdown>
             </div>
           )}

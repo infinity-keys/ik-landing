@@ -1,102 +1,56 @@
-import { useEffect, useState } from 'react'
+import { Fragment } from 'react'
 
-import { SocialProviderType } from '@infinity-keys/core'
+import { Transition, Dialog } from '@headlessui/react'
 
-import { useParams, navigate, routes } from '@redwoodjs/router'
+import LoginForm from 'src/components/LoginForm/LoginForm'
 
-import { useAuth } from 'src/auth'
-import Button from 'src/components/Button'
-import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-import { saveRedirectTo } from 'src/providers/redirection'
-
-const LoginModal = ({ redirectPath }: { redirectPath?: string }) => {
-  const { signUp, isAuthenticated, reauthenticate } = useAuth()
-  const { error, redirectTo } = useParams()
-  const [errorText, setErrorText] = useState('')
-  const [loading, setLoading] = useState(false)
-
-  const getErrorText = (error: string) => {
-    if (error === 'expired') return `Session expired, please log in again.`
-  }
-
-  const onSubmitSignUp = async (type: SocialProviderType) => {
-    setLoading(true)
-    // @NOTE: dbAuth expects a username and password
-    const response = await signUp({
-      type: type.includes('KEYP') ? 'KEYP' : type,
-      username: '',
-      password: '',
-    })
-
-    if (response.url) {
-      const url = new URL(response.url)
-      url.searchParams.set('login_provider', type.split('KEYP_')[1])
-      window.location.href = url.toString()
-    } else {
-      setLoading(false)
-      console.log('Something went wrong')
-    }
-  }
-
-  useEffect(() => {
-    if (redirectTo) {
-      saveRedirectTo(redirectTo) && reauthenticate()
-    } else if (redirectPath) {
-      saveRedirectTo(redirectPath) && reauthenticate()
-    }
-  }, [redirectTo, reauthenticate, redirectPath])
-
-  useEffect(() => {
-    if (error) setErrorText(getErrorText(error) || 'KEYP ERROR')
-  }, [error])
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate(routes.profile())
-    }
-  }, [isAuthenticated])
-
-  const getButton = (type: SocialProviderType, text: string) => (
-    <div className="w-full max-w-[200px]">
-      <Button
-        onClick={() => onSubmitSignUp(type)}
-        text={text}
-        variant="faded"
-        border={false}
-        fullWidth
-      />
-    </div>
-  )
-
+const LoginModal = ({
+  isLoginModalOpen,
+  setIsLoginModalOpen,
+  pathname,
+}: {
+  isLoginModalOpen: boolean
+  setIsLoginModalOpen: (b: boolean) => void
+  pathname?: string
+}) => {
   return (
-    <div className="flex flex-col items-center justify-center">
-      {loading ? (
-        <LoadingIcon />
-      ) : (
-        <div className="w-full max-w-md rounded-lg border-2 border-brand-accent-primary/10 bg-black/20 p-4 text-center">
-          <div className="flex flex-col items-center gap-4 py-10 px-4">
-            <h1 className="pb-2 text-2xl font-bold text-brand-accent-primary">
-              Login to Infinity Keys
-            </h1>
-            {getButton('KEYP_DISCORD', 'Discord')}
-            {getButton('KEYP_GOOGLE', 'Google')}
-            {errorText && <div className="rw-cell-error mt-2">{errorText}</div>}
-          </div>
+    <Transition appear show={isLoginModalOpen} as={Fragment}>
+      <Dialog
+        as="div"
+        className="relative z-50"
+        onClose={() => setIsLoginModalOpen(false)}
+      >
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black/40" />
+        </Transition.Child>
 
-          <p className="text-xs text-white/40">
-            Powered by{' '}
-            <a
-              className="transition-colors hover:text-brand-accent-secondary"
-              href="https://www.usekeyp.com/"
-              target="_blank"
-              rel="noreferrer"
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
             >
-              Keyp
-            </a>
-          </p>
+              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-xl bg-brand-gray-primary p-6 text-left align-middle shadow-xl transition-all">
+                <LoginForm redirectPath={pathname} />
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
         </div>
-      )}
-    </div>
+      </Dialog>
+    </Transition>
   )
 }
 

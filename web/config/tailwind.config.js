@@ -11,10 +11,16 @@ module.exports = {
       center: true,
     },
     extend: {
+      maxWidth: {
+        '8xl': '1440px',
+      },
       colors: {
         'brand-accent-primary': IK_TOKENS.brand.color['ik-gold-primary'].$value,
         'brand-accent-secondary':
           IK_TOKENS.brand.color['ik-gold-secondary'].$value,
+        'brand-accent-tertiary':
+          IK_TOKENS.brand.color['ik-gold-tertiary'].$value,
+        'brand-accent-hover': IK_TOKENS.brand.color['ik-gold-hover'].$value,
         'brand-gray-primary': IK_TOKENS.brand.color['ik-gray-primary'].$value,
         'brand-gray-secondary':
           IK_TOKENS.brand.color['ik-gray-secondary'].$value,
@@ -33,6 +39,12 @@ module.exports = {
           300: '#475171',
           500: '#303B5B',
         },
+        green: {
+          650: '#0E7B0C',
+        },
+      },
+      dropShadow: {
+        icon: '0px 0px 6px rgba(255, 255, 255, 0.50)',
       },
       fontFamily: {
         sans: ['Poppins', 'sans-serif'],
