@@ -94,12 +94,8 @@ const Rewardable = ({ rewardable }: Props) => {
                   {isAuthenticated ? (
                     puzzleCompleted ? (
                       <div className="text-sm md:text-base">
-                        <p className="mb-4 text-base font-medium md:text-xl">
-                          Hunt Finished!
-                        </p>
                         <Markdown>
-                          {rewardable.successMessage ||
-                            'You have completed this hunt. Continue to claim your reward.'}
+                          {rewardable.successMessage || 'Claim your reward.'}
                         </Markdown>
                       </div>
                     ) : (
@@ -216,7 +212,7 @@ const Rewardable = ({ rewardable }: Props) => {
                     {typeof currentStep?.stepSortWeight === 'number'
                       ? currentStep.stepSortWeight > 1
                         ? 'Continue Quest'
-                        : 'Start Quest'
+                        : 'Start'
                       : 'Claim Treasure'}
                   </Button>
                 )

@@ -13,9 +13,9 @@ __metadata:
   linkType: hard
 
 "@adobe/css-tools@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "@adobe/css-tools@npm:4.0.1"
-  checksum: daabd77ae881e4d6fe218c370d1d10fb95a5b7b437fc2f61d8b8aae68a20dfadc7954df88772404b0eb4c50dd8ad0f5c5721f1064a1dd0635536cd2cb16f92b6
+  version: 4.3.1
+  resolution: "@adobe/css-tools@npm:4.3.1"
+  checksum: 05672719b544cc0c21ae3ed0eb6349bf458e9d09457578eeeb07cf0f696469ac6417e9c9be1b129e5d6a18098a061c1db55b2275591760ef30a79822436fcbfa
   languageName: node
   linkType: hard
 
@@ -4705,6 +4705,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fastify/busboy@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@fastify/busboy@npm:2.0.0"
+  checksum: fdaedca865721769a3a8d788c9efd6af90e73b5f2ff0160dbf46a6160631bbe56e6e5770fafb9a6395111372c73fb2bfa8d4698edc98c6b1f7d97cc9b74e37ea
+  languageName: node
+  linkType: hard
+
 "@fastify/deepmerge@npm:^1.0.0":
   version: 1.1.0
   resolution: "@fastify/deepmerge@npm:1.1.0"
@@ -5704,7 +5711,7 @@ __metadata:
     typescript: ^5.2.2
     uuid: ^9.0.0
     vite: ^4.0.5
-    zod: ^3.19.1
+    zod: ^3.22.3
   languageName: unknown
   linkType: soft
 
@@ -13509,7 +13516,7 @@ __metadata:
     alchemy-sdk: ^2.8.3
     cloudinary-build-url: ^0.2.4
     cookie: ^0.5.0
-    crypto-js: ^4.1.1
+    crypto-js: ^4.2.0
     discord.js: ^14.7.1
     googleapis: ^123.0.0
     jose: ^4.10.0
@@ -13520,7 +13527,7 @@ __metadata:
     pkce-challenge: ^3.1.0
     qfs-compression: ^0.2.1
     uuid: ^9.0.0
-    zod: ^3.19.1
+    zod: ^3.22.3
   languageName: unknown
   linkType: soft
 
@@ -16521,6 +16528,13 @@ __metadata:
   version: 4.1.1
   resolution: "crypto-js@npm:4.1.1"
   checksum: 50cc66a35f2738171d9a6d80c85ba7d00cb6440b756db035ba9ccd03032c0a803029a62969ecd4c844106c980af87687c64b204dd967989379c4f354fb482d37
+  languageName: node
+  linkType: hard
+
+"crypto-js@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "crypto-js@npm:4.2.0"
+  checksum: 8fbdf9d56f47aea0794ab87b0eb9833baf80b01a7c5c1b0edc7faf25f662fb69ab18dc2199e2afcac54670ff0cd9607a9045a3f7a80336cccd18d77a55b9fdf0
   languageName: node
   linkType: hard
 
@@ -29551,7 +29565,7 @@ __metadata:
     node-fetch: ^2
     prettier: ^2.8.8
     start-server-and-test: ^2.0.0
-    zod: ^3.19.1
+    zod: ^3.22.3
   languageName: unknown
   linkType: soft
 
@@ -32955,11 +32969,11 @@ __metadata:
   linkType: hard
 
 "undici@npm:^5.13.0, undici@npm:^5.19.1, undici@npm:^5.8.0":
-  version: 5.22.0
-  resolution: "undici@npm:5.22.0"
+  version: 5.26.3
+  resolution: "undici@npm:5.26.3"
   dependencies:
-    busboy: ^1.6.0
-  checksum: a9c1d5bdac6aa95fb623bd9bbba3f2c190556e5c03c7a5d904fbded257ca52de0cfcdfc921e4f8d82a349bacf6d6d2437e905fb9e14435a7347fd76f2303bf0a
+    "@fastify/busboy": ^2.0.0
+  checksum: af418c4ea429fdd63640b780a21c4f790685f60aa3766663bbff1081c3d20a70da70cbb4d4955d5c0c78f06cd13527d171edf3a65db8476a6c02539f495e9f48
   languageName: node
   linkType: hard
 
@@ -34993,10 +35007,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.19.1, zod@npm:^3.20.6":
+"zod@npm:^3.20.6":
   version: 3.21.4
   resolution: "zod@npm:3.21.4"
   checksum: 161e8cf7aea38a99244d65da4a9477d9d966f6a533e503feaa20ff7968a9691065c38c6f1eab5cbbdc8374142fff4a05c9cacb8479803ab50ab6a6ca80e5d624
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.22.3":
+  version: 3.22.4
+  resolution: "zod@npm:3.22.4"
+  checksum: 7578ab283dac0eee66a0ad0fc4a7f28c43e6745aadb3a529f59a4b851aa10872b3890398b3160f257f4b6817b4ce643debdda4fb21a2c040adda7862cab0a587
   languageName: node
   linkType: hard
 
