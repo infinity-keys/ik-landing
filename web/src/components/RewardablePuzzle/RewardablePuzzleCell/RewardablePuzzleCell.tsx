@@ -3,33 +3,25 @@ import type { FindRewardablePuzzleBySlug } from 'types/graphql'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import OldFormatMessage from 'src/components/OldFormatMessage/OldFormatMessage'
 import RewardablePuzzle from 'src/components/RewardablePuzzle/RewardablePuzzle'
 
+// @TODO: This query is skip auth, and the only thing we need when users are
+// logged out is the puzzle cover image.
 export const QUERY = gql`
   query FindRewardablePuzzleBySlug($slug: String!) {
     rewardable: rewardableBySlug(slug: $slug, type: PUZZLE) {
       id
-      type
       name
       slug
-      explanation
       successMessage
-      asChildPublicParentRewardables {
-        parentRewardable {
-          slug
-          name
-          type
-        }
-      }
-      nfts {
-        cloudinaryId
-      }
       puzzle {
         id
-        isAnon
+        coverImage
+        requirements
         steps {
-          id
           stepSortWeight
+          hasUserCompletedStep
         }
       }
     }
@@ -47,5 +39,9 @@ export const Failure = ({ error }: CellFailureProps) => (
 export const Success = ({
   rewardable,
 }: CellSuccessProps<FindRewardablePuzzleBySlug>) => {
-  return <RewardablePuzzle rewardable={rewardable} />
+  return rewardable.puzzle?.coverImage ? (
+    <RewardablePuzzle rewardable={rewardable} />
+  ) : (
+    <OldFormatMessage />
+  )
 }

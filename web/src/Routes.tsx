@@ -44,8 +44,8 @@ const Routes = () => {
         <Private unauthenticated="profile">
           {/* @TODO: Replace HeaderLayout once we get a minimal header */}
           <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
+            <Route path="/puzzle/{slug}/{step:Int}" page={StepPage} name="puzzleStep" />
             <Route path="/add-roles" page={AddRolesPage} name="addRoles" />
-            <Route path="/puzzle/{slug}/{step:Int}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleStep" />
             <Route path="/user/delete" page={DeletePage} name="delete" />
           </Set>
 
@@ -76,9 +76,6 @@ const Routes = () => {
         <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
           <Route path="/puzzle/{slug}" page={RewardablePuzzleRewardablePuzzlePage} name="puzzleLanding" />
           <Route path="/pack/{slug}" page={RewardablePackRewardablePackPage} name="packLanding" />
-          {/* Anonymous Puzzles - landing and step pages */}
-          <Route path="/a/puzzle/{slug}" page={AnonPuzzlePage} name="anonPuzzleLanding" />
-          <Route path="/a/puzzle/{slug}/{step:Int}" page={AnonPuzzlePage} name="anonPuzzleStep" />
         </Set>
 
         {/* NotFoundPage can't be in a set */}

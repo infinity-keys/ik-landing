@@ -112,9 +112,6 @@ export const Success = ({
       },
     })
 
-  // Immediately upon mount, reconcile progress, but also provide function to
-  // use on button click
-
   return (
     <div className="mt-12 flex flex-col gap-6 lg:mt-0 lg:flex-row">
       <div className="mx-auto w-full lg:basis-3/5">
