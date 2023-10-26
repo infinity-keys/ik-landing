@@ -26,7 +26,7 @@
     "pkce-challenge": "^3.1.0",
     "qfs-compression": "^0.2.1",
     "uuid": "^9.0.0",
-    "zod": "^3.19.1"
+    "zod": "^3.22.3"
   },
   "devDependencies": {
     "@types/uuid": "^9.0.1"
