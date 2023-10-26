@@ -248,8 +248,8 @@ __metadata:
   linkType: hard
 
 "@apollo/server@npm:^4.7.4":
-  version: 4.9.1
-  resolution: "@apollo/server@npm:4.9.1"
+  version: 4.9.3
+  resolution: "@apollo/server@npm:4.9.3"
   dependencies:
     "@apollo/cache-control-types": ^1.0.3
     "@apollo/server-gateway-interface": ^1.1.1
@@ -279,7 +279,7 @@ __metadata:
     whatwg-mimetype: ^3.0.0
   peerDependencies:
     graphql: ^16.6.0
-  checksum: 78012f54e868376a6293ac99e7111f4ada10a73a6a87e83b2d5d3f4d1b8f05958d4ab0c08efdbd3f4c9eeec2c3bc35a9131b2d7975396ae268d37a257e5dfea1
+  checksum: 983412052c8584b623637a49e526d3ac6e1a80aa74b47180503e89b3ca0345207864fe5dd632ddab649057ccc253a63032f3b189d45db15f6b6b0b50d07570ec
   languageName: node
   linkType: hard
 
@@ -5692,7 +5692,7 @@ __metadata:
     rollup-plugin-typescript-paths: ^1.4.0
     tslib: ^2.4.1
     typechain: ^8.1.0
-    typescript: ^4.6.4
+    typescript: ^5.2.2
     vite: ^4.0.5
   languageName: unknown
   linkType: soft
@@ -5726,7 +5726,7 @@ __metadata:
     "@vanilla-extract/vite-plugin": ^3.6.1
     "@vitejs/plugin-react": ^2.2.0
     clsx: ^1.2.1
-    typescript: ^4.6.4
+    typescript: ^5.2.2
     vite: ^4.0.5
     vite-plugin-dts: ^1.7.0
     vite-tsconfig-paths: ^3.5.2
@@ -9291,6 +9291,30 @@ __metadata:
     rpc-websockets: ^7.5.1
     superstruct: ^0.14.2
   checksum: 37514f935fa600b44e7de92a1be0ead233b933c01934df07cb99065bb5bacb8994876212a17f573c405f904b66d86ab62afd16c48dca2ed769c856c8182d54e8
+  languageName: node
+  linkType: hard
+
+"@splinetool/react-spline@npm:^2.2.6":
+  version: 2.2.6
+  resolution: "@splinetool/react-spline@npm:2.2.6"
+  dependencies:
+    lodash.debounce: ^4.0.8
+    react-merge-refs: ^2.0.1
+  peerDependencies:
+    "@splinetool/runtime": "*"
+    react: ">=17.0.0"
+    react-dom: ">=17.0.0"
+  checksum: 7a7e95fe2c77657d2583fd4d83010a8f2c355b7288f58eaab99f24562364fd4e6a543ff48fafeafa08d1d4edf5317682c2116f7badc9bd80f291fb5ddfaf8344
+  languageName: node
+  linkType: hard
+
+"@splinetool/runtime@npm:^0.9.484":
+  version: 0.9.484
+  resolution: "@splinetool/runtime@npm:0.9.484"
+  dependencies:
+    on-change: ^4.0.0
+    semver-compare: ^1.0.0
+  checksum: fab50f1d0720d5663670f7ec9b20789114ef462129c51b9e61efff119079e174242f5a25d7c82dc201a9ccf9d5b6c149f62bce1391e283d63b16d8839333ad08
   languageName: node
   linkType: hard
 
@@ -17815,7 +17839,7 @@ __metadata:
     eslint: ^8.36.0
     nodemon: ^2.0.22
     ts-node: ^10.9.1
-    typescript: ^4.9.5
+    typescript: ^5.2.2
   languageName: unknown
   linkType: soft
 
@@ -20604,7 +20628,7 @@ __metadata:
     ts-loader: ^9.2.3
     ts-node: ^10.0.0
     tsconfig-paths: 4.1.1
-    typescript: ^4.7.4
+    typescript: ^5.2.2
   languageName: unknown
   linkType: soft
 
@@ -26413,6 +26437,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"on-change@npm:^4.0.0":
+  version: 4.0.2
+  resolution: "on-change@npm:4.0.2"
+  checksum: f803698daa72b988db1d92f900aa54bda42d7bcee07512f538d413489d377d4d6e78d09057b5f9f013a69551c285112299b0b9d93e00c8f8f77f8f3e9c07b0e4
+  languageName: node
+  linkType: hard
+
 "on-exit-leak-free@npm:^0.2.0":
   version: 0.2.0
   resolution: "on-exit-leak-free@npm:0.2.0"
@@ -28111,7 +28142,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.2.14, postcss@npm:^8.3.6, postcss@npm:^8.4.14, postcss@npm:^8.4.16, postcss@npm:^8.4.21, postcss@npm:^8.4.23, postcss@npm:^8.4.24, postcss@npm:^8.4.27":
+"postcss@npm:^8.2.14, postcss@npm:^8.3.6, postcss@npm:^8.4.14, postcss@npm:^8.4.21, postcss@npm:^8.4.23, postcss@npm:^8.4.24, postcss@npm:^8.4.27":
   version: 8.4.28
   resolution: "postcss@npm:8.4.28"
   dependencies:
@@ -28119,6 +28150,17 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: 7dc843c26fec9d26a6f3abae3525c160de2fb22ee2163ac3f1fdb15a5651342893e38ffd6c26fddac8e42c9aa629dc80ea20bf5a796c954150cf9295adf8b09c
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.31":
+  version: 8.4.31
+  resolution: "postcss@npm:8.4.31"
+  dependencies:
+    nanoid: ^3.3.6
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 748b82e6e5fc34034dcf2ae88ea3d11fd09f69b6c50ecdd3b4a875cfc7cdca435c958b211e2cb52355422ab6fccb7d8f2f2923161d7a1b281029e4a913d59acf
   languageName: node
   linkType: hard
 
@@ -28959,6 +29001,13 @@ __metadata:
     "@types/react": ">=16"
     react: ">=16"
   checksum: aedec51cbc173121574515d0df434073a6248a5554f108a802db8efebd2ff2e5b1fab79818e9fcd2aca045705b73ae5c12737b17bdf15426ae834780d6f7dd34
+  languageName: node
+  linkType: hard
+
+"react-merge-refs@npm:^2.0.1":
+  version: 2.1.1
+  resolution: "react-merge-refs@npm:2.1.1"
+  checksum: b68cbc4ea51fd96f77247733388738630769d928f32958e63262ce43dff10c6b20f18a0483c6a640a1ffba48f32be26059d4ee9711881cacc63297b01311c8f6
   languageName: node
   linkType: hard
 
@@ -30203,6 +30252,13 @@ __metadata:
   dependencies:
     node-forge: ^1
   checksum: 4a2509c8a5bd49c3630a799de66b317352b52746bec981133d4f8098365da35d2344f0fbedf14aacf2cd1e88682048e2df11ad9dc59331d3b1c0a5ec3e6e16ad
+  languageName: node
+  linkType: hard
+
+"semver-compare@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "semver-compare@npm:1.0.0"
+  checksum: 9ef4d8b81847556f0865f46ddc4d276bace118c7cb46811867af82e837b7fc473911981d5a0abc561fa2db487065572217e5b06e18701c4281bcdd2a1affaff1
   languageName: node
   linkType: hard
 
@@ -33143,7 +33199,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.9.5, typescript@npm:^4.6.4, typescript@npm:^4.7.4, typescript@npm:^4.9.5":
+"typescript@npm:4.9.5":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
   bin:
@@ -33183,7 +33239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.9.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
+"typescript@patch:typescript@4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=289587"
   bin:
@@ -34411,6 +34467,8 @@ __metadata:
     "@redwoodjs/web": 6.1.0
     "@snickerdoodlelabs/objects": ^1.1.2
     "@snickerdoodlelabs/web-integration": ^1.1.0
+    "@splinetool/react-spline": ^2.2.6
+    "@splinetool/runtime": ^0.9.484
     "@tailwindcss/forms": ^0.5.3
     "@types/gtag.js": ^0.0.12
     autoprefixer: ^10.4.12
@@ -34424,7 +34482,7 @@ __metadata:
     loaders.css: ^0.1.2
     lodash: ^4.17.21
     nuka-carousel: ^6.0.3
-    postcss: ^8.4.16
+    postcss: ^8.4.31
     postcss-loader: ^7.0.1
     postcss-preset-env: ^7.8.2
     prettier-plugin-tailwindcss: ^0.1.13

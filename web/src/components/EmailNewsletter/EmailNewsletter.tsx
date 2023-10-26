@@ -30,13 +30,9 @@ const EmailNewsletter = () => {
           />
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-3">
-          <Button
-            type="submit"
-            variant="secondary"
-            disabled={state.submitting}
-            text="Subscribe"
-            fullWidth
-          />
+          <Button type="submit" disabled={state.submitting} fullWidth>
+            Subscribe
+          </Button>
         </div>
       </div>
     </form>

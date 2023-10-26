@@ -25,7 +25,7 @@ const CookieConsentBanner = () => {
       enableDeclineButton
       declineButtonText="Decline"
       disableStyles
-      containerClasses="backdrop-blur-md	border-t border-brand-gray-secondary fixed bottom-0 w-full text-gray-100 p-4 bg-brand-gray-primary/60 md:flex justify-between items-center"
+      containerClasses="backdrop-blur-md z-50 border-t border-brand-gray-secondary fixed bottom-0 w-full text-gray-100 p-4 bg-brand-gray-primary/60 md:flex justify-between items-center"
       buttonWrapperClasses="shrink-0"
       buttonClasses="text-sm font-bold px-4 py-2 rounded bg-brand-accent-primary text-blue mt-6 md:mt-0"
       declineButtonClasses="text-sm font-bold px-4 py-2 rounded bg-gray-200 mr-6 md:ml-6"

@@ -1,6 +1,6 @@
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 
-import { Menu, Transition, Dialog } from '@headlessui/react'
+import { Menu, Transition } from '@headlessui/react'
 import UserCircleIcon from '@heroicons/react/24/outline/UserCircleIcon'
 import clsx from 'clsx'
 
@@ -8,11 +8,11 @@ import { Link, routes, useLocation } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
-import LoginModal from 'src/components/LoginModal/LoginModal'
+import { useLoginModal } from 'src/providers/loginModal/loginModal'
 
 const ProfileIcon = () => {
   const { isAuthenticated, logOut } = useAuth()
-  const [showModal, setShowModal] = useState(false)
+  const { setIsLoginModalOpen } = useLoginModal()
   const { pathname } = useLocation()
 
   return (
@@ -74,49 +74,11 @@ const ProfileIcon = () => {
               </Menu>
             </div>
           ) : (
-            <Button text="Login" onClick={() => setShowModal(true)} />
+            <Button size="small" onClick={() => setIsLoginModalOpen(true)}>
+              Login
+            </Button>
           )}
         </>
-      )}
-
-      {showModal && (
-        <Transition appear show={showModal} as={Fragment}>
-          <Dialog
-            as="div"
-            className="relative z-50"
-            onClose={() => setShowModal(false)}
-          >
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <div className="fixed inset-0 bg-black/40" />
-            </Transition.Child>
-
-            <div className="fixed inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4 text-center">
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0 scale-95"
-                  enterTo="opacity-100 scale-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100 scale-100"
-                  leaveTo="opacity-0 scale-95"
-                >
-                  <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-xl bg-brand-gray-primary p-6 text-left align-middle shadow-xl transition-all">
-                    <LoginModal redirectPath={pathname} />
-                  </Dialog.Panel>
-                </Transition.Child>
-              </div>
-            </div>
-          </Dialog>
-        </Transition>
       )}
     </>
   )

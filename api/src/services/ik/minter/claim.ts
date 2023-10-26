@@ -83,7 +83,7 @@ export const claim: MutationResolvers['claim'] = async ({
       return {
         claimed,
         tokenId,
-        errors: ['You have already claimed this NFT'],
+        errors: ['You have already claimed'],
       }
     }
 

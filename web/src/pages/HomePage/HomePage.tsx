@@ -1,29 +1,24 @@
-import { useState } from 'react'
+import { PropsWithChildren, useLayoutEffect, useRef, useState } from 'react'
 
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import clsx from 'clsx'
-import { m as motion, Variants } from 'framer-motion'
 
-import { Link, routes } from '@redwoodjs/router'
+import { Link, routes, useLocation } from '@redwoodjs/router'
 
 import Fade from 'src/components/Animations/Fade'
-import Scale from 'src/components/Animations/Scale'
 import BenefitCard from 'src/components/BenefitCard/BenefitCard'
 import Button from 'src/components/Button'
 import HomeContactForm from 'src/components/HomeContactForm/HomeContactForm'
 import OpportunityCard from 'src/components/OpportunityCard/OpportunityCard'
-import Section from 'src/components/Section/Section'
 import Seo from 'src/components/Seo/Seo'
-import beaker from 'src/images/beaker.webp'
-import circle from 'src/images/Big-Circle.webp'
+import compass from 'src/images/compass.webp'
 import computer from 'src/images/computer.webp'
 import controller from 'src/images/controller.webp'
-import heroBeaker from 'src/images/hero-beaker.webp'
-import heroMedal from 'src/images/hero-medal.webp'
-import heroWatch from 'src/images/hero-watch.webp'
-import medal from 'src/images/medal.webp'
+import heroLogo from 'src/images/full-logo-2x.webp'
+import heroLogoLg from 'src/images/full-logo-lg.webp'
+import key from 'src/images/key.webp'
 import puzzle from 'src/images/puzzle.webp'
-import watch from 'src/images/watch.webp'
+import union from 'src/images/union.webp'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
@@ -39,7 +34,7 @@ export type BenefitCardProps = {
 
 const benefits: Array<BenefitCardProps> = [
   {
-    icon: watch,
+    icon: key,
     title: 'Players',
     description:
       'Seek adventure and collect artifacts in creator-built keyhunt puzzle games.',
@@ -52,7 +47,7 @@ const benefits: Array<BenefitCardProps> = [
     ],
   },
   {
-    icon: beaker,
+    icon: compass,
     title: 'Creators',
     description:
       'Use no-code keyhunt tools to take players on your creative adventures.',
@@ -65,7 +60,7 @@ const benefits: Array<BenefitCardProps> = [
     ],
   },
   {
-    icon: medal,
+    icon: union,
     title: 'Sponsors',
     description:
       'Independent creators build keyhunt puzzle games featuring your collections.',
@@ -130,267 +125,181 @@ const socialLinks = [
   },
 ]
 
-const heroData: Array<{
-  image: string
-  title: string
-  description: string
-}> = [
-  {
-    image: heroWatch,
-    title: 'Players',
-    description: 'Solve puzzles, collect keys & claim treasure',
-  },
-  {
-    image: heroBeaker,
-    title: 'Creators',
-    description: 'Launch no-code keyhunts featuring any digital assets',
-  },
-  {
-    image: heroMedal,
-    title: 'Sponsors',
-    description: 'Post bounties to incentivize creator-built games',
-  },
-]
-
-const transition = {
-  originY: 0.6,
-  transition: {
-    ease: [0.185, -0.01, 0, 1],
-    duration: 1,
-  },
-}
-
-const variants: Variants = {
-  show: {
-    scale: 1,
-    ...transition,
-  },
-  hide: {
-    scale: 0.6,
-    ...transition,
-  },
+const Container = ({
+  pySm = false,
+  noPx = false,
+  noPt = false,
+  bgLight = false,
+  children,
+}: PropsWithChildren & {
+  pySm?: boolean
+  bgLight?: boolean
+  noPx?: boolean
+  noPt?: boolean
+}) => {
+  return (
+    <div className={clsx({ 'bg-white/5': bgLight })}>
+      <div
+        className={clsx(
+          'mx-auto max-w-xs md:max-w-8xl',
+          // pySm ? 'py-8 lg:py-20' : 'py-14 lg:py-24',
+          !noPx && 'px-4 lg:px-12',
+          {
+            'py-8 lg:py-20': pySm && !noPt,
+            'py-14 lg:py-24': !pySm && !noPt,
+            'pb-14 lg:pb-24': noPt,
+          }
+        )}
+      >
+        {children}
+      </div>
+    </div>
+  )
 }
 
 const HomePage = () => {
   const [isFormVisible, setIsFormVisible] = useState(false)
-  const [heroDataIndex, setHeroDataIndex] = useState<number | null>(null)
-  const isSelected = typeof heroDataIndex === 'number'
+  const formRef = useRef<{ scrollToElement: () => void }>()
+  const workRef = useRef<HTMLElement>(null)
+  const { hash } = useLocation()
+
+  const handleScrollToForm = () => {
+    setIsFormVisible(true)
+    if (formRef.current) {
+      formRef.current.scrollToElement()
+    }
+  }
+
+  useLayoutEffect(() => {
+    if (hash === '#works' && workRef.current) {
+      workRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+
+    if (hash === '#waitlist') {
+      handleScrollToForm()
+    }
+  }, [hash])
 
   return (
     <div>
       <Seo title="Home" />
 
-      <div className="relative mx-auto max-w-[1440px] overflow-hidden pb-16">
-        <div className="min-h-screen">
-          <Section>
-            <div className="relative z-20 mt-16 max-w-2xl">
-              <h1 className="text-shadow-lg text-3xl font-semibold lg:text-8xl">
-                <Fade inline duration={1.8} key={heroDataIndex}>
-                  {isSelected ? heroData[heroDataIndex].title : 'Infinity Keys'}
-                </Fade>
-              </h1>
-              <Fade delay={isSelected ? 0.4 : 0.8} key={heroDataIndex}>
-                <p
-                  className="text-shadow-lg mt-4 max-w-xs text-2xl lg:max-w-lg lg:text-4xl"
-                  data-cy="description"
-                >
-                  {isSelected
-                    ? heroData[heroDataIndex].description
-                    : 'is a no-code creator platform for games & collecting digital keys'}
-                </p>
+      <div className="relative mx-auto mt-20 flex max-w-8xl flex-col items-center overflow-x-hidden md:mt-0 md:min-h-screen md:flex-row md:justify-between">
+        <Container noPx pySm>
+          <div className="relative z-10 max-w-xs pr-4 pl-4 md:pr-0 lg:max-w-md lg:pl-12">
+            <h1 className="text-shadow-lg text-3xl font-semibold lg:text-5xl xl:text-6xl">
+              <Fade inline duration={1.2}>
+                Your NFTs
+              </Fade>{' '}
+              <Fade inline delay={0.6} duration={1.2}>
+                are <span className="text-brand-accent-primary">the Keys</span>
               </Fade>
-            </div>
-          </Section>
-        </div>
+            </h1>
 
-        <div className="absolute bottom-24 -left-8 -right-8 z-10 mx-auto max-w-2xl lg:right-4 lg:top-32 lg:bottom-auto lg:left-auto lg:max-w-none">
-          <motion.img
-            src={circle}
-            alt=""
-            className="pointer-events-none block max-h-[calc(90vh)]"
-            variants={variants}
-            animate={isSelected ? 'hide' : 'show'}
-          />
-
-          {!isSelected && (
-            <>
-              <div className="group absolute top-[36%] left-[13%] w-24 max-w-[20vh] md:w-36 lg:w-48">
-                <Fade>
-                  <button onClick={() => setHeroDataIndex(2)}>
-                    <img
-                      src={medal}
-                      alt=""
-                      className="pointer-events-none transition-transform duration-500 ease-in-out group-hover:scale-90 "
-                    />
-                  </button>
-                </Fade>
-              </div>
-
-              <div className="group absolute top-[20%] right-[14%] w-24 max-w-[20vh] md:w-36 lg:w-48">
-                <Fade delay={0.3}>
-                  <button onClick={() => setHeroDataIndex(0)}>
-                    <img
-                      src={watch}
-                      alt=""
-                      className="pointer-events-none transition-transform duration-500 ease-in-out group-hover:scale-90"
-                    />
-                  </button>
-                </Fade>
-              </div>
-
-              <div className="group absolute bottom-[12%] left-[46%] w-24 max-w-[20vh] md:w-36 lg:w-48">
-                <Fade delay={0.6}>
-                  <button onClick={() => setHeroDataIndex(1)}>
-                    <img
-                      src={beaker}
-                      alt=""
-                      className="pointer-events-none transition-transform duration-500 ease-in-out group-hover:scale-90"
-                    />
-                  </button>
-                </Fade>
-              </div>
-            </>
-          )}
-
-          {typeof heroDataIndex === 'number' && (
-            <div className="absolute bottom-1/2 w-full translate-y-[58%] text-center">
-              <button
-                onClick={() => setHeroDataIndex(null)}
-                className="w-[60%]"
+            <Fade delay={0.9}>
+              <p
+                className="text-shadow-lg mt-4 text-lg leading-tight lg:text-2xl"
+                data-cy="description"
               >
-                <Fade inline>
-                  <span
-                    className={clsx(
-                      'block',
-                      heroData[heroDataIndex].title !== 'Players' && 'hidden'
-                    )}
-                  >
-                    <Scale withHover inline scaleInitial={0.9}>
-                      <img
-                        src={heroData[heroDataIndex].image}
-                        alt=""
-                        className="pointer-events-none w-full max-w-[150px] sm:max-w-[170px] lg:max-h-[60vh] lg:max-w-[270px] "
-                      />
-                    </Scale>
-                  </span>
+                Infinity Keys creators build no-code NFT-collecting games.
+              </p>
+            </Fade>
 
-                  <span
-                    className={clsx(
-                      'block',
-                      heroData[heroDataIndex].title !== 'Sponsors' && 'hidden'
-                    )}
-                  >
-                    <Scale withHover inline scaleInitial={0.9}>
-                      <img
-                        src={heroData[heroDataIndex].image}
-                        alt=""
-                        className="pointer-events-none w-full max-w-md lg:max-h-[50vh] lg:max-w-xl"
-                      />
-                    </Scale>
-                  </span>
+            <Fade delay={1.2}>
+              <div className="mt-8 flex gap-2">
+                <Button round solid onClick={handleScrollToForm}>
+                  <span className="hidden md:inline">Join&nbsp;</span>
+                  Waitlist
+                </Button>
 
-                  <span
-                    className={clsx(
-                      'block',
-                      heroData[heroDataIndex].title !== 'Creators' && 'hidden'
-                    )}
-                  >
-                    <Scale withHover inline scaleInitial={0.9}>
-                      <img
-                        src={heroData[heroDataIndex].image}
-                        alt=""
-                        className="pointer-events-none w-full max-w-[170px] sm:max-w-[220px] lg:max-h-[65vh] lg:max-w-xs"
-                      />
-                    </Scale>
-                  </span>
-                </Fade>
-              </button>
-            </div>
-          )}
+                <Button
+                  round
+                  to={routes.puzzleLanding({ slug: 'the-society' })}
+                >
+                  <span className="hidden md:inline">Play&nbsp;</span>
+                  Demo
+                </Button>
+              </div>
+            </Fade>
+          </div>
+        </Container>
+
+        <div className="relative z-0 w-full md:max-w-xl lg:-mt-20 lg:max-w-3xl xl:max-w-4xl">
+          <Fade delay={0.9}>
+            <picture>
+              <source srcSet={`${heroLogo} 1x, ${heroLogoLg} 2x`} />
+              <img
+                src={heroLogo}
+                alt="Infinity Keys logo of a spooky eye in triangle."
+                className="block w-full"
+              />
+            </picture>
+          </Fade>
         </div>
       </div>
 
-      <section className="pt-8 md:pt-20">
-        <div className="px-4">
-          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
-            <Fade>
-              <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
-                How It Works
-              </h2>
-            </Fade>
-            <Fade>
-              <p className="max-w-xl text-sm lg:text-lg">
-                A net positive value loop incentives creators, sponsors, and
-                players without draining economic value from the system
-              </p>
-            </Fade>
-          </div>
-        </div>
-
-        <div className="bg-white/5 py-14 lg:py-24">
-          <div className="mx-auto flex max-w-5xl flex-col items-center gap-2 px-4 md:flex-row md:justify-center lg:gap-6 lg:px-8">
+      <section
+        ref={workRef}
+        className="relative z-40 -mt-[100px] bg-gradient-to-b from-white/0 to-white/5"
+      >
+        <Container noPt>
+          <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center lg:gap-6">
             {benefits.map((data, index) => (
               <BenefitCard {...data} key={data.title} delay={index * 0.3} />
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
-      <section className="pt-8 md:pt-20">
-        <div className="px-4">
-          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
-            <Fade>
-              <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
-                Opportunity
-              </h2>
-            </Fade>
-            <Fade>
-              <p className="max-w-xl text-sm lg:text-lg">
-                Infinity Keys taps into the UCG and web3 gaming sectors giving
-                projects and creators more attention and audience
-              </p>
-            </Fade>
-          </div>
-        </div>
+      <section>
+        <Container pySm>
+          <Fade>
+            <h2 className="pb-12 text-3xl font-semibold lg:text-5xl">
+              Opportunity
+            </h2>
+          </Fade>
+          <Fade>
+            <p className="max-w-xl text-sm lg:text-lg">
+              Infinity Keys taps into the UCG and web3 gaming sectors giving
+              projects and creators more attention and audience
+            </p>
+          </Fade>
+        </Container>
 
-        <div className="bg-white/5 py-14 lg:py-24">
-          <div className="mx-auto flex max-w-5xl flex-col items-center gap-20 px-4 md:flex-row md:items-stretch md:justify-center md:gap-6 lg:px-8">
+        <Container bgLight>
+          <div className="flex flex-col items-center gap-20 md:flex-row md:items-stretch md:justify-between md:gap-6">
             {opportunity.map((data, index) => (
               <OpportunityCard {...data} key={data.title} delay={index * 0.3} />
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
-      <section className="pt-8 md:pt-20">
-        <div className="px-4">
-          <div className="mx-auto max-w-xs pb-8 md:max-w-5xl lg:px-8 lg:pb-20">
-            <Fade>
-              <h2 className="text-3xl font-semibold lg:text-5xl">
-                There&apos;s treasure everywhere.
-              </h2>
-            </Fade>
+      <section>
+        <Container pySm>
+          <Fade>
+            <h2 className="text-3xl font-semibold lg:text-5xl">
+              There&apos;s treasure everywhere.
+            </h2>
+          </Fade>
 
-            <Fade>
-              {!isFormVisible && (
-                <div className="pt-12">
-                  <Button
-                    text="Get in Touch"
-                    variant="rounded"
-                    onClick={() => setIsFormVisible(true)}
-                  />
-                </div>
-              )}
-            </Fade>
-          </div>
-        </div>
+          <Fade>
+            {!isFormVisible && (
+              <div className="pt-12">
+                <Button round solid onClick={handleScrollToForm}>
+                  Join Waitlist
+                </Button>
+              </div>
+            )}
+          </Fade>
+        </Container>
 
         {isFormVisible && (
-          <div className="bg-white/5 py-14 lg:py-24">
-            <div className="mx-auto flex min-h-[542px] max-w-5xl items-center justify-center px-4 lg:min-h-[354px] lg:px-8">
-              <HomeContactForm />
+          <Container bgLight>
+            <div className="flex items-center justify-center">
+              <HomeContactForm ref={formRef} />
             </div>
-          </div>
+          </Container>
         )}
       </section>
 

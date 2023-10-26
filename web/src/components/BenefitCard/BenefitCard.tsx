@@ -38,13 +38,13 @@ const BenefitCard = ({
   const prefersReducedMotion = useReducedMotion()
 
   return (
-    <div className="w-full max-w-xs flex-1">
-      <Fade delay={delay} y={10}>
+    <div className="w-full max-w-xs flex-1 backdrop-blur-md">
+      <Fade delay={delay} y={10} threshold={0}>
         <div className="flex flex-1 flex-col items-stretch rounded-xl border-2 border-stone-50 bg-white/5 py-6 px-8 md:px-6">
           <div className="flex flex-col items-center">
             <Scale delay={delay + 0.3}>
               <Scale withHover>
-                <img src={icon} alt="" className="mb-4 w-14" />
+                <img src={icon} alt="" className="mb-4 h-14 w-14" />
               </Scale>
             </Scale>
             <h3 className="text-xl font-medium">{title}</h3>
@@ -58,7 +58,7 @@ const BenefitCard = ({
                 animate="animate"
                 className="max-w-[240px] list-disc pl-2 text-sm leading-6"
                 transition={{
-                  staggerChildren: prefersReducedMotion ? 0 : 0.1,
+                  staggerChildren: prefersReducedMotion ? 0 : 0.05,
                 }}
               >
                 {list.map((item) => (
@@ -77,15 +77,10 @@ const BenefitCard = ({
           </div>
 
           <div className="mx-auto flex w-full max-w-[120px]">
-            <Button
-              text={''}
-              variant="rounded"
-              fullWidth
-              onClick={() => setShowList(!showList)}
-            >
+            <Button round fullWidth onClick={() => setShowList(!showList)}>
               {showList ? (
                 <Fade inline x={3} key="list">
-                  <span className="block w-7">
+                  <span className="block w-6">
                     <ArrowLeftIcon />
                   </span>
                 </Fade>

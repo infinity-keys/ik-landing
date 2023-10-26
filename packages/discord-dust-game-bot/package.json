@@ -12,7 +12,7 @@
     "discord-economy-super": "^1.7.6",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
-    "typescript": "^4.9.5"
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
     "eslint": "^8.36.0",

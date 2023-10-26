@@ -112,9 +112,6 @@ export const Success = ({
       },
     })
 
-  // Immediately upon mount, reconcile progress, but also provide function to
-  // use on button click
-
   return (
     <div className="mt-12 flex flex-col gap-6 lg:mt-0 lg:flex-row">
       <div className="mx-auto w-full lg:basis-3/5">
@@ -154,7 +151,9 @@ export const Success = ({
             </div>
 
             <div className="mt-8 sm:mt-0">
-              <Button onClick={handleLogOut} text="Log Out" />
+              <Button onClick={handleLogOut} size="small" solid>
+                Log Out
+              </Button>
             </div>
           </div>
 
@@ -291,12 +290,7 @@ export const Success = ({
           </div>
           <div className="flex items-center justify-between">
             <p>Lens:</p>
-            <LensConnect
-              text="Connect"
-              size="small"
-              variant="faded"
-              border={false}
-            />
+            <LensConnect text="Connect" size="small" />
           </div>
 
           <div className="flex items-center justify-between">
@@ -322,10 +316,7 @@ export const Success = ({
                 </button>
               ) : (
                 <Button
-                  text="Connect"
                   size="small"
-                  variant="faded"
-                  border={false}
                   onClick={() =>
                     updateExternalWallet({
                       variables: {
@@ -335,7 +326,9 @@ export const Success = ({
                       },
                     })
                   }
-                />
+                >
+                  Connect
+                </Button>
               )
             ) : (
               <button
