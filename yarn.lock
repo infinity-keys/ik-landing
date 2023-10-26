@@ -8935,93 +8935,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@snickerdoodlelabs/common-utils@npm:^1.0.0, @snickerdoodlelabs/common-utils@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "@snickerdoodlelabs/common-utils@npm:1.0.2"
-  dependencies:
-    "@snickerdoodlelabs/objects": ^1.0.3
-    axios: ^0.27.2
-    ethers: ^5.6.6
-    inversify: ^6.0.1
-    neverthrow: ^5.1.0
-    neverthrow-result-utils: ^2.0.2
-    oauth-1.0a: ^2.2.6
-    pino: ^8.1.0
-    tweetnacl: ^1.0.3
-    uuid: ^8.3.0
-  checksum: 23f87a5b856cb8b6ae7655fe3d35c9a53c80e4329f445ba98563f0fdde1c335d887824b5deb039a4c2d0203569f52cd235a563aead6e686e1e4290c704c4d01d
-  languageName: node
-  linkType: hard
-
-"@snickerdoodlelabs/objects@npm:^1.0.0, @snickerdoodlelabs/objects@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "@snickerdoodlelabs/objects@npm:1.0.3"
-  dependencies:
-    ethers: ^5.6.6
-    neverthrow: ^5.1.0
-    rxjs: ^7.5.5
-    ts-brand: ^0.0.2
-  checksum: 28cb4e340c00bea2ff7d9a09a55490b5f3cc49eb9ab0861989093b2ae2c59e2cee53d8679f4bdaa8aceaa82da2499f1111d73414cf58ce10185c7461c5800f64
-  languageName: node
-  linkType: hard
-
-"@snickerdoodlelabs/objects@npm:^1.1.0":
-  version: 1.1.1
-  resolution: "@snickerdoodlelabs/objects@npm:1.1.1"
-  dependencies:
-    ethers: ^5.6.6
-    neverthrow: ^5.1.0
-    rxjs: ^7.5.5
-    ts-brand: ^0.0.2
-    utility-types: ^3.10.0
-  checksum: ff062656e9a13cd1accd026cfc3bcee0ba1bdfac56305b8db64bde8abecef8be2c24141cdc4856253e7e6aa034ed2a4c865071eee0893c58c820bbad150db45f
-  languageName: node
-  linkType: hard
-
-"@snickerdoodlelabs/objects@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "@snickerdoodlelabs/objects@npm:1.1.2"
-  dependencies:
-    ethers: ^5.6.6
-    neverthrow: ^5.1.0
-    rxjs: ^7.5.5
-    ts-brand: ^0.0.2
-    utility-types: ^3.10.0
-  checksum: cda7726d519a94e1897ae90deca94d62bdf2e58c1ce6494373e45cbf7a50b1f53acc259d046e75d9ac4e8b27802a5ee6775d24b57a18f176cb36b6bbdabccd86
-  languageName: node
-  linkType: hard
-
-"@snickerdoodlelabs/utils@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@snickerdoodlelabs/utils@npm:1.0.0"
-  dependencies:
-    "@snickerdoodlelabs/common-utils": ^1.0.0
-    "@snickerdoodlelabs/objects": ^1.0.0
-    inversify: ^6.0.1
-    neverthrow: ^5.1.0
-    neverthrow-result-utils: ^2.0.2
-    postmate: ^1.5.2
-  checksum: 6778bdce591bfadc939beb77a4cfa7d4499e58f260ed8b826e2384f6d0516b4b46e1c7dc37d1ec1be77ff37ca3bab48555a57897e97d78e721c8d2d02124bc78
-  languageName: node
-  linkType: hard
-
-"@snickerdoodlelabs/web-integration@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@snickerdoodlelabs/web-integration@npm:1.1.0"
-  dependencies:
-    "@snickerdoodlelabs/common-utils": ^1.0.2
-    "@snickerdoodlelabs/objects": ^1.1.0
-    "@snickerdoodlelabs/utils": ^1.0.0
-    ethers: ^5.6.6
-    inversify: ^6.0.1
-    neverthrow: ^5.1.0
-    neverthrow-result-utils: ^2.0.2
-    postmate: ^1.5.2
-    reflect-metadata: ^0.1.13
-  checksum: 3683decfb9437a762230352999dc297502916a8fcf13f6e797e522c5c9a6df9a200a8716c86e3961a475e511bf8eea0b20903a3b400e6d130d5a2169b3f423cc
-  languageName: node
-  linkType: hard
-
 "@solana/buffer-layout@npm:^4.0.0":
   version: 4.0.0
   resolution: "@solana/buffer-layout@npm:4.0.0"
@@ -18962,7 +18875,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^5.6.6, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
+"ethers@npm:^5.7.1, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -21709,13 +21622,6 @@ __metadata:
   dependencies:
     loose-envify: ^1.0.0
   checksum: 5af133a917c0bcf65e84e7f23e779e7abc1cd49cb7fdc62d00d1de74b0d8c1b5ee74ac7766099fb3be1b05b26dfc67bab76a17030d2fe7ea2eef867434362dfc
-  languageName: node
-  linkType: hard
-
-"inversify@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "inversify@npm:6.0.1"
-  checksum: 2d0b67663e7ab8b08704e1a2c0ab7a181c412ab0bec5c3d6144946d77ec38a7f213b88f81a92a717f856910baed50b34e75754f25fc3d2160ec74bd62285bf97
   languageName: node
   linkType: hard
 
@@ -25476,23 +25382,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"neverthrow-result-utils@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "neverthrow-result-utils@npm:2.0.2"
-  dependencies:
-    delay: ^5.0.0
-    neverthrow: ^5.1.0
-  checksum: fbe98645da125c99bc19d967639bb18daec561d6efddcbd00311b5639534a35d492a3d7fa1e481c75ad739f3d5b4d6641563c95f50bacf87c1db13b62945e8e1
-  languageName: node
-  linkType: hard
-
-"neverthrow@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "neverthrow@npm:5.1.0"
-  checksum: 25d7ec6376a7978c3db6b7aed14f0d6b5f563d914b1dd63e7493c390cff8e44a0c90488d740d5381129193c53561af4e5794ef6d4513a681890d33c4d112fd15
-  languageName: node
-  linkType: hard
-
 "new-github-issue-url@npm:0.2.1":
   version: 0.2.1
   resolution: "new-github-issue-url@npm:0.2.1"
@@ -25882,13 +25771,6 @@ __metadata:
   version: 2.2.2
   resolution: "nwsapi@npm:2.2.2"
   checksum: f7c4fedb0dc0786204ee99f440e9827d6e01a0c0322e93b5c9a9a382dd0bd9650d98ca3d1967a77554e3ec1f9a46a20cfea80a41fb00e91c5101c53d8b2c9aed
-  languageName: node
-  linkType: hard
-
-"oauth-1.0a@npm:^2.2.6":
-  version: 2.2.6
-  resolution: "oauth-1.0a@npm:2.2.6"
-  checksum: c540db3717cfe7e73509a29fc9163469af0cf1d7133b49989f0a47e23944efe8ca4ad375ff44bb118b26417f612b83b824e7c662ccd210eeb97169d4a846cf0b
   languageName: node
   linkType: hard
 
@@ -26754,16 +26636,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino-abstract-transport@npm:v1.1.0":
-  version: 1.1.0
-  resolution: "pino-abstract-transport@npm:1.1.0"
-  dependencies:
-    readable-stream: ^4.0.0
-    split2: ^4.0.0
-  checksum: 6e9b9d5a2c0a37f91ecaf224d335daae1ae682b1c79a05b06ef9e0f0a5d289f8e597992217efc857796dae6f1067e9b4882f95c6228ff433ddc153532cae8aca
-  languageName: node
-  linkType: hard
-
 "pino-datadog@npm:^2.0.2":
   version: 2.0.2
   resolution: "pino-datadog@npm:2.0.2"
@@ -26835,27 +26707,6 @@ __metadata:
   bin:
     pino: bin.js
   checksum: 0288488d0426b68d1e3a7e0f11eda6b3e8e4d7cd9f8aa6e090afe03e604fa5039be62397528d78d6f30735e6416a54b4e07881107ef80c125076191399283688
-  languageName: node
-  linkType: hard
-
-"pino@npm:^8.1.0":
-  version: 8.15.1
-  resolution: "pino@npm:8.15.1"
-  dependencies:
-    atomic-sleep: ^1.0.0
-    fast-redact: ^3.1.1
-    on-exit-leak-free: ^2.1.0
-    pino-abstract-transport: v1.1.0
-    pino-std-serializers: ^6.0.0
-    process-warning: ^2.0.0
-    quick-format-unescaped: ^4.0.3
-    real-require: ^0.2.0
-    safe-stable-stringify: ^2.3.1
-    sonic-boom: ^3.1.0
-    thread-stream: ^2.0.0
-  bin:
-    pino: bin.js
-  checksum: d2a5392da372d279f2ff0465d6a6f2033303d7cf8d2020938ae5e00e750a006388148edb8bad2c3f41227e365c3b179fb692d220566fe79e32ac5ed051bd4183
   languageName: node
   linkType: hard
 
@@ -27771,13 +27622,6 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: 748b82e6e5fc34034dcf2ae88ea3d11fd09f69b6c50ecdd3b4a875cfc7cdca435c958b211e2cb52355422ab6fccb7d8f2f2923161d7a1b281029e4a913d59acf
-  languageName: node
-  linkType: hard
-
-"postmate@npm:^1.5.2":
-  version: 1.5.2
-  resolution: "postmate@npm:1.5.2"
-  checksum: a6ef50768bd99b56f8bf8f961fcadca4b96c2748b1639d225d9bb9b15b2cd5af6c4aed91e2c05c41c666fdfc0010d1011ea0e3f9b97c7d1c7b687ee83227ebd5
   languageName: node
   linkType: hard
 
@@ -31919,13 +31763,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-brand@npm:^0.0.2":
-  version: 0.0.2
-  resolution: "ts-brand@npm:0.0.2"
-  checksum: 43f391ff8b8e22dbb3294caa1a74b9f5d44de83b50d75d06a6bacd1bd73d5e117f5785757b733e0ca828c7dc75af5e45912028096a4ad2fcd03d8d6540875788
-  languageName: node
-  linkType: hard
-
 "ts-command-line-args@npm:^2.2.0":
   version: 2.3.1
   resolution: "ts-command-line-args@npm:2.3.1"
@@ -33509,13 +33346,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"utility-types@npm:^3.10.0":
-  version: 3.10.0
-  resolution: "utility-types@npm:3.10.0"
-  checksum: 79a6f7ea0cdd4fcafcec8c6e68e1e0cfa657e414b6f1696552d89ae70a3634b12ac6c16b7a0a3bfdb0a222ebc3d9a7649f2de434a78f2d65d318b50f314a85e4
-  languageName: node
-  linkType: hard
-
 "utils-merge@npm:1.0.1":
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
@@ -33532,7 +33362,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^8.3.0, uuid@npm:^8.3.2":
+"uuid@npm:^8.3.2":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
   bin:
@@ -34015,8 +33845,6 @@ __metadata:
     "@redwoodjs/router": 6.1.0
     "@redwoodjs/vite": 6.1.0
     "@redwoodjs/web": 6.1.0
-    "@snickerdoodlelabs/objects": ^1.1.2
-    "@snickerdoodlelabs/web-integration": ^1.1.0
     "@splinetool/react-spline": ^2.2.6
     "@splinetool/runtime": ^0.9.484
     "@tailwindcss/forms": ^0.5.3
