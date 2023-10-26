@@ -108,7 +108,9 @@ const PuzzleDumb = ({ answer = '' }: PuzzleProps) => {
             data-cy="success_message_check"
           >
             <p className="pb-4 text-xl">Success!</p>
-            <Button text="Enter" fullWidth to={routes.play()} size="large" />
+            <Button fullWidth to={routes.play()} size="large">
+              Enter
+            </Button>
           </div>
         ) : (
           <LoadingIcon />
@@ -188,12 +190,9 @@ const PuzzleDumb = ({ answer = '' }: PuzzleProps) => {
 
         {/* Submit Button */}
         <div data-cy="submit" className="flex justify-center">
-          <Button
-            text="Submit"
-            type="submit"
-            disabled={!canSubmit}
-            variant="solid"
-          />
+          <Button type="submit" disabled={!canSubmit} solid>
+            Submit
+          </Button>
         </div>
       </form>
     </div>

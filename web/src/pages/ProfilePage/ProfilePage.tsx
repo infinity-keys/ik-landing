@@ -6,10 +6,10 @@ import { useAuth } from 'src/auth'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
 import Seo from 'src/components/Seo/Seo'
-import useReconcileProgress from 'src/hooks/useReconcileProgress'
+import Wrapper from 'src/components/Wrapper/Wrapper'
 import { clearRedirectTo } from 'src/providers/redirection'
 
-const LoginModal = lazy(() => import('src/components/LoginModal/LoginModal'))
+const LoginForm = lazy(() => import('src/components/LoginForm/LoginForm'))
 const ProgressDeleteButton = lazy(
   () => import('src/components/ProgressDeleteButton/ProgressDeleteButton')
 )
@@ -17,10 +17,7 @@ const ProgressDeleteButton = lazy(
 const ProfilePage = () => {
   const { isAuthenticated, loading, logOut, currentUser } = useAuth()
   const { redirectTo } = useParams()
-
-  const { reconcilePuzzles, progressLoading } = useReconcileProgress()
   const [errorMessage, setErrorMessage] = useState('')
-
   const [deleteProgressLoading, setDeleteProgressLoading] = useState(false)
 
   const handleLogOut = () => {
@@ -37,29 +34,19 @@ const ProfilePage = () => {
   }, [redirectTo])
 
   return (
-    <div>
+    <Wrapper>
       <Seo title="Profile" />
-      {isAuthenticated &&
-        !progressLoading &&
-        !loading &&
-        !deleteProgressLoading && (
-          <div className="mx-auto w-full max-w-4xl pb-12">
-            <ProfileCell handleLogOut={handleLogOut} />
+      {isAuthenticated && !loading && !deleteProgressLoading && (
+        <div className="mx-auto w-full max-w-4xl pb-12">
+          <ProfileCell handleLogOut={handleLogOut} />
+        </div>
+      )}
 
-            <button
-              className="mx-auto mt-2 block italic text-gray-200 underline transition-colors hover:text-brand-accent-primary"
-              onClick={() => reconcilePuzzles()}
-            >
-              Sync your anonymous progress
-            </button>
-          </div>
-        )}
-
-      {loading || progressLoading ? (
+      {loading ? (
         <LoadingIcon />
       ) : (
         <div className="relative text-center">
-          {!isAuthenticated && <LoginModal />}
+          {!isAuthenticated && <LoginForm />}
 
           <p className="pt-2 text-center text-brand-accent-secondary">
             {errorMessage}
@@ -73,7 +60,7 @@ const ProfilePage = () => {
           />
         </div>
       )}
-    </div>
+    </Wrapper>
   )
 }
 

@@ -68,7 +68,7 @@ const ConnectAccountsPage = () => {
           {error && <p>{error}</p>}
 
           <div className="mt-8">
-            <Button text="Return to Profile Page" to={routes.profile()} />
+            <Button to={routes.profile()}>Return to Profile Page</Button>
           </div>
         </div>
       )}

@@ -13,6 +13,16 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 18
+      - key: SKIP_INSTALL_DEPS
+        value: true
+      - key: SPLINE_PUZZLE_SLUG
+        value: the-society
+      - key: STATIC_FORMS_ACCESS_TOKEN
+        value: d9f1938d-722f-49fa-8bfb-c12ed7062922
+      - key: STATIC_FORMS_EMAIL
+        value: partner@infinitykeys.io
+      - key: WALLET_CONNECT_PROJECT_ID
+        value: 4c0830341026abc0916819b69728a141
     routes:
       - type: rewrite
         source: /.redwood/functions/*

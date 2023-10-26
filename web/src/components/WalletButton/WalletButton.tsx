@@ -1,20 +1,13 @@
 import ShieldExclamationIcon from '@heroicons/react/24/outline/ShieldExclamationIcon'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import clsx from 'clsx'
 
 import Button from 'src/components/Button/Button'
-import useCurrentWidth from 'src/hooks/useCurrentWidth'
-
-const BREAK_POINT = 1024
 
 export default function WalletButton({
   size = 'medium',
 }: {
   size?: 'small' | 'medium' | 'large'
 }) {
-  const width = useCurrentWidth()
-  const isSmall = width < BREAK_POINT
-
   return (
     <ConnectButton.Custom>
       {({
@@ -46,7 +39,6 @@ export default function WalletButton({
               if (!connected) {
                 return (
                   <Button
-                    text={isSmall ? 'Connect' : 'Connect Wallet'}
                     onClick={() => {
                       if (window.Buffer) {
                         openConnectModal()
@@ -59,59 +51,34 @@ export default function WalletButton({
                     }}
                     type="button"
                     size={size}
-                  />
+                    round
+                  >
+                    Connect
+                  </Button>
                 )
               }
               if (chain.unsupported) {
                 return (
                   <Button
-                    text={isSmall ? '' : 'Wrong Network'}
                     onClick={openChainModal}
                     type="button"
-                    variant={isSmall ? 'faded' : 'solid'}
-                    border={false}
+                    round
+                    size={size}
                   >
-                    {isSmall && (
-                      <ShieldExclamationIcon className="h-8 w-8 fill-transparent stroke-red-600" />
-                    )}
+                    <ShieldExclamationIcon className="h-6 w-12 fill-transparent stroke-red-600" />
                   </Button>
                 )
               }
               return (
                 <div className="flex gap-2">
                   <Button
-                    onClick={openChainModal}
-                    type="button"
-                    variant="faded"
-                    text={chain.name || 'Unknown'}
-                    size="small"
-                    border={false}
-                  >
-                    {chain.hasIcon && (
-                      <div
-                        className={clsx('mr-2 flex shrink-0', {
-                          'mr-4': !isSmall,
-                        })}
-                      >
-                        {chain.iconUrl && (
-                          <img
-                            width={24}
-                            height={24}
-                            alt={`${chain.name} icon` ?? 'Chain icon'}
-                            src={chain.iconUrl}
-                          />
-                        )}
-                      </div>
-                    )}
-                  </Button>
-                  <Button
-                    text={account.displayName}
                     onClick={openAccountModal}
                     type="button"
-                    variant="faded"
-                    size="small"
-                    border={false}
-                  />
+                    round
+                    size={size}
+                  >
+                    {account.displayName}
+                  </Button>
                 </div>
               )
             })()}
