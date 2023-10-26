@@ -128,7 +128,7 @@ export const Success = ({
         </div>
       )}
 
-      {canMint && <Button onClick={claim}>Claim NFT</Button>}
+      {canMint && <Button onClick={claim}>Claim</Button>}
 
       {canConnect && (
         <div className="pt-12">
