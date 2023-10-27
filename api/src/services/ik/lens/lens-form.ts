@@ -1,9 +1,10 @@
-import { google } from 'googleapis'
 import type { MutationResolvers } from 'types/graphql'
 
 import { AuthenticationError } from '@redwoodjs/graphql-server'
 
 import { hasRole } from 'src/lib/auth'
+import { appendToSheet } from 'src/lib/googleSheets'
+import { logger } from 'src/lib/logger'
 import { checkBalance } from 'src/lib/web3/check-balance'
 import { updateUser } from 'src/services/users/users'
 
@@ -45,29 +46,20 @@ export const addLensFormRole: MutationResolvers['addLensFormRole'] = async ({
   }
 }
 
-const sheets = google.sheets('v4')
 const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID_LENS_FORM
-const jwtClient = new google.auth.JWT(
-  process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-  undefined,
-  process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-  ['https://www.googleapis.com/auth/spreadsheets']
-)
 
 export const addLensForm: MutationResolvers['addLensForm'] = async ({
   input,
 }) => {
-  await jwtClient.authorize()
+  try {
+    if (!SPREADSHEET_ID) {
+      throw new Error('Missing SPREADSHEET_ID id in `lensForm`')
+    }
 
-  const now = new Date(Date.now())
+    const now = new Date(Date.now())
 
-  const response = await sheets.spreadsheets.values.append({
-    auth: jwtClient,
-    spreadsheetId: SPREADSHEET_ID,
-    range: 'Submissions',
-    valueInputOption: 'RAW',
-    insertDataOption: 'INSERT_ROWS',
-    requestBody: {
+    const response = await appendToSheet({
+      spreadsheetId: SPREADSHEET_ID,
       values: [
         [
           input.name,
@@ -77,10 +69,15 @@ export const addLensForm: MutationResolvers['addLensForm'] = async ({
           now.toISOString(),
         ],
       ],
-    },
-  })
+    })
 
-  return {
-    success: response.statusText === 'OK',
+    return {
+      success: response.statusText === 'OK',
+    }
+  } catch (e) {
+    logger.error('Error in `/waitlistForm`', e)
+    return {
+      success: false,
+    }
   }
 }
