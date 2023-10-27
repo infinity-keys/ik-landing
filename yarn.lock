@@ -6113,6 +6113,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mongodb-js/saslprep@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@mongodb-js/saslprep@npm:1.1.0"
+  dependencies:
+    sparse-bitfield: ^3.0.3
+  checksum: 2d923da9ec1e09cf68cff448fcaea3791bbb3f51610ed093893519003376c9f9c1bf8c32ad76ba4f894aa8abd591eafeb5325097394f2699f6294dec9f58d897
+  languageName: node
+  linkType: hard
+
 "@moralisweb3/api-utils@npm:^2.16.1":
   version: 2.16.1
   resolution: "@moralisweb3/api-utils@npm:2.16.1"
@@ -14490,10 +14499,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bson@npm:^5.0.1":
-  version: 5.1.0
-  resolution: "bson@npm:5.1.0"
-  checksum: 03376bde255f30dd0edf77c1d6f63eaf6fef1ef3843a3da00f65c138abf44801a3ed5ffb7dd124428c318e0d93219cbc5da887148eb9ab9e2a355ee22a0eb432
+"bson@npm:^5.4.0":
+  version: 5.4.0
+  resolution: "bson@npm:5.4.0"
+  checksum: 121e1a833d2c700a6263f8033d88d0b48a7b9f3a0b4ca6d062a463c77553bf70371c1813950a8acc237cf91d4bf9cb42348cbf8155827c91baa7aa2751fe3433
   languageName: node
   linkType: hard
 
@@ -19630,7 +19639,7 @@ __metadata:
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.0.0
     jest: 29.3.1
-    mongodb: ^5.1.0
+    mongodb: ^5.8.0
     moralis: ^2.16.1
     nest-mongodb: ^6.4.0
     prettier: ^2.3.2
@@ -21079,9 +21088,9 @@ __metadata:
   linkType: hard
 
 "inversify@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "inversify@npm:6.0.1"
-  checksum: 2d0b67663e7ab8b08704e1a2c0ab7a181c412ab0bec5c3d6144946d77ec38a7f213b88f81a92a717f856910baed50b34e75754f25fc3d2160ec74bd62285bf97
+  version: 6.0.2
+  resolution: "inversify@npm:6.0.2"
+  checksum: ac532c9a6e45785dcfd5117f19b5c1705a7ebddf432152cd2d5be3e951d9745fec9ae3c39c166b34945458b4eda3e37afae6a63cccc5033d545b450d54221220
   languageName: node
   linkType: hard
 
@@ -24517,29 +24526,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "mongodb@npm:5.1.0"
+"mongodb@npm:^5.8.0":
+  version: 5.8.1
+  resolution: "mongodb@npm:5.8.1"
   dependencies:
-    bson: ^5.0.1
+    "@mongodb-js/saslprep": ^1.1.0
+    bson: ^5.4.0
     mongodb-connection-string-url: ^2.6.0
-    saslprep: ^1.0.3
     socks: ^2.7.1
   peerDependencies:
-    "@aws-sdk/credential-providers": ^3.201.0
-    mongodb-client-encryption: ^2.3.0
+    "@aws-sdk/credential-providers": ^3.188.0
+    "@mongodb-js/zstd": ^1.0.0
+    kerberos: ^1.0.0 || ^2.0.0
+    mongodb-client-encryption: ">=2.3.0 <3"
     snappy: ^7.2.2
   dependenciesMeta:
-    saslprep:
+    "@mongodb-js/saslprep":
       optional: true
   peerDependenciesMeta:
     "@aws-sdk/credential-providers":
+      optional: true
+    "@mongodb-js/zstd":
+      optional: true
+    kerberos:
       optional: true
     mongodb-client-encryption:
       optional: true
     snappy:
       optional: true
-  checksum: 5ff8342445a2d7d8dd25323e7f3264d935f65cbcd2c7ddc97be9e14da2da10c4a537867ab452259e04d8641784b0fb006eabc8f811cfeb50ca41d0d13a68caf2
+  checksum: a2c27aa427f1d0fb5ceb879aacaedb5ce576638985ec6ed1dbf400a93d8a7086ce626664d5c5ab228de6eb52b8569024ac6f9c952b4d213983630a90496b56c1
   languageName: node
   linkType: hard
 

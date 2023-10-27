@@ -28,7 +28,7 @@ const StepPageLayout = ({
     typeof setShowOverlay !== 'undefined'
 
   return (
-    <div className="relative h-full min-h-[320px] md:min-h-[412px]">
+    <div className="relative h-full min-h-[300px] md:min-h-[412px]">
       <div className="flex h-full flex-col justify-between px-12">
         <div className="markdown flex w-full flex-1 items-center py-6">
           <div className="w-full">{children}</div>

@@ -18,7 +18,6 @@ import { Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 import CookieConsentBanner from 'src/components/CookieConsentBanner/CookieConsentBanner'
-import Snick from 'src/components/Snick/Snick'
 import IK_TOKENS from 'src/lib/theme/ik-tokens.tokens.json'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import AuthProvider from 'src/providers/auth'
@@ -92,7 +91,6 @@ const App = () => {
               <AuthProvider>
                 <RedwoodApolloProvider useAuth={useAuth}>
                   <LazyMotion features={domAnimation}>
-                    <Snick />
                     <Routes />
                     <CookieConsentBanner />
                     <Toaster
