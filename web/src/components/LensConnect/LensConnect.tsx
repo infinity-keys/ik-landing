@@ -77,8 +77,12 @@ const LensConnect = (props: Partial<ButtonProps> & { text: string }) => {
 
   const onLoginClick = async () => {
     try {
-      const signer = await connector?.getSigner()
-      await connectToLens(signer)
+      const walletClient = await connector?.getWalletClient()
+      const address = walletClient?.account.address
+      if (!address) {
+        throw new Error('Error obtaining wallet address')
+      }
+      await connectToLens({ address })
       setHasTriedConnection(true)
     } catch {
       toast.error('Error connecting to Lens Profile')

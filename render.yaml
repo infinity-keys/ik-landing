@@ -23,6 +23,8 @@ services:
         value: partner@infinitykeys.io
       - key: WALLET_CONNECT_PROJECT_ID
         value: 4c0830341026abc0916819b69728a141
+      - key: ALCHEMY_API
+        value: 2PgdlVzg4Sw0aqbuqmM16nteB51MBylq
     routes:
       - type: rewrite
         source: /.redwood/functions/*
