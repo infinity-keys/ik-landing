@@ -10,6 +10,10 @@ import clsx from 'clsx'
 import identity from 'lodash/identity'
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
+import {
+  WaitlistFormMutation,
+  WaitlistFormMutationVariables,
+} from 'types/graphql'
 
 import {
   Form,
@@ -19,6 +23,7 @@ import {
   HiddenField,
   CheckboxField,
 } from '@redwoodjs/forms'
+import { useMutation } from '@redwoodjs/web'
 import { LoaderIcon, toast } from '@redwoodjs/web/dist/toast'
 
 import Fade from 'src/components/Animations/Fade'
@@ -30,19 +35,42 @@ type FormData = {
   describe: Record<string, boolean>
 }
 
-// Custom StaticForms fields need to start with "$"
 const checkboxOptions = [
-  'describe.$player',
-  'describe.$creator',
-  'describe.$sponsor',
+  'describe.player',
+  'describe.creator',
+  'describe.sponsor',
 ]
 
-const HomeContactForm = forwardRef((_props, ref) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [checkboxError, setCheckboxError] = useState(false)
-  const [isSuccessful, setIsSuccessful] = useState<boolean | null>(null)
+const WAITLIST_FORM_MUTATION = gql`
+  mutation WaitlistFormMutation($input: AddWaitlistFormInput!) {
+    addWaitlistForm(input: $input) {
+      success
+    }
+  }
+`
 
+const HomeContactForm = forwardRef((_props, ref) => {
+  const [checkboxError, setCheckboxError] = useState(false)
   const localRef = useRef<HTMLDivElement>(null)
+
+  const [addWaitlistForm, { loading, data }] = useMutation<
+    WaitlistFormMutation,
+    WaitlistFormMutationVariables
+  >(WAITLIST_FORM_MUTATION, {
+    onCompleted({ addWaitlistForm }) {
+      if (!addWaitlistForm.success) {
+        toast.error(
+          'An error occurred while submitting the form. Please try again.'
+        )
+        return
+      }
+    },
+    onError() {
+      toast.error(
+        'An error occurred while submitting the form. Please try again.'
+      )
+    },
+  })
 
   const handleScroll = () => {
     if (localRef.current) {
@@ -61,8 +89,11 @@ const HomeContactForm = forwardRef((_props, ref) => {
   }, [])
 
   const onSubmit = async (data: FormData) => {
+    if (data.honeypot) return
+
     setCheckboxError(false)
-    const { describe, ...rest } = data
+
+    const { describe } = data
     // Get only the selected boxes
     const submissionTypes = pickBy(describe, identity)
 
@@ -71,54 +102,22 @@ const HomeContactForm = forwardRef((_props, ref) => {
       setCheckboxError(true)
       return
     }
-    setIsLoading(true)
 
-    const submission = {
-      ...rest,
-      ...submissionTypes,
-      replyTo: '@',
-      accessKey: process.env.STATIC_FORMS_ACCESS_TOKEN,
-      subject: 'Partner Homepage Submission',
-    }
-
-    try {
-      const res = await fetch('https://api.staticforms.xyz/submit', {
-        method: 'POST',
-        body: JSON.stringify(submission),
-        headers: { 'Content-Type': 'application/json' },
-      })
-
-      if (!res.ok) {
-        toast.error('An error occurred while submitting the form')
-        setIsSuccessful(false)
-        return
-      }
-
-      const json = await res.json()
-
-      if (json.success) {
-        setIsSuccessful(true)
-      } else {
-        toast.error(
-          json?.message || 'An error occurred while submitting the form'
-        )
-        setIsSuccessful(false)
-      }
-      setIsLoading(false)
-    } catch {
-      toast.error(
-        'An error occurred while submitting the form. Please try again.'
-      )
-      setIsSuccessful(false)
-      setIsLoading(false)
-    }
+    addWaitlistForm({
+      variables: {
+        input: {
+          email: data.email,
+          ...submissionTypes,
+        },
+      },
+    })
   }
 
-  if (isLoading) {
+  if (loading) {
     return <LoaderIcon />
   }
 
-  if (isSuccessful) {
+  if (data?.addWaitlistForm.success) {
     return (
       <p className="mx-auto max-w-md text-center text-xl">
         Thank you! Your form has been submitted. We will get back to you as soon
@@ -183,7 +182,7 @@ const HomeContactForm = forwardRef((_props, ref) => {
                       className="border-1 mr-2 rounded border-white/30 bg-transparent p-3"
                     />
                     <Label
-                      name={`I'm a ${name.split('describe.$')[1]}`}
+                      name={`I'm a ${name.split('describe.')[1]}`}
                       htmlFor={name}
                       className="label"
                     />
