@@ -7,8 +7,9 @@ import {
 } from '@rainbow-me/rainbowkit'
 import { LazyMotion, domAnimation } from 'framer-motion'
 import loMerge from 'lodash/merge'
-import { chain, configureChains, createClient, WagmiConfig } from 'wagmi'
-import { infuraProvider } from 'wagmi/providers/infura'
+import { configureChains, createConfig, WagmiConfig } from 'wagmi'
+import { optimism } from 'wagmi/chains'
+import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { publicProvider } from 'wagmi/providers/public'
 
@@ -56,24 +57,27 @@ export const IKTheme = loMerge(darkTheme(), {
   },
 })
 
-export const { chains, provider } = configureChains(
-  [chain.optimism],
+export const { chains, publicClient } = configureChains(
+  [optimism],
   [
-    infuraProvider(),
+    alchemyProvider({ apiKey: process.env.ALCHEMY_API || '' }),
     publicProvider(),
-    jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) }),
+    jsonRpcProvider({
+      rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }),
+    }),
   ]
 )
 
 const { connectors } = getDefaultWallets({
   appName: 'Infinity Keys',
+  projectId: process.env.WALLET_CONNECT_PROJECT_ID || '',
   chains,
 })
 
-export const wagmiClient = createClient({
+const config = createConfig({
   autoConnect: true,
+  publicClient,
   connectors,
-  provider,
 })
 
 const lensConfig: LensConfig = {
@@ -84,7 +88,7 @@ const lensConfig: LensConfig = {
 const App = () => {
   return (
     <FatalErrorBoundary page={FatalErrorPage}>
-      <WagmiConfig client={wagmiClient}>
+      <WagmiConfig config={config}>
         <LensProvider config={lensConfig}>
           <RainbowKitProvider chains={chains} theme={IKTheme}>
             <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">

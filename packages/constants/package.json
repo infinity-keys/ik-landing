@@ -30,6 +30,7 @@
     "vite": "^4.0.5"
   },
   "dependencies": {
-    "@rainbow-me/rainbowkit": "^0.8.0"
+    "@rainbow-me/rainbowkit": "^1.0.11",
+    "viem": "^1.15.0"
   }
 }
