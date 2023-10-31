@@ -48,8 +48,8 @@ jobs:
       - run: yarn install
       # run custom build command
       - run: yarn build-ci
-      # build the redwood app
-      - run: yarn rw build
+        # build the redwood app
+        # - run: yarn rw build
         env:
           DISCORD_MINT_BOT_KEY: ${{ secrets.DISCORD_MINT_BOT_KEY }}
           DISCORD_VOTE_BOT_KEY: ${{ secrets.DISCORD_VOTE_BOT_KEY }}
