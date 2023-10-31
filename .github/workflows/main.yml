@@ -49,7 +49,7 @@ jobs:
       # run custom build command
       - run: yarn build-ci
         # build the redwood app
-        # - run: yarn rw build
+        - run: yarn rw build
         env:
           DISCORD_MINT_BOT_KEY: ${{ secrets.DISCORD_MINT_BOT_KEY }}
           DISCORD_VOTE_BOT_KEY: ${{ secrets.DISCORD_VOTE_BOT_KEY }}
@@ -66,6 +66,13 @@ jobs:
           record: false
           project: packages/cypress
           config-file: cypress.config.ts
+        env:
+          DISCORD_MINT_BOT_KEY: ${{ secrets.DISCORD_MINT_BOT_KEY }}
+          DISCORD_VOTE_BOT_KEY: ${{ secrets.DISCORD_VOTE_BOT_KEY }}
+          DISCORD_ROLES_BOT_KEY: ${{ secrets.DISCORD_ROLES_BOT_KEY }}
+          MORALIS_API_KEY: ${{ secrets.MORALIS_API_KEY }}
+          DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+          WALLET_CONNECT_PROJECT_ID: ${{ secrets.WALLET_CONNECT_PROJECT_ID }}
       # run our linter
       - run: yarn rw lint
       # run the api tests
