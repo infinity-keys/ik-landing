@@ -184,7 +184,7 @@ const HomePage = () => {
     <div>
       <Seo title="Home" />
 
-      <div className="relative mx-auto mt-20 flex max-w-8xl flex-col items-center overflow-x-hidden md:mt-0 md:min-h-screen md:flex-row md:justify-between">
+      <div className="relative mx-auto flex max-w-8xl flex-col items-center overflow-x-hidden pt-20 md:mt-0 md:min-h-screen md:flex-row md:justify-between">
         <Container noPx pySm>
           <div className="relative z-10 max-w-xs pr-4 pl-4 md:pr-0 lg:max-w-md lg:pl-12">
             <h1 className="text-shadow-lg text-3xl font-semibold lg:text-5xl xl:text-6xl">
@@ -240,7 +240,7 @@ const HomePage = () => {
 
       <section
         ref={workRef}
-        className="relative z-40 -mt-[100px] bg-gradient-to-b from-white/0 to-white/5"
+        className="scroll-mt-28s relative z-40 -mt-[100px] bg-gradient-to-b from-white/0 to-white/5"
       >
         <Container noPt>
           <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center lg:gap-6">
