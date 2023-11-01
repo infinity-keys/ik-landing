@@ -23,7 +23,8 @@
     "redwoodjs",
     "rewardables",
     "RWJS",
-    "sdls"
+    "sdls",
+    "Waitlist"
   ],
   "editor.rulers": [80],
   "editor.defaultFormatter": "esbenp.prettier-vscode",

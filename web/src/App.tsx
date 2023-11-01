@@ -7,8 +7,9 @@ import {
 } from '@rainbow-me/rainbowkit'
 import { LazyMotion, domAnimation } from 'framer-motion'
 import loMerge from 'lodash/merge'
-import { chain, configureChains, createClient, WagmiConfig } from 'wagmi'
-import { infuraProvider } from 'wagmi/providers/infura'
+import { configureChains, createConfig, WagmiConfig } from 'wagmi'
+import { optimism } from 'wagmi/chains'
+import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { publicProvider } from 'wagmi/providers/public'
 
@@ -18,7 +19,6 @@ import { Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 import CookieConsentBanner from 'src/components/CookieConsentBanner/CookieConsentBanner'
-import Snick from 'src/components/Snick/Snick'
 import IK_TOKENS from 'src/lib/theme/ik-tokens.tokens.json'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import AuthProvider from 'src/providers/auth'
@@ -57,24 +57,27 @@ export const IKTheme = loMerge(darkTheme(), {
   },
 })
 
-export const { chains, provider } = configureChains(
-  [chain.optimism],
+export const { chains, publicClient } = configureChains(
+  [optimism],
   [
-    infuraProvider(),
+    alchemyProvider({ apiKey: process.env.ALCHEMY_API || '' }),
     publicProvider(),
-    jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) }),
+    jsonRpcProvider({
+      rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }),
+    }),
   ]
 )
 
 const { connectors } = getDefaultWallets({
   appName: 'Infinity Keys',
+  projectId: process.env.WALLET_CONNECT_PROJECT_ID || '',
   chains,
 })
 
-export const wagmiClient = createClient({
+const config = createConfig({
   autoConnect: true,
+  publicClient,
   connectors,
-  provider,
 })
 
 const lensConfig: LensConfig = {
@@ -85,14 +88,13 @@ const lensConfig: LensConfig = {
 const App = () => {
   return (
     <FatalErrorBoundary page={FatalErrorPage}>
-      <WagmiConfig client={wagmiClient}>
+      <WagmiConfig config={config}>
         <LensProvider config={lensConfig}>
           <RainbowKitProvider chains={chains} theme={IKTheme}>
             <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
               <AuthProvider>
                 <RedwoodApolloProvider useAuth={useAuth}>
                   <LazyMotion features={domAnimation}>
-                    <Snick />
                     <Routes />
                     <CookieConsentBanner />
                     <Toaster
