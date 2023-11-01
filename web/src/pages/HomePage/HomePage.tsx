@@ -172,7 +172,13 @@ const HomePage = () => {
 
   useLayoutEffect(() => {
     if (hash === '#works' && workRef.current) {
-      workRef.current.scrollIntoView({ behavior: 'smooth' })
+      // Wait for mobile nav to remove `overflow: hidden` from html tag
+      // before scrolling to element
+      const timeout = setTimeout(() => {
+        workRef.current?.scrollIntoView({ behavior: 'smooth' })
+      }, 300)
+
+      return () => clearTimeout(timeout)
     }
 
     if (hash === '#waitlist') {
@@ -240,7 +246,7 @@ const HomePage = () => {
 
       <section
         ref={workRef}
-        className="scroll-mt-28s relative z-40 -mt-[100px] bg-gradient-to-b from-white/0 to-white/5"
+        className="relative z-40 -mt-[100px] scroll-mt-28 bg-gradient-to-b from-white/0 to-white/5"
       >
         <Container noPt>
           <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center lg:gap-6">
