@@ -127,7 +127,7 @@ const HomeContactForm = forwardRef((_props, ref) => {
   }
 
   return (
-    <div className="w-full" ref={localRef}>
+    <div className="w-full scroll-mt-28" ref={localRef}>
       <Fade>
         <Form
           onSubmit={onSubmit}
