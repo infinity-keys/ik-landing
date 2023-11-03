@@ -16,6 +16,7 @@
     "cypress:run": "yarn workspace cypress cypress run --headless --browser chrome"
   },
   "devDependencies": {
+    "@redwoodjs/auth-clerk-setup": "6.3.2",
     "@redwoodjs/auth-dbauth-setup": "6.3.2",
     "@redwoodjs/cli-storybook": "6.3.2",
     "@redwoodjs/core": "6.3.2",

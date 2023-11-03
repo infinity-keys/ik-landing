@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@apollo/client": "3.7.10",
+    "@clerk/clerk-react": "^4",
     "@formspree/react": "^2.4.0",
     "@headlessui/react": "^1.7.2",
     "@heroicons/react": "^2.0.11",
@@ -25,6 +26,7 @@
     "@lens-protocol/wagmi": "^2.1.1",
     "@rainbow-me/rainbowkit": "^1.0.11",
     "@redwoodjs/auth": "6.3.2",
+    "@redwoodjs/auth-clerk-web": "6.3.2",
     "@redwoodjs/auth-dbauth-web": "6.3.2",
     "@redwoodjs/forms": "6.3.2",
     "@redwoodjs/router": "6.3.2",
