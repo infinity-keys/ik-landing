@@ -84,6 +84,12 @@
     height: 45px !important;
     padding: 0;
   }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 
   /* Block, Element Modifiers (BEM) for IK Forms start here */
   .form {

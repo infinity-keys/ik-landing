@@ -105,7 +105,7 @@ const SimpleTextInput = ({
 
             <div
               className={clsx(
-                'flex w-full max-w-[260px] cursor-text overflow-x-scroll rounded-md border-2 border-solid px-4 py-2',
+                'no-scrollbar flex w-full max-w-[260px] cursor-text overflow-x-scroll rounded-md border-2 border-solid px-4 py-2',
                 inputTextLeft ? 'justify-start' : 'justify-center',
                 failedAttempt && !errorMessage
                   ? 'border-red-400'
@@ -128,7 +128,7 @@ const SimpleTextInput = ({
               <div className="relative">
                 <input
                   className={clsx(
-                    'border-none bg-transparent p-0 font-mono tracking-[.8em] text-transparent caret-white focus:!border-none focus:!outline-none focus:ring-0'
+                    'w-full border-none bg-transparent p-0 font-mono tracking-[.8em] text-transparent caret-white focus:!border-none focus:!outline-none focus:ring-0'
                   )}
                   type="text"
                   id="input"
