@@ -18,7 +18,6 @@ import Seo from 'src/components/Seo/Seo'
 import { requirementsLookup } from 'src/lib/puzzleRequirements'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
-import { useLoginModal } from 'src/providers/loginModal/loginModal'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
@@ -31,7 +30,6 @@ const Rewardable = ({ rewardable }: Props) => {
   const [showOverlay, setShowOverlay] = useState(false)
   const [currentOverlayContent, setCurrentOverlayContent] =
     useState<PuzzleRequirements | null>(null)
-  const { setIsLoginModalOpen } = useLoginModal()
   const { pageHeading, setPageHeading } = useGlobalInfo()
 
   useEffect(() => {
@@ -221,7 +219,7 @@ const Rewardable = ({ rewardable }: Props) => {
                   bold
                   solid
                   shadow
-                  onClick={() => setIsLoginModalOpen(true)}
+                  href={`${process.env.CLERK_PORTAL_URL}/sign-in`}
                 >
                   Login
                 </Button>
