@@ -15,6 +15,7 @@ import {
   CreateStepComethApiInput,
   CreateStepTokenIdRangeInput,
   CreateStepOriumApiInput,
+  CreatePuzzleInput,
 } from 'types/graphql'
 
 import {
@@ -91,8 +92,11 @@ function Step({
   remove: (index: number) => void
   errors: FieldErrors<PuzzleFormType>
 }) {
-  // Watch for select val changing
+  // Watch for select 'type' val changing
   const stepTypeVal = watch(`${stepsArrayName}.${index}.type`)
+
+  // Watch for select 'guideType' val changing?
+  // const stepGuideTypeVal = watch(`${stepsArrayName}.${index}.stepGuideType`)
 
   // This is a custom hook that sets the default values for each step
   useEffect(() => {
@@ -102,6 +106,10 @@ function Step({
       challenge: getValues(`${stepsArrayName}.${index}.challenge`),
       resourceLinks: getValues(`${stepsArrayName}.${index}.resourceLinks`),
       stepSortWeight: getValues(`${stepsArrayName}.${index}.stepSortWeight`),
+      solutionHint: getValues(`${stepsArrayName}.${index}.solutionHint`),
+      defaultImage: getValues(`${stepsArrayName}.${index}.defaultImage`),
+      solutionImage: getValues(`${stepsArrayName}.${index}.solutionImage`),
+      stepGuideType: getValues(`${stepsArrayName}.${index}.stepGuideType`),
     }
     if (stepTypeVal === 'SIMPLE_TEXT') {
       setValue(`${stepsArrayName}.${index}`, {
@@ -249,7 +257,68 @@ function Step({
         {errors[stepsArrayName]?.[index]?.resourceLinks?.type === 'required' &&
           requiredFieldError('Resource Links')}
       </div>
-      <div id="step-fail-message" className="form__entry mb-12">
+
+      <div id="solution-hint" className="form__entry mb-12">
+        <Label
+          name={`solutionHint.${index}`}
+          className="form__label text-2xl font-bold text-slate-700"
+          // this errorClassName is not working for the <Step /> component...
+          // ...only the <Puzzle /> component, possibly because the former is nested
+          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+        >
+          <div className="form__entry-name mb-1">Solution Hint</div>
+        </Label>
+        <TextField
+          placeholder="Solution Hint"
+          {...register(`${stepsArrayName}.${index}.solutionHint`)}
+          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+          validation={{ required: true }}
+        />
+        {errors[stepsArrayName]?.[index]?.solutionHint?.type === 'required' &&
+          requiredFieldError('Solution Hint')}
+      </div>
+
+      <div id="default-image" className="form__entry mb-12">
+        <Label
+          name={`defaultImage.${index}`}
+          className="form__label text-2xl font-bold text-slate-700"
+          // this errorClassName is not working for the <Step /> component...
+          // ...only the <Puzzle /> component, possibly because the former is nested
+          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+        >
+          <div className="form__entry-name mb-1">Default Image</div>
+        </Label>
+        <TextField
+          placeholder="Default Image"
+          {...register(`${stepsArrayName}.${index}.defaultImage`)}
+          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+          validation={{ required: true }}
+        />
+        {errors[stepsArrayName]?.[index]?.defaultImage?.type === 'required' &&
+          requiredFieldError('Default Image')}
+      </div>
+
+      <div id="solution-image" className="form__entry mb-12">
+        <Label
+          name={`solutionImage.${index}`}
+          className="form__label text-2xl font-bold text-slate-700"
+          // this errorClassName is not working for the <Step /> component...
+          // ...only the <Puzzle /> component, possibly because the former is nested
+          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+        >
+          <div className="form__entry-name mb-1">Solution Image</div>
+        </Label>
+        <TextField
+          placeholder="Solution Image"
+          {...register(`${stepsArrayName}.${index}.solutionImage`)}
+          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+          validation={{ required: true }}
+        />
+        {errors[stepsArrayName]?.[index]?.solutionImage?.type === 'required' &&
+          requiredFieldError('Solution Image')}
+      </div>
+
+      <div id="step-sort-weight" className="form__entry mb-12">
         <Label
           name={`stepSortWeight.${index}`}
           className="form__label text-2xl font-bold text-slate-700"
@@ -268,9 +337,30 @@ function Step({
         {errors[stepsArrayName]?.[index]?.stepSortWeight?.type === 'required' &&
           requiredFieldError('Step Sort Weight')}
       </div>
+
+      <div id="step-type-guide" className="form__entry mb-12">
+        <Label
+          name={`stepTypeGuide.${index}`}
+          className="form__label text-2xl font-bold text-slate-700"
+        >
+          <div className="form__entry-name mb-1">Step Type Guide</div>
+        </Label>
+        <div className="my-8 text-stone-800">
+          <SelectField
+            {...register(`${stepsArrayName}.${index}.stepGuideType`)}
+          >
+            <option value="SEEK">Seek</option>
+            <option value="INFER">Infer</option>
+            <option value="REWIND">Rewind</option>
+            <option value="TRACK">track</option>
+            <option value="COLLECT">Collect</option>
+            <option value="ACTIVATE">Activate</option>
+          </SelectField>
+        </div>
+      </div>
+
       <div className="my-8 text-stone-800">
         <SelectField {...register(`${stepsArrayName}.${index}.type`)}>
-          <option value="UNCHOSEN">Choose a Step Type</option>
           <option value="SIMPLE_TEXT">Simple Text</option>
           <option value="NFT_CHECK">NFT check</option>
           <option value="FUNCTION_CALL">Function Call</option>
@@ -279,11 +369,6 @@ function Step({
           <option value="ORIUM_API">Orium API</option>
         </SelectField>
       </div>
-      {stepTypeVal === 'UNCHOSEN' && (
-        <h1>
-          <br></br>
-        </h1>
-      )}
       {stepTypeVal === 'SIMPLE_TEXT' && (
         <div className="step__type">
           <div className="form__entry mb-12">
@@ -597,6 +682,10 @@ type PuzzleFormType = {
     explanation: CreateRewardableInput['explanation']
     successMessage: CreateRewardableInput['successMessage']
     listPublicly: CreateRewardableInput['listPublicly']
+    // requirements: CreatePuzzleInput['requirements'] ///// this one or
+  }
+  puzzle: {
+    requirements: CreatePuzzleInput['requirements'] //////// this one
   }
   steps: CreateAllStepTypesInput[]
 }
@@ -652,6 +741,8 @@ export default function PuzzleForm() {
           slug: input.rewardable.slug,
           listPublicly: input.rewardable.listPublicly,
           orgId: 'backend shall handle this!', // hard coded for now
+          // requirements: input.rewardable.requirements, //////////////////////////
+          requirements: input.puzzle.requirements, //////////////////////////
           puzzle: {
             isAnon: false,
             rewardableId: 'ignore me',
@@ -663,6 +754,10 @@ export default function PuzzleForm() {
                 challenge: step.challenge,
                 stepSortWeight: step.stepSortWeight,
                 resourceLinks: step.resourceLinks,
+                solutionHint: step.solutionHint,
+                defaultImage: step.defaultImage,
+                solutionImage: step.solutionImage,
+                stepGuideType: step.stepGuideType,
               }
               if (step.type === 'SIMPLE_TEXT' && 'solution' in step) {
                 return {
@@ -913,6 +1008,28 @@ export default function PuzzleForm() {
             />
           </div>
 
+          <div id="puzzle-requirements" className="form__entry mb-12">
+            <Label
+              // name="rewardable.requirements"
+              name="puzzle.requirements"
+              className="form__label text-2xl font-bold text-slate-700"
+            >
+              <div className="form__entry-name mb-1">Requirements</div>
+            </Label>
+            <div className="my-8 text-stone-800">
+              {/* <SelectField name="rewardable.requirements" multiple> */}
+              <SelectField name="puzzle.requirements" multiple>
+                <option value="HOLDERS_ONLY">Holders Only</option>
+                <option value="SOCIAL_ACCOUNT">Social Account</option>
+                <option value="WALLET_GAS">Wallet Gas</option>
+                <option value="TRAVEL">Travel</option>
+                <option value="WORDPLAY">Wordplay</option>
+                <option value="DETAIL">Detail</option>
+                <option value="INTERACTIVE_OBJECT">Interactive Object</option>
+              </SelectField>
+            </div>
+          </div>
+
           {fields.map((field, index) => (
             <Step
               index={index}
@@ -941,6 +1058,10 @@ export default function PuzzleForm() {
                   solutionCharCount: 0,
                   puzzleId: 'ignore me',
                   stepId: 'ignore me',
+                  solutionHint: '',
+                  defaultImage: '',
+                  solutionImage: '',
+                  stepGuideType: 'SEEK',
                 })
               }
             >
