@@ -742,10 +742,11 @@ export default function PuzzleForm() {
           listPublicly: input.rewardable.listPublicly,
           orgId: 'backend shall handle this!', // hard coded for now
           // requirements: input.rewardable.requirements, //////////////////////////
-          requirements: input.puzzle.requirements, //////////////////////////
+          // requirements: input.puzzle.requirements, //////////////////////////
           puzzle: {
-            isAnon: false,
+            // isAnon: false,
             rewardableId: 'ignore me',
+            requirements: input.puzzle.requirements,
             steps: input.steps.map((step) => {
               const commonStepFields = {
                 puzzleId: 'ignore me',
