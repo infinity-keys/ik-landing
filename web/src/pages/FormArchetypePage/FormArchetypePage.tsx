@@ -685,6 +685,7 @@ type PuzzleFormType = {
     // requirements: CreatePuzzleInput['requirements'] ///// this one or
   }
   puzzle: {
+    coverImage: CreatePuzzleInput['coverImage']
     requirements: CreatePuzzleInput['requirements'] //////// this one
   }
   steps: CreateAllStepTypesInput[]
@@ -747,6 +748,7 @@ export default function PuzzleForm() {
             // isAnon: false,
             rewardableId: 'ignore me',
             requirements: input.puzzle.requirements,
+            coverImage: input.puzzle.coverImage,
             steps: input.steps.map((step) => {
               const commonStepFields = {
                 puzzleId: 'ignore me',
@@ -1029,6 +1031,24 @@ export default function PuzzleForm() {
                 <option value="INTERACTIVE_OBJECT">Interactive Object</option>
               </SelectField>
             </div>
+          </div>
+
+          <div id="puzzle-cover-image" className="form__entry mb-12">
+            <Label
+              name="puzzle.coverImage"
+              className="form__label text-2xl font-bold text-slate-700"
+              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">Cover Image</div>
+            </Label>
+            <TextField
+              name="puzzle.coverImage"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              placeholder="Cover Image"
+              validation={{ required: true }}
+            />
+            {errors.rewardable?.successMessage?.type === 'required' &&
+              requiredFieldError('a Success Message')}
           </div>
 
           {fields.map((field, index) => (
