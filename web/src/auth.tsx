@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { PropsWithChildren, useEffect } from 'react'
 
 import { ClerkProvider, useUser } from '@clerk/clerk-react'
 
@@ -20,18 +20,13 @@ const ClerkStatusUpdater = () => {
   return null
 }
 
-type ClerkOptions =
-  | { publishableKey: string; frontendApi?: never }
-  | { publishableKey?: never; frontendApi: string }
+type ClerkOptions = { publishableKey: string }
 
-interface Props {
-  children: React.ReactNode
+interface Props extends PropsWithChildren {
+  clerkOptions: ClerkOptions
 }
 
-const ClerkProviderWrapper = ({
-  children,
-  clerkOptions,
-}: Props & { clerkOptions: ClerkOptions }) => {
+const ClerkProviderWrapper = ({ children, clerkOptions }: Props) => {
   const { reauthenticate } = useAuth()
 
   return (
@@ -47,12 +42,12 @@ const ClerkProviderWrapper = ({
 
 export const AuthProvider = ({ children }: Props) => {
   const publishableKey = process.env.CLERK_PUBLISHABLE_KEY
-  const frontendApi =
-    process.env.CLERK_FRONTEND_API_URL || process.env.CLERK_FRONTEND_API
 
-  const clerkOptions: ClerkOptions = publishableKey
-    ? { publishableKey }
-    : { frontendApi }
+  if (!publishableKey) {
+    throw new Error('Missing Clerk publishable key')
+  }
+
+  const clerkOptions: ClerkOptions = { publishableKey }
 
   return (
     <ClerkRwAuthProvider>
