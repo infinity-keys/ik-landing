@@ -1,3 +1,4 @@
+import type { UserWebhookEvent } from '@clerk/clerk-sdk-node'
 import type { APIGatewayEvent } from 'aws-lambda'
 
 import {
@@ -57,9 +58,44 @@ export const handler = async (event: APIGatewayEvent) => {
       options,
     })
 
-    const payload = JSON.parse(event.body)
+    const payload: UserWebhookEvent = JSON.parse(event.body)
+    /**
+     * created
+     * updated
+     * deleted
+     */
 
-    // Safely use the validated webhook payload
+    if (payload.type === 'user.created' || payload.type === 'user.updated') {
+      const { data } = payload
+
+      /**
+       * with email
+       * with wallet
+       * with both?
+       */
+
+      if (data.primary_email_address_id) {
+        const emailAddress = data.email_addresses.find(
+          ({ id }) => id === data.primary_email_address_id
+        )?.email_address
+
+        /**
+         * Try to find user with that email
+         * Upsert (authId, username)
+         */
+      }
+
+      if (data.primary_web3_wallet_id) {
+        const wallet = data.web3_wallets.find(
+          ({ id }) => id === data.primary_web3_wallet_id
+        )?.web3_wallet
+
+        /**
+         * Try to find user with that externalAddress
+         * Upsert (authId, username)
+         */
+      }
+    }
 
     return {
       headers: {
@@ -67,7 +103,7 @@ export const handler = async (event: APIGatewayEvent) => {
       },
       statusCode: 200,
       body: JSON.stringify({
-        data: payload,
+        data,
       }),
     }
   } catch (error) {
