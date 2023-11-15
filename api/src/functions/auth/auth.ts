@@ -7,6 +7,7 @@ import {
   WebhookVerificationError,
 } from '@redwoodjs/api/webhooks'
 
+import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 
 const CLERK_WEBHOOK_SECRET_KEY = process.env.CLERK_WEBHOOK_SECRET_KEY
@@ -16,16 +17,18 @@ if (!CLERK_WEBHOOK_SECRET_KEY) {
 }
 
 export const handler = async (event: APIGatewayEvent) => {
-  if (!event.body || event.httpMethod !== 'POST') {
-    return {
-      statusCode: 403,
-    }
+  const webhookLogger = logger.child({ webhook: 'clerk' })
+  webhookLogger.trace('Invoked clerkWebhook function')
+
+  if (event.httpMethod !== 'POST') {
+    webhookLogger.error(`Invalid http method: ${event.httpMethod}`)
+    return { statusCode: 405 }
   }
 
-  const clerkInfo = { webhook: 'clerk' }
-  const webhookLogger = logger.child({ clerkInfo })
-
-  webhookLogger.trace('Invoked clerkWebhook function')
+  if (!event.body) {
+    webhookLogger.error('Request received with missing body')
+    return { statusCode: 422 }
+  }
 
   try {
     const options: VerifyOptions = {
@@ -53,66 +56,92 @@ export const handler = async (event: APIGatewayEvent) => {
 
     verifyEvent('base64Sha256Verifier', {
       event,
+      // Clerk's webhook secrets are prefixed with "whsec_"
       secret: CLERK_WEBHOOK_SECRET_KEY.slice(6),
       payload: `${svix_id}.${svix_timestamp}.${event.body}`,
       options,
     })
 
     const payload: UserWebhookEvent = JSON.parse(event.body)
-    /**
-     * created
-     * updated
-     * deleted
-     */
 
     if (payload.type === 'user.created' || payload.type === 'user.updated') {
       const { data } = payload
 
-      /**
-       * with email
-       * with wallet
-       * with both?
-       */
-
+      // Handle users singing up with a social account
       if (data.primary_email_address_id) {
-        const emailAddress = data.email_addresses.find(
+        const primaryEmail = data.email_addresses.find(
           ({ id }) => id === data.primary_email_address_id
         )?.email_address
 
-        /**
-         * Try to find user with that email
-         * Upsert (authId, username)
-         */
+        await db.user.upsert({
+          where: { email: primaryEmail },
+          create: {
+            email: primaryEmail,
+            authId: data.id,
+          },
+          // Overwrite Keyp id with Clerk id
+          update: { authId: data.id },
+        })
+
+        return { statusCode: 200 }
       }
 
+      // Handle users singing up with a Metamask wallet
       if (data.primary_web3_wallet_id) {
-        const wallet = data.web3_wallets.find(
+        const primaryWallet = data.web3_wallets.find(
           ({ id }) => id === data.primary_web3_wallet_id
         )?.web3_wallet
 
-        /**
-         * Try to find user with that externalAddress
-         * Upsert (authId, username)
-         */
+        // External addresses are not unique
+        const user = await db.user.findFirst({
+          where: {
+            externalAddress: {
+              equals: primaryWallet,
+              // Clerk addresses are lowercase
+              mode: 'insensitive',
+            },
+          },
+          select: { id: true },
+        })
+
+        if (user?.id) {
+          await db.user.update({
+            where: { id: user.id },
+            // Overwrite Keyp id with Clerk id
+            data: { authId: data.id },
+          })
+        } else {
+          await db.user.create({
+            data: {
+              authId: data.id,
+            },
+          })
+        }
+
+        return { statusCode: 200 }
       }
     }
 
-    return {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      statusCode: 200,
-      body: JSON.stringify({
-        data,
-      }),
+    if (payload.type === 'user.deleted') {
+      const { data } = payload
+
+      await db.user.delete({
+        where: { authId: data.id },
+      })
+
+      return { statusCode: 200 }
     }
+
+    webhookLogger.warn(
+      `Invalid payload type: "${payload.type}" sent to functions/auth`
+    )
+
+    return { statusCode: 200 }
   } catch (error) {
     if (error instanceof WebhookVerificationError) {
       webhookLogger.warn('Unauthorized')
 
-      return {
-        statusCode: 401,
-      }
+      return { statusCode: 401 }
     } else {
       const errorMessage =
         error instanceof Error
@@ -121,15 +150,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
       webhookLogger.error('Error in /auth', errorMessage)
 
-      return {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        statusCode: 500,
-        body: JSON.stringify({
-          error: errorMessage,
-        }),
-      }
+      return { statusCode: 500 }
     }
   }
 }
