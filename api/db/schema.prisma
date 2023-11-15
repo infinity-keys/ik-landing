@@ -474,7 +474,7 @@ model User {
   updatedAt       DateTime @updatedAt
   lastLoggedIn    DateTime @default(now())
   /// Unique string used to cryptographically identify this person. NEVER MAKE PUBLIC
-  nonce           String   @default(cuid())
+  nonce           String?  @default(cuid())
   authId          String?  @unique
   username        String?
   address         String?  @unique // Torus wallet address

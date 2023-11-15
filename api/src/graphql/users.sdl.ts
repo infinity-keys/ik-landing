@@ -4,7 +4,7 @@ export const schema = gql`
     createdAt: DateTime!
     updatedAt: DateTime!
     lastLoggedIn: DateTime!
-    nonce: String!
+    nonce: String
     authId: String
     username: String
     address: String
@@ -44,7 +44,7 @@ export const schema = gql`
 
   input CreateUserInput {
     lastLoggedIn: DateTime!
-    nonce: String!
+    nonce: String
     authId: String
     username: String
     address: String
