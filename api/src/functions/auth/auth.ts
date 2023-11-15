@@ -54,6 +54,7 @@ export const handler = async (event: APIGatewayEvent) => {
     const svix_id = event.headers['svix-id']
     const svix_timestamp = event.headers['svix-timestamp']
 
+    // Throws `WebhookVerificationError` if not successful
     verifyEvent('base64Sha256Verifier', {
       event,
       // Clerk's webhook secrets are prefixed with "whsec_"
