@@ -45,14 +45,16 @@ const CREATE_BURD_PUZZLE_MUTATION = gql`
     }
   }
 `
+// TS omit
+type CreateStepInputFrontEnd = Omit<CreateStepInput, 'puzzleId'>
 
 type CreateAllStepTypesInput =
-  | (CreateStepInput & CreateStepSimpleTextInput)
-  | (CreateStepInput & CreateStepNftCheckInput)
-  | (CreateStepInput & CreateStepFunctionCallInput)
-  | (CreateStepInput & CreateStepComethApiInput)
-  | (CreateStepInput & CreateStepTokenIdRangeInput)
-  | (CreateStepInput & CreateStepOriumApiInput)
+  | (CreateStepInputFrontEnd & Omit<CreateStepSimpleTextInput, 'stepId'>)
+  | (CreateStepInputFrontEnd & Omit<CreateStepNftCheckInput, 'stepId'>)
+  | (CreateStepInputFrontEnd & Omit<CreateStepFunctionCallInput, 'stepId'>)
+  | (CreateStepInputFrontEnd & Omit<CreateStepComethApiInput, 'stepId'>)
+  | (CreateStepInputFrontEnd & Omit<CreateStepTokenIdRangeInput, 'stepId'>)
+  | (CreateStepInputFrontEnd & Omit<CreateStepOriumApiInput, 'stepId'>)
 
 // Set as a constant in case we need to change this string value later on
 const stepsArrayName = 'steps'
@@ -116,6 +118,9 @@ function Step({
         type: 'SIMPLE_TEXT',
         ...commonStepFields,
         solution: '',
+        // puzzleId: 'IGNORE_ME',
+        solutionCharCount: 0,
+        // stepId: 'IGNORE_ME',
       })
     }
     if (stepTypeVal === 'NFT_CHECK') {
@@ -123,12 +128,15 @@ function Step({
         type: 'NFT_CHECK',
         ...commonStepFields,
         requireAllNfts: false,
-        nftCheckData: {
-          contractAddress: '',
-          tokenId: '',
-          chainId: '',
-          poapEventId: '',
-        },
+        // ask Tawnee: why is this now an array of objects?
+        nftCheckData: [
+          {
+            contractAddress: '',
+            tokenId: Number(''), // these are now looking for numbers
+            chainId: Number(''), // these are now looking for numbers
+            poapEventId: '',
+          },
+        ],
       })
     }
     if (stepTypeVal === 'FUNCTION_CALL') {
@@ -143,14 +151,14 @@ function Step({
       setValue(`${stepsArrayName}.${index}`, {
         type: 'COMETH_API',
         ...commonStepFields,
-        stepId: '',
+        //stepId: '',
       })
     }
     if (stepTypeVal === 'TOKEN_ID_RANGE') {
       setValue(`${stepsArrayName}.${index}`, {
         type: 'TOKEN_ID_RANGE',
         ...commonStepFields,
-        stepId: '',
+        //stepId: '',
         contractAddress: '',
         chainId: '',
         startIds: [],
@@ -410,6 +418,8 @@ function Step({
               className="form__text-field mt-1 mb-10 box-border block bg-stone-200 text-slate-700"
             />
           </div>
+          {/* Ask Tawnee: did we remove contract address from NFT Check? */}
+          {/* Cuz I can create an NFT Check w/o `contractAddress` */}
           <div className="form__entry mb-12">
             <Label
               name={stepTypeVal}
@@ -423,7 +433,8 @@ function Step({
             <TextField
               placeholder="Contract Address"
               {...register(
-                `${stepsArrayName}.${index}.nftCheckData.contractAddress`
+                // `${stepsArrayName}.${index}.nftCheckData.contractAddress`
+                `${stepsArrayName}.${index}.nftCheckData.0.contractAddress`
               )}
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
@@ -440,7 +451,7 @@ function Step({
             </Label>
             <TextField
               placeholder="Chain Id"
-              {...register(`${stepsArrayName}.${index}.nftCheckData.chainId`)}
+              {...register(`${stepsArrayName}.${index}.nftCheckData.0.chainId`)}
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
@@ -456,7 +467,7 @@ function Step({
             </Label>
             <TextField
               placeholder="Token Id"
-              {...register(`${stepsArrayName}.${index}.nftCheckData.tokenId`)}
+              {...register(`${stepsArrayName}.${index}.nftCheckData.0.tokenId`)}
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
@@ -473,7 +484,7 @@ function Step({
             <TextField
               placeholder="POAP Event Id"
               {...register(
-                `${stepsArrayName}.${index}.nftCheckData.poapEventId`
+                `${stepsArrayName}.${index}.nftCheckData.0.poapEventId`
               )}
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
@@ -518,42 +529,12 @@ function Step({
       )}
       {stepTypeVal === 'COMETH_API' && (
         <div className="step__type">
-          <div className="form__entry mb-12">
-            <Label
-              name={stepTypeVal}
-              className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
-            >
-              <div className="form__entry-name mb-1">Step Id</div>
-            </Label>
-            <TextField
-              placeholder="Step Id"
-              {...register(`${stepsArrayName}.${index}.stepId`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-            />
-          </div>
+          <div className="form__entry mb-12"></div>
         </div>
       )}
       {stepTypeVal === 'TOKEN_ID_RANGE' && (
         <div className="step__type">
-          <div className="form__entry mb-12">
-            <Label
-              name={stepTypeVal}
-              className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
-            >
-              <div className="form__entry-name mb-1">Step Id</div>
-            </Label>
-            <TextField
-              placeholder="Step Id"
-              {...register(`${stepsArrayName}.${index}.stepId`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-            />
-          </div>
+          <div className="form__entry mb-12"></div>
           <div className="form__entry mb-12">
             <Label
               name={stepTypeVal}
@@ -597,8 +578,14 @@ function Step({
               <div className="form__entry-name mb-1">Start Ids</div>
             </Label>
             <TextField
-              placeholder="Start Ids"
-              {...register(`${stepsArrayName}.${index}.startIds`)}
+              placeholder="First Start Id"
+              {...register(`${stepsArrayName}.${index}.startIds.0`)}
+              className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+            />
+
+            <TextField
+              placeholder="Second Start Id"
+              {...register(`${stepsArrayName}.${index}.startIds.1`)}
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
@@ -613,7 +600,12 @@ function Step({
               <div className="form__entry-name mb-1">End Ids</div>
             </Label>
             <TextField
-              placeholder="End Ids"
+              placeholder="First End Id"
+              {...register(`${stepsArrayName}.${index}.endIds`)}
+              className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+            />
+            <TextField
+              placeholder="Second End Id"
               {...register(`${stepsArrayName}.${index}.endIds`)}
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
@@ -622,22 +614,7 @@ function Step({
       )}
       {stepTypeVal === 'ORIUM_API' && (
         <div className="step__type">
-          <div className="form__entry mb-12">
-            <Label
-              name={stepTypeVal}
-              className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
-            >
-              <div className="form__entry-name mb-1">Step Id</div>
-            </Label>
-            <TextField
-              placeholder="Step Id"
-              {...register(`${stepsArrayName}.${index}.stepId`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-            />
-          </div>
+          <div className="form__entry mb-12"></div>
           <label
             htmlFor={`${stepsArrayName}.${index}.checkType`}
             className="form__label text-2xl font-bold text-slate-700"
@@ -1077,8 +1054,8 @@ export default function PuzzleForm() {
                   stepSortWeight: 0,
                   solution: '',
                   solutionCharCount: 0,
-                  puzzleId: 'ignore me',
-                  stepId: 'ignore me',
+                  // puzzleId: 'ignore me',
+                  // stepId: 'ignore me',
                   solutionHint: '',
                   defaultImage: '',
                   solutionImage: '',

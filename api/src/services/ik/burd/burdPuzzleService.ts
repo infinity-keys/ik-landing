@@ -117,7 +117,9 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
       orgId: 'cla9yay7y003k08la2z4j2xrv',
       puzzle: {
         create: {
-          isAnon: input.puzzle.isAnon,
+          //isAnon: input.puzzle.isAnon,
+          coverImage: input.puzzle.coverImage,
+          requirements: input.puzzle.requirements,
           steps: {
             create: steps,
           },
