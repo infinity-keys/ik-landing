@@ -7,8 +7,6 @@ import { handler } from './auth'
 
 jest.spyOn(webhooks, 'verifyEvent').mockReturnValue(true)
 jest.spyOn(db.user, 'upsert')
-jest.spyOn(db.user, 'update')
-jest.spyOn(db.user, 'create')
 jest.spyOn(db.user, 'delete')
 
 const headers = {
@@ -104,8 +102,12 @@ describe('webhook function', () => {
     })
 
     const response = await handler(httpEvent)
-    expect(db.user.create).toHaveBeenCalledWith({ data: { authId: id } })
-    expect(db.user.create).toHaveBeenCalledTimes(1)
+    expect(db.user.upsert).toHaveBeenCalledWith({
+      where: { id: '' },
+      create: expect.any(Object),
+      update: expect.any(Object),
+    })
+    expect(db.user.upsert).toHaveBeenCalledTimes(1)
     expect(response.statusCode).toBe(200)
   })
 
@@ -150,11 +152,12 @@ describe('webhook function', () => {
     })
 
     const response = await handler(httpEvent)
-    expect(db.user.update).toHaveBeenCalledWith({
+    expect(db.user.upsert).toHaveBeenCalledWith({
       where: { id: scenario.user.wallet.id },
-      data: expect.any(Object),
+      create: expect.any(Object),
+      update: expect.any(Object),
     })
-    expect(db.user.update).toHaveBeenCalledTimes(1)
+    expect(db.user.upsert).toHaveBeenCalledTimes(1)
     expect(response.statusCode).toBe(200)
   })
 

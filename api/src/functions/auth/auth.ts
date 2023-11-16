@@ -105,20 +105,12 @@ export const handler = async (event: APIGatewayEvent) => {
           select: { id: true },
         })
 
-        if (user?.id) {
-          await db.user.update({
-            where: { id: user.id },
-            // Overwrite Keyp id with Clerk id
-            data: { authId: data.id },
-          })
-        } else {
-          await db.user.create({
-            data: {
-              authId: data.id,
-            },
-          })
-        }
-
+        await db.user.upsert({
+          where: { id: user?.id || '' },
+          // Overwrite Keyp id with Clerk id
+          create: { authId: data.id },
+          update: { authId: data.id },
+        })
         return { statusCode: 200 }
       }
     }
