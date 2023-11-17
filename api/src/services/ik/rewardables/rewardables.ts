@@ -4,6 +4,11 @@ import type { QueryResolvers, MutationResolvers, StepType } from 'types/graphql'
 import { context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
+import { addNftReward as addReward } from 'src/lib/nft'
+
+export const addNftReward: MutationResolvers['addNftReward'] = ({ id }) => {
+  return addReward(id)
+}
 
 export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
   slug,
