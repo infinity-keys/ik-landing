@@ -219,7 +219,7 @@ const Rewardable = ({ rewardable }: Props) => {
                   bold
                   solid
                   shadow
-                  href={`${process.env.CLERK_PORTAL_URL}/sign-in`}
+                  href={`${process.env.CLERK_SIGNIN_PORTAL_URL}`}
                   openInNewTab={false}
                 >
                   Login

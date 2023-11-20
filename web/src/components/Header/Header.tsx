@@ -70,7 +70,7 @@ const DesktopNav = () => {
       {isAuthenticated ? (
         <Link to={routes.profile()}>Profile</Link>
       ) : (
-        <a href={`${process.env.CLERK_PORTAL_URL}/sign-in`}>Log In</a>
+        <a href={`${process.env.CLERK_SIGNIN_PORTAL_URL}`}>Log In</a>
       )}
     </nav>
   )
@@ -250,7 +250,7 @@ const Header = () => {
                           </Button>
                         ) : (
                           <Button
-                            href={`${process.env.CLERK_PORTAL_URL}/sign-in`}
+                            href={`${process.env.CLERK_SIGNIN_PORTAL_URL}`}
                             round
                             size="small"
                           >
