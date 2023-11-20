@@ -36,7 +36,7 @@ export default async () => {
     {
       id: 'clfbeh0x90000l6z61p1dix7g',
       email: 'tawnee.la@gmail.com',
-      authId: 'user_2YBO66UQdUuOOmwuoY4y3a5nguP',
+      authId: 'user_2YRwmoTgUREEGULLUVSNzYOxV7s',
     },
     {
       id: 'clfboa6v70009id24jvb4jps9',
