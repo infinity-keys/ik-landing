@@ -11,6 +11,12 @@ const ProgressDeleteButton = lazy(
   () => import('src/components/ProgressDeleteButton/ProgressDeleteButton')
 )
 
+const { CLERK_SIGNIN_PORTAL_URL } = process.env
+
+if (!CLERK_SIGNIN_PORTAL_URL) {
+  throw new Error('Missing CLERK_SIGNIN_PORTAL_URL variable')
+}
+
 const ProfilePage = () => {
   const { isAuthenticated, loading, logOut, currentUser } = useAuth()
   const [errorMessage, setErrorMessage] = useState('')
@@ -36,7 +42,7 @@ const ProfilePage = () => {
         <div className="relative text-center">
           {!isAuthenticated && (
             <Button
-              href={`${process.env.CLERK_SIGNIN_PORTAL_URL}`}
+              href={`${CLERK_SIGNIN_PORTAL_URL}`}
               openInNewTab={false}
               solid
             >

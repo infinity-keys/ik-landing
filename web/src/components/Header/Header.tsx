@@ -19,6 +19,12 @@ import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
+const { CLERK_SIGNIN_PORTAL_URL } = process.env
+
+if (!CLERK_SIGNIN_PORTAL_URL) {
+  throw new Error('Missing CLERK_SIGNIN_PORTAL_URL variable')
+}
+
 const socialLinks = [
   {
     href: 'https://lenster.xyz/u/infinitykeys',
@@ -70,7 +76,7 @@ const DesktopNav = () => {
       {isAuthenticated ? (
         <Link to={routes.profile()}>Profile</Link>
       ) : (
-        <a href={`${process.env.CLERK_SIGNIN_PORTAL_URL}`}>Log In</a>
+        <a href={`${CLERK_SIGNIN_PORTAL_URL}`}>Log In</a>
       )}
     </nav>
   )
@@ -250,7 +256,7 @@ const Header = () => {
                           </Button>
                         ) : (
                           <Button
-                            href={`${process.env.CLERK_SIGNIN_PORTAL_URL}`}
+                            href={`${CLERK_SIGNIN_PORTAL_URL}`}
                             round
                             size="small"
                           >
