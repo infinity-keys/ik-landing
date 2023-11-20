@@ -75,6 +75,7 @@ const ProfileIcon = () => {
             <Button
               href={`${process.env.CLERK_PORTAL_URL}/sign-in`}
               size="small"
+              openInNewTab={false}
             >
               Login
             </Button>

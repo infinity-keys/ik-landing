@@ -35,7 +35,11 @@ const ProfilePage = () => {
       ) : (
         <div className="relative text-center">
           {!isAuthenticated && (
-            <Button href={`${process.env.CLERK_PORTAL_URL}/sign-in`} solid>
+            <Button
+              href={`${process.env.CLERK_PORTAL_URL}/sign-in`}
+              openInNewTab={false}
+              solid
+            >
               Login
             </Button>
           )}
