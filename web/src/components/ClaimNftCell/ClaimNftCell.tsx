@@ -3,7 +3,6 @@ import { Fragment, useEffect } from 'react'
 import { gql, useLazyQuery } from '@apollo/client'
 import {
   contractAddressLookup,
-  marketplaceLookup,
   OPTIMISM_CHAIN_ID,
 } from '@infinity-keys/constants'
 import { IKAchievementABI__factory } from '@infinity-keys/contracts'
