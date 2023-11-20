@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from 'react'
 
-import { gql, useLazyQuery } from '@apollo/client'
+import { gql } from '@apollo/client'
 import {
   contractAddressLookup,
   OPTIMISM_CHAIN_ID,
@@ -9,13 +9,13 @@ import { IKAchievementABI__factory } from '@infinity-keys/contracts'
 import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import capitalize from 'lodash/capitalize'
 import type {
-  CheckClaimQueryVariables,
   FindClaimNftQuery,
   FindClaimNftQueryVariables,
   AddNftRewardMutation,
   AddNftRewardMutationVariables,
+  CheckClaimMutation,
+  CheckClaimMutationVariables,
 } from 'types/graphql'
-import { CheckClaimQuery } from 'types/graphql'
 import {
   useAccount,
   useContractWrite,
@@ -58,8 +58,8 @@ export const QUERY = gql`
   }
 `
 
-const CHECK_CLAIM_QUERY = gql`
-  query CheckClaimQuery($rewardableId: String!, $account: String!) {
+const CHECK_CLAIM_MUTATION = gql`
+  mutation CheckClaimMutation($rewardableId: String!, $account: String!) {
     claim(rewardableId: $rewardableId, account: $account) {
       claimed
       signature
@@ -97,10 +97,10 @@ export const Success = ({
 
   // Checks both db and blockchain to see if user is eligible to mint
   // if successful, it runs the gasless claim function
-  const [checkClaim, { loading: queryLoading, data }] = useLazyQuery<
-    CheckClaimQuery,
-    CheckClaimQueryVariables
-  >(CHECK_CLAIM_QUERY, {
+  const [checkClaim, { loading: checkClaimLoading, data }] = useMutation<
+    CheckClaimMutation,
+    CheckClaimMutationVariables
+  >(CHECK_CLAIM_MUTATION, {
     variables: {
       rewardableId: rewardable.id,
       account: address as string,
@@ -162,7 +162,7 @@ export const Success = ({
 
   const contractError = writeError || transactionError || prepareError
   const mustConnect = !address || chain?.id !== OPTIMISM_CHAIN_ID
-  const loading = queryLoading || transactionPending || writeLoading
+  const loading = checkClaimLoading || transactionPending || writeLoading
   const canMint =
     !loading &&
     !claimed &&

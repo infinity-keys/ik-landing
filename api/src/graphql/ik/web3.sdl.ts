@@ -6,7 +6,7 @@ export const schema = gql`
     errors: [String!]
   }
 
-  type Query {
+  type Mutation {
     claim(rewardableId: String!, account: String!): ClaimResponse! @requireAuth
   }
 `

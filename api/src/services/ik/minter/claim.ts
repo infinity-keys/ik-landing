@@ -1,4 +1,4 @@
-import { QueryResolvers } from 'types/graphql'
+import { MutationResolvers } from 'types/graphql'
 
 import { addNftReward } from 'src/lib/nft'
 import { generateSignature } from 'src/lib/signature'
@@ -6,7 +6,7 @@ import { checkBalance } from 'src/lib/web3/check-balance'
 import { checkClaimed } from 'src/lib/web3/check-claimed'
 import { rewardableClaim } from 'src/services/ik/rewardables/rewardables'
 
-export const claim: QueryResolvers['claim'] = async ({
+export const claim: MutationResolvers['claim'] = async ({
   rewardableId,
   account,
 }) => {
