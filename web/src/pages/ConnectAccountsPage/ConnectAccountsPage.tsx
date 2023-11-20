@@ -9,6 +9,7 @@ import { useMutation } from '@redwoodjs/web'
 import { MetaTags } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
 
+import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
 
 const CONNECT_ACCOUNT_MUTATION = gql`
@@ -27,6 +28,7 @@ const CONNECT_ACCOUNT_MUTATION = gql`
 const ConnectAccountsPage = () => {
   const [error, setError] = useState('')
   const { code, state, provider } = useParams()
+  const { isAuthenticated } = useAuth()
 
   const [connect, { data }] = useMutation<ConnectAccountMutation>(
     CONNECT_ACCOUNT_MUTATION,
@@ -46,12 +48,14 @@ const ConnectAccountsPage = () => {
   )
 
   useEffect(() => {
-    if (code && state && provider) {
-      connect()
-    } else {
-      setError('Missing parameters')
+    if (isAuthenticated) {
+      if (code && state && provider) {
+        connect()
+      } else {
+        setError('Missing parameters')
+      }
     }
-  }, [code, state, provider, connect])
+  }, [code, state, provider, connect, isAuthenticated])
 
   return (
     <>
