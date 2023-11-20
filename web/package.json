@@ -27,7 +27,6 @@
     "@rainbow-me/rainbowkit": "^1.0.11",
     "@redwoodjs/auth": "6.3.2",
     "@redwoodjs/auth-clerk-web": "6.3.2",
-    "@redwoodjs/auth-dbauth-web": "6.3.2",
     "@redwoodjs/forms": "6.3.2",
     "@redwoodjs/router": "6.3.2",
     "@redwoodjs/web": "6.3.2",
