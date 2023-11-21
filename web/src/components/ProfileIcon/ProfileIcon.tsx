@@ -9,7 +9,7 @@ import { Link, routes, useLocation } from '@redwoodjs/router'
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
 
-const { CLERK_SIGNIN_PORTAL_URL } = process.env
+const CLERK_SIGNIN_PORTAL_URL = process.env.CLERK_SIGNIN_PORTAL_URL
 
 if (!CLERK_SIGNIN_PORTAL_URL) {
   throw new Error('Missing CLERK_SIGNIN_PORTAL_URL variable')

@@ -19,7 +19,7 @@ import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
-const { CLERK_SIGNIN_PORTAL_URL } = process.env
+const CLERK_SIGNIN_PORTAL_URL = process.env.CLERK_SIGNIN_PORTAL_URL
 
 if (!CLERK_SIGNIN_PORTAL_URL) {
   throw new Error('Missing CLERK_SIGNIN_PORTAL_URL variable')
