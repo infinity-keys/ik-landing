@@ -25,6 +25,12 @@ interface Props {
   rewardable: FindRewardablePuzzleBySlug['rewardable']
 }
 
+const { CLERK_SIGNIN_PORTAL_URL } = process.env
+
+if (!CLERK_SIGNIN_PORTAL_URL) {
+  throw new Error('Missing CLERK_SIGNIN_PORTAL_URL variable')
+}
+
 const Rewardable = ({ rewardable }: Props) => {
   const { isAuthenticated } = useAuth()
   const [showOverlay, setShowOverlay] = useState(false)
@@ -219,7 +225,8 @@ const Rewardable = ({ rewardable }: Props) => {
                   bold
                   solid
                   shadow
-                  href={`${process.env.CLERK_PORTAL_URL}/sign-in`}
+                  href={`${CLERK_SIGNIN_PORTAL_URL}`}
+                  openInNewTab={false}
                 >
                   Login
                 </Button>

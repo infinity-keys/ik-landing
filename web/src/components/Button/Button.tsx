@@ -12,6 +12,7 @@ export interface ButtonProps extends PropsWithChildren {
   borderWhite?: boolean
   disabled?: boolean
   fullWidth?: boolean
+  openInNewTab?: boolean
   round?: boolean
   shadow?: boolean
   solid?: boolean
@@ -27,6 +28,7 @@ export default function Button({
   borderWhite = false,
   disabled = false,
   fullWidth = false,
+  openInNewTab = true,
   round = false,
   shadow = false,
   solid = false,
@@ -74,8 +76,8 @@ export default function Button({
     return (
       <a
         href={href}
-        target="_blank"
-        rel="noopener noreferrer"
+        target={openInNewTab ? '_blank' : undefined}
+        rel={openInNewTab ? 'noopener noreferrer' : undefined}
         className={classes}
       >
         <span className="flex items-center justify-center">{children}</span>
