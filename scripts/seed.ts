@@ -26,7 +26,7 @@ export default async () => {
     {
       id: 'clfbb0mix009tme24zjb3ty7z',
       email: 'itsmekori@infinitykeys.io',
-      authId: 'did:ethr:0xdbf8A4E65F0ef649797f7554ED6D03A32E67bD6D',
+      authId: '2YVGlBRhqVGfnUsqzU19t7q7QNl',
     },
     {
       id: 'clfbb35mj00adme24m0mpx5w2',
