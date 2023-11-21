@@ -1,16 +1,12 @@
 export const schema = gql`
   type ClaimResponse {
-    errors: [String!]
     claimed: Boolean
-    success: Boolean
+    signature: String
     tokenId: Int
-    explorerUrl: String
-    authorized: Boolean
+    errors: [String!]
   }
 
   type Mutation {
-    # runs through entire nft claim flow
-    claim(rewardableId: String!, externalAddress: String): ClaimResponse!
-      @requireAuth
+    claim(rewardableId: String!, account: String!): ClaimResponse! @requireAuth
   }
 `

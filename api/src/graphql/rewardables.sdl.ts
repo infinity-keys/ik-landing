@@ -66,6 +66,7 @@ export const schema = gql`
   }
 
   type Mutation {
+    addNftReward(id: String!): UserReward! @requireAuth
     createRewardable(input: CreateRewardableInput!): Rewardable!
       @requireAuth(roles: ["ADMIN"])
     updateRewardable(id: String!, input: UpdateRewardableInput!): Rewardable!

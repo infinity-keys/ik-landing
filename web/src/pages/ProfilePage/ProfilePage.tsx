@@ -1,22 +1,24 @@
-import { useEffect, useState, lazy } from 'react'
-
-import { useParams } from '@redwoodjs/router'
+import { useState, lazy } from 'react'
 
 import { useAuth } from 'src/auth'
+import Button from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
 import Seo from 'src/components/Seo/Seo'
 import Wrapper from 'src/components/Wrapper/Wrapper'
-import { clearRedirectTo } from 'src/providers/redirection'
 
-const LoginForm = lazy(() => import('src/components/LoginForm/LoginForm'))
 const ProgressDeleteButton = lazy(
   () => import('src/components/ProgressDeleteButton/ProgressDeleteButton')
 )
 
+const CLERK_SIGNIN_PORTAL_URL = process.env.CLERK_SIGNIN_PORTAL_URL
+
+if (!CLERK_SIGNIN_PORTAL_URL) {
+  throw new Error('Missing CLERK_SIGNIN_PORTAL_URL variable')
+}
+
 const ProfilePage = () => {
   const { isAuthenticated, loading, logOut, currentUser } = useAuth()
-  const { redirectTo } = useParams()
   const [errorMessage, setErrorMessage] = useState('')
   const [deleteProgressLoading, setDeleteProgressLoading] = useState(false)
 
@@ -24,14 +26,6 @@ const ProfilePage = () => {
     setErrorMessage('')
     logOut()
   }
-
-  useEffect(() => {
-    // If a user manually navigates to the profile page, clear the redirect route
-    // so they aren't navigated to the wrong page after logging in
-    if (!redirectTo) {
-      clearRedirectTo()
-    }
-  }, [redirectTo])
 
   return (
     <Wrapper>
@@ -46,7 +40,15 @@ const ProfilePage = () => {
         <LoadingIcon />
       ) : (
         <div className="relative text-center">
-          {!isAuthenticated && <LoginForm />}
+          {!isAuthenticated && (
+            <Button
+              href={`${CLERK_SIGNIN_PORTAL_URL}`}
+              openInNewTab={false}
+              solid
+            >
+              Login
+            </Button>
+          )}
 
           <p className="pt-2 text-center text-brand-accent-secondary">
             {errorMessage}

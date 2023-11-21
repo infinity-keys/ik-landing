@@ -38,15 +38,18 @@ type CurrentUser = Pick<
  */
 
 export const getCurrentUser = async (
-  session: Decoded
+  decoded: Decoded
 ): Promise<CurrentUser | null> => {
-  if (!session || typeof session.id !== 'string') {
+  if (!decoded || typeof decoded.id !== 'string') {
+    logger.warn('Missing decoded user')
     return null
   }
 
+  // Be careful to only return information that should be accessible on the web side.
   const user = await db.user.findUnique({
     // @NOTE: session.id is equal to user.authId
-    where: { authId: session.id },
+    // @TODO: IDs won't match until users are migrated on signup
+    where: { authId: decoded.id },
     select: {
       id: true,
       username: true,

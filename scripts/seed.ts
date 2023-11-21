@@ -26,7 +26,7 @@ export default async () => {
     {
       id: 'clfbb0mix009tme24zjb3ty7z',
       email: 'itsmekori@infinitykeys.io',
-      authId: 'did:ethr:0xdbf8A4E65F0ef649797f7554ED6D03A32E67bD6D',
+      authId: 'user_2YVGlBRhqVGfnUsqzU19t7q7QNl',
     },
     {
       id: 'clfbb35mj00adme24m0mpx5w2',
@@ -36,7 +36,7 @@ export default async () => {
     {
       id: 'clfbeh0x90000l6z61p1dix7g',
       email: 'tawnee.la@gmail.com',
-      authId: 'did:ethr:0xF252C8aF80C637030Bb9691eDFa62042156315D7',
+      authId: 'user_2YRwmoTgUREEGULLUVSNzYOxV7s',
     },
     {
       id: 'clfboa6v70009id24jvb4jps9',
@@ -51,7 +51,7 @@ export default async () => {
     {
       id: 'clfbqfryd000008i8dlmn3elb',
       email: 'rick.a.burd@gmail.com',
-      authId: 'did:ethr:0xF09818A04FF3fEB2705AA0cC235901b0fC363dec',
+      authId: 'user_2YVJ5CM05zV0nplPNNYmf8Z0ZJf',
     },
   ]
 

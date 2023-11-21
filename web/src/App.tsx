@@ -17,11 +17,11 @@ import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 import { Toaster } from '@redwoodjs/web/toast'
 
-import { useAuth } from 'src/auth'
+import { AuthProvider, useAuth } from 'src/auth'
 import CookieConsentBanner from 'src/components/CookieConsentBanner/CookieConsentBanner'
 import IK_TOKENS from 'src/lib/theme/ik-tokens.tokens.json'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
-import AuthProvider from 'src/providers/auth'
+import { GlobalInfoProvider } from 'src/providers/globalInfo/globalInfo'
 import Routes from 'src/Routes'
 
 import './scaffold.css'
@@ -94,17 +94,19 @@ const App = () => {
             <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
               <AuthProvider>
                 <RedwoodApolloProvider useAuth={useAuth}>
-                  <LazyMotion features={domAnimation}>
-                    <Routes />
-                    <CookieConsentBanner />
-                    <Toaster
-                      position="bottom-right"
-                      toastOptions={{
-                        className:
-                          'bg-black/40 border border-brand-accent-primary text-white',
-                      }}
-                    />
-                  </LazyMotion>
+                  <GlobalInfoProvider>
+                    <LazyMotion features={domAnimation}>
+                      <Routes />
+                      <CookieConsentBanner />
+                      <Toaster
+                        position="bottom-right"
+                        toastOptions={{
+                          className:
+                            'bg-black/40 border border-brand-accent-primary text-white',
+                        }}
+                      />
+                    </LazyMotion>
+                  </GlobalInfoProvider>
                 </RedwoodApolloProvider>
               </AuthProvider>
             </RedwoodProvider>
