@@ -51,7 +51,7 @@ export default async () => {
     {
       id: 'clfbqfryd000008i8dlmn3elb',
       email: 'rick.a.burd@gmail.com',
-      authId: 'did:ethr:0xF09818A04FF3fEB2705AA0cC235901b0fC363dec',
+      authId: 'user_2YVJ5CM05zV0nplPNNYmf8Z0ZJf',
     },
   ]
 
