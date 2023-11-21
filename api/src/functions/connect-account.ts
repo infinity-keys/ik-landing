@@ -2,7 +2,7 @@ import { APIGatewayEvent } from 'aws-lambda'
 import cookie from 'cookie'
 import { nanoid } from 'nanoid'
 
-import { authDecoder } from '@redwoodjs/auth-dbauth-api'
+import { clerkAuthDecoder as authDecoder } from '@redwoodjs/auth-clerk-api'
 import { useRequireAuth } from '@redwoodjs/graphql-server'
 
 import { getCurrentUser, isAuthenticated } from 'src/lib/auth'
