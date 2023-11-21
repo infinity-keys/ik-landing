@@ -74,7 +74,7 @@ export const chainIds = [
 ]
 
 export const contractAddressLookup: {
-  [key: number]: string
+  [key: number]: `0x${string}`
 } = {
   [ETH_CHAIN_ID]: CONTRACT_ADDRESS_ETH,
   [POLYGON_CHAIN_ID]: CONTRACT_ADDRESS_POLYGON,

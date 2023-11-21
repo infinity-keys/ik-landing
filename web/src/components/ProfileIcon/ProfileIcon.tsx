@@ -8,11 +8,15 @@ import { Link, routes, useLocation } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
-import { useLoginModal } from 'src/providers/loginModal/loginModal'
+
+const CLERK_SIGNIN_PORTAL_URL = process.env.CLERK_SIGNIN_PORTAL_URL
+
+if (!CLERK_SIGNIN_PORTAL_URL) {
+  throw new Error('Missing CLERK_SIGNIN_PORTAL_URL variable')
+}
 
 const ProfileIcon = () => {
   const { isAuthenticated, logOut } = useAuth()
-  const { setIsLoginModalOpen } = useLoginModal()
   const { pathname } = useLocation()
 
   return (
@@ -56,7 +60,7 @@ const ProfileIcon = () => {
                       <Menu.Item>
                         {({ active }) => (
                           <button
-                            onClick={logOut}
+                            onClick={() => logOut()}
                             className={clsx(
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                               active
@@ -74,7 +78,11 @@ const ProfileIcon = () => {
               </Menu>
             </div>
           ) : (
-            <Button size="small" onClick={() => setIsLoginModalOpen(true)}>
+            <Button
+              href={`${CLERK_SIGNIN_PORTAL_URL}`}
+              size="small"
+              openInNewTab={false}
+            >
               Login
             </Button>
           )}

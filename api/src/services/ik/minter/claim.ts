@@ -1,16 +1,14 @@
 import { MutationResolvers } from 'types/graphql'
 
-import { db } from 'src/lib/db'
-import { decryptAndDecompressText } from 'src/lib/encoding/encoding'
-import { mint } from 'src/lib/mint'
 import { addNftReward } from 'src/lib/nft'
+import { generateSignature } from 'src/lib/signature'
 import { checkBalance } from 'src/lib/web3/check-balance'
 import { checkClaimed } from 'src/lib/web3/check-claimed'
 import { rewardableClaim } from 'src/services/ik/rewardables/rewardables'
 
 export const claim: MutationResolvers['claim'] = async ({
   rewardableId,
-  externalAddress,
+  account,
 }) => {
   try {
     const rewardableData = await rewardableClaim({ id: rewardableId })
@@ -51,15 +49,6 @@ export const claim: MutationResolvers['claim'] = async ({
 
     // @TODO: claim logic breaks when we have more than 1 NFT per rewardable
     const { tokenId } = rewardableData.nfts[0]
-
-    const { address: account, accessToken } =
-      (await db.user.findUnique({
-        where: { id: context.currentUser?.id },
-      })) || {}
-
-    if (!accessToken || !account) {
-      throw new Error('Error obtaining user data required to mint.')
-    }
 
     // has this nft already been claimed on this account
     const { claimed, errors: checkClaimedErrors } = await checkClaimed({
@@ -103,7 +92,6 @@ export const claim: MutationResolvers['claim'] = async ({
         claimedTokens,
       } = await checkBalance({
         account,
-        externalAddress: externalAddress ?? undefined,
         tokenIds: requiredNftIds,
       })
 
@@ -118,49 +106,22 @@ export const claim: MutationResolvers['claim'] = async ({
 
         return {
           errors: [
-            `You are missing NFT ids: ${missingNfts}. Please ensure you have completed the above puzzles and are on the correct chain.`,
+            `You are missing NFT ids: ${missingNfts}. Please ensure you have completed the above puzzles.`,
           ],
         }
       }
     }
 
-    let decryptedAccessToken
-
-    try {
-      decryptedAccessToken = decryptAndDecompressText(accessToken)
-    } catch {
-      return { authorized: false }
-    }
-
-    const { success, explorerUrl, errors, authorized } = await mint(
-      decryptedAccessToken,
+    const { signature, errors: sigErrors } = await generateSignature(
       account,
       tokenId
     )
 
-    if (typeof authorized === 'boolean' && !authorized) {
-      return { authorized }
+    if (sigErrors?.length) {
+      return { errors: sigErrors }
     }
 
-    if (errors?.length) {
-      return { errors }
-    }
-
-    if (!success) {
-      return {
-        errors: [
-          'Gas prices are unpredictable and may cause errors. Please try again in a few seconds.',
-        ],
-      }
-    }
-
-    await addNftReward(rewardableId)
-
-    return {
-      success,
-      explorerUrl,
-      tokenId,
-    }
+    return { signature, claimed, tokenId }
   } catch (e) {
     if (e instanceof Error) {
       return { errors: [e.message] }

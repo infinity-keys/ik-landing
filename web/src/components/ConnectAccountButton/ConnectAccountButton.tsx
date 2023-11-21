@@ -13,13 +13,19 @@ const ConnectAccountButton = ({
   provider: ConnectAccountProviders
   text?: string
 }) => {
-  const { currentUser } = useAuth()
+  const { getToken } = useAuth()
 
   const fetchAuthUrl = async () => {
+    const token = await getToken()
+
+    if (!token) {
+      return toast.error('Error obtaining auth token.')
+    }
+
     const res = await fetch(connectAccountApiUrl(provider), {
       headers: {
-        Authorization: `Bearer ${currentUser?.authId}`,
-        'auth-provider': 'dbAuth',
+        Authorization: `Bearer ${token}`,
+        'auth-provider': 'clerk',
         'Content-Type': 'application/json',
       },
     })

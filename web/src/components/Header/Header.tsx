@@ -15,10 +15,15 @@ import LogoFullSm from 'src/images/full-logo-sm.webp'
 import LogoHeader1x from 'src/images/IK-LOGO-1x.webp'
 import LogoHeader2x from 'src/images/IK-LOGO-2x.webp'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
-import { useLoginModal } from 'src/providers/loginModal/loginModal'
 import DiscordIcon from 'src/svgs/DiscordIcon'
 import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
+
+const CLERK_SIGNIN_PORTAL_URL = process.env.CLERK_SIGNIN_PORTAL_URL
+
+if (!CLERK_SIGNIN_PORTAL_URL) {
+  throw new Error('Missing CLERK_SIGNIN_PORTAL_URL variable')
+}
 
 const socialLinks = [
   {
@@ -49,7 +54,6 @@ const socialLinks = [
 
 const DesktopNav = () => {
   const { isAuthenticated } = useAuth()
-  const { setIsLoginModalOpen } = useLoginModal()
 
   return (
     <nav className="hidden w-full max-w-lg justify-around gap-4 lg:flex xl:max-w-xl">
@@ -72,13 +76,7 @@ const DesktopNav = () => {
       {isAuthenticated ? (
         <Link to={routes.profile()}>Profile</Link>
       ) : (
-        <button
-          onClick={() => {
-            setIsLoginModalOpen(true)
-          }}
-        >
-          Login
-        </button>
+        <a href={`${CLERK_SIGNIN_PORTAL_URL}`}>Log In</a>
       )}
     </nav>
   )
@@ -257,7 +255,11 @@ const Header = () => {
                             Profile
                           </Button>
                         ) : (
-                          <Button to={routes.profile()} round size="small">
+                          <Button
+                            href={`${CLERK_SIGNIN_PORTAL_URL}`}
+                            round
+                            size="small"
+                          >
                             Login
                           </Button>
                         )}

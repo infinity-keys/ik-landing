@@ -18,7 +18,6 @@ import Seo from 'src/components/Seo/Seo'
 import { requirementsLookup } from 'src/lib/puzzleRequirements'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
-import { useLoginModal } from 'src/providers/loginModal/loginModal'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
@@ -26,12 +25,17 @@ interface Props {
   rewardable: FindRewardablePuzzleBySlug['rewardable']
 }
 
+const CLERK_SIGNIN_PORTAL_URL = process.env.CLERK_SIGNIN_PORTAL_URL
+
+if (!CLERK_SIGNIN_PORTAL_URL) {
+  throw new Error('Missing CLERK_SIGNIN_PORTAL_URL variable')
+}
+
 const Rewardable = ({ rewardable }: Props) => {
   const { isAuthenticated } = useAuth()
   const [showOverlay, setShowOverlay] = useState(false)
   const [currentOverlayContent, setCurrentOverlayContent] =
     useState<PuzzleRequirements | null>(null)
-  const { setIsLoginModalOpen } = useLoginModal()
   const { pageHeading, setPageHeading } = useGlobalInfo()
 
   useEffect(() => {
@@ -221,7 +225,8 @@ const Rewardable = ({ rewardable }: Props) => {
                   bold
                   solid
                   shadow
-                  onClick={() => setIsLoginModalOpen(true)}
+                  href={`${CLERK_SIGNIN_PORTAL_URL}`}
+                  openInNewTab={false}
                 >
                   Login
                 </Button>
