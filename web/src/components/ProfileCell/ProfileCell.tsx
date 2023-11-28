@@ -22,6 +22,8 @@ import { LoaderIcon, toast } from '@redwoodjs/web/toast'
 import Button from 'src/components/Button/Button'
 import { avatarGradient } from 'src/lib/theme/helpers'
 
+require('dotenv').config()
+
 export const QUERY = gql`
   query FindUserQuery {
     user {
@@ -294,7 +296,7 @@ export const Success = ({
           </div>
 
           <div className="flex items-center justify-between">
-            <p>External Wallet:</p>
+            <p>Socials:</p>
 
             {updateExternalWalletLoading ? (
               <LoaderIcon />
