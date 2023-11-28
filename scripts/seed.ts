@@ -339,20 +339,28 @@ export default async () => {
                 },
               },
               {
+                // this "challenge" shit goes away,
+                // it's in the d.b. so keep it here until Tawnee deletes it from the schema
                 challenge: 'What is the biggest island in Greece?',
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
                 solutionHint: 'Hint',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
+                // this is the thing I have to make work in the form...
+                // a "Step" has an array of "stepPage"s so make it work just like the
+                // freaking TokenId's you just did.
                 stepPage: {
                   create: [
+                    // we don't need to have multiple "stepPage"s but we want at least 1 or 2
                     {
+                      // this is just some b.s. text
                       body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
+                      // this is the actual question you have to solve for
                       body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
                       sortWeight: 2,
                       showStepGuideHint: true,

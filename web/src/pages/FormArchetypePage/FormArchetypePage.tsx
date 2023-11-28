@@ -238,15 +238,15 @@ function Step({
     'HAS_CREATED_SCHOLARSHIP',
   ]
 
-  // left off here 11/21/2023
+  // left off here 11/28/2023
   // state management to track <TokenIdRange /> component
   // // don't use state down here, useFieldArray instead
-  const [tokenIdRanges, setTokenIdRanges] = useState([])
+  // const [tokenIdRanges, setTokenIdRanges] = useState([])
 
   // temp func to add a <TokenIdRange /> component
-  const addTokenIdRange = () => {
-    setTokenIdRanges([...tokenIdRanges, {}]) // Add a new object to represent a new TokenIdRange
-  }
+  // const addTokenIdRange = () => {
+  //   setTokenIdRanges([...tokenIdRanges, {}]) // Add a new object to represent a new TokenIdRange
+  // }
 
   // // the function above needs to be replace with s.thing like this below:
   // const formMethods: UseFormReturn<PuzzleFormType> = useForm<PuzzleFormType>({
@@ -261,15 +261,24 @@ function Step({
   })
 
   // // when the function above it figured out, the one below must be revised:
-  // const { errors } = formMethods.formState as {
-  //   errors: FieldErrors<PuzzleFormType>
-  // }
+  const { errors: tokenIdErrors } = formMethods.formState as {
+    errors: FieldErrors<TokenIdRangeNew>
+  }
+
+  const {
+    fields: tokenIdFields,
+    append,
+    remove: tokenIdRemove,
+  } = useFieldArray({
+    control: formMethods.control,
+    name: tokenIdsArrayName,
+  })
 
   // temp func to remove a <TokenIdRange /> component
-  const removeTokenIdRange = (index) => {
-    const newRanges = tokenIdRanges.filter((_, i) => i !== index)
-    setTokenIdRanges(newRanges)
-  }
+  // const removeTokenIdRange = (index) => {
+  //   const newRanges = tokenIdRanges.filter((_, i) => i !== index)
+  //   setTokenIdRanges(newRanges)
+  // }
 
   // // the function above needs to be replaced with s.thing like this below:
   // const { fields, append, remove } = useFieldArray({
@@ -277,7 +286,7 @@ function Step({
   //   name: stepsArrayName,
   // })
 
-  // left off here on 11/21/2023
+  // left off here 11/28/2023
   // const { fields, append, remove } = useFieldArray({
   //   control: formMethods.control,
   //   name: tokenIdsArrayName,
@@ -674,9 +683,9 @@ function Step({
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             />
           </div>
-          {/* left off here 11/21/2023 */}
 
-          <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
+          {/* left off here 11/28/2023 */}
+          {/* <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
             {tokenIdRanges.map((_, index) => (
               <div key={index}>
                 <TokenIdRange
@@ -694,50 +703,37 @@ function Step({
                 Add a Token ID Range
               </button>
             </div>
-          </div>
-          {/* <div id="start-ids" className="form__entry mb-12">
-            <Label
-              name={stepTypeVal}
-              className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
-            >
-              <div className="form__entry-name mb-1">Start Ids</div>
-            </Label>
-            <TextField
-              placeholder="First Start Id"
-              {...register(`${stepsArrayName}.${index}.startIds.0`)}
-              className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-            />
-
-            <TextField
-              placeholder="Second Start Id"
-              {...register(`${stepsArrayName}.${index}.startIds.1`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-            />
-          </div>
-          <div id="end-ids" className="form__entry mb-12">
-            <Label
-              name={stepTypeVal}
-              className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
-            >
-              <div className="form__entry-name mb-1">End Ids</div>
-            </Label>
-            <TextField
-              placeholder="First End Id"
-              {...register(`${stepsArrayName}.${index}.endIds`)}
-              className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-            />
-            <TextField
-              placeholder="Second End Id"
-              {...register(`${stepsArrayName}.${index}.endIds`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-            />
           </div> */}
+
+          {/* left off here 11/28/2023 */}
+          {/* the block above must be replaced with s.thing like the block below */}
+          <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
+            {tokenIdFields.map((field, index) => (
+              <TokenIdRange
+                index={index}
+                register={formMethods.register}
+                key={field.id}
+                watch={formMethods.watch}
+                setValue={formMethods.setValue}
+                remove={tokenIdRemove}
+                errors={tokenIdErrors}
+              />
+            ))}
+            <div className="mt-8 mb-20">
+              <button
+                type="button"
+                className="rw-button rw-button-blue"
+                onClick={() =>
+                  append({
+                    startId: '',
+                    endId: '',
+                  })
+                }
+              >
+                Add a Token ID Range
+              </button>
+            </div>
+          </div>
         </div>
       )}
       {stepTypeVal === 'ORIUM_API' && (
