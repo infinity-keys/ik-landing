@@ -80,7 +80,7 @@ export type OpportunityCardProps = {
   description: string
 }
 
-const opportunity: Array<OpportunityCardProps> = [
+export const opportunity: Array<OpportunityCardProps> = [
   {
     image: computer,
     title: '$231B',

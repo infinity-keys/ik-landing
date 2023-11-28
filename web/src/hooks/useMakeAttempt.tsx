@@ -74,11 +74,11 @@ const useMakeAttempt = () => {
     setIsLoading(false)
 
     // They made a successful attempt
-    if (responseData.success) {
+    if (responseData?.success) {
       // We automatically forward them to the next step or the puzzle landing
       if (redirectOnSuccess) {
         redirectUser({
-          finalStep: responseData.finalStep,
+          finalStep: !!responseData.finalStep,
           stepParam,
           slug,
         })
@@ -87,7 +87,7 @@ const useMakeAttempt = () => {
     } else {
       // Incorrect attempt, show fail or error message
       setFailedAttempt(true)
-      responseData.message && setErrorMessage(responseData.message)
+      responseData?.message && setErrorMessage(responseData.message)
       return responseData
     }
   }
