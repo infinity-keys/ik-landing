@@ -11,15 +11,20 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import Markdown from './Markdown'
 
-export const generated = () => {
-  return <Markdown />
+export const generated: StoryObj<typeof Markdown> = {
+  render: (args) => {
+    return <Markdown {...args} />
+  },
 }
 
 export default {
   title: 'Components/Markdown',
   component: Markdown,
+  args: {
+    children: '**this is bold**',
+  },
 } as Meta<typeof Markdown>

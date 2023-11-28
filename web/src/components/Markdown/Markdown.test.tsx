@@ -8,7 +8,7 @@ import Markdown from './Markdown'
 describe.skip('Markdown', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<Markdown />)
+      render(<Markdown>**bold**</Markdown>)
     }).not.toThrow()
   })
 })

@@ -8,7 +8,7 @@ import LensConnect from './LensConnect'
 describe.skip('LensConnect', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<LensConnect />)
+      render(<LensConnect text="Connect Lens" />)
     }).not.toThrow()
   })
 })

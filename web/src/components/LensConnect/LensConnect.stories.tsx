@@ -11,15 +11,20 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import LensConnect from './LensConnect'
 
-export const generated = () => {
-  return <LensConnect />
+export const generated: StoryObj<typeof LensConnect> = {
+  render: (args) => {
+    return <LensConnect {...args} />
+  },
 }
 
 export default {
   title: 'Components/LensConnect',
   component: LensConnect,
+  args: {
+    text: 'Connect',
+  },
 } as Meta<typeof LensConnect>
