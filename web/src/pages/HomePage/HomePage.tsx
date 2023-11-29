@@ -32,7 +32,7 @@ export type BenefitCardProps = {
   list: string[]
 }
 
-const benefits: Array<BenefitCardProps> = [
+export const benefits: Array<BenefitCardProps> = [
   {
     icon: key,
     title: 'Players',

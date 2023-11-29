@@ -16,7 +16,7 @@ import type { Meta } from '@storybook/react'
 import DisconnectAccountButton from './DisconnectAccountButton'
 
 export const generated = () => {
-  return <DisconnectAccountButton />
+  return <DisconnectAccountButton provider="discord" />
 }
 
 export default {
