@@ -36,7 +36,12 @@ describe.skip('ProfileCell', () => {
 
   it('renders Success successfully', async () => {
     expect(() => {
-      render(<Success user={standard().user} />)
+      render(
+        <Success
+          user={standard().user}
+          handleLogOut={() => console.log('logged out')}
+        />
+      )
     }).not.toThrow()
   })
 })

@@ -12,6 +12,8 @@
 
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { opportunity } from 'src/pages/HomePage/HomePage'
+
 import OpportunityCard from './OpportunityCard'
 
 const meta: Meta<typeof OpportunityCard> = {
@@ -22,4 +24,6 @@ export default meta
 
 type Story = StoryObj<typeof OpportunityCard>
 
-export const Primary: Story = {}
+export const Primary: Story = {
+  args: { ...opportunity[0] },
+}
