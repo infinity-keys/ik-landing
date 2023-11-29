@@ -1,5 +1,7 @@
 import { render } from '@redwoodjs/testing/web'
 
+import { opportunity } from 'src/pages/HomePage/HomePage'
+
 import OpportunityCard from './OpportunityCard'
 
 //   Improve this test with help from the Redwood Testing Doc:
@@ -8,7 +10,7 @@ import OpportunityCard from './OpportunityCard'
 describe('OpportunityCard', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<OpportunityCard />)
+      render(<OpportunityCard {...opportunity[0]} />)
     }).not.toThrow()
   })
 })

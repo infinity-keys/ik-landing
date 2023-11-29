@@ -54,8 +54,9 @@ describe.skip('truncate', () => {
   it('handles arguments of invalid type', () => {
     // @ts-expect-error - Testing JS scenario
     expect(truncate(false)).toEqual('false')
-
+    // @ts-expect-error - Testing JS scenario
     expect(truncate(undefined)).toEqual('')
+    // @ts-expect-error - Testing JS scenario
     expect(truncate(null)).toEqual('')
   })
 })
