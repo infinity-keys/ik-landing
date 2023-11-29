@@ -16,7 +16,12 @@ import type { Meta } from '@storybook/react'
 import Iframe from './Iframe'
 
 export const generated = () => {
-  return <Iframe />
+  return (
+    <Iframe
+      src="https://www.youtube.com/embed/HBYE1Aysc6I?si=lp8lGPTVmvTSCoWI"
+      aspect="16/9"
+    />
+  )
 }
 
 export default {

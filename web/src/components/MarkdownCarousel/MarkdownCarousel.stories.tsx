@@ -11,15 +11,20 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import MarkdownCarousel from './MarkdownCarousel'
 
-export const generated = () => {
-  return <MarkdownCarousel />
+export const generated: StoryObj<typeof MarkdownCarousel> = {
+  render: (args) => {
+    return <MarkdownCarousel {...args} />
+  },
 }
 
 export default {
   title: 'Components/MarkdownCarousel',
   component: MarkdownCarousel,
+  args: {
+    showOverlay: false,
+  },
 } as Meta<typeof MarkdownCarousel>

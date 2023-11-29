@@ -8,7 +8,15 @@ import MarkdownCarousel from './MarkdownCarousel'
 describe('MarkdownCarousel', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<MarkdownCarousel />)
+      render(
+        <MarkdownCarousel
+          {...{
+            setShowOverlay: () => {},
+            setSlideIndex: () => {},
+            showOverlay: false,
+          }}
+        />
+      )
     }).not.toThrow()
   })
 })

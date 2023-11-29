@@ -8,7 +8,7 @@ import GridDropdown from './GridDropdown'
 describe.skip('GridDropdown', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<GridDropdown />)
+      render(<GridDropdown currentCount={16} rewardableType="PUZZLE" />)
     }).not.toThrow()
   })
 })

@@ -11,15 +11,24 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import GridPagination from './GridPagination'
 
-export const generated = () => {
-  return <GridPagination />
+export const generated: StoryObj<typeof GridPagination> = {
+  render: (args) => {
+    return <GridPagination {...args} />
+  },
 }
 
 export default {
   title: 'Components/GridPagination',
   component: GridPagination,
+  args: {
+    isFirstPage: true,
+    isLastPage: false,
+    pageNum: 1,
+    rewardableType: 'PUZZLE',
+    thumbnailCount: 16,
+  },
 } as Meta<typeof GridPagination>

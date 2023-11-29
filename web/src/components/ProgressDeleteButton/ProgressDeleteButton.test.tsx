@@ -8,7 +8,7 @@ import ProgressDeleteButton from './ProgressDeleteButton'
 describe('ProgressDeleteButton', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<ProgressDeleteButton />)
+      render(<ProgressDeleteButton setDeleteProgressLoading={() => {}} />)
     }).not.toThrow()
   })
 })

@@ -8,7 +8,16 @@ import Thumbnail from './Thumbnail'
 describe.skip('Thumbnail', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<Thumbnail />)
+      render(
+        <Thumbnail
+          {...{
+            id: '1',
+            name: 'name',
+            href: '/',
+            isGrid: false,
+          }}
+        />
+      )
     }).not.toThrow()
   })
 })

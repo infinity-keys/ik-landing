@@ -8,7 +8,17 @@ import GridPagination from './GridPagination'
 describe.skip('GridPagination', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<GridPagination />)
+      render(
+        <GridPagination
+          {...{
+            isFirstPage: true,
+            isLastPage: false,
+            pageNum: 1,
+            rewardableType: 'PUZZLE',
+            thumbnailCount: 16,
+          }}
+        />
+      )
     }).not.toThrow()
   })
 })

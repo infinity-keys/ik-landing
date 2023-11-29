@@ -11,15 +11,23 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import Thumbnail from './Thumbnail'
 
-export const generated = () => {
-  return <Thumbnail />
+export const generated: StoryObj<typeof Thumbnail> = {
+  render: (args) => {
+    return <Thumbnail {...args} />
+  },
 }
 
 export default {
   title: 'Components/Thumbnail',
   component: Thumbnail,
+  args: {
+    id: '1',
+    name: 'name',
+    href: '/',
+    isGrid: false,
+  },
 } as Meta<typeof Thumbnail>
