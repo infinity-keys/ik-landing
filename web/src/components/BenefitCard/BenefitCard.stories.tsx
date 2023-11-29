@@ -12,6 +12,8 @@
 
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { benefits } from 'src/pages/HomePage/HomePage'
+
 import BenefitCard from './BenefitCard'
 
 const meta: Meta<typeof BenefitCard> = {
@@ -22,4 +24,6 @@ export default meta
 
 type Story = StoryObj<typeof BenefitCard>
 
-export const Primary: Story = {}
+export const Primary: Story = {
+  args: { ...benefits[0] },
+}

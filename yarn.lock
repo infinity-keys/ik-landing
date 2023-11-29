@@ -11148,6 +11148,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/pino-datadog@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@types/pino-datadog@npm:2.0.3"
+  dependencies:
+    "@types/node": "*"
+  checksum: 37bc88abaabb512111415639b16e69259e263c5a7cd95622c3855f4cee3427f90edb949a4be2e744da8edc0626f0a813e57927027894f3f9a9a68cef19920bc1
+  languageName: node
+  linkType: hard
+
 "@types/prettier@npm:^2.1.1":
   version: 2.7.1
   resolution: "@types/prettier@npm:2.7.1"
@@ -13562,6 +13571,7 @@ __metadata:
     "@redwoodjs/auth-clerk-api": 6.3.2
     "@redwoodjs/graphql-server": 6.3.2
     "@sendgrid/mail": ^7.7.0
+    "@types/pino-datadog": ^2.0.3
     "@types/uuid": ^9.0.1
     alchemy-sdk: ^2.8.3
     cloudinary-build-url: ^0.2.4
