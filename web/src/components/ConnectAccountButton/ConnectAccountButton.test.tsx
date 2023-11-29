@@ -8,7 +8,7 @@ import ConnectAccountButton from './ConnectAccountButton'
 describe('ConnectAccountButton', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<ConnectAccountButton />)
+      render(<ConnectAccountButton provider="discord" />)
     }).not.toThrow()
   })
 })

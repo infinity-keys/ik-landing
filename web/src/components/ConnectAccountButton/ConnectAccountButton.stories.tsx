@@ -16,7 +16,7 @@ import type { Meta } from '@storybook/react'
 import ConnectAccountButton from './ConnectAccountButton'
 
 export const generated = () => {
-  return <ConnectAccountButton />
+  return <ConnectAccountButton provider="discord" />
 }
 
 export default {

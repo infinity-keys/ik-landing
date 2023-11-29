@@ -11,15 +11,20 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import Flicker from './Flicker'
 
-export const generated = () => {
-  return <Flicker />
+export const generated: StoryObj<typeof Flicker> = {
+  render: (args) => {
+    return <Flicker {...args} />
+  },
 }
 
 export default {
   title: 'Components/Flicker',
   component: Flicker,
+  args: {
+    children: 'Flicker',
+  },
 } as Meta<typeof Flicker>

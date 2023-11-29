@@ -8,7 +8,7 @@ import Alert from './Alert'
 describe.skip('Alert', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<Alert />)
+      render(<Alert text="Hello" />)
     }).not.toThrow()
   })
 })

@@ -8,7 +8,18 @@ import CloudImage from './CloudImage'
 describe.skip('CloudImage', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<CloudImage />)
+      render(
+        <CloudImage
+          {...{
+            id: 'ik-alpha-trophies/starter-pack-achievment_cdbvlv',
+            height: 200,
+            width: 200,
+            alt: 'alt text',
+            circle: false,
+            dpr: 2,
+          }}
+        />
+      )
     }).not.toThrow()
   })
 })

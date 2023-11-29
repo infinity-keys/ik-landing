@@ -18,7 +18,7 @@ import { createLogger } from '@redwoodjs/api/logger'
  */
 
 export const stream = datadog.createWriteStreamSync({
-  apiKey: process.env.DATADOG_API_KEY,
+  apiKey: process.env.DATADOG_API_KEY || '',
   ddsource: 'ik-redwood',
   service: 'ik-redwood',
   size: 1,
