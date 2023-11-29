@@ -6,15 +6,12 @@ import ClipboardIcon from '@heroicons/react/24/outline/ClipboardIcon'
 import { truncate } from '@infinity-keys/core'
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import { useActiveProfile } from '@lens-protocol/react-web'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
 import Avatar from 'boring-avatars'
 import type {
   FindUserQuery,
   FindUserQueryVariables,
   SyncDiscordRolesMutation,
-  UpdateExternalWalletMutation,
 } from 'types/graphql'
-import { useAccount } from 'wagmi'
 
 import { CellSuccessProps, CellFailureProps, useMutation } from '@redwoodjs/web'
 import { LoaderIcon, toast } from '@redwoodjs/web/toast'
@@ -22,7 +19,11 @@ import { LoaderIcon, toast } from '@redwoodjs/web/toast'
 import Button from 'src/components/Button/Button'
 import { avatarGradient } from 'src/lib/theme/helpers'
 
-require('dotenv').config()
+const CLERK_PORTAL_URL = process.env.CLERK_PORTAL_URL
+
+if (!CLERK_PORTAL_URL) {
+  throw new Error('Missing CLERK_PORTAL_URL variable')
+}
 
 export const QUERY = gql`
   query FindUserQuery {
@@ -68,14 +69,6 @@ const SYNC_DISCORD_ROLES_MUTATION = gql`
   }
 `
 
-const UPDATE_EXTERNAL_WALLET_MUTATION = gql`
-  mutation UpdateExternalWalletMutation($input: UpdateUserInput!) {
-    updateUser(input: $input) {
-      externalAddress
-    }
-  }
-`
-
 export const Loading = () => <LoadingIcon />
 
 export const Empty = () => <div>Empty</div>
@@ -94,25 +87,11 @@ export const Success = ({
   handleLogOut: () => void
 }) => {
   const { data: lensProfile } = useActiveProfile()
-  const { address } = useAccount()
-  const { openConnectModal } = useConnectModal()
 
   const [
     syncDiscordRoles,
     { loading: discordSyncLoading, data: discordRolesData },
   ] = useMutation<SyncDiscordRolesMutation>(SYNC_DISCORD_ROLES_MUTATION)
-
-  const [updateExternalWallet, { loading: updateExternalWalletLoading }] =
-    useMutation<UpdateExternalWalletMutation>(UPDATE_EXTERNAL_WALLET_MUTATION, {
-      onCompleted: () => {
-        if (typeof queryResult?.refetch !== 'undefined') {
-          queryResult.refetch()
-        }
-      },
-      onError: () => {
-        toast.error('Error connecting wallet')
-      },
-    })
 
   return (
     <div className="mt-12 flex flex-col gap-6 lg:mt-0 lg:flex-row">
@@ -298,48 +277,12 @@ export const Success = ({
           <div className="flex items-center justify-between">
             <p>Socials:</p>
 
-            {updateExternalWalletLoading ? (
-              <LoaderIcon />
-            ) : address || user.externalAddress ? (
-              user.externalAddress ? (
-                <button
-                  className="overflow-hidden rounded-md p-2 text-sm text-gray-200 transition-colors hover:bg-white/10 hover:text-brand-accent-primary"
-                  onClick={() =>
-                    updateExternalWallet({
-                      variables: {
-                        input: {
-                          externalAddress: null,
-                        },
-                      },
-                    })
-                  }
-                >
-                  Disconnect
-                </button>
-              ) : (
-                <Button
-                  size="small"
-                  onClick={() =>
-                    updateExternalWallet({
-                      variables: {
-                        input: {
-                          externalAddress: address,
-                        },
-                      },
-                    })
-                  }
-                >
-                  Connect
-                </Button>
-              )
-            ) : (
-              <button
-                onClick={openConnectModal}
-                className="overflow-hidden rounded-md p-2 text-sm text-gray-200 transition-colors hover:bg-white/10 hover:text-brand-accent-primary"
-              >
-                Connect Wallet
-              </button>
-            )}
+            <a
+              href={`${CLERK_PORTAL_URL}/user`}
+              className="overflow-hidden rounded-md p-2 text-sm text-gray-200 transition-colors hover:bg-white/10 hover:text-brand-accent-primary"
+            >
+              Connect Wallet
+            </a>
           </div>
         </div>
       </div>
