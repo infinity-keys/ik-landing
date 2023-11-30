@@ -81,13 +81,20 @@ export const handler = async (event: APIGatewayEvent) => {
       )?.email_address
 
       await db.user.upsert({
-        where: { email: primaryEmail },
-        create: {
+        where: {
           email: primaryEmail,
-          authId: data.id,
+          NOT: { authId: { startsWith: 'user_' } },
         },
-        // Overwrite Keyp id with Clerk id
-        update: { authId: data.id },
+        create: {
+          authId: data.id,
+          roles: ['VERIFIED'],
+        },
+        update: {
+          // Overwrite Keyp id with Clerk id
+          authId: data.id,
+          // Remove email from DB
+          email: null,
+        },
       })
 
       return { statusCode: 200 }
@@ -112,10 +119,20 @@ export const handler = async (event: APIGatewayEvent) => {
       })
 
       await db.user.upsert({
-        where: { id: user?.id || '' },
-        create: { authId: data.id },
-        // Overwrite Keyp id with Clerk id
-        update: { authId: data.id },
+        where: {
+          id: user?.id || '',
+          NOT: { authId: { startsWith: 'user_' } },
+        },
+        create: {
+          authId: data.id,
+          roles: ['VERIFIED'],
+        },
+        update: {
+          // Overwrite Keyp id with Clerk id
+          authId: data.id,
+          // Remove email from DB
+          email: null,
+        },
       })
       return { statusCode: 200 }
     }
