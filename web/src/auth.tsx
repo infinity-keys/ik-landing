@@ -40,7 +40,7 @@ const ClerkProviderWrapper = ({ children, clerkOptions }: Props) => {
   )
 }
 
-export const AuthProvider = ({ children }: Props) => {
+export const AuthProvider = ({ children }: PropsWithChildren) => {
   const publishableKey = process.env.CLERK_PUBLISHABLE_KEY
 
   if (!publishableKey) {

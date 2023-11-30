@@ -8,7 +8,7 @@ import DisconnectAccountButton from './DisconnectAccountButton'
 describe('DisconnectAccountButton', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<DisconnectAccountButton />)
+      render(<DisconnectAccountButton provider="discord" />)
     }).not.toThrow()
   })
 })
