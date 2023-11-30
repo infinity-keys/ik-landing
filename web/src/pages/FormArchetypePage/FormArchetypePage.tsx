@@ -118,13 +118,22 @@ function TokenIdRange({
           >
             <div className="form__entry-name mb-1">Start ID</div>
           </Label>
+          {/* type TokenIdRangeNew = {
+            type: 'TOKEN_ID_RANGE'
+              ranges: {
+                startId: number
+                endId: number
+              }[]
+            } */}
+          {/* const tokenIdsArrayName = 'tokenIds' */}
           <TextField
             placeholder="Start ID"
-            {...register(`${tokenIdsArrayName}.${index}.startId`)}
+            // {...register(`${tokenIdsArrayName}.${index}.startId`)}
+            {...register(`ranges.${index}.startId`)}
             className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             validation={{ required: true }}
           />
-          {errors[tokenIdsArrayName]?.[index]?.startId?.type === 'required' &&
+          {errors[`ranges`]?.[index]?.startId?.type === 'required' &&
             requiredFieldError('Start ID')}
         </div>
         <div id="end-id" className="form__entry mb-12">
@@ -137,10 +146,10 @@ function TokenIdRange({
           </Label>
           <TextField
             placeholder="End ID"
-            {...register(`${tokenIdsArrayName}.${index}.endId`)}
+            {...register(`ranges.${index}.endId`)}
             className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
           />
-          {errors[tokenIdsArrayName]?.[index]?.endId?.type === 'required' &&
+          {errors[`ranges`]?.[index]?.endId?.type === 'required' &&
             requiredFieldError('End ID')}
         </div>
         <button
