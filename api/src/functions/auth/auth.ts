@@ -65,69 +65,60 @@ export const handler = async (event: APIGatewayEvent) => {
 
     const payload: UserWebhookEvent = JSON.parse(event.body)
 
-    if (payload.type === 'user.created' || payload.type === 'user.updated') {
-      const { data } = payload
-
-      // Handle users singing up with a social account
-      if (data.primary_email_address_id) {
-        const primaryEmail = data.email_addresses.find(
-          ({ id }) => id === data.primary_email_address_id
-        )?.email_address
-
-        await db.user.upsert({
-          where: { email: primaryEmail },
-          create: {
-            email: primaryEmail,
-            authId: data.id,
-          },
-          // Overwrite Keyp id with Clerk id
-          update: { authId: data.id },
-        })
-
-        return { statusCode: 200 }
-      }
-
-      // Handle users singing up with a Metamask wallet
-      if (data.primary_web3_wallet_id) {
-        const primaryWallet = data.web3_wallets.find(
-          ({ id }) => id === data.primary_web3_wallet_id
-        )?.web3_wallet
-
-        // External addresses are not unique
-        const user = await db.user.findFirst({
-          where: {
-            externalAddress: {
-              equals: primaryWallet,
-              // Clerk addresses are lowercase
-              mode: 'insensitive',
-            },
-          },
-          select: { id: true },
-        })
-
-        await db.user.upsert({
-          where: { id: user?.id || '' },
-          create: { authId: data.id },
-          // Overwrite Keyp id with Clerk id
-          update: { authId: data.id },
-        })
-        return { statusCode: 200 }
-      }
+    if (payload.type !== 'user.created') {
+      webhookLogger.warn(
+        `Invalid payload type: "${payload.type}" sent to functions/auth`
+      )
+      return { statusCode: 400 }
     }
 
-    if (payload.type === 'user.deleted') {
-      const { data } = payload
+    const { data } = payload
 
-      await db.user.delete({
-        where: { authId: data.id },
+    // Handle users singing up with a social account
+    if (data.primary_email_address_id) {
+      const primaryEmail = data.email_addresses.find(
+        ({ id }) => id === data.primary_email_address_id
+      )?.email_address
+
+      await db.user.upsert({
+        where: { email: primaryEmail },
+        create: {
+          email: primaryEmail,
+          authId: data.id,
+        },
+        // Overwrite Keyp id with Clerk id
+        update: { authId: data.id },
       })
 
       return { statusCode: 200 }
     }
 
-    webhookLogger.warn(
-      `Invalid payload type: "${payload.type}" sent to functions/auth`
-    )
+    // Handle users singing up with a Metamask wallet
+    if (data.primary_web3_wallet_id) {
+      const primaryWallet = data.web3_wallets.find(
+        ({ id }) => id === data.primary_web3_wallet_id
+      )?.web3_wallet
+
+      // External addresses are not unique
+      const user = await db.user.findFirst({
+        where: {
+          externalAddress: {
+            equals: primaryWallet,
+            // Clerk addresses are lowercase
+            mode: 'insensitive',
+          },
+        },
+        select: { id: true },
+      })
+
+      await db.user.upsert({
+        where: { id: user?.id || '' },
+        create: { authId: data.id },
+        // Overwrite Keyp id with Clerk id
+        update: { authId: data.id },
+      })
+      return { statusCode: 200 }
+    }
 
     return { statusCode: 200 }
   } catch (error) {
