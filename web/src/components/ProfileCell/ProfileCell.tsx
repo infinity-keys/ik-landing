@@ -281,7 +281,7 @@ export const Success = ({
               href={`${CLERK_PORTAL_URL}/user`}
               className="overflow-hidden rounded-md p-2 text-sm text-gray-200 transition-colors hover:bg-white/10 hover:text-brand-accent-primary"
             >
-              Connect Wallet
+              Connect Accounts
             </a>
           </div>
         </div>
