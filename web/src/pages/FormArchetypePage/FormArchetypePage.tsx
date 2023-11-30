@@ -63,8 +63,7 @@ type CreateAllStepTypesInput =
   | (CreateStepInputFrontEnd & Omit<CreateStepNftCheckInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepFunctionCallInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepComethApiInput, 'stepId'>)
-  // | (CreateStepInputFrontEnd & Omit<CreateStepTokenIdRangeInput, 'stepId'>) // won't be correct
-  | (CreateStepInputFrontEnd & TokenIdRangeNew) //
+  | (CreateStepInputFrontEnd & TokenIdRangeNew)
   | (CreateStepInputFrontEnd & Omit<CreateStepOriumApiInput, 'stepId'>)
 
 // Set as a constant in case we need to change this string value later on
@@ -74,10 +73,10 @@ const stepsArrayName = 'steps'
 const tokenIdsArrayName = 'tokenIds'
 
 // New puzzles start with no steps in an empty array
-const startingSteps: TokenIdRangeNew[] = []
+const startingSteps: CreateAllStepTypesInput[] = []
 
 // New steps start with no token ids in an empty array
-const startingTokenIds: CreateAllStepTypesInput[] = []
+const startingTokenIds: TokenIdRangeNew[] = []
 
 // Using the default: <FieldError /> field validator from react-hook-form creates
 // cryptic (for the user) error messages like this: "steps.1.failMessage is required"
@@ -92,48 +91,67 @@ function requiredFieldError(fieldName: string) {
   )
 }
 
-// left off here 11/21/2023
-function TokenIdRange({ onRemove: onRemove }: { onRemove: () => void }) {
+// This is the component that renders each token id range in each step in the form
+// if the step has a type of 'TOKEN_ID_RANGE'
+function TokenIdRange({
+  index,
+  register,
+  remove,
+  errors,
+}: {
+  index: number
+  register: UseFormRegister<TokenIdRangeNew>
+  remove: (index: number) => void
+  errors: FieldErrors<TokenIdRangeNew>
+}) {
   return (
-    <div>
+    <fieldset>
       <div className="mb-8 rounded-lg border-2 border-gray-500 bg-gray-100 p-6">
+        <div className="form__label mb-12 text-center text-3xl font-extrabold tracking-widest text-slate-700">
+          Token ID Range {index + 1}
+        </div>
         <div id="start-id" className="form__entry mb-12">
           <Label
-            name="startId"
+            name={`failMesssage.${index}`}
             className="form__label text-2xl font-bold text-slate-700"
             errorClassName="form__label--error text-2xl font-bold text-rose-900"
           >
             <div className="form__entry-name mb-1">Start ID</div>
           </Label>
           <TextField
-            name="startId"
             placeholder="Start ID"
+            {...register(`${tokenIdsArrayName}.${index}.startId`)}
             className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+            validation={{ required: true }}
           />
+          {errors[tokenIdsArrayName]?.[index]?.startId?.type === 'required' &&
+            requiredFieldError('Start ID')}
         </div>
         <div id="end-id" className="form__entry mb-12">
           <Label
-            name="endId"
+            name={`failMesssage.${index}`}
             className="form__label text-2xl font-bold text-slate-700"
             errorClassName="form__label--error text-2xl font-bold text-rose-900"
           >
             <div className="form__entry-name mb-1">End ID</div>
           </Label>
           <TextField
-            name="endId"
             placeholder="End ID"
+            {...register(`${tokenIdsArrayName}.${index}.endId`)}
             className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
           />
+          {errors[tokenIdsArrayName]?.[index]?.endId?.type === 'required' &&
+            requiredFieldError('End ID')}
         </div>
         <button
           type="button"
           className="rw-button rw-button-red"
-          onClick={onRemove}
+          onClick={() => remove(index)}
         >
           <div className="">Remove Token ID Range</div>
         </button>
       </div>
-    </div>
+    </fieldset>
   )
 }
 
@@ -238,29 +256,12 @@ function Step({
     'HAS_CREATED_SCHOLARSHIP',
   ]
 
-  // left off here 11/28/2023
-  // state management to track <TokenIdRange /> component
-  // // don't use state down here, useFieldArray instead
-  // const [tokenIdRanges, setTokenIdRanges] = useState([])
-
-  // temp func to add a <TokenIdRange /> component
-  // const addTokenIdRange = () => {
-  //   setTokenIdRanges([...tokenIdRanges, {}]) // Add a new object to represent a new TokenIdRange
-  // }
-
-  // // the function above needs to be replace with s.thing like this below:
-  // const formMethods: UseFormReturn<PuzzleFormType> = useForm<PuzzleFormType>({
-  //   defaultValues: {
-  //     [stepsArrayName]: startingSteps,
-  //   },
-  // })
   const formMethods: UseFormReturn<TokenIdRangeNew> = useForm<TokenIdRangeNew>({
     defaultValues: {
       [tokenIdsArrayName]: startingTokenIds,
     },
   })
 
-  // // when the function above it figured out, the one below must be revised:
   const { errors: tokenIdErrors } = formMethods.formState as {
     errors: FieldErrors<TokenIdRangeNew>
   }
@@ -273,24 +274,6 @@ function Step({
     control: formMethods.control,
     name: tokenIdsArrayName,
   })
-
-  // temp func to remove a <TokenIdRange /> component
-  // const removeTokenIdRange = (index) => {
-  //   const newRanges = tokenIdRanges.filter((_, i) => i !== index)
-  //   setTokenIdRanges(newRanges)
-  // }
-
-  // // the function above needs to be replaced with s.thing like this below:
-  // const { fields, append, remove } = useFieldArray({
-  //   control: formMethods.control,
-  //   name: stepsArrayName,
-  // })
-
-  // left off here 11/28/2023
-  // const { fields, append, remove } = useFieldArray({
-  //   control: formMethods.control,
-  //   name: tokenIdsArrayName,
-  // })
 
   return (
     <fieldset className="ik-child-form mb-8 rounded-lg border-2 border-gray-500 bg-zinc-100 p-4">
@@ -665,6 +648,7 @@ function Step({
               placeholder="Contract Address"
               {...register(`${stepsArrayName}.${index}.contractAddress`)}
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              validation={{ required: true }}
             />
           </div>
           <div className="form__entry mb-12">
@@ -681,32 +665,11 @@ function Step({
               placeholder="Chain Id"
               {...register(`${stepsArrayName}.${index}.chainId`)}
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              validation={{ required: true }}
             />
           </div>
 
           {/* left off here 11/28/2023 */}
-          {/* <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
-            {tokenIdRanges.map((_, index) => (
-              <div key={index}>
-                <TokenIdRange
-                  key={index}
-                  onRemove={() => removeTokenIdRange(index)}
-                />
-              </div>
-            ))}
-            <div className="mt-8 mb-20">
-              <button
-                type="button"
-                className="rw-button rw-button-blue"
-                onClick={addTokenIdRange}
-              >
-                Add a Token ID Range
-              </button>
-            </div>
-          </div> */}
-
-          {/* left off here 11/28/2023 */}
-          {/* the block above must be replaced with s.thing like the block below */}
           <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
             {tokenIdFields.map((field, index) => (
               <TokenIdRange
