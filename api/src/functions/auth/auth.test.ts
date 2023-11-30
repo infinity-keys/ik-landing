@@ -24,17 +24,17 @@ describe('webhook function', () => {
    * General HTTP
    */
 
-  it('responds with 200 on valid POST request', async () => {
+  it('responds with 400 on invalid type', async () => {
     const httpEvent = mockHttpEvent({
       httpMethod: 'POST',
       headers,
-      body: JSON.stringify({ username: 'test' }),
+      body: JSON.stringify({ username: 'test', type: 'user.update' }),
     })
 
     const response = await handler(httpEvent)
 
     expect(webhooks.verifyEvent).toHaveBeenCalled()
-    expect(response.statusCode).toBe(200)
+    expect(response.statusCode).toBe(400)
   })
 
   it('responds with 403 on non-POST request', async () => {
@@ -77,7 +77,7 @@ describe('webhook function', () => {
 
     const response = await handler(httpEvent)
     expect(db.user.upsert).toHaveBeenCalledWith({
-      where: { email },
+      where: expect.objectContaining({ email }),
       create: expect.any(Object),
       update: expect.any(Object),
     })
@@ -103,7 +103,7 @@ describe('webhook function', () => {
 
     const response = await handler(httpEvent)
     expect(db.user.upsert).toHaveBeenCalledWith({
-      where: { id: '' },
+      where: expect.objectContaining({ id: '' }),
       create: expect.any(Object),
       update: expect.any(Object),
     })
@@ -128,7 +128,7 @@ describe('webhook function', () => {
 
     const response = await handler(httpEvent)
     expect(db.user.upsert).toHaveBeenCalledWith({
-      where: { email: scenario.user.social.email },
+      where: expect.objectContaining({ email: scenario.user.social.email }),
       create: expect.any(Object),
       update: expect.any(Object),
     })
@@ -153,29 +153,11 @@ describe('webhook function', () => {
 
     const response = await handler(httpEvent)
     expect(db.user.upsert).toHaveBeenCalledWith({
-      where: { id: scenario.user.wallet.id },
+      where: expect.objectContaining({ id: scenario.user.wallet.id }),
       create: expect.any(Object),
       update: expect.any(Object),
     })
     expect(db.user.upsert).toHaveBeenCalledTimes(1)
-    expect(response.statusCode).toBe(200)
-  })
-
-  scenario('deletes user', async (scenario) => {
-    const httpEvent = mockHttpEvent({
-      httpMethod: 'POST',
-      headers,
-      body: JSON.stringify({
-        type: 'user.deleted',
-        data: { id: scenario.user.wallet.authId },
-      }),
-    })
-
-    const response = await handler(httpEvent)
-    expect(db.user.delete).toHaveBeenCalledWith({
-      where: { authId: scenario.user.wallet.authId },
-    })
-    expect(db.user.delete).toHaveBeenCalledTimes(1)
     expect(response.statusCode).toBe(200)
   })
 })

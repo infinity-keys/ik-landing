@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { UserResource } from '@clerk/types'
+import { truncate as truncateAddress } from '@infinity-keys/core'
 import humanize from 'humanize-string'
 
 const MAX_STRING_LENGTH = 150
@@ -47,4 +49,22 @@ export const timeTag = (dateTime?: string) => {
 
 export const checkboxInputTag = (checked: boolean) => {
   return <input type="checkbox" checked={checked} disabled />
+}
+
+export const formatUserMetadata = (user?: UserResource | null) => {
+  const primaryWallet = user?.primaryWeb3Wallet?.web3Wallet
+  const truncatedWallet = primaryWallet
+    ? truncateAddress(primaryWallet)
+    : undefined
+  const primaryEmail = user?.primaryEmailAddress?.emailAddress
+  const userName =
+    user?.username || primaryEmail?.split('@')[1] || truncatedWallet || user?.id
+
+  return {
+    primaryEmail,
+    primaryWallet,
+    truncatedWallet,
+    userName,
+    avatar: user?.hasImage ? user?.imageUrl : '',
+  }
 }
