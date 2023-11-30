@@ -2,8 +2,6 @@ import React, { lazy } from 'react'
 
 import EnvelopeIcon from '@heroicons/react/20/solid/EnvelopeIcon'
 import WalletIcon from '@heroicons/react/20/solid/WalletIcon'
-import ClipboardIcon from '@heroicons/react/24/outline/ClipboardIcon'
-import { truncate } from '@infinity-keys/core'
 import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import { useActiveProfile } from '@lens-protocol/react-web'
 import Avatar from 'boring-avatars'
@@ -14,9 +12,11 @@ import type {
 } from 'types/graphql'
 
 import { CellSuccessProps, CellFailureProps, useMutation } from '@redwoodjs/web'
-import { LoaderIcon, toast } from '@redwoodjs/web/toast'
+import { LoaderIcon } from '@redwoodjs/web/toast'
 
+import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
+import { formatUserMetadata } from 'src/lib/formatters'
 import { avatarGradient } from 'src/lib/theme/helpers'
 
 const CLERK_PORTAL_URL = process.env.CLERK_PORTAL_URL
@@ -30,9 +30,6 @@ export const QUERY = gql`
     user {
       id
       username
-      email
-      address
-      externalAddress
       lensProfile
       authId
       stepsSolvedCount
@@ -87,11 +84,14 @@ export const Success = ({
   handleLogOut: () => void
 }) => {
   const { data: lensProfile } = useActiveProfile()
+  const { userMetadata } = useAuth()
 
   const [
     syncDiscordRoles,
     { loading: discordSyncLoading, data: discordRolesData },
   ] = useMutation<SyncDiscordRolesMutation>(SYNC_DISCORD_ROLES_MUTATION)
+
+  const userData = formatUserMetadata(userMetadata)
 
   return (
     <div className="mt-12 flex flex-col gap-6 lg:mt-0 lg:flex-row">
@@ -99,35 +99,25 @@ export const Success = ({
         <div className="overflow-hidden rounded-lg bg-black/30">
           <div className="sm:items-centers flex flex-col justify-between bg-black/20 py-8 px-4 sm:flex-row sm:px-10">
             <div className="flex items-center">
-              <Avatar
-                size={56}
-                name={user.email || user.id}
-                variant="marble"
-                colors={avatarGradient}
-              />
+              {userData.avatar ? (
+                <img
+                  src={userData.avatar}
+                  alt=""
+                  className="h-14 w-14 rounded-full"
+                />
+              ) : (
+                <Avatar
+                  size={56}
+                  name={user.id}
+                  variant="marble"
+                  colors={avatarGradient}
+                />
+              )}
 
               <div className="ml-6">
                 <p className="text-xl font-bold text-white">
-                  {user.username || user.email?.split('@')[0] || ''}
+                  {userData.userName}
                 </p>
-                {user.address && (
-                  <div className="flex items-center">
-                    <p className="text-brand-accent-primary">
-                      {truncate(user.address)}
-                    </p>
-                    <button
-                      onClick={() => {
-                        if (!user.address) {
-                          return toast.error('Cannot copy address')
-                        }
-                        toast('Address copied to clipboard')
-                        navigator.clipboard.writeText(user.address)
-                      }}
-                    >
-                      <ClipboardIcon className="ml-1 -mt-[2px] h-4 w-4 fill-transparent text-gray-200 hover:text-brand-accent-primary" />
-                    </button>
-                  </div>
-                )}
               </div>
             </div>
 
@@ -169,10 +159,14 @@ export const Success = ({
           </div>
 
           <div className="px-4 pb-6 text-white sm:px-10">
-            <div className="flex items-center pb-4">
-              <EnvelopeIcon className="h-5 w-5 text-white" />
-              <p className="ml-4 text-sm text-white/70">{user.email}</p>
-            </div>
+            {userData.primaryEmail && (
+              <div className="flex items-center pb-4">
+                <EnvelopeIcon className="h-5 w-5 text-white" />
+                <p className="ml-4 text-sm text-white/70">
+                  {userData.primaryEmail}
+                </p>
+              </div>
+            )}
 
             {user.discordConnection?.username && (
               <div className="flex items-center pb-4">
@@ -183,11 +177,11 @@ export const Success = ({
               </div>
             )}
 
-            {user.externalAddress && (
+            {userData.truncatedWallet && (
               <div className="flex items-center pb-4">
                 <WalletIcon className="h-5 w-5 text-white" />
                 <p className="ml-4 text-sm text-white/70">
-                  {truncate(user.externalAddress)}
+                  {userData.truncatedWallet}
                 </p>
               </div>
             )}
@@ -203,7 +197,7 @@ export const Success = ({
           </div>
         </div>
 
-        {(user?.authId?.split('DISCORD-')[1] || user.discordConnection?.id) && (
+        {user.discordConnection?.id && (
           <div className="rounded-md border-t border-white/10 bg-black/25 py-8 px-4 text-sm text-gray-100 sm:px-10">
             {discordSyncLoading ? (
               <LoaderIcon />
