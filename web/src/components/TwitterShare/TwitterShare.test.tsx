@@ -8,7 +8,7 @@ import TwitterShare from './TwitterShare'
 describe.skip('TwitterShare', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<TwitterShare />)
+      render(<TwitterShare tweetBody="tweet" />)
     }).not.toThrow()
   })
 })

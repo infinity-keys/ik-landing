@@ -140,7 +140,7 @@ export default async () => {
     data: {
       name: 'Puzzle 1 (Brazil)',
       slug: 'puzzle-1',
-      explanation: 'This is the first puzzle, it is about Brazil',
+      explanation: 'this unused field is slated for deletion',
       type: 'PUZZLE',
       orgId: ikOrg.id,
       // Connect the NFT to 'puzzle1' in this rewardable
@@ -156,21 +156,22 @@ export default async () => {
           steps: {
             create: [
               {
-                challenge: 'What is the biggest river in Brazil?',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
-                solutionHint: 'Hint',
+                solutionHint:
+                  'The biggest river in Brazil rhymes with "Paragon"',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: 'Piranhas are a group of carnivorous freshwater fish. They are known for their sharp teeth and powerful jaws. There are over 60 species of piranhas, and not all of them are as aggressive as their reputation suggests.',
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "One of the most critically endangered birds in South America is the Spix's Macaw (Cyanopsitta spixii). This striking blue parrot is native to Brazil and is known for its vibrant blue plumage and distinctive facial markings.\n\nWhat is the name of the River that is full of Piranhas and is home to the Spix's Macaw?",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -203,8 +204,7 @@ export default async () => {
     data: {
       name: 'Puzzle 2 (Japan)',
       slug: 'puzzle-2',
-      explanation:
-        'This is the second puzzle, you must be logged in to solve it',
+      explanation: 'this unused field is slated for deletion',
       type: 'PUZZLE',
       organization: {
         connect: {
@@ -218,22 +218,27 @@ export default async () => {
           steps: {
             create: [
               {
-                challenge: 'What is the capital of Japan?',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
-                solutionHint: 'Hint',
+                solutionHint: 'What is the capital of Japan?',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Honshu, Japan's largest island, and it serves as the political, economic, and cultural center of the country.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "The most crucial period in Tokyo's history in relation to samurai is the Edo Period, which lasted for over two and a half centuries. It began in 1603 when Tokugawa Ieyasu, the founder of the Tokugawa Shogunate, became the de facto ruler of Japan and established Edo as the center of his government.",
                       sortWeight: 2,
+                      showStepGuideHint: false,
+                    },
+                    {
+                      body: 'Edo had a name change later on, can you guess what it is now called?\n\nThis city is on the island of Honshu, and it rhymes with "Portfolio"',
+                      sortWeight: 3,
                       showStepGuideHint: true,
                       image:
                         'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
@@ -247,21 +252,22 @@ export default async () => {
                 },
               },
               {
-                challenge: 'What Japanese food has raw fish wrapped in rice?',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
-                solutionHint: 'Hint',
+                solutionHint:
+                  'What Japanese food has raw fish wrapped in rice?',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: 'In the 8th century, the Japanese developed a method of preserving fish with rice and salt, and over time, the rice started to be consumed along with the fish.',
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: 'Do you know what this food is called?  It rhymes with "Għidni" which is a Maltese word for "tell me".',
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -295,8 +301,7 @@ export default async () => {
     data: {
       name: 'Puzzle 3 (Greece)',
       slug: 'puzzle-3',
-      explanation:
-        'This is the third puzzle, you must be logged in to solve it',
+      explanation: 'this unused field is slated for deletion',
       type: 'PUZZLE',
       organization: {
         connect: {
@@ -310,21 +315,21 @@ export default async () => {
           steps: {
             create: [
               {
-                challenge: 'What is the capital of Greece?',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
-                solutionHint: 'Hint',
+                solutionHint: 'What is the capital of Greece?',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Welcome, it's time to see what you know about Greece and the Hellenistic world.\n\nHopefully you can answer some geographical questions that you may already know the answers to.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: 'According to Herodotus and Diodorus of Sicily, the Achaemenids destroyed this famous city in 480 BCE. What is the name of this city?\n\nIt rymes with "Battens" which are narrow strips of wood or other material that are typically used in building construction or in various crafts.',
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -339,12 +344,10 @@ export default async () => {
                 },
               },
               {
-                // this "challenge" shit goes away,
-                // it's in the d.b. so keep it here until Tawnee deletes it from the schema
-                challenge: 'What is the biggest island in Greece?',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
-                solutionHint: 'Hint',
+                solutionHint: 'What is the biggest island in Greece?',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 // this is the thing I have to make work in the form...
@@ -354,15 +357,20 @@ export default async () => {
                   create: [
                     // we don't need to have multiple "stepPage"s but we want at least 1 or 2
                     {
-                      // this is just some b.s. text
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: 'Minoan civilization was one of the earliest recorded civilizations in the Mediterranean.\n\nThe Minoans are known for their unique art, architecture, and the mysterious Linear A script, which remains undeciphered.',
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      // this is the actual question you have to solve for
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "The Minoan built the Palace of Knossos, often associated with the mythological Minotaur's labyrinth.\n\nThis ancient palace complex is a significant archaeological site, showcasing advanced Minoan architecture.\n\nWhat is the name of the island where the Palace of Knossos is located?",
                       sortWeight: 2,
+                      showStepGuideHint: false,
+                      image:
+                        'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
+                    },
+                    {
+                      body: 'The name of the island rymes with "meat".',
+                      sortWeight: 3,
                       showStepGuideHint: true,
                       image:
                         'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
@@ -376,21 +384,21 @@ export default async () => {
                 },
               },
               {
-                challenge: 'Who is head of the ancient Greek Olympian gods?',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
-                solutionHint: 'Hint',
+                solutionHint: 'His name rymed with "Bruce"',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: 'Titans, led by Cronus, were the first generation of gods in Greek mythology. Cronus had overthrown his father Uranus.\n\nCronus was later overthrown during the Titanomachy, a ten-year war that resulted in the establishment of the Olympian gods as the new ruling deities.',
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: 'Hera, Poseidon, Demeter, Hestia, and Hades, were known as the Olympian gods because they resided on Mount Olympus, the highest peak in Greece.\n\nWho was the leader of these Olympian gods?',
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -415,8 +423,7 @@ export default async () => {
     data: {
       name: 'Puzzle 4 (Egypt)',
       slug: 'puzzle-4',
-      explanation:
-        'This is the forth puzzle, it is about Egypt, you must be logged in to solve it',
+      explanation: 'this unused field is slated for deletion',
       type: 'PUZZLE',
       organization: {
         connect: {
@@ -436,22 +443,22 @@ export default async () => {
           steps: {
             create: [
               {
-                challenge:
-                  'You must have the Prerequiste NFT in order to enter Egypt',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 1,
                 type: 'NFT_CHECK',
-                solutionHint: 'Hint',
+                // NOTE: there is no `<simpleText.solution>` for this step
+                solutionHint: 'this unused field is slated for deletion',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: 'You will need to connect your wallet in order to solve this puzzle.\n\nThis is the only step with a `<type>` of `<NFT_CHECK>` throughout all the puzzles in the seed data.',
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: 'Metamask, Coinbase Wallet, Rainbow, and WalletConnect are all cryptocurrency wallets and tools that enable users to manage their digital assets. Metamask is a browser extension and mobile app, while Coinbase Wallet is a standalone mobile wallet provided by the popular cryptocurrency exchange Coinbase. Rainbow is a mobile wallet with a user-friendly interface, and WalletConnect is a protocol that allows users to connect their wallets to decentralized applications (DApps) and services securely. These tools play a crucial role in the decentralized finance (DeFi) ecosystem, enabling users to store, send, receive, and interact with various cryptocurrencies and blockchain applications.\n\nYou can connect with Metamask, Coinbase Wallet, Rainbow, or WalletConnect',
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -473,21 +480,21 @@ export default async () => {
                 },
               },
               {
-                challenge: "What is the name of Egypt's main canal?",
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
-                solutionHint: 'Hint',
+                solutionHint: "What is the name of Egypt's main canal?",
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: 'Egypt has one of the most crucial waterways globally, facilitating the passage of a vast amount of international trade. It provides the shortest maritime route between Europe and the lands lying around the Indian and western Pacific oceans.\n\nMarch 2021, this waterway gained global attention when a massive container ship named the "Ever Given" ran aground and blocked the canal for six days, disrupting global trade.',
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -502,21 +509,22 @@ export default async () => {
                 },
               },
               {
-                challenge: 'Where are the great pyramids?',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
-                solutionHint: 'Hint',
+                solutionHint:
+                  'This word rhymes with "pisa" - as in the leaning tower of Pisa.',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: 'The Great Pyramid of Khufu, the largest of the three, originally stood at 146.6 meters (481 feet) tall and had a base measuring 230.4 meters (756 feet) on each side.\n\nIts dimensions are believed to have symbolic and mathematical significance, possibly representing various astronomical and mathematical constants.',
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Some theories suggest that the dimensions of the Great Pyramid incorporate the golden ratio (approximately 1.618), a mathematical proportion found in many aspects of art, architecture, and nature.\n\nThe builders likely used basic mathematical concepts, such as the Pythagorean theorem, to ensure the accuracy of the pyramid's angles and dimensions.\n\nWhat city are the great pyramids located next to?",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -531,21 +539,22 @@ export default async () => {
                 },
               },
               {
-                challenge: "What is the name of Egypt's main river?",
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 4,
                 type: 'SIMPLE_TEXT',
-                solutionHint: 'Hint',
+                solutionHint:
+                  'What is the name of Egypt\'s main river? It rhymes with "mile"',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: 'Elephantine Island is one of the oldest inhabited places in Egypt. It was an important trading post and had temples dedicated to Khnum, the ram-headed god of the river the island is located in.\n\nJust downstream from Elephantine Island, Philae Island was the site of the Temple of Isis, dedicated to the goddess Isis. It was an important religious center and home to a complex of temples and structures.',
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: 'Kom Ombo is an archaeological site along the this same river with a double temple dedicated to the gods Sobek (crocodile god) and Horus (falcon god). It\'s an example of ancient Egyptian temple architecture.\n\nThis river is called the "Pi-h\'ior (Ⲡⲏ Ⲏⲟⲩⲟⲣ)" in Coptic and "Ye\'or (יְאֹר)" in Biblical Hebrew. What is the name of this river?',
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -570,7 +579,7 @@ export default async () => {
     data: {
       name: 'Puzzle 5 (Step Types)',
       slug: 'puzzle-5',
-      explanation: 'Just going to have every step type in here so get ready',
+      explanation: 'this unused field is slated for deletion',
       type: 'PUZZLE',
       organization: {
         connect: {
@@ -590,22 +599,22 @@ export default async () => {
           steps: {
             create: [
               {
-                challenge: 'Follow chair and IK',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 1,
                 type: 'LENS_API',
 
-                solutionHint: 'Hint',
+                solutionHint: 'Follow chair and IK',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -621,22 +630,22 @@ export default async () => {
                 },
               },
               {
-                challenge: 'Have you an ERC20?',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 9,
                 type: 'ERC20_BALANCE',
 
-                solutionHint: 'Hint',
+                solutionHint: 'Have you an ERC20?',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -654,22 +663,22 @@ export default async () => {
                 },
               },
               {
-                challenge: 'Have you transferred an asset?',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 8,
                 type: 'ASSET_TRANSFER',
 
-                solutionHint: 'Hint',
+                solutionHint: 'Have you transferred an asset?',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -685,22 +694,22 @@ export default async () => {
                 },
               },
               {
-                challenge: 'Have you created an Orium scholarship?',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 7,
                 type: 'ORIUM_API',
 
-                solutionHint: 'Hint',
+                solutionHint: 'Have you created an Orium scholarship?',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -716,22 +725,22 @@ export default async () => {
                 },
               },
               {
-                challenge: 'NFT check',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 2,
                 type: 'NFT_CHECK',
 
-                solutionHint: 'Hint',
+                solutionHint: 'NFT check',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -754,21 +763,21 @@ export default async () => {
                 },
               },
               {
-                challenge: 'Simple Text (the password is text)',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
-                solutionHint: 'Hint',
+                solutionHint: 'Simple Text (the password is text)',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -784,22 +793,22 @@ export default async () => {
                 },
               },
               {
-                challenge: 'token id range',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 4,
                 type: 'TOKEN_ID_RANGE',
 
-                solutionHint: 'Hint',
+                solutionHint: 'token id range',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -819,22 +828,22 @@ export default async () => {
                 },
               },
               {
-                challenge: 'Have you pet a gotchi?',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 5,
                 type: 'FUNCTION_CALL',
 
-                solutionHint: 'Hint',
+                solutionHint: 'Have you pet a gotchi?',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -852,21 +861,21 @@ export default async () => {
                 },
               },
               {
-                challenge: 'Cometh API',
+                challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 6,
                 type: 'COMETH_API',
-                solutionHint: 'Hint',
+                solutionHint: 'Cometh API',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -1147,9 +1156,4 @@ export default async () => {
       },
     },
   })
-
-  // TODOs:
-  // 1. puzzles should be created that are not rewardable
-  // 2. http://localhost:8910/profile should show 1 or more NFTs
-  // NOTE: `Submission` is outdated and will eventually be deleted; currently we use `Attempt` instead
 }
