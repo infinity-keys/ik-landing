@@ -29,7 +29,6 @@ export const QUERY = gql`
   query FindUserQuery {
     user {
       id
-      username
       lensProfile
       authId
       stepsSolvedCount

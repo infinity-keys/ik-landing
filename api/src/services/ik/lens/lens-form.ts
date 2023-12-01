@@ -14,7 +14,7 @@ const LENS_ACCOUNT_TOKEN_IDS = [153, 169]
 export const addLensFormRole: MutationResolvers['addLensFormRole'] = async ({
   externalAddress,
 }) => {
-  if (!context.currentUser?.address) {
+  if (!context.currentUser) {
     throw new AuthenticationError('Please sign in')
   }
 
@@ -24,8 +24,7 @@ export const addLensFormRole: MutationResolvers['addLensFormRole'] = async ({
   }
 
   const { claimed } = await checkBalance({
-    account: context.currentUser.address,
-    externalAddress: externalAddress ?? undefined,
+    account: externalAddress,
     tokenIds: LENS_ACCOUNT_TOKEN_IDS,
   })
 
