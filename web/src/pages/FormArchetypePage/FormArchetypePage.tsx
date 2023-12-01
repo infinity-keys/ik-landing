@@ -15,7 +15,7 @@ import {
   CreateStepNftCheckInput,
   CreateStepFunctionCallInput,
   CreateStepComethApiInput,
-  // CreateStepTokenIdRangeInput,
+  CreateStepTokenIdRangeInput,
   CreateStepOriumApiInput,
   CreatePuzzleInput,
 } from 'types/graphql'
@@ -63,7 +63,7 @@ type CreateAllStepTypesInput =
   | (CreateStepInputFrontEnd & Omit<CreateStepNftCheckInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepFunctionCallInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepComethApiInput, 'stepId'>)
-  | (CreateStepInputFrontEnd & TokenIdRangeNew)
+  | (CreateStepInputFrontEnd & Omit<CreateStepTokenIdRangeInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepOriumApiInput, 'stepId'>)
 
 // Set as a constant in case we need to change this string value later on
