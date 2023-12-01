@@ -160,7 +160,7 @@ export default async () => {
                 stepSortWeight: 1,
                 type: 'SIMPLE_TEXT',
                 solutionHint:
-                  'The biggest river in Brazil rhymes with “Paragon”',
+                  'The biggest river in Brazil rhymes with "Paragon"',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
@@ -171,7 +171,7 @@ export default async () => {
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'One of the most critically endangered birds in South America is the Spix’s Macaw (Cyanopsitta spixii). This striking blue parrot is native to Brazil and is known for its vibrant blue plumage and distinctive facial markings.\n\nWhat is the name of the River that is full of Piranhas and is home to the Spix’s Macaw?',
+                      body: "One of the most critically endangered birds in South America is the Spix's Macaw (Cyanopsitta spixii). This striking blue parrot is native to Brazil and is known for its vibrant blue plumage and distinctive facial markings.\n\nWhat is the name of the River that is full of Piranhas and is home to the Spix's Macaw?",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -227,17 +227,17 @@ export default async () => {
                 stepPage: {
                   create: [
                     {
-                      body: 'Honshu, Japan’s largest island, and it serves as the political, economic, and cultural center of the country.',
+                      body: "Honshu, Japan's largest island, and it serves as the political, economic, and cultural center of the country.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'The most crucial period in Tokyo’s history in relation to samurai is the Edo Period, which lasted for over two and a half centuries. It began in 1603 when Tokugawa Ieyasu, the founder of the Tokugawa Shogunate, became the de facto ruler of Japan and established Edo as the center of his government.',
+                      body: "The most crucial period in Tokyo's history in relation to samurai is the Edo Period, which lasted for over two and a half centuries. It began in 1603 when Tokugawa Ieyasu, the founder of the Tokugawa Shogunate, became the de facto ruler of Japan and established Edo as the center of his government.",
                       sortWeight: 2,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Edo had a name change later on, can you guess what it is now called?\n\nThis city is on the island of Honshu, and it rhymes with “Portfolio”',
+                      body: 'Edo had a name change later on, can you guess what it is now called?\n\nThis city is on the island of Honshu, and it rhymes with "Portfolio"',
                       sortWeight: 3,
                       showStepGuideHint: true,
                       image:
@@ -267,7 +267,7 @@ export default async () => {
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Do you know what this food is called?  It rhymes with “Għidni” which is a Maltese word for “tell me”.',
+                      body: 'Do you know what this food is called?  It rhymes with "Għidni" which is a Maltese word for "tell me".',
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -324,12 +324,12 @@ export default async () => {
                 stepPage: {
                   create: [
                     {
-                      body: 'Welcome, it’s time to see what you know about Greece and the Hellenistic world.\n\nHopefully you can answer some geographical questions that you may already know the answers to.',
+                      body: "Welcome, it's time to see what you know about Greece and the Hellenistic world.\n\nHopefully you can answer some geographical questions that you may already know the answers to.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'According to Herodotus and Diodorus of Sicily, the Achaemenids destroyed this famous city in 480 BCE. What is the name of this city?\n\nIt rymes with “Battens” which are narrow strips of wood or other material that are typically used in building construction or in various crafts.',
+                      body: 'According to Herodotus and Diodorus of Sicily, the Achaemenids destroyed this famous city in 480 BCE. What is the name of this city?\n\nIt rymes with "Battens" which are narrow strips of wood or other material that are typically used in building construction or in various crafts.',
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -350,22 +350,26 @@ export default async () => {
                 solutionHint: 'What is the biggest island in Greece?',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
+                // this is the thing I have to make work in the form...
+                // a "Step" has an array of "stepPage"s so make it work just like the
+                // freaking TokenId's you just did.
                 stepPage: {
                   create: [
+                    // we don't need to have multiple "stepPage"s but we want at least 1 or 2
                     {
                       body: 'Minoan civilization was one of the earliest recorded civilizations in the Mediterranean.\n\nThe Minoans are known for their unique art, architecture, and the mysterious Linear A script, which remains undeciphered.',
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'The Minoan built the Palace of Knossos, often associated with the mythological Minotaur’s labyrinth.\n\nThis ancient palace complex is a significant archaeological site, showcasing advanced Minoan architecture.\n\nWhat is the name of the island where the Palace of Knossos is located?',
+                      body: "The Minoan built the Palace of Knossos, often associated with the mythological Minotaur's labyrinth.\n\nThis ancient palace complex is a significant archaeological site, showcasing advanced Minoan architecture.\n\nWhat is the name of the island where the Palace of Knossos is located?",
                       sortWeight: 2,
                       showStepGuideHint: false,
                       image:
                         'https://res.cloudinary.com/infinity-keys/image/upload/c_scale,w_500,h_500,q_100,f_png,dpr_1/ik-alpha-trophies/ptd4_mrrfd2',
                     },
                     {
-                      body: 'The name of the island rymes with “meat”.',
+                      body: 'The name of the island rymes with "meat".',
                       sortWeight: 3,
                       showStepGuideHint: true,
                       image:
@@ -383,7 +387,7 @@ export default async () => {
                 challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
-                solutionHint: 'His name rymed with “Bruce”',
+                solutionHint: 'His name rymed with "Bruce"',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
@@ -479,18 +483,18 @@ export default async () => {
                 challenge: 'this unused field is slated for deletion',
                 stepSortWeight: 2,
                 type: 'SIMPLE_TEXT',
-                solutionHint: 'What is the name of Egypt’s main canal?',
+                solutionHint: "What is the name of Egypt's main canal?",
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
                   create: [
                     {
-                      body: 'Egypt has one of the most crucial waterways globally, facilitating the passage of a vast amount of international trade. It provides the shortest maritime route between Europe and the lands lying around the Indian and western Pacific oceans.\n\nMarch 2021, this waterway gained global attention when a massive container ship named the “Ever Given” ran aground and blocked the canal for six days, disrupting global trade.',
+                      body: 'Egypt has one of the most crucial waterways globally, facilitating the passage of a vast amount of international trade. It provides the shortest maritime route between Europe and the lands lying around the Indian and western Pacific oceans.\n\nMarch 2021, this waterway gained global attention when a massive container ship named the "Ever Given" ran aground and blocked the canal for six days, disrupting global trade.',
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -509,7 +513,7 @@ export default async () => {
                 stepSortWeight: 3,
                 type: 'SIMPLE_TEXT',
                 solutionHint:
-                  'This word rhymes with “pisa” - as in the leaning tower of Pisa.',
+                  'This word rhymes with "pisa" - as in the leaning tower of Pisa.',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
@@ -520,7 +524,7 @@ export default async () => {
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Some theories suggest that the dimensions of the Great Pyramid incorporate the golden ratio (approximately 1.618), a mathematical proportion found in many aspects of art, architecture, and nature.\n\nThe builders likely used basic mathematical concepts, such as the Pythagorean theorem, to ensure the accuracy of the pyramid’s angles and dimensions.\n\nWhat city are the great pyramids located next to?',
+                      body: "Some theories suggest that the dimensions of the Great Pyramid incorporate the golden ratio (approximately 1.618), a mathematical proportion found in many aspects of art, architecture, and nature.\n\nThe builders likely used basic mathematical concepts, such as the Pythagorean theorem, to ensure the accuracy of the pyramid's angles and dimensions.\n\nWhat city are the great pyramids located next to?",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -539,7 +543,7 @@ export default async () => {
                 stepSortWeight: 4,
                 type: 'SIMPLE_TEXT',
                 solutionHint:
-                  'What is the name of Egypt’s main river? It rhymes with “mile”',
+                  'What is the name of Egypt\'s main river? It rhymes with "mile"',
                 defaultImage: coverImageUrl,
                 stepGuideType: 'SEEK',
                 stepPage: {
@@ -550,7 +554,7 @@ export default async () => {
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Kom Ombo is an archaeological site along the this same river with a double temple dedicated to the gods Sobek (crocodile god) and Horus (falcon god). It’s an example of ancient Egyptian temple architecture.\n\nThis river is called the “Pi-h’ior (Ⲡⲏ Ⲏⲟⲩⲟⲣ)” in Coptic and “Ye’or (יְאֹר)” in Biblical Hebrew. What is the name of this river?',
+                      body: 'Kom Ombo is an archaeological site along the this same river with a double temple dedicated to the gods Sobek (crocodile god) and Horus (falcon god). It\'s an example of ancient Egyptian temple architecture.\n\nThis river is called the "Pi-h\'ior (Ⲡⲏ Ⲏⲟⲩⲟⲣ)" in Coptic and "Ye\'or (יְאֹר)" in Biblical Hebrew. What is the name of this river?',
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -605,12 +609,12 @@ export default async () => {
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -636,12 +640,12 @@ export default async () => {
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -669,12 +673,12 @@ export default async () => {
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -700,12 +704,12 @@ export default async () => {
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -731,12 +735,12 @@ export default async () => {
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -768,12 +772,12 @@ export default async () => {
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -799,12 +803,12 @@ export default async () => {
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -834,12 +838,12 @@ export default async () => {
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
@@ -866,12 +870,12 @@ export default async () => {
                 stepPage: {
                   create: [
                     {
-                      body: 'You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 1,
                       showStepGuideHint: false,
                     },
                     {
-                      body: 'Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt’s star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.',
+                      body: "Page two. You just started your night job as a tester for GORE Inc, an AI videogame company.\n\nIt's star is Fred, very powerful LLM trained in every horror book, game, and film to create hyper immersive VR games.",
                       sortWeight: 2,
                       showStepGuideHint: true,
                       image:
