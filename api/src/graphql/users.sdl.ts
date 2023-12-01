@@ -4,14 +4,11 @@ export const schema = gql`
     createdAt: DateTime!
     updatedAt: DateTime!
     lastLoggedIn: DateTime!
-    nonce: String!
     authId: String
-    username: String
     address: String
     externalAddress: String
     email: String
     lensProfile: String
-    avatar: String
     roles: [SiteRole]!
     organizations: [OrganizationUser]!
     submissions: [Submission]!
@@ -22,10 +19,6 @@ export const schema = gql`
     puzzlesSolvedCount: Int!
     packsSolvedCount: Int!
     nftsSolvedCount: Int!
-    refreshToken: String
-    accessToken: String
-    oauth: [OAuth]!
-    oauthConnection: [OAuthConnection]!
     discordConnection: DiscordConnection
     lensKeypConnection: [LensKeypConnection]!
   }
@@ -44,32 +37,22 @@ export const schema = gql`
 
   input CreateUserInput {
     lastLoggedIn: DateTime!
-    nonce: String!
     authId: String
-    username: String
     address: String
     externalAddress: String
     email: String
     lensProfile: String
-    avatar: String
     roles: [SiteRole]!
-    refreshToken: String
-    accessToken: String
   }
 
   input UpdateUserInput {
     lastLoggedIn: DateTime
-    nonce: String
     authId: String
-    username: String
     address: String
     externalAddress: String
     email: String
     lensProfile: String
-    avatar: String
     roles: [SiteRole]
-    refreshToken: String
-    accessToken: String
   }
 
   type Mutation {
