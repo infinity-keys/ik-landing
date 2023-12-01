@@ -50,12 +50,6 @@ export const User: UserRelationResolvers = {
     // @TODO: can I skip the `user` query or does that make it faster
     return db.user.findUnique({ where: { id: root?.id } }).userRewards()
   },
-  oauth: (_obj, { root }) => {
-    return db.user.findUnique({ where: { id: root?.id } }).oauth()
-  },
-  oauthConnection: (_obj, { root }) => {
-    return db.user.findUnique({ where: { id: root?.id } }).oauthConnection()
-  },
   discordConnection: (_obj, { root }) => {
     return db.user.findUnique({ where: { id: root?.id } }).discordConnection()
   },
