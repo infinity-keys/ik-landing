@@ -3,7 +3,6 @@ export const schema = gql`
     id: String!
     createdAt: DateTime!
     updatedAt: DateTime!
-    lastLoggedIn: DateTime!
     authId: String
     address: String
     externalAddress: String
@@ -15,10 +14,10 @@ export const schema = gql`
     attempts: [Attempt]!
     solves: [Solve]!
     userRewards: [UserReward]!
-    stepsSolvedCount: Int!
-    puzzlesSolvedCount: Int!
-    packsSolvedCount: Int!
-    nftsSolvedCount: Int!
+    stepsSolvedCount: Int
+    puzzlesSolvedCount: Int
+    packsSolvedCount: Int
+    nftsSolvedCount: Int
     discordConnection: DiscordConnection
     lensKeypConnection: [LensKeypConnection]!
   }
@@ -36,7 +35,6 @@ export const schema = gql`
   }
 
   input CreateUserInput {
-    lastLoggedIn: DateTime!
     authId: String
     address: String
     externalAddress: String
@@ -46,7 +44,6 @@ export const schema = gql`
   }
 
   input UpdateUserInput {
-    lastLoggedIn: DateTime
     authId: String
     address: String
     externalAddress: String

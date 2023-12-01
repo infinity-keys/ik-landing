@@ -4,7 +4,7 @@ import type {
   UserRelationResolvers,
 } from 'types/graphql'
 
-import { context } from '@redwoodjs/graphql-server'
+import { AuthenticationError, context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 
@@ -13,12 +13,18 @@ export const users: QueryResolvers['users'] = () => {
 }
 
 export const user: QueryResolvers['user'] = () => {
+  if (!context.currentUser?.authId) {
+    throw new AuthenticationError('No current user')
+  }
   return db.user.findUnique({
     where: { authId: context.currentUser.authId },
   })
 }
 
 export const updateUser: MutationResolvers['updateUser'] = ({ input }) => {
+  if (!context.currentUser?.authId) {
+    throw new AuthenticationError('No current user')
+  }
   return db.user.update({
     data: input,
     where: { authId: context.currentUser.authId },
@@ -26,6 +32,10 @@ export const updateUser: MutationResolvers['updateUser'] = ({ input }) => {
 }
 
 export const deleteUser: MutationResolvers['deleteUser'] = () => {
+  if (!context.currentUser?.authId) {
+    throw new AuthenticationError('No current user')
+  }
+
   return db.user.delete({
     where: { authId: context.currentUser.authId },
   })
@@ -47,7 +57,6 @@ export const User: UserRelationResolvers = {
   userRewards: (_obj, { root }) => {
     if (!context.currentUser) return []
 
-    // @TODO: can I skip the `user` query or does that make it faster
     return db.user.findUnique({ where: { id: root?.id } }).userRewards()
   },
   discordConnection: (_obj, { root }) => {
@@ -57,11 +66,17 @@ export const User: UserRelationResolvers = {
     return db.user.findUnique({ where: { id: root?.id } }).lensKeypConnection()
   },
   stepsSolvedCount: () => {
+    if (!context.currentUser) {
+      throw new AuthenticationError('No current user')
+    }
     return db.solve.count({
       where: { userId: context.currentUser.id },
     })
   },
   puzzlesSolvedCount: () => {
+    if (!context.currentUser) {
+      throw new AuthenticationError('No current user')
+    }
     return db.userReward.count({
       where: {
         userId: context.currentUser.id,
@@ -70,6 +85,9 @@ export const User: UserRelationResolvers = {
     })
   },
   packsSolvedCount: () => {
+    if (!context.currentUser) {
+      throw new AuthenticationError('No current user')
+    }
     return db.userReward.count({
       where: {
         userId: context.currentUser.id,
@@ -78,6 +96,9 @@ export const User: UserRelationResolvers = {
     })
   },
   nftsSolvedCount: () => {
+    if (!context.currentUser) {
+      throw new AuthenticationError('No current user')
+    }
     return db.userReward.count({
       where: {
         userId: context.currentUser.id,

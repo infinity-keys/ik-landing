@@ -469,10 +469,9 @@ enum SiteRole {
 
 /// Identifiable player
 model User {
-  id           String   @id @default(cuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  lastLoggedIn DateTime @default(now())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   authId          String? @unique
   address         String? @unique // Keyp wallet address
