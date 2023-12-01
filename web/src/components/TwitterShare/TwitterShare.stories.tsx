@@ -11,15 +11,20 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import TwitterShare from './TwitterShare'
 
-export const generated = () => {
-  return <TwitterShare />
+export const generated: StoryObj<typeof TwitterShare> = {
+  render: (args) => {
+    return <TwitterShare {...args} />
+  },
 }
 
 export default {
   title: 'Components/TwitterShare',
   component: TwitterShare,
+  args: {
+    tweetBody: 'tweet',
+  },
 } as Meta<typeof TwitterShare>
