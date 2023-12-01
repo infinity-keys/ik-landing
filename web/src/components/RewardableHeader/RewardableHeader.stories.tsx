@@ -11,15 +11,20 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import RewardableHeader from './RewardableHeader'
 
-export const generated = () => {
-  return <RewardableHeader />
+export const generated: StoryObj<typeof RewardableHeader> = {
+  render: (args) => {
+    return <RewardableHeader {...args} />
+  },
 }
 
 export default {
   title: 'Components/RewardableHeader',
   component: RewardableHeader,
+  args: {
+    name: 'Rewardable',
+  },
 } as Meta<typeof RewardableHeader>

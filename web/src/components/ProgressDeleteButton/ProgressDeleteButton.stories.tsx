@@ -11,12 +11,14 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import ProgressDeleteButton from './ProgressDeleteButton'
 
-export const generated = () => {
-  return <ProgressDeleteButton />
+export const generated: StoryObj<typeof ProgressDeleteButton> = {
+  render: (args) => {
+    return <ProgressDeleteButton {...args} />
+  },
 }
 
 export default {
