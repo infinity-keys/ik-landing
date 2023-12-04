@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "lib": ["es6"],
+    "moduleDetection": "force",
+    "outDir": "./dist",
+    "skipLibCheck": true,
+    "esModuleInterop":true,
+    "downlevelIteration": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}

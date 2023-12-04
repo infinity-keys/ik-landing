@@ -1,0 +1,21 @@
+{
+  "name": "discord-passcode-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.ts",
+    "build": "tsc",
+    "deploy-commands": "tsc && node ./dist/deploy-commands.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.3.1",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.53.0",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1"
+  }
+}
