@@ -11,7 +11,7 @@ export const schema = gql`
   }
 
   type Mutation {
-    addLensFormRole(externalAddress: String): AddLensFormRoleResponse!
+    addLensFormRole(externalAddress: String!): AddLensFormRoleResponse!
       @requireAuth
     addLensForm(input: AddLensFormInput!): AddLensFormRoleResponse!
       @requireAuth(roles: ["ADMIN", "LENS_FORM"])
