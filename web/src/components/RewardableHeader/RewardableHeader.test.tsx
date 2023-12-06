@@ -8,7 +8,7 @@ import RewardableHeader from './RewardableHeader'
 describe.skip('RewardableHeader', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<RewardableHeader />)
+      render(<RewardableHeader name="Rewardable" />)
     }).not.toThrow()
   })
 })

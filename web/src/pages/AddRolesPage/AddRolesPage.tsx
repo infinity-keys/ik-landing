@@ -1,3 +1,4 @@
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 import {
   LensFormRoleMutation,
   LensFormRoleMutationVariables,
@@ -14,7 +15,7 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import Seo from 'src/components/Seo/Seo'
 
 const LENS_FORM_ROLE_MUTATION = gql`
-  mutation LensFormRoleMutation($externalAddress: String) {
+  mutation LensFormRoleMutation($externalAddress: String!) {
     addLensFormRole(externalAddress: $externalAddress) {
       success
     }
@@ -24,14 +25,12 @@ const LENS_FORM_ROLE_MUTATION = gql`
 const AddRolesPage = () => {
   const { address } = useAccount()
   const { currentUser } = useAuth()
+  const { openConnectModal } = useConnectModal()
 
   const [addRole, { loading, data }] = useMutation<
     LensFormRoleMutation,
     LensFormRoleMutationVariables
   >(LENS_FORM_ROLE_MUTATION, {
-    variables: {
-      externalAddress: address,
-    },
     onError() {
       toast.error('Something went wrong checking your NFTs.')
     },
@@ -77,7 +76,17 @@ const AddRolesPage = () => {
                 </Link>{' '}
                 NFTs to be eligible to request your Lens profile.
               </p>
-              <Button onClick={() => addRole()}>Check NFTs</Button>
+              {address ? (
+                <Button
+                  onClick={() =>
+                    addRole({ variables: { externalAddress: address } })
+                  }
+                >
+                  Check NFTs
+                </Button>
+              ) : (
+                <Button onClick={openConnectModal}>Connect Wallet</Button>
+              )}
             </div>
           )}
         </div>

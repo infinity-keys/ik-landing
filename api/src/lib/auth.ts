@@ -14,10 +14,7 @@ import { logger } from 'src/lib/logger'
  * Represents the user attributes returned by the decoding the
  * Authentication provider's JWT together with an optional list of roles.
  */
-type CurrentUser = Pick<
-  User,
-  'id' | 'username' | 'email' | 'authId' | 'roles' | 'address'
->
+type CurrentUser = Pick<User, 'id' | 'email' | 'authId' | 'roles' | 'address'>
 
 /**
  * The session object sent in as the first argument to getCurrentUser() will
@@ -47,12 +44,9 @@ export const getCurrentUser = async (
 
   // Be careful to only return information that should be accessible on the web side.
   const user = await db.user.findUnique({
-    // @NOTE: session.id is equal to user.authId
-    // @TODO: IDs won't match until users are migrated on signup
     where: { authId: decoded.id },
     select: {
       id: true,
-      username: true,
       email: true,
       authId: true,
       roles: true,

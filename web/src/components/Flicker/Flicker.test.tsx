@@ -8,7 +8,7 @@ import Flicker from './Flicker'
 describe.skip('Flicker', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<Flicker />)
+      render(<Flicker>Flicker</Flicker>)
     }).not.toThrow()
   })
 })
