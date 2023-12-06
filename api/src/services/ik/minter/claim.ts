@@ -1,7 +1,7 @@
 import { MutationResolvers } from 'types/graphql'
 
 import { addNftReward } from 'src/lib/nft'
-import { generateSignature } from 'src/lib/signature'
+import { generateSignature } from 'src/lib/signature/signature'
 import { checkBalance } from 'src/lib/web3/check-balance'
 import { checkClaimed } from 'src/lib/web3/check-claimed'
 import { rewardableClaim } from 'src/services/ik/rewardables/rewardables'
@@ -112,16 +112,13 @@ export const claim: MutationResolvers['claim'] = async ({
       }
     }
 
-    const { signature, errors: sigErrors } = await generateSignature(
-      account,
-      tokenId
-    )
+    const signature = await generateSignature(account, tokenId)
 
-    if (sigErrors?.length) {
-      return { errors: sigErrors }
+    if (!signature.ok) {
+      return { errors: [signature.val] }
     }
 
-    return { signature, claimed, tokenId }
+    return { signature: signature.val, claimed, tokenId }
   } catch (e) {
     if (e instanceof Error) {
       return { errors: [e.message] }
