@@ -3,6 +3,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 
+// // currently unused
 // import { fieldNameFromStoreName } from '@apollo/client/cache'
 
 import { DevTool } from '@hookform/devtools'
@@ -47,17 +48,19 @@ const CREATE_BURD_PUZZLE_MUTATION = gql`
     }
   }
 `
-// TS omit
+// TypeScript omit to ignore the parent `puzzleId` field
 type CreateStepInputFrontEnd = Omit<CreateStepInput, 'puzzleId'>
 
-type TokenIdRangeNew = {
-  type: 'TOKEN_ID_RANGE'
-  ranges: {
-    startId: number
-    endId: number
-  }[]
-}
+// TypeScript omit to ignore the parent fields
+type CreateStepTokenIdRangeInputFrontEnd = Omit<
+  CreateStepTokenIdRangeInput,
+  'chainId' | 'contractAddress' | 'stepId'
+>
 
+// this just keeps the naming conventions for `Step` and `TokenIdRange` consistent
+type CreateAllTokenIdRangesInput = CreateStepTokenIdRangeInputFrontEnd
+
+// Handles all the different types of steps [stepType] that can be created
 type CreateAllStepTypesInput =
   | (CreateStepInputFrontEnd & Omit<CreateStepSimpleTextInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepNftCheckInput, 'stepId'>)
@@ -69,14 +72,11 @@ type CreateAllStepTypesInput =
 // Set as a constant in case we need to change this string value later on
 const stepsArrayName = 'steps'
 
-// don't think I need this because token ids don't have different types
-const tokenIdsArrayName = 'tokenIds'
+// Set as a constant in case we need to change this string value later on
+const tokenIdsArrayName = 'ranges'
 
 // New puzzles start with no steps in an empty array
 const startingSteps: CreateAllStepTypesInput[] = []
-
-// New steps start with no token ids in an empty array
-const startingTokenIds: TokenIdRangeNew[] = []
 
 // Using the default: <FieldError /> field validator from react-hook-form creates
 // cryptic (for the user) error messages like this: "steps.1.failMessage is required"
@@ -91,8 +91,15 @@ function requiredFieldError(fieldName: string) {
   )
 }
 
-// This is the component that renders each token id range in each step in the form
-// if the step has a type of 'TOKEN_ID_RANGE'
+type TokenIdRangeFormType = {
+  type: 'TOKEN_ID_RANGE'
+  ranges: {
+    startId: number
+    endId: number
+  }[]
+}
+// This is the component that renders each token id range in
+// each step in the form if the step has a type of 'TOKEN_ID_RANGE'
 function TokenIdRange({
   index,
   register,
@@ -100,9 +107,9 @@ function TokenIdRange({
   errors,
 }: {
   index: number
-  register: UseFormRegister<TokenIdRangeNew>
+  register: UseFormRegister<TokenIdRangeFormType>
   remove: (index: number) => void
-  errors: FieldErrors<TokenIdRangeNew>
+  errors: FieldErrors<TokenIdRangeFormType>
 }) {
   return (
     <fieldset>
@@ -118,24 +125,16 @@ function TokenIdRange({
           >
             <div className="form__entry-name mb-1">Start ID</div>
           </Label>
-          {/* type TokenIdRangeNew = {
-            type: 'TOKEN_ID_RANGE'
-              ranges: {
-                startId: number
-                endId: number
-              }[]
-            } */}
-          {/* const tokenIdsArrayName = 'tokenIds' */}
           <TextField
             placeholder="Start ID"
-            // {...register(`${tokenIdsArrayName}.${index}.startId`)}
-            {...register(`ranges.${index}.startId`)}
+            {...register(`ranges.${index}.startId`, { required: true })}
             className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             validation={{ required: true }}
           />
           {errors[`ranges`]?.[index]?.startId?.type === 'required' &&
-            requiredFieldError('Start ID')}
+            requiredFieldError('a Start ID')}
         </div>
+
         <div id="end-id" className="form__entry mb-12">
           <Label
             name={`failMesssage.${index}`}
@@ -146,11 +145,11 @@ function TokenIdRange({
           </Label>
           <TextField
             placeholder="End ID"
-            {...register(`ranges.${index}.endId`)}
+            {...register(`ranges.${index}.endId`, { required: true })}
             className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
           />
           {errors[`ranges`]?.[index]?.endId?.type === 'required' &&
-            requiredFieldError('End ID')}
+            requiredFieldError('an End ID')}
         </div>
         <button
           type="button"
@@ -164,7 +163,7 @@ function TokenIdRange({
   )
 }
 
-// This is the component that renders each step in the form
+// This is the component that renders each step in the puzzle form
 function Step({
   index,
   register,
@@ -176,18 +175,14 @@ function Step({
 }: {
   index: number
   register: UseFormRegister<PuzzleFormType>
-  // creates linting error: UseFormWatch<CreateBurdPuzzleInput>
   watch: UseFormWatch<PuzzleFormType>
   setValue: UseFormSetValue<PuzzleFormType>
   getValues: UseFormGetValues<PuzzleFormType>
   remove: (index: number) => void
   errors: FieldErrors<PuzzleFormType>
 }) {
-  // Watch for select 'type' val changing
+  // Watch for `stepTypeVal` changes so that we can set the default values
   const stepTypeVal = watch(`${stepsArrayName}.${index}.type`)
-
-  // Watch for select 'guideType' val changing?
-  // const stepGuideTypeVal = watch(`${stepsArrayName}.${index}.stepGuideType`)
 
   // This is a custom hook that sets the default values for each step
   useEffect(() => {
@@ -207,9 +202,7 @@ function Step({
         type: 'SIMPLE_TEXT',
         ...commonStepFields,
         solution: '',
-        // puzzleId: 'IGNORE_ME',
         solutionCharCount: 0,
-        // stepId: 'IGNORE_ME',
       })
     }
     if (stepTypeVal === 'NFT_CHECK') {
@@ -217,12 +210,11 @@ function Step({
         type: 'NFT_CHECK',
         ...commonStepFields,
         requireAllNfts: false,
-        // ask Tawnee: why is this now an array of objects?
         nftCheckData: [
           {
             contractAddress: '',
-            tokenId: Number(''), // these are now looking for numbers
-            chainId: Number(''), // these are now looking for numbers
+            tokenId: Number(''),
+            chainId: Number(''),
             poapEventId: '',
           },
         ],
@@ -265,14 +257,46 @@ function Step({
     'HAS_CREATED_SCHOLARSHIP',
   ]
 
-  const formMethods: UseFormReturn<TokenIdRangeNew> = useForm<TokenIdRangeNew>({
+  // OPTION #1
+  // use the existing types in the CreateAllTokenIdRangesInput type
+  // this creates a rewardable but it does not unregister properly
+  // const formMethods: UseFormReturn<CreateAllTokenIdRangesInput> =
+  //   useForm<CreateAllTokenIdRangesInput>({
+  //     defaultValues: {
+  //       endIds: [],
+  //       startIds: [],
+  //     },
+  //   })
+
+  // OPTION #2 This is Bloom's type error fix using
+  // TokenIdRangeNew (defined herein) instead of CreateAllTokenIdRangesInput
+  // which is defined in types/graphql.d.ts
+  const formMethods = useForm<TokenIdRangeFormType>({
     defaultValues: {
-      [tokenIdsArrayName]: startingTokenIds,
+      ranges: [
+        {
+          startId: 0,
+          endId: 0,
+        },
+      ],
     },
   })
 
+  // // OPTION #3 - this is my original solution, it works but produces a type error
+  // const formMethods: UseFormReturn<TokenIdRangeNew> = useForm<TokenIdRangeNew>({
+  //   defaultValues: {
+  //     [tokenIdsArrayName]: startingTokenIds,
+  //   },
+  // })
+
+  // This works in that the form makes a puzzle, but the puzzle does not have any
+  // errors appear where there should be errors
+  // const { errors: tokenIdErrors } = formMethods.formState as {
+  //   errors: FieldErrors<TokenIdRangeNew>
+  // }
+
   const { errors: tokenIdErrors } = formMethods.formState as {
-    errors: FieldErrors<TokenIdRangeNew>
+    errors: FieldErrors<CreateAllTokenIdRangesInput>
   }
 
   const {
@@ -526,8 +550,7 @@ function Step({
               className="form__text-field mt-1 mb-10 box-border block bg-stone-200 text-slate-700"
             />
           </div>
-          {/* Ask Tawnee: did we remove contract address from NFT Check? */}
-          {/* Cuz I can create an NFT Check w/o `contractAddress` */}
+
           <div className="form__entry mb-12">
             <Label
               name={stepTypeVal}
@@ -678,15 +701,14 @@ function Step({
             />
           </div>
 
-          {/* left off here 11/28/2023 */}
           <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
             {tokenIdFields.map((field, index) => (
               <TokenIdRange
                 index={index}
-                register={formMethods.register}
+                register={formMethods.register} // old error
                 key={field.id}
-                watch={formMethods.watch}
-                setValue={formMethods.setValue}
+                // watch={formMethods.watch}
+                // setValue={formMethods.setValue}
                 remove={tokenIdRemove}
                 errors={tokenIdErrors}
               />
@@ -697,8 +719,8 @@ function Step({
                 className="rw-button rw-button-blue"
                 onClick={() =>
                   append({
-                    startId: '',
-                    endId: '',
+                    startId: 0,
+                    endId: 0,
                   })
                 }
               >
@@ -742,10 +764,6 @@ function Step({
   )
 }
 
-// type StepUnchosen = Step & {
-//   type: 'UNCHOSEN'
-// }
-
 // This type definition is used in the PuzzleForm component below
 // It does not get used in the Step component above
 type PuzzleFormType = {
@@ -755,11 +773,10 @@ type PuzzleFormType = {
     explanation: CreateRewardableInput['explanation']
     successMessage: CreateRewardableInput['successMessage']
     listPublicly: CreateRewardableInput['listPublicly']
-    // requirements: CreatePuzzleInput['requirements'] ///// this one or
   }
   puzzle: {
     coverImage: CreatePuzzleInput['coverImage']
-    requirements: CreatePuzzleInput['requirements'] //////// this one
+    requirements: CreatePuzzleInput['requirements']
   }
   steps: CreateAllStepTypesInput[]
 }
@@ -815,8 +832,8 @@ export default function PuzzleForm() {
           slug: input.rewardable.slug,
           listPublicly: input.rewardable.listPublicly,
           orgId: 'backend shall handle this!', // hard coded for now
-          // requirements: input.rewardable.requirements, //////////////////////////
-          // requirements: input.puzzle.requirements, //////////////////////////
+          // requirements: input.rewardable.requirements,
+          // requirements: input.puzzle.requirements,
           puzzle: {
             // isAnon: false,
             rewardableId: 'ignore me',
@@ -1086,14 +1103,12 @@ export default function PuzzleForm() {
 
           <div id="puzzle-requirements" className="form__entry mb-12">
             <Label
-              // name="rewardable.requirements"
               name="puzzle.requirements"
               className="form__label text-2xl font-bold text-slate-700"
             >
               <div className="form__entry-name mb-1">Requirements</div>
             </Label>
             <div className="my-8 text-stone-800">
-              {/* <SelectField name="rewardable.requirements" multiple> */}
               <SelectField name="puzzle.requirements" multiple>
                 <option value="HOLDERS_ONLY">Holders Only</option>
                 <option value="SOCIAL_ACCOUNT">Social Account</option>
@@ -1150,8 +1165,6 @@ export default function PuzzleForm() {
                   stepSortWeight: 0,
                   solution: '',
                   solutionCharCount: 0,
-                  // puzzleId: 'ignore me',
-                  // stepId: 'ignore me',
                   solutionHint: '',
                   defaultImage: '',
                   solutionImage: '',
@@ -1162,7 +1175,6 @@ export default function PuzzleForm() {
               Add Step
             </button>
           </div>
-          {/* Conditionally render the error message */}
           {hasNoSteps && (
             <div className="rw-field-error">
               You must have at least one step in a puzzle!
