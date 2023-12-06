@@ -13586,6 +13586,7 @@ __metadata:
     pino-datadog: ^2.0.2
     pkce-challenge: ^3.1.0
     qfs-compression: ^0.2.1
+    ts-results: ^3.3.0
     uuid: ^9.0.0
     zod: ^3.22.3
   languageName: unknown
@@ -31929,6 +31930,13 @@ __metadata:
   version: 4.3.0
   resolution: "ts-pattern@npm:4.3.0"
   checksum: e83d370feeda3657f5b9d49b119840e4c4f7cbee9797233078cbf1ad8f82dbd44935e8120ee3293d7626fed542b230827fdb87fcbdcaf37fd0f1d22345d05594
+  languageName: node
+  linkType: hard
+
+"ts-results@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "ts-results@npm:3.3.0"
+  checksum: 507659005733dd102895e868fe1de6f4c39998bcf188863bdc2d18dc5e8ced57be2e83fe9ee53adbabc414fd53e26e8654c7fa0273d2668decc1731d274dbf74
   languageName: node
   linkType: hard
 
