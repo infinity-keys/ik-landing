@@ -154,7 +154,10 @@ function TokenIdRange({
         <button
           type="button"
           className="rw-button rw-button-red"
-          onClick={() => remove(index)}
+          onClick={() => {
+            console.log(index)
+            remove(index)
+          }}
         >
           <div className="">Remove Token ID Range</div>
         </button>
@@ -703,15 +706,18 @@ function Step({
 
           <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
             {tokenIdFields.map((field, index) => (
-              <TokenIdRange
-                index={index}
-                register={formMethods.register} // old error
-                key={field.id}
-                // watch={formMethods.watch}
-                // setValue={formMethods.setValue}
-                remove={tokenIdRemove}
-                errors={tokenIdErrors}
-              />
+              <>
+                Index: {index}
+                <TokenIdRange
+                  index={index}
+                  register={formMethods.register} // old error
+                  key={field.id}
+                  // watch={formMethods.watch}
+                  // setValue={formMethods.setValue}
+                  remove={tokenIdRemove}
+                  errors={tokenIdErrors}
+                />
+              </>
             ))}
             <div className="mt-8 mb-20">
               <button
