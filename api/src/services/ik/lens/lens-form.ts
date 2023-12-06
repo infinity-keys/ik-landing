@@ -23,12 +23,12 @@ export const addLensFormRole: MutationResolvers['addLensFormRole'] = async ({
     return { success: true }
   }
 
-  const { claimed } = await checkBalance({
+  const res = await checkBalance({
     account: externalAddress,
     tokenIds: LENS_ACCOUNT_TOKEN_IDS,
   })
 
-  if (!claimed) {
+  if (!res.ok || !res.val.hasRequiredNfts) {
     return {
       success: false,
     }
