@@ -2,7 +2,7 @@ import { CONTRACT_ADDRESS_OPTIMISM } from '@infinity-keys/constants'
 import { ethers } from 'ethers'
 import { Ok, Err, Result } from 'ts-results'
 
-import { logger } from '../logger'
+import { logger } from 'src/lib/logger'
 
 const { PRIVATE_KEY_VERIFY, MINT_SECRET_VERIFY } = process.env
 
