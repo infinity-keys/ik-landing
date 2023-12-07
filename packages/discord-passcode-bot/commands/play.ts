@@ -1,26 +1,34 @@
-import { CommandInteraction, SlashCommandBuilder } from 'discord.js'
+import {
+  CommandInteraction,
+  SlashCommandBuilder,
+  EmbedBuilder,
+} from 'discord.js'
+
+import { Puzzle } from '../models/test'
 
 export const data = new SlashCommandBuilder()
-.setName('play')
-.setDescription('select a puzzle')
-.addStringOption(option =>
-  option.setName('puzzle')
-    .setDescription('list of puzzles')
-    .setRequired(true)
-    .addChoices(
-      { name: 'Puzzle A', value: 'play_a' },
-      { name: 'Puzzle B', value: 'play_b' },
-      { name: 'Puzzle C', value: 'play_c' },
-    ));
+  .setName('play')
+  .setDescription('select a puzzle')
+  .addStringOption((option) =>
+    option.setName('title').setDescription('enter in title').setRequired(true)
+  )
 
-export async function execute(interaction: CommandInteraction){
-	// if we're not repliable then exit
-	if (!interaction.isRepliable()) {
-		return
-	}
-	await interaction.reply({
-		content: `let's play!`,
-		fetchReply: true,
-	})
-	console.log('play puzzle', interaction.options.get('puzzle').value)
-};
+export async function execute(interaction: CommandInteraction) {
+  // if we're not repliable then exit
+  if (!interaction.isRepliable()) {
+    return
+  }
+
+  const title = interaction.options.get('title').value
+  const puzzle = await Puzzle.findOne({ title })
+
+  if (!puzzle) {
+    return await interaction.reply('Cannot find puzzle with that title')
+  }
+
+  const embedBalance = new EmbedBuilder()
+    .setImage(puzzle.image)
+    .setDescription(`**Title:** ${puzzle.title}\n**Text:** ${puzzle.text}`)
+    .setColor(0xc3b4f7)
+  return interaction.reply({ embeds: [embedBalance] })
+}

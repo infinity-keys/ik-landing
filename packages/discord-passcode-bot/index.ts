@@ -3,6 +3,7 @@ import * as fs from 'node:fs'
 import * as path from 'node:path'
 
 import { Client, Collection, GatewayIntentBits } from 'discord.js'
+import mongoose from 'mongoose'
 
 require('dotenv').config()
 // set up to use config file, if needed
@@ -55,3 +56,13 @@ for (const file of eventFiles) {
 }
 // Log in to Discord with your client's token
 client.login(process.env.token)
+
+//Connect to MongoDB database
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log('Connected to MongoDB.')
+  })
+  .catch((error) => {
+    console.error('Error connecting to MongoDB:', error)
+  })
