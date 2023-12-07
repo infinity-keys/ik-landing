@@ -1,5 +1,6 @@
 import { OPTIMISM_CHAIN_ID } from '@infinity-keys/constants'
 import { ethers } from 'ethers'
+import { Ok, Err, Result } from 'ts-results'
 
 import { logger } from 'src/lib/logger'
 import { contractLookup } from 'src/lib/lookups'
@@ -10,7 +11,15 @@ export const checkBalance = async ({
 }: {
   account: string
   tokenIds: number[]
-}) => {
+}): Promise<
+  Result<
+    {
+      hasRequiredNfts: boolean
+      claimedTokens: boolean[]
+    },
+    string
+  >
+> => {
   try {
     const contract = contractLookup[OPTIMISM_CHAIN_ID]
     const accountArray = Array(tokenIds.length).fill(account)
@@ -24,13 +33,11 @@ export const checkBalance = async ({
     )
 
     // Check if all nft are claimed, returns true if eligible to claim pack nft
-    const claimed = claimedTokens?.every((b) => b)
+    const hasRequiredNfts = claimedTokens?.every((b) => b)
 
-    return { claimed, claimedTokens }
+    return new Ok({ hasRequiredNfts, claimedTokens })
   } catch (error) {
     logger.error('Error at check-balance', error)
-    return {
-      errors: ['Error checking balance'],
-    }
+    return new Err('Error occurred while checking balance.')
   }
 }

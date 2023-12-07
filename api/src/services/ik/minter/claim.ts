@@ -84,22 +84,20 @@ export const claim: MutationResolvers['claim'] = async ({
         ({ childRewardable }) => childRewardable.nfts[0].tokenId
       )
 
-      // Checks both the generated wallet address from the DB and the one
-      // connected via wagmi
-      const {
-        claimed: hasRequiredNfts,
-        errors: checkBalanceErrors,
-        claimedTokens,
-      } = await checkBalance({
+      // Checks contract to ensure user has claimed all required NFTs
+      const balances = await checkBalance({
         account,
         tokenIds: requiredNftIds,
       })
 
-      if (checkBalanceErrors && checkBalanceErrors.length > 0) {
-        return { errors: checkBalanceErrors }
+      if (!balances.ok) {
+        return { errors: [balances.val] }
       }
 
-      if (!hasRequiredNfts && claimedTokens?.length) {
+      const { hasRequiredNfts, claimedTokens } = balances.val
+
+      if (!hasRequiredNfts) {
+        // Get token IDs for unclaimed NFTs
         const missingNfts = requiredNftIds
           .filter((_, i) => !claimedTokens[i])
           .join(', ')
