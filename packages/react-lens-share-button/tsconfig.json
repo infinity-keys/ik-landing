@@ -16,13 +16,10 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
-     "paths": {
-      "react-lens-share-button": [ "src/components/index.ts" ]
+    "paths": {
+      "react-lens-share-button": ["src/components/index.ts"]
     },
-    "typeRoots": [
-      "node_modules/@types",
-      "src/components/index.d.ts"
-    ]
+    "typeRoots": ["node_modules/@types", "src/components/types.ts"]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
