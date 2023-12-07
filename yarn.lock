@@ -11264,11 +11264,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^20.10.3":
-  version: 20.10.4
-  resolution: "@types/node@npm:20.10.4"
+  version: 20.10.3
+  resolution: "@types/node@npm:20.10.3"
   dependencies:
     undici-types: ~5.26.4
-  checksum: 2c8b70cba731eb2ae3ae046daa74903bfcbb0e7b9196da767e5895054f6d252296ae7a04fb1dbbcb53bb004c4c658c05eaea2731bc9e2dd9e08f7e88d672f563
+  checksum: 7c8a0327a29d68a0bb152ae30e8c4738638515dd599064821c9d0c1884a1efa103021cd8f8c91e690cd56b0602bb6fe0e6651a5df2337bdc85e0c0f66054b2ce
   languageName: node
   linkType: hard
 
@@ -25486,8 +25486,8 @@ __metadata:
   linkType: hard
 
 "mongoose@npm:^8.0.2":
-  version: 8.0.3
-  resolution: "mongoose@npm:8.0.3"
+  version: 8.0.2
+  resolution: "mongoose@npm:8.0.2"
   dependencies:
     bson: ^6.2.0
     kareem: 2.5.1
@@ -25496,7 +25496,7 @@ __metadata:
     mquery: 5.0.0
     ms: 2.1.3
     sift: 16.0.1
-  checksum: 2212265d45aaf3443c09df09f9cf72fb4d9bad36d3e2bf2fd151c468f52aa717a7cbb74b8c50b669f4c94898d20a955ef518be41db29f2598fce6f979212bbb6
+  checksum: 2147273d6e067fcda2a0e0ceb0c4c3cfd663deadbfe094e2616503387cceb21c49d31255c1b79e15db169c7fbddfaf295f181b93efc875b81bdcc6c931323676
   languageName: node
   linkType: hard
 
