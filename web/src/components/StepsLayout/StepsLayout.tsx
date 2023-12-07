@@ -60,7 +60,7 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
   }, [setPageHeading, rewardableName, currentStepNum, totalSteps])
 
   const images = step.stepPage
-    .map((page) => page?.image || step.defaultImage)
+    ?.map((page) => page?.image || step.defaultImage)
     .concat(step.solutionImage || step.defaultImage)
 
   // @NOTE: returns undefined if user has completed all steps
@@ -94,7 +94,7 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
               process.env.SPLINE_PUZZLE_SLUG ? (
                 <Spline scene="https://prod.spline.design/wNPv9pIE4aOGShZZ/scene.splinecode" />
               ) : (
-                images.map((image, index) => {
+                images?.map((image, index) => {
                   return image ? (
                     <div
                       key={'image-' + index}
@@ -199,7 +199,7 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
                         showOverlay={showOverlay}
                         setShowOverlay={setShowOverlay}
                         overlayContent={
-                          page.showStepGuideHint
+                          page.showStepGuideHint && step.stepGuideType
                             ? overlayContent[step.stepGuideType]
                             : undefined
                         }
