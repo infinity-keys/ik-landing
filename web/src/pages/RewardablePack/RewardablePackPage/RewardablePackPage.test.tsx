@@ -8,7 +8,7 @@ import RewardablePackPage from './RewardablePackPage'
 describe.skip('RewardablePackPage', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<RewardablePackPage />)
+      render(<RewardablePackPage slug="slug" />)
     }).not.toThrow()
   })
 })
