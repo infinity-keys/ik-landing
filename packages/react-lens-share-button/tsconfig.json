@@ -19,7 +19,7 @@
     "paths": {
       "react-lens-share-button": ["src/components/index.ts"]
     },
-    "typeRoots": ["node_modules/@types", "src/components/types.ts"]
+    "typeRoots": ["node_modules/@types"]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

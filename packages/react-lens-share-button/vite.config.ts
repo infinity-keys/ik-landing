@@ -15,6 +15,7 @@ export default defineConfig(() => ({
     tsConfigPaths(),
     dts({
       include: ['src/components'],
+      rollupTypes: true,
     }),
   ],
   build: {
