@@ -8,7 +8,7 @@ import StepPage from './StepPage'
 describe.skip('StepPage', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<StepPage />)
+      render(<StepPage slug="/step" step={1} />)
     }).not.toThrow()
   })
 })

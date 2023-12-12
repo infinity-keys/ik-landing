@@ -66,10 +66,16 @@ const Rewardable = ({ rewardable }: Props) => {
         )}
 
         <div className="mx-auto mt-12 flex flex-wrap justify-center gap-4 pb-12 sm:flex-row md:pb-20">
-          {rewardable.asParent.map(({ childRewardable }) => {
-            const solvedArray = childRewardable.puzzle.steps.map(
-              ({ hasUserCompletedStep }) => hasUserCompletedStep
-            )
+          {rewardable.asParent.map((child) => {
+            if (!child) return null
+            const { childRewardable } = child
+
+            const solvedArray = childRewardable.puzzle
+              ? childRewardable.puzzle.steps.map(
+                  (step) => !!step?.hasUserCompletedStep
+                )
+              : []
+
             return (
               <Thumbnail
                 key={childRewardable.id}

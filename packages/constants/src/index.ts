@@ -149,3 +149,6 @@ export const avalancheChain: Chain = {
 // REGEX
 export const ETH_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
 export const HTTP_REGEX = /^https?:\/\//
+
+export const IK_LOGO_FULL_URL =
+  'https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/v1696529364/ik-logo-full.png'
