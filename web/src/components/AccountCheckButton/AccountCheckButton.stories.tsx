@@ -11,12 +11,14 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import AccountCheckButton from './AccountCheckButton'
 
-export const generated = () => {
-  return <AccountCheckButton />
+export const generated: StoryObj<typeof AccountCheckButton> = {
+  render: (args) => {
+    return <AccountCheckButton {...args} />
+  },
 }
 
 export default {
