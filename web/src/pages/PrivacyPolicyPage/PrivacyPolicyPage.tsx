@@ -9,7 +9,7 @@ const PrivacyPolicyPage = () => {
 
       <div className="my-20 max-w-2xl pt-20">
         <Heading as="h1">Privacy Policy</Heading>
-        <p className="mb-12 mt-4 font-bold">Last Updated: 8/30/2022</p>
+        <p className="mb-12 mt-4 font-bold">Last Updated: 12/12/2023</p>
         <p className="mt-6">
           Infinity Keys, Inc. (“Infinity Keys”, “we”, “us”, or “our”) is
           committed to protecting your privacy. We have prepared this Privacy
@@ -70,11 +70,11 @@ const PrivacyPolicyPage = () => {
           includes IP addresses, browser type, Internet service provider
           (“ISP”), referring/exit pages, operating system, date/time stamps, and
           clickstream data. We use this information to analyze trends,
-          administer the Service, track users’ movements around the Service, and
-          better tailor our Services to our users’ needs. For example, some of
-          the information may be collected so that when you visit the Service,
-          it will recognize you and the information can be used to personalize
-          your experience.
+          administer the Service, track users&apos; movements around the
+          Service, and better tailor our Services to our users&apos; needs. For
+          example, some of the information may be collected so that when you
+          visit the Service, it will recognize you and the information can be
+          used to personalize your experience.
         </p>
         <p className="mt-6">Cookies.</p>
         <p className="mt-6">
@@ -90,6 +90,77 @@ const PrivacyPolicyPage = () => {
           Our systems do not currently recognize “do not track” signals or other
           mechanisms that might enable Users to opt out of tracking on our site.
         </p>
+
+        <p className="mt-6">
+          Use of Google and Discord OAuth for Secure Sign-In
+        </p>
+
+        <p className="mt-6">1. Introduction to OAuth Sign-In</p>
+        <p className="mt-6">
+          In our commitment to maintaining the security and ease of access to
+          our services, we have integrated Google and Discord OAuth sign-in
+          mechanisms, facilitated by Clerk. This integration is designed to
+          streamline your login process and enhance the security of your
+          account.
+        </p>
+
+        <p className="mt-6">2. How OAuth Sign-In Works</p>
+        <p className="mt-6">
+          When you choose to sign in using your Google or Discord account, you
+          are authorizing our application to access basic profile information
+          from these platforms. This process is managed through Clerk, a trusted
+          third-party service, ensuring a secure and seamless authentication
+          experience.
+        </p>
+
+        <p className="mt-6">3. Data Privacy and Security</p>
+        <p className="mt-6">
+          We take your privacy seriously and adhere to strict data protection
+          standards. Here&apos;s what you need to know about the data involved
+          in the OAuth sign-in process:
+        </p>
+        <p className="mt-6">
+          <b>No Storage of OAuth Credentials</b>: We do not store any
+          credentials associated with your Google or Discord accounts. The OAuth
+          process only provides us with verification of your identity and the
+          necessary basic profile information to facilitate the sign-in process.
+        </p>
+        <p className="mt-6">
+          <b>Limited Data Access</b>: The only information accessed during this
+          process is your email address and basic profile details required for
+          authentication. We do not have access to any other data from your
+          Google or Discord accounts.
+        </p>
+        <p className="mt-6">
+          <b>Data Usage</b>: The information obtained through OAuth is solely
+          used to establish and maintain your account on our platform. It is not
+          used for any other purposes without your explicit consent.
+        </p>
+
+        <p className="mt-6">4. Revoking Access</p>
+        <p className="mt-6">
+          You maintain full control over the permissions granted. At any point,
+          you can revoke our application&apos;s access to your Google or Discord
+          information through your respective account settings on those
+          platforms.
+        </p>
+
+        <p className="mt-6">5. Security Measures</p>
+        <p className="mt-6">
+          We, along with Clerk, implement robust security measures to protect
+          the integrity and confidentiality of your data during the
+          authentication process. However, we encourage you to review the
+          privacy policies of Google and Discord to understand how they manage
+          your data.
+        </p>
+
+        <p className="mt-6">6. Changes to this Policy</p>
+        <p className="mt-6">
+          This section of the privacy policy may be updated to reflect any
+          changes in the way we use Google and Discord OAuth. We recommend
+          reviewing this policy periodically for any updates.
+        </p>
+
         <p className="mt-6">Analytics Services.</p>
         <p className="mt-6">
           In addition to the tracking technologies we place like Cookies, other
@@ -104,11 +175,11 @@ const PrivacyPolicyPage = () => {
           from Analytics Services to improve our Service. The Analytics Services
           may also transfer information to third parties where required to do so
           by law, or where such third parties process Analytics Information on
-          their behalf. Each Analytics Services’ ability to use and share
-          Analytics Information is restricted by such Analytics Services’ terms
-          of use and privacy policy. By using our Service, you consent to the
-          processing of data about you by Analytics Services in the manner and
-          for the purposes set out above.
+          their behalf. Each Analytics Services&apos; ability to use and share
+          Analytics Information is restricted by such Analytics Services&apos;
+          terms of use and privacy policy. By using our Service, you consent to
+          the processing of data about you by Analytics Services in the manner
+          and for the purposes set out above.
         </p>
         <p className="mt-6">
           Information Collected from Third-Party Companies.
@@ -266,19 +337,19 @@ const PrivacyPolicyPage = () => {
           You have several choices regarding the use of information on our
           Services: Email Communications. We may periodically send you
           newsletters and/or emails that directly promote the use of our Service
-          or third parties’ goods and services. When you receive newsletters or
-          promotional communications from us, you may indicate a preference to
-          stop receiving these communications from us by following the
-          unsubscribe instructions provided in the email you receive.
+          or third parties&apos; goods and services. When you receive
+          newsletters or promotional communications from us, you may indicate a
+          preference to stop receiving these communications from us by following
+          the unsubscribe instructions provided in the email you receive.
         </p>
         <p className="mt-6">
           If you decide at any time that you no longer wish to accept Cookies
           from our Service for any of the purposes described above, then you can
           instruct your browser, by changing its settings, to stop accepting
           Cookies or to prompt you before accepting a Cookie from the websites
-          you visit. Consult your browser’s technical information. If you do not
-          accept Cookies, however, you may not be able to use all portions of
-          the Service or all functionality of the Service.
+          you visit. Consult your browser&apos;s technical information. If you
+          do not accept Cookies, however, you may not be able to use all
+          portions of the Service or all functionality of the Service.
         </p>
         <p className="mt-6">
           If you are a user in the European Economic Area or United Kingdom, you
@@ -353,7 +424,7 @@ const PrivacyPolicyPage = () => {
         <p className="mt-6">
           We do not intentionally gather Personal Data from visitors who are
           under the age of 13. Minors who are at least 13 years old but are
-          under 18 years old may use a parent or guardian’s Infinity Keys
+          under 18 years old may use a parent or guardian&apos;s Infinity Keys
           account, but only with the involvement of the account holder. If a
           child under 13 submits Personal Data to Infinity Keys and we learn
           that the Personal Data is the information of a child under 13, we will
