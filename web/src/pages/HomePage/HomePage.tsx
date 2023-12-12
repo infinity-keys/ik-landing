@@ -310,38 +310,48 @@ const HomePage = () => {
       </section>
 
       <footer className="bg-white/5 px-4 py-16">
-        <div className="">
-          <div className="mb-4 flex justify-center gap-4">
-            <Link
-              to={routes.play()}
-              className="text-xl transition-colors hover:text-stone-400"
-            >
-              Play
-            </Link>
+        <div className="mb-4 flex justify-center gap-4">
+          <Link
+            to={routes.play()}
+            className="text-xl transition-colors hover:text-stone-400"
+          >
+            Play
+          </Link>
+          <a
+            href="https://docs.infinitykeys.io"
+            className="text-xl transition-colors hover:text-stone-400"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Docs
+          </a>
+        </div>
+        <div className="flex justify-center gap-8">
+          {socialLinks.map(({ href, testing, ariaLabel, icon }) => (
             <a
-              href="https://docs.infinitykeys.io"
-              className="text-xl transition-colors hover:text-stone-400"
+              key={href}
+              className="text-white/40 transition-colors hover:text-brand-accent-primary"
+              data-cy={testing}
+              href={href}
               target="_blank"
               rel="noreferrer"
+              aria-label={ariaLabel}
             >
-              Docs
+              {icon}
             </a>
-          </div>
-          <div className="flex justify-center gap-8">
-            {socialLinks.map(({ href, testing, ariaLabel, icon }) => (
-              <a
-                key={href}
-                className="text-white/40 transition-colors hover:text-brand-accent-primary"
-                data-cy={testing}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={ariaLabel}
-              >
-                {icon}
-              </a>
-            ))}
-          </div>
+          ))}
+        </div>
+        <div>
+          <p className="mt-8 text-center text-base text-white/50">
+            &copy; 2022 - {new Date().getFullYear()} Infinity Keys. All rights
+            reserved. |{' '}
+            <Link
+              to={routes.privacyPolicy()}
+              className="inline-block underline transition hover:text-brand-accent-primary"
+            >
+              Privacy Policy
+            </Link>
+          </p>
         </div>
       </footer>
     </div>
