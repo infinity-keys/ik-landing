@@ -11,12 +11,14 @@
 //
 // See https://storybook.js.org/docs/react/writing-stories/args.
 
-import type { Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react'
 
 import StepLensApiButton from './StepLensApiButton'
 
-export const generated = () => {
-  return <StepLensApiButton />
+export const generated: StoryObj<typeof StepLensApiButton> = {
+  render: (args) => {
+    return <StepLensApiButton {...args} />
+  },
 }
 
 export default {

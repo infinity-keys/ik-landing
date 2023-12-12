@@ -1,14 +1,24 @@
-import type { StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { Loading, Empty, Failure, Success } from './StepCell'
 import { standard } from './StepCell.mock'
 
-export const loading = () => {
-  return Loading ? <Loading /> : <></>
+const meta: Meta = {
+  title: 'Cells/StepCell',
 }
 
-export const empty = () => {
-  return Empty ? <Empty /> : <></>
+export default meta
+
+export const loading: StoryObj<typeof Loading> = {
+  render: () => {
+    return Loading ? <Loading /> : <></>
+  },
+}
+
+export const empty: StoryObj<typeof Empty> = {
+  render: () => {
+    return Empty ? <Empty /> : <></>
+  },
 }
 
 export const failure: StoryObj<typeof Failure> = {
@@ -22,5 +32,3 @@ export const success: StoryObj<typeof Success> = {
     return Success ? <Success {...standard()} {...args} /> : <></>
   },
 }
-
-export default { title: 'Cells/StepCell' }
