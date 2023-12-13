@@ -18,7 +18,7 @@ if (!CLERK_SIGNIN_PORTAL_URL) {
 }
 
 const ProfilePage = () => {
-  const { isAuthenticated, loading, logOut, currentUser } = useAuth()
+  const { isAuthenticated, loading, logOut, currentUser, hasRole } = useAuth()
   const [errorMessage, setErrorMessage] = useState('')
   const [deleteProgressLoading, setDeleteProgressLoading] = useState(false)
 
@@ -55,7 +55,7 @@ const ProfilePage = () => {
           </p>
         </div>
       )}
-      {currentUser && currentUser.roles.includes('ADMIN') && (
+      {currentUser && hasRole('ADMIN') && (
         <div className="flex justify-center pt-20">
           <ProgressDeleteButton
             setDeleteProgressLoading={setDeleteProgressLoading}
