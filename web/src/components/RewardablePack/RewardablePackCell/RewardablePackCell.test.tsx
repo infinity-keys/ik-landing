@@ -1,7 +1,7 @@
 import { render } from '@redwoodjs/testing/web'
 
 import { Loading, Empty, Failure, Success } from './RewardablePackCell'
-import { standard } from './RewardablePackCell.mock'
+import { findRewardablePackBySlug } from './RewardablePackCell.mock'
 
 // Generated boilerplate tests do not account for all circumstances
 // and can fail without adjustments, e.g. Float and DateTime types.
@@ -36,7 +36,7 @@ describe.skip('RewardablePackCell', () => {
 
   it('renders Success successfully', async () => {
     expect(() => {
-      render(<Success rewardablePack={standard().rewardablePack} />)
+      render(<Success pack={findRewardablePackBySlug().pack} />)
     }).not.toThrow()
   })
 })

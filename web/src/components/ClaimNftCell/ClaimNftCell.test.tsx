@@ -1,7 +1,7 @@
 import { render } from '@redwoodjs/testing/web'
 
 import { Loading, Empty, Failure, Success } from './ClaimNftCell'
-import { standard } from './ClaimNftCell.mock'
+import { findClaimNft } from './ClaimNftCell.mock'
 
 // Generated boilerplate tests do not account for all circumstances
 // and can fail without adjustments, e.g. Float and DateTime types.
@@ -36,7 +36,7 @@ describe.skip('ClaimNftCell', () => {
 
   it('renders Success successfully', async () => {
     expect(() => {
-      render(<Success claimNft={standard().claimNft} />)
+      render(<Success rewardable={findClaimNft().rewardable} />)
     }).not.toThrow()
   })
 })

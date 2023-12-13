@@ -1,7 +1,7 @@
 import { render } from '@redwoodjs/testing/web'
 
 import { Loading, Empty, Failure, Success } from './StepCell'
-import { standard } from './StepCell.mock'
+import { stepBySlug } from './StepCell.mock'
 
 // Generated boilerplate tests do not account for all circumstances
 // and can fail without adjustments, e.g. Float and DateTime types.
@@ -36,7 +36,7 @@ describe.skip('StepCell', () => {
 
   it('renders Success successfully', async () => {
     expect(() => {
-      render(<Success step={standard().step} />)
+      render(<Success step={stepBySlug().step} />)
     }).not.toThrow()
   })
 })

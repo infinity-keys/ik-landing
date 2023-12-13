@@ -1,5 +1,7 @@
 import { render } from '@redwoodjs/testing/web'
 
+import { stepBySlug } from '../StepCell/StepCell.mock'
+
 import StepLensApiButton from './StepLensApiButton'
 
 //   Improve this test with help from the Redwood Testing Doc:
@@ -8,7 +10,7 @@ import StepLensApiButton from './StepLensApiButton'
 describe('StepLensApiButton', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<StepLensApiButton />)
+      render(<StepLensApiButton step={stepBySlug().step} />)
     }).not.toThrow()
   })
 })
