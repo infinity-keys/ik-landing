@@ -324,10 +324,11 @@ function Step({
       <div id="step-fail-message" className="form__entry mb-12">
         <Label
           name={`failMesssage.${index}`}
-          className="form__label text-2xl font-bold text-slate-700"
-          // this errorClassName is not working for the <Step /> component...
-          // ...only the <Puzzle /> component, possibly because the former is nested
-          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+          className={`${defaultStyles} ${
+            errors[stepsArrayName]?.[index]?.failMessage?.type === 'required'
+              ? errorTitleColor
+              : defaultTitleColor
+          }`}
         >
           <div className="form__entry-name mb-1">Fail Message</div>
         </Label>
@@ -351,7 +352,6 @@ function Step({
       <div id="step-success-message" className="form__entry mb-12">
         <Label
           name={`successMessage.${index}`}
-          // left off here on 12/13/2023
           className={`${defaultStyles} ${
             errors[stepsArrayName]?.[index]?.successMessage?.type === 'required'
               ? errorTitleColor
@@ -372,10 +372,11 @@ function Step({
       <div id="step-challenge" className="form__entry mb-12">
         <Label
           name={`challenge.${index}`}
-          className="form__label text-2xl font-bold text-slate-700"
-          // this errorClassName is not working for the <Step /> component...
-          // ...only the <Puzzle /> component, possibly because the former is nested
-          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+          className={`${defaultStyles} ${
+            errors[stepsArrayName]?.[index]?.challenge?.type === 'required'
+              ? errorTitleColor
+              : defaultTitleColor
+          }`}
         >
           <div className="form__entry-name mb-1">Challenge</div>
         </Label>
@@ -391,10 +392,11 @@ function Step({
       <div id="step-resource-links" className="form__entry mb-12">
         <Label
           name={`resourceLinks.${index}`}
-          className="form__label text-2xl font-bold text-slate-700"
-          // this errorClassName is not working for the <Step /> component...
-          // ...only the <Puzzle /> component, possibly because the former is nested
-          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+          className={`${defaultStyles} ${
+            errors[stepsArrayName]?.[index]?.resourceLinks?.type === 'required'
+              ? errorTitleColor
+              : defaultTitleColor
+          }`}
         >
           <div className="form__entry-name mb-1">Resource Links</div>
         </Label>
@@ -411,10 +413,11 @@ function Step({
       <div id="solution-hint" className="form__entry mb-12">
         <Label
           name={`solutionHint.${index}`}
-          className="form__label text-2xl font-bold text-slate-700"
-          // this errorClassName is not working for the <Step /> component...
-          // ...only the <Puzzle /> component, possibly because the former is nested
-          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+          className={`${defaultStyles} ${
+            errors[stepsArrayName]?.[index]?.solutionHint?.type === 'required'
+              ? errorTitleColor
+              : defaultTitleColor
+          }`}
         >
           <div className="form__entry-name mb-1">Solution Hint</div>
         </Label>
@@ -431,10 +434,11 @@ function Step({
       <div id="default-image" className="form__entry mb-12">
         <Label
           name={`defaultImage.${index}`}
-          className="form__label text-2xl font-bold text-slate-700"
-          // this errorClassName is not working for the <Step /> component...
-          // ...only the <Puzzle /> component, possibly because the former is nested
-          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+          className={`${defaultStyles} ${
+            errors[stepsArrayName]?.[index]?.defaultImage?.type === 'required'
+              ? errorTitleColor
+              : defaultTitleColor
+          }`}
         >
           <div className="form__entry-name mb-1">Default Image</div>
         </Label>
@@ -451,10 +455,11 @@ function Step({
       <div id="solution-image" className="form__entry mb-12">
         <Label
           name={`solutionImage.${index}`}
-          className="form__label text-2xl font-bold text-slate-700"
-          // this errorClassName is not working for the <Step /> component...
-          // ...only the <Puzzle /> component, possibly because the former is nested
-          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+          className={`${defaultStyles} ${
+            errors[stepsArrayName]?.[index]?.solutionImage?.type === 'required'
+              ? errorTitleColor
+              : defaultTitleColor
+          }`}
         >
           <div className="form__entry-name mb-1">Solution Image</div>
         </Label>
@@ -471,10 +476,11 @@ function Step({
       <div id="step-sort-weight" className="form__entry mb-12">
         <Label
           name={`stepSortWeight.${index}`}
-          className="form__label text-2xl font-bold text-slate-700"
-          // this errorClassName is not working for the <Step /> component...
-          // ...only the <Puzzle /> component, possibly because the former is nested
-          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+          className={`${defaultStyles} ${
+            errors[stepsArrayName]?.[index]?.stepSortWeight?.type === 'required'
+              ? errorTitleColor
+              : defaultTitleColor
+          }`}
         >
           <div className="form__entry-name mb-1">Step Sort Weight</div>
         </Label>
@@ -526,9 +532,15 @@ function Step({
             <Label
               name={stepTypeVal}
               className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+              // // left off here on 12/13/2023
+              // // The alternative className value *does* work, but it produces
+              // // a type error
+              // className={`${defaultStyles} ${
+              //   errors[stepsArrayName]?.[index]?.solution?.type ===
+              //   'required'
+              //     ? errorTitleColor
+              //     : defaultTitleColor
+              // }`}
             >
               <div className="form__entry-name mb-1">Simple Text</div>
             </Label>
@@ -538,7 +550,8 @@ function Step({
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               validation={{ required: true }}
             />
-            {/* // this error message works, but it has a linting error */}
+            {/* // left off here on 12/13/2023 */}
+            {/* // this error message works, but it has a type error */}
             {/* {errors[stepsArrayName]?.[index]?.solution?.type === 'required' &&
             requiredFieldError('a solution for the simple text')} */}
           </div>
