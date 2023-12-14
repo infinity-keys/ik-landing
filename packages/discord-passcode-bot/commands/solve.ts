@@ -1,6 +1,6 @@
 import { CommandInteraction, SlashCommandBuilder } from 'discord.js'
 
-import { Puzzle } from '../models/test'
+import { Puzzle } from '../models/puzzle'
 
 export const data = new SlashCommandBuilder()
   .setName('solve')

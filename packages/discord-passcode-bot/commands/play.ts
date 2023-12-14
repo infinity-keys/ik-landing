@@ -4,7 +4,7 @@ import {
   EmbedBuilder,
 } from 'discord.js'
 
-import { Puzzle } from '../models/test'
+import { Puzzle } from '../models/puzzle'
 
 export const data = new SlashCommandBuilder()
   .setName('play')

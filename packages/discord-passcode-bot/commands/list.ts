@@ -1,6 +1,6 @@
 import { CommandInteraction, SlashCommandBuilder } from 'discord.js'
 
-import { Puzzle } from '../models/test'
+import { Puzzle } from '../models/puzzle'
 
 // const yourArray = ['Puzzle1', 'Puzzle2', 'Puzzle3'] // Replace with your array
 

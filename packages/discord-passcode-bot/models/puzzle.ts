@@ -1,7 +1,10 @@
 import mongoose from 'mongoose'
 
 const puzzleSchema = new mongoose.Schema({
-  title: String,
+  title: {
+    type: String,
+    unique: true,
+  },
   text: String,
   passcode: String,
   image: String,
