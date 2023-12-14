@@ -155,7 +155,7 @@ function TokenIdRange({
           type="button"
           className="rw-button rw-button-red"
           onClick={() => {
-            console.log(index)
+            // console.log(index)
             remove(index)
           }}
         >
@@ -272,7 +272,7 @@ function Step({
   //   })
 
   // OPTION #2 This is Bloom's type error fix using
-  // TokenIdRangeNew (defined herein) instead of CreateAllTokenIdRangesInput
+  // TokenIdRangeFormType (defined above) instead of CreateAllTokenIdRangesInput
   // which is defined in types/graphql.d.ts
   const formMethods = useForm<TokenIdRangeFormType>({
     defaultValues: {
@@ -311,6 +311,11 @@ function Step({
     name: tokenIdsArrayName,
   })
 
+  //const titleColor = 'text-slate-700'
+  const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
+  const defaultTitleColor = 'text-slate-700'
+  const errorTitleColor = 'text-rose-900'
+
   return (
     <fieldset className="ik-child-form mb-8 rounded-lg border-2 border-gray-500 bg-zinc-100 p-4">
       <div className="form__label text-center text-4xl font-extrabold tracking-widest text-slate-700">
@@ -346,17 +351,19 @@ function Step({
       <div id="step-success-message" className="form__entry mb-12">
         <Label
           name={`successMessage.${index}`}
-          className="form__label text-2xl font-bold text-slate-700"
-          // this errorClassName is not working for the <Step /> component...
-          // ...only the <Puzzle /> component, possibly because the former is nested
-          // errorClassName="form__label--error text-2xl font-bold text-rose-900"
+          // left off here on 12/13/2023
+          className={`${defaultStyles} ${
+            errors[stepsArrayName]?.[index]?.successMessage?.type === 'required'
+              ? errorTitleColor
+              : defaultTitleColor
+          }`}
         >
           <div className="form__entry-name mb-1">Success Message</div>
         </Label>
         <TextField
           placeholder="Success Message"
           {...register(`${stepsArrayName}.${index}.successMessage`)}
-          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+          className={`form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400`}
           validation={{ required: true }}
         />
         {errors[stepsArrayName]?.[index]?.successMessage?.type === 'required' &&
@@ -504,6 +511,7 @@ function Step({
 
       <div className="my-8 text-stone-800">
         <SelectField {...register(`${stepsArrayName}.${index}.type`)}>
+          <option>Choose a Step Type</option>
           <option value="SIMPLE_TEXT">Simple Text</option>
           <option value="NFT_CHECK">NFT check</option>
           <option value="FUNCTION_CALL">Function Call</option>
