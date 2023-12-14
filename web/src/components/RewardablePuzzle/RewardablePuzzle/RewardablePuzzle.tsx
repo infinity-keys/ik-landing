@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { Transition } from '@headlessui/react'
 import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
+import { IK_LOGO_FULL_URL } from '@infinity-keys/constants'
 import { buildUrlString } from '@infinity-keys/core'
 import type {
   FindRewardablePuzzleBySlug,
@@ -73,7 +74,7 @@ const Rewardable = ({ rewardable }: Props) => {
       <Seo
         title={rewardable.name}
         description={`Can you unlock the ${rewardable.name} puzzle?`}
-        imageUrl={rewardable.puzzle.coverImage}
+        imageUrl={rewardable.puzzle.coverImage || IK_LOGO_FULL_URL}
         url={url}
       />
       <div className="mx-auto max-w-lg md:max-w-5xl md:px-4">
@@ -86,7 +87,7 @@ const Rewardable = ({ rewardable }: Props) => {
             <div className="absolute inset-0 flex items-center justify-center">
               <img
                 className="w-full"
-                src={rewardable.puzzle.coverImage}
+                src={rewardable.puzzle.coverImage || IK_LOGO_FULL_URL}
                 alt=""
               />
             </div>
@@ -114,7 +115,7 @@ const Rewardable = ({ rewardable }: Props) => {
                         </div>
 
                         <div className="relative flex flex-wrap justify-center gap-10">
-                          {rewardable.puzzle.requirements.map((req) =>
+                          {rewardable.puzzle?.requirements?.map((req) =>
                             req ? (
                               <button
                                 key={req}
