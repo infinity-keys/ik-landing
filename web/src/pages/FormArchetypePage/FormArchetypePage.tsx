@@ -28,7 +28,7 @@ import {
   FormError,
   FieldErrors,
   useForm,
-  UseFormReturn,
+  // UseFormReturn,
   Label,
   SelectField,
   Submit,
@@ -58,17 +58,17 @@ const CREATE_BURD_PUZZLE_MUTATION = gql`
 type CreateStepInputFrontEnd = Omit<CreateStepInput, 'puzzleId'>
 
 // TypeScript omit to ignore the parent fields
-type CreateStepTokenIdRangeInputFrontEnd = Omit<
-  CreateStepTokenIdRangeInput,
-  'chainId' | 'contractAddress' | 'stepId'
->
+// type CreateStepTokenIdRangeInputFrontEnd = Omit<
+//   CreateStepTokenIdRangeInput,
+//   'chainId' | 'contractAddress' | 'stepId'
+// >
 
 // // new step-page feature
 // this just keeps the naming conventions for `Step` and `stepPages` consistent
 // type CreateAllStepPagesInput = CreateStepPageInputFrontEnd
 
 // this just keeps the naming conventions for `Step` and `TokenIdRange` consistent
-type CreateAllTokenIdRangesInput = CreateStepTokenIdRangeInputFrontEnd
+// type CreateAllTokenIdRangesInput = CreateStepTokenIdRangeInputFrontEnd
 
 // Handles all the different types of steps [stepType] that can be created
 type CreateAllStepTypesInput =
@@ -327,9 +327,10 @@ function StepForm({
   //   errors: FieldErrors<TokenIdRangeNew>
   // }
 
-  const { errors: tokenIdErrors } = formMethods.formState as {
-    errors: FieldErrors<CreateAllTokenIdRangesInput>
-  }
+  // const { errors: tokenIdErrors } = formMethods.formState as {
+  //   errors: FieldErrors<CreateAllTokenIdRangesInput>
+  // }
+  const { errors: tokenIdErrors } = formMethods.formState
 
   const {
     fields: tokenIdFields,
@@ -575,12 +576,20 @@ function StepForm({
               // }`}
               // // left off here on 12/14/2023
               // // this version has no type error, but it does not work
-              className={`${defaultStyles} ${
-                errors[stepsArrayName]?.[index]?.stepSimpleText?.solution
-                  ?.type === 'required'
-                  ? errorTitleColor
-                  : defaultTitleColor
-              }`}
+              // className={`${defaultStyles} ${
+              //   errors[stepsArrayName]?.[index]?.stepSimpleText?.solution
+              //     ?.type === 'required'
+              //     ? errorTitleColor
+              //     : defaultTitleColor
+              // }`}
+              className={
+                Array.isArray(errors[stepsArrayName]) &&
+                'solution' in errors[stepsArrayName][index] &&
+                'type' in errors[stepsArrayName][index].solution &&
+                errors[stepsArrayName][index].solution.type === 'required'
+                  ? `${defaultStyles} ${errorTitleColor}`
+                  : `${defaultStyles} ${defaultTitleColor}`
+              }
             >
               <div className="form__entry-name mb-1">Simple Text</div>
             </Label>
@@ -594,6 +603,11 @@ function StepForm({
             {/* // this error message works, but it has a type error */}
             {/* {errors[stepsArrayName]?.[index]?.solution?.type === 'required' &&
             requiredFieldError('a solution for the simple text')} */}
+            {Array.isArray(errors[stepsArrayName]) &&
+              'solution' in errors[stepsArrayName][index] &&
+              'type' in errors[stepsArrayName][index].solution &&
+              errors[stepsArrayName][index].solution.type === 'required' &&
+              requiredFieldError('a simple text answer')}
           </div>
         </div>
       )}
@@ -864,15 +878,18 @@ export default function PuzzleForm() {
     }
   })
 
-  const formMethods: UseFormReturn<PuzzleFormType> = useForm<PuzzleFormType>({
+  const formMethods = useForm<PuzzleFormType>({
     defaultValues: {
       [stepsArrayName]: startingSteps,
     },
   })
 
-  const { errors } = formMethods.formState as {
-    errors: FieldErrors<PuzzleFormType>
-  }
+  // left off here 12/15/2023
+  // const { errors } = formMethods.formState as {
+  //   errors: FieldErrors<PuzzleFormType>
+  // }
+  const { errors } = formMethods.formState
+  console.log(errors)
 
   const { fields, append, remove } = useFieldArray({
     control: formMethods.control,
