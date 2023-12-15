@@ -19,6 +19,8 @@ import {
   CreateStepTokenIdRangeInput,
   CreateStepOriumApiInput,
   CreatePuzzleInput,
+  // // new step-page feature
+  // CreateStepPageInput,
 } from 'types/graphql'
 
 import {
@@ -48,6 +50,10 @@ const CREATE_BURD_PUZZLE_MUTATION = gql`
     }
   }
 `
+// // new step-page feature
+// TypeScript omit to ignore the parent `stepId` field
+// type CreateStepPageInputFrontEnd = Omit<CreateStepPageInput, 'stepId'>
+
 // TypeScript omit to ignore the parent `puzzleId` field
 type CreateStepInputFrontEnd = Omit<CreateStepInput, 'puzzleId'>
 
@@ -56,6 +62,10 @@ type CreateStepTokenIdRangeInputFrontEnd = Omit<
   CreateStepTokenIdRangeInput,
   'chainId' | 'contractAddress' | 'stepId'
 >
+
+// // new step-page feature
+// this just keeps the naming conventions for `Step` and `stepPages` consistent
+// type CreateAllStepPagesInput = CreateStepPageInputFrontEnd
 
 // this just keeps the naming conventions for `Step` and `TokenIdRange` consistent
 type CreateAllTokenIdRangesInput = CreateStepTokenIdRangeInputFrontEnd
@@ -75,6 +85,10 @@ const stepsArrayName = 'steps'
 // Set as a constant in case we need to change this string value later on
 const tokenIdsArrayName = 'ranges'
 
+// // new step-page feature
+// New steps start with no stepPages in an empty array
+// const startingStepPages: CreateAllStepPagesInput[] = []
+
 // New puzzles start with no steps in an empty array
 const startingSteps: CreateAllStepTypesInput[] = []
 
@@ -91,6 +105,21 @@ function requiredFieldError(fieldName: string) {
   )
 }
 
+// // new step-page feature
+// type stepPageInputFormType = {
+//   body: string
+//   image: string
+//   showStepGuideHint: boolean
+//   sortWeight: number
+// }
+
+// // new step-page feature
+// function StepPageForm({}: {}) {
+//   // build this out once the `TokenIdRangeForm`
+//   // component is working properly with no issues
+// }
+
+// this should be replaced by the actual type definition from the GraphQL schema
 type TokenIdRangeFormType = {
   type: 'TOKEN_ID_RANGE'
   ranges: {
@@ -100,7 +129,7 @@ type TokenIdRangeFormType = {
 }
 // This is the component that renders each token id range in
 // each step in the form if the step has a type of 'TOKEN_ID_RANGE'
-function TokenIdRange({
+function TokenIdRangeForm({
   index,
   register,
   remove,
@@ -167,7 +196,7 @@ function TokenIdRange({
 }
 
 // This is the component that renders each step in the puzzle form
-function Step({
+function StepForm({
   index,
   register,
   watch,
@@ -531,16 +560,27 @@ function Step({
           <div className="form__entry mb-12">
             <Label
               name={stepTypeVal}
-              className="form__label text-2xl font-bold text-slate-700"
-              // // left off here on 12/13/2023
-              // // The alternative className value *does* work, but it produces
-              // // a type error
+              // className="form__label text-2xl font-bold text-slate-700"
+              // // left off here on 12/14/2023
+              // // The alternative className below *does* work, but it produces
+              // // a type error because the `Step` type does not directly contain
+              // // a `solution` property, the solution property exists in StepSimpleText
+              // // So when accessing steps or errors on steps, TypeScript only knows
+              // // about the base Step type and does not know that solution may
+              // // exist on concrete step types.
               // className={`${defaultStyles} ${
-              //   errors[stepsArrayName]?.[index]?.solution?.type ===
-              //   'required'
+              //   errors[stepsArrayName]?.[index]?.solution?.type === 'required'
               //     ? errorTitleColor
               //     : defaultTitleColor
               // }`}
+              // // left off here on 12/14/2023
+              // // this version has no type error, but it does not work
+              className={`${defaultStyles} ${
+                errors[stepsArrayName]?.[index]?.stepSimpleText?.solution
+                  ?.type === 'required'
+                  ? errorTitleColor
+                  : defaultTitleColor
+              }`}
             >
               <div className="form__entry-name mb-1">Simple Text</div>
             </Label>
@@ -550,7 +590,7 @@ function Step({
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               validation={{ required: true }}
             />
-            {/* // left off here on 12/13/2023 */}
+            {/* // left off here on 12/14/2023 */}
             {/* // this error message works, but it has a type error */}
             {/* {errors[stepsArrayName]?.[index]?.solution?.type === 'required' &&
             requiredFieldError('a solution for the simple text')} */}
@@ -729,7 +769,7 @@ function Step({
             {tokenIdFields.map((field, index) => (
               <>
                 Index: {index}
-                <TokenIdRange
+                <TokenIdRangeForm
                   index={index}
                   register={formMethods.register} // old error
                   key={field.id}
@@ -1167,7 +1207,7 @@ export default function PuzzleForm() {
           </div>
 
           {fields.map((field, index) => (
-            <Step
+            <StepForm
               index={index}
               register={formMethods.register}
               key={field.id}
