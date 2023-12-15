@@ -105,6 +105,11 @@ function requiredFieldError(fieldName: string) {
   )
 }
 
+// These are used to render labels (<Label />) for nested components
+const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
+const defaultTitleColor = 'text-slate-700'
+const errorTitleColor = 'text-rose-900'
+
 // // new step-page feature
 // type stepPageInputFormType = {
 //   body: string
@@ -133,13 +138,23 @@ function TokenIdRangeForm({
   index,
   register,
   remove,
-  errors,
+  // in the parent StepForm component, we have this:
+  // const { errors: tokenIdErrors } = formMethods.formState
+  // how do we pass that down to this component?
+  errors, //
 }: {
   index: number
   register: UseFormRegister<TokenIdRangeFormType>
   remove: (index: number) => void
+  // left off here on 12/15/2023
+  // this may be wrong below because the StepForm component has this: errors: FieldErrors<PuzzleFormType>
   errors: FieldErrors<TokenIdRangeFormType>
 }) {
+  // this is repeated in the StepForm component, consolidate both of them
+  // const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
+  // const defaultTitleColor = 'text-slate-700'
+  // const errorTitleColor = 'text-rose-900'
+
   return (
     <fieldset>
       <div className="mb-8 rounded-lg border-2 border-gray-500 bg-gray-100 p-6">
@@ -148,15 +163,25 @@ function TokenIdRangeForm({
         </div>
         <div id="start-id" className="form__entry mb-12">
           <Label
-            name={`failMesssage.${index}`}
-            className="form__label text-2xl font-bold text-slate-700"
-            errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            name={`startId.${index}`}
+            // className="form__label text-2xl font-bold text-slate-700"
+            className={`${defaultStyles} ${
+              // check to see if the type is 'TOKEN_ID_RANGE'
+              Array.isArray(errors[`ranges`]) &&
+              'startId' in errors[`ranges`][index] &&
+              'type' in errors[`ranges`][index].startId &&
+              errors[`ranges`][index].startId.type === 'required'
+                ? errorTitleColor
+                : defaultTitleColor
+            }`}
           >
             <div className="form__entry-name mb-1">Start ID</div>
           </Label>
           <TextField
             placeholder="Start ID"
-            {...register(`ranges.${index}.startId`, { required: true })}
+            // this line below does not match the (working) step simple text example.
+            // {...register(`ranges.${index}.startId`, { required: true })}
+            {...register(`ranges.${index}.startId`)}
             className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             validation={{ required: true }}
           />
@@ -166,7 +191,7 @@ function TokenIdRangeForm({
 
         <div id="end-id" className="form__entry mb-12">
           <Label
-            name={`failMesssage.${index}`}
+            name={`endId.${index}`}
             className="form__label text-2xl font-bold text-slate-700"
             errorClassName="form__label--error text-2xl font-bold text-rose-900"
           >
@@ -330,7 +355,8 @@ function StepForm({
   // const { errors: tokenIdErrors } = formMethods.formState as {
   //   errors: FieldErrors<CreateAllTokenIdRangesInput>
   // }
-  const { errors: tokenIdErrors } = formMethods.formState
+  // const { errors: tokenIdErrors } = formMethods.formState
+  // console.log(errors)
 
   const {
     fields: tokenIdFields,
@@ -341,10 +367,10 @@ function StepForm({
     name: tokenIdsArrayName,
   })
 
-  //const titleColor = 'text-slate-700'
-  const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
-  const defaultTitleColor = 'text-slate-700'
-  const errorTitleColor = 'text-rose-900'
+  // this is repeated in the TokenIdRangeForm component, consolidate both of them
+  // const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
+  // const defaultTitleColor = 'text-slate-700'
+  // const errorTitleColor = 'text-rose-900'
 
   return (
     <fieldset className="ik-child-form mb-8 rounded-lg border-2 border-gray-500 bg-zinc-100 p-4">
@@ -790,7 +816,7 @@ function StepForm({
                   // watch={formMethods.watch}
                   // setValue={formMethods.setValue}
                   remove={tokenIdRemove}
-                  errors={tokenIdErrors}
+                  errors={errors}
                 />
               </>
             ))}
@@ -889,7 +915,7 @@ export default function PuzzleForm() {
   //   errors: FieldErrors<PuzzleFormType>
   // }
   const { errors } = formMethods.formState
-  console.log(errors)
+  // console.log(errors)
 
   const { fields, append, remove } = useFieldArray({
     control: formMethods.control,
