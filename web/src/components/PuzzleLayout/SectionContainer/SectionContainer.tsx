@@ -11,7 +11,7 @@ const SectionContainer = ({
       <h1 className="mb-14 hidden text-3xl font-semibold md:block">
         {pageHeading}
       </h1>
-      <div className="flex flex-col justify-center pb-8 md:flex-row md:gap-6">
+      <div className="grid grid-cols-1 pb-8 md:grid-cols-2 md:items-stretch md:gap-6">
         {children}
       </div>
     </div>
