@@ -57,16 +57,26 @@ const CREATE_BURD_PUZZLE_MUTATION = gql`
 // TypeScript omit to ignore the parent `puzzleId` field
 type CreateStepInputFrontEnd = Omit<CreateStepInput, 'puzzleId'>
 
-// TypeScript omit to ignore the parent fields
+// // left off here on 12/17/2023
+// // new token-id-range-feature
+// // TypeScript omit to ignore the parent `stepId, contractAddress, & chainId` fields
 // type CreateStepTokenIdRangeInputFrontEnd = Omit<
 //   CreateStepTokenIdRangeInput,
-//   'chainId' | 'contractAddress' | 'stepId'
+//   'stepId' | 'contractAddress' | 'chainId'
+// >
+
+// // new step-page feature
+// TypeScript omit to ignore the parent `stepId` field
+// type CreateStepSimpleTextInputFrontEnd = Omit<
+//   CreateStepSimpleTextInput,
+//   'stepId'
 // >
 
 // // new step-page feature
 // this just keeps the naming conventions for `Step` and `stepPages` consistent
 // type CreateAllStepPagesInput = CreateStepPageInputFrontEnd
 
+// NOTE: appears we don't need this, this is slated for deletion
 // this just keeps the naming conventions for `Step` and `TokenIdRange` consistent
 // type CreateAllTokenIdRangesInput = CreateStepTokenIdRangeInputFrontEnd
 
@@ -83,7 +93,7 @@ type CreateAllStepTypesInput =
 const stepsArrayName = 'steps'
 
 // Set as a constant in case we need to change this string value later on
-const tokenIdsArrayName = 'ranges'
+// const tokenIdsArrayName = 'ranges'
 
 // // new step-page feature
 // New steps start with no stepPages in an empty array
@@ -124,6 +134,7 @@ const errorTitleColor = 'text-rose-900'
 //   // component is working properly with no issues
 // }
 
+// // left off here on 12/17/2023
 // this should be replaced by the actual type definition from the GraphQL schema
 type TokenIdRangeFormType = {
   type: 'TOKEN_ID_RANGE'
@@ -132,6 +143,7 @@ type TokenIdRangeFormType = {
     endId: number
   }[]
 }
+
 // This is the component that renders each token id range in
 // each step in the form if the step has a type of 'TOKEN_ID_RANGE'
 function TokenIdRangeForm({
@@ -145,10 +157,13 @@ function TokenIdRangeForm({
 }: {
   index: number
   register: UseFormRegister<TokenIdRangeFormType>
+  // // left off here on 12/17/2023
+  // register: UseFormRegister<CreateStepTokenIdRangeInputFrontEnd>
   remove: (index: number) => void
-  // left off here on 12/15/2023
   // this may be wrong below because the StepForm component has this: errors: FieldErrors<PuzzleFormType>
   errors: FieldErrors<TokenIdRangeFormType>
+  // // left off here on 12/17/2023
+  // errors: FieldErrors<CreateStepTokenIdRangeInputFrontEnd>
 }) {
   // this is repeated in the StepForm component, consolidate both of them
   // const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
@@ -173,6 +188,31 @@ function TokenIdRangeForm({
               errors[`ranges`][index].startId.type === 'required'
                 ? errorTitleColor
                 : defaultTitleColor
+
+              // // left off here on 12/17/2023
+              // // This is the version that uses the CreateStepTokenIdRangeInputFrontEnd
+              // Array.isArray(errors) &&
+              // 'startId' in errors[index] &&
+              // 'type' in errors[index].startId &&
+              // errors[index].startId.type === 'required'
+              //   ? errorTitleColor
+              //   : defaultTitleColor
+
+              // // left off here on 12/17/2023
+              // Array.isArray(errors) &&
+              // 'startId' in errors[stepTokenIdRange][index] &&
+              // 'type' in errors[stepTokenIdRange][index].startId &&
+              // errors[stepTokenIdRange][index].startId.type === 'required'
+              //   ? errorTitleColor
+              //   : defaultTitleColor
+
+              // // left off here on 12/17/2023
+              // Array.isArray(errors) &&
+              // `startIds[${index}]` in errors[stepTokenIdRange][index] &&
+              // 'type' in errors[stepTokenIdRange][index].startId &&
+              // errors[stepTokenIdRange][index].startId.type === 'required'
+              //   ? errorTitleColor
+              //   : defaultTitleColor
             }`}
           >
             <div className="form__entry-name mb-1">Start ID</div>
@@ -339,6 +379,25 @@ function StepForm({
     },
   })
 
+  // // left off here on 12/17/2023
+  // // NOTE: this doesn't seem to want to work at all,
+  // // we have to use the next option below
+  // const { register } = formMethods;
+
+  // // left off here on 12/17/2023
+  // // This mimics what is in the SDL files, but it does not work wit the
+  // // current code because of how we set 'ranges' and `ranges` - it's as if
+  // // we need a NAME for the values we want, so we use the version above
+  // const formMethods = useForm<CreateStepTokenIdRangeInputFrontEnd>({
+  //   defaultValues: {
+  //     // contractAddress
+  //     // chainId
+  //     startIds: [],  // we need this one
+  //     endIds: [],  // we need this one
+  //     // stepId:
+  //   },
+  // })
+
   // // OPTION #3 - this is my original solution, it works but produces a type error
   // const formMethods: UseFormReturn<TokenIdRangeNew> = useForm<TokenIdRangeNew>({
   //   defaultValues: {
@@ -364,10 +423,17 @@ function StepForm({
     remove: tokenIdRemove,
   } = useFieldArray({
     control: formMethods.control,
-    name: tokenIdsArrayName,
+    name: 'ranges',
+    // // left off here on 12/17/2023
+    // // alternative for when we use CreateStepTokenIdRangeInputFrontEnd
+    // name: CreateStepTokenIdRangeInputFrontEnd
+    // name: 'startAndEndIds',
+    // // UPDATE: do this instead based off of what is in `steps.sdl.ts`:
+    // // stepTokenIdRange: CreateStepTokenIdRangeInput
+    // name: 'stepTokenIdRange',
   })
 
-  // this is repeated in the TokenIdRangeForm component, consolidate both of them
+  // // This is repeated in the TokenIdRangeForm component, consolidate both of them
   // const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
   // const defaultTitleColor = 'text-slate-700'
   // const errorTitleColor = 'text-rose-900'
@@ -588,7 +654,6 @@ function StepForm({
             <Label
               name={stepTypeVal}
               // className="form__label text-2xl font-bold text-slate-700"
-              // // left off here on 12/14/2023
               // // The alternative className below *does* work, but it produces
               // // a type error because the `Step` type does not directly contain
               // // a `solution` property, the solution property exists in StepSimpleText
@@ -600,7 +665,6 @@ function StepForm({
               //     ? errorTitleColor
               //     : defaultTitleColor
               // }`}
-              // // left off here on 12/14/2023
               // // this version has no type error, but it does not work
               // className={`${defaultStyles} ${
               //   errors[stepsArrayName]?.[index]?.stepSimpleText?.solution
@@ -625,7 +689,6 @@ function StepForm({
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               validation={{ required: true }}
             />
-            {/* // left off here on 12/14/2023 */}
             {/* // this error message works, but it has a type error */}
             {/* {errors[stepsArrayName]?.[index]?.solution?.type === 'required' &&
             requiredFieldError('a solution for the simple text')} */}
@@ -910,12 +973,11 @@ export default function PuzzleForm() {
     },
   })
 
-  // left off here 12/15/2023
   // const { errors } = formMethods.formState as {
   //   errors: FieldErrors<PuzzleFormType>
   // }
   const { errors } = formMethods.formState
-  // console.log(errors)
+  console.log(errors)
 
   const { fields, append, remove } = useFieldArray({
     control: formMethods.control,
@@ -1021,6 +1083,8 @@ export default function PuzzleForm() {
                 }
               } else if (
                 step.type === 'TOKEN_ID_RANGE' &&
+                // left off here 12/17/2023
+                // this is in the `onSubmit` block
                 'startIds' in step &&
                 'endIds' in step
               ) {
@@ -1031,6 +1095,8 @@ export default function PuzzleForm() {
                     stepId: 'ignore me',
                     contractAddress: step.contractAddress,
                     chainId: step.chainId,
+                    // left off here 12/17/2023
+                    // this is in the `onSubmit` block
                     startIds: step.startIds.map(Number),
                     endIds: step.endIds.map(Number),
                   },
