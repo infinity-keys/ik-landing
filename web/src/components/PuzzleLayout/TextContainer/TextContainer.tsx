@@ -1,5 +1,7 @@
 import { PropsWithChildren, JSX } from 'react'
 
+import ResponsiveHeight from 'src/components/PuzzleLayout/ResponsiveHeight/ResponsiveHeight'
+
 const TextContainer = ({
   Button,
   children,
@@ -9,11 +11,11 @@ const TextContainer = ({
   return (
     <div className="relative flex w-full flex-col gap-4 text-center">
       <div className="flex-1 border-y-2 border-stone-50">
-        <div className="relative h-full">
-          <div className="flex h-full min-h-[300px] flex-col justify-center px-12 py-6 md:min-h-[412px]">
+        <ResponsiveHeight>
+          <div className="flex h-full flex-col justify-center px-12 py-6">
             {children}
           </div>
-        </div>
+        </ResponsiveHeight>
       </div>
 
       <div>{Button}</div>
