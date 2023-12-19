@@ -64,8 +64,7 @@ type CreateAllStepTypesInput =
   | (CreateStepInputFrontEnd & Omit<CreateStepComethApiInput, 'stepId'>)
   | (CreateStepInputFrontEnd & {
       ranges: { startId: number; endId: number }[]
-    } & Omit<CreateStepTokenIdRangeInput, 'stepId' | 'startIds' | 'endIds'>)
-  // } & Omit<CreateStepTokenIdRangeInput, 'stepId' | 'startIds'>)
+    } & Omit<CreateStepTokenIdRangeInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepOriumApiInput, 'stepId'>)
 
 // Set as a constant in case we need to change this string value later on
@@ -652,8 +651,9 @@ function StepForm({
 
           <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
             {tokenIdFields.map((field, index) => (
-              <>
-                Index: {index}
+              <div key={field.id}>
+                <p className="text-red-500">Index: {index}</p>
+                <p className="text-red-500">ID: {field.id}</p>
                 <TokenIdRangeForm
                   index={index}
                   register={formMethods.register}
@@ -661,7 +661,7 @@ function StepForm({
                   remove={tokenIdRemove}
                   errors={errors}
                 />
-              </>
+              </div>
             ))}
             <div className="mt-8 mb-20">
               <button
@@ -772,6 +772,8 @@ export default function PuzzleForm() {
     // Reset the error state if there are steps
     setHasNoSteps(false)
 
+    // debugger
+
     createArchetypalPuzzle({
       variables: {
         input: {
@@ -857,11 +859,8 @@ export default function PuzzleForm() {
                     stepId: 'ignore me',
                   },
                 }
-              } else if (
-                step.type === 'TOKEN_ID_RANGE' &&
-                'startIds' in step &&
-                'endIds' in step
-              ) {
+              } else if (step.type === 'TOKEN_ID_RANGE' && 'ranges' in step) {
+                // debugger
                 return {
                   type: 'TOKEN_ID_RANGE',
                   ...commonStepFields,
