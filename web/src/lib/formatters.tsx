@@ -58,7 +58,7 @@ export const formatUserMetadata = (user?: UserResource | null) => {
     : undefined
   const primaryEmail = user?.primaryEmailAddress?.emailAddress
   const userName =
-    user?.username || primaryEmail?.split('@')[1] || truncatedWallet || user?.id
+    user?.username || primaryEmail?.split('@')[0] || truncatedWallet || user?.id
 
   return {
     primaryEmail,
