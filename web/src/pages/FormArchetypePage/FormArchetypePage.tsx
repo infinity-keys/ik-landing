@@ -1,10 +1,6 @@
 // BROWSER LOCATION: http://localhost:8910/puzzle/archetype
-// web/src/pages/FormArchetypePage/FormArchetypePage.tsx
 
 import { useState, useRef, useEffect } from 'react'
-
-// // currently unused
-// import { fieldNameFromStoreName } from '@apollo/client/cache'
 
 import { DevTool } from '@hookform/devtools'
 import {
@@ -19,8 +15,6 @@ import {
   CreateStepTokenIdRangeInput,
   CreateStepOriumApiInput,
   CreatePuzzleInput,
-  // // new step-page feature
-  // CreateStepPageInput,
 } from 'types/graphql'
 
 import {
@@ -28,7 +22,6 @@ import {
   FormError,
   FieldErrors,
   useForm,
-  // UseFormReturn,
   Label,
   SelectField,
   Submit,
@@ -43,6 +36,15 @@ import {
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 
+// left off here on 12/18/2023
+type TokenIdRangeFormType = {
+  type: 'TOKEN_ID_RANGE'
+  ranges: {
+    startId: number
+    endId: number
+  }[]
+}
+
 const CREATE_BURD_PUZZLE_MUTATION = gql`
   mutation CreateBurdPuzzleMutation($input: CreateRewardableInput!) {
     createBurdPuzzle(input: $input) {
@@ -50,35 +52,9 @@ const CREATE_BURD_PUZZLE_MUTATION = gql`
     }
   }
 `
-// // new step-page feature
-// TypeScript omit to ignore the parent `stepId` field
-// type CreateStepPageInputFrontEnd = Omit<CreateStepPageInput, 'stepId'>
 
 // TypeScript omit to ignore the parent `puzzleId` field
 type CreateStepInputFrontEnd = Omit<CreateStepInput, 'puzzleId'>
-
-// // left off here on 12/17/2023
-// // new token-id-range-feature
-// // TypeScript omit to ignore the parent `stepId, contractAddress, & chainId` fields
-// type CreateStepTokenIdRangeInputFrontEnd = Omit<
-//   CreateStepTokenIdRangeInput,
-//   'stepId' | 'contractAddress' | 'chainId'
-// >
-
-// // new step-page feature
-// TypeScript omit to ignore the parent `stepId` field
-// type CreateStepSimpleTextInputFrontEnd = Omit<
-//   CreateStepSimpleTextInput,
-//   'stepId'
-// >
-
-// // new step-page feature
-// this just keeps the naming conventions for `Step` and `stepPages` consistent
-// type CreateAllStepPagesInput = CreateStepPageInputFrontEnd
-
-// NOTE: appears we don't need this, this is slated for deletion
-// this just keeps the naming conventions for `Step` and `TokenIdRange` consistent
-// type CreateAllTokenIdRangesInput = CreateStepTokenIdRangeInputFrontEnd
 
 // Handles all the different types of steps [stepType] that can be created
 type CreateAllStepTypesInput =
@@ -86,18 +62,14 @@ type CreateAllStepTypesInput =
   | (CreateStepInputFrontEnd & Omit<CreateStepNftCheckInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepFunctionCallInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepComethApiInput, 'stepId'>)
-  | (CreateStepInputFrontEnd & Omit<CreateStepTokenIdRangeInput, 'stepId'>)
+  | (CreateStepInputFrontEnd & {
+      ranges: { startId: number; endId: number }[]
+    } & Omit<CreateStepTokenIdRangeInput, 'stepId' | 'startIds' | 'endIds'>)
+  // } & Omit<CreateStepTokenIdRangeInput, 'stepId' | 'startIds'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepOriumApiInput, 'stepId'>)
 
 // Set as a constant in case we need to change this string value later on
 const stepsArrayName = 'steps'
-
-// Set as a constant in case we need to change this string value later on
-// const tokenIdsArrayName = 'ranges'
-
-// // new step-page feature
-// New steps start with no stepPages in an empty array
-// const startingStepPages: CreateAllStepPagesInput[] = []
 
 // New puzzles start with no steps in an empty array
 const startingSteps: CreateAllStepTypesInput[] = []
@@ -115,34 +87,10 @@ function requiredFieldError(fieldName: string) {
   )
 }
 
-// These are used to render labels (<Label />) for nested components
+// These are used to style labels (<Label />) for nested components
 const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
 const defaultTitleColor = 'text-slate-700'
 const errorTitleColor = 'text-rose-900'
-
-// // new step-page feature
-// type stepPageInputFormType = {
-//   body: string
-//   image: string
-//   showStepGuideHint: boolean
-//   sortWeight: number
-// }
-
-// // new step-page feature
-// function StepPageForm({}: {}) {
-//   // build this out once the `TokenIdRangeForm`
-//   // component is working properly with no issues
-// }
-
-// // left off here on 12/17/2023
-// this should be replaced by the actual type definition from the GraphQL schema
-type TokenIdRangeFormType = {
-  type: 'TOKEN_ID_RANGE'
-  ranges: {
-    startId: number
-    endId: number
-  }[]
-}
 
 // This is the component that renders each token id range in
 // each step in the form if the step has a type of 'TOKEN_ID_RANGE'
@@ -150,26 +98,13 @@ function TokenIdRangeForm({
   index,
   register,
   remove,
-  // in the parent StepForm component, we have this:
-  // const { errors: tokenIdErrors } = formMethods.formState
-  // how do we pass that down to this component?
-  errors, //
+  errors,
 }: {
   index: number
   register: UseFormRegister<TokenIdRangeFormType>
-  // // left off here on 12/17/2023
-  // register: UseFormRegister<CreateStepTokenIdRangeInputFrontEnd>
   remove: (index: number) => void
-  // this may be wrong below because the StepForm component has this: errors: FieldErrors<PuzzleFormType>
   errors: FieldErrors<TokenIdRangeFormType>
-  // // left off here on 12/17/2023
-  // errors: FieldErrors<CreateStepTokenIdRangeInputFrontEnd>
 }) {
-  // this is repeated in the StepForm component, consolidate both of them
-  // const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
-  // const defaultTitleColor = 'text-slate-700'
-  // const errorTitleColor = 'text-rose-900'
-
   return (
     <fieldset>
       <div className="mb-8 rounded-lg border-2 border-gray-500 bg-gray-100 p-6">
@@ -179,48 +114,19 @@ function TokenIdRangeForm({
         <div id="start-id" className="form__entry mb-12">
           <Label
             name={`startId.${index}`}
-            // className="form__label text-2xl font-bold text-slate-700"
             className={`${defaultStyles} ${
-              // check to see if the type is 'TOKEN_ID_RANGE'
               Array.isArray(errors[`ranges`]) &&
               'startId' in errors[`ranges`][index] &&
               'type' in errors[`ranges`][index].startId &&
               errors[`ranges`][index].startId.type === 'required'
                 ? errorTitleColor
                 : defaultTitleColor
-
-              // // left off here on 12/17/2023
-              // // This is the version that uses the CreateStepTokenIdRangeInputFrontEnd
-              // Array.isArray(errors) &&
-              // 'startId' in errors[index] &&
-              // 'type' in errors[index].startId &&
-              // errors[index].startId.type === 'required'
-              //   ? errorTitleColor
-              //   : defaultTitleColor
-
-              // // left off here on 12/17/2023
-              // Array.isArray(errors) &&
-              // 'startId' in errors[stepTokenIdRange][index] &&
-              // 'type' in errors[stepTokenIdRange][index].startId &&
-              // errors[stepTokenIdRange][index].startId.type === 'required'
-              //   ? errorTitleColor
-              //   : defaultTitleColor
-
-              // // left off here on 12/17/2023
-              // Array.isArray(errors) &&
-              // `startIds[${index}]` in errors[stepTokenIdRange][index] &&
-              // 'type' in errors[stepTokenIdRange][index].startId &&
-              // errors[stepTokenIdRange][index].startId.type === 'required'
-              //   ? errorTitleColor
-              //   : defaultTitleColor
             }`}
           >
             <div className="form__entry-name mb-1">Start ID</div>
           </Label>
           <TextField
             placeholder="Start ID"
-            // this line below does not match the (working) step simple text example.
-            // {...register(`ranges.${index}.startId`, { required: true })}
             {...register(`ranges.${index}.startId`)}
             className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
             validation={{ required: true }}
@@ -249,7 +155,6 @@ function TokenIdRangeForm({
           type="button"
           className="rw-button rw-button-red"
           onClick={() => {
-            // console.log(index)
             remove(index)
           }}
         >
@@ -329,18 +234,17 @@ function StepForm({
       setValue(`${stepsArrayName}.${index}`, {
         type: 'COMETH_API',
         ...commonStepFields,
-        //stepId: '',
       })
     }
     if (stepTypeVal === 'TOKEN_ID_RANGE') {
       setValue(`${stepsArrayName}.${index}`, {
         type: 'TOKEN_ID_RANGE',
         ...commonStepFields,
-        //stepId: '',
         contractAddress: '',
         chainId: '',
-        startIds: [],
-        endIds: [],
+        // startIds: [],
+        // endIds: [],
+        ranges: [],
       })
     }
   }, [index, setValue, getValues, stepTypeVal])
@@ -354,20 +258,6 @@ function StepForm({
     'HAS_CREATED_SCHOLARSHIP',
   ]
 
-  // OPTION #1
-  // use the existing types in the CreateAllTokenIdRangesInput type
-  // this creates a rewardable but it does not unregister properly
-  // const formMethods: UseFormReturn<CreateAllTokenIdRangesInput> =
-  //   useForm<CreateAllTokenIdRangesInput>({
-  //     defaultValues: {
-  //       endIds: [],
-  //       startIds: [],
-  //     },
-  //   })
-
-  // OPTION #2 This is Bloom's type error fix using
-  // TokenIdRangeFormType (defined above) instead of CreateAllTokenIdRangesInput
-  // which is defined in types/graphql.d.ts
   const formMethods = useForm<TokenIdRangeFormType>({
     defaultValues: {
       ranges: [
@@ -379,44 +269,6 @@ function StepForm({
     },
   })
 
-  // // left off here on 12/17/2023
-  // // NOTE: this doesn't seem to want to work at all,
-  // // we have to use the next option below
-  // const { register } = formMethods;
-
-  // // left off here on 12/17/2023
-  // // This mimics what is in the SDL files, but it does not work wit the
-  // // current code because of how we set 'ranges' and `ranges` - it's as if
-  // // we need a NAME for the values we want, so we use the version above
-  // const formMethods = useForm<CreateStepTokenIdRangeInputFrontEnd>({
-  //   defaultValues: {
-  //     // contractAddress
-  //     // chainId
-  //     startIds: [],  // we need this one
-  //     endIds: [],  // we need this one
-  //     // stepId:
-  //   },
-  // })
-
-  // // OPTION #3 - this is my original solution, it works but produces a type error
-  // const formMethods: UseFormReturn<TokenIdRangeNew> = useForm<TokenIdRangeNew>({
-  //   defaultValues: {
-  //     [tokenIdsArrayName]: startingTokenIds,
-  //   },
-  // })
-
-  // This works in that the form makes a puzzle, but the puzzle does not have any
-  // errors appear where there should be errors
-  // const { errors: tokenIdErrors } = formMethods.formState as {
-  //   errors: FieldErrors<TokenIdRangeNew>
-  // }
-
-  // const { errors: tokenIdErrors } = formMethods.formState as {
-  //   errors: FieldErrors<CreateAllTokenIdRangesInput>
-  // }
-  // const { errors: tokenIdErrors } = formMethods.formState
-  // console.log(errors)
-
   const {
     fields: tokenIdFields,
     append,
@@ -424,19 +276,7 @@ function StepForm({
   } = useFieldArray({
     control: formMethods.control,
     name: 'ranges',
-    // // left off here on 12/17/2023
-    // // alternative for when we use CreateStepTokenIdRangeInputFrontEnd
-    // name: CreateStepTokenIdRangeInputFrontEnd
-    // name: 'startAndEndIds',
-    // // UPDATE: do this instead based off of what is in `steps.sdl.ts`:
-    // // stepTokenIdRange: CreateStepTokenIdRangeInput
-    // name: 'stepTokenIdRange',
   })
-
-  // // This is repeated in the TokenIdRangeForm component, consolidate both of them
-  // const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
-  // const defaultTitleColor = 'text-slate-700'
-  // const errorTitleColor = 'text-rose-900'
 
   return (
     <fieldset className="ik-child-form mb-8 rounded-lg border-2 border-gray-500 bg-zinc-100 p-4">
@@ -462,14 +302,6 @@ function StepForm({
         />
         {errors[stepsArrayName]?.[index]?.failMessage?.type === 'required' &&
           requiredFieldError('Fail Message')}
-        {/*
-        This is the react-hook-form default but it returns this message:
-          "steps.1.failMessage is required" - but the user won't know WTF that means
-        <FieldError
-          name={`${stepsArrayName}.${index}.failMessage`}
-          className="rw-field-error"
-        />
-      */}
       </div>
       <div id="step-success-message" className="form__entry mb-12">
         <Label
@@ -653,25 +485,6 @@ function StepForm({
           <div className="form__entry mb-12">
             <Label
               name={stepTypeVal}
-              // className="form__label text-2xl font-bold text-slate-700"
-              // // The alternative className below *does* work, but it produces
-              // // a type error because the `Step` type does not directly contain
-              // // a `solution` property, the solution property exists in StepSimpleText
-              // // So when accessing steps or errors on steps, TypeScript only knows
-              // // about the base Step type and does not know that solution may
-              // // exist on concrete step types.
-              // className={`${defaultStyles} ${
-              //   errors[stepsArrayName]?.[index]?.solution?.type === 'required'
-              //     ? errorTitleColor
-              //     : defaultTitleColor
-              // }`}
-              // // this version has no type error, but it does not work
-              // className={`${defaultStyles} ${
-              //   errors[stepsArrayName]?.[index]?.stepSimpleText?.solution
-              //     ?.type === 'required'
-              //     ? errorTitleColor
-              //     : defaultTitleColor
-              // }`}
               className={
                 Array.isArray(errors[stepsArrayName]) &&
                 'solution' in errors[stepsArrayName][index] &&
@@ -689,9 +502,6 @@ function StepForm({
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               validation={{ required: true }}
             />
-            {/* // this error message works, but it has a type error */}
-            {/* {errors[stepsArrayName]?.[index]?.solution?.type === 'required' &&
-            requiredFieldError('a solution for the simple text')} */}
             {Array.isArray(errors[stepsArrayName]) &&
               'solution' in errors[stepsArrayName][index] &&
               'type' in errors[stepsArrayName][index].solution &&
@@ -706,9 +516,6 @@ function StepForm({
             <Label
               name="requireAllNfts"
               className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
               <div className="form__entry-name mb-1">Require All NFTs</div>
             </Label>
@@ -722,16 +529,12 @@ function StepForm({
             <Label
               name={stepTypeVal}
               className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
               <div className="form__entry-name mb-1">Contract Address</div>
             </Label>
             <TextField
               placeholder="Contract Address"
               {...register(
-                // `${stepsArrayName}.${index}.nftCheckData.contractAddress`
                 `${stepsArrayName}.${index}.nftCheckData.0.contractAddress`
               )}
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
@@ -741,9 +544,6 @@ function StepForm({
             <Label
               name={stepTypeVal}
               className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
               <div className="form__entry-name mb-1">Chain Id</div>
             </Label>
@@ -757,9 +557,6 @@ function StepForm({
             <Label
               name={stepTypeVal}
               className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
               <div className="form__entry-name mb-1">Token Id</div>
             </Label>
@@ -773,9 +570,6 @@ function StepForm({
             <Label
               name={stepTypeVal}
               className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
               <div className="form__entry-name mb-1">POAP Event Id</div>
             </Label>
@@ -795,9 +589,6 @@ function StepForm({
             <Label
               name={stepTypeVal}
               className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
               <div className="form__entry-name mb-1">Method Ids</div>
             </Label>
@@ -811,9 +602,6 @@ function StepForm({
             <Label
               name={stepTypeVal}
               className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
               <div className="form__entry-name mb-1">Contract Address</div>
             </Label>
@@ -837,9 +625,6 @@ function StepForm({
             <Label
               name={stepTypeVal}
               className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
               <div className="form__entry-name mb-1">Contract Address</div>
             </Label>
@@ -854,9 +639,6 @@ function StepForm({
             <Label
               name={stepTypeVal}
               className="form__label text-2xl font-bold text-slate-700"
-              // this errorClassName is not working for the <Step /> component...
-              // ...only the <Puzzle /> component, possibly because the former is nested
-              // errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
               <div className="form__entry-name mb-1">Chain Id</div>
             </Label>
@@ -874,10 +656,8 @@ function StepForm({
                 Index: {index}
                 <TokenIdRangeForm
                   index={index}
-                  register={formMethods.register} // old error
+                  register={formMethods.register}
                   key={field.id}
-                  // watch={formMethods.watch}
-                  // setValue={formMethods.setValue}
                   remove={tokenIdRemove}
                   errors={errors}
                 />
@@ -973,9 +753,6 @@ export default function PuzzleForm() {
     },
   })
 
-  // const { errors } = formMethods.formState as {
-  //   errors: FieldErrors<PuzzleFormType>
-  // }
   const { errors } = formMethods.formState
   console.log(errors)
 
@@ -1007,7 +784,6 @@ export default function PuzzleForm() {
           // requirements: input.rewardable.requirements,
           // requirements: input.puzzle.requirements,
           puzzle: {
-            // isAnon: false,
             rewardableId: 'ignore me',
             requirements: input.puzzle.requirements,
             coverImage: input.puzzle.coverImage,
@@ -1026,7 +802,7 @@ export default function PuzzleForm() {
               }
               if (step.type === 'SIMPLE_TEXT' && 'solution' in step) {
                 return {
-                  type: 'SIMPLE_TEXT', // discriminator
+                  type: 'SIMPLE_TEXT',
                   ...commonStepFields,
                   stepSimpleText: {
                     stepId: 'ignore me',
@@ -1036,7 +812,7 @@ export default function PuzzleForm() {
                 }
               } else if (step.type === 'NFT_CHECK' && 'nftCheckData' in step) {
                 return {
-                  type: 'NFT_CHECK', // discriminator
+                  type: 'NFT_CHECK',
                   ...commonStepFields,
                   stepNftCheck: {
                     stepId: 'ignore me',
@@ -1065,7 +841,7 @@ export default function PuzzleForm() {
                 }
               } else if (step.type === 'FUNCTION_CALL' && 'methodIds' in step) {
                 return {
-                  type: 'FUNCTION_CALL', // discriminator
+                  type: 'FUNCTION_CALL',
                   ...commonStepFields,
                   stepFunctionCall: {
                     stepId: 'ignore me',
@@ -1075,7 +851,7 @@ export default function PuzzleForm() {
                 }
               } else if (step.type === 'COMETH_API' && 'stepId' in step) {
                 return {
-                  type: 'COMETH_API', // discriminator
+                  type: 'COMETH_API',
                   ...commonStepFields,
                   stepComethApi: {
                     stepId: 'ignore me',
@@ -1083,22 +859,22 @@ export default function PuzzleForm() {
                 }
               } else if (
                 step.type === 'TOKEN_ID_RANGE' &&
-                // left off here 12/17/2023
-                // this is in the `onSubmit` block
                 'startIds' in step &&
                 'endIds' in step
               ) {
                 return {
-                  type: 'TOKEN_ID_RANGE', // discriminator
+                  type: 'TOKEN_ID_RANGE',
                   ...commonStepFields,
                   stepTokenIdRange: {
                     stepId: 'ignore me',
                     contractAddress: step.contractAddress,
                     chainId: step.chainId,
-                    // left off here 12/17/2023
-                    // this is in the `onSubmit` block
-                    startIds: step.startIds.map(Number),
-                    endIds: step.endIds.map(Number),
+                    // original placeholder values:
+                    // startIds: step.startIds.map(Number),
+                    // endIds: step.endIds.map(Number),
+
+                    startIds: step.ranges.map((range) => range.startId),
+                    endIds: step.ranges.map((range) => range.endId),
                   },
                 }
               } else if (
@@ -1107,7 +883,7 @@ export default function PuzzleForm() {
                 'checkType' in step
               ) {
                 return {
-                  type: 'ORIUM_API', // discriminator
+                  type: 'ORIUM_API',
                   ...commonStepFields,
                   stepOriumApi: {
                     stepId: 'ignore me',
@@ -1180,11 +956,6 @@ export default function PuzzleForm() {
               placeholder="Name"
               validation={{ required: true }}
             />
-            {/*
-              This is the react-hook-form default but it returns this message:
-              "rewardable.name is required" - but the user won't know WTF that means
-              <FieldError name="rewardable.name" className="rw-field-error" />
-            */}
             {errors.rewardable?.name?.type === 'required' &&
               requiredFieldError('a Name')}
           </div>
