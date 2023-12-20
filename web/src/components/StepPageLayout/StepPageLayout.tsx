@@ -4,6 +4,7 @@ import { Transition } from '@headlessui/react'
 import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
 
 import Markdown from 'src/components/Markdown/Markdown'
+import ResponsiveHeight from 'src/components/PuzzleLayout/ResponsiveHeight/ResponsiveHeight'
 
 interface OverlayContent {
   text: string
@@ -28,7 +29,7 @@ const StepPageLayout = ({
     typeof setShowOverlay !== 'undefined'
 
   return (
-    <div className="relative h-full min-h-[300px] md:min-h-[412px]">
+    <ResponsiveHeight>
       <div className="flex h-full flex-col justify-between px-12">
         <div className="markdown flex w-full flex-1 items-center py-6">
           <div className="w-full">{children}</div>
@@ -70,7 +71,7 @@ const StepPageLayout = ({
           </div>
         </Transition>
       )}
-    </div>
+    </ResponsiveHeight>
   )
 }
 
