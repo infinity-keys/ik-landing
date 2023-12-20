@@ -36,7 +36,7 @@ import {
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 
-// left off here on 12/18/2023
+// left off here on 12/20/2023
 type TokenIdRangeFormType = {
   type: 'TOKEN_ID_RANGE'
   ranges: {
@@ -44,6 +44,23 @@ type TokenIdRangeFormType = {
     endId: number
   }[]
 }
+
+// // alternate type definition for the Token ID Range that matches the
+// // PuzzleFormType type definition below
+// type TokenIdRangeFormType = {
+//   contractAddress: CreateStepTokenIdRangeInput['contractAddress'] extends number
+//     ? number
+//     : never
+//   chainId: CreateStepTokenIdRangeInput['chainId'] extends number
+//     ? number
+//     : never
+//   startIds: CreateStepTokenIdRangeInput['startIds'] extends number[]
+//     ? number[]
+//     : never
+//   endIds: CreateStepTokenIdRangeInput['endIds'] extends number[]
+//     ? number[]
+//     : never
+// }
 
 const CREATE_BURD_PUZZLE_MUTATION = gql`
   mutation CreateBurdPuzzleMutation($input: CreateRewardableInput!) {
@@ -63,6 +80,7 @@ type CreateAllStepTypesInput =
   | (CreateStepInputFrontEnd & Omit<CreateStepFunctionCallInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepComethApiInput, 'stepId'>)
   | (CreateStepInputFrontEnd & {
+      // left off here on 12/20/2023
       ranges: { startId: number; endId: number }[]
     } & Omit<CreateStepTokenIdRangeInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepOriumApiInput, 'stepId'>)
@@ -121,6 +139,17 @@ function TokenIdRangeForm({
                 ? errorTitleColor
                 : defaultTitleColor
             }`}
+
+            // // Left off here on 12/20/2023
+            // className={`${defaultStyles} ${
+            //   Array.isArray(errors[`startIds`]) &&
+            //   Array.isArray(errors[`startIds`][index]?.startId) &&
+            //   errors[stepsArrayName][`startIds`].startIds.some(
+            //     (startIdError) => startIdError.type === 'required'
+            //   )
+            //     ? errorTitleColor
+            //     : defaultTitleColor
+            // }`}
           >
             <div className="form__entry-name mb-1">Start ID</div>
           </Label>
@@ -132,6 +161,11 @@ function TokenIdRangeForm({
           />
           {errors[`ranges`]?.[index]?.startId?.type === 'required' &&
             requiredFieldError('a Start ID')}
+
+          {/* Left off here on 12/20/2023 */}
+          {/* {errors[stepsArrayName][index].startIds.some(
+            (startIdError) => startIdError.type === 'required'
+          ) && requiredFieldError('a Start ID')} */}
         </div>
 
         <div id="end-id" className="form__entry mb-12">
@@ -244,6 +278,12 @@ function StepForm({
         // startIds: [],
         // endIds: [],
         ranges: [],
+
+        // left off here on 12/20/2023
+        // contractAddress: 0, // Default value as a number
+        // chainId: 0, // Default value as a number
+        // startIds: [0], // Initialize as an array with a default number
+        // endIds: [0], // Initialize as an array with a default number
       })
     }
   }, [index, setValue, getValues, stepTypeVal])
@@ -257,6 +297,7 @@ function StepForm({
     'HAS_CREATED_SCHOLARSHIP',
   ]
 
+  // left off here on 12/20/2023
   const formMethods = useForm<TokenIdRangeFormType>({
     defaultValues: {
       ranges: [
@@ -276,6 +317,33 @@ function StepForm({
     control: formMethods.control,
     name: 'ranges',
   })
+
+  // const formMethods = useForm<TokenIdRangeFormType>({
+  //   defaultValues: {
+  //     contractAddress: 0,
+  //     chainId: 0,
+  //     startIds: [0],
+  //     endIds: [0],
+  //   },
+  // })
+
+  // const {
+  //   fields: startIdFields,
+  //   append: appendStartId,
+  //   remove: removeStartId,
+  // } = useFieldArray({
+  //   control: formMethods.control,
+  //   name: 'startIds',
+  // })
+
+  // const {
+  //   fields: endIdFields,
+  //   append: appendEndId,
+  //   remove: removeEndId,
+  // } = useFieldArray({
+  //   control: formMethods.control,
+  //   name: 'endIds',
+  // })
 
   return (
     <fieldset className="ik-child-form mb-8 rounded-lg border-2 border-gray-500 bg-zinc-100 p-4">
