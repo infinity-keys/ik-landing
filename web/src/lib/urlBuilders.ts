@@ -64,7 +64,7 @@ export const rewardableGridRoute = ({
 
 export const connectAccountApiUrl = (provider: 'discord') => {
   const url = new URL(
-    `${global.RWJS_API_URL}/connect-account`,
+    `${window.RWJS_API_URL}/connect-account`,
     window.location.origin
   )
   url.searchParams.append('provider', provider)

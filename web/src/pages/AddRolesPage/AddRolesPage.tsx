@@ -24,7 +24,7 @@ const LENS_FORM_ROLE_MUTATION = gql`
 
 const AddRolesPage = () => {
   const { address } = useAccount()
-  const { currentUser } = useAuth()
+  const { currentUser, hasRole } = useAuth()
   const { openConnectModal } = useConnectModal()
 
   const [addRole, { loading, data }] = useMutation<
@@ -49,7 +49,7 @@ const AddRolesPage = () => {
         <LoadingIcon />
       ) : (
         <div className="mx-auto max-w-prose justify-center text-center">
-          {(currentUser && currentUser.roles.includes('LENS_FORM')) ||
+          {(currentUser && hasRole('LENS_FORM')) ||
           data?.addLensFormRole.success ? (
             <div>
               <p className="mb-8">
