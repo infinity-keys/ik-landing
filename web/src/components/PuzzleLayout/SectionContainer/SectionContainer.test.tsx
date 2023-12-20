@@ -1,16 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import { stepBySlug } from '../StepCell/StepCell.mock'
-
-import StepsLayout from './StepsLayout'
+import SectionContainer from './SectionContainer'
 
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe.skip('StepsLayout', () => {
+describe('SectionContainer', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<StepsLayout step={stepBySlug().step} />)
+      render(<SectionContainer pageHeading="Puzzle 1" />)
     }).not.toThrow()
   })
 })
