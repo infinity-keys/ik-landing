@@ -111,7 +111,7 @@ function StepForm({
   getValues: UseFormGetValues<PuzzleFormType>
   remove: (index: number) => void
   errors: FieldErrors<PuzzleFormType>
-  control: Control<PuzzleFormType, any>
+  control: Control<PuzzleFormType, unknown>
 }) {
   // Watch for `stepTypeVal` changes so that we can set the default values
   const stepTypeVal = watch(`${stepsArrayName}.${index}.type`)
@@ -222,7 +222,7 @@ function StepForm({
       </div>
       <div id="step-fail-message" className="form__entry mb-12">
         <Label
-          name={`failMesssage.${index}`}
+          name={`failMessage.${index}`}
           className={`${defaultStyles} ${
             errors[stepsArrayName]?.[index]?.failMessage?.type === 'required'
               ? errorTitleColor
@@ -919,7 +919,7 @@ export default function PuzzleForm() {
       return (
         <div className="ik-form-field-error">
           I&apos;m sorry, but {slug} is not a valid slug; use lowercase letters
-          and/or numbers seperated by dashes
+          and/or numbers separated by dashes
         </div>
       )
     }
@@ -1032,7 +1032,7 @@ export default function PuzzleForm() {
             {/* {errors.rewardable?.orgId?.type === 'required' &&
               requiredFieldError('an Organizational ID')} */}
           </div>
-          <div id="puzzle-list-publicaly" className="form__entry mb-12">
+          <div id="puzzle-list-publicly" className="form__entry mb-12">
             <Label
               name="rewardable.listPublicly"
               className="form__label text-2xl font-bold text-slate-700"
