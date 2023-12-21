@@ -33,33 +33,17 @@ import {
   UseFormGetValues,
   CheckboxField,
   NumberField,
+  Control,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 
 // left off here on 12/20/2023
-type TokenIdRangeFormType = {
-  type: 'TOKEN_ID_RANGE'
-  ranges: {
-    startId: number
-    endId: number
-  }[]
-}
-
-// // alternate type definition for the Token ID Range that matches the
-// // PuzzleFormType type definition below
 // type TokenIdRangeFormType = {
-//   contractAddress: CreateStepTokenIdRangeInput['contractAddress'] extends number
-//     ? number
-//     : never
-//   chainId: CreateStepTokenIdRangeInput['chainId'] extends number
-//     ? number
-//     : never
-//   startIds: CreateStepTokenIdRangeInput['startIds'] extends number[]
-//     ? number[]
-//     : never
-//   endIds: CreateStepTokenIdRangeInput['endIds'] extends number[]
-//     ? number[]
-//     : never
+//   type: 'TOKEN_ID_RANGE'
+//   ranges: {
+//     startId: number
+//     endId: number
+//   }[]
 // }
 
 const CREATE_BURD_PUZZLE_MUTATION = gql`
@@ -109,95 +93,6 @@ const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
 const defaultTitleColor = 'text-slate-700'
 const errorTitleColor = 'text-rose-900'
 
-// This is the component that renders each token id range in
-// each step in the form if the step has a type of 'TOKEN_ID_RANGE'
-function TokenIdRangeForm({
-  index,
-  register,
-  remove,
-  errors,
-}: {
-  index: number
-  register: UseFormRegister<TokenIdRangeFormType>
-  remove: (index: number) => void
-  errors: FieldErrors<TokenIdRangeFormType>
-}) {
-  return (
-    <fieldset>
-      <div className="mb-8 rounded-lg border-2 border-gray-500 bg-gray-100 p-6">
-        <div className="form__label mb-12 text-center text-3xl font-extrabold tracking-widest text-slate-700">
-          Token ID Range {index + 1}
-        </div>
-        <div id="start-id" className="form__entry mb-12">
-          <Label
-            name={`startId.${index}`}
-            className={`${defaultStyles} ${
-              Array.isArray(errors[`ranges`]) &&
-              'startId' in errors[`ranges`][index] &&
-              'type' in errors[`ranges`][index].startId &&
-              errors[`ranges`][index].startId.type === 'required'
-                ? errorTitleColor
-                : defaultTitleColor
-            }`}
-
-            // // Left off here on 12/20/2023
-            // className={`${defaultStyles} ${
-            //   Array.isArray(errors[`startIds`]) &&
-            //   Array.isArray(errors[`startIds`][index]?.startId) &&
-            //   errors[stepsArrayName][`startIds`].startIds.some(
-            //     (startIdError) => startIdError.type === 'required'
-            //   )
-            //     ? errorTitleColor
-            //     : defaultTitleColor
-            // }`}
-          >
-            <div className="form__entry-name mb-1">Start ID</div>
-          </Label>
-          <TextField
-            placeholder="Start ID"
-            {...register(`ranges.${index}.startId`)}
-            className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-            validation={{ required: true }}
-          />
-          {errors[`ranges`]?.[index]?.startId?.type === 'required' &&
-            requiredFieldError('a Start ID')}
-
-          {/* Left off here on 12/20/2023 */}
-          {/* {errors[stepsArrayName][index].startIds.some(
-            (startIdError) => startIdError.type === 'required'
-          ) && requiredFieldError('a Start ID')} */}
-        </div>
-
-        <div id="end-id" className="form__entry mb-12">
-          <Label
-            name={`endId.${index}`}
-            className="form__label text-2xl font-bold text-slate-700"
-            errorClassName="form__label--error text-2xl font-bold text-rose-900"
-          >
-            <div className="form__entry-name mb-1">End ID</div>
-          </Label>
-          <TextField
-            placeholder="End ID"
-            {...register(`ranges.${index}.endId`, { required: true })}
-            className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-          />
-          {errors[`ranges`]?.[index]?.endId?.type === 'required' &&
-            requiredFieldError('an End ID')}
-        </div>
-        <button
-          type="button"
-          className="rw-button rw-button-red"
-          onClick={() => {
-            remove(index)
-          }}
-        >
-          <div className="">Remove Token ID Range</div>
-        </button>
-      </div>
-    </fieldset>
-  )
-}
-
 // This is the component that renders each step in the puzzle form
 function StepForm({
   index,
@@ -207,6 +102,7 @@ function StepForm({
   getValues,
   remove,
   errors,
+  control,
 }: {
   index: number
   register: UseFormRegister<PuzzleFormType>
@@ -215,6 +111,7 @@ function StepForm({
   getValues: UseFormGetValues<PuzzleFormType>
   remove: (index: number) => void
   errors: FieldErrors<PuzzleFormType>
+  control: Control<PuzzleFormType, any>
 }) {
   // Watch for `stepTypeVal` changes so that we can set the default values
   const stepTypeVal = watch(`${stepsArrayName}.${index}.type`)
@@ -298,52 +195,25 @@ function StepForm({
   ]
 
   // left off here on 12/20/2023
-  const formMethods = useForm<TokenIdRangeFormType>({
-    defaultValues: {
-      ranges: [
-        {
-          startId: 0,
-          endId: 0,
-        },
-      ],
-    },
-  })
+  // const formMethods = useForm<TokenIdRangeFormType>({
+  //   defaultValues: {
+  //     ranges: [
+  //       {
+  //         startId: 0,
+  //         endId: 0,
+  //       },
+  //     ],
+  //   },
+  // })
 
   const {
     fields: tokenIdFields,
     append,
-    remove: tokenIdRemove,
+    // remove: tokenIdRemove,
   } = useFieldArray({
-    control: formMethods.control,
-    name: 'ranges',
+    control,
+    name: `${stepsArrayName}.${index}.ranges`,
   })
-
-  // const formMethods = useForm<TokenIdRangeFormType>({
-  //   defaultValues: {
-  //     contractAddress: 0,
-  //     chainId: 0,
-  //     startIds: [0],
-  //     endIds: [0],
-  //   },
-  // })
-
-  // const {
-  //   fields: startIdFields,
-  //   append: appendStartId,
-  //   remove: removeStartId,
-  // } = useFieldArray({
-  //   control: formMethods.control,
-  //   name: 'startIds',
-  // })
-
-  // const {
-  //   fields: endIdFields,
-  //   append: appendEndId,
-  //   remove: removeEndId,
-  // } = useFieldArray({
-  //   control: formMethods.control,
-  //   name: 'endIds',
-  // })
 
   return (
     <fieldset className="ik-child-form mb-8 rounded-lg border-2 border-gray-500 bg-zinc-100 p-4">
@@ -722,13 +592,75 @@ function StepForm({
               <div key={field.id}>
                 <p className="text-red-500">Index: {index}</p>
                 <p className="text-red-500">ID: {field.id}</p>
-                <TokenIdRangeForm
-                  index={index}
-                  register={formMethods.register}
-                  key={field.id}
-                  remove={tokenIdRemove}
-                  errors={errors}
-                />
+                <fieldset>
+                  <div className="mb-8 rounded-lg border-2 border-gray-500 bg-gray-100 p-6">
+                    <div className="form__label mb-12 text-center text-3xl font-extrabold tracking-widest text-slate-700">
+                      Token ID Range {index + 1}
+                    </div>
+                    <div id="start-id" className="form__entry mb-12">
+                      <Label
+                        name={`startId.${index}`}
+                        className={`${defaultStyles} ${
+                          // Array.isArray(errors[`ranges`]) &&
+                          // 'startId' in errors[`ranges`][index] &&
+                          // 'type' in errors[`ranges`][index].startId &&
+                          // errors[`ranges`][index].startId.type === 'required'
+                          Array.isArray(errors[stepsArrayName]) &&
+                          'ranges' in errors[stepsArrayName][index] &&
+                          'startId' in errors[stepsArrayName][index].ranges // &&
+                            ? // 'type' in errors[stepsArrayName][index].ranges
+                              errorTitleColor
+                            : defaultTitleColor
+                        }`}
+                      >
+                        <div className="form__entry-name mb-1">Start ID</div>
+                      </Label>
+                      <TextField
+                        placeholder="Start ID"
+                        // {...register(`ranges.${index}.startId`)}
+                        {...register(
+                          `${stepsArrayName}.${index}.ranges.${index}.startId`
+                        )}
+                        className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                        validation={{ required: true }}
+                      />
+                      {/* {errors[`ranges`]?.[index]?.startId?.type ===
+                        'required' && requiredFieldError('a Start ID')} */}
+
+                      {errors[stepsArrayName]?.ranges?.[index]?.startId
+                        ?.type === 'required' &&
+                        requiredFieldError('a Start ID')}
+                    </div>
+
+                    <div id="end-id" className="form__entry mb-12">
+                      <Label
+                        name={`endId.${index}`}
+                        className="form__label text-2xl font-bold text-slate-700"
+                        errorClassName="form__label--error text-2xl font-bold text-rose-900"
+                      >
+                        <div className="form__entry-name mb-1">End ID</div>
+                      </Label>
+                      <TextField
+                        placeholder="End ID"
+                        {...register(`ranges.${index}.endId`, {
+                          required: true,
+                        })}
+                        className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                      />
+                      {errors[`ranges`]?.[index]?.endId?.type === 'required' &&
+                        requiredFieldError('an End ID')}
+                    </div>
+                    <button
+                      type="button"
+                      className="rw-button rw-button-red"
+                      onClick={() => {
+                        remove(index)
+                      }}
+                    >
+                      <div className="">Remove Token ID Range</div>
+                    </button>
+                  </div>
+                </fieldset>
               </div>
             ))}
             <div className="mt-8 mb-20">
@@ -1163,6 +1095,7 @@ export default function PuzzleForm() {
               getValues={formMethods.getValues}
               remove={remove}
               errors={errors}
+              control={formMethods.control}
             />
           ))}
           <div className="rw-button-group">
