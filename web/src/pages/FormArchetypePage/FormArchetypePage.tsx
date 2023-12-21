@@ -560,7 +560,7 @@ function StepForm({
           <div className="form__entry mb-12"></div>
           <div className="form__entry mb-12">
             <Label
-              name={stepTypeVal}
+              name={`${stepsArrayName}.${index}.contractAddress`}
               className="form__label text-2xl font-bold text-slate-700"
             >
               <div className="form__entry-name mb-1">Contract Address</div>
@@ -574,7 +574,7 @@ function StepForm({
           </div>
           <div className="form__entry mb-12">
             <Label
-              name={stepTypeVal}
+              name={`${stepsArrayName}.${index}.chainId`}
               className="form__label text-2xl font-bold text-slate-700"
             >
               <div className="form__entry-name mb-1">Chain Id</div>
@@ -756,6 +756,7 @@ export default function PuzzleForm() {
   const { errors } = formMethods.formState
   console.log(errors)
 
+  // Steps Field Array
   const { fields, append, remove } = useFieldArray({
     control: formMethods.control,
     name: stepsArrayName,
