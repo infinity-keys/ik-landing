@@ -41,5 +41,6 @@ export async function execute(interaction: CommandInteraction) {
   await interaction.reply({
     content: `you're all set`,
     fetchReply: true,
+    ephemeral: true,
   })
 }
