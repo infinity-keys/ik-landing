@@ -167,7 +167,7 @@ function StepForm({
       })
     }
     if (stepTypeVal === 'TOKEN_ID_RANGE') {
-      console.log('hello world')
+      console.log('token id range selected')
       setValue(`${stepsArrayName}.${index}`, {
         type: 'TOKEN_ID_RANGE',
         ...commonStepFields,
@@ -197,6 +197,14 @@ function StepForm({
     control,
     name: `${stepsArrayName}.${index}.ranges`,
   })
+
+  // this function is used to remove a token id range fieldset
+  const removeFieldset = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const fieldset = event.currentTarget.closest('fieldset')
+    if (fieldset) {
+      fieldset.remove()
+    }
+  }
 
   return (
     <fieldset className="ik-child-form mb-8 rounded-lg border-2 border-gray-500 bg-zinc-100 p-4">
@@ -544,7 +552,15 @@ function StepForm({
           <div className="form__entry mb-12">
             <Label
               name={`${stepsArrayName}.${index}.contractAddress`}
-              className="form__label text-2xl font-bold text-slate-700"
+              className={
+                Array.isArray(errors[stepsArrayName]) &&
+                'contractAddress' in errors[stepsArrayName][index] &&
+                'type' in errors[stepsArrayName][index].contractAddress &&
+                errors[stepsArrayName][index].contractAddress.type ===
+                  'required'
+                  ? `${defaultStyles} ${errorTitleColor}`
+                  : `${defaultStyles} ${defaultTitleColor}`
+              }
             >
               <div className="form__entry-name mb-1">Contract Address</div>
             </Label>
@@ -554,11 +570,24 @@ function StepForm({
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               validation={{ required: true }}
             />
+            {Array.isArray(errors[stepsArrayName]) &&
+              'contractAddress' in errors[stepsArrayName][index] &&
+              'type' in errors[stepsArrayName][index].contractAddress &&
+              errors[stepsArrayName][index].contractAddress.type ===
+                'required' &&
+              requiredFieldError('a contract address')}
           </div>
           <div className="form__entry mb-12">
             <Label
               name={`${stepsArrayName}.${index}.chainId`}
-              className="form__label text-2xl font-bold text-slate-700"
+              className={
+                Array.isArray(errors[stepsArrayName]) &&
+                'chainId' in errors[stepsArrayName][index] &&
+                'type' in errors[stepsArrayName][index].chainId &&
+                errors[stepsArrayName][index].chainId.type === 'required'
+                  ? `${defaultStyles} ${errorTitleColor}`
+                  : `${defaultStyles} ${defaultTitleColor}`
+              }
             >
               <div className="form__entry-name mb-1">Chain Id</div>
             </Label>
@@ -568,26 +597,33 @@ function StepForm({
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               validation={{ required: true }}
             />
+            {Array.isArray(errors[stepsArrayName]) &&
+              'chainId' in errors[stepsArrayName][index] &&
+              'type' in errors[stepsArrayName][index].chainId &&
+              errors[stepsArrayName][index].chainId.type === 'required' &&
+              requiredFieldError('a chain id')}
           </div>
 
           <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
             {tokenIdFields.map((field, tokenIdIndex) => (
               <div key={field.id}>
-                <p className="text-red-500">Index: {tokenIdIndex}</p>
-                <p className="text-red-500">ID: {field.id}</p>
                 <fieldset>
+                  {/* these are temporary values for debugging purposes */}
+                  <p className="text-red-500">Index: {tokenIdIndex}</p>
+                  <p className="text-red-500">ID: {field.id}</p>
                   <div className="mb-8 rounded-lg border-2 border-gray-500 bg-gray-100 p-6">
                     <div className="form__label mb-12 text-center text-3xl font-extrabold tracking-widest text-slate-700">
-                      Token ID Range {tokenIdIndex}
+                      Token ID Range {tokenIdIndex + 1}
                     </div>
                     <div id="start-id" className="form__entry mb-12">
                       <Label
                         name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`}
                         className={`${defaultStyles} ${
                           Array.isArray(errors[stepsArrayName]) &&
-                          'ranges' in errors[stepsArrayName][index] &&
-                          'startId' in
-                            errors[stepsArrayName][index].ranges[tokenIdIndex] // &&
+                          Array.isArray(errors[stepsArrayName]) &&
+                          errors[stepsArrayName][index]?.ranges &&
+                          errors[stepsArrayName][index].ranges[tokenIdIndex]
+                            ?.startId
                             ? errorTitleColor
                             : defaultTitleColor
                         }`}
@@ -612,32 +648,36 @@ function StepForm({
                     <div id="end-id" className="form__entry mb-12">
                       <Label
                         name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`}
-                        className="form__label text-2xl font-bold text-slate-700"
-                        errorClassName="form__label--error text-2xl font-bold text-rose-900"
+                        className={`${defaultStyles} ${
+                          Array.isArray(errors[stepsArrayName]) &&
+                          errors[stepsArrayName][index]?.ranges &&
+                          errors[stepsArrayName][index].ranges[tokenIdIndex]
+                            ?.endId
+                            ? errorTitleColor
+                            : defaultTitleColor
+                        }`}
                       >
                         <div className="form__entry-name mb-1">End ID</div>
                       </Label>
                       <TextField
                         placeholder="End ID"
                         {...register(
-                          `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`,
-                          {
-                            required: true,
-                          }
+                          `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`
                         )}
                         className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                        validation={{ required: true }}
                       />
+
                       {Array.isArray(errors[stepsArrayName]) &&
                         errors[stepsArrayName][index]?.ranges?.[tokenIdIndex]
                           ?.endId?.type === 'required' &&
                         requiredFieldError('an End ID')}
                     </div>
+
                     <button
                       type="button"
                       className="rw-button rw-button-red"
-                      onClick={() => {
-                        remove(index)
-                      }}
+                      onClick={removeFieldset}
                     >
                       <div className="">Remove Token ID Range</div>
                     </button>
