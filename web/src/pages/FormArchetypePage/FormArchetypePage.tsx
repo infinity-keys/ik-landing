@@ -37,15 +37,6 @@ import {
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 
-// left off here on 12/20/2023
-// type TokenIdRangeFormType = {
-//   type: 'TOKEN_ID_RANGE'
-//   ranges: {
-//     startId: number
-//     endId: number
-//   }[]
-// }
-
 const CREATE_BURD_PUZZLE_MUTATION = gql`
   mutation CreateBurdPuzzleMutation($input: CreateRewardableInput!) {
     createBurdPuzzle(input: $input) {
@@ -198,9 +189,19 @@ function StepForm({
     name: `${stepsArrayName}.${index}.ranges`,
   })
 
-  // this function is used to remove a token id range fieldset
-  const removeFieldset = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const fieldset = event.currentTarget.closest('fieldset')
+  // // this function is used to remove a token id range fieldset
+  // // this works but may not be ideal
+  // const removeFieldset = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   const fieldset = event.currentTarget.closest('fieldset')
+  //   if (fieldset) {
+  //     fieldset.remove()
+  //   }
+  // }
+
+  // // this is a refactor of the above function
+  // // left off here on 12/27/2023
+  const removeFieldset = (tokenIdIndex: number) => {
+    const fieldset = document.getElementById(`token-id-index-${tokenIdIndex}`)
     if (fieldset) {
       fieldset.remove()
     }
@@ -607,7 +608,7 @@ function StepForm({
           <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
             {tokenIdFields.map((field, tokenIdIndex) => (
               <div key={field.id}>
-                <fieldset>
+                <fieldset id={`token-id-index-${tokenIdIndex}`}>
                   {/* these are temporary values for debugging purposes */}
                   <p className="text-red-500">Index: {tokenIdIndex}</p>
                   <p className="text-red-500">ID: {field.id}</p>
@@ -677,7 +678,9 @@ function StepForm({
                     <button
                       type="button"
                       className="rw-button rw-button-red"
-                      onClick={removeFieldset}
+                      // left off here on 12/27/2023
+                      // onClick={removeFieldset}
+                      onClick={() => removeFieldset(tokenIdIndex)}
                     >
                       <div className="">Remove Token ID Range</div>
                     </button>
@@ -895,8 +898,9 @@ export default function PuzzleForm() {
                     // startIds: step.startIds.map(Number),
                     // endIds: step.endIds.map(Number),
 
-                    startIds: step.ranges.map((range) => range.startId),
-                    endIds: step.ranges.map((range) => range.endId),
+                    // // left off here on 12/27/2023
+                    startIds: step.ranges.map((range) => Number(range.startId)),
+                    endIds: step.ranges.map((range) => Number(range.endId)),
                   },
                 }
               } else if (
