@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 
 import { DevTool } from '@hookform/devtools'
+import useFormPersist from 'react-hook-form-persist'
 import {
   CreateRewardableInput,
   MutationcreateBurdPuzzleArgs,
@@ -92,6 +93,8 @@ function requiredFieldError(fieldName: string) {
 const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
 const defaultTitleColor = 'text-slate-700'
 const errorTitleColor = 'text-rose-900'
+
+const LOCAL_STORAGE_KEY = 'puzzleForm'
 
 // This is the component that renders each step in the puzzle form
 function StepForm({
@@ -742,6 +745,12 @@ export default function PuzzleForm() {
   const { fields, append, remove } = useFieldArray({
     control: formMethods.control,
     name: stepsArrayName,
+  })
+
+  useFormPersist(LOCAL_STORAGE_KEY, {
+    watch: formMethods.watch,
+    setValue: formMethods.setValue,
+    storage: window.localStorage,
   })
 
   const onSubmit = async (input: PuzzleFormType) => {
