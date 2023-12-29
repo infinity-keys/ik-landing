@@ -28353,6 +28353,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hook-form-persist@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "react-hook-form-persist@npm:3.0.0"
+  peerDependencies:
+    react: ">= 16.3"
+    react-hook-form: ">= 6"
+  checksum: c6dc5d77fc6b8e6ef16740cf9fd1826ccc2683038e319c98e3603ee7444444eb22c2493a88df7c7fc4eb5722b540d11a1698da52c837bdd4cfb42e0ef6370e75
+  languageName: node
+  linkType: hard
+
 "react-hook-form@npm:7.46.1":
   version: 7.46.1
   resolution: "react-hook-form@npm:7.46.1"
@@ -33898,6 +33908,7 @@ __metadata:
     react: 18.2.0
     react-cookie-consent: ^8.0.1
     react-dom: 18.2.0
+    react-hook-form-persist: ^3.0.0
     react-individual-character-input-boxes: 1.2.1
     react-markdown: ^8.0.3
     react-particles: ^2.5.3
