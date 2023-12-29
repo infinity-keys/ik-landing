@@ -16,6 +16,8 @@ import {
   CreateStepTokenIdRangeInput,
   CreateStepOriumApiInput,
   CreatePuzzleInput,
+  // left off here on 12/28/2023
+  CreateStepPageInput,
 } from 'types/graphql'
 
 import {
@@ -37,15 +39,6 @@ import {
   Control,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
-
-// left off here on 12/20/2023
-// type TokenIdRangeFormType = {
-//   type: 'TOKEN_ID_RANGE'
-//   ranges: {
-//     startId: number
-//     endId: number
-//   }[]
-// }
 
 const CREATE_BURD_PUZZLE_MUTATION = gql`
   mutation CreateBurdPuzzleMutation($input: CreateRewardableInput!) {
@@ -69,9 +62,19 @@ type CreateAllStepTypesInput =
       ranges: { startId: number; endId: number }[]
     } & Omit<CreateStepTokenIdRangeInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepOriumApiInput, 'stepId'>)
+  | (CreateStepInputFrontEnd & {
+      // left off here on 12/28/2023
+      stepPageProperties: {
+        body: string
+        image: string
+        showStepGuideHint: boolean
+        sortWeight: number
+      }[]
+    } & Omit<CreateStepPageInput, 'stepId'>)
 
 // Set as a constant in case we need to change this string value later on
 const stepsArrayName = 'steps'
+const stepPagesArrayName = 'stepPages'
 
 // New puzzles start with no steps in an empty array
 const startingSteps: CreateAllStepTypesInput[] = []
@@ -131,6 +134,19 @@ function StepForm({
       defaultImage: getValues(`${stepsArrayName}.${index}.defaultImage`),
       solutionImage: getValues(`${stepsArrayName}.${index}.solutionImage`),
       stepGuideType: getValues(`${stepsArrayName}.${index}.stepGuideType`),
+
+      // // left off here on 12/28/2023
+      // // The syntax below is wrong but it conveys the idea
+      // stepPageFields: getValues(`${stepPagesArrayName}.${index}`).map(
+      //   (stepPageField: any) => {
+      //     return {
+      //       body: stepPageField.body,
+      //       image: stepPageField.image,
+      //       showStepGuideHint: stepPageField.showStepGuideHint,
+      //       sortWeight: stepPageField.sortWeight,
+      //     }
+      //   }
+      // ),
     }
     if (stepTypeVal === 'SIMPLE_TEXT') {
       setValue(`${stepsArrayName}.${index}`, {
@@ -170,7 +186,7 @@ function StepForm({
       })
     }
     if (stepTypeVal === 'TOKEN_ID_RANGE') {
-      console.log('hello world')
+      console.log('token id range selected')
       setValue(`${stepsArrayName}.${index}`, {
         type: 'TOKEN_ID_RANGE',
         ...commonStepFields,
@@ -200,6 +216,33 @@ function StepForm({
     control,
     name: `${stepsArrayName}.${index}.ranges`,
   })
+
+  // left off here on 12/27/2023
+  // Step Page field array
+  const { fields: stepPageFields, append: appendStepPageField } = useFieldArray(
+    {
+      control,
+      name: `${stepPagesArrayName}.${index}.stepPageProperties`,
+    }
+  )
+
+  // // this function is used to remove a token id range fieldset
+  // // this works but may not be ideal
+  // const removeFieldset = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   const fieldset = event.currentTarget.closest('fieldset')
+  //   if (fieldset) {
+  //     fieldset.remove()
+  //   }
+  // }
+
+  // // this is a refactor of the above function
+  // // left off here on 12/27/2023
+  const removeFieldset = (tokenIdIndex: number) => {
+    const fieldset = document.getElementById(`token-id-index-${tokenIdIndex}`)
+    if (fieldset) {
+      fieldset.remove()
+    }
+  }
 
   return (
     <fieldset className="ik-child-form mb-8 rounded-lg border-2 border-gray-500 bg-zinc-100 p-4">
@@ -547,7 +590,15 @@ function StepForm({
           <div className="form__entry mb-12">
             <Label
               name={`${stepsArrayName}.${index}.contractAddress`}
-              className="form__label text-2xl font-bold text-slate-700"
+              className={
+                Array.isArray(errors[stepsArrayName]) &&
+                'contractAddress' in errors[stepsArrayName][index] &&
+                'type' in errors[stepsArrayName][index].contractAddress &&
+                errors[stepsArrayName][index].contractAddress.type ===
+                  'required'
+                  ? `${defaultStyles} ${errorTitleColor}`
+                  : `${defaultStyles} ${defaultTitleColor}`
+              }
             >
               <div className="form__entry-name mb-1">Contract Address</div>
             </Label>
@@ -557,11 +608,24 @@ function StepForm({
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               validation={{ required: true }}
             />
+            {Array.isArray(errors[stepsArrayName]) &&
+              'contractAddress' in errors[stepsArrayName][index] &&
+              'type' in errors[stepsArrayName][index].contractAddress &&
+              errors[stepsArrayName][index].contractAddress.type ===
+                'required' &&
+              requiredFieldError('a contract address')}
           </div>
           <div className="form__entry mb-12">
             <Label
               name={`${stepsArrayName}.${index}.chainId`}
-              className="form__label text-2xl font-bold text-slate-700"
+              className={
+                Array.isArray(errors[stepsArrayName]) &&
+                'chainId' in errors[stepsArrayName][index] &&
+                'type' in errors[stepsArrayName][index].chainId &&
+                errors[stepsArrayName][index].chainId.type === 'required'
+                  ? `${defaultStyles} ${errorTitleColor}`
+                  : `${defaultStyles} ${defaultTitleColor}`
+              }
             >
               <div className="form__entry-name mb-1">Chain Id</div>
             </Label>
@@ -571,26 +635,33 @@ function StepForm({
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               validation={{ required: true }}
             />
+            {Array.isArray(errors[stepsArrayName]) &&
+              'chainId' in errors[stepsArrayName][index] &&
+              'type' in errors[stepsArrayName][index].chainId &&
+              errors[stepsArrayName][index].chainId.type === 'required' &&
+              requiredFieldError('a chain id')}
           </div>
 
           <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
             {tokenIdFields.map((field, tokenIdIndex) => (
               <div key={field.id}>
-                <p className="text-red-500">Index: {tokenIdIndex}</p>
-                <p className="text-red-500">ID: {field.id}</p>
-                <fieldset>
+                <fieldset id={`token-id-index-${tokenIdIndex}`}>
+                  {/* these are temporary values for debugging purposes */}
+                  <p className="text-red-500">Index: {tokenIdIndex}</p>
+                  <p className="text-red-500">ID: {field.id}</p>
                   <div className="mb-8 rounded-lg border-2 border-gray-500 bg-gray-100 p-6">
                     <div className="form__label mb-12 text-center text-3xl font-extrabold tracking-widest text-slate-700">
-                      Token ID Range {tokenIdIndex}
+                      Token ID Range {tokenIdIndex + 1}
                     </div>
                     <div id="start-id" className="form__entry mb-12">
                       <Label
                         name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`}
                         className={`${defaultStyles} ${
                           Array.isArray(errors[stepsArrayName]) &&
-                          'ranges' in errors[stepsArrayName][index] &&
-                          'startId' in
-                            errors[stepsArrayName][index].ranges[tokenIdIndex] // &&
+                          // Array.isArray(errors[stepsArrayName]) &&
+                          errors[stepsArrayName][index]?.ranges &&
+                          errors[stepsArrayName][index].ranges[tokenIdIndex]
+                            ?.startId
                             ? errorTitleColor
                             : defaultTitleColor
                         }`}
@@ -615,32 +686,38 @@ function StepForm({
                     <div id="end-id" className="form__entry mb-12">
                       <Label
                         name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`}
-                        className="form__label text-2xl font-bold text-slate-700"
-                        errorClassName="form__label--error text-2xl font-bold text-rose-900"
+                        className={`${defaultStyles} ${
+                          Array.isArray(errors[stepsArrayName]) &&
+                          errors[stepsArrayName][index]?.ranges &&
+                          errors[stepsArrayName][index].ranges[tokenIdIndex]
+                            ?.endId
+                            ? errorTitleColor
+                            : defaultTitleColor
+                        }`}
                       >
                         <div className="form__entry-name mb-1">End ID</div>
                       </Label>
                       <TextField
                         placeholder="End ID"
                         {...register(
-                          `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`,
-                          {
-                            required: true,
-                          }
+                          `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`
                         )}
                         className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                        validation={{ required: true }}
                       />
+
                       {Array.isArray(errors[stepsArrayName]) &&
                         errors[stepsArrayName][index]?.ranges?.[tokenIdIndex]
                           ?.endId?.type === 'required' &&
                         requiredFieldError('an End ID')}
                     </div>
+
                     <button
                       type="button"
                       className="rw-button rw-button-red"
-                      onClick={() => {
-                        remove(index)
-                      }}
+                      // left off here on 12/27/2023
+                      // onClick={removeFieldset}
+                      onClick={() => removeFieldset(tokenIdIndex)}
                     >
                       <div className="">Remove Token ID Range</div>
                     </button>
@@ -695,6 +772,64 @@ function StepForm({
           Delete this Step
         </button>
       </div>
+      {/* left off here on 12/28/2023 */}
+      {/* <div className="rw-button-group">
+        <button type="button" className="rw-button rw-button-blue">
+          Add Step Page
+        </button>
+      </div> */}
+      {stepPageFields.map((field, stepPageindex) => (
+        <div key={field.id}>
+          <fieldset id={`token-id-index-${stepPageindex}`}>
+            {/* these are temporary values for debugging purposes */}
+            <p className="text-red-500">Index: {stepPageindex}</p>
+            <p className="text-red-500">ID: {field.id}</p>
+            <div id="step-page-body" className="form__entry mb-12">
+              <Label
+                name={`
+                  ${stepPagesArrayName}.${stepPageindex}.stepPageProperties.${stepPageindex}.body
+              `}
+                // // left off here on 12/28/2023
+                className={`${defaultStyles} ${
+                  Array.isArray(errors[stepPagesArrayName]) &&
+                  errors[stepPagesArrayName][stepPageindex]
+                    ?.stepPageProperties &&
+                  errors[stepPagesArrayName][stepPageindex].stepPageProperties[
+                    stepPageindex
+                  ]?.body
+                    ? errorTitleColor
+                    : defaultTitleColor
+                }`}
+              >
+                <div className="form__entry-name mb-1">Body</div>
+              </Label>
+              <TextField
+                placeholder="Body"
+                name="register-me-please"
+                className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                validation={{ required: true }}
+              />
+            </div>
+            {/* Other fields will go here under 'body' */}
+          </fieldset>
+        </div>
+      ))}
+      <div className="rw-button-group">
+        <button
+          type="button"
+          className="rw-button rw-button-blue"
+          onClick={() =>
+            appendStepPageField({
+              body: '',
+              image: '',
+              showStepGuideHint: false,
+              sortWeight: 0,
+            })
+          }
+        >
+          Add Step Page
+        </button>
+      </div>
     </fieldset>
   )
 }
@@ -738,13 +873,30 @@ export default function PuzzleForm() {
     },
   })
 
+  // Errors for Token ID Ranges (and steps too?)
   const { errors } = formMethods.formState
   console.log(errors)
 
-  // Steps Field Array
+  // // left off here on 12/28/2023
+  // // Errors for Step Pages only
+  const { errors: stepPageErrors } = formMethods.formState
+  console.log(stepPageErrors)
+
+  // Steps Field Array for Token ID Ranges (and steps too?)
   const { fields, append, remove } = useFieldArray({
     control: formMethods.control,
     name: stepsArrayName,
+  })
+
+  // // left off here on 12/28/2023
+  // // Steps Field Array for step pages only
+  const {
+    fields: stepPageFields,
+    append: stepPageAppend,
+    remove: stepPageRemove,
+  } = useFieldArray({
+    control: formMethods.control,
+    name: stepPagesArrayName,
   })
 
   useFormPersist(LOCAL_STORAGE_KEY, {
@@ -793,6 +945,20 @@ export default function PuzzleForm() {
                 defaultImage: step.defaultImage,
                 solutionImage: step.solutionImage,
                 stepGuideType: step.stepGuideType,
+                // // left off here on 12/28/2023
+
+                // // some how we need to grab the stepPageProperties, then iterate
+                // // over each one and the values of each one
+                // stepPageProperties: step.stepPageProperties.map(
+                //   (stepPageProperty) => {
+                //     return {
+                //       body: stepPageProperty.body,
+                //       image: stepPageProperty.image,
+                //       showStepGuideHint: stepPageProperty.showStepGuideHint,
+                //       sortWeight: stepPageProperty.sortWeight,
+                //     }
+                //   }
+                // ),
               }
               if (step.type === 'SIMPLE_TEXT' && 'solution' in step) {
                 return {
@@ -864,8 +1030,9 @@ export default function PuzzleForm() {
                     // startIds: step.startIds.map(Number),
                     // endIds: step.endIds.map(Number),
 
-                    startIds: step.ranges.map((range) => range.startId),
-                    endIds: step.ranges.map((range) => range.endId),
+                    // // left off here on 12/27/2023
+                    startIds: step.ranges.map((range) => Number(range.startId)),
+                    endIds: step.ranges.map((range) => Number(range.endId)),
                   },
                 }
               } else if (
