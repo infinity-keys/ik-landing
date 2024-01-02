@@ -34,7 +34,7 @@ export async function execute(interaction: CommandInteraction) {
     title: message.get('title').value,
     text: message.get('text').value,
     passcode: message.get('passcode').value,
-    image: message.get('image').value,
+    image: message.get('image')?.value,
   })
   await puzzle.save()
 
