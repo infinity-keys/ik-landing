@@ -21,7 +21,7 @@ export default async () => {
     {
       id: 'clfbb0aw70095me24zy00lago',
       email: 'bloomcb@gmail.com',
-      authId: 'did:ethr:0x71F832147375264368Dfb39cbceE8aeF39e6d50C',
+      authId: 'user_2ZlhESfsNhtf6kYFrYvmxJN7ilR',
     },
     {
       id: 'clfbb0mix009tme24zjb3ty7z',
