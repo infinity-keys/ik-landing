@@ -866,7 +866,7 @@ function StepForm({
               type="button"
               className="rw-button rw-button-red"
             >
-              delete this step page
+              Delete This Step Page
             </button>
           </div>
         ))}
