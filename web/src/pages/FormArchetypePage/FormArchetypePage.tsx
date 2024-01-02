@@ -123,19 +123,6 @@ function StepForm({
       solutionImage: getValues(`${stepsArrayName}.${index}.solutionImage`),
       stepGuideType: getValues(`${stepsArrayName}.${index}.stepGuideType`),
       stepPage: getValues(`${stepsArrayName}.${index}.stepPage`),
-
-      // // left off here on 12/28/2023
-      // // The syntax below is wrong but it conveys the idea
-      // stepPageFields: getValues(`${stepPagesArrayName}.${index}`).map(
-      //   (stepPageField: any) => {
-      //     return {
-      //       body: stepPageField.body,
-      //       image: stepPageField.image,
-      //       showStepGuideHint: stepPageField.showStepGuideHint,
-      //       sortWeight: stepPageField.sortWeight,
-      //     }
-      //   }
-      // ),
     }
     if (stepTypeVal === 'SIMPLE_TEXT') {
       setValue(`${stepsArrayName}.${index}`, {
