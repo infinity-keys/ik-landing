@@ -122,6 +122,7 @@ function StepForm({
       defaultImage: getValues(`${stepsArrayName}.${index}.defaultImage`),
       solutionImage: getValues(`${stepsArrayName}.${index}.solutionImage`),
       stepGuideType: getValues(`${stepsArrayName}.${index}.stepGuideType`),
+      stepPage: getValues(`${stepsArrayName}.${index}.stepPage`),
 
       // // left off here on 12/28/2023
       // // The syntax below is wrong but it conveys the idea
