@@ -766,7 +766,6 @@ function StepForm({
               >
                 <Label
                   name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
-                  // // left off here on 12/28/2023
                   className={`${defaultStyles} ${
                     Array.isArray(errors[stepsArrayName]) &&
                     errors[stepsArrayName][stepPageIndex]?.stepPage &&
