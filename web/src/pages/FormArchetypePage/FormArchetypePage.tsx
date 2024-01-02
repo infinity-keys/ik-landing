@@ -195,12 +195,14 @@ function StepForm({
 
   // left off here on 12/27/2023
   // Step Page field array
-  const { fields: stepPageFields, append: appendStepPageField } = useFieldArray(
-    {
-      control,
-      name: `${stepsArrayName}.${index}.stepPage`,
-    }
-  )
+  const {
+    fields: stepPageFields,
+    append: appendStepPageField,
+    remove: removeStepPageField,
+  } = useFieldArray({
+    control,
+    name: `${stepsArrayName}.${index}.stepPage`,
+  })
 
   // // this function is used to remove a token id range fieldset
   // // this works but may not be ideal
@@ -748,127 +750,136 @@ function StepForm({
           Delete this Step
         </button>
       </div>
-      {/* left off here on 12/28/2023 */}
-      {/* <div className="rw-button-group">
-        <button type="button" className="rw-button rw-button-blue">
-          Add Step Page
-        </button>
-      </div> */}
-      {stepPageFields.map((field, stepPageIndex) => (
-        <div key={field.id}>
-          <fieldset id={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}`}>
-            {/* these are temporary values for debugging purposes */}
-            <p className="text-red-500">Index: {stepPageIndex}</p>
-            <p className="text-red-500">ID: {field.id}</p>
-            <div
-              id={`step-page-${stepPageIndex}-body`}
-              className="form__entry mb-12"
-            >
-              <Label
-                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
-                // // left off here on 12/28/2023
-                className={`${defaultStyles} ${
-                  Array.isArray(errors[stepsArrayName]) &&
-                  errors[stepsArrayName][stepPageIndex]?.stepPage &&
-                  errors[stepsArrayName][stepPageIndex].stepPage[stepPageIndex]
-                    ?.body
-                    ? errorTitleColor
-                    : defaultTitleColor
-                }`}
-              >
-                <div className="form__entry-name mb-1">Body</div>
-              </Label>
-              <TextField
-                placeholder="Body"
-                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
-                className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-              />
-            </div>
 
-            <div
-              id={`step-page-${stepPageIndex}-image`}
-              className="form__entry mb-12"
-            >
-              <Label
-                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
-                className={`${defaultStyles} ${
-                  Array.isArray(errors[stepsArrayName]) &&
-                  errors[stepsArrayName][stepPageIndex]?.stepPage &&
-                  errors[stepsArrayName][stepPageIndex].stepPage[stepPageIndex]
-                    ?.image
-                    ? errorTitleColor
-                    : defaultTitleColor
-                }`}
-              >
-                <div className="form__entry-name mb-1">Image</div>
-              </Label>
-              <TextField
-                placeholder="Image"
-                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
-                className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-              />
+      <div className="mt-12 rounded-xl border-2 border-stone-400 bg-stone-200 p-4">
+        {stepPageFields.map((field, stepPageIndex) => (
+          <div key={field.id} className="mb-12">
+            <div className="form__label text-center text-4xl font-extrabold tracking-widest text-slate-700">
+              Step Page {stepPageIndex + 1}
             </div>
+            <fieldset
+              id={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}`}
+            >
+              <div
+                id={`step-page-${stepPageIndex}-body`}
+                className="form__entry mb-12"
+              >
+                <Label
+                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
+                  // // left off here on 12/28/2023
+                  className={`${defaultStyles} ${
+                    Array.isArray(errors[stepsArrayName]) &&
+                    errors[stepsArrayName][stepPageIndex]?.stepPage &&
+                    errors[stepsArrayName][stepPageIndex].stepPage[
+                      stepPageIndex
+                    ]?.body
+                      ? errorTitleColor
+                      : defaultTitleColor
+                  }`}
+                >
+                  <div className="form__entry-name mb-1">Body</div>
+                </Label>
+                <TextField
+                  placeholder="Body"
+                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
+                  className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                />
+              </div>
 
-            <div
-              id={`step-page-${stepPageIndex}-hint`}
-              className="form__entry mb-12"
-            >
-              <Label
-                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.showStepGuideHint`}
-                className={`${defaultStyles} ${
-                  Array.isArray(errors[stepsArrayName]) &&
-                  errors[stepsArrayName][stepPageIndex]?.stepPage &&
-                  errors[stepsArrayName][stepPageIndex].stepPage[stepPageIndex]
-                    ?.showStepGuideHint
-                    ? errorTitleColor
-                    : defaultTitleColor
-                }`}
+              <div
+                id={`step-page-${stepPageIndex}-image`}
+                className="form__entry mb-12"
               >
-                <div className="form__entry-name mb-1">Show hint</div>
-              </Label>
-              <CheckboxField
-                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.showStepGuideHint`}
-                className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-              />
-            </div>
-            <div
-              id={`step-page-${stepPageIndex}-sortWeight`}
-              className="form__entry mb-12"
-            >
-              <Label
-                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
-                className={`${defaultStyles} ${
-                  Array.isArray(errors[stepsArrayName]) &&
-                  errors[stepsArrayName][stepPageIndex]?.stepPage &&
-                  errors[stepsArrayName][stepPageIndex].stepPage[stepPageIndex]
-                    ?.sortWeight
-                    ? errorTitleColor
-                    : defaultTitleColor
-                }`}
-              >
-                <div className="form__entry-name mb-1">Sort weight</div>
-              </Label>
+                <Label
+                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
+                  className={`${defaultStyles} ${
+                    Array.isArray(errors[stepsArrayName]) &&
+                    errors[stepsArrayName][stepPageIndex]?.stepPage &&
+                    errors[stepsArrayName][stepPageIndex].stepPage[
+                      stepPageIndex
+                    ]?.image
+                      ? errorTitleColor
+                      : defaultTitleColor
+                  }`}
+                >
+                  <div className="form__entry-name mb-1">Image</div>
+                </Label>
+                <TextField
+                  placeholder="Image"
+                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
+                  className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                />
+              </div>
 
-              <NumberField
-                placeholder="sortWeight"
-                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
-                className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-                validation={{ required: true }}
-                defaultValue={stepPageIndex + 1}
-              />
-            </div>
-            {/* Other fields will go here under 'body' */}
-          </fieldset>
+              <div
+                id={`step-page-${stepPageIndex}-hint`}
+                className="form__entry mb-12"
+              >
+                <Label
+                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.showStepGuideHint`}
+                  className={`${defaultStyles} ${
+                    Array.isArray(errors[stepsArrayName]) &&
+                    errors[stepsArrayName][stepPageIndex]?.stepPage &&
+                    errors[stepsArrayName][stepPageIndex].stepPage[
+                      stepPageIndex
+                    ]?.showStepGuideHint
+                      ? errorTitleColor
+                      : defaultTitleColor
+                  }`}
+                >
+                  <div className="form__entry-name mb-1">Show hint</div>
+                </Label>
+                <CheckboxField
+                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.showStepGuideHint`}
+                  className="form__text-field box-border block bg-stone-200 text-slate-700"
+                />
+              </div>
+              <div
+                id={`step-page-${stepPageIndex}-sortWeight`}
+                className="form__entry mb-12"
+              >
+                <Label
+                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
+                  className={`${defaultStyles} ${
+                    Array.isArray(errors[stepsArrayName]) &&
+                    errors[stepsArrayName][stepPageIndex]?.stepPage &&
+                    errors[stepsArrayName][stepPageIndex].stepPage[
+                      stepPageIndex
+                    ]?.sortWeight
+                      ? errorTitleColor
+                      : defaultTitleColor
+                  }`}
+                >
+                  <div className="form__entry-name mb-1">Sort weight</div>
+                </Label>
+
+                <NumberField
+                  placeholder="sortWeight"
+                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
+                  className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                  validation={{ required: true }}
+                  defaultValue={stepPageIndex + 1}
+                />
+              </div>
+            </fieldset>
+            <button
+              onClick={() => removeStepPageField(stepPageIndex)}
+              type="button"
+              className="rw-button rw-button-red"
+            >
+              delete this step page
+            </button>
+          </div>
+        ))}
+        <div className="rw-button-group">
+          <button
+            type="button"
+            className="rw-button rw-button-blue"
+            onClick={() => appendStepPageField(null)}
+          >
+            Add Step Page
+          </button>
         </div>
-      ))}
-      <div className="rw-button-group">
-        <button
-          type="button"
-          className="rw-button rw-button-blue"
-          onClick={() => appendStepPageField(null)}
-        >
-          Add Step Page
-        </button>
       </div>
     </fieldset>
   )
@@ -963,7 +974,6 @@ export default function PuzzleForm() {
             requirements: input.puzzle.requirements,
             coverImage: input.puzzle.coverImage,
             steps: input.steps.map((step) => {
-              console.log(JSON.stringify(step, null, 2))
               const commonStepFields = {
                 puzzleId: 'ignore me',
                 failMessage: step.failMessage,
@@ -976,20 +986,6 @@ export default function PuzzleForm() {
                 solutionImage: step.solutionImage,
                 stepGuideType: step.stepGuideType,
                 stepPage: step.stepPage,
-                // // left off here on 12/28/2023
-
-                // // some how we need to grab the stepPageProperties, then iterate
-                // // over each one and the values of each one
-                // stepPageProperties: step.stepPageProperties.map(
-                //   (stepPageProperty) => {
-                //     return {
-                //       body: stepPageProperty.body,
-                //       image: stepPageProperty.image,
-                //       showStepGuideHint: stepPageProperty.showStepGuideHint,
-                //       sortWeight: stepPageProperty.sortWeight,
-                //     }
-                //   }
-                // ),
               }
               if (step.type === 'SIMPLE_TEXT' && 'solution' in step) {
                 return {
