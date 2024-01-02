@@ -16,8 +16,6 @@ import {
   CreateStepTokenIdRangeInput,
   CreateStepOriumApiInput,
   CreatePuzzleInput,
-  // left off here on 12/28/2023
-  CreateStepPageInput,
 } from 'types/graphql'
 
 import {
@@ -65,7 +63,6 @@ type CreateAllStepTypesInput =
 
 // Set as a constant in case we need to change this string value later on
 const stepsArrayName = 'steps'
-const stepPagesArrayName = 'stepPages'
 
 // New puzzles start with no steps in an empty array
 const startingSteps: CreateAllStepTypesInput[] = []
@@ -771,15 +768,16 @@ function StepForm({
       </div> */}
       {stepPageFields.map((field, stepPageIndex) => (
         <div key={field.id}>
-          <fieldset id={`step-page-index-${stepPageIndex}`}>
+          <fieldset id={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}`}>
             {/* these are temporary values for debugging purposes */}
             <p className="text-red-500">Index: {stepPageIndex}</p>
             <p className="text-red-500">ID: {field.id}</p>
-            <div id="step-page-body" className="form__entry mb-12">
+            <div
+              id={`step-page-${stepPageIndex}-body`}
+              className="form__entry mb-12"
+            >
               <Label
-                name={`
-                  ${stepPagesArrayName}.${stepPageIndex}.stepPageProperties.${stepPageIndex}.body
-              `}
+                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
                 // // left off here on 12/28/2023
                 className={`${defaultStyles} ${
                   Array.isArray(errors[stepsArrayName]) &&
@@ -794,9 +792,81 @@ function StepForm({
               </Label>
               <TextField
                 placeholder="Body"
-                name="register-me-please"
+                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
+                className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              />
+            </div>
+
+            <div
+              id={`step-page-${stepPageIndex}-image`}
+              className="form__entry mb-12"
+            >
+              <Label
+                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
+                className={`${defaultStyles} ${
+                  Array.isArray(errors[stepsArrayName]) &&
+                  errors[stepsArrayName][stepPageIndex]?.stepPage &&
+                  errors[stepsArrayName][stepPageIndex].stepPage[stepPageIndex]
+                    ?.image
+                    ? errorTitleColor
+                    : defaultTitleColor
+                }`}
+              >
+                <div className="form__entry-name mb-1">Image</div>
+              </Label>
+              <TextField
+                placeholder="Image"
+                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
+                className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              />
+            </div>
+
+            <div
+              id={`step-page-${stepPageIndex}-hint`}
+              className="form__entry mb-12"
+            >
+              <Label
+                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.showStepGuideHint`}
+                className={`${defaultStyles} ${
+                  Array.isArray(errors[stepsArrayName]) &&
+                  errors[stepsArrayName][stepPageIndex]?.stepPage &&
+                  errors[stepsArrayName][stepPageIndex].stepPage[stepPageIndex]
+                    ?.showStepGuideHint
+                    ? errorTitleColor
+                    : defaultTitleColor
+                }`}
+              >
+                <div className="form__entry-name mb-1">Show hint</div>
+              </Label>
+              <CheckboxField
+                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.showStepGuideHint`}
+                className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              />
+            </div>
+            <div
+              id={`step-page-${stepPageIndex}-sortWeight`}
+              className="form__entry mb-12"
+            >
+              <Label
+                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
+                className={`${defaultStyles} ${
+                  Array.isArray(errors[stepsArrayName]) &&
+                  errors[stepsArrayName][stepPageIndex]?.stepPage &&
+                  errors[stepsArrayName][stepPageIndex].stepPage[stepPageIndex]
+                    ?.sortWeight
+                    ? errorTitleColor
+                    : defaultTitleColor
+                }`}
+              >
+                <div className="form__entry-name mb-1">Sort weight</div>
+              </Label>
+
+              <NumberField
+                placeholder="sortWeight"
+                name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
                 className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
                 validation={{ required: true }}
+                defaultValue={stepPageIndex + 1}
               />
             </div>
             {/* Other fields will go here under 'body' */}
@@ -807,14 +877,7 @@ function StepForm({
         <button
           type="button"
           className="rw-button rw-button-blue"
-          onClick={() =>
-            appendStepPageField({
-              body: '',
-              image: '',
-              showStepGuideHint: false,
-              sortWeight: 0,
-            })
-          }
+          onClick={() => appendStepPageField(null)}
         >
           Add Step Page
         </button>
@@ -864,28 +927,17 @@ export default function PuzzleForm() {
 
   // Errors for Token ID Ranges (and steps too?)
   const { errors } = formMethods.formState
-  console.log(errors)
+  console.log({ errors })
 
   // // left off here on 12/28/2023
   // // Errors for Step Pages only
   const { errors: stepPageErrors } = formMethods.formState
-  console.log(stepPageErrors)
+  console.log({ stepPageErrors })
 
   // Steps Field Array for Token ID Ranges (and steps too?)
   const { fields, append, remove } = useFieldArray({
     control: formMethods.control,
     name: stepsArrayName,
-  })
-
-  // // left off here on 12/28/2023
-  // // Steps Field Array for step pages only
-  const {
-    fields: stepPageFields,
-    append: stepPageAppend,
-    remove: stepPageRemove,
-  } = useFieldArray({
-    control: formMethods.control,
-    name: stepPagesArrayName,
   })
 
   useFormPersist(LOCAL_STORAGE_KEY, {
@@ -923,6 +975,7 @@ export default function PuzzleForm() {
             requirements: input.puzzle.requirements,
             coverImage: input.puzzle.coverImage,
             steps: input.steps.map((step) => {
+              console.log(JSON.stringify(step, null, 2))
               const commonStepFields = {
                 puzzleId: 'ignore me',
                 failMessage: step.failMessage,
@@ -934,6 +987,7 @@ export default function PuzzleForm() {
                 defaultImage: step.defaultImage,
                 solutionImage: step.solutionImage,
                 stepGuideType: step.stepGuideType,
+                stepPage: step.stepPage,
                 // // left off here on 12/28/2023
 
                 // // some how we need to grab the stepPageProperties, then iterate
