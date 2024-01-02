@@ -76,6 +76,7 @@ export const schema = gql`
     defaultImage: String!
     solutionImage: String
     stepGuideType: StepGuideType!
+    stepPage: [CreateStepPageInput]
   }
 
   input UpdateStepInput {
@@ -91,6 +92,7 @@ export const schema = gql`
     defaultImage: String
     solutionImage: String
     stepGuideType: StepGuideType
+    stepPage: [UpdateStepPageInput]
   }
 
   type Mutation {

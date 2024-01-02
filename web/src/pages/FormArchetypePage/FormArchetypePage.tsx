@@ -62,15 +62,6 @@ type CreateAllStepTypesInput =
       ranges: { startId: number; endId: number }[]
     } & Omit<CreateStepTokenIdRangeInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepOriumApiInput, 'stepId'>)
-  | (CreateStepInputFrontEnd & {
-      // left off here on 12/28/2023
-      stepPageProperties: {
-        body: string
-        image: string
-        showStepGuideHint: boolean
-        sortWeight: number
-      }[]
-    } & Omit<CreateStepPageInput, 'stepId'>)
 
 // Set as a constant in case we need to change this string value later on
 const stepsArrayName = 'steps'
@@ -222,7 +213,7 @@ function StepForm({
   const { fields: stepPageFields, append: appendStepPageField } = useFieldArray(
     {
       control,
-      name: `${stepPagesArrayName}.${index}.stepPageProperties`,
+      name: `${stepsArrayName}.${index}.stepPage`,
     }
   )
 
@@ -778,25 +769,23 @@ function StepForm({
           Add Step Page
         </button>
       </div> */}
-      {stepPageFields.map((field, stepPageindex) => (
+      {stepPageFields.map((field, stepPageIndex) => (
         <div key={field.id}>
-          <fieldset id={`token-id-index-${stepPageindex}`}>
+          <fieldset id={`step-page-index-${stepPageIndex}`}>
             {/* these are temporary values for debugging purposes */}
-            <p className="text-red-500">Index: {stepPageindex}</p>
+            <p className="text-red-500">Index: {stepPageIndex}</p>
             <p className="text-red-500">ID: {field.id}</p>
             <div id="step-page-body" className="form__entry mb-12">
               <Label
                 name={`
-                  ${stepPagesArrayName}.${stepPageindex}.stepPageProperties.${stepPageindex}.body
+                  ${stepPagesArrayName}.${stepPageIndex}.stepPageProperties.${stepPageIndex}.body
               `}
                 // // left off here on 12/28/2023
                 className={`${defaultStyles} ${
-                  Array.isArray(errors[stepPagesArrayName]) &&
-                  errors[stepPagesArrayName][stepPageindex]
-                    ?.stepPageProperties &&
-                  errors[stepPagesArrayName][stepPageindex].stepPageProperties[
-                    stepPageindex
-                  ]?.body
+                  Array.isArray(errors[stepsArrayName]) &&
+                  errors[stepsArrayName][stepPageIndex]?.stepPage &&
+                  errors[stepsArrayName][stepPageIndex].stepPage[stepPageIndex]
+                    ?.body
                     ? errorTitleColor
                     : defaultTitleColor
                 }`}
