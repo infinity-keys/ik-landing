@@ -857,7 +857,6 @@ function StepForm({
                   name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
                   className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
                   validation={{ required: true }}
-                  defaultValue={stepPageIndex + 1}
                 />
               </div>
             </fieldset>
@@ -874,7 +873,14 @@ function StepForm({
           <button
             type="button"
             className="rw-button rw-button-blue"
-            onClick={() => appendStepPageField(null)}
+            onClick={() =>
+              appendStepPageField({
+                body: '',
+                image: '',
+                showStepGuideHint: false,
+                sortWeight: stepPageFields.length + 1,
+              })
+            }
           >
             Add Step Page
           </button>
