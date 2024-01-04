@@ -234,7 +234,7 @@ function StepForm({
         Step {index + 1}
       </div>
 
-      <div id="solution-hint" className="form__entry mb-12">
+      <div id={`${index}-solution-hint`} className="form__entry mb-12">
         <Label
           name={`solutionHint.${index}`}
           className={`${defaultStyles} ${
@@ -255,7 +255,7 @@ function StepForm({
           requiredFieldError('Solution Hint')}
       </div>
 
-      <div id="default-image" className="form__entry mb-12">
+      <div id={`${index}-default-image`} className="form__entry mb-12">
         <Label
           name={`defaultImage.${index}`}
           className={`${defaultStyles} ${
@@ -278,7 +278,7 @@ function StepForm({
           imageLinkPatternError('default image')}
       </div>
 
-      <div id="solution-image" className="form__entry mb-12">
+      <div id={`${index}-solution-image`} className="form__entry mb-12">
         <Label
           name={`solutionImage.${index}`}
           className={`${defaultStyles} ${
@@ -299,7 +299,7 @@ function StepForm({
           imageLinkPatternError('solution image')}
       </div>
 
-      <div id="step-sort-weight" className="form__entry mb-12">
+      <div id={`${index}-step-sort-weight`} className="form__entry mb-12">
         <Label
           name={`stepSortWeight.${index}`}
           className={`${defaultStyles} ${
@@ -320,7 +320,8 @@ function StepForm({
           requiredFieldError('Step Sort Weight')}
       </div>
 
-      <div id="step-type-guide" className="form__entry mb-12 hidden">
+      {/* @TODO: Are we only supporting SEEK? */}
+      <div id={`${index}-step-type-guide`} className="form__entry mb-12 hidden">
         <Label
           name={`stepTypeGuide.${index}`}
           className="form__label text-2xl font-bold text-slate-700"
@@ -341,6 +342,7 @@ function StepForm({
         </div>
       </div>
 
+      {/* @TODO: Are we only supporting SIMPLE_TEXT? */}
       <div className="my-8 hidden text-stone-800">
         <SelectField
           {...register(`${stepsArrayName}.${index}.type`)}
