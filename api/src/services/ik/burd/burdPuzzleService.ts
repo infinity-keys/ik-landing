@@ -18,11 +18,11 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
 
   const steps = input.puzzle.steps.map((step) => {
     const stepCommon = {
-      failMessage: step.failMessage,
-      successMessage: step.successMessage,
-      challenge: step.challenge,
+      solutionHint: step.solutionHint,
+      defaultImage: step.defaultImage,
+      solutionImage: step.solutionImage,
       stepSortWeight: step.stepSortWeight,
-      resourceLinks: step.resourceLinks,
+      stepGuideType: step.stepGuideType,
       stepPage: {
         create: step.stepPage,
       },
@@ -113,16 +113,19 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   const rewardable = await db.rewardable.create({
     data: {
       name: input.name,
-      explanation: input.explanation,
+      // @TODO: `explanation` is currently only used in packs but required in db
+      // explanation: input.explanation,
       type: input.type,
       slug: input.slug,
       listPublicly: input.listPublicly,
+      successMessage: input.successMessage,
       orgId: 'cla9yay7y003k08la2z4j2xrv',
       puzzle: {
         create: {
-          //isAnon: input.puzzle.isAnon,
           coverImage: input.puzzle.coverImage,
-          requirements: input.puzzle.requirements,
+          requirements: input.puzzle.requirements.flatMap(
+            (requirement) => requirement ?? []
+          ),
           steps: {
             create: steps,
           },
