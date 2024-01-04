@@ -80,6 +80,16 @@ function requiredFieldError(fieldName: string) {
   )
 }
 
+function imageLinkPatternError(fieldName: string) {
+  return (
+    <p className="form__error pt-1 font-medium text-rose-800">
+      Please ensure your {fieldName} link begins with &quot;http(s)://&quot;
+    </p>
+  )
+}
+
+const imageLinkPattern = /^(http|https):\/\/.*/
+
 // These are used to style labels (<Label />) for nested components
 const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
 const defaultTitleColor = 'text-slate-700'
@@ -260,10 +270,12 @@ function StepForm({
           placeholder="Default Image"
           {...register(`${stepsArrayName}.${index}.defaultImage`)}
           className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-          validation={{ required: true }}
+          validation={{ required: true, pattern: imageLinkPattern }}
         />
         {errors[stepsArrayName]?.[index]?.defaultImage?.type === 'required' &&
           requiredFieldError('Default Image')}
+        {errors[stepsArrayName]?.[index]?.defaultImage?.type === 'pattern' &&
+          imageLinkPatternError('default image')}
       </div>
 
       <div id="solution-image" className="form__entry mb-12">
@@ -281,9 +293,10 @@ function StepForm({
           placeholder="Solution Image"
           {...register(`${stepsArrayName}.${index}.solutionImage`)}
           className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+          validation={{ pattern: imageLinkPattern }}
         />
-        {errors[stepsArrayName]?.[index]?.solutionImage?.type === 'required' &&
-          requiredFieldError('Solution Image')}
+        {errors[stepsArrayName]?.[index]?.solutionImage?.type === 'pattern' &&
+          imageLinkPatternError('solution image')}
       </div>
 
       <div id="step-sort-weight" className="form__entry mb-12">
@@ -725,7 +738,11 @@ function StepForm({
                   placeholder="Image"
                   name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
                   className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                  validation={{ pattern: imageLinkPattern }}
                 />
+                {errors[stepsArrayName]?.[index]?.stepPage?.[stepPageIndex]
+                  ?.image?.type === 'pattern' &&
+                  imageLinkPatternError('step image')}
               </div>
 
               <div
@@ -1085,6 +1102,8 @@ export default function PuzzleForm() {
               requiredFieldError('a Slug')}
             {requiredSlugFormatError(formMethods.getValues('rewardable.slug'))}
           </div>
+
+          {/* @TODO: These are required in DB, but now only used for packs */}
           <div id="explanation" className="form__entry mb-12">
             <Label
               name="rewardable.explanation"
@@ -1114,11 +1133,10 @@ export default function PuzzleForm() {
               name="rewardable.successMessage"
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               placeholder="Success Message"
-              validation={{ required: true }}
             />
-            {errors.rewardable?.successMessage?.type === 'required' &&
-              requiredFieldError('a Success Message')}
           </div>
+
+          {/* @TODO: How are we handling the org creation? */}
           <div id="puzzle-org-id" className="form__entry mb-12">
             <Label
               name="rewardable.orgId"
@@ -1141,6 +1159,8 @@ export default function PuzzleForm() {
             {/* {errors.rewardable?.orgId?.type === 'required' &&
               requiredFieldError('an Organizational ID')} */}
           </div>
+
+          {/* @TODO: Is this an option for now or should they be hardcoded? */}
           <div id="puzzle-list-publicly" className="form__entry mb-12">
             <Label
               name="rewardable.listPublicly"
@@ -1156,6 +1176,7 @@ export default function PuzzleForm() {
             />
           </div>
 
+          {/* @TODO: Are these required? If not we need to handle empty array in puzzle landing */}
           <div id="puzzle-requirements" className="form__entry mb-12">
             <Label
               name="puzzle.requirements"
@@ -1188,10 +1209,15 @@ export default function PuzzleForm() {
               name="puzzle.coverImage"
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               placeholder="Cover Image"
-              validation={{ required: true }}
+              validation={{
+                required: true,
+                pattern: imageLinkPattern,
+              }}
             />
-            {errors.rewardable?.successMessage?.type === 'required' &&
-              requiredFieldError('a Success Message')}
+            {errors.puzzle?.coverImage?.type === 'required' &&
+              requiredFieldError('a cover image')}
+            {errors.puzzle?.coverImage?.type === 'pattern' &&
+              imageLinkPatternError('cover image')}
           </div>
 
           {fields.map((field, index) => (
