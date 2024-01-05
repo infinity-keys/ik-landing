@@ -249,10 +249,7 @@ function StepForm({
           placeholder="Solution Hint"
           {...register(`${stepsArrayName}.${index}.solutionHint`)}
           className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-          validation={{ required: true }}
         />
-        {errors[stepsArrayName]?.[index]?.solutionHint?.type === 'required' &&
-          requiredFieldError('Solution Hint')}
       </div>
 
       <div id={`${index}-default-image`} className="form__entry mb-12">
@@ -849,6 +846,7 @@ export default function PuzzleForm() {
   // manages what happens when a user forgets to include at least one step for
   // the puzzle that they are creating with this form
   const [hasNoSteps, setHasNoSteps] = useState(false)
+  const [hasNoStepPages, setHasNoStepPages] = useState(false)
 
   // only used in dev mode
   const renderCount = useRef(process.env.NODE_ENV === 'development' ? 1 : 0)
@@ -896,8 +894,14 @@ export default function PuzzleForm() {
       return
     }
 
+    if (!input.steps.every(({ stepPage }) => stepPage?.length)) {
+      setHasNoStepPages(true)
+      return
+    }
+
     // Reset the error state if there are steps
     setHasNoSteps(false)
+    setHasNoStepPages(false)
 
     // debugger
 
