@@ -5,7 +5,7 @@ export const schema = gql`
     updatedAt: DateTime!
     name: String!
     slug: String!
-    explanation: String!
+    explanation: String
     successMessage: String
     listPublicly: Boolean!
     type: RewardableType!
@@ -42,7 +42,7 @@ export const schema = gql`
   input CreateRewardableInput {
     name: String!
     slug: String!
-    explanation: String!
+    explanation: String
     successMessage: String
     listPublicly: Boolean!
     type: RewardableType!
