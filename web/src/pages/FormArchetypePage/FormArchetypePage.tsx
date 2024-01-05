@@ -107,6 +107,7 @@ function StepForm({
   remove,
   errors,
   control,
+  hasNoStepPages,
 }: {
   index: number
   register: UseFormRegister<PuzzleFormType>
@@ -116,6 +117,7 @@ function StepForm({
   remove: (index: number) => void
   errors: FieldErrors<PuzzleFormType>
   control: Control<PuzzleFormType, unknown>
+  hasNoStepPages?: boolean
 }) {
   // Watch for `stepTypeVal` changes so that we can set the default values
   const stepTypeVal = watch(`${stepsArrayName}.${index}.type`)
@@ -712,7 +714,11 @@ function StepForm({
                   placeholder="Body"
                   name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
                   className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                  validation={{ required: true }}
                 />
+                {errors?.[stepsArrayName]?.[stepPageIndex]?.stepPage?.[
+                  stepPageIndex
+                ]?.body?.type === 'required' && requiredFieldError('a body')}
               </div>
 
               <div
@@ -821,6 +827,11 @@ function StepForm({
           </button>
         </div>
       </div>
+      {hasNoStepPages && !stepPageFields.length && (
+        <div className="rw-field-error">
+          You must have at least one step page in a step!
+        </div>
+      )}
     </fieldset>
   )
 }
@@ -831,7 +842,6 @@ type PuzzleFormType = {
   rewardable: {
     name: CreateRewardableInput['name']
     slug: CreateRewardableInput['slug']
-    explanation: CreateRewardableInput['explanation']
     successMessage: CreateRewardableInput['successMessage']
     listPublicly: CreateRewardableInput['listPublicly']
   }
@@ -909,7 +919,6 @@ export default function PuzzleForm() {
       variables: {
         input: {
           name: input.rewardable.name,
-          explanation: input.rewardable.explanation,
           type: 'PUZZLE', // hard coded for now
           slug: input.rewardable.slug,
           listPublicly: input.rewardable.listPublicly,
@@ -1109,8 +1118,8 @@ export default function PuzzleForm() {
             {requiredSlugFormatError(formMethods.getValues('rewardable.slug'))}
           </div>
 
-          {/* @TODO: These are required in DB, but now only used for packs */}
-          <div id="explanation" className="form__entry mb-12">
+          {/* @NOTE: These are required in DB, but now only used for packs */}
+          {/* <div id="explanation" className="form__entry mb-12">
             <Label
               name="rewardable.explanation"
               className="form__label text-2xl font-bold text-slate-700"
@@ -1126,7 +1135,8 @@ export default function PuzzleForm() {
             />
             {errors.rewardable?.explanation?.type === 'required' &&
               requiredFieldError('an Explanation')}
-          </div>
+          </div> */}
+
           <div id="puzzle-success-message" className="form__entry mb-12">
             <Label
               name="rewardable.successMessage"
@@ -1191,7 +1201,11 @@ export default function PuzzleForm() {
               <div className="form__entry-name mb-1">Requirements</div>
             </Label>
             <div className="my-8 text-stone-800">
-              <SelectField name="puzzle.requirements" multiple>
+              <SelectField
+                name="puzzle.requirements"
+                multiple={true}
+                validation={{ required: true }}
+              >
                 <option value="HOLDERS_ONLY">Holders Only</option>
                 <option value="SOCIAL_ACCOUNT">Social Account</option>
                 <option value="WALLET_GAS">Wallet Gas</option>
@@ -1200,6 +1214,8 @@ export default function PuzzleForm() {
                 <option value="DETAIL">Detail</option>
                 <option value="INTERACTIVE_OBJECT">Interactive Object</option>
               </SelectField>
+              {errors.puzzle?.requirements?.type === 'required' &&
+                requiredFieldError('requirements')}
             </div>
           </div>
 
@@ -1237,6 +1253,7 @@ export default function PuzzleForm() {
               remove={remove}
               errors={errors}
               control={formMethods.control}
+              hasNoStepPages={hasNoStepPages}
             />
           ))}
           <div className="rw-button-group">

@@ -118,7 +118,7 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   const rewardable = await db.rewardable.create({
     data: {
       name: input.name,
-      // @TODO: `explanation` is currently only used in packs but required in db
+      // @NOTE: `explanation` is only used with packs
       // explanation: input.explanation,
       type: input.type,
       slug: input.slug,
