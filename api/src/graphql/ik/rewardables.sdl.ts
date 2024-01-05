@@ -49,7 +49,7 @@ export const schema = gql`
   input CreateRewardablesStepsNftsInput {
     name: String!
     slug: String!
-    explanation: String!
+    explanation: String
     successMessage: String
     listPublicly: Boolean
     type: RewardableType!
