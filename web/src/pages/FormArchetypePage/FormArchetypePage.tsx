@@ -171,7 +171,6 @@ function StepForm({
       })
     }
     if (stepTypeVal === 'TOKEN_ID_RANGE') {
-      console.log('token id range selected')
       setValue(`${stepsArrayName}.${index}`, {
         type: 'TOKEN_ID_RANGE',
         ...commonStepFields,
@@ -324,7 +323,6 @@ function StepForm({
           requiredFieldError('Step Sort Weight')}
       </div>
 
-      {/* @TODO: Are we only supporting SEEK? */}
       <div id={`${index}-step-type-guide`} className="form__entry mb-12 hidden">
         <Label
           name={`stepTypeGuide.${index}`}
@@ -346,7 +344,6 @@ function StepForm({
         </div>
       </div>
 
-      {/* @TODO: Are we only supporting SIMPLE_TEXT? */}
       <div className="my-8 hidden text-stone-800">
         <SelectField
           {...register(`${stepsArrayName}.${index}.type`)}
@@ -368,6 +365,7 @@ function StepForm({
               name={stepTypeVal}
               className={
                 Array.isArray(errors[stepsArrayName]) &&
+                errors[stepsArrayName][index] &&
                 'solution' in errors[stepsArrayName][index] &&
                 'type' in errors[stepsArrayName][index].solution &&
                 errors[stepsArrayName][index].solution.type === 'required'
@@ -386,6 +384,7 @@ function StepForm({
               validation={{ required: true }}
             />
             {Array.isArray(errors[stepsArrayName]) &&
+              errors[stepsArrayName][index] &&
               'solution' in errors[stepsArrayName][index] &&
               'type' in errors[stepsArrayName][index].solution &&
               errors[stepsArrayName][index].solution.type === 'required' &&
@@ -886,14 +885,7 @@ export default function PuzzleForm() {
     },
   })
 
-  // Errors for Token ID Ranges (and steps too?)
   const { errors } = formMethods.formState
-  console.log({ errors })
-
-  // // left off here on 12/28/2023
-  // // Errors for Step Pages only
-  const { errors: stepPageErrors } = formMethods.formState
-  console.log({ stepPageErrors })
 
   // Steps Field Array for Token ID Ranges (and steps too?)
   const { fields, append, remove } = useFieldArray({
@@ -1208,7 +1200,7 @@ export default function PuzzleForm() {
               requiredFieldError('an Organizational ID')} */}
           </div>
 
-          {/* @TODO: Is this an option for now or should they be hardcoded? */}
+          {/* @NOTE: Hard coded to `false` while testing */}
           <div id="puzzle-list-publicly" className="form__entry mb-12">
             <Label
               name="rewardable.listPublicly"
@@ -1224,7 +1216,6 @@ export default function PuzzleForm() {
             />
           </div>
 
-          {/* @TODO: Are these required? If not we need to handle empty array in puzzle landing */}
           <div id="puzzle-requirements" className="form__entry mb-12">
             <Label
               name="puzzle.requirements"

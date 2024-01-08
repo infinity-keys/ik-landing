@@ -122,7 +122,9 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
       // explanation: input.explanation,
       type: input.type,
       slug: input.slug,
-      listPublicly: input.listPublicly,
+      // @NOTE: hardcoded to `false` during testing
+      listPublicly: false,
+      // listPublicly: input.listPublicly,
       successMessage: input.successMessage,
       orgId: 'cla9yay7y003k08la2z4j2xrv',
       puzzle: {
