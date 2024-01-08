@@ -23,6 +23,9 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
       challenge: step.challenge,
       stepSortWeight: step.stepSortWeight,
       resourceLinks: step.resourceLinks,
+      stepPage: {
+        create: step.stepPage,
+      },
     }
 
     if (step.type === 'SIMPLE_TEXT' && step.stepSimpleText) {
