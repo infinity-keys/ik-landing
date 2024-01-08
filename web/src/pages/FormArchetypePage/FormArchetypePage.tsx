@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 
 import { DevTool } from '@hookform/devtools'
+import { uniqBy } from 'lodash'
 import useFormPersist from 'react-hook-form-persist'
 import {
   CreateRewardableInput,
@@ -916,6 +917,23 @@ export default function PuzzleForm() {
 
     if (!input.steps.every(({ stepPage }) => stepPage?.length)) {
       setHasNoStepPages(true)
+      return
+    }
+
+    // Ensure all step sort weights are unique
+    if (uniqBy(input.steps, 'stepSortWeight').length !== input.steps.length) {
+      alert('step sort weights must be unique')
+      return
+    }
+
+    // Ensure all step page sort weights are unique
+    if (
+      !input.steps.every(
+        (step) =>
+          uniqBy(step.stepPage, 'sortWeight').length === step.stepPage?.length
+      )
+    ) {
+      alert('step page sort weights must be unique')
       return
     }
 
