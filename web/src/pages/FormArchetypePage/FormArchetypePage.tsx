@@ -1201,7 +1201,7 @@ export default function PuzzleForm() {
           </div>
 
           {/* @NOTE: Hard coded to `false` while testing */}
-          <div id="puzzle-list-publicly" className="form__entry mb-12">
+          <div id="puzzle-list-publicly" className="form__entry mb-12 hidden">
             <Label
               name="rewardable.listPublicly"
               className="form__label text-2xl font-bold text-slate-700"
