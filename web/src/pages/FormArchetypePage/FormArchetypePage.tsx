@@ -263,7 +263,9 @@ function StepForm({
               : defaultTitleColor
           }`}
         >
-          <div className="form__entry-name mb-1">Default Image</div>
+          <div className="form__entry-name mb-1">
+            Default Image<span className="text-rose-500">*</span>
+          </div>
         </Label>
         <TextField
           placeholder="Default Image"
@@ -307,7 +309,9 @@ function StepForm({
               : defaultTitleColor
           }`}
         >
-          <div className="form__entry-name mb-1">Step Sort Weight</div>
+          <div className="form__entry-name mb-1">
+            Step Sort Weight<span className="text-rose-500">*</span>
+          </div>
         </Label>
         <NumberField
           {...register(`${stepsArrayName}.${index}.stepSortWeight`)}
@@ -370,10 +374,12 @@ function StepForm({
                   : `${defaultStyles} ${defaultTitleColor}`
               }
             >
-              <div className="form__entry-name mb-1">Simple Text</div>
+              <div className="form__entry-name mb-1">
+                Pass Code<span className="text-rose-500">*</span>
+              </div>
             </Label>
             <TextField
-              placeholder="Simple Text"
+              placeholder="Pass Code"
               {...register(`${stepsArrayName}.${index}.solution`)}
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               validation={{ required: true }}
@@ -382,7 +388,7 @@ function StepForm({
               'solution' in errors[stepsArrayName][index] &&
               'type' in errors[stepsArrayName][index].solution &&
               errors[stepsArrayName][index].solution.type === 'required' &&
-              requiredFieldError('a simple text answer')}
+              requiredFieldError('a pass code')}
           </div>
         </div>
       )}
@@ -708,7 +714,9 @@ function StepForm({
                       : defaultTitleColor
                   }`}
                 >
-                  <div className="form__entry-name mb-1">Body</div>
+                  <div className="form__entry-name mb-1">
+                    Body<span className="text-rose-500">*</span>
+                  </div>
                 </Label>
                 <TextField
                   placeholder="Body"
@@ -789,7 +797,9 @@ function StepForm({
                       : defaultTitleColor
                   }`}
                 >
-                  <div className="form__entry-name mb-1">Sort weight</div>
+                  <div className="form__entry-name mb-1">
+                    Sort Weight<span className="text-rose-500">*</span>
+                  </div>
                 </Label>
 
                 <NumberField
@@ -1088,7 +1098,9 @@ export default function PuzzleForm() {
               className="form__label text-2xl font-bold text-slate-700"
               errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
-              <div className="form__entry-name mb-1">Name</div>
+              <div className="form__entry-name mb-1">
+                Name<span className="text-rose-500">*</span>
+              </div>
             </Label>
             <TextField
               name="rewardable.name"
@@ -1105,7 +1117,9 @@ export default function PuzzleForm() {
               className="form__label text-2xl font-bold text-slate-700"
               errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
-              <div className="form__entry-name mb-1">Slug</div>
+              <div className="form__entry-name mb-1">
+                Slug<span className="text-rose-500">*</span>
+              </div>
             </Label>
             <TextField
               name="rewardable.slug"
@@ -1198,24 +1212,31 @@ export default function PuzzleForm() {
               name="puzzle.requirements"
               className="form__label text-2xl font-bold text-slate-700"
             >
-              <div className="form__entry-name mb-1">Requirements</div>
+              <div className="form__entry-name mb-1">
+                Requirements<span className="text-rose-500">*</span>
+              </div>
+              <p className="text-sm font-normal">
+                Hold ctrl/cmd to select multiple
+              </p>
             </Label>
             <div className="my-8 text-stone-800">
               <SelectField
                 name="puzzle.requirements"
-                multiple={true}
+                multiple
                 validation={{ required: true }}
               >
-                <option value="HOLDERS_ONLY">Holders Only</option>
-                <option value="SOCIAL_ACCOUNT">Social Account</option>
-                <option value="WALLET_GAS">Wallet Gas</option>
-                <option value="TRAVEL">Travel</option>
+                {/*
+                  <option value="HOLDERS_ONLY">Holders Only</option>
+                  <option value="SOCIAL_ACCOUNT">Social Account</option>
+                  <option value="WALLET_GAS">Wallet Gas</option>
+                  <option value="TRAVEL">Travel</option>
+                  <option value="INTERACTIVE_OBJECT">Interactive Object</option>
+                */}
                 <option value="WORDPLAY">Wordplay</option>
                 <option value="DETAIL">Detail</option>
-                <option value="INTERACTIVE_OBJECT">Interactive Object</option>
               </SelectField>
               {errors.puzzle?.requirements?.type === 'required' &&
-                requiredFieldError('requirements')}
+                requiredFieldError('a requirement')}
             </div>
           </div>
 
@@ -1225,7 +1246,9 @@ export default function PuzzleForm() {
               className="form__label text-2xl font-bold text-slate-700"
               errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
-              <div className="form__entry-name mb-1">Cover Image</div>
+              <div className="form__entry-name mb-1">
+                Cover Image<span className="text-rose-500">*</span>
+              </div>
             </Label>
             <TextField
               name="puzzle.coverImage"
@@ -1276,7 +1299,7 @@ export default function PuzzleForm() {
               Add Step
             </button>
           </div>
-          {hasNoSteps && (
+          {hasNoSteps && fields.length === 0 && (
             <div className="rw-field-error">
               You must have at least one step in a puzzle!
             </div>
