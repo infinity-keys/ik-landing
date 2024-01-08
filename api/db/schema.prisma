@@ -32,7 +32,7 @@ model Rewardable {
   /// Short name used in URLs, lowercase and dashes, no spaces/caps, ie not-right
   slug           String
   /// Shown at the overall page for this Rewardable
-  explanation    String
+  explanation    String?
   /// When this is successfully completed/rewarded, what should be shown
   successMessage String?
   /// Show in public listings
