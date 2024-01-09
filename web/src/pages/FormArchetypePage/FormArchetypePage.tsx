@@ -903,19 +903,16 @@ export default function PuzzleForm() {
     if (input.steps.length === 0) {
       // alternatively, we could trash the useState and just have an alert:
       // alert('A new puzzle must have at least one step!')
-      setHasNoSteps(true)
-      return
+      return setHasNoSteps(true)
     }
 
     if (!input.steps.every(({ stepPage }) => stepPage?.length)) {
-      setHasNoStepPages(true)
-      return
+      return setHasNoStepPages(true)
     }
 
     // Ensure all step sort weights are unique
     if (uniqBy(input.steps, 'stepSortWeight').length !== input.steps.length) {
-      alert('step sort weights must be unique')
-      return
+      return alert('step sort weights must be unique')
     }
 
     // Ensure all step page sort weights are unique
@@ -925,8 +922,7 @@ export default function PuzzleForm() {
           uniqBy(step.stepPage, 'sortWeight').length === step.stepPage?.length
       )
     ) {
-      alert('step page sort weights must be unique')
-      return
+      return alert('step page sort weights must be unique')
     }
 
     // Reset the error state if there are steps
