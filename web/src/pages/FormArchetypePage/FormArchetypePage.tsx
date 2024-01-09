@@ -1,6 +1,6 @@
 // BROWSER LOCATION: http://localhost:8910/puzzle/archetype
 
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 
 import { DevTool } from '@hookform/devtools'
 import { uniqBy } from 'lodash'
@@ -108,7 +108,6 @@ function StepForm({
   remove,
   errors,
   control,
-  hasNoStepPages,
 }: {
   index: number
   register: UseFormRegister<PuzzleFormType>
@@ -118,7 +117,6 @@ function StepForm({
   remove: (index: number) => void
   errors: FieldErrors<PuzzleFormType>
   control: Control<PuzzleFormType, unknown>
-  hasNoStepPages?: boolean
 }) {
   // Watch for `stepTypeVal` changes so that we can set the default values
   const stepTypeVal = watch(`${stepsArrayName}.${index}.type`)
@@ -210,6 +208,14 @@ function StepForm({
   } = useFieldArray({
     control,
     name: `${stepsArrayName}.${index}.stepPage`,
+    rules: {
+      required: true,
+      validate: {
+        duplicateSortWeight: (value) => {
+          return uniqBy(value, 'sortWeight').length === value.length
+        },
+      },
+    },
   })
 
   // // this function is used to remove a token id range fieldset
@@ -321,6 +327,9 @@ function StepForm({
         />
         {errors[stepsArrayName]?.[index]?.stepSortWeight?.type === 'required' &&
           requiredFieldError('Step Sort Weight')}
+        {errors?.[stepsArrayName]?.root?.type === 'duplicateSortWeight' && (
+          <p className="rw-field-error">Steps must have unique sort weight</p>
+        )}
       </div>
 
       <div id={`${index}-step-type-guide`} className="form__entry mb-12 hidden">
@@ -809,6 +818,12 @@ function StepForm({
                   validation={{ required: true }}
                   min="1"
                 />
+                {errors?.[stepsArrayName]?.[index]?.stepPage?.root?.type ===
+                  'duplicateSortWeight' && (
+                  <p className="rw-field-error">
+                    Step page must have unique sort weight
+                  </p>
+                )}
               </div>
             </fieldset>
             <button
@@ -837,7 +852,8 @@ function StepForm({
           </button>
         </div>
       </div>
-      {hasNoStepPages && !stepPageFields.length && (
+      {errors?.[stepsArrayName]?.[index]?.stepPage?.root?.type ===
+        'required' && (
         <div className="rw-field-error">
           You must have at least one step page in a step!
         </div>
@@ -863,11 +879,6 @@ type PuzzleFormType = {
 }
 
 export default function PuzzleForm() {
-  // manages what happens when a user forgets to include at least one step for
-  // the puzzle that they are creating with this form
-  const [hasNoSteps, setHasNoSteps] = useState(false)
-  const [hasNoStepPages, setHasNoStepPages] = useState(false)
-
   // only used in dev mode
   const renderCount = useRef(process.env.NODE_ENV === 'development' ? 1 : 0)
 
@@ -891,6 +902,14 @@ export default function PuzzleForm() {
   const { fields, append, remove } = useFieldArray({
     control: formMethods.control,
     name: stepsArrayName,
+    rules: {
+      required: true,
+      validate: {
+        duplicateSortWeight: (value) => {
+          return uniqBy(value, 'stepSortWeight').length === value.length
+        },
+      },
+    },
   })
 
   useFormPersist(LOCAL_STORAGE_KEY, {
@@ -900,37 +919,6 @@ export default function PuzzleForm() {
   })
 
   const onSubmit = async (input: PuzzleFormType) => {
-    if (input.steps.length === 0) {
-      // alternatively, we could trash the useState and just have an alert:
-      // alert('A new puzzle must have at least one step!')
-      return setHasNoSteps(true)
-    }
-
-    if (!input.steps.every(({ stepPage }) => stepPage?.length)) {
-      return setHasNoStepPages(true)
-    }
-
-    // Ensure all step sort weights are unique
-    if (uniqBy(input.steps, 'stepSortWeight').length !== input.steps.length) {
-      return alert('step sort weights must be unique')
-    }
-
-    // Ensure all step page sort weights are unique
-    if (
-      !input.steps.every(
-        (step) =>
-          uniqBy(step.stepPage, 'sortWeight').length === step.stepPage?.length
-      )
-    ) {
-      return alert('step page sort weights must be unique')
-    }
-
-    // Reset the error state if there are steps
-    setHasNoSteps(false)
-    setHasNoStepPages(false)
-
-    // debugger
-
     createArchetypalPuzzle({
       variables: {
         input: {
@@ -1138,7 +1126,7 @@ export default function PuzzleForm() {
             {requiredSlugFormatError(formMethods.getValues('rewardable.slug'))}
           </div>
 
-          {/* @NOTE: These are required in DB, but now only used for packs */}
+          {/* @NOTE: This is currently only used for packs */}
           {/* <div id="explanation" className="form__entry mb-12">
             <Label
               name="rewardable.explanation"
@@ -1172,7 +1160,6 @@ export default function PuzzleForm() {
             />
           </div>
 
-          {/* @TODO: How are we handling the org creation? */}
           <div id="puzzle-org-id" className="form__entry mb-12">
             <Label
               name="rewardable.orgId"
@@ -1281,7 +1268,6 @@ export default function PuzzleForm() {
               remove={remove}
               errors={errors}
               control={formMethods.control}
-              hasNoStepPages={hasNoStepPages}
             />
           ))}
           <div className="rw-button-group">
@@ -1304,7 +1290,7 @@ export default function PuzzleForm() {
               Add Step
             </button>
           </div>
-          {hasNoSteps && fields.length === 0 && (
+          {errors?.[stepsArrayName]?.root?.type === 'required' && (
             <div className="rw-field-error">
               You must have at least one step in a puzzle!
             </div>
