@@ -27,8 +27,11 @@ export async function execute(interaction: CommandInteraction) {
   }
 
   const embedBalance = new EmbedBuilder()
-    .setImage(puzzle.image)
+
     .setDescription(`**Title:** ${puzzle.title}\n**Text:** ${puzzle.text}`)
     .setColor(0xc3b4f7)
-  return interaction.reply({ embeds: [embedBalance] })
+  const embedImage = puzzle.image
+    ? embedBalance.setImage(puzzle.image)
+    : embedBalance
+  return interaction.reply({ embeds: [embedImage] })
 }

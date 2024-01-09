@@ -30,17 +30,39 @@ export async function execute(interaction: CommandInteraction) {
     return
   }
   const message = interaction.options
+  const image = message.get('image')?.value
+  if (image && !isValidHttpUrl(image)) {
+    await interaction.reply({
+      content: `Please enter in valid image url`,
+      fetchReply: true,
+      ephemeral: true,
+    })
+    return
+  }
+
   const puzzle = new Puzzle({
     title: message.get('title').value,
     text: message.get('text').value,
     passcode: message.get('passcode').value,
-    image: message.get('image')?.value,
+    image: image && isValidHttpUrl(image) ? image : undefined,
   })
   await puzzle.save()
 
   await interaction.reply({
     content: `you're all set`,
-    fetchReply: true,
+    // fetchReply: true,
     ephemeral: true,
   })
+}
+
+function isValidHttpUrl(string) {
+  let url
+
+  try {
+    url = new URL(string)
+  } catch {
+    return false
+  }
+
+  return url.protocol === 'http:' || url.protocol === 'https:'
 }
