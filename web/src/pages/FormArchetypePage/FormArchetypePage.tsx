@@ -1,8 +1,9 @@
 // BROWSER LOCATION: http://localhost:8910/puzzle/archetype
 
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 
 import { DevTool } from '@hookform/devtools'
+import { uniqBy } from 'lodash'
 import useFormPersist from 'react-hook-form-persist'
 import {
   CreateRewardableInput,
@@ -80,6 +81,16 @@ function requiredFieldError(fieldName: string) {
   )
 }
 
+function imageLinkPatternError(fieldName: string) {
+  return (
+    <p className="form__error pt-1 font-medium text-rose-800">
+      Please ensure your {fieldName} link begins with &quot;http(s)://&quot;
+    </p>
+  )
+}
+
+const imageLinkPattern = /^(http|https):\/\/.*/
+
 // These are used to style labels (<Label />) for nested components
 const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
 const defaultTitleColor = 'text-slate-700'
@@ -113,10 +124,6 @@ function StepForm({
   // This is a custom hook that sets the default values for each step
   useEffect(() => {
     const commonStepFields = {
-      failMessage: getValues(`${stepsArrayName}.${index}.failMessage`),
-      successMessage: getValues(`${stepsArrayName}.${index}.successMessage`),
-      challenge: getValues(`${stepsArrayName}.${index}.challenge`),
-      resourceLinks: getValues(`${stepsArrayName}.${index}.resourceLinks`),
       stepSortWeight: getValues(`${stepsArrayName}.${index}.stepSortWeight`),
       solutionHint: getValues(`${stepsArrayName}.${index}.solutionHint`),
       defaultImage: getValues(`${stepsArrayName}.${index}.defaultImage`),
@@ -162,7 +169,6 @@ function StepForm({
       })
     }
     if (stepTypeVal === 'TOKEN_ID_RANGE') {
-      console.log('token id range selected')
       setValue(`${stepsArrayName}.${index}`, {
         type: 'TOKEN_ID_RANGE',
         ...commonStepFields,
@@ -202,6 +208,14 @@ function StepForm({
   } = useFieldArray({
     control,
     name: `${stepsArrayName}.${index}.stepPage`,
+    rules: {
+      required: true,
+      validate: {
+        duplicateSortWeight: (value) => {
+          return uniqBy(value, 'sortWeight').length === value.length
+        },
+      },
+    },
   })
 
   // // this function is used to remove a token id range fieldset
@@ -227,88 +241,8 @@ function StepForm({
       <div className="form__label text-center text-4xl font-extrabold tracking-widest text-slate-700">
         Step {index + 1}
       </div>
-      <div id="step-fail-message" className="form__entry mb-12">
-        <Label
-          name={`failMessage.${index}`}
-          className={`${defaultStyles} ${
-            errors[stepsArrayName]?.[index]?.failMessage?.type === 'required'
-              ? errorTitleColor
-              : defaultTitleColor
-          }`}
-        >
-          <div className="form__entry-name mb-1">Fail Message</div>
-        </Label>
-        <TextField
-          placeholder="Fail Message"
-          {...register(`${stepsArrayName}.${index}.failMessage`)}
-          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-          validation={{ required: true }}
-        />
-        {errors[stepsArrayName]?.[index]?.failMessage?.type === 'required' &&
-          requiredFieldError('Fail Message')}
-      </div>
-      <div id="step-success-message" className="form__entry mb-12">
-        <Label
-          name={`successMessage.${index}`}
-          className={`${defaultStyles} ${
-            errors[stepsArrayName]?.[index]?.successMessage?.type === 'required'
-              ? errorTitleColor
-              : defaultTitleColor
-          }`}
-        >
-          <div className="form__entry-name mb-1">Success Message</div>
-        </Label>
-        <TextField
-          placeholder="Success Message"
-          {...register(`${stepsArrayName}.${index}.successMessage`)}
-          className={`form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400`}
-          validation={{ required: true }}
-        />
-        {errors[stepsArrayName]?.[index]?.successMessage?.type === 'required' &&
-          requiredFieldError('Success Message')}
-      </div>
-      <div id="step-challenge" className="form__entry mb-12">
-        <Label
-          name={`challenge.${index}`}
-          className={`${defaultStyles} ${
-            errors[stepsArrayName]?.[index]?.challenge?.type === 'required'
-              ? errorTitleColor
-              : defaultTitleColor
-          }`}
-        >
-          <div className="form__entry-name mb-1">Challenge</div>
-        </Label>
-        <TextField
-          placeholder="Challenge"
-          {...register(`${stepsArrayName}.${index}.challenge`)}
-          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-          validation={{ required: true }}
-        />
-        {errors[stepsArrayName]?.[index]?.challenge?.type === 'required' &&
-          requiredFieldError('Challenge')}
-      </div>
-      <div id="step-resource-links" className="form__entry mb-12">
-        <Label
-          name={`resourceLinks.${index}`}
-          className={`${defaultStyles} ${
-            errors[stepsArrayName]?.[index]?.resourceLinks?.type === 'required'
-              ? errorTitleColor
-              : defaultTitleColor
-          }`}
-        >
-          <div className="form__entry-name mb-1">Resource Links</div>
-        </Label>
-        <TextField
-          placeholder="Resource Links"
-          {...register(`${stepsArrayName}.${index}.resourceLinks`)}
-          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-          validation={{ required: true }}
-        />
-        {errors[stepsArrayName]?.[index]?.resourceLinks?.type === 'required' &&
-          requiredFieldError('Resource Links')}
-      </div>
 
-      <div id="solution-hint" className="form__entry mb-12">
+      <div id={`${index}-solution-hint`} className="form__entry mb-12">
         <Label
           name={`solutionHint.${index}`}
           className={`${defaultStyles} ${
@@ -323,13 +257,10 @@ function StepForm({
           placeholder="Solution Hint"
           {...register(`${stepsArrayName}.${index}.solutionHint`)}
           className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-          validation={{ required: true }}
         />
-        {errors[stepsArrayName]?.[index]?.solutionHint?.type === 'required' &&
-          requiredFieldError('Solution Hint')}
       </div>
 
-      <div id="default-image" className="form__entry mb-12">
+      <div id={`${index}-default-image`} className="form__entry mb-12">
         <Label
           name={`defaultImage.${index}`}
           className={`${defaultStyles} ${
@@ -338,19 +269,23 @@ function StepForm({
               : defaultTitleColor
           }`}
         >
-          <div className="form__entry-name mb-1">Default Image</div>
+          <div className="form__entry-name mb-1">
+            Default Image<span className="text-rose-500">*</span>
+          </div>
         </Label>
         <TextField
           placeholder="Default Image"
           {...register(`${stepsArrayName}.${index}.defaultImage`)}
           className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-          validation={{ required: true }}
+          validation={{ required: true, pattern: imageLinkPattern }}
         />
         {errors[stepsArrayName]?.[index]?.defaultImage?.type === 'required' &&
           requiredFieldError('Default Image')}
+        {errors[stepsArrayName]?.[index]?.defaultImage?.type === 'pattern' &&
+          imageLinkPatternError('default image')}
       </div>
 
-      <div id="solution-image" className="form__entry mb-12">
+      <div id={`${index}-solution-image`} className="form__entry mb-12">
         <Label
           name={`solutionImage.${index}`}
           className={`${defaultStyles} ${
@@ -365,13 +300,13 @@ function StepForm({
           placeholder="Solution Image"
           {...register(`${stepsArrayName}.${index}.solutionImage`)}
           className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-          validation={{ required: true }}
+          validation={{ pattern: imageLinkPattern }}
         />
-        {errors[stepsArrayName]?.[index]?.solutionImage?.type === 'required' &&
-          requiredFieldError('Solution Image')}
+        {errors[stepsArrayName]?.[index]?.solutionImage?.type === 'pattern' &&
+          imageLinkPatternError('solution image')}
       </div>
 
-      <div id="step-sort-weight" className="form__entry mb-12">
+      <div id={`${index}-step-sort-weight`} className="form__entry mb-12">
         <Label
           name={`stepSortWeight.${index}`}
           className={`${defaultStyles} ${
@@ -380,19 +315,24 @@ function StepForm({
               : defaultTitleColor
           }`}
         >
-          <div className="form__entry-name mb-1">Step Sort Weight</div>
+          <div className="form__entry-name mb-1">
+            Step Sort Weight<span className="text-rose-500">*</span>
+          </div>
         </Label>
         <NumberField
-          placeholder="Challenge"
           {...register(`${stepsArrayName}.${index}.stepSortWeight`)}
           className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
           validation={{ required: true }}
+          min="1"
         />
         {errors[stepsArrayName]?.[index]?.stepSortWeight?.type === 'required' &&
           requiredFieldError('Step Sort Weight')}
+        {errors?.[stepsArrayName]?.root?.type === 'duplicateSortWeight' && (
+          <p className="rw-field-error">Steps must have unique sort weight</p>
+        )}
       </div>
 
-      <div id="step-type-guide" className="form__entry mb-12">
+      <div id={`${index}-step-type-guide`} className="form__entry mb-12 hidden">
         <Label
           name={`stepTypeGuide.${index}`}
           className="form__label text-2xl font-bold text-slate-700"
@@ -406,15 +346,18 @@ function StepForm({
             <option value="SEEK">Seek</option>
             <option value="INFER">Infer</option>
             <option value="REWIND">Rewind</option>
-            <option value="TRACK">track</option>
+            <option value="TRACK">Track</option>
             <option value="COLLECT">Collect</option>
             <option value="ACTIVATE">Activate</option>
           </SelectField>
         </div>
       </div>
 
-      <div className="my-8 text-stone-800">
-        <SelectField {...register(`${stepsArrayName}.${index}.type`)}>
+      <div className="my-8 hidden text-stone-800">
+        <SelectField
+          {...register(`${stepsArrayName}.${index}.type`)}
+          defaultValue="SIMPLE_TEXT"
+        >
           <option>Choose a Step Type</option>
           <option value="SIMPLE_TEXT">Simple Text</option>
           <option value="NFT_CHECK">NFT check</option>
@@ -431,6 +374,7 @@ function StepForm({
               name={stepTypeVal}
               className={
                 Array.isArray(errors[stepsArrayName]) &&
+                errors[stepsArrayName][index] &&
                 'solution' in errors[stepsArrayName][index] &&
                 'type' in errors[stepsArrayName][index].solution &&
                 errors[stepsArrayName][index].solution.type === 'required'
@@ -438,19 +382,22 @@ function StepForm({
                   : `${defaultStyles} ${defaultTitleColor}`
               }
             >
-              <div className="form__entry-name mb-1">Simple Text</div>
+              <div className="form__entry-name mb-1">
+                Pass Code<span className="text-rose-500">*</span>
+              </div>
             </Label>
             <TextField
-              placeholder="Simple Text"
+              placeholder="Pass Code"
               {...register(`${stepsArrayName}.${index}.solution`)}
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               validation={{ required: true }}
             />
             {Array.isArray(errors[stepsArrayName]) &&
+              errors[stepsArrayName][index] &&
               'solution' in errors[stepsArrayName][index] &&
               'type' in errors[stepsArrayName][index].solution &&
               errors[stepsArrayName][index].solution.type === 'required' &&
-              requiredFieldError('a simple text answer')}
+              requiredFieldError('a pass code')}
           </div>
         </div>
       )}
@@ -776,13 +723,19 @@ function StepForm({
                       : defaultTitleColor
                   }`}
                 >
-                  <div className="form__entry-name mb-1">Body</div>
+                  <div className="form__entry-name mb-1">
+                    Body<span className="text-rose-500">*</span>
+                  </div>
                 </Label>
                 <TextField
                   placeholder="Body"
                   name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
                   className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                  validation={{ required: true }}
                 />
+                {errors?.[stepsArrayName]?.[stepPageIndex]?.stepPage?.[
+                  stepPageIndex
+                ]?.body?.type === 'required' && requiredFieldError('a body')}
               </div>
 
               <div
@@ -807,7 +760,11 @@ function StepForm({
                   placeholder="Image"
                   name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
                   className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                  validation={{ pattern: imageLinkPattern }}
                 />
+                {errors[stepsArrayName]?.[index]?.stepPage?.[stepPageIndex]
+                  ?.image?.type === 'pattern' &&
+                  imageLinkPatternError('step image')}
               </div>
 
               <div
@@ -849,7 +806,9 @@ function StepForm({
                       : defaultTitleColor
                   }`}
                 >
-                  <div className="form__entry-name mb-1">Sort weight</div>
+                  <div className="form__entry-name mb-1">
+                    Sort Weight<span className="text-rose-500">*</span>
+                  </div>
                 </Label>
 
                 <NumberField
@@ -857,7 +816,14 @@ function StepForm({
                   name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
                   className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
                   validation={{ required: true }}
+                  min="1"
                 />
+                {errors?.[stepsArrayName]?.[index]?.stepPage?.root?.type ===
+                  'duplicateSortWeight' && (
+                  <p className="rw-field-error">
+                    Step page must have unique sort weight
+                  </p>
+                )}
               </div>
             </fieldset>
             <button
@@ -886,6 +852,12 @@ function StepForm({
           </button>
         </div>
       </div>
+      {errors?.[stepsArrayName]?.[index]?.stepPage?.root?.type ===
+        'required' && (
+        <div className="rw-field-error">
+          You must have at least one step page in a step!
+        </div>
+      )}
     </fieldset>
   )
 }
@@ -896,7 +868,6 @@ type PuzzleFormType = {
   rewardable: {
     name: CreateRewardableInput['name']
     slug: CreateRewardableInput['slug']
-    explanation: CreateRewardableInput['explanation']
     successMessage: CreateRewardableInput['successMessage']
     listPublicly: CreateRewardableInput['listPublicly']
   }
@@ -908,10 +879,6 @@ type PuzzleFormType = {
 }
 
 export default function PuzzleForm() {
-  // manages what happens when a user forgets to include at least one step for
-  // the puzzle that they are creating with this form
-  const [hasNoSteps, setHasNoSteps] = useState(false)
-
   // only used in dev mode
   const renderCount = useRef(process.env.NODE_ENV === 'development' ? 1 : 0)
 
@@ -929,19 +896,20 @@ export default function PuzzleForm() {
     },
   })
 
-  // Errors for Token ID Ranges (and steps too?)
   const { errors } = formMethods.formState
-  console.log({ errors })
-
-  // // left off here on 12/28/2023
-  // // Errors for Step Pages only
-  const { errors: stepPageErrors } = formMethods.formState
-  console.log({ stepPageErrors })
 
   // Steps Field Array for Token ID Ranges (and steps too?)
   const { fields, append, remove } = useFieldArray({
     control: formMethods.control,
     name: stepsArrayName,
+    rules: {
+      required: true,
+      validate: {
+        duplicateSortWeight: (value) => {
+          return uniqBy(value, 'stepSortWeight').length === value.length
+        },
+      },
+    },
   })
 
   useFormPersist(LOCAL_STORAGE_KEY, {
@@ -951,23 +919,10 @@ export default function PuzzleForm() {
   })
 
   const onSubmit = async (input: PuzzleFormType) => {
-    if (input.steps.length === 0) {
-      // alternatively, we could trash the useState and just have an alert:
-      // alert('A new puzzle must have at least one step!')
-      setHasNoSteps(true)
-      return
-    }
-
-    // Reset the error state if there are steps
-    setHasNoSteps(false)
-
-    // debugger
-
     createArchetypalPuzzle({
       variables: {
         input: {
           name: input.rewardable.name,
-          explanation: input.rewardable.explanation,
           type: 'PUZZLE', // hard coded for now
           slug: input.rewardable.slug,
           listPublicly: input.rewardable.listPublicly,
@@ -981,11 +936,7 @@ export default function PuzzleForm() {
             steps: input.steps.map((step) => {
               const commonStepFields = {
                 puzzleId: 'ignore me',
-                failMessage: step.failMessage,
-                successMessage: step.successMessage,
-                challenge: step.challenge,
                 stepSortWeight: step.stepSortWeight,
-                resourceLinks: step.resourceLinks,
                 solutionHint: step.solutionHint,
                 defaultImage: step.defaultImage,
                 solutionImage: step.solutionImage,
@@ -1094,8 +1045,11 @@ export default function PuzzleForm() {
     CreateBurdPuzzleMutation,
     MutationcreateBurdPuzzleArgs
   >(CREATE_BURD_PUZZLE_MUTATION, {
-    onCompleted: () => {
-      alert(`Rewardable created via Burd's Form!`)
+    onCompleted: ({ createBurdPuzzle }) => {
+      if (createBurdPuzzle.name) {
+        formMethods.reset()
+        alert(`Rewardable created via Burd's Form!`)
+      }
     },
     onError: (error) => {
       alert(`Error with Burd's form: ${error.message}`)
@@ -1138,7 +1092,9 @@ export default function PuzzleForm() {
               className="form__label text-2xl font-bold text-slate-700"
               errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
-              <div className="form__entry-name mb-1">Name</div>
+              <div className="form__entry-name mb-1">
+                Name<span className="text-rose-500">*</span>
+              </div>
             </Label>
             <TextField
               name="rewardable.name"
@@ -1155,7 +1111,9 @@ export default function PuzzleForm() {
               className="form__label text-2xl font-bold text-slate-700"
               errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
-              <div className="form__entry-name mb-1">Slug</div>
+              <div className="form__entry-name mb-1">
+                Slug<span className="text-rose-500">*</span>
+              </div>
             </Label>
             <TextField
               name="rewardable.slug"
@@ -1167,7 +1125,9 @@ export default function PuzzleForm() {
               requiredFieldError('a Slug')}
             {requiredSlugFormatError(formMethods.getValues('rewardable.slug'))}
           </div>
-          <div id="explanation" className="form__entry mb-12">
+
+          {/* @NOTE: This is currently only used for packs */}
+          {/* <div id="explanation" className="form__entry mb-12">
             <Label
               name="rewardable.explanation"
               className="form__label text-2xl font-bold text-slate-700"
@@ -1183,7 +1143,8 @@ export default function PuzzleForm() {
             />
             {errors.rewardable?.explanation?.type === 'required' &&
               requiredFieldError('an Explanation')}
-          </div>
+          </div> */}
+
           <div id="puzzle-success-message" className="form__entry mb-12">
             <Label
               name="rewardable.successMessage"
@@ -1196,11 +1157,9 @@ export default function PuzzleForm() {
               name="rewardable.successMessage"
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               placeholder="Success Message"
-              validation={{ required: true }}
             />
-            {errors.rewardable?.successMessage?.type === 'required' &&
-              requiredFieldError('a Success Message')}
           </div>
+
           <div id="puzzle-org-id" className="form__entry mb-12">
             <Label
               name="rewardable.orgId"
@@ -1223,7 +1182,9 @@ export default function PuzzleForm() {
             {/* {errors.rewardable?.orgId?.type === 'required' &&
               requiredFieldError('an Organizational ID')} */}
           </div>
-          <div id="puzzle-list-publicly" className="form__entry mb-12">
+
+          {/* @NOTE: Hard coded to `false` while testing */}
+          <div id="puzzle-list-publicly" className="form__entry mb-12 hidden">
             <Label
               name="rewardable.listPublicly"
               className="form__label text-2xl font-bold text-slate-700"
@@ -1243,18 +1204,31 @@ export default function PuzzleForm() {
               name="puzzle.requirements"
               className="form__label text-2xl font-bold text-slate-700"
             >
-              <div className="form__entry-name mb-1">Requirements</div>
+              <div className="form__entry-name mb-1">
+                Requirements<span className="text-rose-500">*</span>
+              </div>
+              <p className="text-sm font-normal">
+                Hold ctrl/cmd to select multiple
+              </p>
             </Label>
             <div className="my-8 text-stone-800">
-              <SelectField name="puzzle.requirements" multiple>
-                <option value="HOLDERS_ONLY">Holders Only</option>
-                <option value="SOCIAL_ACCOUNT">Social Account</option>
-                <option value="WALLET_GAS">Wallet Gas</option>
-                <option value="TRAVEL">Travel</option>
+              <SelectField
+                name="puzzle.requirements"
+                multiple
+                validation={{ required: true }}
+              >
+                {/*
+                  <option value="HOLDERS_ONLY">Holders Only</option>
+                  <option value="SOCIAL_ACCOUNT">Social Account</option>
+                  <option value="WALLET_GAS">Wallet Gas</option>
+                  <option value="TRAVEL">Travel</option>
+                  <option value="INTERACTIVE_OBJECT">Interactive Object</option>
+                */}
                 <option value="WORDPLAY">Wordplay</option>
                 <option value="DETAIL">Detail</option>
-                <option value="INTERACTIVE_OBJECT">Interactive Object</option>
               </SelectField>
+              {errors.puzzle?.requirements?.type === 'required' &&
+                requiredFieldError('a requirement')}
             </div>
           </div>
 
@@ -1264,16 +1238,23 @@ export default function PuzzleForm() {
               className="form__label text-2xl font-bold text-slate-700"
               errorClassName="form__label--error text-2xl font-bold text-rose-900"
             >
-              <div className="form__entry-name mb-1">Cover Image</div>
+              <div className="form__entry-name mb-1">
+                Cover Image<span className="text-rose-500">*</span>
+              </div>
             </Label>
             <TextField
               name="puzzle.coverImage"
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               placeholder="Cover Image"
-              validation={{ required: true }}
+              validation={{
+                required: true,
+                pattern: imageLinkPattern,
+              }}
             />
-            {errors.rewardable?.successMessage?.type === 'required' &&
-              requiredFieldError('a Success Message')}
+            {errors.puzzle?.coverImage?.type === 'required' &&
+              requiredFieldError('a cover image')}
+            {errors.puzzle?.coverImage?.type === 'pattern' &&
+              imageLinkPatternError('cover image')}
           </div>
 
           {fields.map((field, index) => (
@@ -1296,11 +1277,7 @@ export default function PuzzleForm() {
               onClick={() =>
                 append({
                   type: 'SIMPLE_TEXT',
-                  failMessage: '',
-                  successMessage: '',
-                  challenge: '',
-                  resourceLinks: '',
-                  stepSortWeight: 0,
+                  stepSortWeight: fields.length + 1,
                   solution: '',
                   solutionCharCount: 0,
                   solutionHint: '',
@@ -1313,7 +1290,7 @@ export default function PuzzleForm() {
               Add Step
             </button>
           </div>
-          {hasNoSteps && (
+          {errors?.[stepsArrayName]?.root?.type === 'required' && (
             <div className="rw-field-error">
               You must have at least one step in a puzzle!
             </div>
