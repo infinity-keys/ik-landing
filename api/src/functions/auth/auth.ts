@@ -1,5 +1,6 @@
 import type { UserWebhookEvent } from '@clerk/clerk-sdk-node'
 import type { APIGatewayEvent } from 'aws-lambda'
+import { nanoid } from 'nanoid'
 
 import {
   verifyEvent,
@@ -74,11 +75,35 @@ export const handler = async (event: APIGatewayEvent) => {
 
     const { data } = payload
 
+    const placeholder = nanoid()
+    const createOrgOptions = {
+      organization: {
+        create: {
+          name: placeholder,
+          slug: placeholder,
+        },
+      },
+    }
+
     // Handle users singing up with a social account
     if (data.primary_email_address_id) {
       const primaryEmail = data.email_addresses.find(
         ({ id }) => id === data.primary_email_address_id
       )?.email_address
+
+      const user = await db.user.findUnique({
+        where: {
+          email: primaryEmail,
+        },
+        select: {
+          id: true,
+          organizations: {
+            select: {
+              orgId: true,
+            },
+          },
+        },
+      })
 
       await db.user.upsert({
         where: {
@@ -88,12 +113,22 @@ export const handler = async (event: APIGatewayEvent) => {
         create: {
           authId: data.id,
           roles: ['VERIFIED'],
+          organizations: {
+            create: createOrgOptions,
+          },
         },
         update: {
           // Overwrite Keyp id with Clerk id
           authId: data.id,
           // Remove email from DB
           email: null,
+          ...(!user?.organizations[0]
+            ? {
+                organizations: {
+                  create: createOrgOptions,
+                },
+              }
+            : {}),
         },
       })
 
@@ -115,7 +150,14 @@ export const handler = async (event: APIGatewayEvent) => {
             mode: 'insensitive',
           },
         },
-        select: { id: true },
+        select: {
+          id: true,
+          organizations: {
+            select: {
+              orgId: true,
+            },
+          },
+        },
       })
 
       await db.user.upsert({
@@ -126,12 +168,22 @@ export const handler = async (event: APIGatewayEvent) => {
         create: {
           authId: data.id,
           roles: ['VERIFIED'],
+          organizations: {
+            create: createOrgOptions,
+          },
         },
         update: {
           // Overwrite Keyp id with Clerk id
           authId: data.id,
           // Remove email from DB
           email: null,
+          ...(!user?.organizations[0]
+            ? {
+                organizations: {
+                  create: createOrgOptions,
+                },
+              }
+            : {}),
         },
       })
       return { statusCode: 200 }
