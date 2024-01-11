@@ -199,8 +199,6 @@ function StepForm({
     name: `${stepsArrayName}.${index}.ranges`,
   })
 
-  // left off here on 12/27/2023
-  // Step Page field array
   const {
     fields: stepPageFields,
     append: appendStepPageField,
@@ -640,8 +638,6 @@ function StepForm({
                     <button
                       type="button"
                       className="rw-button rw-button-red"
-                      // left off here on 12/27/2023
-                      // onClick={removeFieldset}
                       onClick={() => removeFieldset(tokenIdIndex)}
                     >
                       <div className="">Remove Token ID Range</div>
@@ -926,8 +922,6 @@ export default function PuzzleForm() {
           type: 'PUZZLE', // hard coded for now
           slug: input.rewardable.slug,
           listPublicly: input.rewardable.listPublicly,
-          // requirements: input.rewardable.requirements,
-          // requirements: input.puzzle.requirements,
           puzzle: {
             rewardableId: 'ignore me',
             requirements: input.puzzle.requirements,

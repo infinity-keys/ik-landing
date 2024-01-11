@@ -47,7 +47,7 @@ export const schema = gql`
     listPublicly: Boolean!
     type: RewardableType!
     sortWeight: Int
-    orgId: String!
+    orgId: String
     migrateId: String
     # Manually added
     puzzle: CreatePuzzleInput
