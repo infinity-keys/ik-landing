@@ -11,7 +11,7 @@ export async function passcodeSubmit(interaction) {
   console.log('puzzleId4', puzzleId)
   console.log('interactionID', interaction.customId)
 
-  // Here you would verify the passcode, perhaps checking against a value in your database
+  // Here you would verify the passcode, checking against a value in your database
   const puzzle = await Puzzle.findOne({ _id: new ObjectId(puzzleId) })
   console.log('puzzle', puzzle)
 
