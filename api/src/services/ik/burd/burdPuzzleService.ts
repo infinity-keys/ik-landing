@@ -133,6 +133,9 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
     where: {
       userId: context.currentUser.id,
     },
+    orderBy: {
+      createdAt: 'asc',
+    },
     select: {
       orgId: true,
     },
