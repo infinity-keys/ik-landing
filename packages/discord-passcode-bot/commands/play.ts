@@ -21,7 +21,6 @@ export async function execute(interaction: CommandInteraction) {
   const puzzles = await Puzzle.find()
 
   // handler for creation of buttons
-
   const rows = []
   let currentRow = new ActionRowBuilder<ButtonBuilder>()
 
@@ -42,5 +41,5 @@ export async function execute(interaction: CommandInteraction) {
     rows.push(currentRow)
   }
 
-  await interaction.reply({ content: `'Let's play a game:'`, components: rows })
+  await interaction.reply({ content: `Let's play a game.`, components: rows })
 }

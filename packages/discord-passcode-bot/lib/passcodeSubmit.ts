@@ -21,6 +21,10 @@ export async function passcodeSubmit(interaction) {
   }
 
   await interaction.reply(
-    `${puzzle.passcode === passcode ? 'Solved!!' : "You're Wrong!!"}`
+    `${
+      puzzle.passcode === passcode
+        ? 'Puzzle solved. Well done.'
+        : "That's incorrect. Try, try again."
+    }`
   )
 }
