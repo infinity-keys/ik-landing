@@ -1,6 +1,10 @@
-import { StepGuideType, StepType } from '@prisma/client'
+import { StepGuideType, StepType, SiteRole } from '@prisma/client'
+import { nanoid } from 'nanoid'
 import type { MutationResolvers } from 'types/graphql'
 
+import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
+
+import { hasRole } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 
 // Richard Burd's unique service:
@@ -15,6 +19,14 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
 
   if (!input.puzzle.steps) {
     throw new Error('No steps')
+  }
+
+  if (!context.currentUser?.id) {
+    throw new AuthenticationError('Must be logged in')
+  }
+
+  if (!hasRole(SiteRole.ADMIN)) {
+    throw new ForbiddenError('Only admins can create rewardables')
   }
 
   const steps = input.puzzle.steps.map((step) => {
@@ -115,6 +127,43 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
     throw new Error(`Step type ${step.type} not implemented yet`)
   })
 
+  let userOrgId
+
+  const userOrg = await db.organizationUser.findFirst({
+    where: {
+      userId: context.currentUser.id,
+    },
+    select: {
+      orgId: true,
+    },
+  })
+
+  userOrgId = userOrg?.orgId
+
+  if (!userOrg) {
+    const placeholder = nanoid()
+
+    const newOrg = await db.organization.create({
+      data: {
+        slug: placeholder,
+        name: placeholder,
+        users: {
+          create: {
+            userId: context.currentUser.id,
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    })
+    userOrgId = newOrg.id
+  }
+
+  if (!userOrgId) {
+    throw new Error('There was a problem obtaining org id')
+  }
+
   const rewardable = await db.rewardable.create({
     data: {
       name: input.name,
@@ -126,7 +175,7 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
       listPublicly: false,
       // listPublicly: input.listPublicly,
       successMessage: input.successMessage,
-      orgId: 'cla9yay7y003k08la2z4j2xrv',
+      orgId: userOrgId,
       puzzle: {
         create: {
           coverImage: input.puzzle.coverImage,
