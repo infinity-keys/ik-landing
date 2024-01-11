@@ -1,17 +1,16 @@
 import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
   CommandInteraction,
   SlashCommandBuilder,
-  EmbedBuilder,
 } from 'discord.js'
 
 import { Puzzle } from '../models/puzzle'
 
 export const data = new SlashCommandBuilder()
   .setName('play')
-  .setDescription('select a puzzle')
-  .addStringOption((option) =>
-    option.setName('title').setDescription('enter in title').setRequired(true)
-  )
+  .setDescription('list all current puzzles to play and solve')
 
 export async function execute(interaction: CommandInteraction) {
   // if we're not repliable then exit
@@ -19,19 +18,29 @@ export async function execute(interaction: CommandInteraction) {
     return
   }
 
-  const title = interaction.options.get('title').value
-  const puzzle = await Puzzle.findOne({ title })
+  const puzzles = await Puzzle.find()
 
-  if (!puzzle) {
-    return await interaction.reply('Cannot find puzzle with that title')
+  // handler for creation of buttons
+
+  const rows = []
+  let currentRow = new ActionRowBuilder<ButtonBuilder>()
+
+  puzzles.forEach((puzzle, index) => {
+    if (index !== 0 && index % 5 === 0) {
+      rows.push(currentRow)
+      currentRow = new ActionRowBuilder<ButtonBuilder>()
+    }
+    currentRow.addComponents(
+      new ButtonBuilder()
+        .setCustomId(puzzle.id)
+        .setLabel(puzzle.title)
+        .setStyle(ButtonStyle.Primary)
+    )
+  })
+
+  if (currentRow.components.length > 0) {
+    rows.push(currentRow)
   }
 
-  const embedBalance = new EmbedBuilder()
-
-    .setDescription(`**Title:** ${puzzle.title}\n**Text:** ${puzzle.text}`)
-    .setColor(0xc3b4f7)
-  const embedImage = puzzle.image
-    ? embedBalance.setImage(puzzle.image)
-    : embedBalance
-  return interaction.reply({ embeds: [embedImage] })
+  await interaction.reply({ content: `'Let's play a game:'`, components: rows })
 }

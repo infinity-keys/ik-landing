@@ -34,7 +34,7 @@ export async function execute(interaction: CommandInteraction) {
   if (image && !isValidHttpUrl(image)) {
     await interaction.reply({
       content: `Please enter in valid image url`,
-      fetchReply: true,
+
       ephemeral: true,
     })
     return
@@ -50,7 +50,7 @@ export async function execute(interaction: CommandInteraction) {
 
   await interaction.reply({
     content: `you're all set`,
-    // fetchReply: true,
+
     ephemeral: true,
   })
 }

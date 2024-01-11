@@ -20,9 +20,16 @@ for (const file of commandFiles) {
   const command = require(filePath)
   commands.push(command.data.toJSON())
 }
+console.log('commands', commands)
 
 // Construct and prepare an instance of the REST module
 const rest = new REST({ version: '10' }).setToken(token)
+
+// code to delete slash commands (guild-based) - DO NOT UNCOMMENT!!!!
+// rest
+//   .put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
+//   .then(() => console.log('Successfully deleted all guild commands.'))
+//   .catch(console.error)
 
 // and deploy your commands!
 ;(async () => {
