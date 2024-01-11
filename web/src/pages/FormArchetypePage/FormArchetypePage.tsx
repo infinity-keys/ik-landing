@@ -926,7 +926,6 @@ export default function PuzzleForm() {
           type: 'PUZZLE', // hard coded for now
           slug: input.rewardable.slug,
           listPublicly: input.rewardable.listPublicly,
-          orgId: 'backend shall handle this!', // hard coded for now
           // requirements: input.rewardable.requirements,
           // requirements: input.puzzle.requirements,
           puzzle: {
@@ -1158,29 +1157,6 @@ export default function PuzzleForm() {
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               placeholder="Success Message"
             />
-          </div>
-
-          <div id="puzzle-org-id" className="form__entry mb-12">
-            <Label
-              name="rewardable.orgId"
-              className="form__label text-2xl font-bold text-slate-700"
-              errorClassName="form__label--error text-2xl font-bold text-rose-900"
-            >
-              <div className="form__entry-name mb-1">Org Id</div>
-            </Label>
-            <TextField
-              name="rewardable.orgId"
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-              // TODO: Currently this is hardwired to IK's Org ID, but it needs
-              // to eventually say something like this for version 1.0:
-              // if (currentUser.organizations?.id.includes('cla9yay7y003k08la2z4j2xrv')) {
-              //   defaultValue={'cla9yay7y003k08la2z4j2xrv'}
-              // } else { defaultValue={''} }
-              defaultValue={'cla9yay7y003k08la2z4j2xrv'}
-              // validation={{ required: true }}
-            />
-            {/* {errors.rewardable?.orgId?.type === 'required' &&
-              requiredFieldError('an Organizational ID')} */}
           </div>
 
           {/* @NOTE: Hard coded to `false` while testing */}
