@@ -1284,19 +1284,32 @@ export default function PuzzleForm() {
               <div className="form__entry-name mb-1">
                 NFT Image<span className="text-rose-500">*</span>
               </div>
+              <p className="mb-2 text-sm font-normal">
+                Image must be smaller than 5MB
+              </p>
             </Label>
             <FileField
               name="rewardable.nft.image"
               className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
               placeholder="NFT Name"
-              validation={{ required: true }}
+              validation={{
+                required: true,
+                validate: {
+                  imageSize: (value: FileList) => {
+                    const maxSizeInBytes = 5 * 1024 * 1024
+                    return value?.[0].size < maxSizeInBytes
+                  },
+                },
+              }}
               accept=".jpeg, .png, .jpg, .webp"
-              defaultValue={undefined}
             />
             {errors.rewardable?.nft?.image?.type === 'required' &&
               requiredFieldError('an nft image')}
-            {errors.rewardable?.nft?.image?.type === 'pattern' &&
-              imageLinkPatternError('nft image')}
+            {errors.rewardable?.nft?.image?.type === 'imageSize' && (
+              <p className="form__error pt-1 font-medium text-rose-800">
+                Please select an image smaller than 5MB
+              </p>
+            )}
           </div>
 
           {fields.map((field, index) => (
