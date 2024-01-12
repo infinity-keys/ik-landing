@@ -166,6 +166,7 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   if (!userOrgId) {
     throw new Error('There was a problem obtaining org id')
   }
+  console.log(input.nft)
 
   const rewardable = await db.rewardable.create({
     data: {
@@ -187,6 +188,25 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
           ),
           steps: {
             create: steps,
+          },
+        },
+      },
+      nfts: {
+        create: {
+          tokenId: 100,
+          contractName: 'achievement',
+          cloudinaryId: 'ik-alpha-trophies/probably0-astro_hk9mnl',
+          data: {
+            name: input.nft.name,
+            image: input.nft.image,
+            attributes: [
+              {
+                value: 'Community',
+                trait_type: 'Category',
+              },
+            ],
+            description: `https://www.infinitykeys.io/puzzle/${input.slug}\n\nThe ${input.nft.name} IK Alpha Trophy indicates the holder has concluded the ${input.nft.name} Hunt from Infinity Keys. Players hold IK Alpha Trophies to celebrate success in the alpha playtest version of Infinity Keys, participate in community activations, access future hunts and puzzles with Infinity Keys and collaborating projects, and to prepare for an upcoming cross-metaverse gaming adventure.\n\nInfinity Keys are creator tools to build treasure hunt-style puzzles. The alpha version features free-to-play puzzles awarding IK Alpha Trophies to anyone who solves the alpha gametesing version hunts while they are available. These achievements may be used as future keys or clues to more challenging (and rewarding) hunts.\n\nSolve puzzles, collect all the trophies while you can, and find the hidden key in each NFT art. Good luck, there’s treasure everywhere.`,
+            external_url: `https://www.infinitykeys.io/puzzle/${input.slug}`,
           },
         },
       },
