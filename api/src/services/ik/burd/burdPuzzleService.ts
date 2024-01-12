@@ -175,7 +175,6 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   const result = await cloudinary.uploader.upload(input.nft.image, {
     use_filename: false,
     unique_filename: true,
-    overwrite: true,
     folder: 'ik-alpha-creators',
   })
 
