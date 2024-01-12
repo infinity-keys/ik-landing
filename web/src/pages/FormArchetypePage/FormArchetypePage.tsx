@@ -917,7 +917,6 @@ export default function PuzzleForm() {
     watch: formMethods.watch,
     setValue: formMethods.setValue,
     storage: window.localStorage,
-    exclude: ['rewardable.nft.image'],
   })
 
   const convertToBase64 = (file: File): Promise<string> => {
@@ -1292,6 +1291,7 @@ export default function PuzzleForm() {
               placeholder="NFT Name"
               validation={{ required: true }}
               accept=".jpeg, .png, .jpg, .webp"
+              defaultValue={undefined}
             />
             {errors.rewardable?.nft?.image?.type === 'required' &&
               requiredFieldError('an nft image')}
