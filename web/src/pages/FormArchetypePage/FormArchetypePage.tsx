@@ -1068,7 +1068,7 @@ export default function PuzzleForm() {
   >(CREATE_BURD_PUZZLE_MUTATION, {
     onCompleted: ({ createBurdPuzzle }) => {
       if (createBurdPuzzle.name) {
-        // formMethods.reset()
+        formMethods.reset()
         alert(`Rewardable created via Burd's Form!`)
       }
     },
