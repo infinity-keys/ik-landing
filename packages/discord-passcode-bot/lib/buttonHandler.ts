@@ -44,7 +44,6 @@ export async function buttonHandler(interaction, puzzles) {
     })
     return
   } catch (error) {
-    console.log(error.message.includes('Not a well formed URL'))
     if (error.message.includes('Not a well formed URL')) {
       await interaction.reply({
         embeds: [embedMessage],

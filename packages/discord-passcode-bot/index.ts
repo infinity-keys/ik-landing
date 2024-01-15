@@ -83,7 +83,6 @@ client.on('interactionCreate', async (interaction) => {
       !interaction.customId.startsWith('solve-') &&
       puzzles.some((puzzle) => puzzle.id === interaction.customId)
     ) {
-      console.log('puzzleId1', interaction.customId)
       await buttonHandler(interaction, puzzles)
       return
     }
@@ -95,14 +94,12 @@ client.on('interactionCreate', async (interaction) => {
         (puzzle) => puzzle.id === interaction.customId.split('solve-')[1]
       )
     ) {
-      console.log('puzzleId2', interaction.customId)
       await passcodeModal(interaction, puzzles)
       return
     }
 
     // handler for modal submission (passcode verification)
     if (interaction.isModalSubmit()) {
-      console.log('puzzleId3', interaction.customId)
       await passcodeSubmit(interaction)
       return
     }

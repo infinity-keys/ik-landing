@@ -13,10 +13,12 @@ export async function passcodeModal(interaction, puzzles) {
     // Unique ID for the modal
     .setCustomId('passcodeModal-' + selectedPuzzle.id)
     .setTitle('Enter Passcode')
+
   const passcodeInput = new TextInputBuilder()
     .setCustomId('passcodeInput')
     .setLabel(`Enter passcode for ${selectedPuzzle.title}`)
     .setStyle(TextInputStyle.Short)
+
   const firstActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(
     passcodeInput
   )
