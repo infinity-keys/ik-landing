@@ -1,4 +1,5 @@
 import { StepGuideType, StepType, SiteRole } from '@prisma/client'
+import { v2 as cloudinary } from 'cloudinary'
 import { nanoid } from 'nanoid'
 import type { MutationResolvers } from 'types/graphql'
 
@@ -6,6 +7,10 @@ import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
 
 import { hasRole } from 'src/lib/auth'
 import { db } from 'src/lib/db'
+
+cloudinary.config({
+  secure: true,
+})
 
 // Richard Burd's unique service:
 // Eventually this becomes "create rewardable"
@@ -133,6 +138,9 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
     where: {
       userId: context.currentUser.id,
     },
+    orderBy: {
+      createdAt: 'asc',
+    },
     select: {
       orgId: true,
     },
@@ -164,6 +172,16 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
     throw new Error('There was a problem obtaining org id')
   }
 
+  const result = await cloudinary.uploader.upload(input.nft.image, {
+    use_filename: false,
+    unique_filename: true,
+    folder: 'ik-alpha-creators',
+  })
+
+  if (!result.public_id) {
+    throw new Error('There was a problem uploading NFT image to Cloudinary')
+  }
+
   const rewardable = await db.rewardable.create({
     data: {
       name: input.name,
@@ -184,6 +202,26 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
           ),
           steps: {
             create: steps,
+          },
+        },
+      },
+      nfts: {
+        create: {
+          // @TODO: This needs to come from the contract
+          tokenId: 104,
+          contractName: 'achievement',
+          cloudinaryId: result.public_id,
+          data: {
+            name: input.nft.name,
+            image: `https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/${result.public_id}`,
+            attributes: [
+              {
+                value: 'Community',
+                trait_type: 'Category',
+              },
+            ],
+            description: `https://www.infinitykeys.io/puzzle/${input.slug}\n\nThe ${input.nft.name} IK Alpha Trophy indicates the holder has concluded the ${input.nft.name} Hunt from Infinity Keys. Players hold IK Alpha Trophies to celebrate success in the alpha playtest version of Infinity Keys, participate in community activations, access future hunts and puzzles with Infinity Keys and collaborating projects, and to prepare for an upcoming cross-metaverse gaming adventure.\n\nInfinity Keys are creator tools to build treasure hunt-style puzzles. The alpha version features free-to-play puzzles awarding IK Alpha Trophies to anyone who solves the alpha game testing version hunts while they are available. These achievements may be used as future keys or clues to more challenging (and rewarding) hunts.\n\nSolve puzzles, collect all the trophies while you can, and find the hidden key in each NFT art. Good luck, there’s treasure everywhere.`,
+            external_url: `https://www.infinitykeys.io/puzzle/${input.slug}`,
           },
         },
       },
