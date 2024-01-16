@@ -36,6 +36,7 @@ import {
   CheckboxField,
   NumberField,
   Control,
+  FileField,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 
@@ -866,6 +867,10 @@ type PuzzleFormType = {
     slug: CreateRewardableInput['slug']
     successMessage: CreateRewardableInput['successMessage']
     listPublicly: CreateRewardableInput['listPublicly']
+    nft: {
+      image: FileList
+      name: string
+    }
   }
   puzzle: {
     coverImage: CreatePuzzleInput['coverImage']
@@ -914,7 +919,26 @@ export default function PuzzleForm() {
     storage: window.localStorage,
   })
 
+  const convertToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          resolve(reader.result)
+        } else {
+          reject(new Error('File reading did not result in a string.'))
+        }
+      }
+
+      reader.onerror = (error) => reject(error)
+    })
+  }
+
   const onSubmit = async (input: PuzzleFormType) => {
+    const nftImageBase64 = await convertToBase64(input.rewardable.nft.image[0])
+
     createArchetypalPuzzle({
       variables: {
         input: {
@@ -922,6 +946,10 @@ export default function PuzzleForm() {
           type: 'PUZZLE', // hard coded for now
           slug: input.rewardable.slug,
           listPublicly: input.rewardable.listPublicly,
+          nft: {
+            name: input.rewardable.nft.name,
+            image: nftImageBase64,
+          },
           puzzle: {
             rewardableId: 'ignore me',
             requirements: input.puzzle.requirements,
@@ -1225,6 +1253,63 @@ export default function PuzzleForm() {
               requiredFieldError('a cover image')}
             {errors.puzzle?.coverImage?.type === 'pattern' &&
               imageLinkPatternError('cover image')}
+          </div>
+
+          <div id="nft-name" className="form__entry mb-12">
+            <Label
+              name="rewardable.nft.name"
+              className="form__label text-2xl font-bold text-slate-700"
+              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">
+                NFT Name<span className="text-rose-500">*</span>
+              </div>
+            </Label>
+            <TextField
+              name="rewardable.nft.name"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              placeholder="NFT Name"
+              validation={{ required: true }}
+            />
+            {errors.rewardable?.nft?.name?.type === 'required' &&
+              requiredFieldError('an nft name')}
+          </div>
+
+          <div id="nft-image" className="form__entry mb-12">
+            <Label
+              name="rewardable.nft.image"
+              className="form__label text-2xl font-bold text-slate-700"
+              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+            >
+              <div className="form__entry-name mb-1">
+                NFT Image<span className="text-rose-500">*</span>
+              </div>
+              <p className="mb-2 text-sm font-normal">
+                Image must be smaller than 5MB
+              </p>
+            </Label>
+            <FileField
+              name="rewardable.nft.image"
+              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              placeholder="NFT Name"
+              validation={{
+                required: true,
+                validate: {
+                  imageSize: (value: FileList) => {
+                    const maxSizeInBytes = 5 * 1024 * 1024
+                    return value?.[0].size < maxSizeInBytes
+                  },
+                },
+              }}
+              accept=".jpeg, .png, .jpg, .webp"
+            />
+            {errors.rewardable?.nft?.image?.type === 'required' &&
+              requiredFieldError('an nft image')}
+            {errors.rewardable?.nft?.image?.type === 'imageSize' && (
+              <p className="form__error pt-1 font-medium text-rose-800">
+                Please select an image smaller than 5MB
+              </p>
+            )}
           </div>
 
           {fields.map((field, index) => (

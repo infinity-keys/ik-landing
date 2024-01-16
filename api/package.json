@@ -13,6 +13,7 @@
     "@redwoodjs/graphql-server": "6.3.2",
     "@sendgrid/mail": "^7.7.0",
     "alchemy-sdk": "^2.8.3",
+    "cloudinary": "^1.41.2",
     "cloudinary-build-url": "^0.2.4",
     "cookie": "^0.5.0",
     "crypto-js": "^4.2.0",

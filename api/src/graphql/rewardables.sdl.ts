@@ -24,6 +24,11 @@ export const schema = gql`
     migrateId: String
   }
 
+  input FormNftCreateInput {
+    name: String!
+    image: String!
+  }
+
   enum RewardableType {
     PUZZLE
     PACK
@@ -50,7 +55,8 @@ export const schema = gql`
     orgId: String
     migrateId: String
     # Manually added
-    puzzle: CreatePuzzleInput
+    puzzle: CreatePuzzleInput!
+    nft: FormNftCreateInput!
   }
 
   input UpdateRewardableInput {
