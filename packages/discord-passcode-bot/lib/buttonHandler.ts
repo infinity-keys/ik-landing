@@ -15,12 +15,6 @@ export async function buttonHandler(interaction, puzzles) {
     return
   }
 
-  const embedMessage = new EmbedBuilder()
-    .setDescription(
-      `**Title:** ${selectedPuzzle.title}\n**Text:** ${selectedPuzzle.text}`
-    )
-    .setColor(0xc3b4f7)
-
   const currentRow = new ActionRowBuilder<ButtonBuilder>()
 
   currentRow.addComponents(
@@ -30,14 +24,14 @@ export async function buttonHandler(interaction, puzzles) {
       .setStyle(ButtonStyle.Primary)
   )
   try {
-    const embedMessageWithImage = new EmbedBuilder()
+    const embedMessage = new EmbedBuilder()
       .setDescription(
         `**Title:** ${selectedPuzzle.title}\n**Text:** ${selectedPuzzle.text}`
       )
       .setColor(0xc3b4f7)
     const embedImage = selectedPuzzle.image
-      ? embedMessageWithImage.setImage(selectedPuzzle.image)
-      : embedMessageWithImage
+      ? embedMessage.setImage(selectedPuzzle.image)
+      : embedMessage
     await interaction.reply({
       embeds: [embedImage],
       components: [currentRow],
@@ -45,6 +39,11 @@ export async function buttonHandler(interaction, puzzles) {
     return
   } catch (error) {
     if (error.message.includes('Not a well formed URL')) {
+      const embedMessage = new EmbedBuilder()
+        .setDescription(
+          `**Title:** ${selectedPuzzle.title}\n**Text:** ${selectedPuzzle.text}`
+        )
+        .setColor(0xc3b4f7)
       await interaction.reply({
         embeds: [embedMessage],
         components: [currentRow],
