@@ -5,11 +5,6 @@ import * as path from 'node:path'
 import { Client, Collection, GatewayIntentBits } from 'discord.js'
 import mongoose from 'mongoose'
 
-import { buttonHandler } from './lib/buttonHandler'
-import { passcodeModal } from './lib/passcodeModal'
-import { passcodeSubmit } from './lib/passcodeSubmit'
-import { Puzzle } from './models/puzzle'
-
 require('dotenv').config()
 // set up to use config file, if needed
 // const { token } = require('./config.json');
@@ -71,39 +66,3 @@ mongoose
   .catch((error) => {
     console.error('Error connecting to MongoDB:', error)
   })
-
-client.on('interactionCreate', async (interaction) => {
-  if (interaction.isChatInputCommand()) return
-  try {
-    const puzzles = await Puzzle.find()
-
-    // handler for button interactions (puzzle selection)
-    if (
-      interaction.isButton() &&
-      !interaction.customId.startsWith('solve-') &&
-      puzzles.some((puzzle) => puzzle.id === interaction.customId)
-    ) {
-      await buttonHandler(interaction, puzzles)
-      return
-    }
-    // create a modal for passcode submission
-    if (
-      interaction.isButton() &&
-      interaction.customId.startsWith('solve-') &&
-      puzzles.some(
-        (puzzle) => puzzle.id === interaction.customId.split('solve-')[1]
-      )
-    ) {
-      await passcodeModal(interaction, puzzles)
-      return
-    }
-
-    // handler for modal submission (passcode verification)
-    if (interaction.isModalSubmit()) {
-      await passcodeSubmit(interaction)
-      return
-    }
-  } catch (error) {
-    console.log(error)
-  }
-})
