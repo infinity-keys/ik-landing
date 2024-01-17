@@ -1,5 +1,7 @@
+import { CLOUDINARY_CLOUD_NAME } from '@infinity-keys/constants'
 import { StepGuideType, StepType, SiteRole } from '@prisma/client'
 import { v2 as cloudinary } from 'cloudinary'
+import { buildUrl } from 'cloudinary-build-url'
 import { nanoid } from 'nanoid'
 import type { MutationResolvers } from 'types/graphql'
 
@@ -213,7 +215,14 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
           cloudinaryId: result.public_id,
           data: {
             name: input.nft.name,
-            image: `https://res.cloudinary.com/infinity-keys/image/upload/t_ik-nft-meta/${result.public_id}`,
+            image: buildUrl(result.public_id, {
+              cloud: {
+                cloudName: CLOUDINARY_CLOUD_NAME,
+              },
+              transformations: {
+                transformation: 'ik-nft-meta',
+              },
+            }),
             attributes: [
               {
                 value: 'Community',
