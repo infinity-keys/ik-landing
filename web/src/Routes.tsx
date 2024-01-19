@@ -28,7 +28,7 @@ const Routes = () => {
         </Set>
       </Private>
 
-      <Private unauthenticated="profile" roles={'ADMIN'}>
+      <Private unauthenticated="profile" roles={['ADMIN', 'CREATOR_TOOLS_TESTER']}>
         <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
           <Route path="/puzzle" page={PuzzlePage} name="puzzle" />
           <Route path="/puzzle/create" page={PuzzleCreatePage} name="puzzleCreate" />

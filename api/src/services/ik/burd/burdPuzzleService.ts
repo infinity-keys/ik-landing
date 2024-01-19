@@ -23,20 +23,20 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   input,
 }) => {
   try {
+    if (!context.currentUser?.id) {
+      throw new AuthenticationError('Must be logged in')
+    }
+
+    if (!hasRole([SiteRole.ADMIN, SiteRole.CREATOR_TOOLS_TESTER])) {
+      throw new ForbiddenError('You are not authorized to create a rewardable')
+    }
+
     if (!input.puzzle) {
       throw new Error('No puzzle')
     }
 
     if (!input.puzzle.steps) {
       throw new Error('No steps')
-    }
-
-    if (!context.currentUser?.id) {
-      throw new AuthenticationError('Must be logged in')
-    }
-
-    if (!hasRole(SiteRole.ADMIN)) {
-      throw new ForbiddenError('Only admins can create rewardables')
     }
 
     const steps = input.puzzle.steps.map((step) => {
