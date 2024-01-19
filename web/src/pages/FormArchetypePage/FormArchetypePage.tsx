@@ -43,7 +43,12 @@ import { useMutation } from '@redwoodjs/web'
 const CREATE_BURD_PUZZLE_MUTATION = gql`
   mutation CreateBurdPuzzleMutation($input: CreateRewardableInput!) {
     createBurdPuzzle(input: $input) {
-      name
+      rewardable {
+        name
+        slug
+      }
+      success
+      errorMessage
     }
   }
 `
@@ -1067,10 +1072,16 @@ export default function PuzzleForm() {
     MutationcreateBurdPuzzleArgs
   >(CREATE_BURD_PUZZLE_MUTATION, {
     onCompleted: ({ createBurdPuzzle }) => {
-      if (createBurdPuzzle.name) {
+      if (createBurdPuzzle?.success) {
         formMethods.reset()
-        alert(`Rewardable created via Burd's Form!`)
+        return alert(`Rewardable created via Burd's Form!`)
       }
+
+      if (createBurdPuzzle?.errorMessage) {
+        return alert(createBurdPuzzle.errorMessage)
+      }
+
+      return alert('There was an error creating your rewardable!')
     },
     onError: (error) => {
       alert(`Error with Burd's form: ${error.message}`)
