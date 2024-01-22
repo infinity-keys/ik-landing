@@ -27,6 +27,7 @@ export const schema = gql`
     VERIFIED
     ANONYMOUS
     LENS_FORM
+    CREATOR_TOOLS_TESTER
   }
 
   type Query {
