@@ -9,83 +9,100 @@ import { nanoid } from 'nanoid'
 import { logger } from 'src/lib/logger'
 import { providerLookup } from 'src/lib/lookups'
 
+class CreateNftError extends Error {}
+
 const { AUTHORIZED_PRIVATE_KEY, NODE_ENV } = process.env
 
 if (!AUTHORIZED_PRIVATE_KEY && NODE_ENV === 'production') {
   throw new Error('Missing authorized wallet secrets')
 }
-const provider = new ethers.providers.JsonRpcProvider('http://localhost:8545')
 
 const wallet = new ethers.Wallet(
   AUTHORIZED_PRIVATE_KEY || '',
-  // providerLookup[OPTIMISM_CHAIN_ID]
-  provider
+  providerLookup[OPTIMISM_CHAIN_ID]
 )
 
 export const createContractNft = async () => {
   try {
     if (!wallet) {
-      throw new Error('Wallet failed to initialize.')
+      throw new CreateNftError('Wallet failed to initialize.')
     }
 
+    // Create a contract instance using a signer (wallet) that is authorized to
+    // create NFTs
     const contract = new ethers.Contract(
-      // CONTRACT_ADDRESS_OPTIMISM,
-      '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+      CONTRACT_ADDRESS_OPTIMISM,
       IKAchievementABI__factory.abi,
       wallet
     )
-    const actualId = (await contract.totalSupplyAll()).length
-    // const probableTokenId = (await contract.totalSupplyAll()).length
-    const probableTokenId = actualId - 4
-    const stringId = nanoid()
+
+    // The next token ID according to the contract at this current moment
+    // NOTE: This is not guaranteed to be correct by the time the NFT is created
+    const probableTokenId: number = (await contract.totalSupplyAll()).length
+    // The ID for the NFT's metadata URI and DB lookup
+    const lookupId = nanoid()
 
     // @TODO: need to handle this new case in our api function
     const tokenUri = new URL('metadata', 'https://api.infinitykeys.io')
-    tokenUri.searchParams.append('id', stringId)
+    tokenUri.searchParams.append('lookupId', lookupId)
 
+    // Creates a new NFT on the contract
     const newNft = await contract.addTokenUngated(true, tokenUri.toString())
+
     logger.info(
-      `invoked 'addTokenUngated' for ${stringId}. Transaction hash: ${newNft.hash}`
+      `Invoked 'addTokenUngated' for ${lookupId}. Transaction hash: ${newNft.hash}`
     )
 
-    // @TODO: Can this hang forever? If yes, add a timeout.
-    // @TODO: How long does this take in production?
+    // Wait until the transaction has completed
     const receipt = await newNft.wait()
 
+    // Transaction was successful and was not reverted by the contract
     if (receipt.status === 1) {
-      // tx was successful
       const lastTokenId = (await contract.totalSupplyAll()).length - 1
+
+      // No new tokens were created while this function was running,
+      // so `probableTokenId` is the correct NFT token ID
       if (probableTokenId === lastTokenId) {
-        // everything worked correctly
-        return {
-          tokenId: probableTokenId,
-        }
-      } else {
-        // other transactions have gone through, check contract to get correct
-        // token id
-        let idToCheck = probableTokenId
+        return { tokenId: probableTokenId, lookupId }
+      }
 
-        while (idToCheck <= lastTokenId) {
-          const uri = await contract.uri(idToCheck)
-          const url = new URL(uri)
-          const id = url.searchParams.get('id')
+      // Other tokens were created, so we check the new tokens' URIs to ensure
+      // we have the correct NFT token ID
+      let idToCheck = probableTokenId
 
-          if (id === stringId) {
-            return {
-              tokenId: idToCheck,
-            }
-          }
+      while (idToCheck <= lastTokenId) {
+        // @TODO: Might need a timeout for Infura calls
+        const uri = await contract.uri(idToCheck)
+        const url = new URL(uri)
+        const id = url.searchParams.get('lookupId')
 
-          idToCheck++
+        // If the token's URI lookup ID matches the one we created above,
+        // we have found the right NFT
+        if (id === lookupId) {
+          return { tokenId: idToCheck, lookupId }
         }
 
-        throw new Error('There was a problem finding token URI')
+        idToCheck++
+
+        const errorMessage = `Could not find URI id '${lookupId}' after successful transaction. Receipt: ${receipt.transactionHash}`
+
+        logger.error(errorMessage)
+        throw new CreateNftError(errorMessage)
       }
     }
 
-    throw new Error('Transaction failed')
+    const errorMessage = `Transaction failed for hash ${receipt.transactionHash}`
+
+    logger.error(errorMessage)
+    throw new CreateNftError(errorMessage)
   } catch (error) {
-    console.log(error)
-    // logger.error('Error in `createContractNft`', error)
+    logger.error('Error in `createContractNft`', error)
+
+    // Hide the ugly ethers errors from the front end
+    if (error instanceof CreateNftError) {
+      throw error
+    } else {
+      throw new Error('Error occurred in `createContractNft`')
+    }
   }
 }

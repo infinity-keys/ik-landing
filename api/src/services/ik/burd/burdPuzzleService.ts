@@ -187,11 +187,7 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
       throw new Error('There was a problem uploading NFT image to Cloudinary')
     }
 
-    const nft = await createContractNft()
-
-    if (!nft) {
-      throw new Error('There was a problem creating the NFT')
-    }
+    const { tokenId, lookupId } = await createContractNft()
 
     const rewardable = await db.rewardable.create({
       data: {
@@ -218,7 +214,8 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
         },
         nfts: {
           create: {
-            tokenId: nft.tokenId,
+            tokenId,
+            lookupId,
             contractName: 'achievement',
             cloudinaryId: result.public_id,
             data: {
@@ -256,16 +253,19 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   } catch (error) {
     logger.error('Error in `createBurdPuzzle`', error)
 
+    const errorMessage =
+      error instanceof Error
+        ? error.message.includes(
+            'Unique constraint failed on the fields: (`contractName`,`tokenId`)'
+          )
+          ? 'Duplicate token id'
+          : error.message
+        : 'There was a problem creating the rewardable'
+
     return {
       success: false,
       rewardable: null,
-      errorMessage:
-        error instanceof Error &&
-        error.message.includes(
-          'Unique constraint failed on the fields: (`contractName`,`tokenId`)'
-        )
-          ? 'Duplicate token id'
-          : 'There was a problem creating rewardable',
+      errorMessage,
     }
   }
 }

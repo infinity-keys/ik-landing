@@ -448,6 +448,8 @@ model Nft {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   tokenId      Int
+  /// ID that corresponds to the token's URI on the contract
+  lookupId     String?  @unique
   contractName String
   data         Json
   cloudinaryId String
