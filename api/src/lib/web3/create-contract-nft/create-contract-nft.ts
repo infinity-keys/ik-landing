@@ -27,10 +27,12 @@ const { AUTHORIZED_PRIVATE_KEY, NODE_ENV } = process.env
 if (!AUTHORIZED_PRIVATE_KEY && NODE_ENV === 'production') {
   throw new Error('Missing authorized wallet secrets')
 }
+const provider = new ethers.providers.JsonRpcProvider('http://localhost:8545')
 
 const wallet = new ethers.Wallet(
   AUTHORIZED_PRIVATE_KEY || '',
-  providerLookup[OPTIMISM_CHAIN_ID]
+  // providerLookup[OPTIMISM_CHAIN_ID]
+  provider
 )
 
 export const createContractNft = async () => {
@@ -42,7 +44,8 @@ export const createContractNft = async () => {
     // Create a contract instance using a signer (wallet) that is authorized to
     // create NFTs
     const contract = new ethers.Contract(
-      CONTRACT_ADDRESS_OPTIMISM,
+      // CONTRACT_ADDRESS_OPTIMISM,
+      '0x5FbDB2315678afecb367f032d93F642f64180aa3',
       IKAchievementABI__factory.abi,
       wallet
     )
