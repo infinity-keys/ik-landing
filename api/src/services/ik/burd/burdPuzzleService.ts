@@ -253,15 +253,6 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
   } catch (error) {
     logger.error('Error in `createBurdPuzzle`', error)
 
-    const errorMessage =
-      error instanceof Error
-        ? error.message.includes(
-            'Unique constraint failed on the fields: (`contractName`,`tokenId`)'
-          )
-          ? 'Duplicate token id'
-          : error.message
-        : 'There was a problem creating the rewardable'
-
     return {
       success: false,
       rewardable: null,
