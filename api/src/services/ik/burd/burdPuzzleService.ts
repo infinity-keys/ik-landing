@@ -10,7 +10,7 @@ import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
 import { hasRole } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
-import { createContractNft } from 'src/lib/web3/create-contract-nft/create-contract-nft'
+import { getNftData } from 'src/lib/web3/get-nft-data'
 
 cloudinary.config({
   secure: true,
@@ -187,25 +187,7 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
       throw new Error('There was a problem uploading NFT image to Cloudinary')
     }
 
-    let tokenId: number
-    let lookupId: string
-
-    // Skip contract calls unless in production
-    if (process.env.NODE_ENV === 'production') {
-      const nft = await createContractNft()
-      tokenId = nft.tokenId
-      lookupId = nft.lookupId
-    } else {
-      const lastTokenId = (
-        await db.nft.findFirst({
-          orderBy: {
-            tokenId: 'desc',
-          },
-        })
-      )?.tokenId
-      tokenId = lastTokenId ? lastTokenId + 1 : 100
-      lookupId = nanoid()
-    }
+    const { tokenId, lookupId } = await getNftData()
 
     const rewardable = await db.rewardable.create({
       data: {
