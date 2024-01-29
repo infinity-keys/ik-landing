@@ -24,6 +24,27 @@ export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
   })
 }
 
+export const rewardableBySlugWithOrg: QueryResolvers['rewardableBySlug'] = ({
+  slug,
+  type,
+}) => {
+  return db.rewardable.findUnique({
+    where: {
+      slug_type: {
+        slug,
+        type,
+      },
+      organization: {
+        users: {
+          some: {
+            userId: context.currentUser?.id,
+          },
+        },
+      },
+    },
+  })
+}
+
 export const rewardablesBySortType: QueryResolvers['rewardablesBySortType'] = ({
   sortType,
 }) => {

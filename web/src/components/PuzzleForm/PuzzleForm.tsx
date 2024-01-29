@@ -871,7 +871,7 @@ type PuzzleFormType = {
     name: CreateRewardableInput['name']
     slug: CreateRewardableInput['slug']
     successMessage: CreateRewardableInput['successMessage']
-    listPublicly: CreateRewardableInput['listPublicly']
+    listPublicly?: CreateRewardableInput['listPublicly']
     nft: {
       image: FileList
       name: string
@@ -884,7 +884,13 @@ type PuzzleFormType = {
   steps: CreateAllStepTypesInput[]
 }
 
-export default function PuzzleForm() {
+export default function PuzzleForm({
+  initialValues,
+  isEditMode = false,
+}: {
+  initialValues?: PuzzleFormType
+  isEditMode?: boolean
+}) {
   // only used in dev mode
   const renderCount = useRef(process.env.NODE_ENV === 'development' ? 1 : 0)
 
@@ -899,6 +905,11 @@ export default function PuzzleForm() {
   const formMethods = useForm<PuzzleFormType>({
     defaultValues: {
       [stepsArrayName]: startingSteps,
+      rewardable: {
+        name: initialValues?.rewardable.name,
+        slug: initialValues?.rewardable.slug,
+        successMessage: initialValues?.rewardable.successMessage,
+      },
     },
   })
 
@@ -922,6 +933,7 @@ export default function PuzzleForm() {
     watch: formMethods.watch,
     setValue: formMethods.setValue,
     storage: window.localStorage,
+    exclude: isEditMode ? ['rewardable', 'puzzle', 'steps'] : [],
   })
 
   const convertToBase64 = (file: File): Promise<string> => {
@@ -950,7 +962,7 @@ export default function PuzzleForm() {
           name: input.rewardable.name,
           type: 'PUZZLE', // hard coded for now
           slug: input.rewardable.slug,
-          listPublicly: input.rewardable.listPublicly,
+          listPublicly: false, // hard coded for now,
           nft: {
             name: input.rewardable.nft.name,
             image: nftImageBase64,
