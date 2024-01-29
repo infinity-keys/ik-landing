@@ -11,6 +11,17 @@ import { providerLookup } from 'src/lib/lookups'
 
 class CreateNftError extends Error {}
 
+/**
+ * In production we need the private key from a wallet that has been authorized
+ * to create NFTs.
+ *
+ * Dev and testing environments also need a private key to keep ethers from
+ * throwing an error. Publicly know "private" keys can be found at this link.
+ * Do not send any real assets to these addresses.
+ *
+ * https://hardhat.org/hardhat-network/docs/overview#running-stand-alone-in-order-to-support-wallets-and-other-software
+ */
+
 const { AUTHORIZED_PRIVATE_KEY, NODE_ENV } = process.env
 
 if (!AUTHORIZED_PRIVATE_KEY && NODE_ENV === 'production') {
