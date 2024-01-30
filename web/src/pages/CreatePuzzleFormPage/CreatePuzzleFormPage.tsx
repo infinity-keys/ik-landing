@@ -1,9 +1,10 @@
 import PuzzleForm from 'src/components/PuzzleForm/PuzzleForm'
+import Seo from 'src/components/Seo/Seo'
 
 const CreatePuzzleFormPage = () => {
   return (
     <>
-      <p>create</p>
+      <Seo title="Create a new puzzle" />
       <PuzzleForm />
     </>
   )

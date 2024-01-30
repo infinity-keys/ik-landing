@@ -17,6 +17,8 @@ import {
   CreateStepTokenIdRangeInput,
   CreateStepOriumApiInput,
   CreatePuzzleInput,
+  StepType,
+  StepGuideType,
 } from 'types/graphql'
 
 import {
@@ -884,11 +886,35 @@ type PuzzleFormType = {
   steps: CreateAllStepTypesInput[]
 }
 
+type PuzzleFormProps = {
+  rewardable: {
+    name: CreateRewardableInput['name']
+    slug: CreateRewardableInput['slug']
+    successMessage: CreateRewardableInput['successMessage']
+    nft: {
+      image?: string
+      name?: string
+    }
+  }
+  puzzle: {
+    coverImage: CreatePuzzleInput['coverImage']
+    requirements: CreatePuzzleInput['requirements']
+  }
+  steps: {
+    type: StepType
+    solutionHint?: string
+    defaultImage?: string
+    solutionImage?: string
+    stepSortWeight?: number
+    stepGuideType?: StepGuideType
+  }[]
+}
+
 export default function PuzzleForm({
   initialValues,
   isEditMode = false,
 }: {
-  initialValues?: PuzzleFormType
+  initialValues?: PuzzleFormProps
   isEditMode?: boolean
 }) {
   // only used in dev mode
@@ -904,11 +930,18 @@ export default function PuzzleForm({
 
   const formMethods = useForm<PuzzleFormType>({
     defaultValues: {
-      [stepsArrayName]: startingSteps,
+      [stepsArrayName]: isEditMode ? initialValues?.steps : startingSteps,
       rewardable: {
-        name: initialValues?.rewardable.name,
-        slug: initialValues?.rewardable.slug,
-        successMessage: initialValues?.rewardable.successMessage,
+        name: initialValues?.rewardable?.name,
+        slug: initialValues?.rewardable?.slug,
+        successMessage: initialValues?.rewardable?.successMessage,
+        nft: {
+          name: initialValues?.rewardable?.nft?.name,
+        },
+      },
+      puzzle: {
+        coverImage: initialValues?.puzzle?.coverImage,
+        requirements: initialValues?.puzzle?.requirements,
       },
     },
   })
@@ -962,6 +995,7 @@ export default function PuzzleForm({
           name: input.rewardable.name,
           type: 'PUZZLE', // hard coded for now
           slug: input.rewardable.slug,
+          successMessage: input.rewardable.successMessage,
           listPublicly: false, // hard coded for now,
           nft: {
             name: input.rewardable.nft.name,
@@ -1099,6 +1133,8 @@ export default function PuzzleForm({
       alert(`Error with Burd's form: ${error.message}`)
     },
   })
+
+  console.log(formMethods.getValues('rewardable.nft.image')?.[0])
 
   // This checks to see if the slug is formatted correctly
   function requiredSlugFormatError(slug: string) {
@@ -1299,6 +1335,14 @@ export default function PuzzleForm({
           </div>
 
           <div id="nft-image" className="form__entry mb-12">
+            {isEditMode &&
+              initialValues?.rewardable.nft.image &&
+              !formMethods.getValues('rewardable.nft.image')?.[0] && (
+                <div className="mb-2 w-24">
+                  <img src={initialValues?.rewardable.nft.image} alt="" />
+                </div>
+              )}
+
             <Label
               name="rewardable.nft.image"
               className="form__label text-2xl font-bold text-slate-700"
