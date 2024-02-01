@@ -9,8 +9,6 @@ export async function passcodeSubmit(interaction) {
   // Extract puzzle ID from the custom ID
   const puzzleId = interaction.customId.split('passcodeModal-')[1]
 
-  console.log('passcode', passcode)
-
   // Here you would verify the passcode, checking against a value in your database
   const puzzle = await Puzzle.findOne({ _id: new ObjectId(puzzleId) })
 
@@ -21,19 +19,11 @@ export async function passcodeSubmit(interaction) {
 
   puzzle.passcode.toLowerCase() === passcode
     ? await interaction.reply({
-        content: `Puzzle solved. Well done ${interaction.user.username}.`,
+        content: `Puzzle solved. Well done <@${interaction.user.id}>.`,
         ephemeral: false,
       })
     : await interaction.reply({
         content: "That's incorrect. Try, try again.",
         ephemeral: true,
       })
-
-  // await interaction.reply(
-  //   `${
-  //     puzzle.passcode === passcode
-  //       ? `Puzzle solved. Well done ${interaction.user.username}.`
-  //       : "That's incorrect. Try, try again."
-  //   }`
-  // )
 }
