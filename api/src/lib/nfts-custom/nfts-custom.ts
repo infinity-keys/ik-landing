@@ -16,7 +16,7 @@ export const nftByContractAndTokenId = async (
   return nft
 }
 
-export const nftByStringId = async (lookupId: string) => {
+export const nftByLookupId = async (lookupId: string) => {
   const nft = await db.nft.findUnique({
     where: {
       lookupId,
