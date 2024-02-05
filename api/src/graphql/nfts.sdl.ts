@@ -4,6 +4,7 @@ export const schema = gql`
     createdAt: DateTime!
     updatedAt: DateTime!
     tokenId: Int!
+    lookupId: String
     contractName: String!
     data: JSON!
     cloudinaryId: String!
@@ -18,6 +19,7 @@ export const schema = gql`
 
   input CreateNftInput {
     tokenId: Int!
+    lookupId: String
     contractName: String!
     data: JSON!
     cloudinaryId: String!
@@ -25,6 +27,7 @@ export const schema = gql`
 
   input UpdateNftInput {
     tokenId: Int
+    lookupId: String
     contractName: String
     data: JSON
     cloudinaryId: String
