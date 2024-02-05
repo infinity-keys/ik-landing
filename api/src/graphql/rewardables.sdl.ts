@@ -29,6 +29,11 @@ export const schema = gql`
     image: String!
   }
 
+  input FormNftEditInput {
+    name: String!
+    image: String
+  }
+
   enum RewardableType {
     PUZZLE
     PACK
@@ -49,26 +54,27 @@ export const schema = gql`
     slug: String!
     explanation: String
     successMessage: String
-    listPublicly: Boolean!
+    listPublicly: Boolean # This should be required at public release
     type: RewardableType!
     sortWeight: Int
     orgId: String
-    migrateId: String
     # Manually added
     puzzle: CreatePuzzleInput!
     nft: FormNftCreateInput!
   }
 
   input UpdateRewardableInput {
-    name: String
-    slug: String
+    name: String!
+    slug: String!
     explanation: String
     successMessage: String
     listPublicly: Boolean
-    type: RewardableType
+    type: RewardableType!
     sortWeight: Int
     orgId: String
-    migrateId: String
+    # Manually added
+    puzzle: CreatePuzzleInput!
+    nft: FormNftEditInput!
   }
 
   type Mutation {

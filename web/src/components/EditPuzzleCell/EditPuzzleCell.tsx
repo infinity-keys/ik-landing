@@ -1,10 +1,16 @@
 import type {
+  EditBurdPuzzleMutation,
+  EditBurdPuzzleMutationVariables,
   FindEditPuzzleQuery,
   FindEditPuzzleQueryVariables,
   StepType,
 } from 'types/graphql'
 
-import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
+import {
+  type CellSuccessProps,
+  type CellFailureProps,
+  useMutation,
+} from '@redwoodjs/web'
 
 import PuzzleForm from 'src/components/PuzzleForm/PuzzleForm'
 
@@ -19,6 +25,7 @@ export const QUERY = gql`
         data
       }
       puzzle {
+        id
         coverImage
         requirements
         steps {
@@ -40,6 +47,27 @@ export const QUERY = gql`
   }
 `
 
+const EDIT_BURD_PUZZLE_MUTATION = gql`
+  mutation EditBurdPuzzleMutation(
+    $input: UpdateRewardableInput!
+    $rewardableId: String!
+    $puzzleId: String
+  ) {
+    editBurdPuzzle(
+      input: $input
+      rewardableId: $rewardableId
+      puzzleId: $puzzleId
+    ) {
+      rewardable {
+        name
+        slug
+      }
+      success
+      errorMessage
+    }
+  }
+`
+
 export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => <div>Empty!</div>
@@ -53,6 +81,26 @@ export const Failure = ({
 export const Success = ({
   rewardable,
 }: CellSuccessProps<FindEditPuzzleQuery, FindEditPuzzleQueryVariables>) => {
+  const [editArchetypalPuzzle, { loading, error }] = useMutation<
+    EditBurdPuzzleMutation,
+    EditBurdPuzzleMutationVariables
+  >(EDIT_BURD_PUZZLE_MUTATION, {
+    onCompleted: ({ editBurdPuzzle }) => {
+      if (editBurdPuzzle?.success) {
+        return alert(`Rewardable edited via Burd's Form!`)
+      }
+
+      if (editBurdPuzzle?.errorMessage) {
+        return alert(editBurdPuzzle.errorMessage)
+      }
+
+      return alert('There was an error creating your rewardable!')
+    },
+    onError: (error) => {
+      alert(`Error with Burd's form: ${error.message}`)
+    },
+  })
+
   const steps =
     rewardable.puzzle?.steps.flatMap((step) =>
       step
@@ -63,7 +111,13 @@ export const Success = ({
             stepSortWeight: step.stepSortWeight ?? undefined,
             stepGuideType: step.stepGuideType ?? undefined,
             type: 'SIMPLE_TEXT' as StepType,
-            stepPage: step?.stepPage?.flatMap((page) => (page ? page : [])),
+            stepPage: step?.stepPage?.flatMap((page) => {
+              if (!page) return []
+              // Apollo automatically adds `__typename` to the query result.
+              // Our sdls do not have that field and will error if it's present.
+              const { __typename, ...rest } = page
+              return rest
+            }),
           }
         : []
     ) || []
@@ -93,6 +147,17 @@ export const Success = ({
         steps,
       }}
       isEditMode
+      onFormSubmit={({ input }) => {
+        return editArchetypalPuzzle({
+          variables: {
+            input,
+            rewardableId: rewardable.id,
+            puzzleId: rewardable.puzzle?.id,
+          },
+        })
+      }}
+      submissionError={error}
+      submissionPending={loading}
     />
   )
 }
