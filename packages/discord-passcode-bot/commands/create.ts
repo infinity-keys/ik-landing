@@ -1,6 +1,7 @@
 import { CommandInteraction, SlashCommandBuilder } from 'discord.js'
 
 import { Puzzle } from '../models/puzzle'
+import { User } from '../models/user'
 
 export const data = new SlashCommandBuilder()
   .setName('create')
@@ -39,11 +40,18 @@ export async function execute(interaction: CommandInteraction) {
     return
   }
 
+  const user = await User.findOneAndUpdate(
+    { discordId: interaction.user.id },
+    { username: interaction.user.username, userid: interaction.user.id },
+    { upsert: true, new: true }
+  )
+
   const puzzle = new Puzzle({
     title: message.get('title').value,
     text: message.get('text').value,
     passcode: message.get('passcode').value,
     image: image && isValidHttpUrl(image) ? image : undefined,
+    creator: user,
   })
   await puzzle.save()
 

@@ -6,9 +6,9 @@ import {
 } from 'discord.js'
 
 export async function buttonHandler(interaction, puzzles) {
-  const selectedPuzzle = puzzles.find(
-    (puzzle) => puzzle.id === interaction.customId
-  )
+  const selectedPuzzle = await puzzles
+    .find((puzzle) => puzzle.id === interaction.customId)
+    .populate('creator')
 
   if (!selectedPuzzle) {
     await interaction.reply('Cannot find puzzle with that title')
@@ -26,7 +26,7 @@ export async function buttonHandler(interaction, puzzles) {
   try {
     const embedMessage = new EmbedBuilder()
       .setDescription(
-        `**Title:** ${selectedPuzzle.title}\n**Text:** ${selectedPuzzle.text}`
+        `**Title:** ${selectedPuzzle.title}\n**Text:** ${selectedPuzzle.text}\n**Creator:** <@${selectedPuzzle.creator.discordId}>`
       )
       .setColor(0xc3b4f7)
     const embedImage = selectedPuzzle.image
