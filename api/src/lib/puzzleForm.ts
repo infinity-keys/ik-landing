@@ -142,6 +142,12 @@ export const generateNftImage = (id: string) => {
   })
 }
 
+/**
+ * Returns new NFT update object only if the NFT has been editing from the form.
+ * Skips uploading to Cloudinary unless image has changed.
+ * The NFT's metadata field is a JSON object, so it needs to be entirely
+ * re-written every time a field changes.
+ */
 export const getOptionalNftUpdateValues = async ({
   newName,
   newImage,
@@ -181,7 +187,7 @@ export const getOptionalNftUpdateValues = async ({
     },
   })
 
-  // Get previous values from the Prisma JSON object
+  // Get previous values from the Prisma JSON object as fallback for unedited fields
   const prevMetadata = prevNftData?.data
   const prevName =
     prevMetadata &&
@@ -205,7 +211,6 @@ export const getOptionalNftUpdateValues = async ({
       cloudinaryRes && cloudinaryRes.public_id
         ? cloudinaryRes.public_id
         : prevNftData?.cloudinaryId,
-    // `nft.data` is a JSON object and needs to be entirely re-written every time
     data: {
       name: newName || prevName,
       image:

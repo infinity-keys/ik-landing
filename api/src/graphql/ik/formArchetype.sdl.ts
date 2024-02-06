@@ -15,7 +15,7 @@ export const schema = gql`
     editBurdPuzzle(
       input: UpdateRewardableInput!
       rewardableId: String!
-      puzzleId: String
+      puzzleId: String!
     ): BurdPuzzleResponse!
       @requireAuth(roles: ["ADMIN", "CREATOR_TOOLS_TESTER"])
   }

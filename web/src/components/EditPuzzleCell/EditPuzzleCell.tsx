@@ -51,7 +51,7 @@ const EDIT_BURD_PUZZLE_MUTATION = gql`
   mutation EditBurdPuzzleMutation(
     $input: UpdateRewardableInput!
     $rewardableId: String!
-    $puzzleId: String
+    $puzzleId: String!
   ) {
     editBurdPuzzle(
       input: $input
@@ -148,11 +148,14 @@ export const Success = ({
       }}
       isEditMode
       onFormSubmit={({ input }) => {
+        if (!rewardable.puzzle?.id) {
+          throw new Error('Error obtaining puzzle ID')
+        }
         return editArchetypalPuzzle({
           variables: {
             input,
             rewardableId: rewardable.id,
-            puzzleId: rewardable.puzzle?.id,
+            puzzleId: rewardable.puzzle.id,
           },
         })
       }}

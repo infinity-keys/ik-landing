@@ -34,12 +34,12 @@ export const editBurdPuzzle: MutationResolvers['editBurdPuzzle'] = async ({
       throw new ForbiddenError('You are not authorized to create a rewardable')
     }
 
-    if (!input.puzzle || !puzzleId) {
-      throw new Error('No puzzle')
+    if (!input.puzzle) {
+      throw new Error('Puzzle is required in `editBurdPuzzle` request.')
     }
 
     if (!input.puzzle.steps) {
-      throw new Error('No steps')
+      throw new Error('Steps are required in `editBurdPuzzle` request.')
     }
 
     const steps = formatCreateSteps(input.puzzle.steps)
@@ -150,11 +150,11 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
     }
 
     if (!input.puzzle) {
-      throw new Error('No puzzle')
+      throw new Error('Puzzle is required in `createBurdPuzzle` request.')
     }
 
     if (!input.puzzle.steps) {
-      throw new Error('No steps')
+      throw new Error('Steps are required in `createBurdPuzzle` request.')
     }
 
     const steps = formatCreateSteps(input.puzzle.steps)
