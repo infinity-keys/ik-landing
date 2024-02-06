@@ -86,6 +86,20 @@ function imageLinkPatternError(fieldName: string) {
   )
 }
 
+// This checks to see if the slug is formatted correctly
+function requiredSlugFormatError(slug: string) {
+  const slugPattern = /^[a-z0-9]+(-[a-z0-9]+)*$/
+
+  if (!slugPattern.test(slug)) {
+    return (
+      <div className="ik-form-field-error">
+        I&apos;m sorry, but {slug} is not a valid slug; use lowercase letters
+        and/or numbers separated by dashes
+      </div>
+    )
+  }
+}
+
 const convertToBase64 = (file?: File): Promise<string> => {
   if (!file) {
     throw new Error('File missing')
@@ -223,6 +237,7 @@ function StepForm({
   } = useFieldArray({
     control,
     name: `${stepsArrayName}.${index}.stepPage`,
+    shouldUnregister: true,
     rules: {
       required: true,
       validate: {
@@ -705,7 +720,9 @@ function StepForm({
         <button
           type="button"
           className="rw-button rw-button-red"
-          onClick={() => remove(index)}
+          onClick={() => {
+            remove(index)
+          }}
         >
           Delete this Step
         </button>
@@ -1129,20 +1146,6 @@ export default function PuzzleForm({
       submission.data.createBurdPuzzle.success
     ) {
       formMethods.reset()
-    }
-  }
-
-  // This checks to see if the slug is formatted correctly
-  function requiredSlugFormatError(slug: string) {
-    const slugPattern = /^[a-z0-9]+(-[a-z0-9]+)*$/
-
-    if (!slugPattern.test(slug)) {
-      return (
-        <div className="ik-form-field-error">
-          I&apos;m sorry, but {slug} is not a valid slug; use lowercase letters
-          and/or numbers separated by dashes
-        </div>
-      )
     }
   }
 
