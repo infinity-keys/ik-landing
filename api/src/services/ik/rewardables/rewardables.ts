@@ -1,7 +1,7 @@
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import type { QueryResolvers, MutationResolvers, StepType } from 'types/graphql'
 
-import { context } from '@redwoodjs/graphql-server'
+import { AuthenticationError, context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 import { addNftReward as addReward } from 'src/lib/nft'
@@ -28,6 +28,10 @@ export const rewardableBySlugWithOrg: QueryResolvers['rewardableBySlug'] = ({
   slug,
   type,
 }) => {
+  if (!context.currentUser?.id) {
+    throw new AuthenticationError('Must be logged in')
+  }
+
   return db.rewardable.findUnique({
     where: {
       slug_type: {
@@ -37,7 +41,7 @@ export const rewardableBySlugWithOrg: QueryResolvers['rewardableBySlug'] = ({
       organization: {
         users: {
           some: {
-            userId: context.currentUser?.id,
+            userId: context.currentUser.id,
           },
         },
       },

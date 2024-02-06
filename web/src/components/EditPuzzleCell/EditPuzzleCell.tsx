@@ -96,37 +96,43 @@ export const Success = ({
 
       return alert('There was an error creating your rewardable!')
     },
-    onError: (error) => {
-      alert(`Error with Burd's form: ${error.message}`)
-    },
   })
 
-  const steps =
-    rewardable.puzzle?.steps.flatMap((step) =>
-      step
-        ? {
-            solutionHint: step.solutionHint ?? undefined,
-            defaultImage: step.defaultImage ?? undefined,
-            solutionImage: step.solutionImage ?? undefined,
-            stepSortWeight: step.stepSortWeight ?? undefined,
-            stepGuideType: step.stepGuideType ?? undefined,
-            type: 'SIMPLE_TEXT' as StepType,
-            stepPage: step?.stepPage?.flatMap((page) => {
-              if (!page) return []
-              // Apollo automatically adds `__typename` to the query result.
-              // Our sdls do not have that field and will error if it's present.
-              const { __typename, ...rest } = page
-              return rest
-            }),
-          }
-        : []
-    ) || []
+  const formattedSteps = rewardable.puzzle?.steps.flatMap((step) => {
+    if (!step) return []
+    return {
+      solutionHint: step.solutionHint ?? '',
+      defaultImage: step.defaultImage ?? '',
+      solutionImage: step.solutionImage ?? '',
+      stepSortWeight: step.stepSortWeight ?? '',
+      stepGuideType: step.stepGuideType ?? 'SEEK',
+      type: 'SIMPLE_TEXT' as StepType,
+      stepPage: step?.stepPage?.flatMap((page) => {
+        if (!page) return []
+        // Apollo automatically adds `__typename` to the query result.
+        // Our sdls do not have that field and will error if it's present.
+        const { __typename, ...rest } = page
+        return rest
+      }),
+    }
+  })
 
   const dbNft = rewardable.nfts[0]?.data
+
   const nftName =
-    dbNft && typeof dbNft === 'object' && 'name' in dbNft ? dbNft.name : ''
+    dbNft &&
+    typeof dbNft === 'object' &&
+    'name' in dbNft &&
+    typeof dbNft.name === 'string'
+      ? dbNft.name
+      : ''
   const nftImage =
-    dbNft && typeof dbNft === 'object' && 'image' in dbNft ? dbNft.image : ''
+    dbNft &&
+    typeof dbNft === 'object' &&
+    'image' in dbNft &&
+    typeof dbNft.image === 'string'
+      ? dbNft.image
+      : ''
 
   return (
     <PuzzleForm
@@ -136,15 +142,15 @@ export const Success = ({
           slug: rewardable.slug,
           successMessage: rewardable.successMessage,
           nft: {
-            name: typeof nftName === 'string' ? nftName : '',
-            image: typeof nftImage === 'string' ? nftImage : '',
+            name: nftName,
+            image: nftImage,
           },
         },
         puzzle: {
           coverImage: rewardable.puzzle?.coverImage || '',
           requirements: rewardable.puzzle?.requirements || [],
         },
-        steps,
+        steps: formattedSteps || [],
       }}
       isEditMode
       onFormSubmit={({ input }) => {

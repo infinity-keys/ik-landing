@@ -16,8 +16,6 @@ import {
   CreateStepTokenIdRangeInput,
   CreateStepOriumApiInput,
   CreatePuzzleInput,
-  StepType,
-  StepGuideType,
   CreateBurdPuzzleMutation,
   EditBurdPuzzleMutation,
   EditBurdPuzzleMutationVariables,
@@ -720,9 +718,7 @@ function StepForm({
         <button
           type="button"
           className="rw-button rw-button-red"
-          onClick={() => {
-            remove(index)
-          }}
+          onClick={() => remove(index)}
         >
           Delete this Step
         </button>
@@ -894,14 +890,13 @@ function StepForm({
 
 // This type definition is used in the PuzzleForm component below
 // It does not get used in the Step component above
-type PuzzleFormType = {
+type PuzzleFormWithoutNftImage = {
   rewardable: {
     name: CreateRewardableInput['name']
     slug: CreateRewardableInput['slug']
     successMessage: CreateRewardableInput['successMessage']
     listPublicly?: CreateRewardableInput['listPublicly']
     nft: {
-      image?: FileList
       name: string
     }
   }
@@ -912,28 +907,20 @@ type PuzzleFormType = {
   steps: CreateAllStepTypesInput[]
 }
 
-type PuzzleFormProps = {
+type PuzzleFormType = PuzzleFormWithoutNftImage & {
   rewardable: {
-    name: CreateRewardableInput['name']
-    slug: CreateRewardableInput['slug']
-    successMessage: CreateRewardableInput['successMessage']
     nft: {
-      image?: string
-      name?: string
+      image: FileList
     }
   }
-  puzzle: {
-    coverImage: CreatePuzzleInput['coverImage']
-    requirements: CreatePuzzleInput['requirements']
+}
+
+type InitialValuesType = PuzzleFormWithoutNftImage & {
+  rewardable: {
+    nft: {
+      image: string
+    }
   }
-  steps: {
-    type: StepType
-    solutionHint?: string
-    defaultImage?: string
-    solutionImage?: string
-    stepSortWeight?: number
-    stepGuideType?: StepGuideType
-  }[]
 }
 
 export default function PuzzleForm({
@@ -943,12 +930,12 @@ export default function PuzzleForm({
   submissionError,
   submissionPending,
 }: {
-  initialValues?: PuzzleFormProps
+  initialValues?: InitialValuesType
   isEditMode?: boolean
   onFormSubmit: (
     variables:
       | CreateBurdPuzzleMutationVariables
-      | Omit<EditBurdPuzzleMutationVariables, 'rewardableId'>
+      | Omit<EditBurdPuzzleMutationVariables, 'rewardableId' | 'puzzleId'>
   ) => Promise<{
     data?: CreateBurdPuzzleMutation | EditBurdPuzzleMutation | null
   }>

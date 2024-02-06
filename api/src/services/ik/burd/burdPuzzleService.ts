@@ -112,10 +112,6 @@ export const editBurdPuzzle: MutationResolvers['editBurdPuzzle'] = async ({
       updateRewardable,
     ])
 
-    if (!rewardable) {
-      throw new Error('There was a problem creating the rewardable')
-    }
-
     return {
       rewardable,
       success: true,
