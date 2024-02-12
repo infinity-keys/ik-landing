@@ -4,6 +4,7 @@ import { useRef, useEffect } from 'react'
 
 import { ApolloError } from '@apollo/client'
 import { DevTool } from '@hookform/devtools'
+import clsx from 'clsx'
 import { uniqBy } from 'lodash'
 import useFormPersist from 'react-hook-form-persist'
 import {
@@ -60,8 +61,27 @@ type CreateAllStepTypesInput =
 // Set as a constant in case we need to change this string value later on
 const stepsArrayName = 'steps'
 
+const buildEmptyStep = (stepSortWeight = 1): CreateAllStepTypesInput => ({
+  type: 'SIMPLE_TEXT',
+  stepSortWeight,
+  solution: '',
+  solutionCharCount: 0,
+  solutionHint: '',
+  defaultImage: '',
+  solutionImage: '',
+  stepGuideType: 'SEEK',
+  stepPage: [
+    {
+      body: '',
+      image: '',
+      showStepGuideHint: false,
+      sortWeight: 1,
+    },
+  ],
+})
+
 // New puzzles start with no steps in an empty array
-const startingSteps: CreateAllStepTypesInput[] = []
+const startingSteps: CreateAllStepTypesInput[] = [buildEmptyStep()]
 
 // Using the default: <FieldError /> field validator from react-hook-form creates
 // cryptic (for the user) error messages like this: "steps.1.failMessage is required"
@@ -717,8 +737,11 @@ function StepForm({
       <div className="mt-16 flex justify-center">
         <button
           type="button"
-          className="rw-button rw-button-red"
+          className={clsx('rw-button rw-button-red', {
+            'pointer-events-none opacity-40': getValues('steps').length == 1,
+          })}
           onClick={() => remove(index)}
+          disabled={getValues('steps').length === 1}
         >
           Delete this Step
         </button>
@@ -855,7 +878,10 @@ function StepForm({
             <button
               onClick={() => removeStepPageField(stepPageIndex)}
               type="button"
-              className="rw-button rw-button-red"
+              className={clsx('rw-button rw-button-red', {
+                'pointer-events-none opacity-40': stepPageFields.length === 1,
+              })}
+              disabled={stepPageFields.length === 1}
             >
               Delete This Step Page
             </button>
@@ -1386,18 +1412,7 @@ export default function PuzzleForm({
             <button
               type="button"
               className="rw-button rw-button-blue"
-              onClick={() =>
-                append({
-                  type: 'SIMPLE_TEXT',
-                  stepSortWeight: fields.length + 1,
-                  solution: '',
-                  solutionCharCount: 0,
-                  solutionHint: '',
-                  defaultImage: '',
-                  solutionImage: '',
-                  stepGuideType: 'SEEK',
-                })
-              }
+              onClick={() => append(buildEmptyStep(fields.length + 1))}
             >
               Add Step
             </button>
