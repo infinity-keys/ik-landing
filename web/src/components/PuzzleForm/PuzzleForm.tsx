@@ -32,6 +32,7 @@ import {
   SelectField,
   Submit,
   TextField,
+  TextAreaField,
   useFieldArray,
   UseFormRegister,
   UseFormWatch,
@@ -53,7 +54,6 @@ type CreateAllStepTypesInput =
   | (CreateStepInputFrontEnd & Omit<CreateStepFunctionCallInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepComethApiInput, 'stepId'>)
   | (CreateStepInputFrontEnd & {
-      // left off here on 12/20/2023
       ranges: { startId: number; endId: number }[]
     } & Omit<CreateStepTokenIdRangeInput, 'stepId'>)
   | (CreateStepInputFrontEnd & Omit<CreateStepOriumApiInput, 'stepId'>)
@@ -90,7 +90,7 @@ const startingSteps: CreateAllStepTypesInput[] = [buildEmptyStep()]
 // NOTE: this is in parent scope & is used in both the 'Puzzle' and 'Step' forms
 function requiredFieldError(fieldName: string) {
   return (
-    <div className="form__error pt-1 font-medium text-rose-800">
+    <div className="form__error pt-1 font-medium text-rose-300">
       I&apos;m sorry, but {fieldName} is required!
     </div>
   )
@@ -141,7 +141,7 @@ const convertToBase64 = (file?: File): Promise<string> => {
 const imageLinkPattern = /^(http|https):\/\/.*/
 
 // These are used to style labels (<Label />) for nested components
-const defaultStyles = 'form__label text-2xl font-bold text-slate-700'
+const defaultStyles = 'form__label text-slate-100'
 const defaultTitleColor = 'text-slate-700'
 const errorTitleColor = 'text-rose-900'
 
@@ -276,7 +276,6 @@ function StepForm({
   // }
 
   // // this is a refactor of the above function
-  // // left off here on 12/27/2023
   const removeFieldset = (tokenIdIndex: number) => {
     const fieldset = document.getElementById(`token-id-index-${tokenIdIndex}`)
     if (fieldset) {
@@ -285,8 +284,8 @@ function StepForm({
   }
 
   return (
-    <fieldset className="ik-child-form mb-8 rounded-lg border-2 border-gray-500 bg-zinc-100 p-4">
-      <div className="form__label text-center text-4xl font-extrabold tracking-widest text-slate-700">
+    <fieldset className="ik-child-form mb-8 rounded-lg border-2 border-gray-300 bg-transparent p-4">
+      <div className="form__label text-center text-4xl font-extrabold tracking-widest text-slate-300">
         Step {index + 1}
       </div>
 
@@ -304,7 +303,7 @@ function StepForm({
         <TextField
           placeholder="Solution Hint"
           {...register(`${stepsArrayName}.${index}.solutionHint`)}
-          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
         />
       </div>
 
@@ -316,6 +315,9 @@ function StepForm({
               ? errorTitleColor
               : defaultTitleColor
           }`}
+          // left off here on 2/12/2024
+          // this code below is not working for some reason
+          errorClassName="form__label--error text-rose-300"
         >
           <div className="form__entry-name mb-1">
             Default Image<span className="text-rose-500">*</span>
@@ -324,7 +326,7 @@ function StepForm({
         <TextField
           placeholder="Default Image"
           {...register(`${stepsArrayName}.${index}.defaultImage`)}
-          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
           validation={{ required: true, pattern: imageLinkPattern }}
         />
         {errors[stepsArrayName]?.[index]?.defaultImage?.type === 'required' &&
@@ -347,7 +349,7 @@ function StepForm({
         <TextField
           placeholder="Solution Image"
           {...register(`${stepsArrayName}.${index}.solutionImage`)}
-          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
           validation={{ pattern: imageLinkPattern }}
         />
         {errors[stepsArrayName]?.[index]?.solutionImage?.type === 'pattern' &&
@@ -369,7 +371,7 @@ function StepForm({
         </Label>
         <NumberField
           {...register(`${stepsArrayName}.${index}.stepSortWeight`)}
-          className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
           validation={{ required: true }}
           min="1"
         />
@@ -383,7 +385,7 @@ function StepForm({
       <div id={`${index}-step-type-guide`} className="form__entry mb-12 hidden">
         <Label
           name={`stepTypeGuide.${index}`}
-          className="form__label text-2xl font-bold text-slate-700"
+          className="form__label text-slate-100"
         >
           <div className="form__entry-name mb-1">Step Type Guide</div>
         </Label>
@@ -437,7 +439,7 @@ function StepForm({
             <TextField
               placeholder="Pass Code"
               {...register(`${stepsArrayName}.${index}.solution`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
               validation={{ required: true }}
             />
             {Array.isArray(errors[stepsArrayName]) &&
@@ -452,10 +454,7 @@ function StepForm({
       {stepTypeVal === 'NFT_CHECK' && (
         <div className="step__type">
           <div className="form__entry mb-12">
-            <Label
-              name="requireAllNfts"
-              className="form__label text-2xl font-bold text-slate-700"
-            >
+            <Label name="requireAllNfts" className="form__label text-slate-100">
               <div className="form__entry-name mb-1">Require All NFTs</div>
             </Label>
             <CheckboxField
@@ -465,10 +464,7 @@ function StepForm({
           </div>
 
           <div className="form__entry mb-12">
-            <Label
-              name={stepTypeVal}
-              className="form__label text-2xl font-bold text-slate-700"
-            >
+            <Label name={stepTypeVal} className="form__label text-slate-100">
               <div className="form__entry-name mb-1">Contract Address</div>
             </Label>
             <TextField
@@ -476,40 +472,31 @@ function StepForm({
               {...register(
                 `${stepsArrayName}.${index}.nftCheckData.0.contractAddress`
               )}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
             />
           </div>
           <div className="form__entry mb-12">
-            <Label
-              name={stepTypeVal}
-              className="form__label text-2xl font-bold text-slate-700"
-            >
+            <Label name={stepTypeVal} className="form__label text-slate-100">
               <div className="form__entry-name mb-1">Chain Id</div>
             </Label>
             <TextField
               placeholder="Chain Id"
               {...register(`${stepsArrayName}.${index}.nftCheckData.0.chainId`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
             />
           </div>
           <div className="form__entry mb-12">
-            <Label
-              name={stepTypeVal}
-              className="form__label text-2xl font-bold text-slate-700"
-            >
+            <Label name={stepTypeVal} className="form__label text-slate-100">
               <div className="form__entry-name mb-1">Token Id</div>
             </Label>
             <TextField
               placeholder="Token Id"
               {...register(`${stepsArrayName}.${index}.nftCheckData.0.tokenId`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
             />
           </div>
           <div className="form__entry mb-12">
-            <Label
-              name={stepTypeVal}
-              className="form__label text-2xl font-bold text-slate-700"
-            >
+            <Label name={stepTypeVal} className="form__label text-slate-100">
               <div className="form__entry-name mb-1">POAP Event Id</div>
             </Label>
             <TextField
@@ -517,7 +504,7 @@ function StepForm({
               {...register(
                 `${stepsArrayName}.${index}.nftCheckData.0.poapEventId`
               )}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
             />
           </div>
         </div>
@@ -525,29 +512,23 @@ function StepForm({
       {stepTypeVal === 'FUNCTION_CALL' && (
         <div className="step__type">
           <div className="form__entry mb-12">
-            <Label
-              name={stepTypeVal}
-              className="form__label text-2xl font-bold text-slate-700"
-            >
+            <Label name={stepTypeVal} className="form__label text-slate-100">
               <div className="form__entry-name mb-1">Method Ids</div>
             </Label>
             <TextField
               placeholder="Method Ids"
               {...register(`${stepsArrayName}.${index}.methodIds`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
             />
           </div>
           <div className="form__entry mb-12">
-            <Label
-              name={stepTypeVal}
-              className="form__label text-2xl font-bold text-slate-700"
-            >
+            <Label name={stepTypeVal} className="form__label text-slate-100">
               <div className="form__entry-name mb-1">Contract Address</div>
             </Label>
             <TextField
               placeholder="Contract Address"
               {...register(`${stepsArrayName}.${index}.contractAddress`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
             />
           </div>
         </div>
@@ -578,7 +559,7 @@ function StepForm({
             <TextField
               placeholder="Contract Address"
               {...register(`${stepsArrayName}.${index}.contractAddress`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
               validation={{ required: true }}
             />
             {Array.isArray(errors[stepsArrayName]) &&
@@ -605,7 +586,7 @@ function StepForm({
             <TextField
               placeholder="Chain Id"
               {...register(`${stepsArrayName}.${index}.chainId`)}
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
               validation={{ required: true }}
             />
             {Array.isArray(errors[stepsArrayName]) &&
@@ -718,7 +699,7 @@ function StepForm({
           <div className="form__entry mb-12"></div>
           <label
             htmlFor={`${stepsArrayName}.${index}.checkType`}
-            className="form__label text-2xl font-bold text-slate-700"
+            className="form__label text-slate-100"
           >
             <div className="form__entry-name mb-1">Check Type</div>
           </label>
@@ -747,10 +728,10 @@ function StepForm({
         </button>
       </div>
 
-      <div className="mt-12 rounded-xl border-2 border-stone-400 bg-stone-200 p-4">
+      <div className="mt-12 rounded-xl border-2 border-stone-400 bg-transparent p-4">
         {stepPageFields.map((field, stepPageIndex) => (
           <div key={field.id} className="mb-12">
-            <div className="form__label text-center text-4xl font-extrabold tracking-widest text-slate-700">
+            <div className="form__label text-center text-4xl font-extrabold tracking-widest text-slate-300">
               Step Page {stepPageIndex + 1}
             </div>
             <fieldset
@@ -779,7 +760,7 @@ function StepForm({
                 <TextField
                   placeholder="Body"
                   name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
-                  className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                  className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
                   validation={{ required: true }}
                 />
                 {errors?.[stepsArrayName]?.[stepPageIndex]?.stepPage?.[
@@ -808,7 +789,7 @@ function StepForm({
                 <TextField
                   placeholder="Image"
                   name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
-                  className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                  className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
                   validation={{ pattern: imageLinkPattern }}
                 />
                 {errors[stepsArrayName]?.[index]?.stepPage?.[stepPageIndex]
@@ -863,13 +844,13 @@ function StepForm({
                 <NumberField
                   placeholder="sortWeight"
                   name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
-                  className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                  className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
                   validation={{ required: true }}
                   min="1"
                 />
                 {errors?.[stepsArrayName]?.[index]?.stepPage?.root?.type ===
                   'duplicateSortWeight' && (
-                  <p className="rw-field-error">
+                  <p className="rw-field-error text-base text-rose-300">
                     Step page must have unique sort weight
                   </p>
                 )}
@@ -1126,7 +1107,6 @@ export default function PuzzleForm({
                   // startIds: step.startIds.map(Number),
                   // endIds: step.endIds.map(Number),
 
-                  // // left off here on 12/27/2023
                   startIds: step.ranges.map((range) => Number(range.startId)),
                   endIds: step.ranges.map((range) => Number(range.endId)),
                 },
@@ -1162,12 +1142,13 @@ export default function PuzzleForm({
     }
   }
 
+  // left off here on 2/12/2024
   return (
-    <div className="form my-11 max-w-2xl">
-      <div className="rounded-t-xl bg-stone-500 p-2 text-center text-3xl tracking-wide">
+    <div className="form">
+      <div className="p-2 text-center text-3xl tracking-wide">
         {isEditMode ? 'Edit your puzzle' : 'Create a new puzzle'}
       </div>
-      <div className="rounded-b-xl bg-stone-300 p-8">
+      <div className="p-9">
         <Form formMethods={formMethods} onSubmit={onSubmit}>
           <FormError error={submissionError} />
           {process.env.NODE_ENV === 'development' && (
@@ -1181,17 +1162,17 @@ export default function PuzzleForm({
           <div id="puzzle-name" className="form__entry mb-12">
             <Label
               name="rewardable.name"
-              className="form__label text-2xl font-bold text-slate-700"
-              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+              className="form__label text-slate-100"
+              errorClassName="form__label--error text-rose-300"
             >
-              <div className="form__entry-name mb-1">
+              <div className="form__entry-name mb-2.5">
                 Name<span className="text-rose-500">*</span>
               </div>
             </Label>
             <TextField
               name="rewardable.name"
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-              placeholder="Name"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
+              placeholder="Pick a name for your puzzle!"
               validation={{ required: true }}
             />
             {errors.rewardable?.name?.type === 'required' &&
@@ -1200,8 +1181,8 @@ export default function PuzzleForm({
           <div id="puzzle-slug" className="form__entry mb-12">
             <Label
               name="rewardable.slug"
-              className="form__label text-2xl font-bold text-slate-700"
-              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+              className="form__label text-slate-100"
+              errorClassName="form__label--error text-rose-300"
             >
               <div className="form__entry-name mb-1">
                 Slug<span className="text-rose-500">*</span>
@@ -1209,8 +1190,8 @@ export default function PuzzleForm({
             </Label>
             <TextField
               name="rewardable.slug"
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-              placeholder="a Slug"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
+              placeholder="Write a slug where your puzzle will live."
               validation={{ required: true }}
             />
             {errors.rewardable?.slug?.type === 'required' &&
@@ -1222,14 +1203,14 @@ export default function PuzzleForm({
           {/* <div id="explanation" className="form__entry mb-12">
             <Label
               name="rewardable.explanation"
-              className="form__label text-2xl font-bold text-slate-700"
-              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+              className="form__label text-slate-100"
+              errorClassName="form__label--error text-rose-300"
             >
               <div className="form__entry-name mb-1">Explanation</div>
             </Label>
             <TextField
               name="rewardable.explanation"
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
               placeholder="Explanation"
               validation={{ required: true }}
             />
@@ -1240,15 +1221,15 @@ export default function PuzzleForm({
           <div id="puzzle-success-message" className="form__entry mb-12">
             <Label
               name="rewardable.successMessage"
-              className="form__label text-2xl font-bold text-slate-700"
-              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+              className="form__label text-slate-100"
+              errorClassName="form__label--error text-rose-300"
             >
               <div className="form__entry-name mb-1">Success Message</div>
             </Label>
-            <TextField
+            <TextAreaField
               name="rewardable.successMessage"
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-              placeholder="Success Message"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
+              placeholder="Compose a success message the user will see when solving your puzzle."
             />
           </div>
 
@@ -1256,8 +1237,8 @@ export default function PuzzleForm({
           <div id="puzzle-list-publicly" className="form__entry mb-12 hidden">
             <Label
               name="rewardable.listPublicly"
-              className="form__label text-2xl font-bold text-slate-700"
-              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+              className="form__label text-slate-100"
+              errorClassName="form__label--error text-rose-300"
             >
               List Publicly
             </Label>
@@ -1271,7 +1252,7 @@ export default function PuzzleForm({
           <div id="puzzle-requirements" className="form__entry mb-12">
             <Label
               name="puzzle.requirements"
-              className="form__label text-2xl font-bold text-slate-700"
+              className="form__label text-slate-100"
             >
               <div className="form__entry-name mb-1">
                 Requirements<span className="text-rose-500">*</span>
@@ -1284,6 +1265,7 @@ export default function PuzzleForm({
               <SelectField
                 name="puzzle.requirements"
                 multiple
+                className="border-1 rounded-md border-slate-300 bg-transparent text-slate-400"
                 validation={{ required: true }}
               >
                 {/*
@@ -1304,8 +1286,8 @@ export default function PuzzleForm({
           <div id="puzzle-cover-image" className="form__entry mb-12">
             <Label
               name="puzzle.coverImage"
-              className="form__label text-2xl font-bold text-slate-700"
-              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+              className="form__label text-slate-100"
+              errorClassName="form__label--error text-rose-300"
             >
               <div className="form__entry-name mb-1">
                 Cover Image<span className="text-rose-500">*</span>
@@ -1313,7 +1295,7 @@ export default function PuzzleForm({
             </Label>
             <TextField
               name="puzzle.coverImage"
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
               placeholder="Cover Image"
               validation={{
                 required: true,
@@ -1329,8 +1311,8 @@ export default function PuzzleForm({
           <div id="nft-name" className="form__entry mb-12">
             <Label
               name="rewardable.nft.name"
-              className="form__label text-2xl font-bold text-slate-700"
-              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+              className="form__label text-slate-100"
+              errorClassName="form__label--error text-rose-300"
             >
               <div className="form__entry-name mb-1">
                 NFT Name<span className="text-rose-500">*</span>
@@ -1338,7 +1320,7 @@ export default function PuzzleForm({
             </Label>
             <TextField
               name="rewardable.nft.name"
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
               placeholder="NFT Name"
               validation={{ required: true }}
             />
@@ -1357,8 +1339,8 @@ export default function PuzzleForm({
 
             <Label
               name="rewardable.nft.image"
-              className="form__label text-2xl font-bold text-slate-700"
-              errorClassName="form__label--error text-2xl font-bold text-rose-900"
+              className="form__label text-slate-100"
+              errorClassName="form__label--error text-rose-300"
             >
               <div className="form__entry-name mb-1">
                 NFT Image<span className="text-rose-500">*</span>
@@ -1369,7 +1351,7 @@ export default function PuzzleForm({
             </Label>
             <FileField
               name="rewardable.nft.image"
-              className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
               placeholder="NFT Name"
               validation={{
                 required: !isEditMode,
