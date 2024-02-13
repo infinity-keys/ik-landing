@@ -7,6 +7,7 @@ import {
 } from 'discord.js'
 
 import { Puzzle } from '../models/puzzle'
+import { User } from '../models/user'
 
 export const data = new SlashCommandBuilder()
   .setName('play')
@@ -24,7 +25,17 @@ export async function execute(interaction: CommandInteraction) {
   const rows = []
   let currentRow = new ActionRowBuilder<ButtonBuilder>()
 
+  const user = await User.findOneAndUpdate(
+    { discordId: interaction.user.id },
+    {
+      username: interaction.user.username,
+      discordId: interaction.user.id,
+    },
+    { upsert: true, new: true }
+  )
+
   puzzles.forEach((puzzle, index) => {
+    const hasSolved = user.solvedPuzzles.includes(puzzle.id)
     if (index !== 0 && index % 5 === 0) {
       rows.push(currentRow)
       currentRow = new ActionRowBuilder<ButtonBuilder>()
@@ -33,7 +44,7 @@ export async function execute(interaction: CommandInteraction) {
       new ButtonBuilder()
         .setCustomId(puzzle.id)
         .setLabel(puzzle.title)
-        .setStyle(ButtonStyle.Primary)
+        .setStyle(hasSolved ? ButtonStyle.Secondary : ButtonStyle.Primary)
     )
   })
 

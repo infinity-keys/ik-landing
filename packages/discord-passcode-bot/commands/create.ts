@@ -42,7 +42,7 @@ export async function execute(interaction: CommandInteraction) {
 
   const user = await User.findOneAndUpdate(
     { discordId: interaction.user.id },
-    { username: interaction.user.username, userid: interaction.user.id },
+    { username: interaction.user.username, discordId: interaction.user.id },
     { upsert: true, new: true }
   )
 
