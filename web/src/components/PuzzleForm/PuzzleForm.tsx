@@ -46,7 +46,6 @@ import {
   NumberField,
   Control,
   FileField,
-  Controller,
   UseFormClearErrors,
   UseFormSetError,
 } from '@redwoodjs/forms'
@@ -1029,14 +1028,8 @@ export default function PuzzleForm({
       setError: UseFormSetError<PuzzleFormType>,
       clearErrors: UseFormClearErrors<PuzzleFormType>
     ) => {
-      if (!slug) {
-        clearErrors('rewardable.slug')
-        setIsSlugCheckLoading(false)
-        return
-      }
-
-      // In edit mode, don't run query unless the slug has been changed
-      if (isEditMode && slug === initialValues?.rewardable.slug) {
+      // Skip query if slug is empty or if slug has not changed in edit mode
+      if (!slug || (isEditMode && slug === initialValues?.rewardable.slug)) {
         setIsSlugCheckLoading(false)
         return clearErrors('rewardable.slug')
       }
