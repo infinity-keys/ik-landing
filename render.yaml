@@ -68,6 +68,18 @@ services:
       - key: NODE_VERSION
         value: 18
 
+  - name: discord-passcode-bot
+    type: worker
+    env: node
+    region: oregon
+    rootDir: packages/discord-passcode-bot
+    buildCommand: yarn && yarn build
+    startCommand: node ./dist
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+
   - name: function-stream
     type: web
     env: node
