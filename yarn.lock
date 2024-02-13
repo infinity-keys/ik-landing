@@ -4483,17 +4483,18 @@ __metadata:
   linkType: hard
 
 "@fastify/reply-from@npm:^9.0.0":
-  version: 9.0.1
-  resolution: "@fastify/reply-from@npm:9.0.1"
+  version: 9.6.0
+  resolution: "@fastify/reply-from@npm:9.6.0"
   dependencies:
     "@fastify/error": ^3.0.0
     end-of-stream: ^1.4.4
+    fast-content-type-parse: ^1.1.0
     fast-querystring: ^1.0.0
     fastify-plugin: ^4.0.0
     pump: ^3.0.0
-    tiny-lru: ^10.0.0
+    tiny-lru: ^11.0.0
     undici: ^5.19.1
-  checksum: eadee7751ec2679cb9ae732258bc53a57e7232f1bec0fd4265e4124e27301dc879972adc024435d36a271b632cbd9283b819a41b71fd44d0d329f74156bede72
+  checksum: 01d6dd4cffb6810415ccf04718d1477acf7acc18ec2f7b26537b994b6037b9ff25df6e2778e1f1017fd35f9cad85a1b7d540db2aa20e21db04b30f4fd3449913
   languageName: node
   linkType: hard
 
@@ -19528,6 +19529,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-content-type-parse@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "fast-content-type-parse@npm:1.1.0"
+  checksum: 882bf990fa5d64be1825ce183818db43900ece0d7ef184cb9409bae8ed1001acbe536a657b1496382cb3e308e71ab39cc399bbdae70cba1745eecaeca4e55384
+  languageName: node
+  linkType: hard
+
 "fast-decode-uri-component@npm:^1.0.1":
   version: 1.0.1
   resolution: "fast-decode-uri-component@npm:1.0.1"
@@ -20043,12 +20051,12 @@ __metadata:
   linkType: hard
 
 "follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.8, follow-redirects@npm:^1.14.9, follow-redirects@npm:^1.15.0":
-  version: 1.15.2
-  resolution: "follow-redirects@npm:1.15.2"
+  version: 1.15.4
+  resolution: "follow-redirects@npm:1.15.4"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: da5932b70e63944d38eecaa16954bac4347036f08303c913d166eda74809d8797d38386e3a0eb1d2fe37d2aaff2764cce8e9dbd99459d860cf2cdfa237923b5f
+  checksum: 5f37ed9170c9eb19448c5418fdb0f2b73f644b5364834e70791a76ecc7db215246f9773bbef4852cfae4067764ffc852e047f744b661b0211532155b73556a6a
   languageName: node
   linkType: hard
 
@@ -31931,10 +31939,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tiny-lru@npm:^10.0.0":
-  version: 10.4.1
-  resolution: "tiny-lru@npm:10.4.1"
-  checksum: b12cb6f4e451bd90ee1bea05d754733cc93571430061a69cc304e9a2a0275d720892514c6dd46c92875074b87a04097eacb499719d1609836c6256247ed8b26b
+"tiny-lru@npm:^11.0.0":
+  version: 11.2.5
+  resolution: "tiny-lru@npm:11.2.5"
+  checksum: bda6de074035ca108ce179ba4ceb02a3eca6aab78b5cf161736035f2af562644594435d8fa4c07f098eee96e1a483992025af72f25e6033d54a66cf270fa8372
   languageName: node
   linkType: hard
 

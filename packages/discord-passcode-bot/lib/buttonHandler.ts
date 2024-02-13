@@ -21,7 +21,7 @@ export async function buttonHandler(interaction, puzzles) {
     new ButtonBuilder()
       .setCustomId(`solve-${selectedPuzzle.id}`)
       .setLabel('Solve')
-      .setStyle(ButtonStyle.Primary)
+      .setStyle(ButtonStyle.Success)
   )
   try {
     const embedMessage = new EmbedBuilder()

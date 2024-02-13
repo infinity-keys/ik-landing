@@ -3,7 +3,9 @@ import { ObjectId } from 'mongodb'
 import { Puzzle } from '../models/puzzle'
 
 export async function passcodeSubmit(interaction) {
-  const passcode = interaction.fields.getTextInputValue('passcodeInput')
+  const passcode = interaction.fields
+    .getTextInputValue('passcodeInput')
+    .toLowerCase()
   // Extract puzzle ID from the custom ID
   const puzzleId = interaction.customId.split('passcodeModal-')[1]
 
@@ -15,11 +17,13 @@ export async function passcodeSubmit(interaction) {
     return
   }
 
-  await interaction.reply(
-    `${
-      puzzle.passcode === passcode
-        ? 'Puzzle solved. Well done.'
-        : "That's incorrect. Try, try again."
-    }`
-  )
+  puzzle.passcode.toLowerCase() === passcode
+    ? await interaction.reply({
+        content: `Puzzle solved. Well done <@${interaction.user.id}>.`,
+        ephemeral: false,
+      })
+    : await interaction.reply({
+        content: "That's incorrect. Try, try again.",
+        ephemeral: true,
+      })
 }
