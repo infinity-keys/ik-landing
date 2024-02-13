@@ -54,6 +54,7 @@
     "react-markdown": "^8.0.3",
     "react-particles": "^2.5.3",
     "reflect-metadata": "^0.1.13",
+    "slugify": "^1.6.6",
     "tsparticles": "^2.5.3",
     "use-device-pixel-ratio": "^1.1.0",
     "viem": "^1.14.0",

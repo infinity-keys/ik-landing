@@ -1,7 +1,7 @@
 import { SiteRole } from '@prisma/client'
 import { v2 as cloudinary } from 'cloudinary'
 import { nanoid } from 'nanoid'
-import type { MutationResolvers } from 'types/graphql'
+import type { MutationResolvers, QueryResolvers } from 'types/graphql'
 
 import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
 
@@ -276,4 +276,19 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
           : 'There was a problem creating the rewardable',
     }
   }
+}
+
+export const checkSlugExistence: QueryResolvers['checkSlugExistence'] = async ({
+  slug,
+}) => {
+  const rewardable = await db.rewardable.findUnique({
+    where: {
+      slug_type: {
+        slug,
+        type: 'PUZZLE',
+      },
+    },
+  })
+
+  return rewardable !== null
 }

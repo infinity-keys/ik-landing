@@ -6,6 +6,11 @@ export const schema = gql`
     success: Boolean!
     errorMessage: String
   }
+
+  type Query {
+    checkSlugExistence(slug: String!): Boolean! @requireAuth
+  }
+
   type Mutation {
     # I already have the types that exist for a step, so you don't need a
     # CreateBurdStepType...

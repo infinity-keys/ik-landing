@@ -1,12 +1,16 @@
 // BROWSER LOCATION: http://localhost:8910/puzzle/archetype
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useCallback, useState, useMemo } from 'react'
 
-import { ApolloError } from '@apollo/client'
+import { ApolloError, useLazyQuery } from '@apollo/client'
+import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
+import CheckIcon from '@heroicons/react/24/solid/CheckIcon'
 import { DevTool } from '@hookform/devtools'
 import clsx from 'clsx'
 import { uniqBy } from 'lodash'
+import debounce from 'lodash/debounce'
 import useFormPersist from 'react-hook-form-persist'
+import slugify from 'slugify'
 import {
   CreateRewardableInput,
   CreateStepInput,
@@ -42,8 +46,17 @@ import {
   NumberField,
   Control,
   FileField,
+  Controller,
+  UseFormClearErrors,
+  UseFormSetError,
 } from '@redwoodjs/forms'
+import { LoaderIcon } from '@redwoodjs/web/dist/toast'
 
+const CHECK_SLUG_EXISTENCE = gql`
+  query CheckSlugExistence($slug: String!) {
+    checkSlugExistence(slug: $slug)
+  }
+`
 // TypeScript omit to ignore the parent `puzzleId` field
 type CreateStepInputFrontEnd = Omit<CreateStepInput, 'puzzleId'>
 
@@ -102,20 +115,6 @@ function imageLinkPatternError(fieldName: string) {
       Please ensure your {fieldName} link begins with &quot;http(s)://&quot;
     </p>
   )
-}
-
-// This checks to see if the slug is formatted correctly
-function requiredSlugFormatError(slug: string) {
-  const slugPattern = /^[a-z0-9]+(-[a-z0-9]+)*$/
-
-  if (!slugPattern.test(slug)) {
-    return (
-      <div className="ik-form-field-error">
-        I&apos;m sorry, but {slug} is not a valid slug; use lowercase letters
-        and/or numbers separated by dashes
-      </div>
-    )
-  }
 }
 
 const convertToBase64 = (file?: File): Promise<string> => {
@@ -949,6 +948,11 @@ export default function PuzzleForm({
   submissionError?: ApolloError
   submissionPending?: boolean
 }) {
+  const [isSlugCheckLoading, setIsSlugCheckLoading] = useState(false)
+  const [checkSlugExistence] = useLazyQuery(CHECK_SLUG_EXISTENCE, {
+    fetchPolicy: 'network-only', // Skips cache to ensure up-to-date result
+  })
+
   // only used in dev mode
   const renderCount = useRef(process.env.NODE_ENV === 'development' ? 1 : 0)
 
@@ -979,6 +983,7 @@ export default function PuzzleForm({
   })
 
   const { errors } = formMethods.formState
+  console.log('errors: ', errors)
 
   // Steps Field Array for Token ID Ranges (and steps too?)
   const { fields, append, remove } = useFieldArray({
@@ -1001,7 +1006,59 @@ export default function PuzzleForm({
     exclude: isEditMode ? ['rewardable', 'puzzle', 'steps'] : [],
   })
 
+  const debouncedCheckSlugExistence = useMemo(
+    () =>
+      debounce(async (slug, setError, clearErrors) => {
+        const { data } = await checkSlugExistence({ variables: { slug } })
+        setIsSlugCheckLoading(false)
+
+        if (data?.checkSlugExistence) {
+          setError('rewardable.slug', {
+            type: 'unique',
+            message: 'Slug already exists.',
+          })
+        } else {
+          clearErrors('rewardable.slug')
+        }
+      }, 750),
+    [checkSlugExistence]
+  )
+
+  const handleSlugInputChange = useCallback(
+    (
+      slug: string,
+      setError: UseFormSetError<PuzzleFormType>,
+      clearErrors: UseFormClearErrors<PuzzleFormType>
+    ) => {
+      console.log('handleSlugInputChange')
+      if (!slug) {
+        clearErrors('rewardable.slug')
+        setIsSlugCheckLoading(false)
+        return
+      }
+
+      // In edit mode, don't run query unless the slug has been changed
+      if (isEditMode && slug === initialValues?.rewardable.slug) {
+        setIsSlugCheckLoading(false)
+        return clearErrors('rewardable.slug')
+      }
+
+      setIsSlugCheckLoading(true)
+      clearErrors('rewardable.slug')
+      debouncedCheckSlugExistence(slug, setError, clearErrors)
+    },
+    [debouncedCheckSlugExistence, isEditMode, initialValues?.rewardable.slug]
+  )
+
+  useEffect(() => {
+    return () => {
+      debouncedCheckSlugExistence.cancel()
+    }
+  }, [debouncedCheckSlugExistence])
+
   const onSubmit = async (input: PuzzleFormType) => {
+    console.log(input.rewardable.slug)
+    return
     const nftImageList = input.rewardable.nft.image
 
     if (!nftImageList?.length && !isEditMode) {
@@ -1016,7 +1073,7 @@ export default function PuzzleForm({
       input: {
         name: input.rewardable.name,
         type: 'PUZZLE', // hard coded for now
-        slug: input.rewardable.slug,
+        slug: slugify(input.rewardable.slug, { strict: true }),
         successMessage: input.rewardable.successMessage,
         listPublicly: false, // hard coded for now,
         nft: {
@@ -1141,8 +1198,7 @@ export default function PuzzleForm({
       formMethods.reset()
     }
   }
-
-  // left off here on 2/12/2024
+  console.log(formMethods.getValues('rewardable.slug'))
   return (
     <div className="form">
       <div className="p-2 text-center text-3xl tracking-wide">
@@ -1188,15 +1244,85 @@ export default function PuzzleForm({
                 Slug<span className="text-rose-500">*</span>
               </div>
             </Label>
-            <TextField
+            {/* <TextField
               name="rewardable.slug"
               className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
               placeholder="Write a slug where your puzzle will live."
               validation={{ required: true }}
-            />
+            /> */}
+
+            <div className="flex items-center">
+              <TextField
+                {...formMethods.register('rewardable.slug', {
+                  onChange: (e) => {
+                    // field.onChange(e) // Ensure React Hook Form registers the change
+                    handleSlugInputChange(
+                      slugify(e.target.value, { strict: true }),
+                      formMethods.setError,
+                      formMethods.clearErrors
+                    )
+                  },
+                })}
+                className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+              />
+
+              {/* <Controller
+                name="rewardable.slug"
+                control={formMethods.control}
+                rules={{ required: true }}
+                render={({ field }) => {
+                  return (
+                    <TextField
+                      {...field}
+                      name={field.name}
+                      onBlur={field.onBlur}
+                      className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                      onChange={(e) => {
+                        field.onChange(e) // Ensure React Hook Form registers the change
+                        handleSlugInputChange(
+                          slugify(e.target.value, { strict: true }),
+                          formMethods.setError,
+                          formMethods.clearErrors
+                        )
+                      }}
+                    />
+                  )
+                }}
+              /> */}
+
+              {!isSlugCheckLoading &&
+                errors.rewardable?.slug?.type !== 'unique' &&
+                formMethods.getValues('rewardable.slug') && (
+                  <CheckIcon className="ml-1 h-5 w-5 text-green-600" />
+                )}
+
+              {!isSlugCheckLoading &&
+                errors.rewardable?.slug?.type === 'unique' && (
+                  <XMarkIcon className="ml-1 h-5 w-5 text-rose-800" />
+                )}
+
+              {isSlugCheckLoading && (
+                <div className="ml-2">
+                  <LoaderIcon />
+                </div>
+              )}
+            </div>
+
+            <p className="text-slate-500">
+              {slugify(formMethods.getValues('rewardable.slug') || '', {
+                strict: true,
+              })}
+            </p>
+
+            {!isSlugCheckLoading &&
+              errors.rewardable?.slug?.type === 'unique' && (
+                <p className="form__error pt-1 font-medium text-rose-800">
+                  {errors.rewardable?.slug?.message}
+                </p>
+              )}
+
             {errors.rewardable?.slug?.type === 'required' &&
               requiredFieldError('a Slug')}
-            {requiredSlugFormatError(formMethods.getValues('rewardable.slug'))}
           </div>
 
           {/* @NOTE: This is currently only used for packs */}
