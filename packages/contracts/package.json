@@ -27,7 +27,7 @@
     "rollup-plugin-typescript-paths": "^1.4.0",
     "tslib": "^2.4.1",
     "typescript": "^5.2.2",
-    "vite": "^4.4.12"
+    "vite": "^4.5.2"
   },
   "dependencies": {
     "@ethersproject/providers": "^5.7.2",
