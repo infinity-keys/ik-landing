@@ -983,7 +983,6 @@ export default function PuzzleForm({
   })
 
   const { errors } = formMethods.formState
-  console.log('errors: ', errors)
 
   // Steps Field Array for Token ID Ranges (and steps too?)
   const { fields, append, remove } = useFieldArray({
@@ -1030,7 +1029,6 @@ export default function PuzzleForm({
       setError: UseFormSetError<PuzzleFormType>,
       clearErrors: UseFormClearErrors<PuzzleFormType>
     ) => {
-      console.log('handleSlugInputChange')
       if (!slug) {
         clearErrors('rewardable.slug')
         setIsSlugCheckLoading(false)
@@ -1057,8 +1055,6 @@ export default function PuzzleForm({
   }, [debouncedCheckSlugExistence])
 
   const onSubmit = async (input: PuzzleFormType) => {
-    console.log(input.rewardable.slug)
-    return
     const nftImageList = input.rewardable.nft.image
 
     if (!nftImageList?.length && !isEditMode) {
@@ -1198,7 +1194,7 @@ export default function PuzzleForm({
       formMethods.reset()
     }
   }
-  console.log(formMethods.getValues('rewardable.slug'))
+
   return (
     <div className="form">
       <div className="p-2 text-center text-3xl tracking-wide">
@@ -1244,18 +1240,12 @@ export default function PuzzleForm({
                 Slug<span className="text-rose-500">*</span>
               </div>
             </Label>
-            {/* <TextField
-              name="rewardable.slug"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="Write a slug where your puzzle will live."
-              validation={{ required: true }}
-            /> */}
 
             <div className="flex items-center">
               <TextField
                 {...formMethods.register('rewardable.slug', {
                   onChange: (e) => {
-                    // field.onChange(e) // Ensure React Hook Form registers the change
+                    formMethods.setValue('rewardable.slug', e.target.value)
                     handleSlugInputChange(
                       slugify(e.target.value, { strict: true }),
                       formMethods.setError,
@@ -1263,32 +1253,9 @@ export default function PuzzleForm({
                     )
                   },
                 })}
-                className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
+                placeholder="Write a slug where your puzzle will live."
               />
-
-              {/* <Controller
-                name="rewardable.slug"
-                control={formMethods.control}
-                rules={{ required: true }}
-                render={({ field }) => {
-                  return (
-                    <TextField
-                      {...field}
-                      name={field.name}
-                      onBlur={field.onBlur}
-                      className="form__text-field box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-                      onChange={(e) => {
-                        field.onChange(e) // Ensure React Hook Form registers the change
-                        handleSlugInputChange(
-                          slugify(e.target.value, { strict: true }),
-                          formMethods.setError,
-                          formMethods.clearErrors
-                        )
-                      }}
-                    />
-                  )
-                }}
-              /> */}
 
               {!isSlugCheckLoading &&
                 errors.rewardable?.slug?.type !== 'unique' &&
@@ -1531,7 +1498,9 @@ export default function PuzzleForm({
             </div>
           )}
           <Submit
-            disabled={submissionPending}
+            disabled={
+              submissionPending || errors.rewardable?.slug?.type === 'unique'
+            }
             className="rw-button rw-button-blue"
           >
             Submit
