@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
 
 import { Puzzle } from '../models/puzzle'
+import { User } from '../models/user'
 
 export async function passcodeSubmit(interaction) {
   const passcode = interaction.fields
@@ -16,6 +17,17 @@ export async function passcodeSubmit(interaction) {
     await interaction.reply('Cannot find puzzle with that title')
     return
   }
+
+  //adding the solved puzzle to the user's schema
+  await User.findOneAndUpdate(
+    { discordId: interaction.user.id },
+    {
+      username: interaction.user.username,
+      discordId: interaction.user.id,
+      $addToSet: { solvedPuzzles: puzzle },
+    },
+    { upsert: true, new: true }
+  )
 
   puzzle.passcode.toLowerCase() === passcode
     ? await interaction.reply({
