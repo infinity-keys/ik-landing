@@ -310,22 +310,6 @@ const HomePage = () => {
       </section>
 
       <footer className="bg-white/5 px-4 py-16">
-        {/* <div className="mb-4 flex justify-center gap-4">
-          <Link
-            to={routes.play()}
-            className="text-xl transition-colors hover:text-stone-400"
-          >
-            Play
-          </Link>
-          <a
-            href="https://docs.infinitykeys.io"
-            className="text-xl transition-colors hover:text-stone-400"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Docs
-          </a>
-        </div> */}
         <div className="flex justify-center gap-8">
           {socialLinks.map(({ href, testing, ariaLabel, icon }) => (
             <a
