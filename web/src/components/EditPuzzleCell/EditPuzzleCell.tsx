@@ -6,6 +6,7 @@ import type {
   StepType,
 } from 'types/graphql'
 
+import { navigate, routes } from '@redwoodjs/router'
 import {
   type CellSuccessProps,
   type CellFailureProps,
@@ -86,8 +87,10 @@ export const Success = ({
     EditBurdPuzzleMutationVariables
   >(EDIT_BURD_PUZZLE_MUTATION, {
     onCompleted: ({ editBurdPuzzle }) => {
-      if (editBurdPuzzle?.success) {
-        return alert(`Rewardable edited via Burd's Form!`)
+      if (editBurdPuzzle?.success && editBurdPuzzle.rewardable?.slug) {
+        return navigate(
+          routes.puzzleLanding({ slug: editBurdPuzzle.rewardable.slug })
+        )
       }
 
       if (editBurdPuzzle?.errorMessage) {
@@ -139,7 +142,6 @@ export const Success = ({
       initialValues={{
         rewardable: {
           name: rewardable.name,
-          slug: rewardable.slug,
           successMessage: rewardable.successMessage,
           nft: {
             name: nftName,

@@ -3,6 +3,7 @@ import {
   CreateBurdPuzzleMutationVariables,
 } from 'types/graphql'
 
+import { navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 
 import PuzzleForm from 'src/components/PuzzleForm/PuzzleForm'
@@ -27,8 +28,10 @@ const CreatePuzzleFormPage = () => {
     CreateBurdPuzzleMutationVariables
   >(CREATE_BURD_PUZZLE_MUTATION, {
     onCompleted: ({ createBurdPuzzle }) => {
-      if (createBurdPuzzle?.success) {
-        return alert(`Rewardable created via Burd's Form!`)
+      if (createBurdPuzzle?.success && createBurdPuzzle.rewardable?.slug) {
+        return navigate(
+          routes.puzzleLanding({ slug: createBurdPuzzle.rewardable.slug })
+        )
       }
 
       if (createBurdPuzzle?.errorMessage) {
