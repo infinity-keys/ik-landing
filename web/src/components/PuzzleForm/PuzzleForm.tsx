@@ -104,20 +104,6 @@ function imageLinkPatternError(fieldName: string) {
   )
 }
 
-// This checks to see if the slug is formatted correctly
-function requiredSlugFormatError(slug: string) {
-  const slugPattern = /^[a-z0-9]+(-[a-z0-9]+)*$/
-
-  if (!slugPattern.test(slug)) {
-    return (
-      <div className="ik-form-field-error">
-        I&apos;m sorry, but {slug} is not a valid slug; use lowercase letters
-        and/or numbers separated by dashes
-      </div>
-    )
-  }
-}
-
 const convertToBase64 = (file?: File): Promise<string> => {
   if (!file) {
     throw new Error('File missing')
@@ -908,7 +894,6 @@ function StepForm({
 type PuzzleFormWithoutNftImage = {
   rewardable: {
     name: CreateRewardableInput['name']
-    slug: CreateRewardableInput['slug']
     successMessage: CreateRewardableInput['successMessage']
     listPublicly?: CreateRewardableInput['listPublicly']
     nft: {
@@ -973,7 +958,6 @@ export default function PuzzleForm({
       [stepsArrayName]: isEditMode ? initialValues?.steps : startingSteps,
       rewardable: {
         name: initialValues?.rewardable?.name,
-        slug: initialValues?.rewardable?.slug,
         successMessage: initialValues?.rewardable?.successMessage,
         nft: {
           name: initialValues?.rewardable?.nft?.name,
@@ -1024,7 +1008,6 @@ export default function PuzzleForm({
       input: {
         name: input.rewardable.name,
         type: 'PUZZLE', // hard coded for now
-        slug: input.rewardable.slug,
         successMessage: input.rewardable.successMessage,
         listPublicly: false, // hard coded for now,
         nft: {
@@ -1185,26 +1168,6 @@ export default function PuzzleForm({
             />
             {errors.rewardable?.name?.type === 'required' &&
               requiredFieldError('a Name')}
-          </div>
-          <div id="puzzle-slug" className="form__entry mb-12">
-            <Label
-              name="rewardable.slug"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              <div className="form__entry-name mb-1">
-                Slug<span className="text-rose-500">*</span>
-              </div>
-            </Label>
-            <TextField
-              name="rewardable.slug"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="Write a slug where your puzzle will live."
-              validation={{ required: true }}
-            />
-            {errors.rewardable?.slug?.type === 'required' &&
-              requiredFieldError('a Slug')}
-            {requiredSlugFormatError(formMethods.getValues('rewardable.slug'))}
           </div>
 
           {/* @NOTE: This is currently only used for packs */}

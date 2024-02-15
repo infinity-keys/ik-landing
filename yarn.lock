@@ -13810,6 +13810,7 @@ __metadata:
     pino-datadog: ^2.0.2
     pkce-challenge: ^3.1.0
     qfs-compression: ^0.2.1
+    slugify: ^1.6.6
     ts-results: ^3.3.0
     uuid: ^9.0.0
     zod: ^3.22.3
@@ -30762,6 +30763,13 @@ __metadata:
     ansi-styles: ^6.0.0
     is-fullwidth-code-point: ^4.0.0
   checksum: 2d4d40b2a9d5cf4e8caae3f698fe24ae31a4d778701724f578e984dcb485ec8c49f0c04dab59c401821e80fcdfe89cace9c66693b0244e40ec485d72e543914f
+  languageName: node
+  linkType: hard
+
+"slugify@npm:^1.6.6":
+  version: 1.6.6
+  resolution: "slugify@npm:1.6.6"
+  checksum: e7e63f08f389a371d6228bc19d64ec84360bf0a538333446cc49dbbf3971751a6d180d2f31551188dd007a65ca771e69f574e0283290a7825a818e90b75ef44d
   languageName: node
   linkType: hard
 
