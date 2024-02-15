@@ -298,7 +298,9 @@ function StepForm({
               : defaultTitleColor
           }`}
         >
-          <div className="form__entry-name mb-1">Solution Hint</div>
+          <div className="form__entry-name mb-1 text-slate-100">
+            Solution Hint
+          </div>
         </Label>
         <TextField
           placeholder="Solution Hint"
@@ -319,7 +321,7 @@ function StepForm({
           // this code below is not working for some reason
           errorClassName="form__label--error text-rose-300"
         >
-          <div className="form__entry-name mb-1">
+          <div className="form__entry-name mb-1 text-slate-100">
             Default Image<span className="text-rose-500">*</span>
           </div>
         </Label>
@@ -344,7 +346,9 @@ function StepForm({
               : defaultTitleColor
           }`}
         >
-          <div className="form__entry-name mb-1">Solution Image</div>
+          <div className="form__entry-name mb-1 text-slate-100">
+            Solution Image
+          </div>
         </Label>
         <TextField
           placeholder="Solution Image"
@@ -365,7 +369,7 @@ function StepForm({
               : defaultTitleColor
           }`}
         >
-          <div className="form__entry-name mb-1">
+          <div className="form__entry-name mb-1 text-slate-100">
             Step Sort Weight<span className="text-rose-500">*</span>
           </div>
         </Label>
@@ -432,7 +436,7 @@ function StepForm({
                   : `${defaultStyles} ${defaultTitleColor}`
               }
             >
-              <div className="form__entry-name mb-1">
+              <div className="form__entry-name mb-1 text-slate-100">
                 Pass Code<span className="text-rose-500">*</span>
               </div>
             </Label>
@@ -753,7 +757,7 @@ function StepForm({
                       : defaultTitleColor
                   }`}
                 >
-                  <div className="form__entry-name mb-1">
+                  <div className="form__entry-name mb-1 text-slate-100">
                     Body<span className="text-rose-500">*</span>
                   </div>
                 </Label>
@@ -784,7 +788,9 @@ function StepForm({
                       : defaultTitleColor
                   }`}
                 >
-                  <div className="form__entry-name mb-1">Image</div>
+                  <div className="form__entry-name mb-1 text-slate-100">
+                    Image
+                  </div>
                 </Label>
                 <TextField
                   placeholder="Image"
@@ -813,7 +819,9 @@ function StepForm({
                       : defaultTitleColor
                   }`}
                 >
-                  <div className="form__entry-name mb-1">Show hint</div>
+                  <div className="form__entry-name mb-1 text-slate-100">
+                    Show hint
+                  </div>
                 </Label>
                 <CheckboxField
                   name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.showStepGuideHint`}
@@ -836,7 +844,7 @@ function StepForm({
                       : defaultTitleColor
                   }`}
                 >
-                  <div className="form__entry-name mb-1">
+                  <div className="form__entry-name mb-1 text-slate-100">
                     Sort Weight<span className="text-rose-500">*</span>
                   </div>
                 </Label>
