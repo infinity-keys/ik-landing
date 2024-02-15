@@ -56,22 +56,7 @@ const DesktopNav = () => {
   const { isAuthenticated } = useAuth()
 
   return (
-    <nav className="hidden w-full max-w-lg justify-around gap-4 lg:flex xl:max-w-xl">
-      <Link to="/#works">How It Works</Link>
-      <a
-        href="https://docs.infinitykeys.io/infinity-keys-docs/start-here/what-is-infinity-keys"
-        target="_blank"
-        rel="noreferrer"
-      >
-        About
-      </a>
-      <a
-        href="https://mirror.xyz/0xD4076B05a720d263993BC5801d74692D1588C68A"
-        target="_blank"
-        rel="noreferrer"
-      >
-        Blog
-      </a>
+    <nav className="hidden max-w-lg items-center justify-end gap-4 lg:flex xl:max-w-xl">
       <Link to={routes.puzzleLanding({ slug: 'the-society' })}>Play Demo</Link>
       {isAuthenticated ? (
         <Link to={routes.profile()}>Profile</Link>
@@ -139,9 +124,8 @@ const Header = () => {
         <div className="flex h-20 items-center justify-between">
           {/* On puzzle or step pages, the rewardable name should replace logo on mobile */}
           <Logos />
-          <DesktopNav />
-
           <div className="flex shrink-0 gap-4">
+            <DesktopNav />
             <div className="hidden lg:block">
               <WalletButton size="small" />
             </div>
@@ -211,33 +195,6 @@ const Header = () => {
                     <nav className="mt-7 flex flex-col items-center p-6">
                       {/* Navigation links */}
                       <NavTitle text="Navigation" />
-                      <Link
-                        to="/#works"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
-                      >
-                        How It Works
-                      </Link>
-
-                      <a
-                        href="https://docs.infinitykeys.io/infinity-keys-docs/start-here/what-is-infinity-keys"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
-                      >
-                        About
-                      </a>
-
-                      <a
-                        href="https://mirror.xyz/0xD4076B05a720d263993BC5801d74692D1588C68A"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
-                      >
-                        Blog
-                      </a>
-
                       <Link
                         to={routes.puzzleLanding({ slug: 'the-society' })}
                         className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
