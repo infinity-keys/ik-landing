@@ -3,6 +3,7 @@
 import { useRef, useEffect } from 'react'
 
 import { ApolloError } from '@apollo/client'
+import { Tab } from '@headlessui/react'
 import { DevTool } from '@hookform/devtools'
 import clsx from 'clsx'
 import { uniqBy } from 'lodash'
@@ -43,6 +44,8 @@ import {
   Control,
   FileField,
 } from '@redwoodjs/forms'
+
+import TabLabel from './TabLabel'
 
 // TypeScript omit to ignore the parent `puzzleId` field
 type CreateStepInputFrontEnd = Omit<CreateStepInput, 'puzzleId'>
@@ -1152,63 +1155,76 @@ export default function PuzzleForm({
 
   // left off here on 2/12/2024
   return (
-    <div className="form">
+    <div className="form min-h-full">
       <div className="p-2 text-center text-3xl tracking-wide">
         {isEditMode ? 'Edit your puzzle' : 'Create a new puzzle'}
       </div>
-      <div className="p-9">
-        <Form formMethods={formMethods} onSubmit={onSubmit}>
-          <FormError error={submissionError} />
-          {process.env.NODE_ENV === 'development' && (
-            <div>
-              <div className="mb-8 inline-block rounded-xl bg-rose-700 p-2 text-lg text-red-200">
-                Times this component has rendered: <b>{renderCount.current}</b>
+      <Tab.Group>
+        <div className="border-b-2 border-gray-700">
+          <Tab.List className="flex translate-y-[2px] gap-4">
+            <TabLabel>Description</TabLabel>
+            <TabLabel>Steps</TabLabel>
+            <TabLabel>Summary</TabLabel>
+          </Tab.List>
+        </div>
+        <div className="p-9">
+          <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <FormError error={submissionError} />
+            {process.env.NODE_ENV === 'development' && (
+              <div>
+                <div className="mb-8 inline-block rounded-xl bg-rose-700 p-2 text-lg text-red-200">
+                  Times this component has rendered:{' '}
+                  <b>{renderCount.current}</b>
+                </div>
+                <DevTool control={formMethods.control} />
               </div>
-              <DevTool control={formMethods.control} />
-            </div>
-          )}
-          <div id="puzzle-name" className="form__entry mb-12">
-            <Label
-              name="rewardable.name"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              <div className="form__entry-name mb-2.5">
-                Name<span className="text-rose-500">*</span>
-              </div>
-            </Label>
-            <TextField
-              name="rewardable.name"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="Pick a name for your puzzle!"
-              validation={{ required: true }}
-            />
-            {errors.rewardable?.name?.type === 'required' &&
-              requiredFieldError('a Name')}
-          </div>
-          <div id="puzzle-slug" className="form__entry mb-12">
-            <Label
-              name="rewardable.slug"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              <div className="form__entry-name mb-1">
-                Slug<span className="text-rose-500">*</span>
-              </div>
-            </Label>
-            <TextField
-              name="rewardable.slug"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="Write a slug where your puzzle will live."
-              validation={{ required: true }}
-            />
-            {errors.rewardable?.slug?.type === 'required' &&
-              requiredFieldError('a Slug')}
-            {requiredSlugFormatError(formMethods.getValues('rewardable.slug'))}
-          </div>
+            )}
+            <Tab.Panels>
+              <Tab.Panel>
+                <div id="puzzle-name" className="form__entry mb-12">
+                  <Label
+                    name="rewardable.name"
+                    className="form__label text-slate-100"
+                    errorClassName="form__label--error text-rose-300"
+                  >
+                    <div className="form__entry-name mb-2.5">
+                      Name<span className="text-rose-500">*</span>
+                    </div>
+                  </Label>
+                  <TextField
+                    name="rewardable.name"
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
+                    placeholder="Pick a name for your puzzle!"
+                    validation={{ required: true }}
+                  />
+                  {errors.rewardable?.name?.type === 'required' &&
+                    requiredFieldError('a Name')}
+                </div>
+                <div id="puzzle-slug" className="form__entry mb-12">
+                  <Label
+                    name="rewardable.slug"
+                    className="form__label text-slate-100"
+                    errorClassName="form__label--error text-rose-300"
+                  >
+                    <div className="form__entry-name mb-1">
+                      Slug<span className="text-rose-500">*</span>
+                    </div>
+                  </Label>
+                  <TextField
+                    name="rewardable.slug"
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
+                    placeholder="Write a slug where your puzzle will live."
+                    validation={{ required: true }}
+                  />
+                  {errors.rewardable?.slug?.type === 'required' &&
+                    requiredFieldError('a Slug')}
+                  {requiredSlugFormatError(
+                    formMethods.getValues('rewardable.slug')
+                  )}
+                </div>
 
-          {/* @NOTE: This is currently only used for packs */}
-          {/* <div id="explanation" className="form__entry mb-12">
+                {/* @NOTE: This is currently only used for packs */}
+                {/* <div id="explanation" className="form__entry mb-12">
             <Label
               name="rewardable.explanation"
               className="form__label text-slate-100"
@@ -1226,200 +1242,211 @@ export default function PuzzleForm({
               requiredFieldError('an Explanation')}
           </div> */}
 
-          <div id="puzzle-success-message" className="form__entry mb-12">
-            <Label
-              name="rewardable.successMessage"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              <div className="form__entry-name mb-1">Success Message</div>
-            </Label>
-            <TextAreaField
-              name="rewardable.successMessage"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="Compose a success message the user will see when solving your puzzle."
-            />
-          </div>
+                <div id="puzzle-success-message" className="form__entry mb-12">
+                  <Label
+                    name="rewardable.successMessage"
+                    className="form__label text-slate-100"
+                    errorClassName="form__label--error text-rose-300"
+                  >
+                    <div className="form__entry-name mb-1">Success Message</div>
+                  </Label>
+                  <TextAreaField
+                    name="rewardable.successMessage"
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
+                    placeholder="Compose a success message the user will see when solving your puzzle."
+                  />
+                </div>
 
-          {/* @NOTE: Hard coded to `false` while testing */}
-          <div id="puzzle-list-publicly" className="form__entry mb-12 hidden">
-            <Label
-              name="rewardable.listPublicly"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              List Publicly
-            </Label>
+                {/* @NOTE: Hard coded to `false` while testing */}
+                <div
+                  id="puzzle-list-publicly"
+                  className="form__entry mb-12 hidden"
+                >
+                  <Label
+                    name="rewardable.listPublicly"
+                    className="form__label text-slate-100"
+                    errorClassName="form__label--error text-rose-300"
+                  >
+                    List Publicly
+                  </Label>
 
-            <CheckboxField
-              name="rewardable.listPublicly"
-              className="form__text-field box-border block bg-stone-200 text-slate-700"
-            />
-          </div>
+                  <CheckboxField
+                    name="rewardable.listPublicly"
+                    className="form__text-field box-border block bg-stone-200 text-slate-700"
+                  />
+                </div>
 
-          <div id="puzzle-requirements" className="form__entry mb-12">
-            <Label
-              name="puzzle.requirements"
-              className="form__label text-slate-100"
-            >
-              <div className="form__entry-name mb-1">
-                Requirements<span className="text-rose-500">*</span>
-              </div>
-              <p className="text-sm font-normal">
-                Hold ctrl/cmd to select multiple
-              </p>
-            </Label>
-            <div className="my-8 text-stone-800">
-              <SelectField
-                name="puzzle.requirements"
-                multiple
-                className="border-1 rounded-md border-slate-300 bg-transparent text-slate-400"
-                validation={{ required: true }}
-              >
-                {/*
+                <div id="puzzle-requirements" className="form__entry mb-12">
+                  <Label
+                    name="puzzle.requirements"
+                    className="form__label text-slate-100"
+                  >
+                    <div className="form__entry-name mb-1">
+                      Requirements<span className="text-rose-500">*</span>
+                    </div>
+                    <p className="text-sm font-normal">
+                      Hold ctrl/cmd to select multiple
+                    </p>
+                  </Label>
+                  <div className="my-8 text-stone-800">
+                    <SelectField
+                      name="puzzle.requirements"
+                      multiple
+                      className="border-1 rounded-md border-slate-300 bg-transparent text-slate-400"
+                      validation={{ required: true }}
+                    >
+                      {/*
                   <option value="HOLDERS_ONLY">Holders Only</option>
                   <option value="SOCIAL_ACCOUNT">Social Account</option>
                   <option value="WALLET_GAS">Wallet Gas</option>
                   <option value="TRAVEL">Travel</option>
                   <option value="INTERACTIVE_OBJECT">Interactive Object</option>
                 */}
-                <option value="WORDPLAY">Wordplay</option>
-                <option value="DETAIL">Detail</option>
-              </SelectField>
-              {errors.puzzle?.requirements?.type === 'required' &&
-                requiredFieldError('a requirement')}
-            </div>
-          </div>
-
-          <div id="puzzle-cover-image" className="form__entry mb-12">
-            <Label
-              name="puzzle.coverImage"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              <div className="form__entry-name mb-1">
-                Cover Image<span className="text-rose-500">*</span>
-              </div>
-            </Label>
-            <TextField
-              name="puzzle.coverImage"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="Cover Image"
-              validation={{
-                required: true,
-                pattern: imageLinkPattern,
-              }}
-            />
-            {errors.puzzle?.coverImage?.type === 'required' &&
-              requiredFieldError('a cover image')}
-            {errors.puzzle?.coverImage?.type === 'pattern' &&
-              imageLinkPatternError('cover image')}
-          </div>
-
-          <div id="nft-name" className="form__entry mb-12">
-            <Label
-              name="rewardable.nft.name"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              <div className="form__entry-name mb-1">
-                NFT Name<span className="text-rose-500">*</span>
-              </div>
-            </Label>
-            <TextField
-              name="rewardable.nft.name"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="NFT Name"
-              validation={{ required: true }}
-            />
-            {errors.rewardable?.nft?.name?.type === 'required' &&
-              requiredFieldError('an nft name')}
-          </div>
-
-          <div id="nft-image" className="form__entry mb-12">
-            {isEditMode &&
-              initialValues?.rewardable.nft.image &&
-              !formMethods.getValues('rewardable.nft.image')?.[0] && (
-                <div className="mb-2 w-24">
-                  <img src={initialValues?.rewardable.nft.image} alt="" />
+                      <option value="WORDPLAY">Wordplay</option>
+                      <option value="DETAIL">Detail</option>
+                    </SelectField>
+                    {errors.puzzle?.requirements?.type === 'required' &&
+                      requiredFieldError('a requirement')}
+                  </div>
                 </div>
-              )}
 
-            <Label
-              name="rewardable.nft.image"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              <div className="form__entry-name mb-1">
-                NFT Image<span className="text-rose-500">*</span>
-              </div>
-              <p className="mb-2 text-sm font-normal">
-                Image must be smaller than 5MB
-              </p>
-            </Label>
-            <FileField
-              name="rewardable.nft.image"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="NFT Name"
-              validation={{
-                required: !isEditMode,
-                validate: {
-                  imageSize: (value: FileList) => {
-                    if (!value.length) return true
+                <div id="puzzle-cover-image" className="form__entry mb-12">
+                  <Label
+                    name="puzzle.coverImage"
+                    className="form__label text-slate-100"
+                    errorClassName="form__label--error text-rose-300"
+                  >
+                    <div className="form__entry-name mb-1">
+                      Cover Image<span className="text-rose-500">*</span>
+                    </div>
+                  </Label>
+                  <TextField
+                    name="puzzle.coverImage"
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
+                    placeholder="Cover Image"
+                    validation={{
+                      required: true,
+                      pattern: imageLinkPattern,
+                    }}
+                  />
+                  {errors.puzzle?.coverImage?.type === 'required' &&
+                    requiredFieldError('a cover image')}
+                  {errors.puzzle?.coverImage?.type === 'pattern' &&
+                    imageLinkPatternError('cover image')}
+                </div>
 
-                    const maxSizeInBytes = 5 * 1024 * 1024
-                    return value?.[0].size < maxSizeInBytes
-                  },
-                },
-              }}
-              accept=".jpeg, .png, .jpg, .webp"
-            />
-            {errors.rewardable?.nft?.image?.type === 'required' &&
-              requiredFieldError('an nft image')}
-            {errors.rewardable?.nft?.image?.type === 'imageSize' && (
-              <p className="form__error pt-1 font-medium text-rose-800">
-                Please select an image smaller than 5MB
-              </p>
-            )}
-          </div>
+                <div id="nft-name" className="form__entry mb-12">
+                  <Label
+                    name="rewardable.nft.name"
+                    className="form__label text-slate-100"
+                    errorClassName="form__label--error text-rose-300"
+                  >
+                    <div className="form__entry-name mb-1">
+                      NFT Name<span className="text-rose-500">*</span>
+                    </div>
+                  </Label>
+                  <TextField
+                    name="rewardable.nft.name"
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
+                    placeholder="NFT Name"
+                    validation={{ required: true }}
+                  />
+                  {errors.rewardable?.nft?.name?.type === 'required' &&
+                    requiredFieldError('an nft name')}
+                </div>
 
-          {fields.map((field, index) => {
-            return (
-              <StepForm
-                index={index}
-                register={formMethods.register}
-                key={field.id}
-                watch={formMethods.watch}
-                setValue={formMethods.setValue}
-                getValues={formMethods.getValues}
-                remove={remove}
-                errors={errors}
-                control={formMethods.control}
-              />
-            )
-          })}
-          <div className="rw-button-group">
-            <button
-              type="button"
-              className="rw-button rw-button-blue"
-              onClick={() => append(buildEmptyStep(fields.length + 1))}
-            >
-              Add Step
-            </button>
-          </div>
-          {errors?.[stepsArrayName]?.root?.type === 'required' && (
-            <div className="rw-field-error">
-              You must have at least one step in a puzzle!
-            </div>
-          )}
-          <Submit
-            disabled={submissionPending}
-            className="rw-button rw-button-blue"
-          >
-            Submit
-          </Submit>
-        </Form>
-      </div>
+                <div id="nft-image" className="form__entry mb-12">
+                  {isEditMode &&
+                    initialValues?.rewardable.nft.image &&
+                    !formMethods.getValues('rewardable.nft.image')?.[0] && (
+                      <div className="mb-2 w-24">
+                        <img src={initialValues?.rewardable.nft.image} alt="" />
+                      </div>
+                    )}
+
+                  <Label
+                    name="rewardable.nft.image"
+                    className="form__label text-slate-100"
+                    errorClassName="form__label--error text-rose-300"
+                  >
+                    <div className="form__entry-name mb-1">
+                      NFT Image<span className="text-rose-500">*</span>
+                    </div>
+                    <p className="mb-2 text-sm font-normal">
+                      Image must be smaller than 5MB
+                    </p>
+                  </Label>
+                  <FileField
+                    name="rewardable.nft.image"
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
+                    placeholder="NFT Name"
+                    validation={{
+                      required: !isEditMode,
+                      validate: {
+                        imageSize: (value: FileList) => {
+                          if (!value.length) return true
+
+                          const maxSizeInBytes = 5 * 1024 * 1024
+                          return value?.[0].size < maxSizeInBytes
+                        },
+                      },
+                    }}
+                    accept=".jpeg, .png, .jpg, .webp"
+                  />
+                  {errors.rewardable?.nft?.image?.type === 'required' &&
+                    requiredFieldError('an nft image')}
+                  {errors.rewardable?.nft?.image?.type === 'imageSize' && (
+                    <p className="form__error pt-1 font-medium text-rose-800">
+                      Please select an image smaller than 5MB
+                    </p>
+                  )}
+                </div>
+              </Tab.Panel>
+
+              <Tab.Panel>
+                {fields.map((field, index) => {
+                  return (
+                    <StepForm
+                      index={index}
+                      register={formMethods.register}
+                      key={field.id}
+                      watch={formMethods.watch}
+                      setValue={formMethods.setValue}
+                      getValues={formMethods.getValues}
+                      remove={remove}
+                      errors={errors}
+                      control={formMethods.control}
+                    />
+                  )
+                })}
+                <div className="rw-button-group">
+                  <button
+                    type="button"
+                    className="rw-button rw-button-blue"
+                    onClick={() => append(buildEmptyStep(fields.length + 1))}
+                  >
+                    Add Step
+                  </button>
+                </div>
+                {errors?.[stepsArrayName]?.root?.type === 'required' && (
+                  <div className="rw-field-error">
+                    You must have at least one step in a puzzle!
+                  </div>
+                )}
+              </Tab.Panel>
+              <Tab.Panel>
+                <p>summary</p>
+                <Submit
+                  disabled={submissionPending}
+                  className="rw-button rw-button-blue"
+                >
+                  Submit
+                </Submit>
+              </Tab.Panel>
+            </Tab.Panels>
+          </Form>
+        </div>
+      </Tab.Group>
     </div>
   )
 }
