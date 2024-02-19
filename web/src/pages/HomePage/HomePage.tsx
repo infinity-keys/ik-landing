@@ -25,6 +25,12 @@ import TwitterIcon from 'src/svgs/TwitterIcon'
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
+const CLERK_SIGNIN_PORTAL_URL = process.env.CLERK_SIGNIN_PORTAL_URL
+
+if (!CLERK_SIGNIN_PORTAL_URL) {
+  throw new Error('Missing CLERK_SIGNIN_PORTAL_URL variable')
+}
+
 export type BenefitCardProps = {
   icon: string
   title: string
@@ -212,7 +218,7 @@ const HomePage = () => {
             </Fade>
 
             <Fade delay={1.2}>
-              <div className="mt-8 flex gap-2">
+              <div className="mt-8 flex flex-wrap justify-center gap-2">
                 <Button round solid onClick={handleScrollToForm}>
                   <span className="hidden md:inline">Join&nbsp;</span>
                   Waitlist
@@ -224,6 +230,10 @@ const HomePage = () => {
                 >
                   <span className="hidden md:inline">Play&nbsp;</span>
                   Demo
+                </Button>
+
+                <Button round href={`${CLERK_SIGNIN_PORTAL_URL}`}>
+                  Login
                 </Button>
               </div>
             </Fade>
