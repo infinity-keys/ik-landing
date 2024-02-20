@@ -17,7 +17,7 @@ export const schema = gql`
   }
 
   input CreateStepPageInput {
-    stepId: String!
+    stepId: String
     body: String!
     image: String
     showStepGuideHint: Boolean!

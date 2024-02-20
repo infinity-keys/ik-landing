@@ -1,7 +1,7 @@
 import { PAGINATION_COUNTS } from '@infinity-keys/constants'
 import type { QueryResolvers, MutationResolvers, StepType } from 'types/graphql'
 
-import { context } from '@redwoodjs/graphql-server'
+import { AuthenticationError, context } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 import { addNftReward as addReward } from 'src/lib/nft'
@@ -19,6 +19,31 @@ export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
       slug_type: {
         slug,
         type,
+      },
+    },
+  })
+}
+
+export const rewardableBySlugWithOrg: QueryResolvers['rewardableBySlug'] = ({
+  slug,
+  type,
+}) => {
+  if (!context.currentUser?.id) {
+    throw new AuthenticationError('Must be logged in')
+  }
+
+  return db.rewardable.findUnique({
+    where: {
+      slug_type: {
+        slug,
+        type,
+      },
+      organization: {
+        users: {
+          some: {
+            userId: context.currentUser.id,
+          },
+        },
       },
     },
   })
@@ -138,6 +163,83 @@ export const userProgress: QueryResolvers['userProgress'] = () => {
     },
   })
 }
+
+// // Richard Burd's unique service:
+// // Eventually this becomes "create rewardable"
+// export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
+//   input,
+// }) => {
+//   if (!input.puzzle) {
+//     throw new Error('No puzzle')
+//   }
+
+//   if (!input.puzzle.steps) {
+//     throw new Error('No steps')
+//   }
+
+//   const steps = input.puzzle.steps.map((step) => {
+//     if (step.type === 'SIMPLE_TEXT' && step.stepSimpleText) {
+//       return {
+//         failMessage: step.failMessage,
+//         successMessage: step.successMessage,
+//         stepSortWeight: step.stepSortWeight,
+//         type: 'SIMPLE_TEXT',
+//         stepSimpleText: {
+//           create: {
+//             solution: step.stepSimpleText.solution,
+//           },
+//         },
+//       }
+//     }
+//     throw new Error(`Step type ${step.type} not implemented yet`)
+//   })
+
+//   const rewardable = await db.rewardable.create({
+//     data: {
+//       name: input.name,
+//       explanation: input.explanation,
+//       type: input.type,
+//       slug: input.slug,
+//       listPublicly: input.listPublicly,
+//       orgId: 'cla9yay7y003k08la2z4j2xrv',
+//       puzzle: {
+//         create: {
+//           isAnon: input.puzzle.isAnon,
+//           steps: {
+//             create: steps,
+//           },
+//         },
+//       },
+//     },
+//   })
+//   // const rewardable = await db.rewardable.create({
+//   //   data: {
+//   //     name: input.rewardable.name,
+//   //     explanation: input.rewardable.explanation,
+//   //     type: input.rewardable.type,
+//   //     organization: {
+//   //       connect: {
+//   //         id: input.rewardable.orgId,
+//   //       },
+//   //     },
+//   //     slug: input.rewardable.slug,
+//   //     listPublicly: input.rewardable.listPublicly,
+//   //     puzzle: {
+//   //       create: {
+//   //         isAnon: input.puzzle.isAnon,
+//   //         steps: {
+//   //           create: input.puzzle.steps.map((step) => ({
+//   //             type: step.type,
+//   //             failMessage: step.failMessage,
+//   //             stepSortWeight: step.stepSortWeight,
+//   //           })),
+//   //         },
+//   //       },
+//   //     },
+//   //   },
+//   // })
+//   return rewardable
+// }
 
 // @TODO: move to lookups
 const stepTypeLookup: {

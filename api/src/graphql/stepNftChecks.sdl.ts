@@ -15,6 +15,8 @@ export const schema = gql`
   input CreateStepNftCheckInput {
     stepId: String!
     requireAllNfts: Boolean!
+    # Manually added
+    nftCheckData: [CreateNftCheckDatumInput!]!
   }
 
   input UpdateStepNftCheckInput {

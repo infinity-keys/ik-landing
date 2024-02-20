@@ -28,8 +28,12 @@ const Routes = () => {
         </Set>
       </Private>
 
-      <Private unauthenticated="profile" roles={'ADMIN'}>
+      <Private unauthenticated="profile" roles={['ADMIN', 'CREATOR_TOOLS_TESTER']}>
         <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
+          <Route path="/puzzle" page={PuzzlePage} name="puzzle" />
+          <Route path="/puzzle/create" page={PuzzleCreatePage} name="puzzleCreate" />
+          <Route path="/puzzle/archetype" page={CreatePuzzleFormPage} name="formArchetype" />
+          <Route path="/puzzle/edit/{slug}" page={EditPuzzleFormPage} name="editFormArchetype" />
           <Route path="/rewardable/new" page={RewardablePuzzleNewRewardablePuzzlePage} name="newRewardable" />
           {/* <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" /> */}
         </Set>

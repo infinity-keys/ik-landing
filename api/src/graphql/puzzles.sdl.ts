@@ -27,6 +27,7 @@ export const schema = gql`
 
   input CreatePuzzleInput {
     rewardableId: String!
+    steps: [CreateStepInput!]
     requirements: [PuzzleRequirements]!
     coverImage: String!
   }
