@@ -1,10 +1,4 @@
-import {
-  useEffect,
-  useState,
-  forwardRef,
-  useRef,
-  useImperativeHandle,
-} from 'react'
+import { useState, forwardRef, useRef, useImperativeHandle } from 'react'
 
 import clsx from 'clsx'
 import identity from 'lodash/identity'
@@ -83,10 +77,6 @@ const HomeContactForm = forwardRef((_props, ref) => {
       handleScroll()
     },
   }))
-
-  useEffect(() => {
-    handleScroll()
-  }, [])
 
   const onSubmit = async (data: FormData) => {
     if (data.honeypot) return
@@ -192,7 +182,7 @@ const HomeContactForm = forwardRef((_props, ref) => {
             </div>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-8 flex flex-col items-center justify-center">
             <Button type="submit" round>
               Submit
             </Button>

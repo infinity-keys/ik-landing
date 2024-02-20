@@ -1,4 +1,4 @@
-import { PropsWithChildren, useLayoutEffect, useRef, useState } from 'react'
+import { PropsWithChildren, useLayoutEffect, useRef } from 'react'
 
 import clsx from 'clsx'
 
@@ -63,13 +63,11 @@ const Container = ({
 }
 
 const HomePage = () => {
-  const [isFormVisible, setIsFormVisible] = useState(false)
   const formRef = useRef<{ scrollToElement: () => void }>()
   const workRef = useRef<HTMLElement>(null)
   const { hash } = useLocation()
 
   const handleScrollToForm = () => {
-    setIsFormVisible(true)
     if (formRef.current) {
       formRef.current.scrollToElement()
     }
@@ -150,31 +148,11 @@ const HomePage = () => {
       </div>
 
       <section>
-        <Container pySm>
-          <Fade>
-            <h2 className="text-3xl font-semibold lg:text-5xl">
-              There&apos;s treasure everywhere.
-            </h2>
-          </Fade>
-
-          <Fade>
-            {!isFormVisible && (
-              <div className="pt-12">
-                <Button round solid onClick={handleScrollToForm}>
-                  Join Waitlist
-                </Button>
-              </div>
-            )}
-          </Fade>
+        <Container bgLight>
+          <div className="flex items-center justify-center">
+            <HomeContactForm ref={formRef} />
+          </div>
         </Container>
-
-        {isFormVisible && (
-          <Container bgLight>
-            <div className="flex items-center justify-center">
-              <HomeContactForm ref={formRef} />
-            </div>
-          </Container>
-        )}
       </section>
 
       <footer className="bg-white/5 px-4 py-16">
