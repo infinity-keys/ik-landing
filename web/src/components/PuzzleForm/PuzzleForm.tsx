@@ -9,6 +9,7 @@ import {
   TrashIcon,
   XCircleIcon,
   KeyIcon,
+  LightBulbIcon,
 } from '@heroicons/react/20/solid'
 import { PlusCircleIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
@@ -1575,9 +1576,11 @@ export default function PuzzleForm({
                             Step {stepIndex + 1}
                           </p>
 
-                          {step.defaultImage && (
-                            <DisplayImage src={step.defaultImage} />
-                          )}
+                          {step.defaultImage &&
+                            step.defaultImage !==
+                              formMethods.getValues('puzzle.coverImage') && (
+                              <DisplayImage src={step.defaultImage} />
+                            )}
 
                           <div className="p-4 pt-0">
                             {step.stepPage.map((page, pageIndex) => (
@@ -1589,16 +1592,25 @@ export default function PuzzleForm({
                               </div>
                             ))}
 
-                            <p className="mt-8">{step.solutionHint}</p>
+                            <div className="mt-8 ">
+                              {step.solutionHint && (
+                                <p className="flex items-center gap-2">
+                                  <span>
+                                    <LightBulbIcon className="h-4 w-4" />
+                                  </span>
+                                  {step.solutionHint}
+                                </p>
+                              )}
 
-                            {'solution' in step && (
-                              <p className="mt-2 flex items-center gap-2 text-brand-accent-secondary">
-                                <span>
-                                  <KeyIcon className="h-4 w-4" />
-                                </span>{' '}
-                                {step.solution}
-                              </p>
-                            )}
+                              {'solution' in step && (
+                                <p className="mt-2 flex items-center gap-2 text-brand-accent-secondary">
+                                  <span>
+                                    <KeyIcon className="h-4 w-4" />
+                                  </span>{' '}
+                                  {step.solution}
+                                </p>
+                              )}
+                            </div>
                           </div>
                         </div>
                       ))}
