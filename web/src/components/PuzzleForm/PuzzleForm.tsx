@@ -1,9 +1,16 @@
 // BROWSER LOCATION: http://localhost:8910/puzzle/archetype
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 
 import { ApolloError } from '@apollo/client'
-import { DevTool } from '@hookform/devtools'
+import { Tab, Disclosure } from '@headlessui/react'
+import {
+  ChevronRightIcon,
+  TrashIcon,
+  XCircleIcon,
+  KeyIcon,
+} from '@heroicons/react/20/solid'
+import { PlusCircleIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { uniqBy } from 'lodash'
 import useFormPersist from 'react-hook-form-persist'
@@ -39,10 +46,14 @@ import {
   UseFormSetValue,
   UseFormGetValues,
   CheckboxField,
-  NumberField,
   Control,
   FileField,
 } from '@redwoodjs/forms'
+
+import Button, { generateButtonClasses } from '../Button/Button'
+
+import DisplayImage from './DisplayImage/DisplayImage'
+import TabLabel from './TabLabel'
 
 // TypeScript omit to ignore the parent `puzzleId` field
 type CreateStepInputFrontEnd = Omit<CreateStepInput, 'puzzleId'>
@@ -244,11 +255,6 @@ function StepForm({
     shouldUnregister: true,
     rules: {
       required: true,
-      validate: {
-        duplicateSortWeight: (value) => {
-          return uniqBy(value, 'sortWeight').length === value.length
-        },
-      },
     },
   })
 
@@ -270,622 +276,703 @@ function StepForm({
   }
 
   return (
-    <fieldset className="ik-child-form mb-8 rounded-lg border-2 border-gray-300 bg-transparent p-4">
-      <div className="form__label text-center text-4xl font-extrabold tracking-widest text-slate-300">
-        Step {index + 1}
-      </div>
+    <Disclosure defaultOpen>
+      {({ open }) => (
+        <fieldset className="ik-child-form border-b border-stone-50">
+          <Disclosure.Button className="w-full text-left">
+            <div className="flex items-center gap-2 py-4">
+              <p className="form__label min-w-[56px] text-lg text-white">
+                Step {index + 1}{' '}
+              </p>
+              <ChevronRightIcon
+                className={clsx('h-6 w-6 transition', {
+                  'rotate-90 transform': open,
+                })}
+              />
+            </div>
+          </Disclosure.Button>
+          <Disclosure.Panel className="mt-6">
+            <div className="mt-2 mb-16 rounded-xl">
+              <p className="mb-2">Story Blocks</p>
+              {stepPageFields.map((field, stepPageIndex) => (
+                <div key={field.id} className="relative">
+                  <fieldset
+                    id={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}`}
+                  >
+                    {stepPageFields.length > 1 && (
+                      <button
+                        onClick={() => removeStepPageField(stepPageIndex)}
+                        type="button"
+                        className="absolute right-0 top-0 translate-x-3 -translate-y-3"
+                      >
+                        <XCircleIcon className="h-6 w-6" />
+                      </button>
+                    )}
 
-      <div id={`${index}-solution-hint`} className="form__entry mb-12">
-        <Label
-          name={`solutionHint.${index}`}
-          className={`${defaultStyles} ${
-            errors[stepsArrayName]?.[index]?.solutionHint?.type === 'required'
-              ? errorTitleColor
-              : defaultTitleColor
-          }`}
-        >
-          <div className="form__entry-name mb-1 text-slate-100">
-            Solution Hint
-          </div>
-        </Label>
-        <TextField
-          placeholder="Solution Hint"
-          {...register(`${stepsArrayName}.${index}.solutionHint`)}
-          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-        />
-      </div>
+                    <div
+                      id={`step-page-${stepPageIndex}-body`}
+                      className="form__entry mb-6"
+                    >
+                      {/* <Label
+                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
+                        className={`${defaultStyles} ${
+                          Array.isArray(errors[stepsArrayName]) &&
+                          errors[stepsArrayName][stepPageIndex]?.stepPage &&
+                          errors[stepsArrayName][stepPageIndex].stepPage[
+                            stepPageIndex
+                          ]?.body
+                            ? errorTitleColor
+                            : defaultTitleColor
+                        }`}
+                      >
+                        <div className="form__entry-name mb-1 text-slate-100">
+                          Body<span className="text-rose-500">*</span>
+                        </div>
+                      </Label> */}
+                      <TextAreaField
+                        placeholder="Body"
+                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
+                        className="form__text-field border-1 box-border block w-full resize-none rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                        validation={{ required: true }}
+                      />
+                      {errors?.[stepsArrayName]?.[stepPageIndex]?.stepPage?.[
+                        stepPageIndex
+                      ]?.body?.type === 'required' &&
+                        requiredFieldError('a body')}
+                    </div>
 
-      <div id={`${index}-default-image`} className="form__entry mb-12">
-        <Label
-          name={`defaultImage.${index}`}
-          className={`${defaultStyles} ${
-            errors[stepsArrayName]?.[index]?.defaultImage?.type === 'required'
-              ? errorTitleColor
-              : defaultTitleColor
-          }`}
-          // left off here on 2/12/2024
-          // this code below is not working for some reason
-          errorClassName="form__label--error text-rose-300"
-        >
-          <div className="form__entry-name mb-1 text-slate-100">
-            Default Image<span className="text-rose-500">*</span>
-          </div>
-        </Label>
-        <TextField
-          placeholder="Default Image"
-          {...register(`${stepsArrayName}.${index}.defaultImage`)}
-          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-          validation={{ required: true, pattern: imageLinkPattern }}
-        />
-        {errors[stepsArrayName]?.[index]?.defaultImage?.type === 'required' &&
-          requiredFieldError('Default Image')}
-        {errors[stepsArrayName]?.[index]?.defaultImage?.type === 'pattern' &&
-          imageLinkPatternError('default image')}
-      </div>
+                    {/* <div
+                      id={`step-page-${stepPageIndex}-image`}
+                      className="form__entry mb-12"
+                    >
+                      <Label
+                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
+                        className={`${defaultStyles} ${
+                          Array.isArray(errors[stepsArrayName]) &&
+                          errors[stepsArrayName][stepPageIndex]?.stepPage &&
+                          errors[stepsArrayName][stepPageIndex].stepPage[
+                            stepPageIndex
+                          ]?.image
+                            ? errorTitleColor
+                            : defaultTitleColor
+                        }`}
+                      >
+                        <div className="form__entry-name mb-1 text-slate-100">
+                          Image
+                        </div>
+                      </Label>
+                      <TextField
+                        placeholder="Image"
+                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
+                        className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                        validation={{ pattern: imageLinkPattern }}
+                      />
+                      {errors[stepsArrayName]?.[index]?.stepPage?.[
+                        stepPageIndex
+                      ]?.image?.type === 'pattern' &&
+                        imageLinkPatternError('step image')}
+                    </div> */}
 
-      <div id={`${index}-solution-image`} className="form__entry mb-12">
-        <Label
-          name={`solutionImage.${index}`}
-          className={`${defaultStyles} ${
-            errors[stepsArrayName]?.[index]?.solutionImage?.type === 'required'
-              ? errorTitleColor
-              : defaultTitleColor
-          }`}
-        >
-          <div className="form__entry-name mb-1 text-slate-100">
-            Solution Image
-          </div>
-        </Label>
-        <TextField
-          placeholder="Solution Image"
-          {...register(`${stepsArrayName}.${index}.solutionImage`)}
-          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-          validation={{ pattern: imageLinkPattern }}
-        />
-        {errors[stepsArrayName]?.[index]?.solutionImage?.type === 'pattern' &&
-          imageLinkPatternError('solution image')}
-      </div>
+                    {/* <div
+                      id={`step-page-${stepPageIndex}-hint`}
+                      className="form__entry mb-12"
+                    >
+                      <Label
+                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.showStepGuideHint`}
+                        className={`${defaultStyles} ${
+                          Array.isArray(errors[stepsArrayName]) &&
+                          errors[stepsArrayName][stepPageIndex]?.stepPage &&
+                          errors[stepsArrayName][stepPageIndex].stepPage[
+                            stepPageIndex
+                          ]?.showStepGuideHint
+                            ? errorTitleColor
+                            : defaultTitleColor
+                        }`}
+                      >
+                        <div className="form__entry-name mb-1 text-slate-100">
+                          Show hint
+                        </div>
+                      </Label>
+                      <CheckboxField
+                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.showStepGuideHint`}
+                        className="form__text-field box-border block bg-stone-200 text-slate-700"
+                      />
+                    </div> */}
 
-      <div id={`${index}-step-sort-weight`} className="form__entry mb-12">
-        <Label
-          name={`stepSortWeight.${index}`}
-          className={`${defaultStyles} ${
-            errors[stepsArrayName]?.[index]?.stepSortWeight?.type === 'required'
-              ? errorTitleColor
-              : defaultTitleColor
-          }`}
-        >
-          <div className="form__entry-name mb-1 text-slate-100">
-            Step Sort Weight<span className="text-rose-500">*</span>
-          </div>
-        </Label>
-        <NumberField
-          {...register(`${stepsArrayName}.${index}.stepSortWeight`)}
-          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-          validation={{ required: true }}
-          min="1"
-        />
-        {errors[stepsArrayName]?.[index]?.stepSortWeight?.type === 'required' &&
-          requiredFieldError('Step Sort Weight')}
-        {errors?.[stepsArrayName]?.root?.type === 'duplicateSortWeight' && (
-          <p className="rw-field-error">Steps must have unique sort weight</p>
-        )}
-      </div>
+                    {/* <div
+                      id={`step-page-${stepPageIndex}-sortWeight`}
+                      className="form__entry mb-12"
+                    >
+                      <Label
+                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
+                        className={`${defaultStyles} ${
+                          Array.isArray(errors[stepsArrayName]) &&
+                          errors[stepsArrayName][stepPageIndex]?.stepPage &&
+                          errors[stepsArrayName][stepPageIndex].stepPage[
+                            stepPageIndex
+                          ]?.sortWeight
+                            ? errorTitleColor
+                            : defaultTitleColor
+                        }`}
+                      >
+                        <div className="form__entry-name mb-1 text-slate-100">
+                          Sort Weight<span className="text-rose-500">*</span>
+                        </div>
+                      </Label>
 
-      <div id={`${index}-step-type-guide`} className="form__entry mb-12 hidden">
-        <Label
-          name={`stepTypeGuide.${index}`}
-          className="form__label text-slate-100"
-        >
-          <div className="form__entry-name mb-1">Step Type Guide</div>
-        </Label>
-        <div className="my-8 text-stone-800">
-          <SelectField
-            {...register(`${stepsArrayName}.${index}.stepGuideType`)}
-          >
-            <option value="SEEK">Seek</option>
-            <option value="INFER">Infer</option>
-            <option value="REWIND">Rewind</option>
-            <option value="TRACK">Track</option>
-            <option value="COLLECT">Collect</option>
-            <option value="ACTIVATE">Activate</option>
-          </SelectField>
-        </div>
-      </div>
+                      <NumberField
+                        placeholder="sortWeight"
+                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
+                        className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                        validation={{ required: true }}
+                        min="1"
+                        value={stepPageIndex + 1}
+                      />
+                      {errors?.[stepsArrayName]?.[index]?.stepPage?.root
+                        ?.type === 'duplicateSortWeight' && (
+                        <p className="rw-field-error text-base text-rose-300">
+                          Step page must have unique sort weight
+                        </p>
+                      )}
+                    </div> */}
+                  </fieldset>
+                </div>
+              ))}
 
-      <div className="my-8 hidden text-stone-800">
-        <SelectField
-          {...register(`${stepsArrayName}.${index}.type`)}
-          defaultValue="SIMPLE_TEXT"
-        >
-          <option>Choose a Step Type</option>
-          <option value="SIMPLE_TEXT">Simple Text</option>
-          <option value="NFT_CHECK">NFT check</option>
-          <option value="FUNCTION_CALL">Function Call</option>
-          <option value="COMETH_API">Cometh API</option>
-          <option value="TOKEN_ID_RANGE">Token ID Range</option>
-          <option value="ORIUM_API">Orium API</option>
-        </SelectField>
-      </div>
-      {stepTypeVal === 'SIMPLE_TEXT' && (
-        <div className="step__type">
-          <div className="form__entry mb-12">
-            <Label
-              name={stepTypeVal}
-              className={
-                Array.isArray(errors[stepsArrayName]) &&
-                errors[stepsArrayName][index] &&
-                'solution' in errors[stepsArrayName][index] &&
-                'type' in errors[stepsArrayName][index].solution &&
-                errors[stepsArrayName][index].solution.type === 'required'
-                  ? `${defaultStyles} ${errorTitleColor}`
-                  : `${defaultStyles} ${defaultTitleColor}`
-              }
-            >
-              <div className="form__entry-name mb-1 text-slate-100">
-                Pass Code<span className="text-rose-500">*</span>
-              </div>
-            </Label>
-            <TextField
-              placeholder="Pass Code"
-              {...register(`${stepsArrayName}.${index}.solution`)}
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              validation={{ required: true }}
-            />
-            {Array.isArray(errors[stepsArrayName]) &&
-              errors[stepsArrayName][index] &&
-              'solution' in errors[stepsArrayName][index] &&
-              'type' in errors[stepsArrayName][index].solution &&
-              errors[stepsArrayName][index].solution.type === 'required' &&
-              requiredFieldError('a pass code')}
-          </div>
-        </div>
-      )}
-      {stepTypeVal === 'NFT_CHECK' && (
-        <div className="step__type">
-          <div className="form__entry mb-12">
-            <Label name="requireAllNfts" className="form__label text-slate-100">
-              <div className="form__entry-name mb-1">Require All NFTs</div>
-            </Label>
-            <CheckboxField
-              {...register(`${stepsArrayName}.${index}.requireAllNfts`)}
-              className="form__text-field mt-1 mb-10 box-border block bg-stone-200 text-slate-700"
-            />
-          </div>
-
-          <div className="form__entry mb-12">
-            <Label name={stepTypeVal} className="form__label text-slate-100">
-              <div className="form__entry-name mb-1">Contract Address</div>
-            </Label>
-            <TextField
-              placeholder="Contract Address"
-              {...register(
-                `${stepsArrayName}.${index}.nftCheckData.0.contractAddress`
+              {stepPageFields.length < 3 && (
+                <div className="mt-t mb-10 border-y border-stone-50 py-2">
+                  <button
+                    type="button"
+                    className="block w-full py-2"
+                    onClick={() =>
+                      appendStepPageField({
+                        body: '',
+                        image: '',
+                        showStepGuideHint: false,
+                        sortWeight: stepPageFields.length + 1,
+                      })
+                    }
+                  >
+                    <span className="flex items-center gap-2 text-sm">
+                      <PlusCircleIcon className="h-6 w-6 fill-transparent" />{' '}
+                      Story Block
+                    </span>
+                  </button>
+                </div>
               )}
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-            />
-          </div>
-          <div className="form__entry mb-12">
-            <Label name={stepTypeVal} className="form__label text-slate-100">
-              <div className="form__entry-name mb-1">Chain Id</div>
-            </Label>
-            <TextField
-              placeholder="Chain Id"
-              {...register(`${stepsArrayName}.${index}.nftCheckData.0.chainId`)}
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-            />
-          </div>
-          <div className="form__entry mb-12">
-            <Label name={stepTypeVal} className="form__label text-slate-100">
-              <div className="form__entry-name mb-1">Token Id</div>
-            </Label>
-            <TextField
-              placeholder="Token Id"
-              {...register(`${stepsArrayName}.${index}.nftCheckData.0.tokenId`)}
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-            />
-          </div>
-          <div className="form__entry mb-12">
-            <Label name={stepTypeVal} className="form__label text-slate-100">
-              <div className="form__entry-name mb-1">POAP Event Id</div>
-            </Label>
-            <TextField
-              placeholder="POAP Event Id"
-              {...register(
-                `${stepsArrayName}.${index}.nftCheckData.0.poapEventId`
-              )}
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-            />
-          </div>
-        </div>
-      )}
-      {stepTypeVal === 'FUNCTION_CALL' && (
-        <div className="step__type">
-          <div className="form__entry mb-12">
-            <Label name={stepTypeVal} className="form__label text-slate-100">
-              <div className="form__entry-name mb-1">Method Ids</div>
-            </Label>
-            <TextField
-              placeholder="Method Ids"
-              {...register(`${stepsArrayName}.${index}.methodIds`)}
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-            />
-          </div>
-          <div className="form__entry mb-12">
-            <Label name={stepTypeVal} className="form__label text-slate-100">
-              <div className="form__entry-name mb-1">Contract Address</div>
-            </Label>
-            <TextField
-              placeholder="Contract Address"
-              {...register(`${stepsArrayName}.${index}.contractAddress`)}
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-            />
-          </div>
-        </div>
-      )}
-      {stepTypeVal === 'COMETH_API' && (
-        <div className="step__type">
-          <div className="form__entry mb-12"></div>
-        </div>
-      )}
-      {stepTypeVal === 'TOKEN_ID_RANGE' && (
-        <div className="step__type">
-          <div className="form__entry mb-12"></div>
-          <div className="form__entry mb-12">
-            <Label
-              name={`${stepsArrayName}.${index}.contractAddress`}
-              className={
-                Array.isArray(errors[stepsArrayName]) &&
-                'contractAddress' in errors[stepsArrayName][index] &&
-                'type' in errors[stepsArrayName][index].contractAddress &&
-                errors[stepsArrayName][index].contractAddress.type ===
+            </div>
+
+            {/*
+            <div id={`${index}-solution-image`} className="form__entry mb-12">
+              <Label
+                name={`solutionImage.${index}`}
+                className={`${defaultStyles} ${
+                  errors[stepsArrayName]?.[index]?.solutionImage?.type ===
                   'required'
-                  ? `${defaultStyles} ${errorTitleColor}`
-                  : `${defaultStyles} ${defaultTitleColor}`
-              }
+                    ? errorTitleColor
+                    : defaultTitleColor
+                }`}
+              >
+                <div className="form__entry-name mb-1 text-slate-100">
+                  Solution Image
+                </div>
+              </Label>
+              <TextField
+                placeholder="Solution Image"
+                {...register(`${stepsArrayName}.${index}.solutionImage`)}
+                className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                validation={{ pattern: imageLinkPattern }}
+              />
+              {errors[stepsArrayName]?.[index]?.solutionImage?.type ===
+                'pattern' && imageLinkPatternError('solution image')}
+            </div> */}
+
+            {/* <div id={`${index}-step-sort-weight`} className="form__entry mb-12">
+              <Label
+                name={`stepSortWeight.${index}`}
+                className={`${defaultStyles} ${
+                  errors[stepsArrayName]?.[index]?.stepSortWeight?.type ===
+                  'required'
+                    ? errorTitleColor
+                    : defaultTitleColor
+                }`}
+              >
+                <div className="form__entry-name mb-1 text-slate-100">
+                  Step Sort Weight<span className="text-rose-500">*</span>
+                </div>
+              </Label>
+              <NumberField
+                {...register(`${stepsArrayName}.${index}.stepSortWeight`)}
+                className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                validation={{ required: true }}
+                min="1"
+              />
+              {errors[stepsArrayName]?.[index]?.stepSortWeight?.type ===
+                'required' && requiredFieldError('Step Sort Weight')}
+              {errors?.[stepsArrayName]?.root?.type ===
+                'duplicateSortWeight' && (
+                <p className="rw-field-error">
+                  Steps must have unique sort weight
+                </p>
+              )}
+            </div> */}
+
+            <div
+              id={`${index}-step-type-guide`}
+              className="form__entry mb-12 hidden"
             >
-              <div className="form__entry-name mb-1">Contract Address</div>
-            </Label>
-            <TextField
-              placeholder="Contract Address"
-              {...register(`${stepsArrayName}.${index}.contractAddress`)}
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              validation={{ required: true }}
-            />
-            {Array.isArray(errors[stepsArrayName]) &&
-              'contractAddress' in errors[stepsArrayName][index] &&
-              'type' in errors[stepsArrayName][index].contractAddress &&
-              errors[stepsArrayName][index].contractAddress.type ===
-                'required' &&
-              requiredFieldError('a contract address')}
-          </div>
-          <div className="form__entry mb-12">
-            <Label
-              name={`${stepsArrayName}.${index}.chainId`}
-              className={
-                Array.isArray(errors[stepsArrayName]) &&
-                'chainId' in errors[stepsArrayName][index] &&
-                'type' in errors[stepsArrayName][index].chainId &&
-                errors[stepsArrayName][index].chainId.type === 'required'
-                  ? `${defaultStyles} ${errorTitleColor}`
-                  : `${defaultStyles} ${defaultTitleColor}`
-              }
-            >
-              <div className="form__entry-name mb-1">Chain Id</div>
-            </Label>
-            <TextField
-              placeholder="Chain Id"
-              {...register(`${stepsArrayName}.${index}.chainId`)}
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              validation={{ required: true }}
-            />
-            {Array.isArray(errors[stepsArrayName]) &&
-              'chainId' in errors[stepsArrayName][index] &&
-              'type' in errors[stepsArrayName][index].chainId &&
-              errors[stepsArrayName][index].chainId.type === 'required' &&
-              requiredFieldError('a chain id')}
-          </div>
+              <Label
+                name={`stepTypeGuide.${index}`}
+                className="form__label text-slate-100"
+              >
+                <div className="form__entry-name mb-1">Step Type Guide</div>
+              </Label>
+              <div className="my-8 text-stone-800">
+                <SelectField
+                  {...register(`${stepsArrayName}.${index}.stepGuideType`)}
+                >
+                  <option value="SEEK">Seek</option>
+                  <option value="INFER">Infer</option>
+                  <option value="REWIND">Rewind</option>
+                  <option value="TRACK">Track</option>
+                  <option value="COLLECT">Collect</option>
+                  <option value="ACTIVATE">Activate</option>
+                </SelectField>
+              </div>
+            </div>
 
-          <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
-            {tokenIdFields.map((field, tokenIdIndex) => (
-              <div key={field.id}>
-                <fieldset id={`token-id-index-${tokenIdIndex}`}>
-                  {/* these are temporary values for debugging purposes */}
-                  <p className="text-red-500">Index: {tokenIdIndex}</p>
-                  <p className="text-red-500">ID: {field.id}</p>
-                  <div className="mb-8 rounded-lg border-2 border-gray-500 bg-gray-100 p-6">
-                    <div className="form__label mb-12 text-center text-3xl font-extrabold tracking-widest text-slate-700">
-                      Token ID Range {tokenIdIndex + 1}
+            <div className="my-8 hidden text-stone-800">
+              <SelectField
+                {...register(`${stepsArrayName}.${index}.type`)}
+                defaultValue="SIMPLE_TEXT"
+              >
+                <option>Choose a Step Type</option>
+                <option value="SIMPLE_TEXT">Simple Text</option>
+                <option value="NFT_CHECK">NFT check</option>
+                <option value="FUNCTION_CALL">Function Call</option>
+                <option value="COMETH_API">Cometh API</option>
+                <option value="TOKEN_ID_RANGE">Token ID Range</option>
+                <option value="ORIUM_API">Orium API</option>
+              </SelectField>
+            </div>
+            {stepTypeVal === 'SIMPLE_TEXT' && (
+              <div className="step__type">
+                <div className="form__entry mb-12">
+                  <Label
+                    name={stepTypeVal}
+                    className={
+                      Array.isArray(errors[stepsArrayName]) &&
+                      errors[stepsArrayName][index] &&
+                      'solution' in errors[stepsArrayName][index] &&
+                      'type' in errors[stepsArrayName][index].solution &&
+                      errors[stepsArrayName][index].solution.type === 'required'
+                        ? `${defaultStyles} ${errorTitleColor}`
+                        : `${defaultStyles} ${defaultTitleColor}`
+                    }
+                  >
+                    <div className="form__entry-name mb-1 text-slate-100">
+                      Pass Code<span className="text-rose-500">*</span>
                     </div>
-                    <div id="start-id" className="form__entry mb-12">
-                      <Label
-                        name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`}
-                        className={`${defaultStyles} ${
-                          Array.isArray(errors[stepsArrayName]) &&
-                          // Array.isArray(errors[stepsArrayName]) &&
-                          errors[stepsArrayName][index]?.ranges &&
-                          errors[stepsArrayName][index].ranges[tokenIdIndex]
-                            ?.startId
-                            ? errorTitleColor
-                            : defaultTitleColor
-                        }`}
-                      >
-                        <div className="form__entry-name mb-1">Start ID</div>
-                      </Label>
-                      <TextField
-                        placeholder="Start ID"
-                        {...register(
-                          `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`
-                        )}
-                        className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-                        validation={{ required: true }}
-                      />
-
-                      {Array.isArray(errors[stepsArrayName]) &&
-                        errors[stepsArrayName][index]?.ranges?.[tokenIdIndex]
-                          ?.startId?.type === 'required' &&
-                        requiredFieldError('a Start ID')}
+                  </Label>
+                  <TextField
+                    placeholder="Pass Code"
+                    {...register(`${stepsArrayName}.${index}.solution`)}
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                    validation={{ required: true }}
+                  />
+                  {Array.isArray(errors[stepsArrayName]) &&
+                    errors[stepsArrayName][index] &&
+                    'solution' in errors[stepsArrayName][index] &&
+                    'type' in errors[stepsArrayName][index].solution &&
+                    errors[stepsArrayName][index].solution.type ===
+                      'required' &&
+                    requiredFieldError('a pass code')}
+                </div>
+              </div>
+            )}
+            {stepTypeVal === 'NFT_CHECK' && (
+              <div className="step__type">
+                <div className="form__entry mb-12">
+                  <Label
+                    name="requireAllNfts"
+                    className="form__label text-slate-100"
+                  >
+                    <div className="form__entry-name mb-1">
+                      Require All NFTs
                     </div>
+                  </Label>
+                  <CheckboxField
+                    {...register(`${stepsArrayName}.${index}.requireAllNfts`)}
+                    className="form__text-field mt-1 mb-10 box-border block bg-stone-200 text-slate-700"
+                  />
+                </div>
 
-                    <div id="end-id" className="form__entry mb-12">
-                      <Label
-                        name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`}
-                        className={`${defaultStyles} ${
-                          Array.isArray(errors[stepsArrayName]) &&
-                          errors[stepsArrayName][index]?.ranges &&
-                          errors[stepsArrayName][index].ranges[tokenIdIndex]
-                            ?.endId
-                            ? errorTitleColor
-                            : defaultTitleColor
-                        }`}
-                      >
-                        <div className="form__entry-name mb-1">End ID</div>
-                      </Label>
-                      <TextField
-                        placeholder="End ID"
-                        {...register(
-                          `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`
-                        )}
-                        className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-                        validation={{ required: true }}
-                      />
-
-                      {Array.isArray(errors[stepsArrayName]) &&
-                        errors[stepsArrayName][index]?.ranges?.[tokenIdIndex]
-                          ?.endId?.type === 'required' &&
-                        requiredFieldError('an End ID')}
+                <div className="form__entry mb-12">
+                  <Label
+                    name={stepTypeVal}
+                    className="form__label text-slate-100"
+                  >
+                    <div className="form__entry-name mb-1">
+                      Contract Address
                     </div>
+                  </Label>
+                  <TextField
+                    placeholder="Contract Address"
+                    {...register(
+                      `${stepsArrayName}.${index}.nftCheckData.0.contractAddress`
+                    )}
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                  />
+                </div>
+                <div className="form__entry mb-12">
+                  <Label
+                    name={stepTypeVal}
+                    className="form__label text-slate-100"
+                  >
+                    <div className="form__entry-name mb-1">Chain Id</div>
+                  </Label>
+                  <TextField
+                    placeholder="Chain Id"
+                    {...register(
+                      `${stepsArrayName}.${index}.nftCheckData.0.chainId`
+                    )}
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                  />
+                </div>
+                <div className="form__entry mb-12">
+                  <Label
+                    name={stepTypeVal}
+                    className="form__label text-slate-100"
+                  >
+                    <div className="form__entry-name mb-1">Token Id</div>
+                  </Label>
+                  <TextField
+                    placeholder="Token Id"
+                    {...register(
+                      `${stepsArrayName}.${index}.nftCheckData.0.tokenId`
+                    )}
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                  />
+                </div>
+                <div className="form__entry mb-12">
+                  <Label
+                    name={stepTypeVal}
+                    className="form__label text-slate-100"
+                  >
+                    <div className="form__entry-name mb-1">POAP Event Id</div>
+                  </Label>
+                  <TextField
+                    placeholder="POAP Event Id"
+                    {...register(
+                      `${stepsArrayName}.${index}.nftCheckData.0.poapEventId`
+                    )}
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                  />
+                </div>
+              </div>
+            )}
+            {stepTypeVal === 'FUNCTION_CALL' && (
+              <div className="step__type">
+                <div className="form__entry mb-12">
+                  <Label
+                    name={stepTypeVal}
+                    className="form__label text-slate-100"
+                  >
+                    <div className="form__entry-name mb-1">Method Ids</div>
+                  </Label>
+                  <TextField
+                    placeholder="Method Ids"
+                    {...register(`${stepsArrayName}.${index}.methodIds`)}
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                  />
+                </div>
+                <div className="form__entry mb-12">
+                  <Label
+                    name={stepTypeVal}
+                    className="form__label text-slate-100"
+                  >
+                    <div className="form__entry-name mb-1">
+                      Contract Address
+                    </div>
+                  </Label>
+                  <TextField
+                    placeholder="Contract Address"
+                    {...register(`${stepsArrayName}.${index}.contractAddress`)}
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                  />
+                </div>
+              </div>
+            )}
+            {stepTypeVal === 'COMETH_API' && (
+              <div className="step__type">
+                <div className="form__entry mb-12"></div>
+              </div>
+            )}
+            {stepTypeVal === 'TOKEN_ID_RANGE' && (
+              <div className="step__type">
+                <div className="form__entry mb-12"></div>
+                <div className="form__entry mb-12">
+                  <Label
+                    name={`${stepsArrayName}.${index}.contractAddress`}
+                    className={
+                      Array.isArray(errors[stepsArrayName]) &&
+                      'contractAddress' in errors[stepsArrayName][index] &&
+                      'type' in errors[stepsArrayName][index].contractAddress &&
+                      errors[stepsArrayName][index].contractAddress.type ===
+                        'required'
+                        ? `${defaultStyles} ${errorTitleColor}`
+                        : `${defaultStyles} ${defaultTitleColor}`
+                    }
+                  >
+                    <div className="form__entry-name mb-1">
+                      Contract Address
+                    </div>
+                  </Label>
+                  <TextField
+                    placeholder="Contract Address"
+                    {...register(`${stepsArrayName}.${index}.contractAddress`)}
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                    validation={{ required: true }}
+                  />
+                  {Array.isArray(errors[stepsArrayName]) &&
+                    'contractAddress' in errors[stepsArrayName][index] &&
+                    'type' in errors[stepsArrayName][index].contractAddress &&
+                    errors[stepsArrayName][index].contractAddress.type ===
+                      'required' &&
+                    requiredFieldError('a contract address')}
+                </div>
+                <div className="form__entry mb-12">
+                  <Label
+                    name={`${stepsArrayName}.${index}.chainId`}
+                    className={
+                      Array.isArray(errors[stepsArrayName]) &&
+                      'chainId' in errors[stepsArrayName][index] &&
+                      'type' in errors[stepsArrayName][index].chainId &&
+                      errors[stepsArrayName][index].chainId.type === 'required'
+                        ? `${defaultStyles} ${errorTitleColor}`
+                        : `${defaultStyles} ${defaultTitleColor}`
+                    }
+                  >
+                    <div className="form__entry-name mb-1">Chain Id</div>
+                  </Label>
+                  <TextField
+                    placeholder="Chain Id"
+                    {...register(`${stepsArrayName}.${index}.chainId`)}
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                    validation={{ required: true }}
+                  />
+                  {Array.isArray(errors[stepsArrayName]) &&
+                    'chainId' in errors[stepsArrayName][index] &&
+                    'type' in errors[stepsArrayName][index].chainId &&
+                    errors[stepsArrayName][index].chainId.type === 'required' &&
+                    requiredFieldError('a chain id')}
+                </div>
 
+                <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
+                  {tokenIdFields.map((field, tokenIdIndex) => (
+                    <div key={field.id}>
+                      <fieldset id={`token-id-index-${tokenIdIndex}`}>
+                        {/* these are temporary values for debugging purposes */}
+                        <p className="text-red-500">Index: {tokenIdIndex}</p>
+                        <p className="text-red-500">ID: {field.id}</p>
+                        <div className="mb-8 rounded-lg border-2 border-gray-500 bg-gray-100 p-6">
+                          <div className="form__label mb-12 text-center text-3xl font-extrabold tracking-widest text-slate-700">
+                            Token ID Range {tokenIdIndex + 1}
+                          </div>
+                          <div id="start-id" className="form__entry mb-12">
+                            <Label
+                              name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`}
+                              className={`${defaultStyles} ${
+                                Array.isArray(errors[stepsArrayName]) &&
+                                // Array.isArray(errors[stepsArrayName]) &&
+                                errors[stepsArrayName][index]?.ranges &&
+                                errors[stepsArrayName][index].ranges[
+                                  tokenIdIndex
+                                ]?.startId
+                                  ? errorTitleColor
+                                  : defaultTitleColor
+                              }`}
+                            >
+                              <div className="form__entry-name mb-1">
+                                Start ID
+                              </div>
+                            </Label>
+                            <TextField
+                              placeholder="Start ID"
+                              {...register(
+                                `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`
+                              )}
+                              className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                              validation={{ required: true }}
+                            />
+
+                            {Array.isArray(errors[stepsArrayName]) &&
+                              errors[stepsArrayName][index]?.ranges?.[
+                                tokenIdIndex
+                              ]?.startId?.type === 'required' &&
+                              requiredFieldError('a Start ID')}
+                          </div>
+
+                          <div id="end-id" className="form__entry mb-12">
+                            <Label
+                              name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`}
+                              className={`${defaultStyles} ${
+                                Array.isArray(errors[stepsArrayName]) &&
+                                errors[stepsArrayName][index]?.ranges &&
+                                errors[stepsArrayName][index].ranges[
+                                  tokenIdIndex
+                                ]?.endId
+                                  ? errorTitleColor
+                                  : defaultTitleColor
+                              }`}
+                            >
+                              <div className="form__entry-name mb-1">
+                                End ID
+                              </div>
+                            </Label>
+                            <TextField
+                              placeholder="End ID"
+                              {...register(
+                                `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`
+                              )}
+                              className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                              validation={{ required: true }}
+                            />
+
+                            {Array.isArray(errors[stepsArrayName]) &&
+                              errors[stepsArrayName][index]?.ranges?.[
+                                tokenIdIndex
+                              ]?.endId?.type === 'required' &&
+                              requiredFieldError('an End ID')}
+                          </div>
+
+                          <button
+                            type="button"
+                            className="rw-button rw-button-red"
+                            onClick={() => removeFieldset(tokenIdIndex)}
+                          >
+                            <div className="">Remove Token ID Range</div>
+                          </button>
+                        </div>
+                      </fieldset>
+                    </div>
+                  ))}
+                  <div className="mt-8 mb-20">
                     <button
                       type="button"
-                      className="rw-button rw-button-red"
-                      onClick={() => removeFieldset(tokenIdIndex)}
+                      className="rw-button rw-button-blue"
+                      onClick={() =>
+                        append({
+                          startId: 0,
+                          endId: 0,
+                        })
+                      }
                     >
-                      <div className="">Remove Token ID Range</div>
+                      Add a Token ID Range
                     </button>
                   </div>
-                </fieldset>
+                </div>
               </div>
-            ))}
-            <div className="mt-8 mb-20">
-              <button
+            )}
+            {stepTypeVal === 'ORIUM_API' && (
+              <div className="step__type">
+                <div className="form__entry mb-12"></div>
+                <label
+                  htmlFor={`${stepsArrayName}.${index}.checkType`}
+                  className="form__label text-slate-100"
+                >
+                  <div className="form__entry-name mb-1">Check Type</div>
+                </label>
+                <SelectField
+                  name={`${stepsArrayName}.${index}.checkType`}
+                  className="block bg-inherit font-semibold text-stone-700"
+                >
+                  {oriumCheckTypeOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </SelectField>
+              </div>
+            )}
+
+            <div id={`${index}-solution-hint`} className="form__entry mb-12">
+              <Label
+                name={`solutionHint.${index}`}
+                className={`${defaultStyles} ${
+                  errors[stepsArrayName]?.[index]?.solutionHint?.type ===
+                  'required'
+                    ? errorTitleColor
+                    : defaultTitleColor
+                }`}
+              >
+                <div className="form__entry-name mb-1 text-slate-100">Hint</div>
+              </Label>
+              <TextField
+                placeholder="Make your hint helpful but don’t spoil the puzzle."
+                {...register(`${stepsArrayName}.${index}.solutionHint`)}
+                className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+              />
+            </div>
+
+            <div id={`${index}-default-image`} className="form__entry mb-12">
+              <Label
+                name={`defaultImage.${index}`}
+                className={`${defaultStyles} ${
+                  errors[stepsArrayName]?.[index]?.defaultImage?.type ===
+                  'required'
+                    ? errorTitleColor
+                    : defaultTitleColor
+                }`}
+                errorClassName="form__label--error text-rose-300"
+              >
+                <p className="form__entry-name mb-1 text-slate-100">
+                  Step Image
+                </p>
+              </Label>
+
+              <TextField
+                placeholder="Step Image"
+                {...register(`${stepsArrayName}.${index}.defaultImage`)}
+                className="form__text-field border-1 mb-8 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                validation={{ pattern: imageLinkPattern }}
+              />
+
+              {getValues(`${stepsArrayName}.${index}.defaultImage`) && (
+                <DisplayImage
+                  src={getValues(`${stepsArrayName}.${index}.defaultImage`)}
+                />
+              )}
+              {errors[stepsArrayName]?.[index]?.defaultImage?.type ===
+                'required' && requiredFieldError('Default Image')}
+              {errors[stepsArrayName]?.[index]?.defaultImage?.type ===
+                'pattern' && imageLinkPatternError('default image')}
+            </div>
+
+            <div className="my-8">
+              <Button
                 type="button"
-                className="rw-button rw-button-blue"
-                onClick={() =>
-                  append({
-                    startId: 0,
-                    endId: 0,
-                  })
-                }
+                borderWhite
+                round
+                onClick={() => remove(index)}
+                disabled={getValues('steps').length === 1}
               >
-                Add a Token ID Range
-              </button>
+                <span className="flex items-center gap-2 text-xs">
+                  <TrashIcon className="h-5 w-5" /> Delete Step {index + 1}
+                </span>
+              </Button>
             </div>
-          </div>
-        </div>
+
+            {errors?.[stepsArrayName]?.[index]?.stepPage?.root?.type ===
+              'required' && (
+              <div className="rw-field-error">
+                You must have at least one step page in a step!
+              </div>
+            )}
+          </Disclosure.Panel>
+        </fieldset>
       )}
-      {stepTypeVal === 'ORIUM_API' && (
-        <div className="step__type">
-          <div className="form__entry mb-12"></div>
-          <label
-            htmlFor={`${stepsArrayName}.${index}.checkType`}
-            className="form__label text-slate-100"
-          >
-            <div className="form__entry-name mb-1">Check Type</div>
-          </label>
-          <SelectField
-            name={`${stepsArrayName}.${index}.checkType`}
-            className="block bg-inherit font-semibold text-stone-700"
-          >
-            {oriumCheckTypeOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </SelectField>
-        </div>
-      )}
-      <div className="mt-16 flex justify-center">
-        <button
-          type="button"
-          className={clsx('rw-button rw-button-red', {
-            'pointer-events-none opacity-40': getValues('steps').length == 1,
-          })}
-          onClick={() => remove(index)}
-          disabled={getValues('steps').length === 1}
-        >
-          Delete this Step
-        </button>
-      </div>
-
-      <div className="mt-12 rounded-xl border-2 border-stone-400 bg-transparent p-4">
-        {stepPageFields.map((field, stepPageIndex) => (
-          <div key={field.id} className="mb-12">
-            <div className="form__label text-center text-4xl font-extrabold tracking-widest text-slate-300">
-              Step Page {stepPageIndex + 1}
-            </div>
-            <fieldset
-              id={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}`}
-            >
-              <div
-                id={`step-page-${stepPageIndex}-body`}
-                className="form__entry mb-12"
-              >
-                <Label
-                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
-                  className={`${defaultStyles} ${
-                    Array.isArray(errors[stepsArrayName]) &&
-                    errors[stepsArrayName][stepPageIndex]?.stepPage &&
-                    errors[stepsArrayName][stepPageIndex].stepPage[
-                      stepPageIndex
-                    ]?.body
-                      ? errorTitleColor
-                      : defaultTitleColor
-                  }`}
-                >
-                  <div className="form__entry-name mb-1 text-slate-100">
-                    Body<span className="text-rose-500">*</span>
-                  </div>
-                </Label>
-                <TextField
-                  placeholder="Body"
-                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
-                  className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-                  validation={{ required: true }}
-                />
-                {errors?.[stepsArrayName]?.[stepPageIndex]?.stepPage?.[
-                  stepPageIndex
-                ]?.body?.type === 'required' && requiredFieldError('a body')}
-              </div>
-
-              <div
-                id={`step-page-${stepPageIndex}-image`}
-                className="form__entry mb-12"
-              >
-                <Label
-                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
-                  className={`${defaultStyles} ${
-                    Array.isArray(errors[stepsArrayName]) &&
-                    errors[stepsArrayName][stepPageIndex]?.stepPage &&
-                    errors[stepsArrayName][stepPageIndex].stepPage[
-                      stepPageIndex
-                    ]?.image
-                      ? errorTitleColor
-                      : defaultTitleColor
-                  }`}
-                >
-                  <div className="form__entry-name mb-1 text-slate-100">
-                    Image
-                  </div>
-                </Label>
-                <TextField
-                  placeholder="Image"
-                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
-                  className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-                  validation={{ pattern: imageLinkPattern }}
-                />
-                {errors[stepsArrayName]?.[index]?.stepPage?.[stepPageIndex]
-                  ?.image?.type === 'pattern' &&
-                  imageLinkPatternError('step image')}
-              </div>
-
-              <div
-                id={`step-page-${stepPageIndex}-hint`}
-                className="form__entry mb-12"
-              >
-                <Label
-                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.showStepGuideHint`}
-                  className={`${defaultStyles} ${
-                    Array.isArray(errors[stepsArrayName]) &&
-                    errors[stepsArrayName][stepPageIndex]?.stepPage &&
-                    errors[stepsArrayName][stepPageIndex].stepPage[
-                      stepPageIndex
-                    ]?.showStepGuideHint
-                      ? errorTitleColor
-                      : defaultTitleColor
-                  }`}
-                >
-                  <div className="form__entry-name mb-1 text-slate-100">
-                    Show hint
-                  </div>
-                </Label>
-                <CheckboxField
-                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.showStepGuideHint`}
-                  className="form__text-field box-border block bg-stone-200 text-slate-700"
-                />
-              </div>
-              <div
-                id={`step-page-${stepPageIndex}-sortWeight`}
-                className="form__entry mb-12"
-              >
-                <Label
-                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
-                  className={`${defaultStyles} ${
-                    Array.isArray(errors[stepsArrayName]) &&
-                    errors[stepsArrayName][stepPageIndex]?.stepPage &&
-                    errors[stepsArrayName][stepPageIndex].stepPage[
-                      stepPageIndex
-                    ]?.sortWeight
-                      ? errorTitleColor
-                      : defaultTitleColor
-                  }`}
-                >
-                  <div className="form__entry-name mb-1 text-slate-100">
-                    Sort Weight<span className="text-rose-500">*</span>
-                  </div>
-                </Label>
-
-                <NumberField
-                  placeholder="sortWeight"
-                  name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
-                  className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-                  validation={{ required: true }}
-                  min="1"
-                />
-                {errors?.[stepsArrayName]?.[index]?.stepPage?.root?.type ===
-                  'duplicateSortWeight' && (
-                  <p className="rw-field-error text-base text-rose-300">
-                    Step page must have unique sort weight
-                  </p>
-                )}
-              </div>
-            </fieldset>
-            <button
-              onClick={() => removeStepPageField(stepPageIndex)}
-              type="button"
-              className={clsx('rw-button rw-button-red', {
-                'pointer-events-none opacity-40': stepPageFields.length === 1,
-              })}
-              disabled={stepPageFields.length === 1}
-            >
-              Delete This Step Page
-            </button>
-          </div>
-        ))}
-        <div className="rw-button-group">
-          <button
-            type="button"
-            className="rw-button rw-button-blue"
-            onClick={() =>
-              appendStepPageField({
-                body: '',
-                image: '',
-                showStepGuideHint: false,
-                sortWeight: stepPageFields.length + 1,
-              })
-            }
-          >
-            Add Step Page
-          </button>
-        </div>
-      </div>
-      {errors?.[stepsArrayName]?.[index]?.stepPage?.root?.type ===
-        'required' && (
-        <div className="rw-field-error">
-          You must have at least one step page in a step!
-        </div>
-      )}
-    </fieldset>
+    </Disclosure>
   )
 }
 
@@ -894,7 +981,7 @@ function StepForm({
 type PuzzleFormWithoutNftImage = {
   rewardable: {
     name: CreateRewardableInput['name']
-    successMessage: CreateRewardableInput['successMessage']
+    // successMessage: CreateRewardableInput['successMessage']
     listPublicly?: CreateRewardableInput['listPublicly']
     nft: {
       name: string
@@ -910,7 +997,7 @@ type PuzzleFormWithoutNftImage = {
 type PuzzleFormType = PuzzleFormWithoutNftImage & {
   rewardable: {
     nft: {
-      image: FileList
+      image: FileList | null
     }
   }
 }
@@ -942,6 +1029,8 @@ export default function PuzzleForm({
   submissionError?: ApolloError
   submissionPending?: boolean
 }) {
+  const [nftImagePlaceholder, setNftImagePlaceholder] = useState('')
+  const [selectedTab, setSelectedTab] = useState(0)
   // only used in dev mode
   const renderCount = useRef(process.env.NODE_ENV === 'development' ? 1 : 0)
 
@@ -958,7 +1047,7 @@ export default function PuzzleForm({
       [stepsArrayName]: isEditMode ? initialValues?.steps : startingSteps,
       rewardable: {
         name: initialValues?.rewardable?.name,
-        successMessage: initialValues?.rewardable?.successMessage,
+        // successMessage: initialValues?.rewardable?.successMessage,
         nft: {
           name: initialValues?.rewardable?.nft?.name,
         },
@@ -993,7 +1082,27 @@ export default function PuzzleForm({
     exclude: isEditMode ? ['rewardable', 'puzzle', 'steps'] : [],
   })
 
+  const nftImageValue = formMethods.watch('rewardable.nft.image')
+  console.log('nftImageValue: ', nftImageValue)
+  useEffect(() => {
+    async function setPlaceholder() {
+      try {
+        if (nftImageValue?.length) {
+          const image = await convertToBase64(nftImageValue[0])
+          setNftImagePlaceholder(image)
+        } else {
+          setNftImagePlaceholder('')
+        }
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    setPlaceholder()
+  }, [setNftImagePlaceholder, nftImageValue])
+
   const onSubmit = async (input: PuzzleFormType) => {
+    console.log(input.steps)
+    // return
     const nftImageList = input.rewardable.nft.image
 
     if (!nftImageList?.length && !isEditMode) {
@@ -1008,7 +1117,7 @@ export default function PuzzleForm({
       input: {
         name: input.rewardable.name,
         type: 'PUZZLE', // hard coded for now
-        successMessage: input.rewardable.successMessage,
+        // successMessage: input.rewardable.successMessage,
         listPublicly: false, // hard coded for now,
         nft: {
           name: input.rewardable.nft.name,
@@ -1018,15 +1127,19 @@ export default function PuzzleForm({
           rewardableId: 'ignore me',
           requirements: input.puzzle.requirements,
           coverImage: input.puzzle.coverImage,
-          steps: input.steps.map((step) => {
+          steps: input.steps.map((step, stepIndex) => {
             const commonStepFields = {
               puzzleId: 'ignore me',
-              stepSortWeight: step.stepSortWeight,
+              stepSortWeight: stepIndex + 1,
               solutionHint: step.solutionHint,
-              defaultImage: step.defaultImage,
-              solutionImage: step.solutionImage,
+              defaultImage: step.defaultImage || input.puzzle.coverImage,
+              // solutionImage: step.solutionImage,
               stepGuideType: step.stepGuideType,
-              stepPage: step.stepPage,
+              stepPage: step.stepPage?.map((page, pageIndex) => ({
+                sortWeight: pageIndex + 1,
+                showStepGuideHint: step.stepPage?.length === pageIndex + 1,
+                body: page.body,
+              })),
             }
             if (step.type === 'SIMPLE_TEXT' && 'solution' in step) {
               return {
@@ -1133,45 +1246,47 @@ export default function PuzzleForm({
     }
   }
 
-  // left off here on 2/12/2024
   return (
-    <div className="form">
-      <div className="p-2 text-center text-3xl tracking-wide">
-        {isEditMode ? 'Edit your puzzle' : 'Create a new puzzle'}
+    <div className="form min-h-[calc(100vh-80px)] px-4 pb-16">
+      <div className="my-8 p-2 text-center text-3xl tracking-wide">
+        {isEditMode ? 'Edit Your Puzzle' : 'Create a New Puzzle'}
       </div>
-      <div className="p-9">
-        <Form formMethods={formMethods} onSubmit={onSubmit}>
-          <FormError error={submissionError} />
-          {process.env.NODE_ENV === 'development' && (
-            <div>
-              <div className="mb-8 inline-block rounded-xl bg-rose-700 p-2 text-lg text-red-200">
-                Times this component has rendered: <b>{renderCount.current}</b>
-              </div>
-              <DevTool control={formMethods.control} />
-            </div>
-          )}
-          <div id="puzzle-name" className="form__entry mb-12">
-            <Label
-              name="rewardable.name"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              <div className="form__entry-name mb-2.5">
-                Name<span className="text-rose-500">*</span>
-              </div>
-            </Label>
-            <TextField
-              name="rewardable.name"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="Pick a name for your puzzle!"
-              validation={{ required: true }}
-            />
-            {errors.rewardable?.name?.type === 'required' &&
-              requiredFieldError('a Name')}
-          </div>
+      <Tab.Group selectedIndex={selectedTab} onChange={setSelectedTab}>
+        <div className="border-b-2 border-gray-700">
+          <Tab.List className="flex translate-y-[2px] justify-center gap-8">
+            <TabLabel>Description</TabLabel>
+            <TabLabel>Steps</TabLabel>
+            <TabLabel>Summary</TabLabel>
+          </Tab.List>
+        </div>
+        <div className="mx-auto max-w-md pt-9">
+          <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <FormError error={submissionError} />
 
-          {/* @NOTE: This is currently only used for packs */}
-          {/* <div id="explanation" className="form__entry mb-12">
+            <Tab.Panels>
+              <Tab.Panel unmount={false}>
+                <div id="puzzle-name" className="form__entry mb-12">
+                  <Label
+                    name="rewardable.name"
+                    className="form__label text-slate-100"
+                    errorClassName="form__label--error text-rose-300"
+                  >
+                    <div className="form__entry-name">
+                      Name<span className="text-rose-500">*</span>
+                    </div>
+                  </Label>
+                  <TextField
+                    name="rewardable.name"
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                    placeholder="Pick a name for your puzzle!"
+                    validation={{ required: true }}
+                  />
+                  {errors.rewardable?.name?.type === 'required' &&
+                    requiredFieldError('a Name')}
+                </div>
+
+                {/* @NOTE: This is currently only used for packs */}
+                {/* <div id="explanation" className="form__entry mb-12">
             <Label
               name="rewardable.explanation"
               className="form__label text-slate-100"
@@ -1181,7 +1296,7 @@ export default function PuzzleForm({
             </Label>
             <TextField
               name="rewardable.explanation"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
+              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
               placeholder="Explanation"
               validation={{ required: true }}
             />
@@ -1189,200 +1304,338 @@ export default function PuzzleForm({
               requiredFieldError('an Explanation')}
           </div> */}
 
-          <div id="puzzle-success-message" className="form__entry mb-12">
-            <Label
-              name="rewardable.successMessage"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              <div className="form__entry-name mb-1">Success Message</div>
-            </Label>
-            <TextAreaField
-              name="rewardable.successMessage"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="Compose a success message the user will see when solving your puzzle."
-            />
-          </div>
+                {/* <div id="puzzle-success-message" className="form__entry mb-12">
+                  <Label
+                    name="rewardable.successMessage"
+                    className="form__label text-slate-100"
+                    errorClassName="form__label--error text-rose-300"
+                  >
+                    <div className="form__entry-name mb-1">Success Message</div>
+                  </Label>
+                  <TextAreaField
+                    name="rewardable.successMessage"
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                    placeholder="Compose a success message the user will see when solving your puzzle."
+                  />
+                </div> */}
 
-          {/* @NOTE: Hard coded to `false` while testing */}
-          <div id="puzzle-list-publicly" className="form__entry mb-12 hidden">
-            <Label
-              name="rewardable.listPublicly"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              List Publicly
-            </Label>
+                {/* @NOTE: Hard coded to `false` while testing */}
+                <div
+                  id="puzzle-list-publicly"
+                  className="form__entry mb-12 hidden"
+                >
+                  <Label
+                    name="rewardable.listPublicly"
+                    className="form__label text-slate-100"
+                    errorClassName="form__label--error text-rose-300"
+                  >
+                    List Publicly
+                  </Label>
 
-            <CheckboxField
-              name="rewardable.listPublicly"
-              className="form__text-field box-border block bg-stone-200 text-slate-700"
-            />
-          </div>
-
-          <div id="puzzle-requirements" className="form__entry mb-12">
-            <Label
-              name="puzzle.requirements"
-              className="form__label text-slate-100"
-            >
-              <div className="form__entry-name mb-1">
-                Requirements<span className="text-rose-500">*</span>
-              </div>
-              <p className="text-sm font-normal">
-                Hold ctrl/cmd to select multiple
-              </p>
-            </Label>
-            <div className="my-8 text-stone-800">
-              <SelectField
-                name="puzzle.requirements"
-                multiple
-                className="border-1 rounded-md border-slate-300 bg-transparent text-slate-400"
-                validation={{ required: true }}
-              >
-                {/*
-                  <option value="HOLDERS_ONLY">Holders Only</option>
-                  <option value="SOCIAL_ACCOUNT">Social Account</option>
-                  <option value="WALLET_GAS">Wallet Gas</option>
-                  <option value="TRAVEL">Travel</option>
-                  <option value="INTERACTIVE_OBJECT">Interactive Object</option>
-                */}
-                <option value="WORDPLAY">Wordplay</option>
-                <option value="DETAIL">Detail</option>
-              </SelectField>
-              {errors.puzzle?.requirements?.type === 'required' &&
-                requiredFieldError('a requirement')}
-            </div>
-          </div>
-
-          <div id="puzzle-cover-image" className="form__entry mb-12">
-            <Label
-              name="puzzle.coverImage"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              <div className="form__entry-name mb-1">
-                Cover Image<span className="text-rose-500">*</span>
-              </div>
-            </Label>
-            <TextField
-              name="puzzle.coverImage"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="Cover Image"
-              validation={{
-                required: true,
-                pattern: imageLinkPattern,
-              }}
-            />
-            {errors.puzzle?.coverImage?.type === 'required' &&
-              requiredFieldError('a cover image')}
-            {errors.puzzle?.coverImage?.type === 'pattern' &&
-              imageLinkPatternError('cover image')}
-          </div>
-
-          <div id="nft-name" className="form__entry mb-12">
-            <Label
-              name="rewardable.nft.name"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              <div className="form__entry-name mb-1">
-                NFT Name<span className="text-rose-500">*</span>
-              </div>
-            </Label>
-            <TextField
-              name="rewardable.nft.name"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="NFT Name"
-              validation={{ required: true }}
-            />
-            {errors.rewardable?.nft?.name?.type === 'required' &&
-              requiredFieldError('an nft name')}
-          </div>
-
-          <div id="nft-image" className="form__entry mb-12">
-            {isEditMode &&
-              initialValues?.rewardable.nft.image &&
-              !formMethods.getValues('rewardable.nft.image')?.[0] && (
-                <div className="mb-2 w-24">
-                  <img src={initialValues?.rewardable.nft.image} alt="" />
+                  <CheckboxField
+                    name="rewardable.listPublicly"
+                    className="form__text-field box-border block bg-stone-200 text-slate-700"
+                  />
                 </div>
-              )}
 
-            <Label
-              name="rewardable.nft.image"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              <div className="form__entry-name mb-1">
-                NFT Image<span className="text-rose-500">*</span>
-              </div>
-              <p className="mb-2 text-sm font-normal">
-                Image must be smaller than 5MB
-              </p>
-            </Label>
-            <FileField
-              name="rewardable.nft.image"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-400 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="NFT Name"
-              validation={{
-                required: !isEditMode,
-                validate: {
-                  imageSize: (value: FileList) => {
-                    if (!value.length) return true
+                <div
+                  id="puzzle-requirements"
+                  className="form__entry mb-12 hidden"
+                >
+                  <Label
+                    name="puzzle.requirements"
+                    className="form__label text-slate-100"
+                  >
+                    <div className="form__entry-name mb-1">
+                      Requirements<span className="text-rose-500">*</span>
+                    </div>
+                    <p className="text-sm font-normal">
+                      Hold ctrl/cmd to select multiple
+                    </p>
+                  </Label>
+                  <div className="my-8 text-stone-800">
+                    <SelectField
+                      name="puzzle.requirements"
+                      multiple
+                      className="border-1 h-[72px] rounded-md border-slate-300 bg-transparent text-slate-200"
+                      validation={{ required: true }}
+                      value={['DETAIL']}
+                    >
+                      {/*
+                        <option value="HOLDERS_ONLY">Holders Only</option>
+                        <option value="SOCIAL_ACCOUNT">Social Account</option>
+                        <option value="WALLET_GAS">Wallet Gas</option>
+                        <option value="TRAVEL">Travel</option>
+                        <option value="INTERACTIVE_OBJECT">Interactive Object</option>
+                      */}
+                      <option value="WORDPLAY">Wordplay</option>
+                      <option value="DETAIL">Detail</option>
+                    </SelectField>
+                    {errors.puzzle?.requirements?.type === 'required' &&
+                      requiredFieldError('a requirement')}
+                  </div>
+                </div>
 
-                    const maxSizeInBytes = 5 * 1024 * 1024
-                    return value?.[0].size < maxSizeInBytes
-                  },
-                },
-              }}
-              accept=".jpeg, .png, .jpg, .webp"
-            />
-            {errors.rewardable?.nft?.image?.type === 'required' &&
-              requiredFieldError('an nft image')}
-            {errors.rewardable?.nft?.image?.type === 'imageSize' && (
-              <p className="form__error pt-1 font-medium text-rose-800">
-                Please select an image smaller than 5MB
-              </p>
-            )}
-          </div>
+                <div id="puzzle-cover-image" className="form__entry mb-12">
+                  <Label
+                    name="puzzle.coverImage"
+                    className="form__label text-slate-100"
+                    errorClassName="form__label--error text-rose-300"
+                  >
+                    <div className="form__entry-name mb-1">
+                      Puzzle Image<span className="text-rose-500">*</span>
+                    </div>
+                  </Label>
+                  <TextField
+                    name="puzzle.coverImage"
+                    className="form__text-field border-1 mb-8 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                    placeholder="Cover Image"
+                    validation={{
+                      required: true,
+                      pattern: imageLinkPattern,
+                    }}
+                  />
+                  {errors.puzzle?.coverImage?.type === 'required' &&
+                    requiredFieldError('a cover image')}
+                  {errors.puzzle?.coverImage?.type === 'pattern' &&
+                    imageLinkPatternError('cover image')}
 
-          {fields.map((field, index) => {
-            return (
-              <StepForm
-                index={index}
-                register={formMethods.register}
-                key={field.id}
-                watch={formMethods.watch}
-                setValue={formMethods.setValue}
-                getValues={formMethods.getValues}
-                remove={remove}
-                errors={errors}
-                control={formMethods.control}
-              />
-            )
-          })}
-          <div className="rw-button-group">
-            <button
-              type="button"
-              className="rw-button rw-button-blue"
-              onClick={() => append(buildEmptyStep(fields.length + 1))}
-            >
-              Add Step
-            </button>
-          </div>
-          {errors?.[stepsArrayName]?.root?.type === 'required' && (
-            <div className="rw-field-error">
-              You must have at least one step in a puzzle!
-            </div>
-          )}
-          <Submit
-            disabled={submissionPending}
-            className="rw-button rw-button-blue"
-          >
-            Submit
-          </Submit>
-        </Form>
-      </div>
+                  {formMethods.getValues('puzzle.coverImage') && (
+                    <DisplayImage
+                      src={formMethods.getValues('puzzle.coverImage')}
+                    />
+                  )}
+                </div>
+
+                <div id="nft-name" className="form__entry mb-12">
+                  <Label
+                    name="rewardable.nft.name"
+                    className="form__label text-slate-100"
+                    errorClassName="form__label--error text-rose-300"
+                  >
+                    <div className="form__entry-name mb-1">
+                      NFT Name<span className="text-rose-500">*</span>
+                    </div>
+                  </Label>
+                  <TextField
+                    name="rewardable.nft.name"
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                    placeholder="NFT Name"
+                    validation={{ required: true }}
+                  />
+                  {errors.rewardable?.nft?.name?.type === 'required' &&
+                    requiredFieldError('an nft name')}
+                </div>
+
+                <div id="nft-image" className="form__entry mb-12">
+                  {(initialValues?.rewardable.nft.image ||
+                    nftImagePlaceholder) && (
+                    <div className="relative mb-6 inline-flex">
+                      <DisplayImage
+                        src={
+                          nftImagePlaceholder ||
+                          initialValues?.rewardable.nft.image ||
+                          ''
+                        }
+                      />
+
+                      {nftImagePlaceholder && (
+                        <button
+                          type="button"
+                          className="tran absolute top-0 right-0 translate-x-3 -translate-y-3 shadow-md"
+                          onClick={() =>
+                            formMethods.setValue('rewardable.nft.image', null)
+                          }
+                        >
+                          <XCircleIcon className="h-6 w-6" />
+                        </button>
+                      )}
+                    </div>
+                  )}
+
+                  <Label
+                    name="rewardable.nft.image"
+                    className="form__label text-slate-100"
+                    errorClassName="form__label--error text-rose-300"
+                  >
+                    <div className="form__entry-name mb-1">
+                      NFT Image<span className="text-rose-500">*</span>
+                    </div>
+                    <p className="mb-2 text-sm font-normal">
+                      Image must be smaller than 5MB
+                    </p>
+                  </Label>
+                  <FileField
+                    name="rewardable.nft.image"
+                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                    placeholder="NFT Name"
+                    validation={{
+                      required: !isEditMode,
+                      validate: {
+                        imageSize: (value: FileList) => {
+                          if (!value?.length) return true
+
+                          const maxSizeInBytes = 5 * 1024 * 1024
+                          return value?.[0].size < maxSizeInBytes
+                        },
+                      },
+                    }}
+                    accept=".jpeg, .png, .jpg, .webp"
+                  />
+                  {errors.rewardable?.nft?.image?.type === 'required' &&
+                    requiredFieldError('an nft image')}
+                  {errors.rewardable?.nft?.image?.type === 'imageSize' && (
+                    <p className="form__error pt-1 font-medium text-rose-800">
+                      Please select an image smaller than 5MB
+                    </p>
+                  )}
+                </div>
+                <div className="flex justify-center">
+                  <Button
+                    type="button"
+                    round
+                    solid
+                    onClick={() => setSelectedTab(1)}
+                  >
+                    Continue to Steps
+                  </Button>
+                </div>
+              </Tab.Panel>
+
+              <Tab.Panel unmount={false}>
+                <div className="border-t border-stone-50">
+                  {fields.map((field, index) => {
+                    return (
+                      <StepForm
+                        index={index}
+                        register={formMethods.register}
+                        key={field.id}
+                        watch={formMethods.watch}
+                        setValue={formMethods.setValue}
+                        getValues={formMethods.getValues}
+                        remove={remove}
+                        errors={errors}
+                        control={formMethods.control}
+                      />
+                    )
+                  })}
+                </div>
+
+                {formMethods.getValues('steps').length < 3 && (
+                  <div className="border-b border-stone-50 py-4">
+                    <button
+                      type="button"
+                      className="block"
+                      onClick={() => append(buildEmptyStep(fields.length + 1))}
+                    >
+                      <span className="flex items-center gap-2">
+                        <PlusCircleIcon className="h-6 w-6 fill-transparent" />{' '}
+                        Add Step
+                      </span>
+                    </button>
+                  </div>
+                )}
+                {errors?.[stepsArrayName]?.root?.type === 'required' && (
+                  <div className="rw-field-error">
+                    You must have at least one step in a puzzle!
+                  </div>
+                )}
+                <div className="mt-12 flex justify-center">
+                  <Button
+                    type="button"
+                    round
+                    solid
+                    onClick={() => setSelectedTab(2)}
+                  >
+                    Continue to Summary
+                  </Button>
+                </div>
+              </Tab.Panel>
+
+              <Tab.Panel unmount={false}>
+                <div>
+                  <div className="mb-8 border-b border-stone-700 pb-8">
+                    <p className="mb-4 italic text-stone-400">Puzzle</p>
+                    {formMethods.getValues('puzzle.coverImage') && (
+                      <DisplayImage
+                        src={formMethods.getValues('puzzle.coverImage')}
+                      />
+                    )}
+                    <p className="my-8 text-3xl">
+                      {formMethods.getValues('rewardable.name')}
+                    </p>
+
+                    <div className="flex flex-col gap-4">
+                      {formMethods.getValues('steps').map((step, stepIndex) => (
+                        <div
+                          key={stepIndex}
+                          className="rounded border border-white/10"
+                        >
+                          <p className="bg-white/10 p-2 text-sm italic text-stone-100">
+                            Step {stepIndex + 1}
+                          </p>
+
+                          {step.defaultImage && (
+                            <DisplayImage src={step.defaultImage} />
+                          )}
+
+                          <div className="p-4 pt-0">
+                            {step.stepPage.map((page, pageIndex) => (
+                              <div
+                                className="mt-4 text-sm text-stone-300"
+                                key={`step-${stepIndex}-stepPage-${pageIndex}`}
+                              >
+                                <p>{page.body}</p>
+                              </div>
+                            ))}
+
+                            <p className="mt-8">{step.solutionHint}</p>
+
+                            {'solution' in step && (
+                              <p className="mt-2 flex items-center gap-2 text-brand-accent-secondary">
+                                <span>
+                                  <KeyIcon className="h-4 w-4" />
+                                </span>{' '}
+                                {step.solution}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <p className="mb-4 italic text-stone-400">NFT Reward</p>
+                  {(initialValues?.rewardable.nft.image ||
+                    nftImagePlaceholder) && (
+                    <DisplayImage
+                      src={
+                        nftImagePlaceholder ||
+                        initialValues?.rewardable.nft.image ||
+                        ''
+                      }
+                    />
+                  )}
+                  <p className="mt-8 text-3xl">
+                    {formMethods.getValues('rewardable.nft.name')}
+                  </p>
+                </div>
+                <div className="mt-12 flex justify-center">
+                  <Submit
+                    disabled={submissionPending}
+                    className={generateButtonClasses({
+                      round: true,
+                      solid: true,
+                    })}
+                  >
+                    Publish
+                  </Submit>
+                </div>
+              </Tab.Panel>
+            </Tab.Panels>
+          </Form>
+        </div>
+      </Tab.Group>
     </div>
   )
 }

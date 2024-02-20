@@ -76,7 +76,7 @@ export const schema = gql`
     defaultImage: String!
     solutionImage: String
     stepGuideType: StepGuideType!
-    stepPage: [CreateStepPageInput]
+    stepPage: [CreateStepPageInput!]!
   }
 
   input UpdateStepInput {
