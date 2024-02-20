@@ -2,6 +2,8 @@ import { CLOUDINARY_CLOUD_NAME } from '@infinity-keys/constants'
 import { StepGuideType, StepType } from '@prisma/client'
 import { v2 as cloudinary } from 'cloudinary'
 import buildUrl from 'cloudinary-build-url'
+import { nanoid } from 'nanoid'
+import slugify from 'slugify'
 import { CreateStepInput } from 'types/graphql'
 
 import { db } from 'src/lib/db'
@@ -224,4 +226,11 @@ export const getOptionalNftUpdateValues = async ({
       external_url: `https://www.infinitykeys.io/puzzle/${slug}`,
     },
   }
+}
+
+export const generateSlug = (name: string): string => {
+  return slugify(`${name}-${nanoid()}`, {
+    strict: true,
+    lower: true,
+  })
 }

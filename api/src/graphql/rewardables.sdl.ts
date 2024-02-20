@@ -51,7 +51,6 @@ export const schema = gql`
 
   input CreateRewardableInput {
     name: String!
-    slug: String!
     explanation: String
     successMessage: String
     listPublicly: Boolean # This should be required at public release
@@ -65,7 +64,6 @@ export const schema = gql`
 
   input UpdateRewardableInput {
     name: String!
-    slug: String!
     explanation: String
     successMessage: String
     listPublicly: Boolean

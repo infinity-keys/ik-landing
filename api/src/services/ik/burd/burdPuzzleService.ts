@@ -12,6 +12,7 @@ import {
   formatCreateSteps,
   generateNftDescription,
   generateNftImage,
+  generateSlug,
   getOptionalNftUpdateValues,
 } from 'src/lib/puzzleForm'
 import { getNftData } from 'src/lib/web3/get-nft-data'
@@ -43,12 +44,13 @@ export const editBurdPuzzle: MutationResolvers['editBurdPuzzle'] = async ({
     }
 
     const steps = formatCreateSteps(input.puzzle.steps)
+    const slug = generateSlug(input.name)
 
     // Handle optional Cloudinary upload
     const nftUpdateData = await getOptionalNftUpdateValues({
       newName: input.nft.name,
       newImage: input.nft.image ?? undefined,
-      slug: input.slug,
+      slug,
       rewardableId,
     })
 
@@ -73,7 +75,7 @@ export const editBurdPuzzle: MutationResolvers['editBurdPuzzle'] = async ({
         // @NOTE: `explanation` is only used with packs
         // explanation: input.explanation,
         type: input.type,
-        slug: input.slug,
+        slug,
         // @NOTE: hardcoded to `false` during testing
         listPublicly: false,
         // listPublicly: input.listPublicly,
@@ -206,6 +208,7 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
     }
 
     const { tokenId, lookupId } = await getNftData()
+    const slug = generateSlug(input.name)
 
     const rewardable = await db.rewardable.create({
       data: {
@@ -213,7 +216,7 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
         // @NOTE: `explanation` is only used with packs
         // explanation: input.explanation,
         type: input.type,
-        slug: input.slug,
+        slug,
         // @NOTE: hardcoded to `false` during testing
         listPublicly: false,
         // listPublicly: input.listPublicly,
@@ -246,10 +249,10 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
                 },
               ],
               description: generateNftDescription({
-                slug: input.slug,
+                slug,
                 name: input.nft.name,
               }),
-              external_url: `https://www.infinitykeys.io/puzzle/${input.slug}`,
+              external_url: `https://www.infinitykeys.io/puzzle/${slug}`,
             },
           },
         },
