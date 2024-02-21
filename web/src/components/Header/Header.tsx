@@ -118,6 +118,9 @@ const Header = () => {
     setIsOpen(false)
   }, [pathname, hash])
 
+  // do not display the navbar if the user is on the landing page
+  if (pathname === '/') return null
+
   return (
     <div className="fixed top-0 left-0 z-50 w-full bg-brand-gray-primary">
       <div className="mx-auto max-w-8xl px-4 lg:px-12">
