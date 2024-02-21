@@ -58,9 +58,9 @@ export const editBurdPuzzle: MutationResolvers['editBurdPuzzle'] = async ({
       where: { step: { puzzleId } },
     })
 
-    const deleteStepSimpleTextOperation = db.stepSimpleText.deleteMany({
-      where: { step: { puzzleId } },
-    })
+    // const deleteStepSimpleTextOperation = db.stepSimpleText.deleteMany({
+    //   where: { step: { puzzleId } },
+    // })
 
     const deleteStepsOperation = db.step.deleteMany({
       where: { puzzleId },
@@ -107,9 +107,9 @@ export const editBurdPuzzle: MutationResolvers['editBurdPuzzle'] = async ({
     })
 
     // Get the rewardable that's returned after all transactions succeed
-    const [, , , rewardable] = await db.$transaction([
+    const [, , rewardable] = await db.$transaction([
       deleteStepPagesOperation,
-      deleteStepSimpleTextOperation,
+      // deleteStepSimpleTextOperation,
       deleteStepsOperation,
       updateRewardable,
     ])
