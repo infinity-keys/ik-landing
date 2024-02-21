@@ -98,7 +98,7 @@ const HomePage = () => {
           <div className="relative z-10 max-w-xs pr-4 pl-4 md:pr-0 lg:max-w-xl lg:pl-12">
             <h1 className="text-shadow-lg text-3xl font-semibold lg:text-5xl xl:text-6xl">
               <Fade inline duration={1.2}>
-                There&apos;s treasure
+                <span data-cy="description">There&apos;s treasure</span>
               </Fade>
               <Fade inline delay={0.6} duration={1.2}>
                 <span className="text-brand-accent-primary">everywhere</span>
