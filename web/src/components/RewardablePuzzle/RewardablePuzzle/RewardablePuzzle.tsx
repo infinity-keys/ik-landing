@@ -25,6 +25,7 @@ import { requirementsLookup } from 'src/lib/puzzleRequirements'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
 
+// need to check & see if current user is part of the org that owns this rewardable
 const CURRENT_USER_QUERY = gql`
   query CurrentUserQuery {
     user {
@@ -50,10 +51,10 @@ if (!CLERK_SIGNIN_PORTAL_URL) {
   throw new Error('Missing CLERK_SIGNIN_PORTAL_URL variable')
 }
 
-// left off here on 2/21/2024
 const Rewardable = ({ rewardable }: Props) => {
   const { data, loading } = useQuery(CURRENT_USER_QUERY)
 
+  // verify if user can edit this rewardable
   let canEditRewardable = false
   if (!loading && data) {
     const userOrgIds = data.user.organizations.map(
@@ -61,15 +62,6 @@ const Rewardable = ({ rewardable }: Props) => {
     )
     canEditRewardable = userOrgIds.includes(rewardable?.orgId)
   }
-
-  // left off here on 2/21/2024
-  // check to see if user can edit this rewardable
-  //const { currentUser } = useAuth()
-  // const canEditRewardable =
-  // currentUser && rewardable && currentUser.orgId === rewardable.orgId
-  // currentUser.id === 'clfbqfryd000008i8dlmn3elb' // [true]
-  // currentUser.orgId === 'cla9yay7y003k08la2z4j2xrv' // [false]
-  //rewardable.orgId === 'cla9yay7y003k08la2z4j2xrv' // [true]
 
   const { isAuthenticated } = useAuth()
   const [showOverlay, setShowOverlay] = useState(false)
@@ -263,8 +255,18 @@ const Rewardable = ({ rewardable }: Props) => {
             </div>
           )}
         </TextContainer>
-        {/* left off here on 2/21/2024 */}
-        {canEditRewardable && <div>You can edit this rewardable</div>}
+        {canEditRewardable && (
+          <div className="">
+            <Button
+              to={routes.editFormArchetype({ slug: rewardable.slug })}
+              shadow
+              bold
+              solid
+            >
+              Edit this Puzzle
+            </Button>
+          </div>
+        )}
       </SectionContainer>
     </>
   )
