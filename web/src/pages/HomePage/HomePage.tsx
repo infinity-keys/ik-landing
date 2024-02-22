@@ -95,24 +95,15 @@ const HomePage = () => {
 
       <div className="relative mx-auto flex max-w-8xl flex-col items-center overflow-x-hidden pt-20 md:mt-0 md:min-h-screen md:flex-row md:justify-between">
         <Container noPx pySm>
-          <div className="relative z-10 max-w-xs pr-4 pl-4 md:pr-0 lg:max-w-md lg:pl-12">
+          <div className="relative z-10 max-w-xs pr-4 pl-4 md:pr-0 lg:max-w-xl lg:pl-12">
             <h1 className="text-shadow-lg text-3xl font-semibold lg:text-5xl xl:text-6xl">
               <Fade inline duration={1.2}>
-                Your NFTs
-              </Fade>{' '}
+                <span data-cy="description">There&apos;s treasure</span>
+              </Fade>
               <Fade inline delay={0.6} duration={1.2}>
-                are <span className="text-brand-accent-primary">the Keys</span>
+                <span className="text-brand-accent-primary">everywhere</span>
               </Fade>
             </h1>
-
-            <Fade delay={0.9}>
-              <p
-                className="text-shadow-lg mt-4 text-lg leading-tight lg:text-2xl"
-                data-cy="description"
-              >
-                Infinity Keys creators build no-code NFT-collecting games.
-              </p>
-            </Fade>
 
             <Fade delay={1.2}>
               <div className="mt-8 flex gap-2">

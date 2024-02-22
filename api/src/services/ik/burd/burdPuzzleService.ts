@@ -43,8 +43,16 @@ export const editBurdPuzzle: MutationResolvers['editBurdPuzzle'] = async ({
       throw new Error('Steps are required in `editBurdPuzzle` request.')
     }
 
+    const prevRewardable = await db.rewardable.findUnique({
+      where: { id: rewardableId },
+      select: { name: true, slug: true },
+    })
+
     const steps = formatCreateSteps(input.puzzle.steps)
-    const slug = generateSlug(input.name)
+    const slug =
+      prevRewardable?.name === input.name
+        ? prevRewardable.slug
+        : generateSlug(input.name)
 
     // Handle optional Cloudinary upload
     const nftUpdateData = await getOptionalNftUpdateValues({
