@@ -10,6 +10,7 @@ import type {
 } from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
+import { useQuery } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
@@ -24,6 +25,19 @@ import { requirementsLookup } from 'src/lib/puzzleRequirements'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
 
+const CURRENT_USER_QUERY = gql`
+  query CurrentUserQuery {
+    user {
+      id
+      organizations {
+        organization {
+          id
+        }
+      }
+    }
+  }
+`
+
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface Props {
@@ -36,7 +50,27 @@ if (!CLERK_SIGNIN_PORTAL_URL) {
   throw new Error('Missing CLERK_SIGNIN_PORTAL_URL variable')
 }
 
+// left off here on 2/21/2024
 const Rewardable = ({ rewardable }: Props) => {
+  const { data, loading } = useQuery(CURRENT_USER_QUERY)
+
+  let canEditRewardable = false
+  if (!loading && data) {
+    const userOrgIds = data.user.organizations.map(
+      (org: { organization: { id: string } }) => org.organization.id
+    )
+    canEditRewardable = userOrgIds.includes(rewardable?.orgId)
+  }
+
+  // left off here on 2/21/2024
+  // check to see if user can edit this rewardable
+  //const { currentUser } = useAuth()
+  // const canEditRewardable =
+  // currentUser && rewardable && currentUser.orgId === rewardable.orgId
+  // currentUser.id === 'clfbqfryd000008i8dlmn3elb' // [true]
+  // currentUser.orgId === 'cla9yay7y003k08la2z4j2xrv' // [false]
+  //rewardable.orgId === 'cla9yay7y003k08la2z4j2xrv' // [true]
+
   const { isAuthenticated } = useAuth()
   const [showOverlay, setShowOverlay] = useState(false)
   const [currentOverlayContent, setCurrentOverlayContent] =
@@ -81,6 +115,7 @@ const Rewardable = ({ rewardable }: Props) => {
         imageUrl={rewardable.puzzle.coverImage || IK_LOGO_FULL_URL}
         url={url}
       />
+
       <SectionContainer pageHeading={pageHeading}>
         <ImagesContainer>
           <AbsoluteImage>
@@ -228,6 +263,8 @@ const Rewardable = ({ rewardable }: Props) => {
             </div>
           )}
         </TextContainer>
+        {/* left off here on 2/21/2024 */}
+        {canEditRewardable && <div>You can edit this rewardable</div>}
       </SectionContainer>
     </>
   )
