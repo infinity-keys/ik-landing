@@ -14,6 +14,7 @@ export const QUERY = gql`
       id
       name
       slug
+      orgId
       successMessage
       puzzle {
         id
