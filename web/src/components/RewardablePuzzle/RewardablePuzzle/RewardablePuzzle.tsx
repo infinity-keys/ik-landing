@@ -52,20 +52,19 @@ if (!CLERK_SIGNIN_PORTAL_URL) {
 }
 
 const Rewardable = ({ rewardable }: Props) => {
-  const { data, loading } = useQuery(CURRENT_USER_QUERY)
-
   const [canEditRewardable, setCanEditRewardable] = useState(false)
 
-  // wait until the data from query is ready
-  useEffect(() => {
-    if (!loading && data) {
+  // when querying for the current user...
+  useQuery(CURRENT_USER_QUERY, {
+    onCompleted: (data) => {
+      // run once after completed, not on every rerender
       const userOrgIds = data.user.organizations.map(
         (org: { organization: { id: string } }) => org.organization.id
       )
-      // verify if user can edit this rewardable
+      // Verify if user can edit this rewardable
       setCanEditRewardable(userOrgIds.includes(rewardable?.orgId))
-    }
-  }, [data, loading, rewardable?.orgId])
+    },
+  })
 
   const { isAuthenticated } = useAuth()
   const [showOverlay, setShowOverlay] = useState(false)
