@@ -10,6 +10,7 @@ import type {
 } from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
+import { useQuery } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
@@ -24,6 +25,20 @@ import { requirementsLookup } from 'src/lib/puzzleRequirements'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
 
+// need to check & see if current user is part of the org that owns this rewardable
+const CURRENT_USER_QUERY = gql`
+  query CurrentUserQuery {
+    user {
+      id
+      organizations {
+        organization {
+          id
+        }
+      }
+    }
+  }
+`
+
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface Props {
@@ -37,6 +52,20 @@ if (!CLERK_SIGNIN_PORTAL_URL) {
 }
 
 const Rewardable = ({ rewardable }: Props) => {
+  const [canEditRewardable, setCanEditRewardable] = useState(false)
+
+  // when querying for the current user...
+  useQuery(CURRENT_USER_QUERY, {
+    onCompleted: (data) => {
+      // run once after completed, not on every rerender
+      const userOrgIds = data.user.organizations.map(
+        (org: { organization: { id: string } }) => org.organization.id
+      )
+      // Verify if user can edit this rewardable
+      setCanEditRewardable(userOrgIds.includes(rewardable?.orgId))
+    },
+  })
+
   const { isAuthenticated } = useAuth()
   const [showOverlay, setShowOverlay] = useState(false)
   const [currentOverlayContent, setCurrentOverlayContent] =
@@ -85,6 +114,7 @@ const Rewardable = ({ rewardable }: Props) => {
         imageUrl={rewardable.puzzle.coverImage || IK_LOGO_FULL_URL}
         url={url}
       />
+
       <SectionContainer pageHeading={pageHeading}>
         <ImagesContainer>
           <AbsoluteImage>
@@ -203,6 +233,18 @@ const Rewardable = ({ rewardable }: Props) => {
             </div>
           )}
         </TextContainer>
+        {canEditRewardable && (
+          <div className="">
+            <Button
+              to={routes.editFormArchetype({ slug: rewardable.slug })}
+              shadow
+              bold
+              solid
+            >
+              Edit this Puzzle
+            </Button>
+          </div>
+        )}
       </SectionContainer>
     </>
   )
