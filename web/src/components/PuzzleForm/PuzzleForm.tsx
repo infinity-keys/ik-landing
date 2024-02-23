@@ -25,8 +25,6 @@ import {
   CreateStepTokenIdRangeInput,
   CreateStepOriumApiInput,
   CreatePuzzleInput,
-  CreateBurdPuzzleMutation,
-  EditBurdPuzzleMutation,
   EditBurdPuzzleMutationVariables,
   CreateBurdPuzzleMutationVariables,
 } from 'types/graphql'
@@ -80,12 +78,10 @@ const buildEmptyStep = (stepSortWeight = 1): CreateAllStepTypesInput => ({
   solutionCharCount: 0,
   solutionHint: '',
   defaultImage: '',
-  solutionImage: '',
   stepGuideType: 'SEEK',
   stepPage: [
     {
       body: '',
-      image: '',
       showStepGuideHint: false,
       sortWeight: 1,
     },
@@ -294,7 +290,9 @@ function StepForm({
           </Disclosure.Button>
           <Disclosure.Panel className="mt-6">
             <div className="mt-2 mb-16 rounded-xl">
-              <p className="mb-2">Story Blocks</p>
+              <p className="mb-2">
+                Story Blocks<span className="text-rose-500">*</span>
+              </p>
               {stepPageFields.map((field, stepPageIndex) => (
                 <div key={field.id} className="relative">
                   <fieldset
@@ -448,7 +446,6 @@ function StepForm({
                     onClick={() =>
                       appendStepPageField({
                         body: '',
-                        image: '',
                         showStepGuideHint: false,
                         sortWeight: stepPageFields.length + 1,
                       })
@@ -1011,6 +1008,22 @@ type InitialValuesType = PuzzleFormWithoutNftImage & {
   }
 }
 
+const emptyFormValues: PuzzleFormType = {
+  puzzle: {
+    coverImage: '',
+    requirements: ['DETAIL'],
+  },
+  rewardable: {
+    name: '',
+    listPublicly: false,
+    nft: {
+      image: null,
+      name: '',
+    },
+  },
+  steps: [buildEmptyStep()],
+}
+
 export default function PuzzleForm({
   initialValues,
   isEditMode = false,
@@ -1023,10 +1036,9 @@ export default function PuzzleForm({
   onFormSubmit: (
     variables:
       | CreateBurdPuzzleMutationVariables
-      | Omit<EditBurdPuzzleMutationVariables, 'rewardableId' | 'puzzleId'>
-  ) => Promise<{
-    data?: CreateBurdPuzzleMutation | EditBurdPuzzleMutation | null
-  }>
+      | Omit<EditBurdPuzzleMutationVariables, 'rewardableId' | 'puzzleId'>,
+    onSuccess?: () => void
+  ) => void
   submissionError?: ApolloError
   submissionPending?: boolean
 }) {
@@ -1076,7 +1088,7 @@ export default function PuzzleForm({
     },
   })
 
-  useFormPersist(LOCAL_STORAGE_KEY, {
+  const { clear: clearPersistance } = useFormPersist(LOCAL_STORAGE_KEY, {
     watch: formMethods.watch,
     setValue: formMethods.setValue,
     storage: window.localStorage,
@@ -1084,7 +1096,6 @@ export default function PuzzleForm({
   })
 
   const nftImageValue = formMethods.watch('rewardable.nft.image')
-  console.log('nftImageValue: ', nftImageValue)
   useEffect(() => {
     async function setPlaceholder() {
       try {
@@ -1102,8 +1113,6 @@ export default function PuzzleForm({
   }, [setNftImagePlaceholder, nftImageValue])
 
   const onSubmit = async (input: PuzzleFormType) => {
-    console.log(input.steps)
-    // return
     const nftImageList = input.rewardable.nft.image
 
     if (!nftImageList?.length && !isEditMode) {
@@ -1114,137 +1123,136 @@ export default function PuzzleForm({
       ? await convertToBase64(input.rewardable.nft.image?.[0])
       : null
 
-    const submission = await onFormSubmit({
-      input: {
-        name: input.rewardable.name,
-        type: 'PUZZLE', // hard coded for now
-        // successMessage: input.rewardable.successMessage,
-        listPublicly: false, // hard coded for now,
-        nft: {
-          name: input.rewardable.nft.name,
-          image: nftImageBase64,
-        },
-        puzzle: {
-          rewardableId: 'ignore me',
-          requirements: input.puzzle.requirements,
-          coverImage: input.puzzle.coverImage,
-          steps: input.steps.map((step, stepIndex) => {
-            const commonStepFields = {
-              puzzleId: 'ignore me',
-              stepSortWeight: stepIndex + 1,
-              solutionHint: step.solutionHint,
-              defaultImage: step.defaultImage || input.puzzle.coverImage,
-              // solutionImage: step.solutionImage,
-              stepGuideType: step.stepGuideType,
-              stepPage: step.stepPage?.map((page, pageIndex) => ({
-                sortWeight: pageIndex + 1,
-                showStepGuideHint: step.stepPage?.length === pageIndex + 1,
-                body: page.body,
-              })),
-            }
-            if (step.type === 'SIMPLE_TEXT' && 'solution' in step) {
-              return {
-                type: 'SIMPLE_TEXT',
-                ...commonStepFields,
-                stepSimpleText: {
-                  stepId: 'ignore me',
-                  solution: step.solution,
-                  solutionCharCount: step.solution.length,
-                },
+    await onFormSubmit(
+      {
+        input: {
+          name: input.rewardable.name,
+          type: 'PUZZLE', // hard coded for now
+          // successMessage: input.rewardable.successMessage,
+          listPublicly: false, // hard coded for now,
+          nft: {
+            name: input.rewardable.nft.name,
+            image: nftImageBase64,
+          },
+          puzzle: {
+            rewardableId: 'ignore me',
+            requirements: input.puzzle.requirements,
+            coverImage: input.puzzle.coverImage,
+            steps: input.steps.map((step, stepIndex) => {
+              const commonStepFields = {
+                puzzleId: 'ignore me',
+                stepSortWeight: stepIndex + 1,
+                solutionHint: step.solutionHint,
+                defaultImage: step.defaultImage || input.puzzle.coverImage,
+                // solutionImage: step.solutionImage,
+                stepGuideType: step.stepGuideType,
+                stepPage: step.stepPage?.map((page, pageIndex) => ({
+                  sortWeight: pageIndex + 1,
+                  showStepGuideHint: step.stepPage?.length === pageIndex + 1,
+                  body: page.body,
+                })),
               }
-            } else if (step.type === 'NFT_CHECK' && 'nftCheckData' in step) {
-              return {
-                type: 'NFT_CHECK',
-                ...commonStepFields,
-                stepNftCheck: {
-                  stepId: 'ignore me',
-                  requireAllNfts: false, // hard coded for now
-                  nftCheckData: step.nftCheckData.map((nftCheckData) => {
-                    if (
-                      nftCheckData.chainId === undefined ||
-                      nftCheckData.tokenId === undefined ||
-                      nftCheckData.chainId === null ||
-                      nftCheckData.tokenId === null
-                    ) {
-                      throw new Error('No chainId or tokenId provided')
-                    }
+              if (step.type === 'SIMPLE_TEXT' && 'solution' in step) {
+                return {
+                  type: 'SIMPLE_TEXT',
+                  ...commonStepFields,
+                  stepSimpleText: {
+                    stepId: 'ignore me',
+                    solution: step.solution,
+                    solutionCharCount: step.solution.length,
+                  },
+                }
+              } else if (step.type === 'NFT_CHECK' && 'nftCheckData' in step) {
+                return {
+                  type: 'NFT_CHECK',
+                  ...commonStepFields,
+                  stepNftCheck: {
+                    stepId: 'ignore me',
+                    requireAllNfts: false, // hard coded for now
+                    nftCheckData: step.nftCheckData.map((nftCheckData) => {
+                      if (
+                        nftCheckData.chainId === undefined ||
+                        nftCheckData.tokenId === undefined ||
+                        nftCheckData.chainId === null ||
+                        nftCheckData.tokenId === null
+                      ) {
+                        throw new Error('No chainId or tokenId provided')
+                      }
 
-                    // @TODO: chainId and tokenId can be empty if POAP exists,
-                    // REVISIT THIS!
-                    return {
-                      chainId: nftCheckData.chainId,
-                      contractAddress: nftCheckData.contractAddress,
-                      poapEventId: nftCheckData.poapEventId,
-                      tokenId: nftCheckData.tokenId,
-                      // stepNftCheckId: 'ignore me',
-                    }
-                  }),
-                },
-              }
-            } else if (step.type === 'FUNCTION_CALL' && 'methodIds' in step) {
-              return {
-                type: 'FUNCTION_CALL',
-                ...commonStepFields,
-                stepFunctionCall: {
-                  stepId: 'ignore me',
-                  methodIds: step.methodIds,
-                  contractAddress: step.contractAddress,
-                },
-              }
-            } else if (step.type === 'COMETH_API' && 'stepId' in step) {
-              return {
-                type: 'COMETH_API',
-                ...commonStepFields,
-                stepComethApi: {
-                  stepId: 'ignore me',
-                },
-              }
-            } else if (step.type === 'TOKEN_ID_RANGE' && 'ranges' in step) {
-              // debugger
-              return {
-                type: 'TOKEN_ID_RANGE',
-                ...commonStepFields,
-                stepTokenIdRange: {
-                  stepId: 'ignore me',
-                  contractAddress: step.contractAddress,
-                  chainId: step.chainId,
-                  // original placeholder values:
-                  // startIds: step.startIds.map(Number),
-                  // endIds: step.endIds.map(Number),
+                      // @TODO: chainId and tokenId can be empty if POAP exists,
+                      // REVISIT THIS!
+                      return {
+                        chainId: nftCheckData.chainId,
+                        contractAddress: nftCheckData.contractAddress,
+                        poapEventId: nftCheckData.poapEventId,
+                        tokenId: nftCheckData.tokenId,
+                        // stepNftCheckId: 'ignore me',
+                      }
+                    }),
+                  },
+                }
+              } else if (step.type === 'FUNCTION_CALL' && 'methodIds' in step) {
+                return {
+                  type: 'FUNCTION_CALL',
+                  ...commonStepFields,
+                  stepFunctionCall: {
+                    stepId: 'ignore me',
+                    methodIds: step.methodIds,
+                    contractAddress: step.contractAddress,
+                  },
+                }
+              } else if (step.type === 'COMETH_API' && 'stepId' in step) {
+                return {
+                  type: 'COMETH_API',
+                  ...commonStepFields,
+                  stepComethApi: {
+                    stepId: 'ignore me',
+                  },
+                }
+              } else if (step.type === 'TOKEN_ID_RANGE' && 'ranges' in step) {
+                // debugger
+                return {
+                  type: 'TOKEN_ID_RANGE',
+                  ...commonStepFields,
+                  stepTokenIdRange: {
+                    stepId: 'ignore me',
+                    contractAddress: step.contractAddress,
+                    chainId: step.chainId,
+                    // original placeholder values:
+                    // startIds: step.startIds.map(Number),
+                    // endIds: step.endIds.map(Number),
 
-                  startIds: step.ranges.map((range) => Number(range.startId)),
-                  endIds: step.ranges.map((range) => Number(range.endId)),
-                },
+                    startIds: step.ranges.map((range) => Number(range.startId)),
+                    endIds: step.ranges.map((range) => Number(range.endId)),
+                  },
+                }
+              } else if (
+                step.type === 'ORIUM_API' &&
+                'stepId' in step &&
+                'checkType' in step
+              ) {
+                return {
+                  type: 'ORIUM_API',
+                  ...commonStepFields,
+                  stepOriumApi: {
+                    stepId: 'ignore me',
+                    checkType: step.checkType,
+                  },
+                }
+              } else {
+                throw new Error('Step type not recognized')
               }
-            } else if (
-              step.type === 'ORIUM_API' &&
-              'stepId' in step &&
-              'checkType' in step
-            ) {
-              return {
-                type: 'ORIUM_API',
-                ...commonStepFields,
-                stepOriumApi: {
-                  stepId: 'ignore me',
-                  checkType: step.checkType,
-                },
-              }
-            } else {
-              throw new Error('Step type not recognized')
-            }
-          }),
+            }),
+          },
         },
       },
-    })
-
-    if (
-      !isEditMode &&
-      submission.data &&
-      'createBurdPuzzle' in submission.data &&
-      submission.data.createBurdPuzzle.success
-    ) {
-      formMethods.reset()
-    }
+      () => {
+        if (!isEditMode) {
+          formMethods.reset(emptyFormValues)
+          clearPersistance()
+        }
+      }
+    )
   }
 
   return (

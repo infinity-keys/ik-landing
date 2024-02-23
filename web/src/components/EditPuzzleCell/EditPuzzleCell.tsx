@@ -20,8 +20,6 @@ export const QUERY = gql`
     rewardable: rewardableBySlugWithOrg(slug: $slug, type: PUZZLE) {
       id
       name
-      slug
-      successMessage
       nfts {
         data
       }
@@ -33,12 +31,10 @@ export const QUERY = gql`
           type
           solutionHint
           defaultImage
-          solutionImage
           stepSortWeight
           stepGuideType
           stepPage {
             body
-            image
             showStepGuideHint
             sortWeight
           }
@@ -101,12 +97,15 @@ export const Success = ({
     },
   })
 
-  const formattedSteps = rewardable.puzzle?.steps.flatMap((step) => {
+  if (!rewardable.puzzle?.steps.length) {
+    return null
+  }
+
+  const formattedSteps = rewardable.puzzle.steps.flatMap((step) => {
     if (!step) return []
     return {
       solutionHint: step.solutionHint ?? '',
       defaultImage: step.defaultImage ?? '',
-      solutionImage: step.solutionImage ?? '',
       stepSortWeight: step.stepSortWeight ?? '',
       stepGuideType: step.stepGuideType ?? 'SEEK',
       type: 'SIMPLE_TEXT' as StepType,
@@ -116,7 +115,13 @@ export const Success = ({
         // Our sdls do not have that field and will error if it's present.
         const { __typename, ...rest } = page
         return rest
-      }),
+      }) || [
+        {
+          body: '',
+          showStepGuideHint: false,
+          sortWeight: 1,
+        },
+      ],
     }
   })
 
@@ -142,7 +147,6 @@ export const Success = ({
       initialValues={{
         rewardable: {
           name: rewardable.name,
-          successMessage: rewardable.successMessage,
           nft: {
             name: nftName,
             image: nftImage,
@@ -152,14 +156,15 @@ export const Success = ({
           coverImage: rewardable.puzzle?.coverImage || '',
           requirements: rewardable.puzzle?.requirements || [],
         },
-        steps: formattedSteps || [],
+        steps: formattedSteps,
       }}
       isEditMode
       onFormSubmit={({ input }) => {
         if (!rewardable.puzzle?.id) {
           throw new Error('Error obtaining puzzle ID')
         }
-        return editArchetypalPuzzle({
+
+        editArchetypalPuzzle({
           variables: {
             input,
             rewardableId: rewardable.id,
