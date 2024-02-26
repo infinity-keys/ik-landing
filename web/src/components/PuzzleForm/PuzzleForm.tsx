@@ -13,7 +13,8 @@ import {
 } from '@heroicons/react/20/solid'
 import { PlusCircleIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import { uniqBy } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
+import uniqBy from 'lodash/uniqBy'
 import useFormPersist from 'react-hook-form-persist'
 import {
   CreateRewardableInput,
@@ -52,6 +53,7 @@ import {
 } from '@redwoodjs/forms'
 
 import Button, { generateButtonClasses } from '../Button/Button'
+import LoadingIcon from '../LoadingIcon/LoadingIcon'
 
 import DisplayImage from './DisplayImage/DisplayImage'
 import TabLabel from './TabLabel'
@@ -1084,7 +1086,7 @@ export default function PuzzleForm({
   })
 
   const nftImageValue = formMethods.watch('rewardable.nft.image')
-  console.log('nftImageValue: ', nftImageValue)
+
   useEffect(() => {
     async function setPlaceholder() {
       try {
@@ -1102,8 +1104,6 @@ export default function PuzzleForm({
   }, [setNftImagePlaceholder, nftImageValue])
 
   const onSubmit = async (input: PuzzleFormType) => {
-    console.log(input.steps)
-    // return
     const nftImageList = input.rewardable.nft.image
 
     if (!nftImageList?.length && !isEditMode) {
@@ -1262,8 +1262,6 @@ export default function PuzzleForm({
         </div>
         <div className="mx-auto max-w-md pt-9">
           <Form formMethods={formMethods} onSubmit={onSubmit}>
-            <FormError error={submissionError} />
-
             <Tab.Panels>
               <Tab.Panel unmount={false}>
                 <div id="puzzle-name" className="form__entry mb-12">
@@ -1592,25 +1590,28 @@ export default function PuzzleForm({
                               </div>
                             ))}
 
-                            <div className="mt-8 ">
-                              {step.solutionHint && (
-                                <p className="flex items-center gap-2">
-                                  <span>
-                                    <LightBulbIcon className="h-4 w-4" />
-                                  </span>
-                                  {step.solutionHint}
-                                </p>
-                              )}
+                            {step.solutionHint && (
+                              <p className="mt-8 flex items-center gap-2">
+                                <span>
+                                  <LightBulbIcon className="h-4 w-4" />
+                                </span>
+                                {step.solutionHint}
+                              </p>
+                            )}
 
-                              {'solution' in step && (
-                                <p className="mt-2 flex items-center gap-2 text-brand-accent-secondary">
-                                  <span>
-                                    <KeyIcon className="h-4 w-4" />
-                                  </span>{' '}
-                                  {step.solution}
-                                </p>
-                              )}
-                            </div>
+                            {'solution' in step && step.solution && (
+                              <p
+                                className={clsx(
+                                  'flex items-center gap-2 text-brand-accent-secondary',
+                                  step.solutionHint ? 'mt-2' : 'mt-8'
+                                )}
+                              >
+                                <span>
+                                  <KeyIcon className="h-4 w-4" />
+                                </span>{' '}
+                                {step.solution}
+                              </p>
+                            )}
                           </div>
                         </div>
                       ))}
@@ -1632,22 +1633,37 @@ export default function PuzzleForm({
                     {formMethods.getValues('rewardable.nft.name')}
                   </p>
                 </div>
-                <div className="mt-12 flex justify-center">
+                <div className="mt-12 flex flex-col items-center gap-4 pb-8">
                   <Submit
-                    disabled={submissionPending}
+                    disabled={submissionPending || !isEmpty(errors)}
                     className={generateButtonClasses({
                       round: true,
                       solid: true,
+                      disabled: submissionPending || !isEmpty(errors),
                     })}
                   >
                     Publish
                   </Submit>
+
+                  {!isEmpty(errors) && (
+                    <p className="text-center text-rose-300">
+                      There is an error with the form. Please make sure all
+                      required fields are present and formatted correctly.
+                    </p>
+                  )}
+
+                  <FormError error={submissionError} />
                 </div>
               </Tab.Panel>
             </Tab.Panels>
           </Form>
         </div>
       </Tab.Group>
+      {submissionPending && (
+        <div className="fixed top-0 left-0 flex h-full w-full items-center justify-center bg-brand-gray-primary/90">
+          <LoadingIcon />
+        </div>
+      )}
     </div>
   )
 }
