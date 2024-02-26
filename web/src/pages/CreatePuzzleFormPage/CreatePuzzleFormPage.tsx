@@ -62,12 +62,12 @@ const CreatePuzzleFormPage = () => {
           })
 
           if (
-            onSuccess &&
-            typeof onSuccess === 'function' &&
             result.data?.createBurdPuzzle.success &&
             result.data?.createBurdPuzzle.rewardable?.slug
           ) {
-            onSuccess()
+            if (onSuccess && typeof onSuccess === 'function') {
+              onSuccess()
+            }
 
             navigate(
               routes.puzzleLanding({
