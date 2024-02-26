@@ -52,8 +52,8 @@ import {
   FileField,
 } from '@redwoodjs/forms'
 
-import Button, { generateButtonClasses } from '../Button/Button'
-import LoadingIcon from '../LoadingIcon/LoadingIcon'
+import Button, { generateButtonClasses } from 'src/components/Button/Button'
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 
 import DisplayImage from './DisplayImage/DisplayImage'
 import TabLabel from './TabLabel'
