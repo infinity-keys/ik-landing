@@ -1,12 +1,13 @@
 import { CreatorToolsRoleMutation } from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
-import { MetaTags, useMutation } from '@redwoodjs/web'
+import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
+import Seo from 'src/components/Seo/Seo'
 
 const CREATOR_TOOLS_ROLE_MUTATION = gql`
   mutation CreatorToolsRoleMutation {
@@ -36,10 +37,7 @@ const CreatorToolsTesterPage = () => {
   )
   return (
     <>
-      <MetaTags
-        title="CreatorToolsTester"
-        description="CreatorToolsTester page"
-      />
+      <Seo title="Get the Creator Tools tester role" />
 
       <div className="flex min-h-[calc(100vh-80px)] items-center justify-center text-center">
         {!loading &&
