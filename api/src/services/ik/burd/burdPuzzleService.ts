@@ -1,3 +1,4 @@
+import { PUZZLE_CREATION_LIMIT } from '@infinity-keys/constants'
 import { SiteRole } from '@prisma/client'
 import { v2 as cloudinary } from 'cloudinary'
 import { nanoid } from 'nanoid'
@@ -20,8 +21,6 @@ import { getNftData } from 'src/lib/web3/get-nft-data'
 cloudinary.config({
   secure: true,
 })
-
-const PUZZLE_CREATION_LIMIT = 10
 
 export const editBurdPuzzle: MutationResolvers['editBurdPuzzle'] = async ({
   input,

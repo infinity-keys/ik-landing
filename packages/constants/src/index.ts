@@ -26,6 +26,9 @@ export const PUZZLE_FAILED_BASE = 'puzzle' // back to landing
 // Puzzles per page
 export const PAGINATION_COUNTS = [32, 64, 128]
 
+// Creator Tools puzzle limit
+export const PUZZLE_CREATION_LIMIT = 10
+
 // Cloudinary
 export const CLOUDINARY_CLOUD_NAME = 'infinity-keys'
 
