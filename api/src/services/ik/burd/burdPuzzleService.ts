@@ -21,6 +21,8 @@ cloudinary.config({
   secure: true,
 })
 
+const PUZZLE_CREATION_LIMIT = 10
+
 export const editBurdPuzzle: MutationResolvers['editBurdPuzzle'] = async ({
   input,
   rewardableId,
@@ -199,6 +201,22 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
         },
       })
       userOrgId = newOrg.id
+    } else {
+      // If user already belongs to an org, make sure that org has not reached their limit
+      const numOfCreatedRewardables = await db.rewardable.count({
+        where: {
+          orgId: userOrgId,
+        },
+      })
+
+      if (
+        numOfCreatedRewardables >= PUZZLE_CREATION_LIMIT &&
+        !hasRole('ADMIN')
+      ) {
+        throw new Error(
+          'You have reached your puzzle creation limit. Please edit an existing puzzle.'
+        )
+      }
     }
 
     if (!userOrgId) {
