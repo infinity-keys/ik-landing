@@ -42,7 +42,7 @@ const ProfilePage = () => {
         <div className="relative text-center">
           {!isAuthenticated && (
             <Button
-              href={`${CLERK_SIGNIN_PORTAL_URL}`}
+              href={`${CLERK_SIGNIN_PORTAL_URL}?redirect_url=http://localhost:8910/profile`}
               openInNewTab={false}
               solid
             >
