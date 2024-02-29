@@ -1,5 +1,7 @@
 import { useState, lazy } from 'react'
 
+import { useParams } from '@redwoodjs/router'
+
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
@@ -27,6 +29,8 @@ const ProfilePage = () => {
     logOut()
   }
 
+  const { redirectTo } = useParams()
+
   return (
     <Wrapper>
       <Seo title="Profile" />
@@ -42,7 +46,11 @@ const ProfilePage = () => {
         <div className="relative text-center">
           {!isAuthenticated && (
             <Button
-              href={`${CLERK_SIGNIN_PORTAL_URL}?redirect_url=http://localhost:8910/profile`}
+              href={
+                redirectTo
+                  ? `${CLERK_SIGNIN_PORTAL_URL}?redirect_url=${window.location.origin}${redirectTo}`
+                  : CLERK_SIGNIN_PORTAL_URL
+              }
               openInNewTab={false}
               solid
             >
