@@ -1,3 +1,4 @@
+import { PUZZLE_CREATION_LIMIT } from '@infinity-keys/constants'
 import { SiteRole } from '@prisma/client'
 import { v2 as cloudinary } from 'cloudinary'
 import { nanoid } from 'nanoid'
@@ -62,14 +63,6 @@ export const editBurdPuzzle: MutationResolvers['editBurdPuzzle'] = async ({
       rewardableId,
     })
 
-    const deleteStepPagesOperation = db.stepPage.deleteMany({
-      where: { step: { puzzleId } },
-    })
-
-    const deleteStepSimpleTextOperation = db.stepSimpleText.deleteMany({
-      where: { step: { puzzleId } },
-    })
-
     const deleteStepsOperation = db.step.deleteMany({
       where: { puzzleId },
     })
@@ -115,9 +108,7 @@ export const editBurdPuzzle: MutationResolvers['editBurdPuzzle'] = async ({
     })
 
     // Get the rewardable that's returned after all transactions succeed
-    const [, , , rewardable] = await db.$transaction([
-      deleteStepPagesOperation,
-      deleteStepSimpleTextOperation,
+    const [, rewardable] = await db.$transaction([
       deleteStepsOperation,
       updateRewardable,
     ])
@@ -199,6 +190,22 @@ export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
         },
       })
       userOrgId = newOrg.id
+    } else {
+      // If user already belongs to an org, make sure that org has not reached their limit
+      const numOfCreatedRewardables = await db.rewardable.count({
+        where: {
+          orgId: userOrgId,
+        },
+      })
+
+      if (
+        numOfCreatedRewardables >= PUZZLE_CREATION_LIMIT &&
+        !hasRole('ADMIN')
+      ) {
+        throw new Error(
+          'You have reached your puzzle creation limit. Please edit an existing puzzle.'
+        )
+      }
     }
 
     if (!userOrgId) {

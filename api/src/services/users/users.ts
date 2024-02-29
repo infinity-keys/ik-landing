@@ -65,6 +65,27 @@ export const User: UserRelationResolvers = {
   lensKeypConnection: (_obj, { root }) => {
     return db.user.findUnique({ where: { id: root?.id } }).lensKeypConnection()
   },
+  primaryOrgRewardableCount: async () => {
+    if (!context.currentUser) {
+      throw new AuthenticationError('No current user')
+    }
+
+    const org = await db.organizationUser.findFirst({
+      where: { userId: context.currentUser.id },
+      orderBy: { createdAt: 'asc' },
+      select: { orgId: true },
+    })
+
+    if (!org?.orgId) {
+      return null
+    }
+
+    return db.rewardable.count({
+      where: {
+        orgId: org.orgId,
+      },
+    })
+  },
   stepsSolvedCount: () => {
     if (!context.currentUser) {
       throw new AuthenticationError('No current user')

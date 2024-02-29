@@ -95,12 +95,16 @@ const Rewardable = ({ rewardable }: Props) => {
     return !step ? false : !step.hasUserCompletedStep
   })
 
-  // If currentStep is undefined, make sure it's because they've completed all steps
+  // If currentStep is undefined, make sure it's because they've completed all
+  // steps, or they have a userReward
   const puzzleCompleted =
-    !currentStep &&
-    rewardable.puzzle.steps.every((step) => {
-      return step?.hasUserCompletedStep
-    })
+    !!rewardable.userRewards.length ||
+    (!currentStep &&
+      rewardable.puzzle.steps.every((step) => step?.hasUserCompletedStep))
+
+  const shouldContinue =
+    typeof currentStep?.stepSortWeight === 'number' &&
+    currentStep.stepSortWeight > 1
 
   return (
     <>
@@ -124,49 +128,20 @@ const Rewardable = ({ rewardable }: Props) => {
 
         <TextContainer
           Button={
-            isAuthenticated ? (
-              showOverlay ? (
-                <Button
-                  solid
-                  shadow
-                  bold
-                  href="https://discord.gg/infinitykeys"
-                >
-                  Ask on Discord
-                </Button>
-              ) : (
-                <Button
-                  solid
-                  shadow
-                  bold
-                  to={
-                    currentStep?.stepSortWeight
-                      ? routes.puzzleStep({
-                          slug: rewardable.slug,
-                          step: currentStep?.stepSortWeight,
-                        })
-                      : // TODO: where do we take them if they have completed all steps
-                        routes.claim({ id: rewardable.id })
-                  }
-                >
-                  {typeof currentStep?.stepSortWeight === 'number'
-                    ? currentStep.stepSortWeight > 1
-                      ? 'Continue Quest'
-                      : 'Start'
-                    : 'Claim Treasure'}
-                </Button>
-              )
-            ) : (
-              <Button
-                bold
-                solid
-                shadow
-                href={`${CLERK_SIGNIN_PORTAL_URL}`}
-                openInNewTab={false}
-              >
-                Login
-              </Button>
-            )
+            <TextContainerButton
+              shouldContinue={shouldContinue}
+              isAuthenticated={isAuthenticated}
+              showOverlay={showOverlay}
+              puzzleCompleted={puzzleCompleted}
+              rewardable={rewardable}
+              currentStep={
+                typeof currentStep?.stepSortWeight === 'number'
+                  ? currentStep.stepSortWeight
+                  : // @NOTE: If users can manually enter sort weight when creating,
+                    // `1` isn't necessarily the first step
+                    1
+              }
+            />
           }
         >
           {isAuthenticated ? (
@@ -276,3 +251,67 @@ const Rewardable = ({ rewardable }: Props) => {
 }
 
 export default Rewardable
+
+const TextContainerButton = ({
+  isAuthenticated,
+  showOverlay,
+  puzzleCompleted,
+  shouldContinue,
+  rewardable,
+  currentStep,
+}: {
+  isAuthenticated: boolean
+  showOverlay: boolean
+  puzzleCompleted: boolean
+  shouldContinue: boolean
+  rewardable: Props['rewardable']
+  currentStep: number
+}) => {
+  if (!rewardable) {
+    return null
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <Button
+        bold
+        solid
+        shadow
+        href={`${CLERK_SIGNIN_PORTAL_URL}`}
+        openInNewTab={false}
+      >
+        Login
+      </Button>
+    )
+  }
+
+  if (showOverlay) {
+    return (
+      <Button solid shadow bold href="https://discord.gg/infinitykeys">
+        Ask on Discord
+      </Button>
+    )
+  }
+
+  if (puzzleCompleted) {
+    return (
+      <Button solid shadow bold to={routes.claim({ id: rewardable.id })}>
+        Claim Treasure
+      </Button>
+    )
+  }
+
+  return (
+    <Button
+      solid
+      shadow
+      bold
+      to={routes.puzzleStep({
+        slug: rewardable.slug,
+        step: currentStep,
+      })}
+    >
+      {shouldContinue ? 'Continue Quest' : 'Start'}
+    </Button>
+  )
+}
