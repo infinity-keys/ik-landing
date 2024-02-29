@@ -28,17 +28,13 @@ const CreatePuzzleFormPage = () => {
     CreateBurdPuzzleMutationVariables
   >(CREATE_BURD_PUZZLE_MUTATION, {
     onCompleted: ({ createBurdPuzzle }) => {
-      if (createBurdPuzzle?.success && createBurdPuzzle.rewardable?.slug) {
-        return navigate(
-          routes.puzzleLanding({ slug: createBurdPuzzle.rewardable.slug })
-        )
-      }
+      if (!createBurdPuzzle.success) {
+        if (createBurdPuzzle?.errorMessage) {
+          return alert(createBurdPuzzle.errorMessage)
+        }
 
-      if (createBurdPuzzle?.errorMessage) {
-        return alert(createBurdPuzzle.errorMessage)
+        return alert('There was an error creating your rewardable!')
       }
-
-      return alert('There was an error creating your rewardable!')
     },
     onError: (error) => {
       alert(`Error with Burd's form: ${error.message}`)
@@ -49,14 +45,14 @@ const CreatePuzzleFormPage = () => {
     <>
       <Seo title="Create a new puzzle" />
       <PuzzleForm
-        onFormSubmit={({ input }) => {
+        onFormSubmit={async ({ input }, onSuccess) => {
           const image = input.nft.image
 
           if (!image) {
             throw new Error('NFT image is required on creation')
           }
 
-          return createArchetypalPuzzle({
+          const result = await createArchetypalPuzzle({
             variables: {
               input: {
                 ...input,
@@ -64,6 +60,21 @@ const CreatePuzzleFormPage = () => {
               },
             },
           })
+
+          if (
+            result.data?.createBurdPuzzle.success &&
+            result.data?.createBurdPuzzle.rewardable?.slug
+          ) {
+            if (onSuccess && typeof onSuccess === 'function') {
+              onSuccess()
+            }
+
+            navigate(
+              routes.puzzleLanding({
+                slug: result.data.createBurdPuzzle.rewardable.slug,
+              })
+            )
+          }
         }}
         submissionError={error}
         submissionPending={loading}
