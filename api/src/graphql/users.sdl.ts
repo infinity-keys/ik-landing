@@ -20,6 +20,7 @@ export const schema = gql`
     nftsSolvedCount: Int
     discordConnection: DiscordConnection
     lensKeypConnection: [LensKeypConnection]!
+    primaryOrgRewardableCount: Int
   }
 
   enum SiteRole {
