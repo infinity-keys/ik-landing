@@ -9,7 +9,7 @@ import type {
   PuzzleRequirements,
 } from 'types/graphql'
 
-import { routes } from '@redwoodjs/router'
+import { routes, useLocation } from '@redwoodjs/router'
 import { useQuery } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
@@ -267,6 +267,8 @@ const TextContainerButton = ({
   rewardable: Props['rewardable']
   currentStep: number
 }) => {
+  const { pathname } = useLocation()
+
   if (!rewardable) {
     return null
   }
@@ -277,7 +279,7 @@ const TextContainerButton = ({
         bold
         solid
         shadow
-        href={`${CLERK_SIGNIN_PORTAL_URL}`}
+        href={`${CLERK_SIGNIN_PORTAL_URL}?redirect_url=${window.location.origin}${pathname}`}
         openInNewTab={false}
       >
         Login
