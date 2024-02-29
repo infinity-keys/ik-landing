@@ -16,6 +16,9 @@ export const QUERY = gql`
       slug
       orgId
       successMessage
+      userRewards {
+        id
+      }
       puzzle {
         id
         coverImage
