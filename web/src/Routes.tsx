@@ -44,6 +44,7 @@ const Routes = () => {
         <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
           <Route path="/puzzle/{slug}/{step:Int}" page={StepPage} name="puzzleStep" />
           <Route path="/add-roles" page={AddRolesPage} name="addRoles" />
+          <Route path="/creator-tools-tester" page={CreatorToolsTesterPage} name="creatorToolsTester" />
         </Set>
 
         <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
