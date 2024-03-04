@@ -1,6 +1,6 @@
 import type {
-  EditBurdPuzzleMutation,
-  EditBurdPuzzleMutationVariables,
+  EditRewardableMutation,
+  EditRewardableMutationVariables,
   FindEditPuzzleQuery,
   FindEditPuzzleQueryVariables,
   StepType,
@@ -44,8 +44,8 @@ export const QUERY = gql`
   }
 `
 
-const EDIT_BURD_PUZZLE_MUTATION = gql`
-  mutation EditBurdPuzzleMutation(
+const EDIT_REWARDABLE_MUTATION = gql`
+  mutation EditRewardableMutation(
     $input: UpdateRewardableInput!
     $rewardableId: String!
     $puzzleId: String!
@@ -79,9 +79,9 @@ export const Success = ({
   rewardable,
 }: CellSuccessProps<FindEditPuzzleQuery, FindEditPuzzleQueryVariables>) => {
   const [editArchetypalPuzzle, { loading, error }] = useMutation<
-    EditBurdPuzzleMutation,
-    EditBurdPuzzleMutationVariables
-  >(EDIT_BURD_PUZZLE_MUTATION, {
+    EditRewardableMutation,
+    EditRewardableMutationVariables
+  >(EDIT_REWARDABLE_MUTATION, {
     onCompleted: ({ editBurdPuzzle }) => {
       if (editBurdPuzzle?.success && editBurdPuzzle.rewardable?.slug) {
         return navigate(

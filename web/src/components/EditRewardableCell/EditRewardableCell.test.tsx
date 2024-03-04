@@ -1,7 +1,7 @@
 import { render } from '@redwoodjs/testing/web'
 
-import { Loading, Empty, Failure, Success } from './EditPuzzleCell'
-import { standard } from './EditPuzzleCell.mock'
+import { standard } from './EditRewardableCell.mock'
+import { Loading, Empty, Failure, Success } from './EditRewardableCell'
 
 // Generated boilerplate tests do not account for all circumstances
 // and can fail without adjustments, e.g. Float and DateTime types.
@@ -9,7 +9,7 @@ import { standard } from './EditPuzzleCell.mock'
 //        https://redwoodjs.com/docs/testing#testing-cells
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe.skip('EditPuzzleCell', () => {
+describe.skip('EditRewardableCell', () => {
   it('renders Loading successfully', () => {
     expect(() => {
       render(<Loading />)
