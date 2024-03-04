@@ -27,7 +27,7 @@ import {
   CreateStepOriumApiInput,
   CreatePuzzleInput,
   EditBurdPuzzleMutationVariables,
-  CreateBurdPuzzleMutationVariables,
+  CreateRewardableMutationVariables,
 } from 'types/graphql'
 
 import {
@@ -1037,7 +1037,7 @@ export default function PuzzleForm({
   isEditMode?: boolean
   onFormSubmit: (
     variables:
-      | CreateBurdPuzzleMutationVariables
+      | CreateRewardableMutationVariables
       | Omit<EditBurdPuzzleMutationVariables, 'rewardableId' | 'puzzleId'>,
     onSuccess?: () => void
   ) => void

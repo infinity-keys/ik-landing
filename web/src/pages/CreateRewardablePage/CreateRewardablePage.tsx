@@ -1,7 +1,7 @@
 import { PUZZLE_CREATION_LIMIT } from '@infinity-keys/constants'
 import {
-  CreateBurdPuzzleMutation,
-  CreateBurdPuzzleMutationVariables,
+  CreateRewardableMutation,
+  CreateRewardableMutationVariables,
 } from 'types/graphql'
 
 import { navigate, routes } from '@redwoodjs/router'
@@ -11,8 +11,8 @@ import { useAuth } from 'src/auth'
 import PuzzleForm from 'src/components/PuzzleForm/PuzzleForm'
 import Seo from 'src/components/Seo/Seo'
 
-const CREATE_BURD_PUZZLE_MUTATION = gql`
-  mutation CreateBurdPuzzleMutation($input: CreateRewardableInput!) {
+const CREATE_REWARDABLE_MUTATION = gql`
+  mutation CreateRewardableMutation($input: CreateRewardableInput!) {
     createBurdPuzzle(input: $input) {
       rewardable {
         name
@@ -32,13 +32,13 @@ const GET_USER_PUZZLE_COUNT = gql`
   }
 `
 
-const CreatePuzzleFormPage = () => {
+const CreateRewardablePage = () => {
   const { hasRole } = useAuth()
 
   const [createArchetypalPuzzle, { loading, error }] = useMutation<
-    CreateBurdPuzzleMutation,
-    CreateBurdPuzzleMutationVariables
-  >(CREATE_BURD_PUZZLE_MUTATION, {
+    CreateRewardableMutation,
+    CreateRewardableMutationVariables
+  >(CREATE_REWARDABLE_MUTATION, {
     onCompleted: ({ createBurdPuzzle }) => {
       if (!createBurdPuzzle.success) {
         if (createBurdPuzzle?.errorMessage) {
@@ -112,4 +112,4 @@ const CreatePuzzleFormPage = () => {
   )
 }
 
-export default CreatePuzzleFormPage
+export default CreateRewardablePage
