@@ -45,7 +45,7 @@ const CreatorToolsTesterPage = () => {
           data?.addCreatorToolsRole.success ? (
             <div>
               <p className="mb-8 text-xl">You are a Creator Tools tester!</p>
-              <Button solid to={routes.formArchetype()}>
+              <Button solid to={routes.rewardableForm()}>
                 Create a Puzzle
               </Button>
             </div>

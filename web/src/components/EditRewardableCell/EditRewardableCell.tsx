@@ -1,6 +1,6 @@
 import type {
-  EditBurdPuzzleMutation,
-  EditBurdPuzzleMutationVariables,
+  EditRewardableMutation,
+  EditRewardableMutationVariables,
   FindEditPuzzleQuery,
   FindEditPuzzleQueryVariables,
   StepType,
@@ -44,13 +44,13 @@ export const QUERY = gql`
   }
 `
 
-const EDIT_BURD_PUZZLE_MUTATION = gql`
-  mutation EditBurdPuzzleMutation(
+const EDIT_REWARDABLE_MUTATION = gql`
+  mutation EditRewardableMutation(
     $input: UpdateRewardableInput!
     $rewardableId: String!
     $puzzleId: String!
   ) {
-    editBurdPuzzle(
+    editRewardablePuzzle(
       input: $input
       rewardableId: $rewardableId
       puzzleId: $puzzleId
@@ -79,18 +79,21 @@ export const Success = ({
   rewardable,
 }: CellSuccessProps<FindEditPuzzleQuery, FindEditPuzzleQueryVariables>) => {
   const [editArchetypalPuzzle, { loading, error }] = useMutation<
-    EditBurdPuzzleMutation,
-    EditBurdPuzzleMutationVariables
-  >(EDIT_BURD_PUZZLE_MUTATION, {
-    onCompleted: ({ editBurdPuzzle }) => {
-      if (editBurdPuzzle?.success && editBurdPuzzle.rewardable?.slug) {
+    EditRewardableMutation,
+    EditRewardableMutationVariables
+  >(EDIT_REWARDABLE_MUTATION, {
+    onCompleted: ({ editRewardablePuzzle }) => {
+      if (
+        editRewardablePuzzle?.success &&
+        editRewardablePuzzle.rewardable?.slug
+      ) {
         return navigate(
-          routes.puzzleLanding({ slug: editBurdPuzzle.rewardable.slug })
+          routes.puzzleLanding({ slug: editRewardablePuzzle.rewardable.slug })
         )
       }
 
-      if (editBurdPuzzle?.errorMessage) {
-        return alert(editBurdPuzzle.errorMessage)
+      if (editRewardablePuzzle?.errorMessage) {
+        return alert(editRewardablePuzzle.errorMessage)
       }
 
       return alert('There was an error creating your rewardable!')

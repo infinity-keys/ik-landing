@@ -26,8 +26,8 @@ import {
   CreateStepTokenIdRangeInput,
   CreateStepOriumApiInput,
   CreatePuzzleInput,
-  EditBurdPuzzleMutationVariables,
-  CreateBurdPuzzleMutationVariables,
+  EditRewardableMutationVariables,
+  CreateRewardableMutationVariables,
 } from 'types/graphql'
 
 import {
@@ -1037,8 +1037,8 @@ export default function PuzzleForm({
   isEditMode?: boolean
   onFormSubmit: (
     variables:
-      | CreateBurdPuzzleMutationVariables
-      | Omit<EditBurdPuzzleMutationVariables, 'rewardableId' | 'puzzleId'>,
+      | CreateRewardableMutationVariables
+      | Omit<EditRewardableMutationVariables, 'rewardableId' | 'puzzleId'>,
     onSuccess?: () => void
   ) => void
   submissionError?: ApolloError
