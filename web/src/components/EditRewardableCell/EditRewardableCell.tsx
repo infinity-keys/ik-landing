@@ -50,7 +50,7 @@ const EDIT_REWARDABLE_MUTATION = gql`
     $rewardableId: String!
     $puzzleId: String!
   ) {
-    editBurdPuzzle(
+    editRewardablePuzzle(
       input: $input
       rewardableId: $rewardableId
       puzzleId: $puzzleId
@@ -82,15 +82,18 @@ export const Success = ({
     EditRewardableMutation,
     EditRewardableMutationVariables
   >(EDIT_REWARDABLE_MUTATION, {
-    onCompleted: ({ editBurdPuzzle }) => {
-      if (editBurdPuzzle?.success && editBurdPuzzle.rewardable?.slug) {
+    onCompleted: ({ editRewardablePuzzle }) => {
+      if (
+        editRewardablePuzzle?.success &&
+        editRewardablePuzzle.rewardable?.slug
+      ) {
         return navigate(
-          routes.puzzleLanding({ slug: editBurdPuzzle.rewardable.slug })
+          routes.puzzleLanding({ slug: editRewardablePuzzle.rewardable.slug })
         )
       }
 
-      if (editBurdPuzzle?.errorMessage) {
-        return alert(editBurdPuzzle.errorMessage)
+      if (editRewardablePuzzle?.errorMessage) {
+        return alert(editRewardablePuzzle.errorMessage)
       }
 
       return alert('There was an error creating your rewardable!')

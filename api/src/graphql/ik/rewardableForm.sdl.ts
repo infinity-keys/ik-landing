@@ -9,10 +9,10 @@ export const schema = gql`
   type Mutation {
     # I already have the types that exist for a step, so you don't need a
     # CreateBurdStepType...
-    createBurdPuzzle(input: CreateRewardableInput!): RewardableResponse!
+    createRewardablePuzzle(input: CreateRewardableInput!): RewardableResponse!
       @requireAuth(roles: ["ADMIN", "CREATOR_TOOLS_TESTER"])
 
-    editBurdPuzzle(
+    editRewardablePuzzle(
       input: UpdateRewardableInput!
       rewardableId: String!
       puzzleId: String!

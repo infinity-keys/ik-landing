@@ -166,7 +166,7 @@ export const userProgress: QueryResolvers['userProgress'] = () => {
 
 // // Richard Burd's unique service:
 // // Eventually this becomes "create rewardable"
-// export const createBurdPuzzle: MutationResolvers['createBurdPuzzle'] = async ({
+// export const createRewardablePuzzle: MutationResolvers['createRewardablePuzzle'] = async ({
 //   input,
 // }) => {
 //   if (!input.puzzle) {

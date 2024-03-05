@@ -13,7 +13,7 @@ import Seo from 'src/components/Seo/Seo'
 
 const CREATE_REWARDABLE_MUTATION = gql`
   mutation CreateRewardableMutation($input: CreateRewardableInput!) {
-    createBurdPuzzle(input: $input) {
+    createRewardablePuzzle(input: $input) {
       rewardable {
         name
         slug
@@ -39,10 +39,10 @@ const CreateRewardablePage = () => {
     CreateRewardableMutation,
     CreateRewardableMutationVariables
   >(CREATE_REWARDABLE_MUTATION, {
-    onCompleted: ({ createBurdPuzzle }) => {
-      if (!createBurdPuzzle.success) {
-        if (createBurdPuzzle?.errorMessage) {
-          return alert(createBurdPuzzle.errorMessage)
+    onCompleted: ({ createRewardablePuzzle }) => {
+      if (!createRewardablePuzzle.success) {
+        if (createRewardablePuzzle?.errorMessage) {
+          return alert(createRewardablePuzzle.errorMessage)
         }
 
         return alert('There was an error creating your rewardable!')
@@ -91,8 +91,8 @@ const CreateRewardablePage = () => {
           })
 
           if (
-            result.data?.createBurdPuzzle.success &&
-            result.data?.createBurdPuzzle.rewardable?.slug
+            result.data?.createRewardablePuzzle.success &&
+            result.data?.createRewardablePuzzle.rewardable?.slug
           ) {
             if (onSuccess && typeof onSuccess === 'function') {
               onSuccess()
@@ -100,7 +100,7 @@ const CreateRewardablePage = () => {
 
             navigate(
               routes.puzzleLanding({
-                slug: result.data.createBurdPuzzle.rewardable.slug,
+                slug: result.data.createRewardablePuzzle.rewardable.slug,
               })
             )
           }
