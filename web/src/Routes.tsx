@@ -31,7 +31,7 @@ const Routes = () => {
       <Private unauthenticated="profile" roles={['ADMIN', 'CREATOR_TOOLS_TESTER']}>
         <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
           <Route path="/puzzle" page={PuzzlePage} name="puzzle" />
-          <Route path="/puzzle/create" page={CreateRewardablePage} name="formArchetype" />
+          <Route path="/puzzle/create" page={CreateRewardablePage} name="rewardableForm" />
           <Route path="/puzzle/edit/{slug}" page={EditPuzzleFormPage} name="editFormArchetype" />
           {/* <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" /> */}
         </Set>
