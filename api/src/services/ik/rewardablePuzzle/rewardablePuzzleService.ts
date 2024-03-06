@@ -287,7 +287,8 @@ export const createRewardablePuzzle: MutationResolvers['createRewardablePuzzle']
         success: true,
       }
     } catch (error) {
-      logger.error('Error in `createRewardablePuzzle`', error)
+      logger.error('Error in `createRewardablePuzzle`')
+      logger.error(error)
 
       return {
         success: false,
