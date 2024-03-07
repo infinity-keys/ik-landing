@@ -571,11 +571,11 @@ function StepForm({
                     }
                   >
                     <div className="form__entry-name mb-1 text-slate-100">
-                      Pass Code<span className="text-rose-500">*</span>
+                      Passcode<span className="text-rose-500">*</span>
                     </div>
                   </Label>
                   <TextField
-                    placeholder="Pass Code"
+                    placeholder="Passcode"
                     {...register(`${stepsArrayName}.${index}.solution`)}
                     className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
                     validation={{ required: true }}
@@ -586,7 +586,7 @@ function StepForm({
                     'type' in errors[stepsArrayName][index].solution &&
                     errors[stepsArrayName][index].solution.type ===
                       'required' &&
-                    requiredFieldError('a pass code')}
+                    requiredFieldError('a passcode')}
                 </div>
               </div>
             )}
@@ -932,7 +932,7 @@ function StepForm({
               </Label>
 
               <TextField
-                placeholder="Step Image"
+                placeholder="https://"
                 {...register(`${stepsArrayName}.${index}.defaultImage`)}
                 className="form__text-field border-1 mb-8 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
                 validation={{ pattern: imageLinkPattern }}
@@ -1399,7 +1399,7 @@ export default function PuzzleForm({
                   <TextField
                     name="puzzle.coverImage"
                     className="form__text-field border-1 mb-8 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                    placeholder="Cover Image"
+                    placeholder="https://"
                     validation={{
                       required: true,
                       pattern: imageLinkPattern,
@@ -1430,7 +1430,7 @@ export default function PuzzleForm({
                   <TextField
                     name="rewardable.nft.name"
                     className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                    placeholder="NFT Name"
+                    placeholder="NFT Image"
                     validation={{ required: true }}
                   />
                   {errors.rewardable?.nft?.name?.type === 'required' &&
@@ -1472,7 +1472,7 @@ export default function PuzzleForm({
                       NFT Image<span className="text-rose-500">*</span>
                     </div>
                     <p className="mb-2 text-sm font-normal">
-                      Image must be smaller than 5MB
+                      Image must be less than 1MB
                     </p>
                   </Label>
                   <FileField
@@ -1485,7 +1485,7 @@ export default function PuzzleForm({
                         imageSize: (value: FileList) => {
                           if (!value?.length) return true
 
-                          const maxSizeInBytes = 5 * 1024 * 1024
+                          const maxSizeInBytes = 1 * 1024 * 1024
                           return value?.[0].size < maxSizeInBytes
                         },
                       },
