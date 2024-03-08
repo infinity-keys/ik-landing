@@ -19,7 +19,7 @@
     "crypto-js": "^4.2.0",
     "discord.js": "^14.7.1",
     "googleapis": "^123.0.0",
-    "jose": "^4.10.0",
+    "jose": "^4.15.5",
     "moralis": "^2.10.4",
     "nanoid": "^3.0.0",
     "node-fetch": "2",
