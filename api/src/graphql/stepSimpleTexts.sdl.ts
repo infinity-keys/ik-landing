@@ -3,8 +3,7 @@ export const schema = gql`
     id: String!
     step: Step!
     stepId: String!
-    # removing so users can't access it in query
-    # solution: String! @requireAuth
+    solution: String! @requireAuth
     solutionCharCount: Int!
   }
 
