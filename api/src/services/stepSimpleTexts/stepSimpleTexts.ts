@@ -53,6 +53,7 @@ export const StepSimpleText: StepSimpleTextRelationResolvers = {
       throw new ForbiddenError('Must be logged in')
     }
 
+    // Only show solution if user belongs to the org that created the rewardable
     const belongsToOrg = await db.rewardable.findFirst({
       where: {
         AND: [
