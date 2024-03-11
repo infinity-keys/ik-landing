@@ -38,6 +38,9 @@ export const QUERY = gql`
             showStepGuideHint
             sortWeight
           }
+          stepSimpleText {
+            solution
+          }
         }
       }
     }
@@ -107,6 +110,7 @@ export const Success = ({
   const formattedSteps = rewardable.puzzle.steps.flatMap((step) => {
     if (!step) return []
     return {
+      solution: step.stepSimpleText?.solution ?? '',
       solutionHint: step.solutionHint ?? '',
       defaultImage: step.defaultImage ?? '',
       stepSortWeight: step.stepSortWeight ?? '',

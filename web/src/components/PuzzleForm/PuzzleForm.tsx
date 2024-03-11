@@ -180,7 +180,7 @@ function StepForm({
       setValue(`${stepsArrayName}.${index}`, {
         type: 'SIMPLE_TEXT',
         ...commonStepFields,
-        solution: '',
+        solution: getValues(`${stepsArrayName}.${index}.solution`) || '',
         solutionCharCount: 0,
       })
     }
