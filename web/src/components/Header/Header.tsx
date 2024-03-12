@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon'
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon'
-import { LensIcon } from '@infinity-keys/react-lens-share-button'
+// import { LensIcon } from '@infinity-keys/react-lens-share-button'
 import clsx from 'clsx'
 
 import { Link, routes, useLocation } from '@redwoodjs/router'
@@ -16,7 +16,7 @@ import LogoHeader1x from 'src/images/IK-LOGO-1x.webp'
 import LogoHeader2x from 'src/images/IK-LOGO-2x.webp'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
 import DiscordIcon from 'src/svgs/DiscordIcon'
-import RedditIcon from 'src/svgs/RedditIcon'
+// import RedditIcon from 'src/svgs/RedditIcon'
 import TwitterIcon from 'src/svgs/TwitterIcon'
 
 const CLERK_SIGNIN_PORTAL_URL = process.env.CLERK_SIGNIN_PORTAL_URL
@@ -26,12 +26,12 @@ if (!CLERK_SIGNIN_PORTAL_URL) {
 }
 
 const socialLinks = [
-  {
-    href: 'https://lenster.xyz/u/infinitykeys',
-    testing: 'lens',
-    ariaLabel: 'visit IK Lenster.',
-    icon: <LensIcon height={32} width={32} />,
-  },
+  // {
+  //   href: 'https://lenster.xyz/u/infinitykeys',
+  //   testing: 'lens',
+  //   ariaLabel: 'visit IK Lenster.',
+  //   icon: <LensIcon height={32} width={32} />,
+  // },
   {
     href: 'https://twitter.com/InfinityKeys',
     testing: 'twitter',
@@ -44,12 +44,12 @@ const socialLinks = [
     ariaLabel: 'visit IK Discord.',
     icon: <DiscordIcon />,
   },
-  {
-    href: 'https://www.reddit.com/r/infinitykeys/',
-    testing: 'reddit',
-    ariaLabel: 'visit the IK subreddit.',
-    icon: <RedditIcon />,
-  },
+  // {
+  //   href: 'https://www.reddit.com/r/infinitykeys/',
+  //   testing: 'reddit',
+  //   ariaLabel: 'visit the IK subreddit.',
+  //   icon: <RedditIcon />,
+  // },
 ]
 
 const DesktopNav = () => {
@@ -57,7 +57,7 @@ const DesktopNav = () => {
 
   return (
     <nav className="hidden max-w-lg items-center justify-end gap-4 lg:flex xl:max-w-xl">
-      <Link to={routes.puzzleLanding({ slug: 'the-society' })}>Play Demo</Link>
+      <Link to={routes.puzzleLanding({ slug: 'the-society' })}>Play</Link>
       {isAuthenticated ? (
         <Link to={routes.profile()}>Profile</Link>
       ) : (
@@ -133,8 +133,13 @@ const Header = () => {
               <WalletButton size="small" />
             </div>
             <div className="text-center">
-              <Button size="small" to="/#waitlist" round solid>
-                Join Waitlist
+              <Button
+                size="small"
+                href="https://discord.com/invite/infinitykeys"
+                round
+                solid
+              >
+                Join Community
               </Button>
             </div>
 
@@ -202,7 +207,7 @@ const Header = () => {
                         to={routes.puzzleLanding({ slug: 'the-society' })}
                         className="header-nav--link mt-2 py-2 px-4 text-xl font-medium text-white transition-colors hover:text-brand-accent-primary"
                       >
-                        Play Demo
+                        Play
                       </Link>
 
                       {/* Wallet and profile buttons */}

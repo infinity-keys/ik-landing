@@ -279,8 +279,8 @@ export const Success = ({
       )}
 
       <div className="mt-8">
-        <Button round solid to="/#waitlist">
-          Join Waitlist
+        <Button round solid href="https://discord.com/invite/infinitykeys">
+          Join Community
         </Button>
       </div>
     </div>

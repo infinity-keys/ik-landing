@@ -6,7 +6,7 @@ import { Link, routes, useLocation } from '@redwoodjs/router'
 
 import Fade from 'src/components/Animations/Fade'
 import Button from 'src/components/Button'
-import HomeContactForm from 'src/components/HomeContactForm/HomeContactForm'
+// import HomeContactForm from 'src/components/HomeContactForm/HomeContactForm'
 import Seo from 'src/components/Seo/Seo'
 import heroLogo from 'src/images/full-logo-2x.webp'
 import heroLogoLg from 'src/images/full-logo-lg.webp'
@@ -63,15 +63,15 @@ const Container = ({
 }
 
 const HomePage = () => {
-  const formRef = useRef<{ scrollToElement: () => void }>()
+  // const formRef = useRef<{ scrollToElement: () => void }>()
   const workRef = useRef<HTMLElement>(null)
   const { hash } = useLocation()
 
-  const handleScrollToForm = () => {
-    if (formRef.current) {
-      formRef.current.scrollToElement()
-    }
-  }
+  // const handleScrollToForm = () => {
+  //   if (formRef.current) {
+  //     formRef.current.scrollToElement()
+  //   }
+  // }
 
   useLayoutEffect(() => {
     if (hash === '#works' && workRef.current) {
@@ -84,9 +84,9 @@ const HomePage = () => {
       return () => clearTimeout(timeout)
     }
 
-    if (hash === '#waitlist') {
-      handleScrollToForm()
-    }
+    // if (hash === '#waitlist') {
+    //   handleScrollToForm()
+    // }
   }, [hash])
 
   return (
@@ -107,17 +107,22 @@ const HomePage = () => {
 
             <Fade delay={1.2}>
               <div className="mt-8 flex gap-2">
-                <Button round solid onClick={handleScrollToForm}>
+                {/* <Button round solid onClick={handleScrollToForm}> */}
+                <Button
+                  round
+                  solid
+                  href="https://discord.com/invite/infinitykeys"
+                >
                   <span className="hidden md:inline">Join&nbsp;</span>
-                  Waitlist
+                  Community
                 </Button>
 
                 <Button
                   round
-                  to={routes.puzzleLanding({ slug: 'the-society' })}
+                  // to={routes.puzzleLanding({ slug: 'the-society' })}
+                  to={routes.play()}
                 >
                   <span className="hidden md:inline">Play&nbsp;</span>
-                  Demo
                 </Button>
               </div>
             </Fade>
@@ -141,7 +146,7 @@ const HomePage = () => {
       <section>
         <Container bgLight>
           <div className="flex items-center justify-center">
-            <HomeContactForm ref={formRef} />
+            {/* <HomeContactForm ref={formRef} /> */}
           </div>
         </Container>
       </section>
