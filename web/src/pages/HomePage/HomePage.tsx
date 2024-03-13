@@ -1,12 +1,11 @@
-import { PropsWithChildren, useLayoutEffect, useRef } from 'react'
+import { PropsWithChildren } from 'react'
 
 import clsx from 'clsx'
 
-import { Link, routes, useLocation } from '@redwoodjs/router'
+import { Link, routes } from '@redwoodjs/router'
 
 import Fade from 'src/components/Animations/Fade'
 import Button from 'src/components/Button'
-// import HomeContactForm from 'src/components/HomeContactForm/HomeContactForm'
 import Seo from 'src/components/Seo/Seo'
 import heroLogo from 'src/images/full-logo-2x.webp'
 import heroLogoLg from 'src/images/full-logo-lg.webp'
@@ -63,32 +62,6 @@ const Container = ({
 }
 
 const HomePage = () => {
-  // const formRef = useRef<{ scrollToElement: () => void }>()
-  const workRef = useRef<HTMLElement>(null)
-  const { hash } = useLocation()
-
-  // const handleScrollToForm = () => {
-  //   if (formRef.current) {
-  //     formRef.current.scrollToElement()
-  //   }
-  // }
-
-  useLayoutEffect(() => {
-    if (hash === '#works' && workRef.current) {
-      // Wait for mobile nav to remove `overflow: hidden` from html tag
-      // before scrolling to element
-      const timeout = setTimeout(() => {
-        workRef.current?.scrollIntoView({ behavior: 'smooth' })
-      }, 300)
-
-      return () => clearTimeout(timeout)
-    }
-
-    // if (hash === '#waitlist') {
-    //   handleScrollToForm()
-    // }
-  }, [hash])
-
   return (
     <div>
       <Seo title="Home" />
@@ -113,16 +86,11 @@ const HomePage = () => {
                   solid
                   href="https://discord.com/invite/infinitykeys"
                 >
-                  <span className="hidden md:inline">Join&nbsp;</span>
-                  Community
+                  Join Community
                 </Button>
 
-                <Button
-                  round
-                  // to={routes.puzzleLanding({ slug: 'the-society' })}
-                  to={routes.play()}
-                >
-                  <span className="hidden md:inline">Play&nbsp;</span>
+                <Button round to={routes.play()}>
+                  Play
                 </Button>
               </div>
             </Fade>
