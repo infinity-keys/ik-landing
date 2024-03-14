@@ -110,12 +110,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      <section>
-        <Container bgLight>
-          <div className="flex items-center justify-center"></div>
-        </Container>
-      </section>
-
       <footer className="bg-white/5 px-4 py-16">
         <div className="flex justify-center gap-8">
           {socialLinks.map(({ href, testing, ariaLabel, icon }) => (
