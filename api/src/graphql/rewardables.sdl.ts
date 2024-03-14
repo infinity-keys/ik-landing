@@ -53,7 +53,7 @@ export const schema = gql`
     name: String!
     explanation: String
     successMessage: String
-    listPublicly: Boolean # This should be required at public release
+    listPublicly: Boolean!
     type: RewardableType!
     sortWeight: Int
     orgId: String
@@ -66,7 +66,7 @@ export const schema = gql`
     name: String!
     explanation: String
     successMessage: String
-    listPublicly: Boolean
+    listPublicly: Boolean!
     type: RewardableType!
     sortWeight: Int
     orgId: String
