@@ -80,7 +80,6 @@ const HomePage = () => {
 
             <Fade delay={1.2}>
               <div className="mt-8 flex gap-2">
-                {/* <Button round solid onClick={handleScrollToForm}> */}
                 <Button
                   round
                   solid
@@ -110,14 +109,6 @@ const HomePage = () => {
           </Fade>
         </div>
       </div>
-
-      <section>
-        <Container bgLight>
-          <div className="flex items-center justify-center">
-            {/* <HomeContactForm ref={formRef} /> */}
-          </div>
-        </Container>
-      </section>
 
       <footer className="bg-white/5 px-4 py-16">
         <div className="flex justify-center gap-8">
