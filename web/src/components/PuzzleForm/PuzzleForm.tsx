@@ -11,7 +11,10 @@ import {
   KeyIcon,
   LightBulbIcon,
 } from '@heroicons/react/20/solid'
-import { PlusCircleIcon } from '@heroicons/react/24/outline'
+import {
+  PlusCircleIcon,
+  InformationCircleIcon,
+} from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import isEmpty from 'lodash/isEmpty'
 import uniqBy from 'lodash/uniqBy'
@@ -982,7 +985,7 @@ type PuzzleFormWithoutNftImage = {
   rewardable: {
     name: CreateRewardableInput['name']
     // successMessage: CreateRewardableInput['successMessage']
-    listPublicly?: CreateRewardableInput['listPublicly']
+    listPublicly: CreateRewardableInput['listPublicly']
     nft: {
       name: string
     }
@@ -1062,6 +1065,7 @@ export default function PuzzleForm({
       [stepsArrayName]: isEditMode ? initialValues?.steps : startingSteps,
       rewardable: {
         name: initialValues?.rewardable?.name,
+        listPublicly: initialValues?.rewardable?.listPublicly,
         // successMessage: initialValues?.rewardable?.successMessage,
         nft: {
           name: initialValues?.rewardable?.nft?.name,
@@ -1132,7 +1136,7 @@ export default function PuzzleForm({
           name: input.rewardable.name,
           type: 'PUZZLE', // hard coded for now
           // successMessage: input.rewardable.successMessage,
-          listPublicly: false, // hard coded for now,
+          listPublicly: input.rewardable.listPublicly,
           nft: {
             name: input.rewardable.nft.name,
             image: nftImageBase64,
@@ -1329,25 +1333,6 @@ export default function PuzzleForm({
                   />
                 </div> */}
 
-                {/* @NOTE: Hard coded to `false` while testing */}
-                <div
-                  id="puzzle-list-publicly"
-                  className="form__entry mb-12 hidden"
-                >
-                  <Label
-                    name="rewardable.listPublicly"
-                    className="form__label text-slate-100"
-                    errorClassName="form__label--error text-rose-300"
-                  >
-                    List Publicly
-                  </Label>
-
-                  <CheckboxField
-                    name="rewardable.listPublicly"
-                    className="form__text-field box-border block bg-stone-200 text-slate-700"
-                  />
-                </div>
-
                 <div
                   id="puzzle-requirements"
                   className="form__entry mb-12 hidden"
@@ -1496,7 +1481,7 @@ export default function PuzzleForm({
                     requiredFieldError('an nft image')}
                   {errors.rewardable?.nft?.image?.type === 'imageSize' && (
                     <p className="form__error pt-1 font-medium text-rose-800">
-                      Please select an image smaller than 5MB
+                      Please select an image smaller than 1MB
                     </p>
                   )}
                 </div>
@@ -1644,17 +1629,41 @@ export default function PuzzleForm({
                     {formMethods.getValues('rewardable.nft.name')}
                   </p>
                 </div>
-                <div className="mt-12 flex flex-col items-center gap-4 pb-8">
+                <div className="mt-12 flex flex-col items-center justify-center gap-6">
                   <Submit
                     disabled={submissionPending || !isEmpty(errors)}
                     className={generateButtonClasses({
                       round: true,
-                      solid: true,
+                      solid: !!formMethods.getValues('rewardable.listPublicly'),
                       disabled: submissionPending || !isEmpty(errors),
                     })}
                   >
-                    Publish
+                    {formMethods.getValues('rewardable.listPublicly')
+                      ? 'Launch Puzzle'
+                      : 'Save Draft'}
                   </Submit>
+
+                  <div id="puzzle-list-publicly" className="form__entry">
+                    <div className="flex items-center justify-center gap-2">
+                      <Label
+                        name="rewardable.listPublicly"
+                        className="form__label text-slate-100"
+                        errorClassName="form__label--error text-rose-300"
+                      >
+                        List Publicly
+                      </Label>
+                      <CheckboxField
+                        name="rewardable.listPublicly"
+                        className="form__text-field box-border block bg-stone-200 text-slate-700"
+                      />
+                    </div>
+                    <p className="mt-1 flex items-center gap-1 text-sm text-stone-400">
+                      <InformationCircleIcon className="h-5 w-5 fill-transparent" />
+                      {formMethods.getValues('rewardable.listPublicly')
+                        ? 'This puzzle will show on the "play" page for all users.'
+                        : 'This puzzle will only be accessible via direct link.'}
+                    </p>
+                  </div>
 
                   {!isEmpty(errors) && (
                     <p className="text-center text-rose-300">

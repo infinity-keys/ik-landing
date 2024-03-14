@@ -76,9 +76,7 @@ export const editRewardablePuzzle: MutationResolvers['editRewardablePuzzle'] =
           // explanation: input.explanation,
           type: input.type,
           slug,
-          // @NOTE: hardcoded to `false` during testing
-          listPublicly: false,
-          // listPublicly: input.listPublicly,
+          listPublicly: input.listPublicly,
           successMessage: input.successMessage,
           puzzle: {
             update: {
@@ -236,9 +234,7 @@ export const createRewardablePuzzle: MutationResolvers['createRewardablePuzzle']
           // explanation: input.explanation,
           type: input.type,
           slug,
-          // @NOTE: hardcoded to `false` during testing
-          listPublicly: false,
-          // listPublicly: input.listPublicly,
+          listPublicly: input.listPublicly,
           successMessage: input.successMessage,
           orgId: userOrgId,
           puzzle: {

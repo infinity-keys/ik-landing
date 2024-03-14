@@ -20,6 +20,7 @@ export const QUERY = gql`
     rewardable: rewardableBySlugWithOrg(slug: $slug, type: PUZZLE) {
       id
       name
+      listPublicly
       nfts {
         data
       }
@@ -154,6 +155,7 @@ export const Success = ({
       initialValues={{
         rewardable: {
           name: rewardable.name,
+          listPublicly: rewardable.listPublicly,
           nft: {
             name: nftName,
             image: nftImage,
