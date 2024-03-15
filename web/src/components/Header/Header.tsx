@@ -118,14 +118,15 @@ const Header = () => {
             <div className="hidden lg:block">
               <WalletButton size="small" />
             </div>
-            <div className="text-center">
+            <div className="w-24 text-center">
               <Button
                 size="small"
-                href="https://discord.com/invite/infinitykeys"
+                fullWidth
+                to={routes.rewardableForm()}
                 round
                 solid
               >
-                Join Community
+                Create
               </Button>
             </div>
 
