@@ -28,12 +28,9 @@ const Routes = () => {
         </Set>
       </Private>
 
-      <Private unauthenticated="profile" roles={['ADMIN', 'CREATOR_TOOLS_TESTER']}>
+      <Private unauthenticated="profile" roles={['ADMIN']}>
         <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
           <Route path="/puzzle" page={PuzzlePage} name="puzzle" />
-          <Route path="/puzzle/create" page={CreateRewardablePage} name="rewardableForm" />
-          <Route path="/puzzle/edit/{slug}" page={EditPuzzleFormPage} name="editFormArchetype" />
-          {/* <Route path="/puzzle/{id}/edit" page={RewardablePuzzleEditRewardablePuzzlePage} name="editPuzzle" /> */}
         </Set>
       </Private>
 
@@ -42,7 +39,8 @@ const Routes = () => {
         <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>
           <Route path="/puzzle/{slug}/{step:Int}" page={StepPage} name="puzzleStep" />
           <Route path="/add-roles" page={AddRolesPage} name="addRoles" />
-          <Route path="/creator-tools-tester" page={CreatorToolsTesterPage} name="creatorToolsTester" />
+          <Route path="/puzzle/create" page={CreateRewardablePage} name="rewardableForm" />
+          <Route path="/puzzle/edit/{slug}" page={EditPuzzleFormPage} name="editFormArchetype" />
         </Set>
 
         <Set wrap={[HeaderLayout, MainLayout, WrapperLayout]}>

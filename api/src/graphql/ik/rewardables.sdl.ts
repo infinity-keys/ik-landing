@@ -67,7 +67,7 @@ export const schema = gql`
     rewardablesBySortType(sortType: RewardableSortType): [Rewardable] @skipAuth
     rewardableBySlug(slug: String!, type: RewardableType!): Rewardable @skipAuth
     rewardableBySlugWithOrg(slug: String!, type: RewardableType!): Rewardable
-      @requireAuth(roles: ["ADMIN", "CREATOR_TOOLS_TESTER"])
+      @requireAuth
     rewardablesCollection(
       types: [RewardableType!]!
       page: Int
