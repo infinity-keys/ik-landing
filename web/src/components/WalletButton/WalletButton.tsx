@@ -65,7 +65,7 @@ export default function WalletButton({
                     round
                     size={size}
                   >
-                    <ShieldExclamationIcon className="h-6 w-12 fill-transparent stroke-red-600" />
+                    <ShieldExclamationIcon className="h-5 w-10 fill-transparent stroke-red-600" />
                   </Button>
                 )
               }

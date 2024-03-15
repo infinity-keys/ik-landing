@@ -16,16 +16,16 @@ import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 const socialLinks = [
   {
-    href: 'https://twitter.com/InfinityKeys',
-    testing: 'twitter',
-    ariaLabel: 'visit IK Twitter.',
-    icon: <TwitterIcon />,
-  },
-  {
     href: 'https://discord.com/invite/infinitykeys',
     testing: 'discord',
     ariaLabel: 'visit IK Discord.',
-    icon: <DiscordIcon />,
+    icon: <DiscordIcon height={28} width={28} />,
+  },
+  {
+    href: 'https://twitter.com/InfinityKeys',
+    testing: 'twitter',
+    ariaLabel: 'visit IK Twitter.',
+    icon: <TwitterIcon height={28} width={28} />,
   },
 ]
 
@@ -80,17 +80,30 @@ const HomePage = () => {
 
             <Fade delay={1.2}>
               <div className="mt-8 flex gap-2">
-                <Button
-                  round
-                  solid
-                  href="https://discord.com/invite/infinitykeys"
-                >
-                  Join Community
+                <Button round solid to={routes.rewardableForm()}>
+                  Create
                 </Button>
 
                 <Button round to={routes.play()}>
                   Play
                 </Button>
+              </div>
+
+              <p className="mt-8">Join the community</p>
+              <div className="mt-2 flex gap-4">
+                {socialLinks.map(({ href, testing, ariaLabel, icon }) => (
+                  <a
+                    key={href}
+                    className="text-white/40 transition-colors hover:text-brand-accent-primary"
+                    data-cy={testing}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={ariaLabel}
+                  >
+                    {icon}
+                  </a>
+                ))}
               </div>
             </Fade>
           </div>
