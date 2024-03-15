@@ -8,6 +8,7 @@ import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
 import Seo from 'src/components/Seo/Seo'
 import Wrapper from 'src/components/Wrapper/Wrapper'
+import logo from 'src/images/full-logo-1x.webp'
 
 const ProgressDeleteButton = lazy(
   () => import('src/components/ProgressDeleteButton/ProgressDeleteButton')
@@ -32,7 +33,7 @@ const ProfilePage = () => {
   const { redirectTo } = useParams()
 
   return (
-    <Wrapper>
+    <div className="flex min-h-[calc(100vh-80px)] justify-center pt-12 md:items-center md:pt-0">
       <Seo title="Profile" />
       {isAuthenticated && !loading && !deleteProgressLoading && (
         <div className="mx-auto w-full max-w-4xl pb-12">
@@ -45,17 +46,22 @@ const ProfilePage = () => {
       ) : (
         <div className="relative text-center">
           {!isAuthenticated && (
-            <Button
-              href={
-                redirectTo
-                  ? `${CLERK_SIGNIN_PORTAL_URL}?redirect_url=${window.location.origin}${redirectTo}`
-                  : CLERK_SIGNIN_PORTAL_URL
-              }
-              openInNewTab={false}
-              solid
-            >
-              Login
-            </Button>
+            <div className="rounded-md bg-black/20 p-4 pb-8">
+              <div className="mb-6 w-64 md:w-80">
+                <img src={logo} alt="" />
+              </div>
+              <Button
+                href={
+                  redirectTo
+                    ? `${CLERK_SIGNIN_PORTAL_URL}?redirect_url=${window.location.origin}${redirectTo}`
+                    : CLERK_SIGNIN_PORTAL_URL
+                }
+                openInNewTab={false}
+                solid
+              >
+                Login
+              </Button>
+            </div>
           )}
 
           <p className="pt-2 text-center text-brand-accent-secondary">
@@ -70,7 +76,7 @@ const ProfilePage = () => {
           />
         </div>
       )}
-    </Wrapper>
+    </div>
   )
 }
 
