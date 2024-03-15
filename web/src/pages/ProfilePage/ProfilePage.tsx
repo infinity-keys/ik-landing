@@ -7,7 +7,6 @@ import Button from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import ProfileCell from 'src/components/ProfileCell'
 import Seo from 'src/components/Seo/Seo'
-import Wrapper from 'src/components/Wrapper/Wrapper'
 import logo from 'src/images/full-logo-1x.webp'
 
 const ProgressDeleteButton = lazy(
