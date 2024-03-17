@@ -11,7 +11,12 @@ import type {
   SyncDiscordRolesMutation,
 } from 'types/graphql'
 
-import { CellSuccessProps, CellFailureProps, useMutation } from '@redwoodjs/web'
+import {
+  useQuery,
+  CellSuccessProps,
+  CellFailureProps,
+  useMutation,
+} from '@redwoodjs/web'
 import { LoaderIcon } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
@@ -46,6 +51,7 @@ export const QUERY = gql`
     }
   }
 `
+
 const LensConnect = lazy(() => import('src/components/LensConnect/LensConnect'))
 const DiscordIcon = lazy(() => import('src/svgs/DiscordIcon'))
 const LoadingIcon = lazy(() => import('src/components/LoadingIcon/LoadingIcon'))
@@ -65,6 +71,32 @@ const SYNC_DISCORD_ROLES_MUTATION = gql`
     }
   }
 `
+
+// displays rewardables (puzzles & packs) a user can edit or delete
+const USER_REWARDABLES_QUERY = gql`
+  query UserRewardablesQuery($userId: String!) {
+    userRewardables(userId: $userId) {
+      id
+      name
+      slug
+      nfts {
+        cloudinaryId
+      }
+      type
+    }
+  }
+`
+
+// Used to display the puzzles & packs a user can edit &/or delete
+interface Rewardable {
+  id: string
+  name: string
+  slug: string
+  href: string
+  cloudinaryId: string
+  nfts: { cloudinaryId?: string }[]
+  type?: string
+}
 
 export const Loading = () => <LoadingIcon />
 
@@ -93,34 +125,29 @@ export const Success = ({
 
   const userData = formatUserMetadata(userMetadata)
 
-  // some dummy data to test the UI; this will be deleted and replaced
-  // with calls to the backend later on
-  const thumbnailData = [
-    {
-      id: '1',
-      name: 'Puzzle 1 (Brazil)',
-      href: '/puzzle/puzzle-1',
-      isGrid: false,
-      cloudinaryId: undefined,
-      solvedArray: [true, false, true],
-    },
-    {
-      id: '2',
-      name: 'Puzzle 2 (Japan)',
-      href: '/puzzle/puzzle-2',
-      isGrid: false,
-      cloudinaryId: undefined,
-      solvedArray: [true, true, true],
-    },
-    {
-      id: '3',
-      name: 'Puzzle 3 (Greece)',
-      href: '/puzzle/puzzle-3',
-      isGrid: false,
-      cloudinaryId: undefined,
-      solvedArray: [false, false, false],
-    },
-  ]
+  const { data, loading, error } = useQuery(USER_REWARDABLES_QUERY, {
+    variables: { userId: user?.id },
+  })
+
+  // can be replaced with dummy data if backend breaks
+  let userRewardableData = []
+
+  if (!loading && !error) {
+    userRewardableData = data.userRewardables.map((rewardable: Rewardable) => {
+      const href =
+        rewardable.type === 'PUZZLE'
+          ? `/puzzle/${rewardable.slug}` // show user's puzzles
+          : `/pack/${rewardable.slug}` // show user's packs
+
+      return {
+        id: rewardable.id, // provides unique key value for map
+        name: rewardable.name, // display name
+        href: href, // link to correct path
+        // grab the image associated with the rewardable
+        cloudinaryId: rewardable.nfts?.[0]?.cloudinaryId || undefined,
+      }
+    })
+  }
 
   return (
     <div>
@@ -317,20 +344,19 @@ export const Success = ({
       <div className="mt-6 flex flex-col gap-6">
         <div className="overflow-hidden rounded-lg bg-black/30 lg:basis-2/5">
           <div className="bg-black/30 py-8 px-4 sm:px-8">
-            <p className="">Your Puzzles</p>
+            <p className="">Your Puzzles & Packs</p>
           </div>
 
           <div className="flex flex-col gap-4 py-8 px-4 text-sm sm:px-8">
             <div className="grid gap-4 py-8 px-4 text-sm sm:px-8 md:grid-cols-2">
-              {thumbnailData.map((thumb) => (
+              {userRewardableData.map((rewardable: Rewardable) => (
                 <Thumbnail
-                  key={thumb.id}
-                  id={thumb.id}
-                  name={thumb.name}
-                  href={thumb.href}
-                  isGrid={thumb.isGrid}
-                  cloudinaryId={thumb.cloudinaryId}
-                  solvedArray={thumb.solvedArray}
+                  id={rewardable.id} // keep typescript happy
+                  key={rewardable.id}
+                  name={rewardable.name}
+                  href={rewardable.href}
+                  isGrid={false} // always false for this display
+                  cloudinaryId={rewardable.cloudinaryId}
                 />
               ))}
             </div>

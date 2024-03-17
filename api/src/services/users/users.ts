@@ -41,6 +41,32 @@ export const deleteUser: MutationResolvers['deleteUser'] = () => {
   })
 }
 
+// Displays the puzzles a user can edit or delete on the user's profile page
+export const userRewardables: QueryResolvers['userRewardables'] = async ({
+  userId,
+}) => {
+  // Logic to fetch user's Rewardables
+  const userOrganizations = await db.organizationUser.findMany({
+    where: { userId },
+    select: { orgId: true },
+  })
+
+  const orgIds = userOrganizations.map((orgUser) => orgUser.orgId)
+
+  const rewardables = await db.rewardable.findMany({
+    where: {
+      orgId: {
+        in: orgIds,
+      },
+    },
+    include: {
+      nfts: true,
+    },
+  })
+
+  return rewardables
+}
+
 export const User: UserRelationResolvers = {
   organizations: (_obj, { root }) => {
     return db.user.findUnique({ where: { id: root?.id } }).organizations()
