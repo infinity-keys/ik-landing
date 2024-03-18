@@ -163,7 +163,9 @@ export const Success = ({
         },
         puzzle: {
           coverImage: rewardable.puzzle?.coverImage || '',
-          requirements: rewardable.puzzle?.requirements || [],
+          requirements: rewardable.puzzle?.requirements?.length
+            ? rewardable.puzzle.requirements
+            : ['DETAIL'],
         },
         steps: formattedSteps,
       }}
