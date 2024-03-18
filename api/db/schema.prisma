@@ -270,7 +270,7 @@ model StepSimpleText {
 model StepFunctionCall {
   id String @id @default(cuid())
 
-  step   Step   @relation(fields: [stepId], references: [id])
+  step   Step   @relation(fields: [stepId], references: [id], onDelete: Cascade)
   stepId String @unique
 
   /// MethodIds for the functions we want to check
@@ -288,7 +288,7 @@ model NftCheckDatum {
   chainId         Int?
   poapEventId     String?
 
-  StepNftCheck   StepNftCheck? @relation(fields: [stepNftCheckId], references: [id])
+  StepNftCheck   StepNftCheck? @relation(fields: [stepNftCheckId], references: [id], onDelete: Cascade)
   stepNftCheckId String?
 }
 
@@ -296,7 +296,7 @@ model NftCheckDatum {
 model StepNftCheck {
   id String @id @default(cuid())
 
-  step   Step   @relation(fields: [stepId], references: [id])
+  step   Step   @relation(fields: [stepId], references: [id], onDelete: Cascade)
   stepId String @unique
 
   nftCheckData   NftCheckDatum[]
@@ -308,7 +308,7 @@ model StepNftCheck {
 model StepComethApi {
   id String @id @default(cuid())
 
-  step   Step   @relation(fields: [stepId], references: [id])
+  step   Step   @relation(fields: [stepId], references: [id], onDelete: Cascade)
   stepId String @unique
 }
 
@@ -316,7 +316,7 @@ model StepComethApi {
 model StepErc20Balance {
   id String @id @default(cuid())
 
-  step   Step   @relation(fields: [stepId], references: [id])
+  step   Step   @relation(fields: [stepId], references: [id], onDelete: Cascade)
   stepId String @unique
 
   /// The token's contract address
@@ -338,7 +338,7 @@ enum OriumCheckType {
 model StepOriumApi {
   id String @id @default(cuid())
 
-  step   Step   @relation(fields: [stepId], references: [id])
+  step   Step   @relation(fields: [stepId], references: [id], onDelete: Cascade)
   stepId String @unique
 
   /// We can check the Orium API for different passing states
@@ -349,7 +349,7 @@ model StepOriumApi {
 model StepTokenIdRange {
   id String @id @default(cuid())
 
-  step   Step   @relation(fields: [stepId], references: [id])
+  step   Step   @relation(fields: [stepId], references: [id], onDelete: Cascade)
   stepId String @unique
 
   contractAddress String
@@ -371,7 +371,7 @@ enum LensCheckType {
 model StepLensApi {
   id String @id @default(cuid())
 
-  step   Step   @relation(fields: [stepId], references: [id])
+  step   Step   @relation(fields: [stepId], references: [id], onDelete: Cascade)
   stepId String @unique
 
   /// Choose the type of Lens API call you would like to check
@@ -384,7 +384,7 @@ model StepLensApi {
 model StepAssetTransfer {
   id String @id @default(cuid())
 
-  step   Step   @relation(fields: [stepId], references: [id])
+  step   Step   @relation(fields: [stepId], references: [id], onDelete: Cascade)
   stepId String @unique
 
   toAddress        String
