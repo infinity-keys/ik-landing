@@ -1073,7 +1073,7 @@ export default function PuzzleForm({
       },
       puzzle: {
         coverImage: initialValues?.puzzle?.coverImage,
-        requirements: initialValues?.puzzle?.requirements || ['DETAIL'],
+        requirements: initialValues?.puzzle?.requirements,
       },
     },
   })
