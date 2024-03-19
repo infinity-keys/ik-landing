@@ -1,10 +1,9 @@
 import { PUZZLE_CREATION_LIMIT } from '@infinity-keys/constants'
-import { SiteRole } from '@prisma/client'
 import { v2 as cloudinary } from 'cloudinary'
 import { nanoid } from 'nanoid'
 import type { MutationResolvers } from 'types/graphql'
 
-import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
+import { AuthenticationError } from '@redwoodjs/graphql-server'
 
 import { hasRole } from 'src/lib/auth'
 import { db } from 'src/lib/db'
@@ -27,12 +26,6 @@ export const editRewardablePuzzle: MutationResolvers['editRewardablePuzzle'] =
     try {
       if (!context.currentUser?.id) {
         throw new AuthenticationError('Must be logged in')
-      }
-
-      if (!hasRole([SiteRole.ADMIN, SiteRole.CREATOR_TOOLS_TESTER])) {
-        throw new ForbiddenError(
-          'You are not authorized to create a rewardable'
-        )
       }
 
       if (!input.puzzle) {
@@ -136,12 +129,6 @@ export const createRewardablePuzzle: MutationResolvers['createRewardablePuzzle']
     try {
       if (!context.currentUser?.id) {
         throw new AuthenticationError('Must be logged in')
-      }
-
-      if (!hasRole([SiteRole.ADMIN, SiteRole.CREATOR_TOOLS_TESTER])) {
-        throw new ForbiddenError(
-          'You are not authorized to create a rewardable'
-        )
       }
 
       if (!input.puzzle) {

@@ -10,13 +10,12 @@ export const schema = gql`
     # I already have the types that exist for a step, so you don't need a
     # CreateBurdStepType...
     createRewardablePuzzle(input: CreateRewardableInput!): RewardableResponse!
-      @requireAuth(roles: ["ADMIN", "CREATOR_TOOLS_TESTER"])
+      @requireAuth
 
     editRewardablePuzzle(
       input: UpdateRewardableInput!
       rewardableId: String!
       puzzleId: String!
-    ): RewardableResponse!
-      @requireAuth(roles: ["ADMIN", "CREATOR_TOOLS_TESTER"])
+    ): RewardableResponse! @requireAuth
   }
 `
