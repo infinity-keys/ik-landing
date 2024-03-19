@@ -9,6 +9,7 @@ import type {
   FindUserQuery,
   FindUserQueryVariables,
   SyncDiscordRolesMutation,
+  UserRewardablesQuery,
 } from 'types/graphql'
 
 import {
@@ -24,6 +25,7 @@ import Button from 'src/components/Button/Button'
 import Thumbnail from 'src/components/Thumbnail/Thumbnail'
 import { formatUserMetadata } from 'src/lib/formatters'
 import { avatarGradient } from 'src/lib/theme/helpers'
+import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 
 const CLERK_PORTAL_URL = process.env.CLERK_PORTAL_URL
 
@@ -87,17 +89,6 @@ const USER_REWARDABLES_QUERY = gql`
   }
 `
 
-// Used to display the puzzles & packs a user can edit &/or delete
-interface Rewardable {
-  id: string
-  name: string
-  slug: string
-  href: string
-  cloudinaryId: string
-  nfts: { cloudinaryId?: string }[]
-  type?: string
-}
-
 export const Loading = () => <LoadingIcon />
 
 export const Empty = () => <div>Empty</div>
@@ -125,29 +116,9 @@ export const Success = ({
 
   const userData = formatUserMetadata(userMetadata)
 
-  const { data, loading, error } = useQuery(USER_REWARDABLES_QUERY, {
+  const { data } = useQuery<UserRewardablesQuery>(USER_REWARDABLES_QUERY, {
     variables: { userId: user?.id },
   })
-
-  // can be replaced with dummy data if backend breaks
-  let userRewardableData = []
-
-  if (!loading && !error) {
-    userRewardableData = data.userRewardables.map((rewardable: Rewardable) => {
-      const href =
-        rewardable.type === 'PUZZLE'
-          ? `/puzzle/${rewardable.slug}` // show user's puzzles
-          : `/pack/${rewardable.slug}` // show user's packs
-
-      return {
-        id: rewardable.id, // provides unique key value for map
-        name: rewardable.name, // display name
-        href: href, // link to correct path
-        // grab the image associated with the rewardable
-        cloudinaryId: rewardable.nfts?.[0]?.cloudinaryId || undefined,
-      }
-    })
-  }
 
   return (
     <div>
@@ -185,30 +156,30 @@ export const Success = ({
               </div>
             </div>
 
-            <div className="flex gap-10 py-10 px-4 sm:px-10">
-              <div>
-                <p className="text-xl font-bold text-brand-accent-primary">
+            <div className="gap-10 py-10 px-4 sm:flex sm:px-10">
+              <div className="flex justify-center sm:block sm:justify-start">
+                <p className="mr-3 text-xl font-bold text-brand-accent-primary">
                   {user.stepsSolvedCount}
                 </p>
                 <p>Steps</p>
               </div>
 
-              <div>
-                <p className="text-xl font-bold text-brand-accent-primary">
+              <div className="flex justify-center sm:block sm:justify-start">
+                <p className="mr-3 text-xl font-bold text-brand-accent-primary">
                   {user.puzzlesSolvedCount}
                 </p>
                 <p>Puzzles</p>
               </div>
 
-              <div>
-                <p className="text-xl font-bold text-brand-accent-primary">
+              <div className="flex justify-center sm:block sm:justify-start">
+                <p className="mr-3 text-xl font-bold text-brand-accent-primary">
                   {user.packsSolvedCount}
                 </p>
                 <p>Packs</p>
               </div>
 
-              <div>
-                <p className="text-xl font-bold text-brand-accent-primary">
+              <div className="flex justify-center sm:block sm:justify-start">
+                <p className="mr-3 text-xl font-bold text-brand-accent-primary">
                   {user.nftsSolvedCount}
                 </p>
                 <p>NFTs</p>
@@ -349,14 +320,17 @@ export const Success = ({
 
           <div className="flex flex-col gap-4 py-8 px-4 text-sm sm:px-8">
             <div className="grid gap-4 py-8 px-4 text-sm sm:px-8 md:grid-cols-2">
-              {userRewardableData.map((rewardable: Rewardable) => (
+              {data?.userRewardables.map((rewardable) => (
                 <Thumbnail
                   id={rewardable.id} // keep typescript happy
                   key={rewardable.id}
                   name={rewardable.name}
-                  href={rewardable.href}
+                  href={rewardableLandingRoute({
+                    type: rewardable.type,
+                    slug: rewardable.slug,
+                  })}
                   isGrid={false} // always false for this display
-                  cloudinaryId={rewardable.cloudinaryId}
+                  cloudinaryId={rewardable.nfts?.[0]?.cloudinaryId}
                 />
               ))}
             </div>
