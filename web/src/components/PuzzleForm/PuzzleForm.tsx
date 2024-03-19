@@ -334,7 +334,7 @@ function StepForm({
                         </div>
                       </Label> */}
                       <TextAreaField
-                        placeholder="Body"
+                        placeholder="Write the text of your puzzle here"
                         name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
                         className="form__text-field border-1 box-border block w-full resize-none rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
                         validation={{ required: true }}
@@ -1073,7 +1073,7 @@ export default function PuzzleForm({
       },
       puzzle: {
         coverImage: initialValues?.puzzle?.coverImage,
-        requirements: initialValues?.puzzle?.requirements || ['DETAIL'],
+        requirements: initialValues?.puzzle?.requirements,
       },
     },
   })
