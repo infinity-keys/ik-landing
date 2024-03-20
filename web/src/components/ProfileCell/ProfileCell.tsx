@@ -9,15 +9,23 @@ import type {
   FindUserQuery,
   FindUserQueryVariables,
   SyncDiscordRolesMutation,
+  UserRewardablesQuery,
 } from 'types/graphql'
 
-import { CellSuccessProps, CellFailureProps, useMutation } from '@redwoodjs/web'
+import {
+  useQuery,
+  CellSuccessProps,
+  CellFailureProps,
+  useMutation,
+} from '@redwoodjs/web'
 import { LoaderIcon } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 import Button from 'src/components/Button/Button'
+import Thumbnail from 'src/components/Thumbnail/Thumbnail'
 import { formatUserMetadata } from 'src/lib/formatters'
 import { avatarGradient } from 'src/lib/theme/helpers'
+import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 
 const CLERK_PORTAL_URL = process.env.CLERK_PORTAL_URL
 
@@ -45,6 +53,7 @@ export const QUERY = gql`
     }
   }
 `
+
 const LensConnect = lazy(() => import('src/components/LensConnect/LensConnect'))
 const DiscordIcon = lazy(() => import('src/svgs/DiscordIcon'))
 const LoadingIcon = lazy(() => import('src/components/LoadingIcon/LoadingIcon'))
@@ -61,6 +70,21 @@ const SYNC_DISCORD_ROLES_MUTATION = gql`
       success
       errors
       message
+    }
+  }
+`
+
+// displays rewardables (puzzles & packs) a user can edit or delete
+const USER_REWARDABLES_QUERY = gql`
+  query UserRewardablesQuery($userId: String!) {
+    userRewardables(userId: $userId) {
+      id
+      name
+      slug
+      nfts {
+        cloudinaryId
+      }
+      type
     }
   }
 `
@@ -92,190 +116,224 @@ export const Success = ({
 
   const userData = formatUserMetadata(userMetadata)
 
+  const { data } = useQuery<UserRewardablesQuery>(USER_REWARDABLES_QUERY, {
+    variables: { userId: user?.id },
+  })
+
   return (
-    <div className="mt-12 flex flex-col gap-6 lg:mt-0 lg:flex-row">
-      <div className="mx-auto w-full lg:basis-3/5">
-        <div className="overflow-hidden rounded-lg bg-black/30">
-          <div className="sm:items-centers flex flex-col justify-between bg-black/20 py-8 px-4 sm:flex-row sm:px-10">
-            <div className="flex items-center">
-              {userData.avatar ? (
-                <img
-                  src={userData.avatar}
-                  alt=""
-                  className="h-14 w-14 rounded-full"
-                />
-              ) : (
-                <Avatar
-                  size={56}
-                  name={user.id}
-                  variant="marble"
-                  colors={avatarGradient}
-                />
+    <div>
+      <div className="mt-12 flex flex-col gap-6 lg:mt-0 lg:flex-row">
+        <div className="mx-auto w-full lg:basis-3/5">
+          <div className="overflow-hidden rounded-lg bg-black/30">
+            <div className="sm:items-centers flex flex-col justify-between bg-black/20 py-8 px-4 sm:flex-row sm:px-10">
+              <div className="flex items-center">
+                {userData.avatar ? (
+                  <img
+                    src={userData.avatar}
+                    alt=""
+                    className="h-14 w-14 rounded-full"
+                  />
+                ) : (
+                  <Avatar
+                    size={56}
+                    name={user.id}
+                    variant="marble"
+                    colors={avatarGradient}
+                  />
+                )}
+
+                <div className="ml-6">
+                  <p className="text-xl font-bold text-white">
+                    {userData.userName}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-8 sm:mt-0">
+                <Button onClick={handleLogOut} size="small" solid>
+                  Log Out
+                </Button>
+              </div>
+            </div>
+
+            <div className="gap-10 py-10 px-4 sm:flex sm:px-10">
+              <div className="flex justify-center sm:block sm:justify-start">
+                <p className="mr-3 text-xl font-bold text-brand-accent-primary">
+                  {user.stepsSolvedCount}
+                </p>
+                <p>Steps</p>
+              </div>
+
+              <div className="flex justify-center sm:block sm:justify-start">
+                <p className="mr-3 text-xl font-bold text-brand-accent-primary">
+                  {user.puzzlesSolvedCount}
+                </p>
+                <p>Puzzles</p>
+              </div>
+
+              <div className="flex justify-center sm:block sm:justify-start">
+                <p className="mr-3 text-xl font-bold text-brand-accent-primary">
+                  {user.packsSolvedCount}
+                </p>
+                <p>Packs</p>
+              </div>
+
+              <div className="flex justify-center sm:block sm:justify-start">
+                <p className="mr-3 text-xl font-bold text-brand-accent-primary">
+                  {user.nftsSolvedCount}
+                </p>
+                <p>NFTs</p>
+              </div>
+            </div>
+
+            <div className="px-4 pb-6 text-white sm:px-10">
+              {userData.primaryEmail && (
+                <div className="flex items-center pb-4">
+                  <EnvelopeIcon className="h-5 w-5 text-white" />
+                  <p className="ml-4 text-sm text-white/70">
+                    {userData.primaryEmail}
+                  </p>
+                </div>
               )}
 
-              <div className="ml-6">
-                <p className="text-xl font-bold text-white">
-                  {userData.userName}
-                </p>
-              </div>
-            </div>
+              {user.discordConnection?.username && (
+                <div className="flex items-center pb-4">
+                  <DiscordIcon width={20} height={20} />
+                  <p className="ml-4 text-sm text-white/70">
+                    {user.discordConnection.username}
+                  </p>
+                </div>
+              )}
 
-            <div className="mt-8 sm:mt-0">
-              <Button onClick={handleLogOut} size="small" solid>
-                Log Out
-              </Button>
-            </div>
-          </div>
+              {userData.truncatedWallet && (
+                <div className="flex items-center pb-4">
+                  <WalletIcon className="h-5 w-5 text-white" />
+                  <p className="ml-4 text-sm text-white/70">
+                    {userData.truncatedWallet}
+                  </p>
+                </div>
+              )}
 
-          <div className="flex gap-10 py-10 px-4 sm:px-10">
-            <div>
-              <p className="text-xl font-bold text-brand-accent-primary">
-                {user.stepsSolvedCount}
-              </p>
-              <p>Steps</p>
-            </div>
-
-            <div>
-              <p className="text-xl font-bold text-brand-accent-primary">
-                {user.puzzlesSolvedCount}
-              </p>
-              <p>Puzzles</p>
-            </div>
-
-            <div>
-              <p className="text-xl font-bold text-brand-accent-primary">
-                {user.packsSolvedCount}
-              </p>
-              <p>Packs</p>
-            </div>
-
-            <div>
-              <p className="text-xl font-bold text-brand-accent-primary">
-                {user.nftsSolvedCount}
-              </p>
-              <p>NFTs</p>
+              {lensProfile?.handle && (
+                <div className="flex items-center">
+                  <LensIcon className="h-5 w-5 text-white" />
+                  <p className="ml-4 text-sm text-white/70">
+                    {lensProfile.handle}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="px-4 pb-6 text-white sm:px-10">
-            {userData.primaryEmail && (
-              <div className="flex items-center pb-4">
-                <EnvelopeIcon className="h-5 w-5 text-white" />
-                <p className="ml-4 text-sm text-white/70">
-                  {userData.primaryEmail}
-                </p>
-              </div>
-            )}
+          {user.discordConnection?.id && (
+            <div className="rounded-md border-t border-white/10 bg-black/25 py-8 px-4 text-sm text-gray-100 sm:px-10">
+              {discordSyncLoading ? (
+                <LoaderIcon />
+              ) : (
+                <>
+                  {!discordRolesData?.syncDiscordRoles.success && (
+                    <>
+                      <p>
+                        Are you a member of our{' '}
+                        <a
+                          href="https://discord.gg/infinitykeys"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline transition-colors hover:text-brand-accent-primary"
+                        >
+                          Discord server
+                        </a>
+                        ? Sync your Discord roles here.
+                      </p>
 
-            {user.discordConnection?.username && (
-              <div className="flex items-center pb-4">
-                <DiscordIcon width={20} height={20} />
-                <p className="ml-4 text-sm text-white/70">
-                  {user.discordConnection.username}
-                </p>
-              </div>
-            )}
+                      <div className="flex justify-center">
+                        <button
+                          onClick={() => syncDiscordRoles()}
+                          className="social-share mt-4 inline-flex items-center rounded bg-discordPurple px-4 py-2 text-sm font-medium text-white transition hover:bg-discordPurple/70"
+                        >
+                          Sync Roles
+                        </button>
+                      </div>
+                    </>
+                  )}
 
-            {userData.truncatedWallet && (
-              <div className="flex items-center pb-4">
-                <WalletIcon className="h-5 w-5 text-white" />
-                <p className="ml-4 text-sm text-white/70">
-                  {userData.truncatedWallet}
-                </p>
-              </div>
-            )}
+                  {discordRolesData?.syncDiscordRoles?.message && (
+                    <p className="text-center">
+                      {discordRolesData?.syncDiscordRoles?.message}
+                    </p>
+                  )}
 
-            {lensProfile?.handle && (
-              <div className="flex items-center">
-                <LensIcon className="h-5 w-5 text-white" />
-                <p className="ml-4 text-sm text-white/70">
-                  {lensProfile.handle}
-                </p>
-              </div>
-            )}
-          </div>
+                  {discordRolesData?.syncDiscordRoles?.errors?.map(
+                    (text, i) => (
+                      <p className="mt-2" key={i}>
+                        {text}
+                      </p>
+                    )
+                  )}
+                </>
+              )}
+            </div>
+          )}
         </div>
 
-        {user.discordConnection?.id && (
-          <div className="rounded-md border-t border-white/10 bg-black/25 py-8 px-4 text-sm text-gray-100 sm:px-10">
-            {discordSyncLoading ? (
-              <LoaderIcon />
-            ) : (
-              <>
-                {!discordRolesData?.syncDiscordRoles.success && (
-                  <>
-                    <p>
-                      Are you a member of our{' '}
-                      <a
-                        href="https://discord.gg/infinitykeys"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline transition-colors hover:text-brand-accent-primary"
-                      >
-                        Discord server
-                      </a>
-                      ? Sync your Discord roles here.
-                    </p>
-
-                    <div className="flex justify-center">
-                      <button
-                        onClick={() => syncDiscordRoles()}
-                        className="social-share mt-4 inline-flex items-center rounded bg-discordPurple px-4 py-2 text-sm font-medium text-white transition hover:bg-discordPurple/70"
-                      >
-                        Sync Roles
-                      </button>
-                    </div>
-                  </>
-                )}
-
-                {discordRolesData?.syncDiscordRoles?.message && (
-                  <p className="text-center">
-                    {discordRolesData?.syncDiscordRoles?.message}
-                  </p>
-                )}
-
-                {discordRolesData?.syncDiscordRoles?.errors?.map((text, i) => (
-                  <p className="mt-2" key={i}>
-                    {text}
-                  </p>
-                ))}
-              </>
-            )}
+        <div className="overflow-hidden rounded-lg bg-black/30 lg:basis-2/5">
+          <div className="bg-black/30 py-8 px-4 sm:px-8">
+            <p className="">Connect accounts:</p>
           </div>
-        )}
+
+          <div className="flex flex-col gap-4 py-8 px-4 text-sm sm:px-8">
+            <div className="flex items-center justify-between">
+              <p>Discord:</p>
+              {user?.discordConnection?.id ? (
+                <DisconnectAccountButton
+                  provider="discord"
+                  onSuccess={queryResult?.refetch}
+                />
+              ) : (
+                <ConnectAccountButton provider="discord" />
+              )}
+            </div>
+            <div className="flex items-center justify-between">
+              <p>Lens:</p>
+              <LensConnect text="Connect" size="small" />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <p>Socials:</p>
+
+              <a
+                href={`${CLERK_PORTAL_URL}/user`}
+                className="overflow-hidden rounded-md p-2 text-sm text-gray-200 transition-colors hover:bg-white/10 hover:text-brand-accent-primary"
+              >
+                Connect Accounts
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="overflow-hidden rounded-lg bg-black/30 lg:basis-2/5">
-        <div className="bg-black/30 py-8 px-4 sm:px-8">
-          <p className="">Connect accounts:</p>
-        </div>
-
-        <div className="flex flex-col gap-4 py-8 px-4 text-sm sm:px-8">
-          <div className="flex items-center justify-between">
-            <p>Discord:</p>
-            {user?.discordConnection?.id ? (
-              <DisconnectAccountButton
-                provider="discord"
-                onSuccess={queryResult?.refetch}
-              />
-            ) : (
-              <ConnectAccountButton provider="discord" />
-            )}
-          </div>
-          <div className="flex items-center justify-between">
-            <p>Lens:</p>
-            <LensConnect text="Connect" size="small" />
+      <div className="mt-6 flex flex-col gap-6">
+        <div className="overflow-hidden rounded-lg bg-black/30 lg:basis-2/5">
+          <div className="bg-black/30 py-8 px-4 sm:px-8">
+            <p className="">Your Puzzles & Packs</p>
           </div>
 
-          <div className="flex items-center justify-between">
-            <p>Socials:</p>
-
-            <a
-              href={`${CLERK_PORTAL_URL}/user`}
-              className="overflow-hidden rounded-md p-2 text-sm text-gray-200 transition-colors hover:bg-white/10 hover:text-brand-accent-primary"
-            >
-              Connect Accounts
-            </a>
+          <div className="flex flex-col gap-4 py-8 px-4 text-sm sm:px-8">
+            <div className="grid gap-4 py-8 px-4 text-sm sm:px-8 md:grid-cols-2">
+              {data?.userRewardables.map((rewardable) => (
+                <Thumbnail
+                  id={rewardable.id} // keep typescript happy
+                  key={rewardable.id}
+                  name={rewardable.name}
+                  href={rewardableLandingRoute({
+                    type: rewardable.type,
+                    slug: rewardable.slug,
+                  })}
+                  isGrid={false} // always false for this display
+                  cloudinaryId={rewardable.nfts?.[0]?.cloudinaryId}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

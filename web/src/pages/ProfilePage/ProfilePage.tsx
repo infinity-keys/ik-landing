@@ -32,7 +32,7 @@ const ProfilePage = () => {
   const { redirectTo } = useParams()
 
   return (
-    <div className="flex min-h-[calc(100vh-80px)] justify-center pt-12 md:items-center md:pt-0">
+    <div className="mx-6 min-h-[calc(100vh-80px)] justify-center pt-12 md:items-center md:pt-0">
       <Seo title="Profile" />
       {isAuthenticated && !loading && !deleteProgressLoading && (
         <div className="mx-auto w-full max-w-4xl pb-12">
@@ -69,7 +69,7 @@ const ProfilePage = () => {
         </div>
       )}
       {currentUser && hasRole('ADMIN') && (
-        <div className="flex justify-center pt-20">
+        <div className="flex justify-center pb-20">
           <ProgressDeleteButton
             setDeleteProgressLoading={setDeleteProgressLoading}
           />
