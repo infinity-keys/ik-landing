@@ -1083,12 +1083,18 @@ export default function PuzzleForm({
       },
       puzzle: {
         coverImage: initialValues?.puzzle?.coverImage,
-        requirements: initialValues?.puzzle?.requirements,
+        requirements: initialValues?.puzzle?.requirements || ['DETAIL'],
       },
     },
   })
 
   const { errors } = formMethods.formState
+
+  useEffect(() => {
+    if (!isEmpty(errors)) {
+      console.error(errors)
+    }
+  }, [errors])
 
   // Steps Field Array for Token ID Ranges (and steps too?)
   const { fields, append, remove } = useFieldArray({
