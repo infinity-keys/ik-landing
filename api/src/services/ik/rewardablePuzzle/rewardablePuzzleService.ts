@@ -14,6 +14,7 @@ import {
   generateNftImage,
   generateSlug,
   getOptionalNftUpdateValues,
+  isAlphanumeric,
 } from 'src/lib/puzzleForm'
 import { getNftData } from 'src/lib/web3/get-nft-data'
 
@@ -35,6 +36,14 @@ export const editRewardablePuzzle: MutationResolvers['editRewardablePuzzle'] =
       if (!input.puzzle.steps) {
         throw new Error('Steps are required in `editRewardablePuzzle` request.')
       }
+
+      input.puzzle.steps.forEach((step) => {
+        if (!isAlphanumeric(step.stepSimpleText?.solution)) {
+          throw new Error(
+            'Invalid passcode - must have letters and numbers only'
+          )
+        }
+      })
 
       const prevRewardable = await db.rewardable.findUnique({
         where: { id: rewardableId },
@@ -121,9 +130,6 @@ export const editRewardablePuzzle: MutationResolvers['editRewardablePuzzle'] =
     }
   }
 
-// Richard Burd's unique service:
-// Eventually this becomes "create rewardable"
-
 export const createRewardablePuzzle: MutationResolvers['createRewardablePuzzle'] =
   async ({ input }) => {
     try {
@@ -142,6 +148,14 @@ export const createRewardablePuzzle: MutationResolvers['createRewardablePuzzle']
           'Steps are required in `createRewardablePuzzle` request.'
         )
       }
+
+      input.puzzle.steps.forEach((step) => {
+        if (!isAlphanumeric(step.stepSimpleText?.solution)) {
+          throw new Error(
+            'Invalid passcode - must have letters and numbers only'
+          )
+        }
+      })
 
       const steps = formatCreateSteps(input.puzzle.steps)
 
