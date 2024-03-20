@@ -112,7 +112,12 @@ export const hasRole = (roles: AllowedRoles): boolean => {
  */
 export const requireAuth = ({ roles }: { roles?: AllowedRoles }) => {
   if (!isAuthenticated()) {
+    // // Use this for dev & prod as the default
     throw new AuthenticationError('Not authenticated')
+
+    // // Use this to enable GraphQL Playground
+    // // WARNING: switch back to above line before commit!!
+    // return true
   }
 
   if (roles && !hasRole(roles)) {

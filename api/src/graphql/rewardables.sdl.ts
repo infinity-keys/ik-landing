@@ -47,6 +47,7 @@ export const schema = gql`
   type Query {
     rewardables: [Rewardable!]! @requireAuth
     rewardable(id: String!): Rewardable @requireAuth
+    userRewardables(userId: String!): [Rewardable!]! @requireAuth
   }
 
   input CreateRewardableInput {
