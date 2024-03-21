@@ -578,10 +578,10 @@ function StepForm({
                     </div>
                   </Label>
                   <TextField
-                    placeholder="Passcode"
+                    placeholder="The passcode can be only letters and numbers."
                     {...register(`${stepsArrayName}.${index}.solution`)}
                     className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                    validation={{ required: true }}
+                    validation={{ required: true, pattern: /^[a-zA-Z0-9]+$/ }}
                   />
                   {Array.isArray(errors[stepsArrayName]) &&
                     errors[stepsArrayName][index] &&
@@ -590,6 +590,16 @@ function StepForm({
                     errors[stepsArrayName][index].solution.type ===
                       'required' &&
                     requiredFieldError('a passcode')}
+                  {Array.isArray(errors[stepsArrayName]) &&
+                    errors[stepsArrayName][index] &&
+                    'solution' in errors[stepsArrayName][index] &&
+                    'type' in errors[stepsArrayName][index].solution &&
+                    errors[stepsArrayName][index].solution.type ===
+                      'pattern' && (
+                      <div className="form__error pt-1 font-medium text-rose-300">
+                        The passcode can be only letters or numbers
+                      </div>
+                    )}
                 </div>
               </div>
             )}
@@ -1421,7 +1431,7 @@ export default function PuzzleForm({
                   <TextField
                     name="rewardable.nft.name"
                     className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                    placeholder="NFT Image"
+                    placeholder="NFT Name"
                     validation={{ required: true }}
                   />
                   {errors.rewardable?.nft?.name?.type === 'required' &&
@@ -1469,7 +1479,7 @@ export default function PuzzleForm({
                   <FileField
                     name="rewardable.nft.image"
                     className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                    placeholder="NFT Name"
+                    placeholder="NFT Image"
                     validation={{
                       required: !isEditMode,
                       validate: {

@@ -234,3 +234,9 @@ export const generateSlug = (name: string): string => {
     lower: true,
   })
 }
+
+export const isAlphanumeric = (str?: string) => {
+  if (!str) return false
+  const regex = /^[a-zA-Z0-9]+$/
+  return regex.test(str)
+}
