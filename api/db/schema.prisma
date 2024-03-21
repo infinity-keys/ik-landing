@@ -75,7 +75,7 @@ model UserReward {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
-  rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
+  rewardable   Rewardable @relation(fields: [rewardableId], references: [id], onDelete: Cascade)
   rewardableId String
 
   nfts Nft[]
@@ -88,9 +88,9 @@ model UserReward {
 model RewardableConnection {
   id String @id @default(cuid())
 
-  parentRewardable Rewardable @relation("ParentLink", fields: [parentId], references: [id])
+  parentRewardable Rewardable @relation("ParentLink", fields: [parentId], references: [id], onDelete: Cascade)
   parentId         String
-  childRewardable  Rewardable @relation("ChildLink", fields: [childId], references: [id])
+  childRewardable  Rewardable @relation("ChildLink", fields: [childId], references: [id], onDelete: Cascade)
   childId          String
 
   childSortWeight Int? @default(1)
@@ -123,7 +123,7 @@ model Bundle {
 model Puzzle {
   id String @id @default(cuid())
 
-  rewardable   Rewardable @relation(fields: [rewardableId], references: [id])
+  rewardable   Rewardable @relation(fields: [rewardableId], references: [id], onDelete: Cascade)
   rewardableId String     @unique
 
   // Users can fill out a form and submit answers when completing a puzzle
@@ -189,7 +189,7 @@ model Step {
   stepSortWeight Int @default(1)
 
   // Connect this step to exactly 1 Puzzle
-  puzzle   Puzzle @relation(fields: [puzzleId], references: [id])
+  puzzle   Puzzle @relation(fields: [puzzleId], references: [id], onDelete: Cascade)
   puzzleId String
 
   // Step types
@@ -398,7 +398,7 @@ model Submission {
 
   data Json
 
-  puzzle   Puzzle @relation(fields: [puzzleId], references: [rewardableId])
+  puzzle   Puzzle @relation(fields: [puzzleId], references: [rewardableId], onDelete: Cascade)
   puzzleId String
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId   String
