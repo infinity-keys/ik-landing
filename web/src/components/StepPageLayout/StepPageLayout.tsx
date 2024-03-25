@@ -36,7 +36,10 @@ const StepPageLayout = ({
         </div>
         {hasOverlay && (
           <div className="relative z-40 flex justify-center">
-            <button onClick={() => setShowOverlay(!showOverlay)}>
+            <button
+              className="pointer-events-none"
+              // onClick={() => setShowOverlay(!showOverlay)}
+            >
               <span className="overlay-icon hidden max-w-[226px] text-transparent md:block">
                 {overlayContent.icon}
               </span>
