@@ -3,6 +3,7 @@ export const schema = gql`
     id: String!
     createdAt: DateTime!
     updatedAt: DateTime!
+    trashedAt: DateTime
     name: String!
     slug: String!
     explanation: String

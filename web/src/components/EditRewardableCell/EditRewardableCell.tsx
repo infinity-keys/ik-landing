@@ -21,6 +21,7 @@ export const QUERY = gql`
       id
       name
       listPublicly
+      trashedAt
       nfts {
         data
       }
@@ -81,6 +82,7 @@ export const Failure = ({
 
 export const Success = ({
   rewardable,
+  queryResult,
 }: CellSuccessProps<FindEditPuzzleQuery, FindEditPuzzleQueryVariables>) => {
   const [editArchetypalPuzzle, { loading, error }] = useMutation<
     EditRewardableMutation,
@@ -154,6 +156,7 @@ export const Success = ({
     <PuzzleForm
       initialValues={{
         rewardable: {
+          id: rewardable.id,
           name: rewardable.name,
           listPublicly: rewardable.listPublicly,
           nft: {
@@ -169,7 +172,9 @@ export const Success = ({
         },
         steps: formattedSteps,
       }}
+      refetch={queryResult?.refetch}
       isEditMode
+      trashed={!!rewardable.trashedAt}
       onFormSubmit={({ input }) => {
         if (!rewardable.puzzle?.id) {
           throw new Error('Error obtaining puzzle ID')

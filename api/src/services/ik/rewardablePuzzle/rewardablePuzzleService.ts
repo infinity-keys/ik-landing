@@ -3,7 +3,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import { nanoid } from 'nanoid'
 import type { MutationResolvers } from 'types/graphql'
 
-import { AuthenticationError } from '@redwoodjs/graphql-server'
+import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
 
 import { hasRole } from 'src/lib/auth'
 import { db } from 'src/lib/db'
@@ -294,6 +294,105 @@ export const createRewardablePuzzle: MutationResolvers['createRewardablePuzzle']
           error instanceof Error
             ? error.message
             : 'There was a problem creating the rewardable',
+      }
+    }
+  }
+
+export const trashRewardablePuzzle: MutationResolvers['trashRewardablePuzzle'] =
+  async ({ rewardableId }) => {
+    try {
+      if (!context.currentUser?.id) {
+        throw new AuthenticationError('Must be logged in')
+      }
+
+      // Ensure user owns the rewardable they are trying to trash
+      try {
+        await db.rewardable.findUniqueOrThrow({
+          where: {
+            id: rewardableId,
+            organization: {
+              users: {
+                some: {
+                  userId: context.currentUser.id,
+                },
+              },
+            },
+          },
+        })
+      } catch {
+        throw new ForbiddenError(
+          'User must belong to the org that owns this puzzle.'
+        )
+      }
+
+      const rewardable = await db.rewardable.update({
+        where: { id: rewardableId },
+        data: {
+          trashedAt: new Date(),
+          listPublicly: false,
+        },
+      })
+
+      return { success: true, rewardable }
+    } catch (error) {
+      logger.error('Error in `trashRewardablePuzzle`')
+      logger.error(error)
+
+      return {
+        success: false,
+        rewardable: null,
+        errorMessage:
+          error instanceof Error
+            ? error.message
+            : 'There was a problem trashing the rewardable',
+      }
+    }
+  }
+
+export const restoreRewardablePuzzle: MutationResolvers['restoreRewardablePuzzle'] =
+  async ({ rewardableId }) => {
+    try {
+      if (!context.currentUser?.id) {
+        throw new AuthenticationError('Must be logged in')
+      }
+
+      // Ensure user owns the rewardable they are trying to restore
+      try {
+        await db.rewardable.findUniqueOrThrow({
+          where: {
+            id: rewardableId,
+            organization: {
+              users: {
+                some: {
+                  userId: context.currentUser.id,
+                },
+              },
+            },
+          },
+        })
+      } catch {
+        throw new ForbiddenError(
+          'User must belong to the org that owns this puzzle.'
+        )
+      }
+
+      const rewardable = await db.rewardable.update({
+        where: { id: rewardableId },
+        data: { trashedAt: null },
+      })
+
+      return { success: true, rewardable }
+    } catch (error) {
+      logger.error('Error in `restoreRewardablePuzzle`')
+      logger.error(error)
+
+      return {
+        success: false,
+        rewardable: null,
+        errorMessage:
+          error instanceof Error
+            ? error.message
+            : 'There was a problem restoring the rewardable',
       }
     }
   }

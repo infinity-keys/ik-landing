@@ -17,5 +17,10 @@ export const schema = gql`
       rewardableId: String!
       puzzleId: String!
     ): RewardableResponse! @requireAuth
+
+    trashRewardablePuzzle(rewardableId: String!): RewardableResponse!
+      @requireAuth
+    restoreRewardablePuzzle(rewardableId: String!): RewardableResponse!
+      @requireAuth
   }
 `
