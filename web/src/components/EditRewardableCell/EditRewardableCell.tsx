@@ -17,6 +17,8 @@ import {
   useMutation,
 } from '@redwoodjs/web'
 
+import RestorePuzzle from 'src/components/EditRewardableCell/RestorePuzzle'
+import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import PuzzleForm from 'src/components/PuzzleForm/PuzzleForm'
 
 export const QUERY = gql`
@@ -126,7 +128,7 @@ export const Success = ({
     },
   })
 
-  const [trashPuzzle] = useMutation<
+  const [trashPuzzle, { loading: trashLoading }] = useMutation<
     TrashRewardablePuzzle,
     TrashRewardablePuzzleVariables
   >(TRASH_PUZZLE_MUTATION, {
@@ -140,7 +142,7 @@ export const Success = ({
     },
   })
 
-  const [restorePuzzle] = useMutation<
+  const [restorePuzzle, { loading: restoreLoading }] = useMutation<
     RestoreRewardablePuzzle,
     RestoreRewardablePuzzleVariables
   >(RESTORE_PUZZLE_MUTATION, {
@@ -202,6 +204,29 @@ export const Success = ({
 
   const trashed = !!rewardable.trashedAt
 
+  if (trashLoading || restoreLoading) {
+    return (
+      <div className="flex min-h-[calc(100vh-80px)] items-center">
+        <LoadingIcon />
+      </div>
+    )
+  }
+
+  if (trashed) {
+    return (
+      <RestorePuzzle
+        name={rewardable.name}
+        restorePuzzle={() =>
+          restorePuzzle({
+            variables: {
+              rewardableId: rewardable.id,
+            },
+          })
+        }
+      />
+    )
+  }
+
   return (
     <div className="form min-h-[calc(100vh-80px)] px-4 pb-16">
       <div className="my-8 p-2 text-center text-3xl tracking-wide">
@@ -212,20 +237,14 @@ export const Success = ({
         type="button"
         className="rounded bg-white/10 px-3"
         onClick={() =>
-          trashed
-            ? restorePuzzle({
-                variables: {
-                  rewardableId: rewardable.id,
-                },
-              })
-            : trashPuzzle({
-                variables: {
-                  rewardableId: rewardable.id,
-                },
-              })
+          trashPuzzle({
+            variables: {
+              rewardableId: rewardable.id,
+            },
+          })
         }
       >
-        {trashed ? 'Restore Puzzle' : 'Trash Puzzle'}
+        Trash Puzzle
       </button>
 
       <PuzzleForm
