@@ -47,8 +47,12 @@ export const editRewardablePuzzle: MutationResolvers['editRewardablePuzzle'] =
 
       const prevRewardable = await db.rewardable.findUnique({
         where: { id: rewardableId },
-        select: { name: true, slug: true },
+        select: { name: true, slug: true, trashedAt: true },
       })
+
+      if (prevRewardable?.trashedAt) {
+        throw new Error("Cannot edit a puzzle that's in the trash")
+      }
 
       const steps = formatCreateSteps(input.puzzle.steps)
       const slug =
