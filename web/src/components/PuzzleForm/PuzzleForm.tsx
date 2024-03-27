@@ -31,10 +31,6 @@ import {
   CreatePuzzleInput,
   EditRewardableMutationVariables,
   CreateRewardableMutationVariables,
-  TrashRewardablePuzzle,
-  TrashRewardablePuzzleVariables,
-  RestoreRewardablePuzzle,
-  RestoreRewardablePuzzleVariables,
 } from 'types/graphql'
 
 import {
@@ -56,7 +52,6 @@ import {
   Control,
   FileField,
 } from '@redwoodjs/forms'
-import { useMutation } from '@redwoodjs/web'
 
 import Button, { generateButtonClasses } from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
@@ -1045,35 +1040,15 @@ const emptyFormValues: PuzzleFormType = {
   steps: [buildEmptyStep()],
 }
 
-const TRASH_PUZZLE_MUTATION = gql`
-  mutation TrashRewardablePuzzle($rewardableId: String!) {
-    trashRewardablePuzzle(rewardableId: $rewardableId) {
-      success
-    }
-  }
-`
-
-const RESTORE_PUZZLE_MUTATION = gql`
-  mutation RestoreRewardablePuzzle($rewardableId: String!) {
-    restoreRewardablePuzzle(rewardableId: $rewardableId) {
-      success
-    }
-  }
-`
-
 export default function PuzzleForm({
   initialValues,
   isEditMode = false,
-  trashed = false,
-  refetch,
   onFormSubmit,
   submissionError,
   submissionPending,
 }: {
   initialValues?: InitialValuesType
   isEditMode?: boolean
-  trashed?: boolean
-  refetch?: () => void
   onFormSubmit: (
     variables:
       | CreateRewardableMutationVariables
@@ -1085,31 +1060,6 @@ export default function PuzzleForm({
 }) {
   const [nftImagePlaceholder, setNftImagePlaceholder] = useState('')
   const [selectedTab, setSelectedTab] = useState(0)
-
-  const [trashPuzzle] = useMutation<
-    TrashRewardablePuzzle,
-    TrashRewardablePuzzleVariables
-  >(TRASH_PUZZLE_MUTATION, {
-    onCompleted: (data) => {
-      if (data.trashRewardablePuzzle.success && typeof refetch === 'function') {
-        refetch()
-      }
-    },
-  })
-
-  const [restorePuzzle] = useMutation<
-    RestoreRewardablePuzzle,
-    RestoreRewardablePuzzleVariables
-  >(RESTORE_PUZZLE_MUTATION, {
-    onCompleted: (data) => {
-      if (
-        data.restoreRewardablePuzzle.success &&
-        typeof refetch === 'function'
-      ) {
-        refetch()
-      }
-    },
-  })
 
   // only used in dev mode
   const renderCount = useRef(process.env.NODE_ENV === 'development' ? 1 : 0)
@@ -1331,10 +1281,7 @@ export default function PuzzleForm({
   }
 
   return (
-    <div className="form min-h-[calc(100vh-80px)] px-4 pb-16">
-      <div className="my-8 p-2 text-center text-3xl tracking-wide">
-        {isEditMode ? 'Edit Your Puzzle' : 'Create a New Puzzle'}
-      </div>
+    <>
       <Tab.Group selectedIndex={selectedTab} onChange={setSelectedTab}>
         <div className="border-b-2 border-gray-700">
           <Tab.List className="flex translate-y-[2px] justify-center gap-8">
@@ -1741,37 +1688,6 @@ export default function PuzzleForm({
                   )}
 
                   <FormError error={submissionError} />
-                  {!trashed && isEditMode && initialValues?.rewardable.id && (
-                    <button
-                      type="button"
-                      className="bg-red-500"
-                      onClick={() =>
-                        trashPuzzle({
-                          variables: {
-                            rewardableId: initialValues.rewardable.id,
-                          },
-                        })
-                      }
-                    >
-                      Trash Puzzle
-                    </button>
-                  )}
-
-                  {trashed && isEditMode && initialValues?.rewardable.id && (
-                    <button
-                      type="button"
-                      className="bg-green-500"
-                      onClick={() =>
-                        restorePuzzle({
-                          variables: {
-                            rewardableId: initialValues.rewardable.id,
-                          },
-                        })
-                      }
-                    >
-                      Restore Puzzle
-                    </button>
-                  )}
                 </div>
               </Tab.Panel>
             </Tab.Panels>
@@ -1783,6 +1699,6 @@ export default function PuzzleForm({
           <LoadingIcon />
         </div>
       )}
-    </div>
+    </>
   )
 }
