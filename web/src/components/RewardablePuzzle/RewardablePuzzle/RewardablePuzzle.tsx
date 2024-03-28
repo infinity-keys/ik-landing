@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 // import { Transition } from '@headlessui/react'
 // import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
+import { TrashIcon } from '@heroicons/react/20/solid'
 import { IK_LOGO_FULL_URL } from '@infinity-keys/constants'
 import { buildUrlString } from '@infinity-keys/core'
 import type {
@@ -10,7 +11,7 @@ import type {
 } from 'types/graphql'
 
 import { routes, useLocation } from '@redwoodjs/router'
-import { useQuery } from '@redwoodjs/web'
+import { useQuery, useMutation } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
@@ -39,6 +40,15 @@ const CURRENT_USER_QUERY = gql`
   }
 `
 
+// user can delete a rewardable they have permission to edit
+const DELETE_REWARDABLE_MUTATION = gql`
+  mutation DeleteRewardableMutation($id: String!) {
+    deleteRewardable(id: $id) {
+      id
+    }
+  }
+`
+
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface Props {
@@ -53,6 +63,9 @@ if (!CLERK_SIGNIN_PORTAL_URL) {
 
 const Rewardable = ({ rewardable }: Props) => {
   const [canEditRewardable, setCanEditRewardable] = useState(false)
+
+  // user can delete a rewardable they have permission to edit
+  const [deleteRewardable] = useMutation(DELETE_REWARDABLE_MUTATION)
 
   // when querying for the current user...
   useQuery(CURRENT_USER_QUERY, {
@@ -235,15 +248,38 @@ const Rewardable = ({ rewardable }: Props) => {
           )}
         </TextContainer>
         {canEditRewardable && (
-          <div className="">
-            <Button
-              to={routes.editFormArchetype({ slug: rewardable.slug })}
-              shadow
-              bold
-              solid
-            >
-              Edit this Puzzle
-            </Button>
+          <div className="pt-2">
+            <div className="flex justify-center py-2 sm:py-2">
+              <Button
+                to={routes.editFormArchetype({ slug: rewardable.slug })}
+                shadow
+                bold
+                solid
+              >
+                Edit this Puzzle
+              </Button>
+            </div>
+            <div className="flex justify-center py-2 sm:py-2">
+              <Button
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      'Are you sure you want to delete this puzzle? It will be trashed and deleted after 30 days'
+                    )
+                  ) {
+                    deleteRewardable({ variables: { id: rewardable.id } })
+                      .then(() => {
+                        window.location.href = routes.profile() // Redirect after deletion
+                      })
+                      .catch((error) => {
+                        console.error('Error deleting rewardable:', error)
+                      })
+                  }
+                }}
+              >
+                <TrashIcon className="h-5 w-5" /> Delete Puzzle
+              </Button>
+            </div>
           </div>
         )}
       </SectionContainer>
