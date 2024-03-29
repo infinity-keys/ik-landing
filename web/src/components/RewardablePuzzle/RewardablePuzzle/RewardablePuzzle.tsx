@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 
-// import { Transition } from '@headlessui/react'
-// import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
+import { Transition } from '@headlessui/react'
+import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
 import { IK_LOGO_FULL_URL } from '@infinity-keys/constants'
 import { buildUrlString } from '@infinity-keys/core'
 import type {
   FindRewardablePuzzleBySlug,
-  // PuzzleRequirements,
+  PuzzleRequirements,
 } from 'types/graphql'
 
 import { routes, useLocation } from '@redwoodjs/router'
@@ -21,7 +21,7 @@ import ImagesContainer from 'src/components/PuzzleLayout/ImageContainer/ImagesCo
 import SectionContainer from 'src/components/PuzzleLayout/SectionContainer/SectionContainer'
 import TextContainer from 'src/components/PuzzleLayout/TextContainer/TextContainer'
 import Seo from 'src/components/Seo/Seo'
-// import { requirementsLookup } from 'src/lib/puzzleRequirements'
+import { requirementsLookup } from 'src/lib/puzzleRequirements'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
 
@@ -67,9 +67,9 @@ const Rewardable = ({ rewardable }: Props) => {
   })
 
   const { isAuthenticated } = useAuth()
-  // const [showOverlay, setShowOverlay] = useState(false)
-  // const [currentOverlayContent, setCurrentOverlayContent] =
-  // useState<PuzzleRequirements | null>(null)
+  const [showOverlay, setShowOverlay] = useState(false)
+  const [currentOverlayContent, setCurrentOverlayContent] =
+    useState<PuzzleRequirements | null>(null)
   const { pageHeading, setPageHeading } = useGlobalInfo()
 
   useEffect(() => {
@@ -158,12 +158,12 @@ const Rewardable = ({ rewardable }: Props) => {
                   <p className="mb-1 text-lg font-medium md:text-xl">
                     Get Ready!
                   </p>
-                  {/* <p className="text-sm md:text-base">
+                  <p className="text-sm md:text-base">
                     Check the items below before you jump in.
-                  </p> */}
+                  </p>
                 </div>
 
-                {/* <div className="relative flex flex-wrap justify-center gap-10">
+                <div className="relative flex flex-wrap justify-center gap-10">
                   {rewardable.puzzle?.requirements?.map((req) =>
                     req ? (
                       <button
@@ -184,9 +184,9 @@ const Rewardable = ({ rewardable }: Props) => {
                       </button>
                     ) : null
                   )}
-                </div> */}
+                </div>
 
-                {/* <Transition
+                <Transition
                   show={showOverlay}
                   enter="transition-opacity duration-75"
                   enterFrom="opacity-0"
@@ -225,7 +225,7 @@ const Rewardable = ({ rewardable }: Props) => {
                       <XCircleIcon className="h-7 w-7 fill-transparent" />
                     </button>
                   </div>
-                </Transition> */}
+                </Transition>
               </div>
             )
           ) : (

@@ -181,6 +181,7 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
                     <StepPageLayout
                       key={page.id}
                       showOverlay={showOverlay}
+                      disableModal={true}
                       setShowOverlay={setShowOverlay}
                       overlayContent={
                         page.showStepGuideHint && step.stepGuideType
