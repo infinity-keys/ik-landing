@@ -16,13 +16,15 @@ import { useQuery, useMutation } from '@redwoodjs/web'
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button'
+// import EditRewardableCell from 'src/components/EditRewardableCell'
 import Markdown from 'src/components/Markdown/Markdown'
 import AbsoluteImage from 'src/components/PuzzleLayout/AbsoluteImage/AbsoluteImage'
 import ImagesContainer from 'src/components/PuzzleLayout/ImageContainer/ImagesContainer'
 import SectionContainer from 'src/components/PuzzleLayout/SectionContainer/SectionContainer'
 import TextContainer from 'src/components/PuzzleLayout/TextContainer/TextContainer'
 import Seo from 'src/components/Seo/Seo'
-import { Success as TrashPuzzleCell } from 'src/components/TrashPuzzleCell/TrashPuzzleCell'
+import TrashPuzzleCell from 'src/components/TrashPuzzleCell'
+// import { Success as TrashPuzzleCell } from 'src/components/TrashPuzzleCell/TrashPuzzleCell'
 // import { requirementsLookup } from 'src/lib/puzzleRequirements'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
@@ -284,6 +286,7 @@ const Rewardable = ({ rewardable }: Props) => {
             </div>
             <div className="flex justify-center py-2 sm:py-2">
               <TrashPuzzleCell slug={slug} />
+              {/* <EditRewardableCell slug={slug} /> */}
             </div>
           </div>
         )}
