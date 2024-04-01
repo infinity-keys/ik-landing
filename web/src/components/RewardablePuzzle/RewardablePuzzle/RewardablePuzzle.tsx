@@ -22,6 +22,7 @@ import ImagesContainer from 'src/components/PuzzleLayout/ImageContainer/ImagesCo
 import SectionContainer from 'src/components/PuzzleLayout/SectionContainer/SectionContainer'
 import TextContainer from 'src/components/PuzzleLayout/TextContainer/TextContainer'
 import Seo from 'src/components/Seo/Seo'
+import { Success as TrashPuzzleCell } from 'src/components/TrashPuzzleCell/TrashPuzzleCell'
 // import { requirementsLookup } from 'src/lib/puzzleRequirements'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
@@ -62,6 +63,7 @@ if (!CLERK_SIGNIN_PORTAL_URL) {
 }
 
 const Rewardable = ({ rewardable }: Props) => {
+  const slug = rewardable?.slug
   const [canEditRewardable, setCanEditRewardable] = useState(false)
 
   // user can delete a rewardable they have permission to edit
@@ -277,8 +279,11 @@ const Rewardable = ({ rewardable }: Props) => {
                   }
                 }}
               >
-                <TrashIcon className="h-5 w-5" /> Delete Puzzle
+                <TrashIcon className="h-5 w-5" /> Delete Puzzle Permanently!
               </Button>
+            </div>
+            <div className="flex justify-center py-2 sm:py-2">
+              <TrashPuzzleCell slug={slug} />
             </div>
           </div>
         )}
