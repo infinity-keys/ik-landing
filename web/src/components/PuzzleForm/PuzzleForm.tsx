@@ -56,6 +56,8 @@ import {
 import Button, { generateButtonClasses } from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 
+// import CloudinaryUpload from './CloudinaryUpload/CloudinaryUpload'
+import CloudinaryUploadWidget from './CloudinaryUpload/CloudinaryUploadWidget'
 import DisplayImage from './DisplayImage/DisplayImage'
 import TabLabel from './TabLabel'
 
@@ -1295,6 +1297,7 @@ export default function PuzzleForm({
           <Form formMethods={formMethods} onSubmit={onSubmit}>
             <Tab.Panels>
               <Tab.Panel unmount={false}>
+                <CloudinaryUploadWidget />
                 <div id="puzzle-name" className="form__entry mb-12">
                   <Label
                     name="rewardable.name"
