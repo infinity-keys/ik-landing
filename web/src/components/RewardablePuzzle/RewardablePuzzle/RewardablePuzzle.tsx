@@ -285,7 +285,7 @@ const Rewardable = ({ rewardable }: Props) => {
               </Button>
             </div>
             <div className="flex justify-center py-2 sm:py-2">
-              <TrashPuzzleCell slug={slug} />
+              <TrashPuzzleCell slug={slug} id={rewardable.id} />
               {/* <EditRewardableCell slug={slug} /> */}
             </div>
           </div>

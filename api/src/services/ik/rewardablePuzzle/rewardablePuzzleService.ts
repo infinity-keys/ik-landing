@@ -378,8 +378,7 @@ export const restoreRewardablePuzzle: MutationResolvers['restoreRewardablePuzzle
 
       const rewardable = await db.rewardable.update({
         where: { id: rewardableId },
-        // `listPublicly` to see it on `/play` path again
-        data: { trashedAt: null, listPublicly: true },
+        data: { trashedAt: null },
       })
 
       return { success: true, rewardable }

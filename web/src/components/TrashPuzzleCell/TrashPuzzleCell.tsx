@@ -1,3 +1,9 @@
+// TODO:
+// make this a normal component, not a cell
+// use generators to make component
+// when you trash a puzzle, you should be redirected
+// to the profile page
+
 import type {
   FindEditPuzzleQuery,
   FindEditPuzzleQueryVariables,
@@ -13,6 +19,8 @@ import {
   useMutation,
 } from '@redwoodjs/web'
 
+// delete this query because you are now
+// pulling it in as a prop on the parent component
 export const QUERY = gql`
   query FindEditPuzzleQuery($slug: String!) {
     rewardable: rewardableBySlugWithOrg(slug: $slug, type: PUZZLE) {
