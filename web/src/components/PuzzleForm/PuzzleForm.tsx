@@ -50,7 +50,6 @@ import {
   UseFormGetValues,
   CheckboxField,
   Control,
-  FileField,
 } from '@redwoodjs/forms'
 
 import Button, { generateButtonClasses } from 'src/components/Button/Button'
@@ -117,26 +116,6 @@ function imageLinkPatternError(fieldName: string) {
       Please ensure your {fieldName} link begins with &quot;http(s)://&quot;
     </p>
   )
-}
-
-const convertToBase64 = (file?: File): Promise<string> => {
-  if (!file) {
-    throw new Error('File missing')
-  }
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        resolve(reader.result)
-      } else {
-        reject(new Error('File reading did not result in a string.'))
-      }
-    }
-
-    reader.onerror = (error) => reject(error)
-  })
 }
 
 const imageLinkPattern = /^(http|https):\/\/.*/
@@ -993,13 +972,14 @@ function StepForm({
 
 // This type definition is used in the PuzzleForm component below
 // It does not get used in the Step component above
-type PuzzleFormWithoutNftImage = {
+type PuzzleFormType = {
   rewardable: {
     name: CreateRewardableInput['name']
     // successMessage: CreateRewardableInput['successMessage']
     listPublicly: CreateRewardableInput['listPublicly']
     nft: {
       name: string
+      image: string
     }
   }
   puzzle: {
@@ -1007,22 +987,6 @@ type PuzzleFormWithoutNftImage = {
     requirements: CreatePuzzleInput['requirements']
   }
   steps: CreateAllStepTypesInput[]
-}
-
-type PuzzleFormType = PuzzleFormWithoutNftImage & {
-  rewardable: {
-    nft: {
-      image: FileList | null
-    }
-  }
-}
-
-type InitialValuesType = PuzzleFormWithoutNftImage & {
-  rewardable: {
-    nft: {
-      image: string
-    }
-  }
 }
 
 const emptyFormValues: PuzzleFormType = {
@@ -1034,7 +998,7 @@ const emptyFormValues: PuzzleFormType = {
     name: '',
     listPublicly: false,
     nft: {
-      image: null,
+      image: '',
       name: '',
     },
   },
@@ -1048,7 +1012,7 @@ export default function PuzzleForm({
   submissionError,
   submissionPending,
 }: {
-  initialValues?: InitialValuesType
+  initialValues?: PuzzleFormType
   isEditMode?: boolean
   onFormSubmit: (
     variables:
@@ -1059,7 +1023,6 @@ export default function PuzzleForm({
   submissionError?: ApolloError
   submissionPending?: boolean
 }) {
-  const [nftImagePlaceholder, setNftImagePlaceholder] = useState('')
   const [selectedTab, setSelectedTab] = useState(0)
   // only used in dev mode
   const renderCount = useRef(process.env.NODE_ENV === 'development' ? 1 : 0)
@@ -1119,35 +1082,7 @@ export default function PuzzleForm({
     exclude: isEditMode ? ['rewardable', 'puzzle', 'steps'] : [],
   })
 
-  const nftImageValue = formMethods.watch('rewardable.nft.image')
-
-  useEffect(() => {
-    async function setPlaceholder() {
-      try {
-        if (nftImageValue?.length) {
-          const image = await convertToBase64(nftImageValue[0])
-          setNftImagePlaceholder(image)
-        } else {
-          setNftImagePlaceholder('')
-        }
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    setPlaceholder()
-  }, [setNftImagePlaceholder, nftImageValue])
-
   const onSubmit = async (input: PuzzleFormType) => {
-    const nftImageList = input.rewardable.nft.image
-
-    if (!nftImageList?.length && !isEditMode) {
-      throw new Error('missing nft image')
-    }
-
-    const nftImageBase64 = nftImageList?.length
-      ? await convertToBase64(input.rewardable.nft.image?.[0])
-      : null
-
     await onFormSubmit(
       {
         input: {
@@ -1157,7 +1092,7 @@ export default function PuzzleForm({
           listPublicly: input.rewardable.listPublicly,
           nft: {
             name: input.rewardable.nft.name,
-            image: nftImageBase64,
+            image: input.rewardable.nft.image,
           },
           puzzle: {
             rewardableId: 'ignore me',
@@ -1297,7 +1232,6 @@ export default function PuzzleForm({
           <Form formMethods={formMethods} onSubmit={onSubmit}>
             <Tab.Panels>
               <Tab.Panel unmount={false}>
-                <CloudinaryUploadWidget />
                 <div id="puzzle-name" className="form__entry mb-12">
                   <Label
                     name="rewardable.name"
@@ -1427,9 +1361,9 @@ export default function PuzzleForm({
                     className="form__label text-slate-100"
                     errorClassName="form__label--error text-rose-300"
                   >
-                    <div className="form__entry-name mb-1">
+                    <p className="form__entry-name mb-1">
                       NFT Name<span className="text-rose-500">*</span>
-                    </div>
+                    </p>
                   </Label>
                   <TextField
                     name="rewardable.nft.name"
@@ -1442,60 +1376,27 @@ export default function PuzzleForm({
                 </div>
 
                 <div id="nft-image" className="form__entry mb-12">
-                  {(initialValues?.rewardable.nft.image ||
-                    nftImagePlaceholder) && (
-                    <div className="relative mb-6 inline-flex">
-                      <DisplayImage
-                        src={
-                          nftImagePlaceholder ||
-                          initialValues?.rewardable.nft.image ||
-                          ''
-                        }
-                      />
-
-                      {nftImagePlaceholder && (
-                        <button
-                          type="button"
-                          className="tran absolute top-0 right-0 translate-x-3 -translate-y-3 shadow-md"
-                          onClick={() =>
-                            formMethods.setValue('rewardable.nft.image', null)
-                          }
-                        >
-                          <XCircleIcon className="h-6 w-6" />
-                        </button>
-                      )}
-                    </div>
-                  )}
-
                   <Label
                     name="rewardable.nft.image"
                     className="form__label text-slate-100"
                     errorClassName="form__label--error text-rose-300"
                   >
-                    <div className="form__entry-name mb-1">
+                    <p className="form__entry-name mb-1">
                       NFT Image<span className="text-rose-500">*</span>
-                    </div>
-                    <p className="mb-2 text-sm font-normal">
-                      Image must be less than 1MB
+                    </p>
+                    <p className="mb-2 text-sm font-normal italic text-slate-400">
+                      Image must be smaller than 5MB
                     </p>
                   </Label>
-                  <FileField
-                    name="rewardable.nft.image"
-                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                    placeholder="NFT Image"
-                    validation={{
-                      required: !isEditMode,
-                      validate: {
-                        imageSize: (value: FileList) => {
-                          if (!value?.length) return true
 
-                          const maxSizeInBytes = 1 * 1024 * 1024
-                          return value?.[0].size < maxSizeInBytes
-                        },
-                      },
-                    }}
-                    accept=".jpeg, .png, .jpg, .webp"
-                  />
+                  <div className="mt-4">
+                    <CloudinaryUploadWidget
+                      setNftImage={(nftImageId: string) =>
+                        formMethods.setValue('rewardable.nft.image', nftImageId)
+                      }
+                    />
+                  </div>
+
                   {errors.rewardable?.nft?.image?.type === 'required' &&
                     requiredFieldError('an nft image')}
                   {errors.rewardable?.nft?.image?.type === 'imageSize' && (
@@ -1635,10 +1536,10 @@ export default function PuzzleForm({
 
                   <p className="mb-4 italic text-stone-400">NFT Reward</p>
                   {(initialValues?.rewardable.nft.image ||
-                    nftImagePlaceholder) && (
+                    formMethods.getValues('rewardable.nft.image')) && (
                     <DisplayImage
                       src={
-                        nftImagePlaceholder ||
+                        formMethods.getValues('rewardable.nft.image') ||
                         initialValues?.rewardable.nft.image ||
                         ''
                       }

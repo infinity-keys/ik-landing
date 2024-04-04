@@ -87,7 +87,7 @@ const lensConfig: LensConfig = {
   environment: production,
 }
 
-const cld = new Cloudinary({
+const _cld = new Cloudinary({
   cloud: {
     cloudName: CLOUDINARY_CLOUD_NAME,
   },

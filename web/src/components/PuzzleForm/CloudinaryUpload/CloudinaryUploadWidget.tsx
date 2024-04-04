@@ -1,13 +1,21 @@
-import { createContext, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
+import CloudArrowUpIcon from '@heroicons/react/20/solid/CloudArrowUpIcon'
+import XCircleIcon from '@heroicons/react/20/solid/XCircleIcon'
 import { CLOUDINARY_CLOUD_NAME } from '@infinity-keys/constants'
 
-// Create a context to manage the script loading state
-const CloudinaryScriptContext = createContext()
+import Button from 'src/components/Button'
 
-function CloudinaryUploadWidget({ uwConfig, setPublicId }) {
+import DisplayImage from '../DisplayImage/DisplayImage'
+
+function CloudinaryUploadWidget({
+  setNftImage,
+}: {
+  setNftImage: (s: string) => void
+}) {
   const [loaded, setLoaded] = useState(false)
-  const cloudn = useRef()
+  const [thumbnail, setThumbnail] = useState('')
+  const uploadWidget = useRef()
 
   useEffect(() => {
     // Check if the script is already loaded
@@ -30,47 +38,87 @@ function CloudinaryUploadWidget({ uwConfig, setPublicId }) {
 
   const initializeCloudinaryWidget = () => {
     if (loaded) {
-      if (!cloudn.current) {
-        cloudn.current = window.cloudinary.createUploadWidget(
-          {
-            cloudName: CLOUDINARY_CLOUD_NAME,
-          },
+      if (!uploadWidget.current) {
+        uploadWidget.current = window.cloudinary.createUploadWidget(
+          uploadOptions,
           (error, result) => {
             if (!error && result && result.event === 'success') {
-              console.log('Done! Here is the image info: ', result.info)
-              setPublicId(result.info.public_id)
+              setNftImage(result.info.public_id)
+              setThumbnail(result.info.thumbnail_url)
             }
           }
         )
       }
-      // document.getElementById('upload_widget').addEventListener(
-      //   'click',
-      //   function () {
-      //     cloudn.current.open()
-      //   },
-      //   false
-      // )
-      cloudn.current.open()
+
+      uploadWidget.current.open()
     }
   }
 
   return (
-    <CloudinaryScriptContext.Provider value={{ loaded }}>
-      <button
-        id="upload_widget"
-        onClick={initializeCloudinaryWidget}
-        type="button"
-        className={
-          loaded
-            ? 'opacity-1 cloudinary-button'
-            : 'cloudinary-button opacity-30'
-        }
-      >
-        Upload
-      </button>
-    </CloudinaryScriptContext.Provider>
+    <>
+      {thumbnail ? (
+        <div className="relative mb-6 inline-flex">
+          <DisplayImage src={thumbnail} />
+          <button
+            type="button"
+            className="absolute top-0 right-0 translate-x-3 -translate-y-3 shadow-md"
+            onClick={() => {
+              setNftImage('')
+              setThumbnail('')
+            }}
+          >
+            <XCircleIcon className="h-6 w-6" />
+          </button>
+        </div>
+      ) : (
+        <Button
+          type="button"
+          borderWhite
+          round
+          onClick={initializeCloudinaryWidget}
+          disabled={!loaded}
+        >
+          <span className="flex items-center gap-2 text-xs">
+            <CloudArrowUpIcon className="h-5 w-5" /> Upload Image
+          </span>
+        </Button>
+      )}
+    </>
   )
 }
 
 export default CloudinaryUploadWidget
-export { CloudinaryScriptContext }
+
+const uploadOptions = {
+  cloudName: CLOUDINARY_CLOUD_NAME,
+  uploadPreset: 'ml_default',
+  cropping: true,
+  maxImageFileSize: 5000000, // Restrict file size to less than 5MB
+  maxImageWidth: 1000, // Scales the image down to a width of 1000 pixels before uploading
+  folder: 'ik-alpha-creators',
+  // Upload modal styles
+  styles: {
+    palette: {
+      window: '#1E1E1C',
+      sourceBg: '#1E1E1C',
+      windowBorder: '#c7a49f',
+      tabIcon: '#F1C391',
+      inactiveTabIcon: '#E8D5BB',
+      menuIcons: '#ebe5db',
+      link: '#F1C391',
+      action: '#F1C391',
+      inProgress: '#99cccc',
+      complete: '#78b3b4',
+      error: '#ff6666',
+      textDark: '#1E1E1C',
+      textLight: '#D8CFCF',
+    },
+    fonts: {
+      default: null,
+      "'Poppins', sans-serif": {
+        url: 'https://fonts.googleapis.com/css?family=Poppins',
+        active: true,
+      },
+    },
+  },
+}
