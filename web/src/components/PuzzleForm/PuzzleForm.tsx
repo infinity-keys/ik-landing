@@ -1,5 +1,3 @@
-// BROWSER LOCATION: http://localhost:8910/puzzle/archetype
-
 import { useRef, useEffect, useState } from 'react'
 
 import { ApolloError } from '@apollo/client'
@@ -50,13 +48,16 @@ import {
   UseFormGetValues,
   CheckboxField,
   Control,
+  Controller,
 } from '@redwoodjs/forms'
 
 import Button, { generateButtonClasses } from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 
 // import CloudinaryUpload from './CloudinaryUpload/CloudinaryUpload'
-import CloudinaryUploadWidget from './CloudinaryUpload/CloudinaryUploadWidget'
+import CloudinaryUploadWidget, {
+  formatImageSrc,
+} from './CloudinaryUpload/CloudinaryUploadWidget'
 import DisplayImage from './DisplayImage/DisplayImage'
 import TabLabel from './TabLabel'
 
@@ -1390,10 +1391,21 @@ export default function PuzzleForm({
                   </Label>
 
                   <div className="mt-4">
-                    <CloudinaryUploadWidget
-                      setNftImage={(nftImageId: string) =>
-                        formMethods.setValue('rewardable.nft.image', nftImageId)
+                    <Controller
+                      control={formMethods.control}
+                      name="rewardable.nft.image"
+                      rules={{ required: true }}
+                      defaultValue={
+                        isEditMode ? initialValues?.rewardable.nft.image : ''
                       }
+                      render={({ field: { onChange, value } }) => {
+                        return (
+                          <CloudinaryUploadWidget
+                            setNftImage={onChange}
+                            nftImage={value}
+                          />
+                        )
+                      }}
                     />
                   </div>
 
@@ -1535,14 +1547,11 @@ export default function PuzzleForm({
                   </div>
 
                   <p className="mb-4 italic text-stone-400">NFT Reward</p>
-                  {(initialValues?.rewardable.nft.image ||
-                    formMethods.getValues('rewardable.nft.image')) && (
+                  {formMethods.getValues('rewardable.nft.image') && (
                     <DisplayImage
-                      src={
-                        formMethods.getValues('rewardable.nft.image') ||
-                        initialValues?.rewardable.nft.image ||
-                        ''
-                      }
+                      src={formatImageSrc(
+                        formMethods.getValues('rewardable.nft.image')
+                      )}
                     />
                   )}
                   <p className="mt-8 text-3xl">

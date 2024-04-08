@@ -13,7 +13,6 @@ import {
   generateNftDescription,
   generateNftImage,
   generateSlug,
-  getOptionalNftUpdateValues,
   isAlphanumeric,
 } from 'src/lib/puzzleForm'
 import { getNftData } from 'src/lib/web3/get-nft-data'
@@ -56,14 +55,6 @@ export const editRewardablePuzzle: MutationResolvers['editRewardablePuzzle'] =
           ? prevRewardable.slug
           : generateSlug(input.name)
 
-      // Handle optional Cloudinary upload
-      const nftUpdateData = await getOptionalNftUpdateValues({
-        newName: input.nft.name,
-        newImage: input.nft.image ?? undefined,
-        slug,
-        rewardableId,
-      })
-
       const deleteStepsOperation = db.step.deleteMany({
         where: { puzzleId },
       })
@@ -91,18 +82,25 @@ export const editRewardablePuzzle: MutationResolvers['editRewardablePuzzle'] =
               },
             },
           },
-          ...(nftUpdateData
-            ? {
-                nfts: {
-                  // @NOTE: Rewardables can have multiple NFTs, but currently we only
-                  // support one. Be sure to update this if that changes.
-                  updateMany: {
-                    where: {},
-                    data: nftUpdateData,
-                  },
+          nfts: {
+            // @NOTE: Rewardables can have multiple NFTs, but currently we only
+            // support one. Be sure to update this if that changes.
+            updateMany: {
+              where: {},
+              data: {
+                cloudinaryId: input.nft.image,
+                data: {
+                  name: input.nft.name,
+                  image: generateNftImage(input.nft.image),
+                  description: generateNftDescription({
+                    slug,
+                    name: input.nft.name,
+                  }),
+                  external_url: `https://www.infinitykeys.io/puzzle/${slug}`,
                 },
-              }
-            : {}),
+              },
+            },
+          },
         },
       })
 
@@ -215,16 +213,6 @@ export const createRewardablePuzzle: MutationResolvers['createRewardablePuzzle']
         throw new Error('There was a problem obtaining org id')
       }
 
-      const result = await cloudinary.uploader.upload(input.nft.image, {
-        use_filename: false,
-        unique_filename: true,
-        folder: 'ik-alpha-creators',
-      })
-
-      if (!result.public_id) {
-        throw new Error('There was a problem uploading NFT image to Cloudinary')
-      }
-
       const { tokenId, lookupId } = await getNftData()
       const slug = generateSlug(input.name)
 
@@ -254,10 +242,10 @@ export const createRewardablePuzzle: MutationResolvers['createRewardablePuzzle']
               tokenId,
               lookupId,
               contractName: 'achievement',
-              cloudinaryId: result.public_id,
+              cloudinaryId: input.nft.image,
               data: {
                 name: input.nft.name,
-                image: generateNftImage(result.public_id),
+                image: generateNftImage(input.nft.image),
                 attributes: [
                   {
                     value: 'Community',

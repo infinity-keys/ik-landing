@@ -3,18 +3,26 @@ import { useEffect, useRef, useState } from 'react'
 import CloudArrowUpIcon from '@heroicons/react/20/solid/CloudArrowUpIcon'
 import XCircleIcon from '@heroicons/react/20/solid/XCircleIcon'
 import { CLOUDINARY_CLOUD_NAME } from '@infinity-keys/constants'
+import { cloudinaryUrl } from '@infinity-keys/core'
 
 import Button from 'src/components/Button'
 
 import DisplayImage from '../DisplayImage/DisplayImage'
 
-function CloudinaryUploadWidget({
+export const formatImageSrc = (src: string) => {
+  if (src.startsWith('https')) return src
+
+  return cloudinaryUrl(src, 300, 300, false, 1)
+}
+
+const CloudinaryUploadWidget = ({
+  nftImage,
   setNftImage,
 }: {
+  nftImage?: string
   setNftImage: (s: string) => void
-}) {
+}) => {
   const [loaded, setLoaded] = useState(false)
-  const [thumbnail, setThumbnail] = useState('')
   const uploadWidget = useRef()
 
   useEffect(() => {
@@ -44,7 +52,7 @@ function CloudinaryUploadWidget({
           (error, result) => {
             if (!error && result && result.event === 'success') {
               setNftImage(result.info.public_id)
-              setThumbnail(result.info.thumbnail_url)
+              console.log(result)
             }
           }
         )
@@ -56,16 +64,13 @@ function CloudinaryUploadWidget({
 
   return (
     <>
-      {thumbnail ? (
+      {nftImage ? (
         <div className="relative mb-6 inline-flex">
-          <DisplayImage src={thumbnail} />
+          <DisplayImage src={formatImageSrc(nftImage)} />
           <button
             type="button"
             className="absolute top-0 right-0 translate-x-3 -translate-y-3 shadow-md"
-            onClick={() => {
-              setNftImage('')
-              setThumbnail('')
-            }}
+            onClick={() => setNftImage('')}
           >
             <XCircleIcon className="h-6 w-6" />
           </button>
