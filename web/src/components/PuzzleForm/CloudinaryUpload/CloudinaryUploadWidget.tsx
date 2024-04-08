@@ -46,10 +46,10 @@ const CloudinaryUploadWidget = ({
 
   const initializeCloudinaryWidget = () => {
     if (loaded) {
-      if (!uploadWidget.current) {
-        uploadWidget.current = window.cloudinary.createUploadWidget(
+      if (!uploadWidget.current && window) {
+        uploadWidget.current = (window as any).cloudinary.createUploadWidget(
           uploadOptions,
-          (error, result) => {
+          (error: any, result: any) => {
             if (!error && result && result.event === 'success') {
               setNftImage(result.info.public_id)
               console.log(result)
@@ -58,7 +58,7 @@ const CloudinaryUploadWidget = ({
         )
       }
 
-      uploadWidget.current.open()
+      ;(uploadWidget.current as any).open()
     }
   }
 
