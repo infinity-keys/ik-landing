@@ -23,7 +23,7 @@ const CloudinaryUploadWidget = ({
   setNftImage: (s: string) => void
 }) => {
   const [loaded, setLoaded] = useState(false)
-  const uploadWidget = useRef()
+  const uploadWidget = useRef<cloudinary.WidgetInterface | null>(null)
 
   useEffect(() => {
     // Check if the script is already loaded
@@ -47,18 +47,21 @@ const CloudinaryUploadWidget = ({
   const initializeCloudinaryWidget = () => {
     if (loaded) {
       if (!uploadWidget.current && window) {
-        uploadWidget.current = (window as any).cloudinary.createUploadWidget(
+        uploadWidget.current = window.cloudinary.createUploadWidget(
           uploadOptions,
-          (error: any, result: any) => {
+          (error, result) => {
             if (!error && result && result.event === 'success') {
-              setNftImage(result.info.public_id)
-              console.log(result)
+              const info =
+                result.info as cloudinary.CloudinaryEventInfoMap['success']
+              setNftImage(info.public_id)
             }
           }
         )
       }
 
-      ;(uploadWidget.current as any).open()
+      if (uploadWidget.current) {
+        uploadWidget.current.open()
+      }
     }
   }
 
