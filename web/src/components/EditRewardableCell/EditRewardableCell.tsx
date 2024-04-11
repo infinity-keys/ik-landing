@@ -22,6 +22,7 @@ export const QUERY = gql`
       name
       listPublicly
       nfts {
+        cloudinaryId
         data
       }
       puzzle {
@@ -142,13 +143,6 @@ export const Success = ({
     typeof dbNft.name === 'string'
       ? dbNft.name
       : ''
-  const nftImage =
-    dbNft &&
-    typeof dbNft === 'object' &&
-    'image' in dbNft &&
-    typeof dbNft.image === 'string'
-      ? dbNft.image
-      : ''
 
   return (
     <PuzzleForm
@@ -158,7 +152,7 @@ export const Success = ({
           listPublicly: rewardable.listPublicly,
           nft: {
             name: nftName,
-            image: nftImage,
+            image: rewardable.nfts[0]?.cloudinaryId || '',
           },
         },
         puzzle: {
