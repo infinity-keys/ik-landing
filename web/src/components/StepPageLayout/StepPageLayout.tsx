@@ -13,6 +13,7 @@ interface OverlayContent {
 }
 interface StepPageProps extends PropsWithChildren {
   showOverlay?: boolean
+  disableModal?: boolean
   overlayContent?: OverlayContent
   setShowOverlay?: (b: boolean) => void
 }
@@ -21,6 +22,7 @@ const StepPageLayout = ({
   showOverlay,
   overlayContent,
   setShowOverlay,
+  disableModal,
   children,
 }: StepPageProps) => {
   const hasOverlay =
@@ -36,7 +38,14 @@ const StepPageLayout = ({
         </div>
         {hasOverlay && (
           <div className="relative z-40 flex justify-center">
-            <button onClick={() => setShowOverlay(!showOverlay)}>
+            <button
+              className={disableModal ? 'pointer-events-none' : ''}
+              onClick={() => {
+                if (!disableModal) {
+                  setShowOverlay(!showOverlay)
+                }
+              }}
+            >
               <span className="overlay-icon hidden max-w-[226px] text-transparent md:block">
                 {overlayContent.icon}
               </span>

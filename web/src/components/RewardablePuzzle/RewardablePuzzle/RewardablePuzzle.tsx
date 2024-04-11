@@ -131,7 +131,8 @@ const Rewardable = ({ rewardable }: Props) => {
             <TextContainerButton
               shouldContinue={shouldContinue}
               isAuthenticated={isAuthenticated}
-              showOverlay={showOverlay}
+              // set ack to original state when modal is in use `showOverlay={showOverlay}`
+              showOverlay={false}
               puzzleCompleted={puzzleCompleted}
               rewardable={rewardable}
               currentStep={
