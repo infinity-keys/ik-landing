@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import CloudArrowUpIcon from '@heroicons/react/20/solid/CloudArrowUpIcon'
 import XCircleIcon from '@heroicons/react/20/solid/XCircleIcon'
@@ -44,7 +44,7 @@ const CloudinaryUploadWidget = ({
     }
   }, [loaded])
 
-  const initializeCloudinaryWidget = () => {
+  const initializeCloudinaryWidget = useCallback(() => {
     if (loaded) {
       if (!uploadWidget.current && window) {
         uploadWidget.current = window.cloudinary.createUploadWidget(
@@ -63,7 +63,7 @@ const CloudinaryUploadWidget = ({
         uploadWidget.current.open()
       }
     }
-  }
+  }, [loaded, setNftImage])
 
   return (
     <>
@@ -97,6 +97,8 @@ const CloudinaryUploadWidget = ({
 
 export default CloudinaryUploadWidget
 
+const sources: cloudinary.Sources[] = ['local', 'url', 'camera']
+
 const uploadOptions = {
   cloudName: CLOUDINARY_CLOUD_NAME,
   uploadPreset: 'ml_default',
@@ -104,6 +106,7 @@ const uploadOptions = {
   maxImageFileSize: 5000000, // Restrict file size to less than 5MB
   maxImageWidth: 1000, // Scales the image down to a width of 1000 pixels before uploading
   folder: 'ik-alpha-creators',
+  sources,
   // Upload modal styles
   styles: {
     palette: {

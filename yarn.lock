@@ -2895,49 +2895,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudinary/html@npm:^1.13.0":
-  version: 1.13.0
-  resolution: "@cloudinary/html@npm:1.13.0"
-  dependencies:
-    "@types/lodash.clonedeep": ^4.5.6
-    "@types/lodash.debounce": ^4.0.6
-    "@types/node": ^14.14.10
-    lodash.clonedeep: ^4.5.0
-    lodash.debounce: ^4.0.8
-    typescript: ^4.1.2
-  checksum: 6fbdb92ce0c3b518b163cff082c23c94450485bfc07780ddbb1648fd24cc6026d8ea8f5e14282b1c41ab028b02ceed7d168e4faba46474e500381084cf08b5cf
-  languageName: node
-  linkType: hard
-
-"@cloudinary/react@npm:^1.13.0":
-  version: 1.13.0
-  resolution: "@cloudinary/react@npm:1.13.0"
-  dependencies:
-    "@cloudinary/html": ^1.13.0
-  peerDependencies:
-    react: ^16.3.0 || ^17.0.0 || ^18.0.0
-  checksum: 4c8b889c71bc40c0476ee0bf377865a038012577fbe3495f25a2c21072ae97f7fc16537b0aae83f2b061be39bd05809dae039a8604d3d65647b962955fb06eff
-  languageName: node
-  linkType: hard
-
-"@cloudinary/transformation-builder-sdk@npm:^1.13.0":
-  version: 1.13.3
-  resolution: "@cloudinary/transformation-builder-sdk@npm:1.13.3"
-  dependencies:
-    "@cloudinary/url-gen": ^1.7.0
-  checksum: 2f2b2e29ff0e0be205c6d4a20b6e8831e47d2b479e66cebd1b927ac4a7b864ecdedd6d98c3a153ab6353d8ac27f84ceae77949b6151ef682b8268107f674afdc
-  languageName: node
-  linkType: hard
-
-"@cloudinary/url-gen@npm:^1.19.0, @cloudinary/url-gen@npm:^1.7.0":
-  version: 1.19.0
-  resolution: "@cloudinary/url-gen@npm:1.19.0"
-  dependencies:
-    "@cloudinary/transformation-builder-sdk": ^1.13.0
-  checksum: bfef710f7ea7b7ebd8752cf8bae4e0f860ce9f9afb970ce5c7592b45d38f4c9543ff211752678ca034c0215c9cfa5bd8230e864d3009d61a923f39db57c770e5
-  languageName: node
-  linkType: hard
-
 "@coinbase/wallet-sdk@npm:^3.6.6":
   version: 3.7.2
   resolution: "@coinbase/wallet-sdk@npm:3.7.2"
@@ -11190,31 +11147,6 @@ __metadata:
   version: 1.0.0
   resolution: "@types/line-column@npm:1.0.0"
   checksum: 70503f45d4e0953b470067df22911e0a9e877f5d8459dcbc2bbebc7dd8534114ef99fd0f0926e657fb9711e45e3ffaa7fb04469b605252f4309dbe66cb1c9489
-  languageName: node
-  linkType: hard
-
-"@types/lodash.clonedeep@npm:^4.5.6":
-  version: 4.5.9
-  resolution: "@types/lodash.clonedeep@npm:4.5.9"
-  dependencies:
-    "@types/lodash": "*"
-  checksum: 2f224ce9578046bccd1cd9594fb73540600ebd3d59a45695166a6123e2c376b84ab106b005a00453f357907f25bc8bfd2271b822be76e8f5527eadb4690b5e96
-  languageName: node
-  linkType: hard
-
-"@types/lodash.debounce@npm:^4.0.6":
-  version: 4.0.9
-  resolution: "@types/lodash.debounce@npm:4.0.9"
-  dependencies:
-    "@types/lodash": "*"
-  checksum: 9fbb24e5e52616faf60ba5c82d8c6517f4b86fc6e9ab353b4c56c0760f63d9bf53af3f2d8f6c37efa48090359fb96dba1087d497758511f6c40677002191d042
-  languageName: node
-  linkType: hard
-
-"@types/lodash@npm:*":
-  version: 4.17.0
-  resolution: "@types/lodash@npm:4.17.0"
-  checksum: 4c5b41c9a6c41e2c05d08499e96f7940bcf194dcfa84356235b630da920c2a5e05f193618cea76006719bec61c76617dff02defa9d29934f9f6a76a49291bd8f
   languageName: node
   linkType: hard
 
@@ -24422,13 +24354,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.clonedeep@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "lodash.clonedeep@npm:4.5.0"
-  checksum: 2caf0e4808f319d761d2939ee0642fa6867a4bbf2cfce43276698828380756b99d4c4fa226d881655e6ac298dd453fe12a5ec8ba49861777759494c534936985
-  languageName: node
-  linkType: hard
-
 "lodash.debounce@npm:^4.0.8":
   version: 4.0.8
   resolution: "lodash.debounce@npm:4.0.8"
@@ -33424,7 +33349,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.9.5, typescript@npm:^4.1.2":
+"typescript@npm:4.9.5":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
   bin:
@@ -33454,7 +33379,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.9.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.1.2#~builtin<compat/typescript>":
+"typescript@patch:typescript@4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=289587"
   bin:
@@ -34654,8 +34579,6 @@ __metadata:
   dependencies:
     "@apollo/client": 3.7.10
     "@clerk/clerk-react": ^4
-    "@cloudinary/react": ^1.13.0
-    "@cloudinary/url-gen": ^1.19.0
     "@formspree/react": ^2.4.0
     "@headlessui/react": ^1.7.2
     "@heroicons/react": ^2.0.11

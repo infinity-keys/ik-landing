@@ -1,5 +1,3 @@
-import { Cloudinary } from '@cloudinary/url-gen'
-import { CLOUDINARY_CLOUD_NAME } from '@infinity-keys/constants'
 import { LensConfig, production, LensProvider } from '@lens-protocol/react-web'
 import { bindings as wagmiBindings } from '@lens-protocol/wagmi'
 import {
@@ -86,12 +84,6 @@ const lensConfig: LensConfig = {
   bindings: wagmiBindings(),
   environment: production,
 }
-
-const _cld = new Cloudinary({
-  cloud: {
-    cloudName: CLOUDINARY_CLOUD_NAME,
-  },
-})
 
 const App = () => {
   return (
