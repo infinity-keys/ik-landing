@@ -1,12 +1,9 @@
 import { CLOUDINARY_CLOUD_NAME } from '@infinity-keys/constants'
 import { StepGuideType, StepType } from '@prisma/client'
-import { v2 as cloudinary } from 'cloudinary'
 import buildUrl from 'cloudinary-build-url'
 import { nanoid } from 'nanoid'
 import slugify from 'slugify'
 import { CreateStepInput } from 'types/graphql'
-
-import { db } from 'src/lib/db'
 
 // Formats steps coming from the form into the shape expected by Prisma `create`
 export const formatCreateSteps = (steps: CreateStepInput[]) => {
@@ -142,90 +139,6 @@ export const generateNftImage = (id: string) => {
       transformation: 'ik-nft-meta',
     },
   })
-}
-
-/**
- * Returns new NFT update object only if the NFT has been editing from the form.
- * Skips uploading to Cloudinary unless image has changed.
- * The NFT's metadata field is a JSON object, so it needs to be entirely
- * re-written every time a field changes.
- */
-export const getOptionalNftUpdateValues = async ({
-  newName,
-  newImage,
-  rewardableId,
-  slug,
-}: {
-  newName?: string
-  newImage?: string
-  rewardableId: string
-  slug: string
-}) => {
-  if (!newImage && !newName) {
-    return
-  }
-
-  cloudinary.config({ secure: true })
-
-  const cloudinaryRes =
-    newImage &&
-    (await cloudinary.uploader.upload(newImage, {
-      use_filename: false,
-      unique_filename: true,
-      folder: 'ik-alpha-creators',
-    }))
-
-  if (newImage && (!cloudinaryRes || !cloudinaryRes?.public_id)) {
-    throw new Error('There was a problem uploading NFT image to Cloudinary')
-  }
-
-  const prevNftData = await db.nft.findFirst({
-    where: {
-      rewardables: {
-        some: {
-          id: rewardableId,
-        },
-      },
-    },
-  })
-
-  // Get previous values from the Prisma JSON object as fallback for unedited fields
-  const prevMetadata = prevNftData?.data
-  const prevName =
-    prevMetadata &&
-    typeof prevMetadata === 'object' &&
-    'name' in prevMetadata &&
-    typeof prevMetadata.name === 'string' &&
-    prevMetadata.name
-
-  const prevImage =
-    prevMetadata &&
-    typeof prevMetadata === 'object' &&
-    'image' in prevMetadata &&
-    prevMetadata.image
-
-  if (!prevImage || !prevName) {
-    throw new Error("There was a problem obtaining the NFT's previous metadata")
-  }
-
-  return {
-    cloudinaryId:
-      cloudinaryRes && cloudinaryRes.public_id
-        ? cloudinaryRes.public_id
-        : prevNftData?.cloudinaryId,
-    data: {
-      name: newName || prevName,
-      image:
-        cloudinaryRes && cloudinaryRes?.public_id
-          ? generateNftImage(cloudinaryRes.public_id)
-          : prevImage,
-      description: generateNftDescription({
-        slug,
-        name: newName || prevName,
-      }),
-      external_url: `https://www.infinitykeys.io/puzzle/${slug}`,
-    },
-  }
 }
 
 export const generateSlug = (name: string): string => {

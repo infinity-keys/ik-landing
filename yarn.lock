@@ -5442,7 +5442,7 @@ __metadata:
     tslib: ^2.4.1
     typescript: ^5.2.2
     viem: ^1.15.0
-    vite: ^4.5.2
+    vite: ^4.5.3
   languageName: unknown
   linkType: soft
 
@@ -5460,7 +5460,7 @@ __metadata:
     tslib: ^2.4.1
     typechain: ^8.1.0
     typescript: ^5.2.2
-    vite: ^4.5.2
+    vite: ^4.5.3
   languageName: unknown
   linkType: soft
 
@@ -5478,7 +5478,7 @@ __metadata:
     tslib: ^2.4.1
     typescript: ^5.2.2
     uuid: ^9.0.0
-    vite: ^4.5.2
+    vite: ^4.5.3
     zod: ^3.22.3
   languageName: unknown
   linkType: soft
@@ -5494,7 +5494,7 @@ __metadata:
     "@vitejs/plugin-react": ^2.2.0
     clsx: ^1.2.1
     typescript: ^5.2.2
-    vite: ^4.5.2
+    vite: ^4.5.3
     vite-plugin-dts: ^1.7.0
     vite-tsconfig-paths: ^3.5.2
   peerDependencies:
@@ -31933,8 +31933,8 @@ __metadata:
   linkType: hard
 
 "tar@npm:^6.1.11, tar@npm:^6.1.13, tar@npm:^6.1.2":
-  version: 6.1.15
-  resolution: "tar@npm:6.1.15"
+  version: 6.2.1
+  resolution: "tar@npm:6.2.1"
   dependencies:
     chownr: ^2.0.0
     fs-minipass: ^2.0.0
@@ -31942,7 +31942,7 @@ __metadata:
     minizlib: ^2.1.1
     mkdirp: ^1.0.3
     yallist: ^4.0.0
-  checksum: bb2babe7b14442f690d83c2b2c571c9dd0bf802314773e05f4a3e4a241fdecd7fb560b8e4e7d6ea34533c8cd692e1b8418a3b8ba3b9687fe78a683dfbad7f82d
+  checksum: a5eca3eb50bc11552d453488344e6507156b9193efd7635e98e867fab275d527af53d8866e2370cd09dfe74378a18111622ace35af6a608e5223a7d27fe99537
   languageName: node
   linkType: hard
 
@@ -34301,9 +34301,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^4.5.2":
-  version: 4.5.2
-  resolution: "vite@npm:4.5.2"
+"vite@npm:^4.5.3":
+  version: 4.5.3
+  resolution: "vite@npm:4.5.3"
   dependencies:
     esbuild: ^0.18.10
     fsevents: ~2.3.2
@@ -34337,7 +34337,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 68969ccf72ad2078aec7d9e023fce6de03746a4761f9308924212fff7bd42487145b270166cec66cddacfd7b1315ec5aa39ead174fbd7fcd463637a96ff4c9d1
+  checksum: caeb1eecc0a8e0865782899e2f83d2993a9816562badc1c8291316d80d49b82f12038abd8cb8b8c627b6f369f58dfb25972ef4517d5e6e1b6e1bf7ee5b63a8a6
   languageName: node
   linkType: hard
 
@@ -34713,8 +34713,8 @@ __metadata:
   linkType: hard
 
 "webpack-dev-middleware@npm:^5.3.1":
-  version: 5.3.3
-  resolution: "webpack-dev-middleware@npm:5.3.3"
+  version: 5.3.4
+  resolution: "webpack-dev-middleware@npm:5.3.4"
   dependencies:
     colorette: ^2.0.10
     memfs: ^3.4.3
@@ -34723,7 +34723,7 @@ __metadata:
     schema-utils: ^4.0.0
   peerDependencies:
     webpack: ^4.0.0 || ^5.0.0
-  checksum: 378ceed430b61c0b0eccdbb55a97173aa36231bb88e20ad12bafb3d553e542708fa31f08474b9c68d4ac95174a047def9e426e193b7134be3736afa66a0d1708
+  checksum: 257df7d6bc5494d1d3cb66bba70fbdf5a6e0423e39b6420f7631aeb52435afbfbff8410a62146dcdf3d2f945c62e03193aae2ac1194a2f7d5a2523b9d194e9e1
   languageName: node
   linkType: hard
 

@@ -27,6 +27,7 @@ export const QUERY = gql`
       listPublicly
       trashedAt
       nfts {
+        cloudinaryId
         data
       }
       puzzle {
@@ -192,13 +193,6 @@ export const Success = ({
     typeof dbNft.name === 'string'
       ? dbNft.name
       : ''
-  const nftImage =
-    dbNft &&
-    typeof dbNft === 'object' &&
-    'image' in dbNft &&
-    typeof dbNft.image === 'string'
-      ? dbNft.image
-      : ''
 
   const trashed = !!rewardable.trashedAt
 
@@ -231,12 +225,11 @@ export const Success = ({
       <PuzzleForm
         initialValues={{
           rewardable: {
-            id: rewardable.id,
             name: rewardable.name,
             listPublicly: rewardable.listPublicly,
             nft: {
               name: nftName,
-              image: nftImage,
+              image: rewardable.nfts[0]?.cloudinaryId || '',
             },
           },
           puzzle: {
