@@ -1,27 +1,30 @@
 import { useEffect, useState } from 'react'
 
-// import { Transition } from '@headlessui/react'
-// import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
+import { Transition } from '@headlessui/react'
+import { TrashIcon } from '@heroicons/react/20/solid'
+import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
 import { IK_LOGO_FULL_URL } from '@infinity-keys/constants'
 import { buildUrlString } from '@infinity-keys/core'
 import type {
   FindRewardablePuzzleBySlug,
-  // PuzzleRequirements,
+  PuzzleRequirements,
 } from 'types/graphql'
 
 import { routes, useLocation } from '@redwoodjs/router'
-import { useQuery } from '@redwoodjs/web'
+import { useQuery, useMutation } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button'
+// import EditRewardableCell from 'src/components/EditRewardableCell'
 import Markdown from 'src/components/Markdown/Markdown'
 import AbsoluteImage from 'src/components/PuzzleLayout/AbsoluteImage/AbsoluteImage'
 import ImagesContainer from 'src/components/PuzzleLayout/ImageContainer/ImagesContainer'
 import SectionContainer from 'src/components/PuzzleLayout/SectionContainer/SectionContainer'
 import TextContainer from 'src/components/PuzzleLayout/TextContainer/TextContainer'
 import Seo from 'src/components/Seo/Seo'
-// import { requirementsLookup } from 'src/lib/puzzleRequirements'
+import TrashPuzzleCell from 'src/components/TrashPuzzleCell'
+import { requirementsLookup } from 'src/lib/puzzleRequirements'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
 
@@ -39,6 +42,15 @@ const CURRENT_USER_QUERY = gql`
   }
 `
 
+// user can delete a rewardable they have permission to edit
+const DELETE_REWARDABLE_MUTATION = gql`
+  mutation DeleteRewardableMutation($id: String!) {
+    deleteRewardable(id: $id) {
+      id
+    }
+  }
+`
+
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface Props {
@@ -52,7 +64,11 @@ if (!CLERK_SIGNIN_PORTAL_URL) {
 }
 
 const Rewardable = ({ rewardable }: Props) => {
+  const slug = rewardable?.slug
   const [canEditRewardable, setCanEditRewardable] = useState(false)
+
+  // user can delete a rewardable they have permission to edit
+  const [deleteRewardable] = useMutation(DELETE_REWARDABLE_MUTATION)
 
   // when querying for the current user...
   useQuery(CURRENT_USER_QUERY, {
@@ -67,9 +83,9 @@ const Rewardable = ({ rewardable }: Props) => {
   })
 
   const { isAuthenticated } = useAuth()
-  // const [showOverlay, setShowOverlay] = useState(false)
-  // const [currentOverlayContent, setCurrentOverlayContent] =
-  // useState<PuzzleRequirements | null>(null)
+  const [showOverlay, setShowOverlay] = useState(false)
+  const [currentOverlayContent, setCurrentOverlayContent] =
+    useState<PuzzleRequirements | null>(null)
   const { pageHeading, setPageHeading } = useGlobalInfo()
 
   useEffect(() => {
@@ -158,12 +174,12 @@ const Rewardable = ({ rewardable }: Props) => {
                   <p className="mb-1 text-lg font-medium md:text-xl">
                     Get Ready!
                   </p>
-                  {/* <p className="text-sm md:text-base">
+                  <p className="text-sm md:text-base">
                     Check the items below before you jump in.
-                  </p> */}
+                  </p>
                 </div>
 
-                {/* <div className="relative flex flex-wrap justify-center gap-10">
+                <div className="relative flex flex-wrap justify-center gap-10">
                   {rewardable.puzzle?.requirements?.map((req) =>
                     req ? (
                       <button
@@ -184,9 +200,9 @@ const Rewardable = ({ rewardable }: Props) => {
                       </button>
                     ) : null
                   )}
-                </div> */}
+                </div>
 
-                {/* <Transition
+                <Transition
                   show={showOverlay}
                   enter="transition-opacity duration-75"
                   enterFrom="opacity-0"
@@ -225,7 +241,7 @@ const Rewardable = ({ rewardable }: Props) => {
                       <XCircleIcon className="h-7 w-7 fill-transparent" />
                     </button>
                   </div>
-                </Transition> */}
+                </Transition>
               </div>
             )
           ) : (
@@ -235,15 +251,42 @@ const Rewardable = ({ rewardable }: Props) => {
           )}
         </TextContainer>
         {canEditRewardable && (
-          <div className="">
-            <Button
-              to={routes.editFormArchetype({ slug: rewardable.slug })}
-              shadow
-              bold
-              solid
-            >
-              Edit this Puzzle
-            </Button>
+          <div className="pt-2">
+            <div className="flex justify-center py-2 sm:py-2">
+              <Button
+                to={routes.editFormArchetype({ slug: rewardable.slug })}
+                shadow
+                bold
+                solid
+              >
+                Edit this Puzzle
+              </Button>
+            </div>
+            <div className="flex justify-center py-2 sm:py-2">
+              <Button
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      'Are you sure you want to delete this puzzle? It will be trashed and deleted after 30 days'
+                    )
+                  ) {
+                    deleteRewardable({ variables: { id: rewardable.id } })
+                      .then(() => {
+                        window.location.href = routes.profile() // Redirect after deletion
+                      })
+                      .catch((error) => {
+                        console.error('Error deleting rewardable:', error)
+                      })
+                  }
+                }}
+              >
+                <TrashIcon className="h-5 w-5" /> Delete Puzzle Permanently!
+              </Button>
+            </div>
+            <div className="flex justify-center py-2 sm:py-2">
+              <TrashPuzzleCell slug={slug} id={rewardable.id} />
+              {/* <EditRewardableCell slug={slug} /> */}
+            </div>
           </div>
         )}
       </SectionContainer>

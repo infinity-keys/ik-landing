@@ -32,7 +32,7 @@ export const schema = gql`
 
   input FormNftEditInput {
     name: String!
-    image: String
+    image: String!
   }
 
   enum RewardableType {
