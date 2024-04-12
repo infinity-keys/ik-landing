@@ -10,7 +10,7 @@ import type {
 } from 'types/graphql'
 
 import { routes, useLocation } from '@redwoodjs/router'
-import { useQuery } from '@redwoodjs/web'
+// import { useQuery } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
@@ -26,18 +26,18 @@ import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
 
 // need to check & see if current user is part of the org that owns this rewardable
-const CURRENT_USER_QUERY = gql`
-  query CurrentUserQuery {
-    user {
-      id
-      organizations {
-        organization {
-          id
-        }
-      }
-    }
-  }
-`
+// const CURRENT_USER_QUERY = gql`
+//   query CurrentUserQuery {
+//     user {
+//       id
+//       organizations {
+//         organization {
+//           id
+//         }
+//       }
+//     }
+//   }
+// `
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
@@ -52,19 +52,20 @@ if (!CLERK_SIGNIN_PORTAL_URL) {
 }
 
 const Rewardable = ({ rewardable }: Props) => {
-  const [canEditRewardable, setCanEditRewardable] = useState(false)
+  // const [canEditRewardable, setCanEditRewardable] = useState(false)
 
   // when querying for the current user...
-  useQuery(CURRENT_USER_QUERY, {
-    onCompleted: (data) => {
-      // run once after completed, not on every rerender
-      const userOrgIds = data.user.organizations.map(
-        (org: { organization: { id: string } }) => org.organization.id
-      )
-      // Verify if user can edit this rewardable
-      setCanEditRewardable(userOrgIds.includes(rewardable?.orgId))
-    },
-  })
+  // useQuery(CURRENT_USER_QUERY, {
+  //   onCompleted: (data) => {
+  //     console.log(data)
+  //     // run once after completed, not on every rerender
+  //     const userOrgIds = data.user.organizations.map(
+  //       (org: { organization: { id: string } }) => org.organization.id
+  //     )
+  //     // Verify if user can edit this rewardable
+  //     setCanEditRewardable(userOrgIds.includes(rewardable?.orgId))
+  //   },
+  // })
 
   const { isAuthenticated } = useAuth()
   const [showOverlay, setShowOverlay] = useState(false)
@@ -234,7 +235,7 @@ const Rewardable = ({ rewardable }: Props) => {
             </div>
           )}
         </TextContainer>
-        {canEditRewardable && (
+        {/* {canEditRewardable && (
           <div className="">
             <Button
               to={routes.editFormArchetype({ slug: rewardable.slug })}
@@ -245,7 +246,7 @@ const Rewardable = ({ rewardable }: Props) => {
               Edit this Puzzle
             </Button>
           </div>
-        )}
+        )} */}
       </SectionContainer>
     </>
   )
