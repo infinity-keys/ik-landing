@@ -17,6 +17,7 @@ export const schema = gql`
     puzzle: Puzzle
     pack: Pack
     bundle: Bundle
+    userCanEdit: Boolean!
     userRewards: [UserReward]!
     asParent: [RewardableConnection]!
     asChild: [RewardableConnection]!
