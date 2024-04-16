@@ -58,6 +58,26 @@ export const Rewardable: RewardableRelationResolvers = {
   bundle: (_obj, { root }) => {
     return db.rewardable.findUnique({ where: { id: root?.id } }).bundle()
   },
+  userCanEdit: async (_obj, { root }) => {
+    if (!context.currentUser) return false
+
+    const canEdit = await db.rewardable.findUnique({
+      where: {
+        id: root?.id,
+        organization: {
+          users: {
+            some: {
+              userId: context.currentUser.id,
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    })
+    return !!canEdit?.id
+  },
   userRewards: (_obj, { root }) => {
     if (!context.currentUser) return []
 

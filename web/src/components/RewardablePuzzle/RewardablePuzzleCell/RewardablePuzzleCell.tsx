@@ -16,6 +16,7 @@ export const QUERY = gql`
       slug
       orgId
       successMessage
+      userCanEdit
       userRewards {
         id
       }

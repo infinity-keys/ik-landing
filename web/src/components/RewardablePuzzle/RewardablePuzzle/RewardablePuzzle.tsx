@@ -52,21 +52,6 @@ if (!CLERK_SIGNIN_PORTAL_URL) {
 }
 
 const Rewardable = ({ rewardable }: Props) => {
-  // const [canEditRewardable, setCanEditRewardable] = useState(false)
-
-  // when querying for the current user...
-  // useQuery(CURRENT_USER_QUERY, {
-  //   onCompleted: (data) => {
-  //     console.log(data)
-  //     // run once after completed, not on every rerender
-  //     const userOrgIds = data.user.organizations.map(
-  //       (org: { organization: { id: string } }) => org.organization.id
-  //     )
-  //     // Verify if user can edit this rewardable
-  //     setCanEditRewardable(userOrgIds.includes(rewardable?.orgId))
-  //   },
-  // })
-
   const { isAuthenticated } = useAuth()
   const [showOverlay, setShowOverlay] = useState(false)
   const [currentOverlayContent, setCurrentOverlayContent] =
@@ -235,7 +220,7 @@ const Rewardable = ({ rewardable }: Props) => {
             </div>
           )}
         </TextContainer>
-        {/* {canEditRewardable && (
+        {isAuthenticated && rewardable.userCanEdit && (
           <div className="">
             <Button
               to={routes.editFormArchetype({ slug: rewardable.slug })}
@@ -246,7 +231,7 @@ const Rewardable = ({ rewardable }: Props) => {
               Edit this Puzzle
             </Button>
           </div>
-        )} */}
+        )}
       </SectionContainer>
     </>
   )
