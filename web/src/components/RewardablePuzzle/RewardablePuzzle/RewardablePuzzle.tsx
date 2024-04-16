@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { Transition } from '@headlessui/react'
-import { TrashIcon } from '@heroicons/react/20/solid'
+// import { TrashIcon } from '@heroicons/react/20/solid'
 import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
 import { IK_LOGO_FULL_URL } from '@infinity-keys/constants'
 import { buildUrlString } from '@infinity-keys/core'
@@ -11,7 +11,7 @@ import type {
 } from 'types/graphql'
 
 import { routes, useLocation } from '@redwoodjs/router'
-import { useQuery, useMutation } from '@redwoodjs/web'
+// import { useQuery } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
@@ -23,33 +23,33 @@ import ImagesContainer from 'src/components/PuzzleLayout/ImageContainer/ImagesCo
 import SectionContainer from 'src/components/PuzzleLayout/SectionContainer/SectionContainer'
 import TextContainer from 'src/components/PuzzleLayout/TextContainer/TextContainer'
 import Seo from 'src/components/Seo/Seo'
-import TrashPuzzleCell from 'src/components/TrashPuzzleCell'
+// import TrashPuzzleCell from 'src/components/TrashPuzzleCell'
 import { requirementsLookup } from 'src/lib/puzzleRequirements'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
 
 // need to check & see if current user is part of the org that owns this rewardable
-const CURRENT_USER_QUERY = gql`
-  query CurrentUserQuery {
-    user {
-      id
-      organizations {
-        organization {
-          id
-        }
-      }
-    }
-  }
-`
+// const CURRENT_USER_QUERY = gql`
+//   query CurrentUserQuery {
+//     user {
+//       id
+//       organizations {
+//         organization {
+//           id
+//         }
+//       }
+//     }
+//   }
+// `
 
 // user can delete a rewardable they have permission to edit
-const DELETE_REWARDABLE_MUTATION = gql`
-  mutation DeleteRewardableMutation($id: String!) {
-    deleteRewardable(id: $id) {
-      id
-    }
-  }
-`
+// const DELETE_REWARDABLE_MUTATION = gql`
+//   mutation DeleteRewardableMutation($id: String!) {
+//     deleteRewardable(id: $id) {
+//       id
+//     }
+//   }
+// `
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
@@ -64,24 +64,6 @@ if (!CLERK_SIGNIN_PORTAL_URL) {
 }
 
 const Rewardable = ({ rewardable }: Props) => {
-  const slug = rewardable?.slug
-  const [canEditRewardable, setCanEditRewardable] = useState(false)
-
-  // user can delete a rewardable they have permission to edit
-  const [deleteRewardable] = useMutation(DELETE_REWARDABLE_MUTATION)
-
-  // when querying for the current user...
-  useQuery(CURRENT_USER_QUERY, {
-    onCompleted: (data) => {
-      // run once after completed, not on every rerender
-      const userOrgIds = data.user.organizations.map(
-        (org: { organization: { id: string } }) => org.organization.id
-      )
-      // Verify if user can edit this rewardable
-      setCanEditRewardable(userOrgIds.includes(rewardable?.orgId))
-    },
-  })
-
   const { isAuthenticated } = useAuth()
   const [showOverlay, setShowOverlay] = useState(false)
   const [currentOverlayContent, setCurrentOverlayContent] =
@@ -250,43 +232,16 @@ const Rewardable = ({ rewardable }: Props) => {
             </div>
           )}
         </TextContainer>
-        {canEditRewardable && (
-          <div className="pt-2">
-            <div className="flex justify-center py-2 sm:py-2">
-              <Button
-                to={routes.editFormArchetype({ slug: rewardable.slug })}
-                shadow
-                bold
-                solid
-              >
-                Edit this Puzzle
-              </Button>
-            </div>
-            <div className="flex justify-center py-2 sm:py-2">
-              <Button
-                onClick={() => {
-                  if (
-                    window.confirm(
-                      'Are you sure you want to delete this puzzle? It will be trashed and deleted after 30 days'
-                    )
-                  ) {
-                    deleteRewardable({ variables: { id: rewardable.id } })
-                      .then(() => {
-                        window.location.href = routes.profile() // Redirect after deletion
-                      })
-                      .catch((error) => {
-                        console.error('Error deleting rewardable:', error)
-                      })
-                  }
-                }}
-              >
-                <TrashIcon className="h-5 w-5" /> Delete Puzzle Permanently!
-              </Button>
-            </div>
-            <div className="flex justify-center py-2 sm:py-2">
-              <TrashPuzzleCell slug={slug} id={rewardable.id} />
-              {/* <EditRewardableCell slug={slug} /> */}
-            </div>
+        {isAuthenticated && rewardable.userCanEdit && (
+          <div className="">
+            <Button
+              to={routes.editFormArchetype({ slug: rewardable.slug })}
+              shadow
+              bold
+              solid
+            >
+              Edit this Puzzle
+            </Button>
           </div>
         )}
       </SectionContainer>
