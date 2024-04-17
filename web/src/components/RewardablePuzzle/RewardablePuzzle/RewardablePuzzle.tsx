@@ -102,7 +102,7 @@ const Rewardable = ({ rewardable }: Props) => {
                       800,
                       800,
                       false,
-                      2
+                      1
                     )
                   : ''
               }

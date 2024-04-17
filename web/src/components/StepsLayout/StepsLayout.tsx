@@ -107,7 +107,7 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
                               800,
                               800,
                               false,
-                              2
+                              1
                             )
                           : ''
                       }
