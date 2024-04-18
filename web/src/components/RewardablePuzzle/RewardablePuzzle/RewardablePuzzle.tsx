@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react'
 
 import { Transition } from '@headlessui/react'
-// import { TrashIcon } from '@heroicons/react/20/solid'
+import { TrashIcon } from '@heroicons/react/20/solid'
 import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
 import { IK_LOGO_FULL_URL } from '@infinity-keys/constants'
 import { buildUrlString } from '@infinity-keys/core'
 import type {
   FindRewardablePuzzleBySlug,
+  // FindEditPuzzleQueryVariables, shouldn't need this
   PuzzleRequirements,
 } from 'types/graphql'
 
 import { routes, useLocation } from '@redwoodjs/router'
+
 // import { useQuery } from '@redwoodjs/web'
 
 import { useAuth } from 'src/auth'
@@ -28,30 +30,25 @@ import { requirementsLookup } from 'src/lib/puzzleRequirements'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
 
-// need to check & see if current user is part of the org that owns this rewardable
-// const CURRENT_USER_QUERY = gql`
-//   query CurrentUserQuery {
-//     user {
-//       id
-//       organizations {
-//         organization {
-//           id
-//         }
-//       }
-//     }
-//   }
-// `
-
-// user can delete a rewardable they have permission to edit
-// const DELETE_REWARDABLE_MUTATION = gql`
-//   mutation DeleteRewardableMutation($id: String!) {
-//     deleteRewardable(id: $id) {
-//       id
-//     }
-//   }
-// `
-
 import '@infinity-keys/react-lens-share-button/dist/style.css'
+
+// // I don't think we need this for trashing puzzle but I'm not sure
+// export const Loading = () => <div>Loading...</div>
+
+// // I don't think we need this for trashing puzzle but I'm not sure
+// export const Empty = () => <div>Empty!</div>
+
+// // I don't think we need this for trashing puzzle but I'm not sure
+// export const Failure = ({
+//   error,
+// }: CellFailureProps<FindEditPuzzleQueryVariables>) => (
+//   <div style={{ color: 'red' }}>Error: {error?.message}</div>
+// )
+
+// // If we need the function above, we probably need this one too:
+// export const Success = ({
+//  // rest of code from EditRewardableCell.tsx
+// })
 
 interface Props {
   rewardable: FindRewardablePuzzleBySlug['rewardable']
@@ -233,15 +230,23 @@ const Rewardable = ({ rewardable }: Props) => {
           )}
         </TextContainer>
         {isAuthenticated && rewardable.userCanEdit && (
-          <div className="">
-            <Button
-              to={routes.editFormArchetype({ slug: rewardable.slug })}
-              shadow
-              bold
-              solid
-            >
-              Edit this Puzzle
-            </Button>
+          <div>
+            <div className="mt-5 flex justify-center">
+              <Button
+                to={routes.editFormArchetype({ slug: rewardable.slug })}
+                shadow
+                bold
+                solid
+              >
+                Edit this Puzzle
+              </Button>
+            </div>
+            <div className="mt-5 flex justify-center">
+              <Button>
+                <TrashIcon className="h-5 w-5" />
+                &nbsp; Trash Puzzle
+              </Button>
+            </div>
           </div>
         )}
       </SectionContainer>

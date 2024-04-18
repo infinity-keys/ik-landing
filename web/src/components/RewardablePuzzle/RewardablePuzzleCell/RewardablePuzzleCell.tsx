@@ -1,7 +1,19 @@
-import type { FindRewardablePuzzleBySlug } from 'types/graphql'
+import type {
+  FindRewardablePuzzleBySlug,
+  RestoreRewardablePuzzle,
+  RestoreRewardablePuzzleVariables,
+  TrashRewardablePuzzle,
+  TrashRewardablePuzzleVariables,
+} from 'types/graphql'
 
-import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
+import { navigate, routes } from '@redwoodjs/router'
+import {
+  type CellSuccessProps,
+  type CellFailureProps,
+  useMutation,
+} from '@redwoodjs/web'
 
+import RestorePuzzle from 'src/components/EditRewardableCell/RestorePuzzle'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import OldFormatMessage from 'src/components/OldFormatMessage/OldFormatMessage'
 import RewardablePuzzle from 'src/components/RewardablePuzzle/RewardablePuzzle'
@@ -13,6 +25,7 @@ export const QUERY = gql`
     rewardable: rewardableBySlug(slug: $slug, type: PUZZLE) {
       id
       name
+      trashedAt
       slug
       orgId
       successMessage
@@ -33,6 +46,22 @@ export const QUERY = gql`
   }
 `
 
+const TRASH_PUZZLE_MUTATION = gql`
+  mutation TrashRewardablePuzzle($rewardableId: String!) {
+    trashRewardablePuzzle(rewardableId: $rewardableId) {
+      success
+    }
+  }
+`
+
+const RESTORE_PUZZLE_MUTATION = gql`
+  mutation RestoreRewardablePuzzle($rewardableId: String!) {
+    restoreRewardablePuzzle(rewardableId: $rewardableId) {
+      success
+    }
+  }
+`
+
 export const Loading = () => <LoadingIcon />
 
 export const Empty = () => <div>Rewardable not found</div>
@@ -43,9 +72,89 @@ export const Failure = ({ error }: CellFailureProps) => (
 
 export const Success = ({
   rewardable,
+  queryResult,
 }: CellSuccessProps<FindRewardablePuzzleBySlug>) => {
+  const [trashPuzzle, { loading: trashLoading }] = useMutation<
+    TrashRewardablePuzzle,
+    TrashRewardablePuzzleVariables
+  >(TRASH_PUZZLE_MUTATION, {
+    onCompleted: (data) => {
+      if (data.trashRewardablePuzzle.success) {
+        // this works!
+        console.log('TRASHED')
+        // navigate to rewardable (not working)
+        // return navigate(routes.puzzleLanding({ slug: rewardable.slug }))
+
+        // this one works, but if you visit the puzzle/puzzle{slug} again,
+        // it will say "Rewadable not found" instead of rendering the
+        // <RestorePuzzle /> component like the EditRewardableCell.tsx does
+        return navigate(routes.home())
+      }
+      if (
+        data.trashRewardablePuzzle.success &&
+        typeof queryResult?.refetch === 'function'
+      ) {
+        queryResult.refetch()
+      }
+    },
+  })
+
+  const [restorePuzzle, { loading: restoreLoading }] = useMutation<
+    RestoreRewardablePuzzle,
+    RestoreRewardablePuzzleVariables
+  >(RESTORE_PUZZLE_MUTATION, {
+    onCompleted: (data) => {
+      if (
+        data.restoreRewardablePuzzle.success &&
+        typeof queryResult?.refetch === 'function'
+      ) {
+        queryResult.refetch()
+      }
+    },
+  })
+
+  const trashed = !!rewardable.trashedAt
+
+  if (trashLoading || restoreLoading) {
+    return (
+      <div className="flex min-h-[calc(100vh-80px)] items-center">
+        <LoadingIcon />
+      </div>
+    )
+  }
+
+  if (trashed) {
+    return (
+      <RestorePuzzle
+        name={rewardable.name}
+        restorePuzzle={() =>
+          restorePuzzle({
+            variables: {
+              rewardableId: rewardable.id,
+            },
+          })
+        }
+      />
+    )
+  }
+
   return rewardable.puzzle?.coverImage ? (
-    <RewardablePuzzle rewardable={rewardable} />
+    <div>
+      <button
+        type="button"
+        className="rounded bg-white/10 px-3"
+        onClick={() =>
+          trashPuzzle({
+            variables: {
+              rewardableId: rewardable.id,
+            },
+          })
+        }
+      >
+        Trash Puzzle
+      </button>
+      <RewardablePuzzle rewardable={rewardable} />
+    </div>
   ) : (
     <OldFormatMessage />
   )
