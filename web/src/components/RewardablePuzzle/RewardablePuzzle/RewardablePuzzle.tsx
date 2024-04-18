@@ -242,6 +242,9 @@ const Rewardable = ({ rewardable }: Props) => {
               </Button>
             </div>
             <div className="mt-5 flex justify-center">
+              {/* NOTE: this button doesn't do anything */}
+              {/* it shows the placing & styling we eventually want */}
+              {/* for the working button */}
               <Button>
                 <TrashIcon className="h-5 w-5" />
                 &nbsp; Trash Puzzle

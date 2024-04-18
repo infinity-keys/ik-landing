@@ -80,15 +80,7 @@ export const Success = ({
   >(TRASH_PUZZLE_MUTATION, {
     onCompleted: (data) => {
       if (data.trashRewardablePuzzle.success) {
-        // this works!
-        console.log('TRASHED')
-        // navigate to rewardable (not working)
-        // return navigate(routes.puzzleLanding({ slug: rewardable.slug }))
-
-        // this one works, but if you visit the puzzle/puzzle{slug} again,
-        // it will say "Rewadable not found" instead of rendering the
-        // <RestorePuzzle /> component like the EditRewardableCell.tsx does
-        return navigate(routes.home())
+        return navigate(routes.profile())
       }
       if (
         data.trashRewardablePuzzle.success &&
