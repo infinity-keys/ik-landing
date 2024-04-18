@@ -1,5 +1,6 @@
 import { Fragment, PropsWithChildren, lazy, useEffect, useState } from 'react'
 
+import { cloudinaryUrl } from '@infinity-keys/core'
 import Spline from '@splinetool/react-spline'
 import clsx from 'clsx'
 import sample from 'lodash/sample'
@@ -9,6 +10,7 @@ import { routes } from '@redwoodjs/router'
 import { CellSuccessProps } from '@redwoodjs/web'
 
 import Button from 'src/components/Button/Button'
+import ImageWithFallback from 'src/components/ImageWithFallback/ImageWithFallback'
 import Markdown from 'src/components/Markdown/Markdown'
 import NeedHintIcon from 'src/components/OverlayIcons/NeedHintIcon'
 import NeedHintMiniIcon from 'src/components/OverlayIcons/NeedHintMiniIcon'
@@ -96,8 +98,19 @@ const StepsLayout = ({ step, refetch }: StepsLayoutProps) => {
               images?.map((image, index) => {
                 return image ? (
                   <AbsoluteImage key={'image-' + index}>
-                    <img
+                    <ImageWithFallback
                       src={image}
+                      fallback={
+                        step.puzzle.rewardable.nfts[0]?.cloudinaryId
+                          ? cloudinaryUrl(
+                              step.puzzle.rewardable.nfts[0]?.cloudinaryId,
+                              800,
+                              800,
+                              false,
+                              1
+                            )
+                          : ''
+                      }
                       alt=""
                       loading={index === 0 ? 'eager' : 'lazy'}
                       className={clsx(

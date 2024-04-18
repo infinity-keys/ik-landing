@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
 import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
 import { IK_LOGO_FULL_URL } from '@infinity-keys/constants'
-import { buildUrlString } from '@infinity-keys/core'
+import { buildUrlString, cloudinaryUrl } from '@infinity-keys/core'
 import type {
   FindRewardablePuzzleBySlug,
   PuzzleRequirements,
@@ -15,6 +15,7 @@ import { routes, useLocation } from '@redwoodjs/router'
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button'
+import ImageWithFallback from 'src/components/ImageWithFallback/ImageWithFallback'
 import Markdown from 'src/components/Markdown/Markdown'
 import AbsoluteImage from 'src/components/PuzzleLayout/AbsoluteImage/AbsoluteImage'
 import ImagesContainer from 'src/components/PuzzleLayout/ImageContainer/ImagesContainer'
@@ -24,20 +25,6 @@ import Seo from 'src/components/Seo/Seo'
 import { requirementsLookup } from 'src/lib/puzzleRequirements'
 import { rewardableLandingRoute } from 'src/lib/urlBuilders'
 import { useGlobalInfo } from 'src/providers/globalInfo/globalInfo'
-
-// need to check & see if current user is part of the org that owns this rewardable
-// const CURRENT_USER_QUERY = gql`
-//   query CurrentUserQuery {
-//     user {
-//       id
-//       organizations {
-//         organization {
-//           id
-//         }
-//       }
-//     }
-//   }
-// `
 
 import '@infinity-keys/react-lens-share-button/dist/style.css'
 
@@ -104,10 +91,21 @@ const Rewardable = ({ rewardable }: Props) => {
       <SectionContainer pageHeading={pageHeading}>
         <ImagesContainer>
           <AbsoluteImage>
-            <img
+            <ImageWithFallback
               className="w-full"
               src={rewardable.puzzle.coverImage || IK_LOGO_FULL_URL}
               alt=""
+              fallback={
+                rewardable.nfts[0]?.cloudinaryId
+                  ? cloudinaryUrl(
+                      rewardable.nfts[0]?.cloudinaryId,
+                      800,
+                      800,
+                      false,
+                      1
+                    )
+                  : ''
+              }
             />
           </AbsoluteImage>
         </ImagesContainer>
