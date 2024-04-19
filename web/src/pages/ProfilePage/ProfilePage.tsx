@@ -45,8 +45,8 @@ const ProfilePage = () => {
       ) : (
         <div className="relative text-center">
           {!isAuthenticated && (
-            <div className="rounded-md bg-black/20 p-4 pb-8">
-              <div className="mb-6 w-64 md:w-80">
+            <div className="mx-auto max-w-md rounded-md bg-black/20 p-4 pb-8">
+              <div className="mx-auto mb-6 w-64 md:w-80">
                 <img src={logo} alt="" />
               </div>
               <Button
