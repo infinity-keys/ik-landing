@@ -4,7 +4,7 @@ import { Transition } from '@headlessui/react'
 import { TrashIcon } from '@heroicons/react/20/solid'
 import XCircleIcon from '@heroicons/react/24/outline/XCircleIcon'
 import { IK_LOGO_FULL_URL } from '@infinity-keys/constants'
-import { buildUrlString } from '@infinity-keys/core'
+import { buildUrlString, cloudinaryUrl } from '@infinity-keys/core'
 import type {
   FindRewardablePuzzleBySlug,
   // FindEditPuzzleQueryVariables, shouldn't need this
@@ -18,7 +18,7 @@ import { routes, useLocation } from '@redwoodjs/router'
 import { useAuth } from 'src/auth'
 import Alert from 'src/components/Alert/Alert'
 import Button from 'src/components/Button'
-// import EditRewardableCell from 'src/components/EditRewardableCell'
+import ImageWithFallback from 'src/components/ImageWithFallback/ImageWithFallback'
 import Markdown from 'src/components/Markdown/Markdown'
 import AbsoluteImage from 'src/components/PuzzleLayout/AbsoluteImage/AbsoluteImage'
 import ImagesContainer from 'src/components/PuzzleLayout/ImageContainer/ImagesContainer'
@@ -113,10 +113,21 @@ const Rewardable = ({ rewardable }: Props) => {
       <SectionContainer pageHeading={pageHeading}>
         <ImagesContainer>
           <AbsoluteImage>
-            <img
+            <ImageWithFallback
               className="w-full"
               src={rewardable.puzzle.coverImage || IK_LOGO_FULL_URL}
               alt=""
+              fallback={
+                rewardable.nfts[0]?.cloudinaryId
+                  ? cloudinaryUrl(
+                      rewardable.nfts[0]?.cloudinaryId,
+                      800,
+                      800,
+                      false,
+                      1
+                    )
+                  : ''
+              }
             />
           </AbsoluteImage>
         </ImagesContainer>

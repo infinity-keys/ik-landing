@@ -30,6 +30,9 @@ export const QUERY = gql`
       orgId
       successMessage
       userCanEdit
+      nfts {
+        cloudinaryId
+      }
       userRewards {
         id
       }

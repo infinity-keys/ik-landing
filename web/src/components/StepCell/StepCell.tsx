@@ -43,6 +43,9 @@ export const QUERY = gql`
           name
           slug
           successMessage
+          nfts {
+            cloudinaryId
+          }
         }
       }
     }
