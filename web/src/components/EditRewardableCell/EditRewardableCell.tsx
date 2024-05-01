@@ -1,3 +1,4 @@
+import { TrashIcon } from '@heroicons/react/20/solid'
 import type {
   EditRewardableMutation,
   EditRewardableMutationVariables,
@@ -17,6 +18,7 @@ import {
   useMutation,
 } from '@redwoodjs/web'
 
+import Button from 'src/components/Button'
 import RestorePuzzle from 'src/components/EditRewardableCell/RestorePuzzle'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
 import PuzzleForm from 'src/components/PuzzleForm/PuzzleForm'
@@ -226,20 +228,22 @@ export const Success = ({
       <div className="my-8 p-2 text-center text-3xl tracking-wide">
         Edit Your Puzzle
       </div>
-
-      <button
-        type="button"
-        className="rounded bg-white/10 px-3"
-        onClick={() =>
-          trashPuzzle({
-            variables: {
-              rewardableId: rewardable.id,
-            },
-          })
-        }
-      >
-        Trash Puzzle
-      </button>
+      {/* Center the button using the <div> className*/}
+      <div className="flex justify-center pb-8">
+        <Button
+          type="button"
+          onClick={() =>
+            trashPuzzle({
+              variables: {
+                rewardableId: rewardable.id,
+              },
+            })
+          }
+        >
+          <TrashIcon className="h-5 w-5" />
+          &nbsp; Trash Puzzle
+        </Button>
+      </div>
 
       <PuzzleForm
         initialValues={{

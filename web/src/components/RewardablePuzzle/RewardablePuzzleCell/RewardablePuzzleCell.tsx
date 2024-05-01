@@ -135,20 +135,7 @@ export const Success = ({
 
   return rewardable.puzzle?.coverImage ? (
     <div>
-      <button
-        type="button"
-        className="rounded bg-white/10 px-3"
-        onClick={() =>
-          trashPuzzle({
-            variables: {
-              rewardableId: rewardable.id,
-            },
-          })
-        }
-      >
-        Trash Puzzle
-      </button>
-      <RewardablePuzzle rewardable={rewardable} />
+      <RewardablePuzzle rewardable={rewardable} onTrashPuzzle={trashPuzzle} />
     </div>
   ) : (
     <OldFormatMessage />

@@ -131,7 +131,7 @@ export const Success = ({
 
   return (
     <div>
-      <div className="mt-12 flex flex-col gap-6 lg:mt-0 lg:flex-row">
+      <div className="mt-12 mb-6 flex flex-col gap-6 lg:mt-0 lg:flex-row">
         <div className="mx-auto w-full lg:basis-3/5">
           <div className="overflow-hidden rounded-lg bg-black/30">
             <div className="sm:items-centers flex flex-col justify-between bg-black/20 py-8 px-4 sm:flex-row sm:px-10">

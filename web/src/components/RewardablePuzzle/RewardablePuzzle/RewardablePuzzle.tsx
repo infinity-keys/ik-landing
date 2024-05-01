@@ -52,6 +52,11 @@ import '@infinity-keys/react-lens-share-button/dist/style.css'
 
 interface Props {
   rewardable: FindRewardablePuzzleBySlug['rewardable']
+  onTrashPuzzle: (args: {
+    variables: {
+      rewardableId: string
+    }
+  }) => void
 }
 
 const CLERK_SIGNIN_PORTAL_URL = process.env.CLERK_SIGNIN_PORTAL_URL
@@ -60,7 +65,7 @@ if (!CLERK_SIGNIN_PORTAL_URL) {
   throw new Error('Missing CLERK_SIGNIN_PORTAL_URL variable')
 }
 
-const Rewardable = ({ rewardable }: Props) => {
+const Rewardable = ({ rewardable, onTrashPuzzle }: Props) => {
   const { isAuthenticated } = useAuth()
   const [showOverlay, setShowOverlay] = useState(false)
   const [currentOverlayContent, setCurrentOverlayContent] =
@@ -253,10 +258,16 @@ const Rewardable = ({ rewardable }: Props) => {
               </Button>
             </div>
             <div className="mt-5 flex justify-center">
-              {/* NOTE: this button doesn't do anything */}
-              {/* it shows the placing & styling we eventually want */}
-              {/* for the working button */}
-              <Button>
+              <Button
+                type="button"
+                onClick={() =>
+                  onTrashPuzzle({
+                    variables: {
+                      rewardableId: rewardable.id,
+                    },
+                  })
+                }
+              >
                 <TrashIcon className="h-5 w-5" />
                 &nbsp; Trash Puzzle
               </Button>
