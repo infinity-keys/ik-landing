@@ -49,6 +49,7 @@ import {
   CheckboxField,
   Control,
   Controller,
+  FieldError,
 } from '@redwoodjs/forms'
 
 import Button, { generateButtonClasses } from 'src/components/Button/Button'
@@ -563,15 +564,24 @@ function StepForm({
                     placeholder="The passcode can be only letters and numbers."
                     {...register(`${stepsArrayName}.${index}.solution`)}
                     className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                    validation={{ required: true, pattern: /^[a-zA-Z0-9]+$/ }}
+                    validation={{
+                      required: 'I&apos;m sorry, passcode is required.',
+                      pattern: /^[a-zA-Z0-9]+$/,
+                    }}
                   />
-                  {Array.isArray(errors[stepsArrayName]) &&
+                  {/* {Array.isArray(errors[stepsArrayName]) &&
                     errors[stepsArrayName][index] &&
                     'solution' in errors[stepsArrayName][index] &&
                     'type' in errors[stepsArrayName][index].solution &&
                     errors[stepsArrayName][index].solution.type ===
                       'required' &&
-                    requiredFieldError('a passcode')}
+                    requiredFieldError('a passcode')} */}
+
+                  <FieldError
+                    name={`${stepsArrayName}.${index}.solution`}
+                    className="form__error pt-1 font-medium text-rose-300"
+                  />
+
                   {Array.isArray(errors[stepsArrayName]) &&
                     errors[stepsArrayName][index] &&
                     'solution' in errors[stepsArrayName][index] &&
