@@ -27,6 +27,7 @@ model Rewardable {
   id             String              @id @default(cuid())
   createdAt      DateTime            @default(now())
   updatedAt      DateTime            @updatedAt
+  trashedAt      DateTime?
   /// Full name, with spaces, ie Not Right
   name           String
   /// Short name used in URLs, lowercase and dashes, no spaces/caps, ie not-right

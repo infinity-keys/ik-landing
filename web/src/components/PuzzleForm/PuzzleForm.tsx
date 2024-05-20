@@ -1025,6 +1025,7 @@ export default function PuzzleForm({
   submissionPending?: boolean
 }) {
   const [selectedTab, setSelectedTab] = useState(0)
+
   // only used in dev mode
   const renderCount = useRef(process.env.NODE_ENV === 'development' ? 1 : 0)
 
@@ -1217,10 +1218,7 @@ export default function PuzzleForm({
   }
 
   return (
-    <div className="form min-h-[calc(100vh-80px)] px-4 pb-16">
-      <div className="my-8 p-2 text-center text-3xl tracking-wide">
-        {isEditMode ? 'Edit Your Puzzle' : 'Create a New Puzzle'}
-      </div>
+    <>
       <Tab.Group selectedIndex={selectedTab} onChange={setSelectedTab}>
         <div className="border-b-2 border-gray-700">
           <Tab.List className="flex translate-y-[2px] justify-center gap-8">
@@ -1613,6 +1611,6 @@ export default function PuzzleForm({
           <LoadingIcon />
         </div>
       )}
-    </div>
+    </>
   )
 }

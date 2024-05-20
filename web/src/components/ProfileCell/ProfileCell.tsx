@@ -12,6 +12,7 @@ import type {
   UserRewardablesQuery,
 } from 'types/graphql'
 
+import { routes } from '@redwoodjs/router'
 import {
   useQuery,
   CellSuccessProps,
@@ -79,6 +80,7 @@ const USER_REWARDABLES_QUERY = gql`
   query UserRewardablesQuery($userId: String!) {
     userRewardables(userId: $userId) {
       id
+      trashedAt
       name
       slug
       nfts {
@@ -120,9 +122,16 @@ export const Success = ({
     variables: { userId: user?.id },
   })
 
+  const liveRewardables = data?.userRewardables.filter(
+    (rewardable) => !rewardable.trashedAt
+  )
+  const trashedRewardables = data?.userRewardables.filter(
+    (rewardable) => rewardable.trashedAt
+  )
+
   return (
     <div>
-      <div className="mt-12 flex flex-col gap-6 lg:mt-0 lg:flex-row">
+      <div className="mt-12 mb-6 flex flex-col gap-6 lg:mt-0 lg:flex-row">
         <div className="mx-auto w-full lg:basis-3/5">
           <div className="overflow-hidden rounded-lg bg-black/30">
             <div className="sm:items-centers flex flex-col justify-between bg-black/20 py-8 px-4 sm:flex-row sm:px-10">
@@ -312,31 +321,55 @@ export const Success = ({
         </div>
       </div>
 
-      <div className="mt-6 flex flex-col gap-6">
-        <div className="overflow-hidden rounded-lg bg-black/30 lg:basis-2/5">
-          <div className="bg-black/30 py-8 px-4 sm:px-8">
-            <p className="">Your Puzzles & Packs</p>
-          </div>
+      {(!!liveRewardables?.length || !!trashedRewardables?.length) && (
+        <div className="flex flex-col gap-6">
+          <div className="overflow-hidden rounded-lg bg-black/30 lg:basis-2/5">
+            <div className="bg-black/30 py-8 px-4 sm:px-8">
+              <p className="">Your Puzzles & Packs</p>
+            </div>
 
-          <div className="flex flex-col gap-4 py-8 px-4 text-sm sm:px-8">
-            <div className="grid gap-4 py-8 px-4 text-sm sm:px-8 md:grid-cols-2">
-              {data?.userRewardables.map((rewardable) => (
-                <Thumbnail
-                  id={rewardable.id} // keep typescript happy
-                  key={rewardable.id}
-                  name={rewardable.name}
-                  href={rewardableLandingRoute({
-                    type: rewardable.type,
-                    slug: rewardable.slug,
-                  })}
-                  isGrid={false} // always false for this display
-                  cloudinaryId={rewardable.nfts?.[0]?.cloudinaryId}
-                />
-              ))}
+            <div className="flex flex-col gap-4 py-8 px-4 text-sm sm:px-8">
+              {!!liveRewardables?.length && (
+                <div className="grid gap-4 py-8 px-4 text-sm sm:px-8 md:grid-cols-2">
+                  {liveRewardables?.map((rewardable) => (
+                    <Thumbnail
+                      id={rewardable.id} // keep typescript happy
+                      key={rewardable.id}
+                      name={rewardable.name}
+                      href={rewardableLandingRoute({
+                        type: rewardable.type,
+                        slug: rewardable.slug,
+                      })}
+                      isGrid={false} // always false for this display
+                      cloudinaryId={rewardable.nfts?.[0]?.cloudinaryId}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {!!trashedRewardables?.length && (
+                <>
+                  <p className="text-stone-300">Puzzles and packs in trash</p>
+                  <div className="grid gap-4 py-8 px-4 text-sm sm:px-8 md:grid-cols-2">
+                    {trashedRewardables?.map((rewardable) => (
+                      <Thumbnail
+                        id={rewardable.id} // keep typescript happy
+                        key={rewardable.id}
+                        name={rewardable.name}
+                        href={routes.editFormArchetype({
+                          slug: rewardable.slug,
+                        })}
+                        isGrid={false} // always false for this display
+                        cloudinaryId={rewardable.nfts?.[0]?.cloudinaryId}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
