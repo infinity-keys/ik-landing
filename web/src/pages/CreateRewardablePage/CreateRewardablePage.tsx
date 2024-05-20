@@ -71,8 +71,12 @@ const CreateRewardablePage = () => {
   }
 
   return (
-    <>
+    <div className="form min-h-[calc(100vh-80px)] px-4 pb-16">
       <Seo title="Create a new puzzle" />
+
+      <div className="my-8 p-2 text-center text-3xl tracking-wide">
+        Create Your Puzzle
+      </div>
       <PuzzleForm
         onFormSubmit={async ({ input }, onSuccess) => {
           const image = input.nft.image
@@ -108,7 +112,7 @@ const CreateRewardablePage = () => {
         submissionError={error}
         submissionPending={loading}
       />
-    </>
+    </div>
   )
 }
 

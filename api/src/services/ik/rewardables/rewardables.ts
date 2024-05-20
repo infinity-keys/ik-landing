@@ -20,6 +20,9 @@ export const rewardableBySlug: QueryResolvers['rewardableBySlug'] = ({
         slug,
         type,
       },
+      trashedAt: {
+        equals: null,
+      },
     },
   })
 }
@@ -57,6 +60,7 @@ export const rewardablesBySortType: QueryResolvers['rewardablesBySortType'] = ({
     where: {
       sortType,
       listPublicly: true,
+      trashedAt: { equals: null },
     },
   })
 }
@@ -73,7 +77,13 @@ export const rewardablesCollection: QueryResolvers['rewardablesCollection'] =
       ? count
       : smallestPaginationCount
 
-    const typesFilter = types.map((type) => ({ type, listPublicly: true }))
+    const typesFilter = types.map((type) => ({
+      type,
+      listPublicly: true,
+      trashedAt: {
+        equals: null,
+      },
+    }))
     const totalCount = await db.rewardable.count({
       where: { OR: typesFilter },
     })
