@@ -34,6 +34,7 @@ const SimpleTextInput = ({
   const { loading, failedAttempt, makeAttempt, errorMessage } = useMakeAttempt()
   const [inputValue, setInputValue] = useState('')
   const [displayValue, setDisplayValue] = useState('')
+  const [showFailMessage, setShowFailMessage] = useState(false)
   const [inputTextLeft, setInputTextLeft] = useState(false)
 
   const inputRef = useRef<HTMLInputElement>(null)
@@ -52,12 +53,17 @@ const SimpleTextInput = ({
       if (data?.success && onSuccess) {
         onSuccess()
       }
+      if (!data?.success) {
+        setShowFailMessage(true)
+        setInputValue('')
+      }
     },
     [makeAttempt, onSuccess, step.id]
   )
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
+      setShowFailMessage(false)
       const value = e.target.value
       setInputValue(value)
 
@@ -147,7 +153,7 @@ const SimpleTextInput = ({
             </div>
           </div>
 
-          {failedAttempt && !errorMessage && inputValue.length === count && (
+          {failedAttempt && !errorMessage && showFailMessage && (
             <div
               className="relative flex justify-center pt-6 text-gray-150"
               data-cy="fail_message_check"

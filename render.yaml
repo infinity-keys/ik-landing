@@ -92,6 +92,14 @@ services:
       - key: NODE_VERSION
         value: 18
 
+  - type: cron
+    name: puzzle-cleanup
+    runtime: node
+    schedule: '0 * * * *'
+    buildCommand: yarn && yarn rw prisma generate
+    startCommand: yarn rw exec puzzleCleanup
+    repo: https://github.com/infinity-keys/ik-landing
+
 databases:
   - name: redwoodjs-db
     region: oregon
