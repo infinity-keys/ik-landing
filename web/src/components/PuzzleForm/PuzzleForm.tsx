@@ -29,6 +29,7 @@ import {
   CreatePuzzleInput,
   EditRewardableMutationVariables,
   CreateRewardableMutationVariables,
+  OriumCheckType,
 } from 'types/graphql'
 
 import {
@@ -78,7 +79,20 @@ type CreateAllStepTypesInput =
 
 // Set as a constant in case we need to change this string value later on
 const stepsArrayName = 'steps'
+const imageLinkPattern = /^(http|https):\/\/.*/
 
+// These are used to style labels (<Label />) for nested components
+const defaultStyles = 'form__label text-slate-100'
+const defaultTitleColor = 'text-slate-700'
+const errorTitleColor = 'text-rose-900'
+
+const LOCAL_STORAGE_KEY = 'puzzleForm'
+
+/**
+ * @TODO: wat do?
+ *
+ * @param stepSortWeight - The sort weight used in ordering
+ */
 const buildEmptyStep = (stepSortWeight = 1): CreateAllStepTypesInput => ({
   type: 'SIMPLE_TEXT',
   stepSortWeight,
@@ -95,39 +109,22 @@ const buildEmptyStep = (stepSortWeight = 1): CreateAllStepTypesInput => ({
     },
   ],
 })
-
 // New puzzles start with no steps in an empty array
 const startingSteps: CreateAllStepTypesInput[] = [buildEmptyStep()]
 
 // Using the default: <FieldError /> field validator from react-hook-form creates
+
 // cryptic (for the user) error messages like this: "steps.1.failMessage is required"
 // because the default field validator is not configured for nested arrays of objects
 // thus we have a custom error message function instead so as to not confuse users.
 // NOTE: this is in parent scope & is used in both the 'Puzzle' and 'Step' forms
-function requiredFieldError(fieldName: string) {
-  return (
-    <div className="form__error pt-1 font-medium text-rose-300">
-      I&apos;m sorry, but {fieldName} is required!
-    </div>
-  )
-}
-
-function imageLinkPatternError(fieldName: string) {
-  return (
-    <p className="form__error pt-1 font-medium text-rose-800">
-      Please ensure your {fieldName} link begins with &quot;http(s)://&quot;
-    </p>
-  )
-}
-
-const imageLinkPattern = /^(http|https):\/\/.*/
-
-// These are used to style labels (<Label />) for nested components
-const defaultStyles = 'form__label text-slate-100'
-const defaultTitleColor = 'text-slate-700'
-const errorTitleColor = 'text-rose-900'
-
-const LOCAL_STORAGE_KEY = 'puzzleForm'
+// const requiredFieldError = (fieldName: string) => {
+//   return (
+//     <div className="form__error pt-1 font-medium text-rose-300">
+//       I&apos;m sorry, but {fieldName} is required!
+//     </div>
+//   )
+// }
 
 // This is the component that renders each step in the puzzle form
 function StepForm({
@@ -211,10 +208,7 @@ function StepForm({
     }
   }, [index, setValue, getValues, stepTypeVal])
 
-  // We want to grab the enum OriumCheckType from 'types/graphql'
-  // but when we do that we get a linting error so the three options are
-  // re-declared in this constant below to make TypeScript happy
-  const oriumCheckTypeOptions = [
+  const oriumCheckTypeOptions: OriumCheckType[] = [
     'HAS_CREATED_VAULT',
     'HAS_DEPOSITED_NFT',
     'HAS_CREATED_SCHOLARSHIP',
@@ -242,23 +236,6 @@ function StepForm({
       required: true,
     },
   })
-
-  // // this function is used to remove a token id range fieldset
-  // // this works but may not be ideal
-  // const removeFieldset = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   const fieldset = event.currentTarget.closest('fieldset')
-  //   if (fieldset) {
-  //     fieldset.remove()
-  //   }
-  // }
-
-  // // this is a refactor of the above function
-  const removeFieldset = (tokenIdIndex: number) => {
-    const fieldset = document.getElementById(`token-id-index-${tokenIdIndex}`)
-    if (fieldset) {
-      fieldset.remove()
-    }
-  }
 
   return (
     <Disclosure defaultOpen>
@@ -300,22 +277,6 @@ function StepForm({
                       id={`step-page-${stepPageIndex}-body`}
                       className="form__entry mb-6"
                     >
-                      {/* <Label
-                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
-                        className={`${defaultStyles} ${
-                          Array.isArray(errors[stepsArrayName]) &&
-                          errors[stepsArrayName][stepPageIndex]?.stepPage &&
-                          errors[stepsArrayName][stepPageIndex].stepPage[
-                            stepPageIndex
-                          ]?.body
-                            ? errorTitleColor
-                            : defaultTitleColor
-                        }`}
-                      >
-                        <div className="form__entry-name mb-1 text-slate-100">
-                          Body<span className="text-rose-500">*</span>
-                        </div>
-                      </Label> */}
                       <TextAreaField
                         placeholder="Write the text of your puzzle here"
                         name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
@@ -327,101 +288,6 @@ function StepForm({
                       ]?.body?.type === 'required' &&
                         requiredFieldError('a body')}
                     </div>
-
-                    {/* <div
-                      id={`step-page-${stepPageIndex}-image`}
-                      className="form__entry mb-12"
-                    >
-                      <Label
-                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
-                        className={`${defaultStyles} ${
-                          Array.isArray(errors[stepsArrayName]) &&
-                          errors[stepsArrayName][stepPageIndex]?.stepPage &&
-                          errors[stepsArrayName][stepPageIndex].stepPage[
-                            stepPageIndex
-                          ]?.image
-                            ? errorTitleColor
-                            : defaultTitleColor
-                        }`}
-                      >
-                        <div className="form__entry-name mb-1 text-slate-100">
-                          Image
-                        </div>
-                      </Label>
-                      <TextField
-                        placeholder="Image"
-                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.image`}
-                        className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                        validation={{ pattern: imageLinkPattern }}
-                      />
-                      {errors[stepsArrayName]?.[index]?.stepPage?.[
-                        stepPageIndex
-                      ]?.image?.type === 'pattern' &&
-                        imageLinkPatternError('step image')}
-                    </div> */}
-
-                    {/* <div
-                      id={`step-page-${stepPageIndex}-hint`}
-                      className="form__entry mb-12"
-                    >
-                      <Label
-                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.showStepGuideHint`}
-                        className={`${defaultStyles} ${
-                          Array.isArray(errors[stepsArrayName]) &&
-                          errors[stepsArrayName][stepPageIndex]?.stepPage &&
-                          errors[stepsArrayName][stepPageIndex].stepPage[
-                            stepPageIndex
-                          ]?.showStepGuideHint
-                            ? errorTitleColor
-                            : defaultTitleColor
-                        }`}
-                      >
-                        <div className="form__entry-name mb-1 text-slate-100">
-                          Show hint
-                        </div>
-                      </Label>
-                      <CheckboxField
-                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.showStepGuideHint`}
-                        className="form__text-field box-border block bg-stone-200 text-slate-700"
-                      />
-                    </div> */}
-
-                    {/* <div
-                      id={`step-page-${stepPageIndex}-sortWeight`}
-                      className="form__entry mb-12"
-                    >
-                      <Label
-                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
-                        className={`${defaultStyles} ${
-                          Array.isArray(errors[stepsArrayName]) &&
-                          errors[stepsArrayName][stepPageIndex]?.stepPage &&
-                          errors[stepsArrayName][stepPageIndex].stepPage[
-                            stepPageIndex
-                          ]?.sortWeight
-                            ? errorTitleColor
-                            : defaultTitleColor
-                        }`}
-                      >
-                        <div className="form__entry-name mb-1 text-slate-100">
-                          Sort Weight<span className="text-rose-500">*</span>
-                        </div>
-                      </Label>
-
-                      <NumberField
-                        placeholder="sortWeight"
-                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.sortWeight`}
-                        className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                        validation={{ required: true }}
-                        min="1"
-                        value={stepPageIndex + 1}
-                      />
-                      {errors?.[stepsArrayName]?.[index]?.stepPage?.root
-                        ?.type === 'duplicateSortWeight' && (
-                        <p className="rw-field-error text-base text-rose-300">
-                          Step page must have unique sort weight
-                        </p>
-                      )}
-                    </div> */}
                   </fieldset>
                 </div>
               ))}
@@ -447,61 +313,6 @@ function StepForm({
                 </div>
               )}
             </div>
-
-            {/*
-            <div id={`${index}-solution-image`} className="form__entry mb-12">
-              <Label
-                name={`solutionImage.${index}`}
-                className={`${defaultStyles} ${
-                  errors[stepsArrayName]?.[index]?.solutionImage?.type ===
-                  'required'
-                    ? errorTitleColor
-                    : defaultTitleColor
-                }`}
-              >
-                <div className="form__entry-name mb-1 text-slate-100">
-                  Solution Image
-                </div>
-              </Label>
-              <TextField
-                placeholder="Solution Image"
-                {...register(`${stepsArrayName}.${index}.solutionImage`)}
-                className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                validation={{ pattern: imageLinkPattern }}
-              />
-              {errors[stepsArrayName]?.[index]?.solutionImage?.type ===
-                'pattern' && imageLinkPatternError('solution image')}
-            </div> */}
-
-            {/* <div id={`${index}-step-sort-weight`} className="form__entry mb-12">
-              <Label
-                name={`stepSortWeight.${index}`}
-                className={`${defaultStyles} ${
-                  errors[stepsArrayName]?.[index]?.stepSortWeight?.type ===
-                  'required'
-                    ? errorTitleColor
-                    : defaultTitleColor
-                }`}
-              >
-                <div className="form__entry-name mb-1 text-slate-100">
-                  Step Sort Weight<span className="text-rose-500">*</span>
-                </div>
-              </Label>
-              <NumberField
-                {...register(`${stepsArrayName}.${index}.stepSortWeight`)}
-                className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                validation={{ required: true }}
-                min="1"
-              />
-              {errors[stepsArrayName]?.[index]?.stepSortWeight?.type ===
-                'required' && requiredFieldError('Step Sort Weight')}
-              {errors?.[stepsArrayName]?.root?.type ===
-                'duplicateSortWeight' && (
-                <p className="rw-field-error">
-                  Steps must have unique sort weight
-                </p>
-              )}
-            </div> */}
 
             <div
               id={`${index}-step-type-guide`}
@@ -569,13 +380,6 @@ function StepForm({
                       pattern: /^[a-zA-Z0-9]+$/,
                     }}
                   />
-                  {/* {Array.isArray(errors[stepsArrayName]) &&
-                    errors[stepsArrayName][index] &&
-                    'solution' in errors[stepsArrayName][index] &&
-                    'type' in errors[stepsArrayName][index].solution &&
-                    errors[stepsArrayName][index].solution.type ===
-                      'required' &&
-                    requiredFieldError('a passcode')} */}
 
                   <FieldError
                     name={`${stepsArrayName}.${index}.solution`}
@@ -778,6 +582,7 @@ function StepForm({
                     <div key={field.id}>
                       <fieldset id={`token-id-index-${tokenIdIndex}`}>
                         {/* these are temporary values for debugging purposes */}
+                        {/* @TODO: REMOVE FOR PROD */}
                         <p className="text-red-500">Index: {tokenIdIndex}</p>
                         <p className="text-red-500">ID: {field.id}</p>
                         <div className="mb-8 rounded-lg border-2 border-gray-500 bg-gray-100 p-6">
@@ -854,7 +659,7 @@ function StepForm({
                           <button
                             type="button"
                             className="rw-button rw-button-red"
-                            onClick={() => removeFieldset(tokenIdIndex)}
+                            // onClick={() => removeFieldset(tokenIdIndex)}
                           >
                             <div className="">Remove Token ID Range</div>
                           </button>
@@ -940,7 +745,12 @@ function StepForm({
                 placeholder="https://"
                 {...register(`${stepsArrayName}.${index}.defaultImage`)}
                 className="form__text-field border-1 mb-8 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                validation={{ pattern: imageLinkPattern }}
+                validation={{
+                  pattern: {
+                    value: imageLinkPattern,
+                    message: 'All image links should start with http or https.',
+                  },
+                }}
               />
 
               {getValues(`${stepsArrayName}.${index}.defaultImage`) && (
@@ -948,10 +758,11 @@ function StepForm({
                   src={getValues(`${stepsArrayName}.${index}.defaultImage`)}
                 />
               )}
-              {errors[stepsArrayName]?.[index]?.defaultImage?.type ===
-                'required' && requiredFieldError('Default Image')}
-              {errors[stepsArrayName]?.[index]?.defaultImage?.type ===
-                'pattern' && imageLinkPatternError('default image')}
+
+              <FieldError
+                name={`${stepsArrayName}.${index}.defaultImage`}
+                className="form__error pt-1 font-medium text-rose-300"
+              />
             </div>
 
             <div className="my-8">
@@ -1261,40 +1072,6 @@ export default function PuzzleForm({
                     requiredFieldError('a Name')}
                 </div>
 
-                {/* @NOTE: This is currently only used for packs */}
-                {/* <div id="explanation" className="form__entry mb-12">
-            <Label
-              name="rewardable.explanation"
-              className="form__label text-slate-100"
-              errorClassName="form__label--error text-rose-300"
-            >
-              <div className="form__entry-name mb-1">Explanation</div>
-            </Label>
-            <TextField
-              name="rewardable.explanation"
-              className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-              placeholder="Explanation"
-              validation={{ required: true }}
-            />
-            {errors.rewardable?.explanation?.type === 'required' &&
-              requiredFieldError('an Explanation')}
-          </div> */}
-
-                {/* <div id="puzzle-success-message" className="form__entry mb-12">
-                  <Label
-                    name="rewardable.successMessage"
-                    className="form__label text-slate-100"
-                    errorClassName="form__label--error text-rose-300"
-                  >
-                    <div className="form__entry-name mb-1">Success Message</div>
-                  </Label>
-                  <TextAreaField
-                    name="rewardable.successMessage"
-                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                    placeholder="Compose a success message the user will see when solving your puzzle."
-                  />
-                </div> */}
-
                 <div
                   id="puzzle-requirements"
                   className="form__entry mb-12 hidden"
@@ -1348,14 +1125,19 @@ export default function PuzzleForm({
                     className="form__text-field border-1 mb-8 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
                     placeholder="https://"
                     validation={{
-                      required: true,
-                      pattern: imageLinkPattern,
+                      required: "I'm sorry, a cover image is required.",
+                      pattern: {
+                        value: imageLinkPattern,
+                        message:
+                          'All image links should start with http or https.',
+                      },
                     }}
                   />
-                  {errors.puzzle?.coverImage?.type === 'required' &&
-                    requiredFieldError('a cover image')}
-                  {errors.puzzle?.coverImage?.type === 'pattern' &&
-                    imageLinkPatternError('cover image')}
+
+                  <FieldError
+                    name="puzzle.coverImage"
+                    className="form__error pt-1 font-medium text-rose-300"
+                  />
 
                   {formMethods.getValues('puzzle.coverImage') && (
                     <DisplayImage
