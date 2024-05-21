@@ -385,7 +385,7 @@ function StepForm({
                     name={`${stepsArrayName}.${index}.solution`}
                     className="form__error pt-1 font-medium text-rose-300"
                   />
-
+                  {/* Not sure we can refactor this using <FieldError> but maybe? */}
                   {Array.isArray(errors[stepsArrayName]) &&
                     errors[stepsArrayName][index] &&
                     'solution' in errors[stepsArrayName][index] &&
@@ -541,14 +541,21 @@ function StepForm({
                     placeholder="Contract Address"
                     {...register(`${stepsArrayName}.${index}.contractAddress`)}
                     className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                    validation={{ required: true }}
+                    validation={{
+                      required:
+                        'I&apos;m sorry, a contract address is required.',
+                    }}
                   />
-                  {Array.isArray(errors[stepsArrayName]) &&
+                  {/* {Array.isArray(errors[stepsArrayName]) &&
                     'contractAddress' in errors[stepsArrayName][index] &&
                     'type' in errors[stepsArrayName][index].contractAddress &&
                     errors[stepsArrayName][index].contractAddress.type ===
                       'required' &&
-                    requiredFieldError('a contract address')}
+                    requiredFieldError('a contract address')} */}
+                  <FieldError
+                    name={`${stepsArrayName}.${index}.contractAddress`}
+                    className="form__error pt-1 font-medium text-rose-300"
+                  />
                 </div>
                 <div className="form__entry mb-12">
                   <Label
@@ -568,13 +575,14 @@ function StepForm({
                     placeholder="Chain Id"
                     {...register(`${stepsArrayName}.${index}.chainId`)}
                     className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                    validation={{ required: true }}
+                    validation={{
+                      required: 'I&apos;m sorry, a chain id is required.',
+                    }}
                   />
-                  {Array.isArray(errors[stepsArrayName]) &&
-                    'chainId' in errors[stepsArrayName][index] &&
-                    'type' in errors[stepsArrayName][index].chainId &&
-                    errors[stepsArrayName][index].chainId.type === 'required' &&
-                    requiredFieldError('a chain id')}
+                  <FieldError
+                    name={`${stepsArrayName}.${index}.chainId`}
+                    className="form__error pt-1 font-medium text-rose-300"
+                  />
                 </div>
 
                 <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
@@ -613,14 +621,21 @@ function StepForm({
                                 `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`
                               )}
                               className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-                              validation={{ required: true }}
+                              validation={{
+                                required:
+                                  'I&apos;m sorry, a Start ID is required.',
+                              }}
                             />
-
-                            {Array.isArray(errors[stepsArrayName]) &&
+                            {/* This is slated for deletion */}
+                            {/* {Array.isArray(errors[stepsArrayName]) &&
                               errors[stepsArrayName][index]?.ranges?.[
                                 tokenIdIndex
                               ]?.startId?.type === 'required' &&
-                              requiredFieldError('a Start ID')}
+                              requiredFieldError('a Start ID')} */}
+                            <FieldError
+                              name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`}
+                              className="form__error pt-1 font-medium text-rose-300"
+                            />
                           </div>
 
                           <div id="end-id" className="form__entry mb-12">
@@ -646,14 +661,21 @@ function StepForm({
                                 `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`
                               )}
                               className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-                              validation={{ required: true }}
+                              validation={{
+                                required:
+                                  'I&apos;m sorry, an End ID is required.',
+                              }}
                             />
-
-                            {Array.isArray(errors[stepsArrayName]) &&
+                            {/* This is slated for deletion */}
+                            {/* {Array.isArray(errors[stepsArrayName]) &&
                               errors[stepsArrayName][index]?.ranges?.[
                                 tokenIdIndex
                               ]?.endId?.type === 'required' &&
-                              requiredFieldError('an End ID')}
+                              requiredFieldError('an End ID')} */}
+                            <FieldError
+                              name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`}
+                              className="form__error pt-1 font-medium text-rose-300"
+                            />
                           </div>
 
                           <button
