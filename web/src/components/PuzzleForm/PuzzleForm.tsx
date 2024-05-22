@@ -83,7 +83,7 @@ const imageLinkPattern = /^(http|https):\/\/.*/
 
 // These are used to style labels (<Label />) for nested components
 const defaultStyles = 'form__label text-slate-100'
-const defaultTitleColor = 'text-slate-700'
+const defaultTitleColor = 'text-slate-100'
 const errorTitleColor = 'text-rose-900'
 
 const LOCAL_STORAGE_KEY = 'puzzleForm'
@@ -118,13 +118,13 @@ const startingSteps: CreateAllStepTypesInput[] = [buildEmptyStep()]
 // because the default field validator is not configured for nested arrays of objects
 // thus we have a custom error message function instead so as to not confuse users.
 // NOTE: this is in parent scope & is used in both the 'Puzzle' and 'Step' forms
-// const requiredFieldError = (fieldName: string) => {
-//   return (
-//     <div className="form__error pt-1 font-medium text-rose-300">
-//       I&apos;m sorry, but {fieldName} is required!
-//     </div>
-//   )
-// }
+const requiredFieldError = (fieldName: string) => {
+  return (
+    <div className="form__error pt-1 font-medium text-rose-300">
+      I&apos;m sorry, but {fieldName} is required!
+    </div>
+  )
+}
 
 // This is the component that renders each step in the puzzle form
 function StepForm({
@@ -281,12 +281,12 @@ function StepForm({
                         placeholder="Write the text of your puzzle here"
                         name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
                         className="form__text-field border-1 box-border block w-full resize-none rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                        validation={{ required: true }}
+                        validation={{ required: 'Body text is required.' }}
                       />
-                      {errors?.[stepsArrayName]?.[stepPageIndex]?.stepPage?.[
-                        stepPageIndex
-                      ]?.body?.type === 'required' &&
-                        requiredFieldError('a body')}
+                      <FieldError
+                        name={`${stepsArrayName}.${index}.stepPage.${stepPageIndex}.body`}
+                        className="form__error pt-1 font-medium text-rose-300"
+                      />
                     </div>
                   </fieldset>
                 </div>
@@ -356,18 +356,11 @@ function StepForm({
               <div className="step__type">
                 <div className="form__entry mb-12">
                   <Label
-                    name={stepTypeVal}
-                    className={
-                      Array.isArray(errors[stepsArrayName]) &&
-                      errors[stepsArrayName][index] &&
-                      'solution' in errors[stepsArrayName][index] &&
-                      'type' in errors[stepsArrayName][index].solution &&
-                      errors[stepsArrayName][index].solution.type === 'required'
-                        ? `${defaultStyles} ${errorTitleColor}`
-                        : `${defaultStyles} ${defaultTitleColor}`
-                    }
+                    name={`${stepsArrayName}.${index}.solution`}
+                    className={`${defaultStyles} ${defaultTitleColor}`}
+                    errorClassName={`${defaultStyles} ${errorTitleColor}`}
                   >
-                    <div className="form__entry-name mb-1 text-slate-100">
+                    <div className="form__entry-name">
                       Passcode<span className="text-rose-500">*</span>
                     </div>
                   </Label>
@@ -377,25 +370,16 @@ function StepForm({
                     className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
                     validation={{
                       required: 'I&apos;m sorry, passcode is required.',
-                      pattern: /^[a-zA-Z0-9]+$/,
+                      pattern: {
+                        value: /^[a-zA-Z0-9]+$/,
+                        message: 'The passcode can be only letters or numbers.',
+                      },
                     }}
                   />
-
                   <FieldError
                     name={`${stepsArrayName}.${index}.solution`}
                     className="form__error pt-1 font-medium text-rose-300"
                   />
-                  {/* Not sure we can refactor this using <FieldError> but maybe? */}
-                  {Array.isArray(errors[stepsArrayName]) &&
-                    errors[stepsArrayName][index] &&
-                    'solution' in errors[stepsArrayName][index] &&
-                    'type' in errors[stepsArrayName][index].solution &&
-                    errors[stepsArrayName][index].solution.type ===
-                      'pattern' && (
-                      <div className="form__error pt-1 font-medium text-rose-300">
-                        The passcode can be only letters or numbers
-                      </div>
-                    )}
                 </div>
               </div>
             )}
