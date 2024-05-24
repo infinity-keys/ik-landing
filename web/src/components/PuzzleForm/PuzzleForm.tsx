@@ -814,23 +814,12 @@ export default function PuzzleForm({
 
   const { errors } = formMethods.formState
 
-  useEffect(() => {
-    if (!isEmpty(errors)) {
-      console.error(errors)
-    }
-  }, [errors])
-
   // Steps Field Array for Token ID Ranges (and steps too?)
   const { fields, append, remove } = useFieldArray({
     control: formMethods.control,
     name: stepsArrayName,
     rules: {
       required: true,
-      validate: {
-        duplicateSortWeight: (value) => {
-          return uniqBy(value, 'stepSortWeight').length === value.length
-        },
-      },
     },
   })
 
@@ -871,95 +860,121 @@ export default function PuzzleForm({
                   body: page.body,
                 })),
               }
-              if (step.type === 'SIMPLE_TEXT' && 'solution' in step) {
-                return {
-                  type: 'SIMPLE_TEXT',
-                  ...commonStepFields,
-                  stepSimpleText: {
-                    stepId: 'ignore me',
-                    solution: step.solution,
-                    solutionCharCount: step.solution.length,
-                  },
-                }
-              } else if (step.type === 'NFT_CHECK' && 'nftCheckData' in step) {
-                return {
-                  type: 'NFT_CHECK',
-                  ...commonStepFields,
-                  stepNftCheck: {
-                    stepId: 'ignore me',
-                    requireAllNfts: false, // hard coded for now
-                    nftCheckData: step.nftCheckData.map((nftCheckData) => {
-                      if (
-                        nftCheckData.chainId === undefined ||
-                        nftCheckData.tokenId === undefined ||
-                        nftCheckData.chainId === null ||
-                        nftCheckData.tokenId === null
-                      ) {
-                        throw new Error('No chainId or tokenId provided')
-                      }
 
-                      // @TODO: chainId and tokenId can be empty if POAP exists,
-                      // REVISIT THIS!
-                      return {
-                        chainId: nftCheckData.chainId,
-                        contractAddress: nftCheckData.contractAddress,
-                        poapEventId: nftCheckData.poapEventId,
-                        tokenId: nftCheckData.tokenId,
-                        // stepNftCheckId: 'ignore me',
-                      }
-                    }),
-                  },
+              // Exhaustive check for all cases of step type
+              switch (step.type) {
+                case 'SIMPLE_TEXT': {
+                  if (!('solution' in step))
+                    throw new Error('`solution` missing in step')
+                  return {
+                    type: 'SIMPLE_TEXT',
+                    ...commonStepFields,
+                    stepSimpleText: {
+                      stepId: 'ignore me',
+                      solution: step.solution,
+                      solutionCharCount: step.solution.length,
+                    },
+                  }
                 }
-              } else if (step.type === 'FUNCTION_CALL' && 'methodIds' in step) {
-                return {
-                  type: 'FUNCTION_CALL',
-                  ...commonStepFields,
-                  stepFunctionCall: {
-                    stepId: 'ignore me',
-                    methodIds: step.methodIds,
-                    contractAddress: step.contractAddress,
-                  },
-                }
-              } else if (step.type === 'COMETH_API' && 'stepId' in step) {
-                return {
-                  type: 'COMETH_API',
-                  ...commonStepFields,
-                  stepComethApi: {
-                    stepId: 'ignore me',
-                  },
-                }
-              } else if (step.type === 'TOKEN_ID_RANGE' && 'ranges' in step) {
-                // debugger
-                return {
-                  type: 'TOKEN_ID_RANGE',
-                  ...commonStepFields,
-                  stepTokenIdRange: {
-                    stepId: 'ignore me',
-                    contractAddress: step.contractAddress,
-                    chainId: step.chainId,
-                    // original placeholder values:
-                    // startIds: step.startIds.map(Number),
-                    // endIds: step.endIds.map(Number),
+                case 'NFT_CHECK': {
+                  if (!('nftCheckData' in step))
+                    throw new Error('`nftCheckData` missing in step')
+                  return {
+                    type: 'NFT_CHECK',
+                    ...commonStepFields,
+                    stepNftCheck: {
+                      stepId: 'ignore me',
+                      requireAllNfts: false, // hard coded for now
+                      nftCheckData: step.nftCheckData.map((nftCheckData) => {
+                        if (
+                          nftCheckData.chainId === undefined ||
+                          nftCheckData.tokenId === undefined ||
+                          nftCheckData.chainId === null ||
+                          nftCheckData.tokenId === null
+                        ) {
+                          throw new Error('No chainId or tokenId provided')
+                        }
 
-                    startIds: step.ranges.map((range) => Number(range.startId)),
-                    endIds: step.ranges.map((range) => Number(range.endId)),
-                  },
+                        // @TODO: chainId and tokenId can be empty if POAP exists,
+                        // REVISIT THIS!
+                        return {
+                          chainId: nftCheckData.chainId,
+                          contractAddress: nftCheckData.contractAddress,
+                          poapEventId: nftCheckData.poapEventId,
+                          tokenId: nftCheckData.tokenId,
+                          // stepNftCheckId: 'ignore me',
+                        }
+                      }),
+                    },
+                  }
                 }
-              } else if (
-                step.type === 'ORIUM_API' &&
-                'stepId' in step &&
-                'checkType' in step
-              ) {
-                return {
-                  type: 'ORIUM_API',
-                  ...commonStepFields,
-                  stepOriumApi: {
-                    stepId: 'ignore me',
-                    checkType: step.checkType,
-                  },
+                case 'FUNCTION_CALL': {
+                  if (!('methodIds' in step))
+                    throw new Error('`methodIds` missing in step')
+                  return {
+                    type: 'FUNCTION_CALL',
+                    ...commonStepFields,
+                    stepFunctionCall: {
+                      stepId: 'ignore me',
+                      methodIds: step.methodIds,
+                      contractAddress: step.contractAddress,
+                    },
+                  }
                 }
-              } else {
-                throw new Error('Step type not recognized')
+                case 'COMETH_API': {
+                  return {
+                    type: 'COMETH_API',
+                    ...commonStepFields,
+                    stepComethApi: {
+                      stepId: 'ignore me',
+                    },
+                  }
+                }
+                case 'TOKEN_ID_RANGE': {
+                  if (!('ranges' in step))
+                    throw new Error('`ranges` missing in step')
+                  return {
+                    type: 'TOKEN_ID_RANGE',
+                    ...commonStepFields,
+                    stepTokenIdRange: {
+                      stepId: 'ignore me',
+                      contractAddress: step.contractAddress,
+                      chainId: step.chainId,
+                      // original placeholder values:
+                      // startIds: step.startIds.map(Number),
+                      // endIds: step.endIds.map(Number),
+
+                      startIds: step.ranges.map((range) =>
+                        Number(range.startId)
+                      ),
+                      endIds: step.ranges.map((range) => Number(range.endId)),
+                    },
+                  }
+                }
+                case 'ORIUM_API': {
+                  if (!('checkType' in step))
+                    throw new Error('`checkType` missing in step')
+                  return {
+                    type: 'ORIUM_API',
+                    ...commonStepFields,
+                    stepOriumApi: {
+                      stepId: 'ignore me',
+                      checkType: step.checkType,
+                    },
+                  }
+                }
+
+                // Not handled yet
+                case 'LENS_API':
+                case 'ERC20_BALANCE':
+                case 'ASSET_TRANSFER': {
+                  throw new Error('Step type not recognized')
+                }
+
+                default: {
+                  const _exhaustiveCheck: never = step.type
+                  throw new Error('all cases not handled')
+                }
               }
             }),
           },
