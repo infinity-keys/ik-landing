@@ -104,7 +104,7 @@ const errorLabelStyles = 'form__label form__label--error text-rose-900'
 const LOCAL_STORAGE_KEY = 'puzzleForm'
 
 /**
- * @TODO: wat do?
+ * This is the starting state of a Step, used in a couple different contexts
  *
  * @param stepSortWeight - The sort weight used in ordering
  */
@@ -162,52 +162,69 @@ function StepForm({
       stepGuideType: getValues(`${stepsArrayName}.${index}.stepGuideType`),
       stepPage: getValues(`${stepsArrayName}.${index}.stepPage`),
     }
-    if (stepTypeVal === 'SIMPLE_TEXT') {
-      setValue(`${stepsArrayName}.${index}`, {
-        type: 'SIMPLE_TEXT',
-        ...commonStepFields,
-        solution: getValues(`${stepsArrayName}.${index}.solution`) || '',
-        solutionCharCount: 0,
-      })
-    }
-    if (stepTypeVal === 'NFT_CHECK') {
-      setValue(`${stepsArrayName}.${index}`, {
-        type: 'NFT_CHECK',
-        ...commonStepFields,
-        requireAllNfts: false,
-        nftCheckData: [
-          {
-            contractAddress: '',
-            tokenId: Number(''),
-            chainId: Number(''),
-            poapEventId: '',
-          },
-        ],
-      })
-    }
-    if (stepTypeVal === 'FUNCTION_CALL') {
-      setValue(`${stepsArrayName}.${index}`, {
-        type: 'FUNCTION_CALL',
-        ...commonStepFields,
-        methodIds: [],
-        contractAddress: '',
-      })
-    }
-    if (stepTypeVal === 'COMETH_API') {
-      setValue(`${stepsArrayName}.${index}`, {
-        type: 'COMETH_API',
-        ...commonStepFields,
-      })
-    }
-    if (stepTypeVal === 'TOKEN_ID_RANGE') {
-      setValue(`${stepsArrayName}.${index}`, {
-        type: 'TOKEN_ID_RANGE',
-        ...commonStepFields,
-        contractAddress: '',
-        chainId: '',
-        // ranges: [{ startId: 0, endId: 0 }],
-        ranges: [],
-      })
+    switch (stepTypeVal) {
+      case 'SIMPLE_TEXT': {
+        setValue(`${stepsArrayName}.${index}`, {
+          type: 'SIMPLE_TEXT',
+          ...commonStepFields,
+          solution: getValues(`${stepsArrayName}.${index}.solution`) || '',
+          solutionCharCount: 0,
+        })
+        break
+      }
+      case 'NFT_CHECK': {
+        setValue(`${stepsArrayName}.${index}`, {
+          type: 'NFT_CHECK',
+          ...commonStepFields,
+          requireAllNfts: false,
+          nftCheckData: [
+            {
+              contractAddress: '',
+              tokenId: Number(''),
+              chainId: Number(''),
+              poapEventId: '',
+            },
+          ],
+        })
+        break
+      }
+      case 'FUNCTION_CALL': {
+        setValue(`${stepsArrayName}.${index}`, {
+          type: 'FUNCTION_CALL',
+          ...commonStepFields,
+          methodIds: [],
+          contractAddress: '',
+        })
+        break
+      }
+      case 'COMETH_API': {
+        setValue(`${stepsArrayName}.${index}`, {
+          type: 'COMETH_API',
+          ...commonStepFields,
+        })
+        break
+      }
+      case 'TOKEN_ID_RANGE': {
+        setValue(`${stepsArrayName}.${index}`, {
+          type: 'TOKEN_ID_RANGE',
+          ...commonStepFields,
+          contractAddress: '',
+          chainId: '',
+          // ranges: [{ startId: 0, endId: 0 }],
+          ranges: [],
+        })
+        break
+      }
+      case 'LENS_API':
+      case 'ERC20_BALANCE':
+      case 'ORIUM_API':
+      case 'ASSET_TRANSFER': {
+        throw new Error('stepTypeVal not handled.')
+      }
+      default: {
+        const _exhaustiveCheck: never = stepTypeVal
+        throw new Error('stepTypeVal exhaustive check not handled.')
+      }
     }
   }, [index, setValue, getValues, stepTypeVal])
 
