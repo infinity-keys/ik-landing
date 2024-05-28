@@ -15,7 +15,6 @@ import {
 } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import isEmpty from 'lodash/isEmpty'
-import uniqBy from 'lodash/uniqBy'
 import useFormPersist from 'react-hook-form-persist'
 import {
   CreateRewardableInput,
