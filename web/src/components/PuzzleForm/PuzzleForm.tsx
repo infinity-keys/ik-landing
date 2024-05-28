@@ -103,6 +103,11 @@ const errorLabelStyles = 'form__label form__label--error text-rose-900'
 
 const LOCAL_STORAGE_KEY = 'puzzleForm'
 
+const oriumCheckTypeOptions: OriumCheckType[] = [
+  'HAS_CREATED_VAULT',
+  'HAS_DEPOSITED_NFT',
+  'HAS_CREATED_SCHOLARSHIP',
+]
 /**
  * This is the starting state of a Step, used in a couple different contexts
  *
@@ -228,12 +233,6 @@ function StepForm({
     }
   }, [index, setValue, getValues, stepTypeVal])
 
-  const oriumCheckTypeOptions: OriumCheckType[] = [
-    'HAS_CREATED_VAULT',
-    'HAS_DEPOSITED_NFT',
-    'HAS_CREATED_SCHOLARSHIP',
-  ]
-
   // Token ID ranges field array
   const {
     fields: tokenIdFields,
@@ -244,6 +243,7 @@ function StepForm({
     name: `${stepsArrayName}.${index}.ranges`,
   })
 
+  // Step PAGES field array (carousel)
   const {
     fields: stepPageFields,
     append: appendStepPageField,
@@ -334,10 +334,7 @@ function StepForm({
               )}
             </div>
 
-            <div
-              id={`${index}-step-type-guide`}
-              className="form__entry mb-12 hidden"
-            >
+            <div className="form__entry mb-12 hidden">
               <Label
                 name={`stepTypeGuide.${index}`}
                 className="form__label text-slate-100"
@@ -372,331 +369,373 @@ function StepForm({
                 <option value="ORIUM_API">Orium API</option>
               </SelectField>
             </div>
-            {stepTypeVal === 'SIMPLE_TEXT' && (
-              <div className="step__type">
-                <div className="form__entry mb-12">
-                  <Label
-                    name={`${stepsArrayName}.${index}.solution`}
-                    className={defaultLabelStyles}
-                    errorClassName={`${defaultLabelStyles} ${errorLabelStyles}`}
-                  >
-                    <div className="form__entry-name">
-                      Passcode<span className="text-rose-500">*</span>
-                    </div>
-                  </Label>
-                  <TextField
-                    placeholder="The passcode can be only letters and numbers."
-                    {...register(`${stepsArrayName}.${index}.solution`)}
-                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                    validation={{
-                      required: 'I&apos;m sorry, passcode is required.',
-                      pattern: {
-                        value: /^[a-zA-Z0-9]+$/,
-                        message: 'The passcode can be only letters or numbers.',
-                      },
-                    }}
-                  />
-                  <FieldError
-                    name={`${stepsArrayName}.${index}.solution`}
-                    className="form__error pt-1 font-medium text-rose-300"
-                  />
-                </div>
-              </div>
-            )}
-            {stepTypeVal === 'NFT_CHECK' && (
-              <div className="step__type">
-                <div className="form__entry mb-12">
-                  <Label
-                    name="requireAllNfts"
-                    className="form__label text-slate-100"
-                  >
-                    <div className="form__entry-name mb-1">
-                      Require All NFTs
-                    </div>
-                  </Label>
-                  <CheckboxField
-                    {...register(`${stepsArrayName}.${index}.requireAllNfts`)}
-                    className="form__text-field mt-1 mb-10 box-border block bg-stone-200 text-slate-700"
-                  />
-                </div>
-
-                <div className="form__entry mb-12">
-                  <Label
-                    name={stepTypeVal}
-                    className="form__label text-slate-100"
-                  >
-                    <div className="form__entry-name mb-1">
-                      Contract Address
-                    </div>
-                  </Label>
-                  <TextField
-                    placeholder="Contract Address"
-                    {...register(
-                      `${stepsArrayName}.${index}.nftCheckData.0.contractAddress`
-                    )}
-                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                  />
-                </div>
-                <div className="form__entry mb-12">
-                  <Label
-                    name={stepTypeVal}
-                    className="form__label text-slate-100"
-                  >
-                    <div className="form__entry-name mb-1">Chain Id</div>
-                  </Label>
-                  <TextField
-                    placeholder="Chain Id"
-                    {...register(
-                      `${stepsArrayName}.${index}.nftCheckData.0.chainId`
-                    )}
-                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                  />
-                </div>
-                <div className="form__entry mb-12">
-                  <Label
-                    name={stepTypeVal}
-                    className="form__label text-slate-100"
-                  >
-                    <div className="form__entry-name mb-1">Token Id</div>
-                  </Label>
-                  <TextField
-                    placeholder="Token Id"
-                    {...register(
-                      `${stepsArrayName}.${index}.nftCheckData.0.tokenId`
-                    )}
-                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                  />
-                </div>
-                <div className="form__entry mb-12">
-                  <Label
-                    name={stepTypeVal}
-                    className="form__label text-slate-100"
-                  >
-                    <div className="form__entry-name mb-1">POAP Event Id</div>
-                  </Label>
-                  <TextField
-                    placeholder="POAP Event Id"
-                    {...register(
-                      `${stepsArrayName}.${index}.nftCheckData.0.poapEventId`
-                    )}
-                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                  />
-                </div>
-              </div>
-            )}
-            {stepTypeVal === 'FUNCTION_CALL' && (
-              <div className="step__type">
-                <div className="form__entry mb-12">
-                  <Label
-                    name={stepTypeVal}
-                    className="form__label text-slate-100"
-                  >
-                    <div className="form__entry-name mb-1">Method Ids</div>
-                  </Label>
-                  <TextField
-                    placeholder="Method Ids"
-                    {...register(`${stepsArrayName}.${index}.methodIds`)}
-                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                  />
-                </div>
-                <div className="form__entry mb-12">
-                  <Label
-                    name={stepTypeVal}
-                    className="form__label text-slate-100"
-                  >
-                    <div className="form__entry-name mb-1">
-                      Contract Address
-                    </div>
-                  </Label>
-                  <TextField
-                    placeholder="Contract Address"
-                    {...register(`${stepsArrayName}.${index}.contractAddress`)}
-                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                  />
-                </div>
-              </div>
-            )}
-            {stepTypeVal === 'COMETH_API' && (
-              <div className="step__type">
-                <div className="form__entry mb-12"></div>
-              </div>
-            )}
-            {stepTypeVal === 'TOKEN_ID_RANGE' && (
-              <div className="step__type">
-                <div className="form__entry mb-12"></div>
-                <div className="form__entry mb-12">
-                  <Label
-                    name={`${stepsArrayName}.${index}.contractAddress`}
-                    className={defaultLabelStyles}
-                    errorClassName={errorLabelStyles}
-                  >
-                    <div className="form__entry-name mb-1">
-                      Contract Address
-                    </div>
-                  </Label>
-                  <TextField
-                    placeholder="Contract Address"
-                    {...register(`${stepsArrayName}.${index}.contractAddress`)}
-                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                    validation={{
-                      required:
-                        'I&apos;m sorry, a contract address is required.',
-                    }}
-                  />
-
-                  <FieldError
-                    name={`${stepsArrayName}.${index}.contractAddress`}
-                    className="form__error pt-1 font-medium text-rose-300"
-                  />
-                </div>
-                <div className="form__entry mb-12">
-                  <Label
-                    name={`${stepsArrayName}.${index}.chainId`}
-                    className={defaultLabelStyles}
-                    errorClassName={errorLabelStyles}
-                  >
-                    <div className="form__entry-name mb-1">Chain Id</div>
-                  </Label>
-                  <TextField
-                    placeholder="Chain Id"
-                    {...register(`${stepsArrayName}.${index}.chainId`)}
-                    className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
-                    validation={{
-                      required: 'I&apos;m sorry, a chain id is required.',
-                    }}
-                  />
-                  <FieldError
-                    name={`${stepsArrayName}.${index}.chainId`}
-                    className="form__error pt-1 font-medium text-rose-300"
-                  />
-                </div>
-
-                <div id="dynamically-add-token-id-ranges" className="m-4 p-6">
-                  {tokenIdFields.map((field, tokenIdIndex) => (
-                    <div key={field.id}>
-                      <fieldset id={`token-id-index-${tokenIdIndex}`}>
-                        {/* these are temporary values for debugging purposes */}
-                        {/* @TODO: REMOVE FOR PROD */}
-                        {/* <p className="text-red-500">Index: {tokenIdIndex}</p> */}
-                        {/* <p className="text-red-500">ID: {field.id}</p> */}
-                        <div className="mb-8 rounded-lg border-2 border-gray-500 bg-gray-100 p-6">
-                          <div className="form__label mb-12 text-center text-3xl font-extrabold tracking-widest text-slate-700">
-                            Token ID Range {tokenIdIndex + 1}
+            {(() => {
+              switch (stepTypeVal) {
+                case 'SIMPLE_TEXT': {
+                  return (
+                    <div className="step__type">
+                      <div className="form__entry mb-12">
+                        <Label
+                          name={`${stepsArrayName}.${index}.solution`}
+                          className={defaultLabelStyles}
+                          errorClassName={`${defaultLabelStyles} ${errorLabelStyles}`}
+                        >
+                          <div className="form__entry-name">
+                            Passcode<span className="text-rose-500">*</span>
                           </div>
-                          <div id="start-id" className="form__entry mb-12">
-                            <Label
-                              name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`}
-                              className={defaultLabelStyles}
-                              errorClassName={errorLabelStyles}
-                            >
-                              <div className="form__entry-name mb-1">
-                                Start ID
+                        </Label>
+                        <TextField
+                          placeholder="The passcode can be only letters and numbers."
+                          {...register(`${stepsArrayName}.${index}.solution`)}
+                          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                          validation={{
+                            required: 'I&apos;m sorry, passcode is required.',
+                            pattern: {
+                              value: /^[a-zA-Z0-9]+$/,
+                              message:
+                                'The passcode can be only letters or numbers.',
+                            },
+                          }}
+                        />
+                        <FieldError
+                          name={`${stepsArrayName}.${index}.solution`}
+                          className="form__error pt-1 font-medium text-rose-300"
+                        />
+                      </div>
+                    </div>
+                  )
+                }
+                case 'NFT_CHECK': {
+                  return (
+                    <div className="step__type">
+                      <div className="form__entry mb-12">
+                        <Label
+                          name="requireAllNfts"
+                          className="form__label text-slate-100"
+                        >
+                          <div className="form__entry-name mb-1">
+                            Require All NFTs
+                          </div>
+                        </Label>
+                        <CheckboxField
+                          {...register(
+                            `${stepsArrayName}.${index}.requireAllNfts`
+                          )}
+                          className="form__text-field mt-1 mb-10 box-border block bg-stone-200 text-slate-700"
+                        />
+                      </div>
+
+                      <div className="form__entry mb-12">
+                        <Label
+                          name={stepTypeVal}
+                          className="form__label text-slate-100"
+                        >
+                          <div className="form__entry-name mb-1">
+                            Contract Address
+                          </div>
+                        </Label>
+                        <TextField
+                          placeholder="Contract Address"
+                          {...register(
+                            `${stepsArrayName}.${index}.nftCheckData.0.contractAddress`
+                          )}
+                          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                        />
+                      </div>
+                      <div className="form__entry mb-12">
+                        <Label
+                          name={stepTypeVal}
+                          className="form__label text-slate-100"
+                        >
+                          <div className="form__entry-name mb-1">Chain Id</div>
+                        </Label>
+                        <TextField
+                          placeholder="Chain Id"
+                          {...register(
+                            `${stepsArrayName}.${index}.nftCheckData.0.chainId`
+                          )}
+                          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                        />
+                      </div>
+                      <div className="form__entry mb-12">
+                        <Label
+                          name={stepTypeVal}
+                          className="form__label text-slate-100"
+                        >
+                          <div className="form__entry-name mb-1">Token Id</div>
+                        </Label>
+                        <TextField
+                          placeholder="Token Id"
+                          {...register(
+                            `${stepsArrayName}.${index}.nftCheckData.0.tokenId`
+                          )}
+                          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                        />
+                      </div>
+                      <div className="form__entry mb-12">
+                        <Label
+                          name={stepTypeVal}
+                          className="form__label text-slate-100"
+                        >
+                          <div className="form__entry-name mb-1">
+                            POAP Event Id
+                          </div>
+                        </Label>
+                        <TextField
+                          placeholder="POAP Event Id"
+                          {...register(
+                            `${stepsArrayName}.${index}.nftCheckData.0.poapEventId`
+                          )}
+                          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                        />
+                      </div>
+                    </div>
+                  )
+                }
+                case 'FUNCTION_CALL': {
+                  return (
+                    <div className="step__type">
+                      <div className="form__entry mb-12">
+                        <Label
+                          name={stepTypeVal}
+                          className="form__label text-slate-100"
+                        >
+                          <div className="form__entry-name mb-1">
+                            Method Ids
+                          </div>
+                        </Label>
+                        <TextField
+                          placeholder="Method Ids"
+                          {...register(`${stepsArrayName}.${index}.methodIds`)}
+                          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                        />
+                      </div>
+                      <div className="form__entry mb-12">
+                        <Label
+                          name={stepTypeVal}
+                          className="form__label text-slate-100"
+                        >
+                          <div className="form__entry-name mb-1">
+                            Contract Address
+                          </div>
+                        </Label>
+                        <TextField
+                          placeholder="Contract Address"
+                          {...register(
+                            `${stepsArrayName}.${index}.contractAddress`
+                          )}
+                          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                        />
+                      </div>
+                    </div>
+                  )
+                }
+                case 'COMETH_API': {
+                  return (
+                    <div className="step__type">
+                      <div className="form__entry mb-12"></div>
+                    </div>
+                  )
+                }
+                case 'TOKEN_ID_RANGE': {
+                  return (
+                    <div className="step__type">
+                      <div className="form__entry mb-12"></div>
+                      <div className="form__entry mb-12">
+                        <Label
+                          name={`${stepsArrayName}.${index}.contractAddress`}
+                          className={defaultLabelStyles}
+                          errorClassName={errorLabelStyles}
+                        >
+                          <div className="form__entry-name mb-1">
+                            Contract Address
+                          </div>
+                        </Label>
+                        <TextField
+                          placeholder="Contract Address"
+                          {...register(
+                            `${stepsArrayName}.${index}.contractAddress`
+                          )}
+                          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                          validation={{
+                            required:
+                              'I&apos;m sorry, a contract address is required.',
+                          }}
+                        />
+
+                        <FieldError
+                          name={`${stepsArrayName}.${index}.contractAddress`}
+                          className="form__error pt-1 font-medium text-rose-300"
+                        />
+                      </div>
+                      <div className="form__entry mb-12">
+                        <Label
+                          name={`${stepsArrayName}.${index}.chainId`}
+                          className={defaultLabelStyles}
+                          errorClassName={errorLabelStyles}
+                        >
+                          <div className="form__entry-name mb-1">Chain Id</div>
+                        </Label>
+                        <TextField
+                          placeholder="Chain Id"
+                          {...register(`${stepsArrayName}.${index}.chainId`)}
+                          className="form__text-field border-1 box-border block w-full rounded-md border-slate-300 bg-transparent p-3 text-slate-200 placeholder-slate-400 sm:w-full md:max-w-md"
+                          validation={{
+                            required: 'I&apos;m sorry, a chain id is required.',
+                          }}
+                        />
+                        <FieldError
+                          name={`${stepsArrayName}.${index}.chainId`}
+                          className="form__error pt-1 font-medium text-rose-300"
+                        />
+                      </div>
+
+                      <div
+                        id="dynamically-add-token-id-ranges"
+                        className="m-4 p-6"
+                      >
+                        {tokenIdFields.map((field, tokenIdIndex) => (
+                          <div key={field.id}>
+                            <fieldset id={`token-id-index-${tokenIdIndex}`}>
+                              {/* these are temporary values for debugging purposes */}
+                              {/* @TODO: REMOVE FOR PROD */}
+                              {/* <p className="text-red-500">Index: {tokenIdIndex}</p> */}
+                              {/* <p className="text-red-500">ID: {field.id}</p> */}
+                              <div className="mb-8 rounded-lg border-2 border-gray-500 bg-gray-100 p-6">
+                                <div className="form__label mb-12 text-center text-3xl font-extrabold tracking-widest text-slate-700">
+                                  Token ID Range {tokenIdIndex + 1}
+                                </div>
+                                <div
+                                  id="start-id"
+                                  className="form__entry mb-12"
+                                >
+                                  <Label
+                                    name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`}
+                                    className={defaultLabelStyles}
+                                    errorClassName={errorLabelStyles}
+                                  >
+                                    <div className="form__entry-name mb-1">
+                                      Start ID
+                                    </div>
+                                  </Label>
+                                  <TextField
+                                    placeholder="Start ID"
+                                    {...register(
+                                      `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`
+                                    )}
+                                    className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                                    validation={{
+                                      required:
+                                        'I&apos;m sorry, a Start ID is required.',
+                                    }}
+                                  />
+
+                                  <FieldError
+                                    name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`}
+                                    className="form__error pt-1 font-medium text-rose-300"
+                                  />
+                                </div>
+
+                                <div id="end-id" className="form__entry mb-12">
+                                  <Label
+                                    name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`}
+                                    className={defaultLabelStyles}
+                                    errorClassName={errorLabelStyles}
+                                  >
+                                    <div className="form__entry-name mb-1">
+                                      End ID
+                                    </div>
+                                  </Label>
+                                  <TextField
+                                    placeholder="End ID"
+                                    {...register(
+                                      `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`
+                                    )}
+                                    className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
+                                    validation={{
+                                      required:
+                                        'I&apos;m sorry, an End ID is required.',
+                                    }}
+                                  />
+
+                                  <FieldError
+                                    name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`}
+                                    className="form__error pt-1 font-medium text-rose-300"
+                                  />
+                                </div>
+
+                                <button
+                                  type="button"
+                                  className="rw-button rw-button-red"
+                                  // onClick={() => removeFieldset(tokenIdIndex)}
+                                >
+                                  <div className="">Remove Token ID Range</div>
+                                </button>
                               </div>
-                            </Label>
-                            <TextField
-                              placeholder="Start ID"
-                              {...register(
-                                `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`
-                              )}
-                              className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-                              validation={{
-                                required:
-                                  'I&apos;m sorry, a Start ID is required.',
-                              }}
-                            />
-
-                            <FieldError
-                              name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.startId`}
-                              className="form__error pt-1 font-medium text-rose-300"
-                            />
+                            </fieldset>
                           </div>
-
-                          <div id="end-id" className="form__entry mb-12">
-                            <Label
-                              name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`}
-                              className={defaultLabelStyles}
-                              errorClassName={errorLabelStyles}
-                            >
-                              <div className="form__entry-name mb-1">
-                                End ID
-                              </div>
-                            </Label>
-                            <TextField
-                              placeholder="End ID"
-                              {...register(
-                                `${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`
-                              )}
-                              className="form__text-field mb-4 box-border block rounded-lg bg-stone-200 text-slate-700 placeholder-zinc-400"
-                              validation={{
-                                required:
-                                  'I&apos;m sorry, an End ID is required.',
-                              }}
-                            />
-
-                            <FieldError
-                              name={`${stepsArrayName}.${index}.ranges.${tokenIdIndex}.endId`}
-                              className="form__error pt-1 font-medium text-rose-300"
-                            />
-                          </div>
-
+                        ))}
+                        <div className="mt-8 mb-20">
                           <button
                             type="button"
-                            className="rw-button rw-button-red"
-                            // onClick={() => removeFieldset(tokenIdIndex)}
+                            className="rw-button rw-button-blue"
+                            onClick={() =>
+                              append({
+                                startId: 0,
+                                endId: 0,
+                              })
+                            }
                           >
-                            <div className="">Remove Token ID Range</div>
+                            Add a Token ID Range
                           </button>
                         </div>
-                      </fieldset>
+                      </div>
                     </div>
-                  ))}
-                  <div className="mt-8 mb-20">
-                    <button
-                      type="button"
-                      className="rw-button rw-button-blue"
-                      onClick={() =>
-                        append({
-                          startId: 0,
-                          endId: 0,
-                        })
-                      }
-                    >
-                      Add a Token ID Range
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-            {stepTypeVal === 'ORIUM_API' && (
-              <div className="step__type">
-                <div className="form__entry mb-12"></div>
-                {/* Remove once verified we can remove */}
-                {/* <label
+                  )
+                }
+                case 'ORIUM_API': {
+                  return (
+                    <div className="step__type">
+                      <div className="form__entry mb-12"></div>
+                      {/* Remove once verified we can remove */}
+                      {/* <label
                   htmlFor={`${stepsArrayName}.${index}.checkType`}
                   className="form__label text-slate-100"
                 >
                   <div className="form__entry-name mb-1">Check Type</div>
                 </label> */}
-                <Label
-                  name={`${stepsArrayName}.${index}.checkType`}
-                  className={defaultLabelStyles}
-                  errorClassName={errorLabelStyles}
-                >
-                  <p className="form__entry-name mb-1">Check Type</p>
-                </Label>
+                      <Label
+                        name={`${stepsArrayName}.${index}.checkType`}
+                        className={defaultLabelStyles}
+                        errorClassName={errorLabelStyles}
+                      >
+                        <p className="form__entry-name mb-1">Check Type</p>
+                      </Label>
 
-                <SelectField
-                  name={`${stepsArrayName}.${index}.checkType`}
-                  className="block bg-inherit font-semibold text-stone-700"
-                >
-                  {oriumCheckTypeOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </SelectField>
-              </div>
-            )}
+                      <SelectField
+                        name={`${stepsArrayName}.${index}.checkType`}
+                        className="block bg-inherit font-semibold text-stone-700"
+                      >
+                        {oriumCheckTypeOptions.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </SelectField>
+                    </div>
+                  )
+                }
+                case 'LENS_API':
+                case 'ERC20_BALANCE':
+                case 'ASSET_TRANSFER': {
+                  return <div>Not handled</div>
+                }
+                default: {
+                  const _exhaustiveCheck: never = stepTypeVal
+                  throw new Error('React stepTypeVal exhaustive.')
+                }
+              }
+            })()}
 
             <div id={`${index}-solution-hint`} className="form__entry mb-12">
               <Label
