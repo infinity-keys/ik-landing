@@ -132,8 +132,6 @@ const buildEmptyStep = (stepSortWeight = 1): CreateAllStepTypesInput => ({
 // New puzzles start with no steps in an empty array
 const startingSteps: CreateAllStepTypesInput[] = [buildEmptyStep()]
 
-// Using the default: <FieldError /> field validator from react-hook-form creates
-
 // This is the component that renders each step in the puzzle form
 function StepForm({
   index,
@@ -253,7 +251,7 @@ function StepForm({
     name: `${stepsArrayName}.${index}.stepPage`,
     shouldUnregister: true,
     rules: {
-      required: true,
+      required: 'You must have at least one Story Block in a Step!',
     },
   })
 
@@ -311,6 +309,10 @@ function StepForm({
                   </fieldset>
                 </div>
               ))}
+              <FieldError
+                name={`${stepsArrayName}.${index}.stepPage.root`}
+                className="form__error font-medium text-rose-300"
+              ></FieldError>
 
               {stepPageFields.length < 3 && (
                 <div className="mt-t mb-10 border-y border-stone-50 py-2">
@@ -597,10 +599,6 @@ function StepForm({
                         {tokenIdFields.map((field, tokenIdIndex) => (
                           <div key={field.id}>
                             <fieldset id={`token-id-index-${tokenIdIndex}`}>
-                              {/* these are temporary values for debugging purposes */}
-                              {/* @TODO: REMOVE FOR PROD */}
-                              {/* <p className="text-red-500">Index: {tokenIdIndex}</p> */}
-                              {/* <p className="text-red-500">ID: {field.id}</p> */}
                               <div className="mb-8 rounded-lg border-2 border-gray-500 bg-gray-100 p-6">
                                 <div className="form__label mb-12 text-center text-3xl font-extrabold tracking-widest text-slate-700">
                                   Token ID Range {tokenIdIndex + 1}
@@ -667,6 +665,8 @@ function StepForm({
                                 <button
                                   type="button"
                                   className="rw-button rw-button-red"
+                                  // Since token ID range is not implemented yet,
+                                  // this doesn't do anything.
                                   // onClick={() => removeFieldset(tokenIdIndex)}
                                 >
                                   <div className="">Remove Token ID Range</div>
@@ -697,13 +697,7 @@ function StepForm({
                   return (
                     <div className="step__type">
                       <div className="form__entry mb-12"></div>
-                      {/* Remove once verified we can remove */}
-                      {/* <label
-                  htmlFor={`${stepsArrayName}.${index}.checkType`}
-                  className="form__label text-slate-100"
-                >
-                  <div className="form__entry-name mb-1">Check Type</div>
-                </label> */}
+
                       <Label
                         name={`${stepsArrayName}.${index}.checkType`}
                         className={defaultLabelStyles}
@@ -737,7 +731,7 @@ function StepForm({
               }
             })()}
 
-            <div id={`${index}-solution-hint`} className="form__entry mb-12">
+            <div className="form__entry mb-12">
               <Label
                 name={`${stepsArrayName}.${index}.solutionHint`}
                 className={defaultLabelStyles}
@@ -752,7 +746,7 @@ function StepForm({
               />
             </div>
 
-            <div id={`${index}-default-image`} className="form__entry mb-12">
+            <div className="form__entry mb-12">
               <Label
                 name={`${stepsArrayName}.${index}.defaultImage`}
                 className={defaultLabelStyles}
@@ -798,14 +792,6 @@ function StepForm({
                 </span>
               </Button>
             </div>
-
-            {/* Refactor rw-field error to just use tailwind classes here */}
-            {errors?.[stepsArrayName]?.[index]?.stepPage?.root?.type ===
-              'required' && (
-              <div className={errorLabelStyles}>
-                You must have at least one step page in a step!
-              </div>
-            )}
           </Disclosure.Panel>
         </fieldset>
       )}
