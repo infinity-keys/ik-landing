@@ -34,7 +34,6 @@ import {
 import {
   Form,
   FormError,
-  FieldErrors,
   useForm,
   Label,
   SelectField,
@@ -140,7 +139,6 @@ function StepForm({
   setValue,
   getValues,
   remove,
-  errors,
   control,
 }: {
   index: number
@@ -149,7 +147,6 @@ function StepForm({
   setValue: UseFormSetValue<PuzzleFormType>
   getValues: UseFormGetValues<PuzzleFormType>
   remove: (index: number) => void
-  errors: FieldErrors<PuzzleFormType>
   control: Control<PuzzleFormType, unknown>
 }) {
   // Watch for `stepTypeVal` changes so that we can set the default values
@@ -1226,7 +1223,6 @@ export default function PuzzleForm({
                         setValue={formMethods.setValue}
                         getValues={formMethods.getValues}
                         remove={remove}
-                        errors={errors}
                         control={formMethods.control}
                       />
                     )
