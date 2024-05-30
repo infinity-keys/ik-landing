@@ -53,12 +53,11 @@ import {
 
 import Button, { generateButtonClasses } from 'src/components/Button/Button'
 import LoadingIcon from 'src/components/LoadingIcon/LoadingIcon'
-
 import CloudinaryUploadWidget, {
   formatImageSrc,
-} from './CloudinaryUpload/CloudinaryUploadWidget'
-import DisplayImage from './DisplayImage/DisplayImage'
-import TabLabel from './TabLabel'
+} from 'src/components/PuzzleForm/CloudinaryUpload/CloudinaryUploadWidget'
+import DisplayImage from 'src/components/PuzzleForm/DisplayImage/DisplayImage'
+import TabLabel from 'src/components/PuzzleForm/TabLabel'
 
 // TypeScript omit to ignore the parent `puzzleId` field
 type CreateStepInputFrontEnd = Omit<CreateStepInput, 'puzzleId'>
