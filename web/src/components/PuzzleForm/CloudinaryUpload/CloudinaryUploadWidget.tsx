@@ -6,8 +6,7 @@ import { CLOUDINARY_CLOUD_NAME } from '@infinity-keys/constants'
 import { cloudinaryUrl } from '@infinity-keys/core'
 
 import Button from 'src/components/Button'
-
-import DisplayImage from '../DisplayImage/DisplayImage'
+import DisplayImage from 'src/components/PuzzleForm/DisplayImage/DisplayImage'
 
 export const formatImageSrc = (src: string) => {
   if (src.startsWith('https')) return src

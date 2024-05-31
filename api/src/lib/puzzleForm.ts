@@ -16,6 +16,10 @@ export const formatCreateSteps = (steps: CreateStepInput[]) => {
       stepPage,
       type,
       stepSimpleText,
+      stepNftCheck,
+      stepFunctionCall,
+      stepTokenIdRange,
+      stepOriumApi,
     }) => {
       const stepCommon = {
         solutionHint,
@@ -30,90 +34,106 @@ export const formatCreateSteps = (steps: CreateStepInput[]) => {
         },
       }
 
-      if (type === StepType.SIMPLE_TEXT && stepSimpleText) {
-        return {
-          ...stepCommon,
-          type: StepType.SIMPLE_TEXT,
-          stepSimpleText: {
-            create: {
-              solution: stepSimpleText.solution,
-              solutionCharCount: stepSimpleText.solution.length,
+      switch (type) {
+        case StepType.SIMPLE_TEXT: {
+          if (!stepSimpleText) throw new Error('Simple text step missing')
+          return {
+            ...stepCommon,
+            type: StepType.SIMPLE_TEXT,
+            stepSimpleText: {
+              create: {
+                solution: stepSimpleText.solution,
+                solutionCharCount: stepSimpleText.solution.length,
+              },
             },
-          },
+          }
+        }
+        case StepType.NFT_CHECK: {
+          throw new Error(`Step type ${type} not implemented yet`)
+          if (!stepNftCheck) throw new Error('NFT check step missing')
+          // return {
+          //   ...stepCommon,
+          //   type: 'NFT_CHECK',
+          //   stepNftCheck: {
+          //     create: {
+          //       requireAllNfts: stepNftCheck.requireAllNfts,
+          //       nftCheckData: {
+          //         create: stepNftCheck.nftCheckData.map((nftCheckDatum) => {
+          //           return {
+          //             contractAddress: nftCheckDatum.contractAddress,
+          //             tokenId: nftCheckDatum.tokenId,
+          //             chainId: nftCheckDatum.chainId,
+          //             poapEventId: nftCheckDatum.poapEventId,
+          //           }
+          //         }),
+          //       },
+          //     },
+          //   },
+          // }
+        }
+        case StepType.FUNCTION_CALL: {
+          throw new Error(`Step type ${type} not implemented yet`)
+          if (!stepFunctionCall) throw new Error('Function call step missing')
+          // return {
+          //   ...stepCommon,
+          //   type: 'FUNCTION_CALL',
+          //   stepFunctionCall: {
+          //     create: {
+          //       methodIds: stepFunctionCall.methodIds,
+          //       contractAddress: stepFunctionCall.contractAddress,
+          //     },
+          //   },
+          // }
+        }
+        case StepType.COMETH_API: {
+          throw new Error(`Step type ${type} not implemented yet`)
+          // return {
+          //   ...stepCommon,
+          //   type: 'COMETH_API',
+          //   stepComethApi: {
+          //     // No addition info currently needed for the Cometh API check
+          //   },
+          // }
+        }
+        case StepType.TOKEN_ID_RANGE: {
+          throw new Error(`Step type ${type} not implemented yet`)
+          if (!stepTokenIdRange) throw new Error('Token ID range step missing')
+          // return {
+          //   ...stepCommon,
+          //   type: 'TOKEN_ID_RANGE',
+          //   stepTokenIdRange: {
+          //     create: {
+          //       contractAddress: stepTokenIdRange.contractAddress,
+          //       chainId: stepTokenIdRange.chainId,
+          //       startIds: stepTokenIdRange.startIds,
+          //       endIds: stepTokenIdRange.endIds,
+          //     },
+          //   },
+          // }
+        }
+        case StepType.ORIUM_API: {
+          throw new Error(`Step type ${type} not implemented yet`)
+          if (!stepOriumApi) throw new Error('Orium API step missing')
+          // return {
+          //   ...stepCommon,
+          //   type: 'ORIUM_API',
+          //   stepOriumApi: {
+          //     create: {
+          //       checkType: stepOriumApi.checkType,
+          //     },
+          //   },
+          // }
+        }
+        case StepType.ASSET_TRANSFER:
+        case StepType.ERC20_BALANCE:
+        case StepType.LENS_API: {
+          throw new Error(`Step type ${type} not implemented yet`)
+        }
+        default: {
+          const _exhaustiveCheck: never = type
+          throw new Error(`Unhandled step type: ${_exhaustiveCheck}`)
         }
       }
-
-      // NOTE: Enable each option when we start supporting it
-      {
-        // if (step.type === 'NFT_CHECK' && step.stepNftCheck) {
-        //   return {
-        //     ...stepCommon,
-        //     type: 'NFT_CHECK',
-        //     stepNftCheck: {
-        //       create: {
-        //         requireAllNfts: step.stepNftCheck.requireAllNfts,
-        //         nftCheckData: {
-        //           create: step.stepNftCheck.nftCheckData.map((nftCheckDatum) => {
-        //             return {
-        //               contractAddress: nftCheckDatum.contractAddress,
-        //               tokenId: nftCheckDatum.tokenId,
-        //               chainId: nftCheckDatum.chainId,
-        //               poapEventId: nftCheckDatum.poapEventId,
-        //             }
-        //           }),
-        //         },
-        //       },
-        //     },
-        //   }
-        // }
-        // if (step.type === 'FUNCTION_CALL' && step.stepFunctionCall) {
-        //   return {
-        //     ...stepCommon,
-        //     type: 'FUNCTION_CALL',
-        //     stepFunctionCall: {
-        //       create: {
-        //         methodIds: step.stepFunctionCall.methodIds,
-        //         contractAddress: step.stepFunctionCall.contractAddress,
-        //       },
-        //     },
-        //   }
-        // }
-        // if (step.type === 'COMETH_API' && step.stepComethApi) {
-        //   return {
-        //     ...stepCommon,
-        //     type: 'COMETH_API',
-        //     stepComethApi: {
-        //       // No addition info currently needed for the Cometh API check
-        //     },
-        //   }
-        // }
-        // if (step.type === 'TOKEN_ID_RANGE' && step.stepTokenIdRange) {
-        //   return {
-        //     ...stepCommon,
-        //     type: 'TOKEN_ID_RANGE',
-        //     stepTokenIdRange: {
-        //       create: {
-        //         contractAddress: step.stepTokenIdRange.contractAddress,
-        //         chainId: step.stepTokenIdRange.chainId,
-        //         startIds: step.stepTokenIdRange.startIds,
-        //         endIds: step.stepTokenIdRange.endIds,
-        //       },
-        //     },
-        //   }
-        // }
-        // if (step.type === 'ORIUM_API' && step.stepOriumApi) {
-        //   return {
-        //     ...stepCommon,
-        //     type: 'ORIUM_API',
-        //     stepOriumApi: {
-        //       create: {
-        //         checkType: step.stepOriumApi.checkType,
-        //       },
-        //     },
-        //   }
-        // }
-      }
-      throw new Error(`Step type ${type} not implemented yet`)
     }
   )
 
