@@ -1,7 +1,8 @@
 import { db } from 'api/src/lib/db'
+import { sub } from 'date-fns/sub'
 
 export default async () => {
-  const twoWeeksAgo = new Date(Date.now() - 12096e5)
+  const twoWeeksAgo = sub(new Date(), { weeks: 2 })
 
   const deletedPuzzleIds = await db.rewardable.findMany({
     where: {
