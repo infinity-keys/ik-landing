@@ -36,6 +36,7 @@
   },
   "packageManager": "yarn@3.5.1",
   "dependencies": {
+    "date-fns": "^3.6.0",
     "discord-economy-super": "^1.7.6",
     "jest-watch-typeahead": "^2.2.2",
     "lodash": "^4.17.21",
