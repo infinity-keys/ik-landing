@@ -581,3 +581,29 @@ This will be the first page===This will be the second
 ```
 
 testing
+
+## IK Puzzle Form
+
+### User Interface
+
+Click on the Create button or navigate to `/puzzle/create` in order to create a new puzzle. Each puzzle has one or more steps, this is where you ask the user a question and define the answer that the user must provide in order to complete the step. Fields also exist for images & hints you can provide for a more enriched experience.
+
+The summary section allows a user to _list publicly_ which makes the puzzle available to anyone visiting the site. The option to _not_ list publically enables a creator to restrict access to those who share the same `OrgId` as the creator.
+
+The current configuration does not allow users to assign NFT's to puzzles or interact with blockchains, however, several frontend components and backend services are partially implemented to support this functionality.
+
+### Design Architecture
+
+RedwoodJS helper components are used wherever possible per the [docs](https://docs.redwoodjs.com/docs/forms/) but many of these helpers do not work well in nested or conditional forms. The `react-hook-form` library is used to manage the form state and validation.
+
+The form is located here:
+`web/src/components/PuzzleForm/PuzzleForm.tsx`
+...other forms in this repo may be outdated.
+
+The `type` definitions for each component are under the import statements, at the top of file. These include the straightforward `type PuzzleFormType` as well as the more contrived `type CreateAllStepTypesInput` that must handle each type of step that can be created.
+
+the parent function is the `PuzzleForm` which is the exported function. The `PuzzleForm` has 1 or more instances of a child `StepForm` which in turn is one of several `stepType` variations. Currently, only the `SIMPLE_TEXT` step type is fully functional.
+
+# MAYBE DELETE THIS!?:
+
+Within the puzzle, there are multiple steps that users can configure. These steps are stored in an array called `stepsArrayName`, with each step having properties like stepSortWeight to determine its order and `stepGuideType` to guide users through the process. The form supports various step types, including `SIMPLE_TEXT`, `NFT_CHECK`, `FUNCTION_CALL`, `COMETH_API`, and `TOKEN_ID_RANGE`. However, only the `SIMPLE_TEXT` type is currently fully functional.
