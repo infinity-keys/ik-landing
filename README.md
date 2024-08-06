@@ -604,6 +604,6 @@ The `type` definitions for each component are under the import statements, at th
 
 the parent function is the `PuzzleForm` which is the exported function. The `PuzzleForm` has 1 or more instances of a child `StepForm` which in turn is one of several `stepType` variations. Currently, only the `SIMPLE_TEXT` step type is fully functional.
 
-# MAYBE DELETE THIS!?:
+These steps are stored in an array called `stepsArrayName`, with each step having properties like stepSortWeight to determine its order and `stepGuideType` to guide users through the process. The form supports various step types, including `SIMPLE_TEXT`, `NFT_CHECK`, `FUNCTION_CALL`, `COMETH_API`, and `TOKEN_ID_RANGE`. However, only the `SIMPLE_TEXT` type is currently fully functional.
 
-Within the puzzle, there are multiple steps that users can configure. These steps are stored in an array called `stepsArrayName`, with each step having properties like stepSortWeight to determine its order and `stepGuideType` to guide users through the process. The form supports various step types, including `SIMPLE_TEXT`, `NFT_CHECK`, `FUNCTION_CALL`, `COMETH_API`, and `TOKEN_ID_RANGE`. However, only the `SIMPLE_TEXT` type is currently fully functional.
+Most styling is done with TailwindCSS, but we initially planned to implement Block, Element Modifiers (BEM) for the forms. This work can be found at: `web/src/index.css`
