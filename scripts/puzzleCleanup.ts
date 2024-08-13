@@ -1,3 +1,9 @@
+/**
+ * This is run on cron (see render.yaml) to clean up puzzles marked for deletion.
+ * When puzzles are "deleted", they are simply flagged as trashed until this cron
+ * script runs.
+ */
+
 import { db } from 'api/src/lib/db'
 import { sub } from 'date-fns/sub'
 
