@@ -210,6 +210,18 @@ yarn npm publish --access public
 - polygon: 0x7e8E97A66A935061B2f5a8576226175c4fdE0ff9
 - optimism: 0x54b743D6055e3BBBF13eb2C748A3783516156e5B
 
+## Architecture
+
+This diagram is generated from the `./api/db/schema.prisma` file and gives a high-level overview of our our data model works.
+
+Organizations have Users connected by OrganizationUser, which stores the Users' role within that Organization.
+
+Organizations can also have Rewardables, the main thing we use to let users play and receive rewards. Rewardables can be a particular type: Pack, Bundle, or Puzzle. Rewardables can link to each other through the RewardableConnection model.
+
+Currently, the main Rewardable we feature is the Puzzle, which has 1 or many Steps. Steps are the individual gates a User must complete before being rewarded with a Rewardable. Steps are broken down further into StepTypes which allow a player to answer questions, show proof of NFT ownership, etc. There are many StepTypes but the only functional ones today are StepSimpleText, which asks a person a question they must answer correctly before moving on to the next Step. Every time a User attempts to solve a Step, and entry is made in the Attempt model, tying a User to an Attempt. When a User finally gets an Attempt correct, an entry is written to Solve. This creates a chain of User's attempts to a Solve which is tied to aStep, which is tied to a Rewardable.
+
+![Infinity Keys ERD from Prisma Schema](./prisma-erd.svg)
+
 ## Adding a New Step Type
 
 Infinity Keys works under a system of "Rewardables" which have "Steps". A Rewardable is anything that rewards the user with something. Each Rewardable has 1 or more Steps. Each Step can have different ways of playing (StepType).
