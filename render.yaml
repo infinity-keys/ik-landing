@@ -80,18 +80,6 @@ services:
       - key: NODE_VERSION
         value: 18
 
-  - name: function-stream
-    type: web
-    env: node
-    region: oregon
-    rootDir: packages/function-stream
-    buildCommand: yarn && yarn build
-    startCommand: yarn start
-    autoDeploy: true
-    envVars:
-      - key: NODE_VERSION
-        value: 18
-
   - type: cron
     name: puzzle-cleanup
     runtime: node

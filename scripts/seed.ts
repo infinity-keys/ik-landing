@@ -1,3 +1,9 @@
+/**
+ * This seed file is used to create the initial data for LOCAL DEVELOPMENT ONLY.
+ * Do not run in production. See root README for more information on how to run this
+ * command.
+ */
+
 import { db } from 'api/src/lib/db'
 
 export default async () => {
@@ -12,7 +18,12 @@ export default async () => {
 
   console.log(`created ${ikOrg.name} organization`)
 
-  // siteRole { ADMIN } user data
+  /**
+   * These emails are only here so that devs can sign in and work within the app.
+   * We need these accounts pre-existing in our DB before someone can actually sign
+   * in. Normally, user creation at Clerk does at callback to our API to create
+   * user within our system. We're just emulating that having already happened here.
+   */
   const ikUsersData = [
     {
       email: 'infinitykeys_devs@protonmail.com',
