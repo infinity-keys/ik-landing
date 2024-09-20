@@ -5364,7 +5364,7 @@ __metadata:
     tslib: ^2.4.1
     typescript: ^5.2.2
     viem: ^1.15.0
-    vite: ^4.5.3
+    vite: ^4.5.5
   languageName: unknown
   linkType: soft
 
@@ -5382,7 +5382,7 @@ __metadata:
     tslib: ^2.4.1
     typechain: ^8.1.0
     typescript: ^5.2.2
-    vite: ^4.5.3
+    vite: ^4.5.5
   languageName: unknown
   linkType: soft
 
@@ -5400,7 +5400,7 @@ __metadata:
     tslib: ^2.4.1
     typescript: ^5.2.2
     uuid: ^9.0.0
-    vite: ^4.5.3
+    vite: ^4.5.5
     zod: ^3.22.3
   languageName: unknown
   linkType: soft
@@ -5416,7 +5416,7 @@ __metadata:
     "@vitejs/plugin-react": ^2.2.0
     clsx: ^1.2.1
     typescript: ^5.2.2
-    vite: ^4.5.3
+    vite: ^4.5.5
     vite-plugin-dts: ^1.7.0
     vite-tsconfig-paths: ^3.5.2
   peerDependencies:
@@ -33325,9 +33325,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^4.5.3":
-  version: 4.5.3
-  resolution: "vite@npm:4.5.3"
+"vite@npm:^4.5.5":
+  version: 4.5.5
+  resolution: "vite@npm:4.5.5"
   dependencies:
     esbuild: ^0.18.10
     fsevents: ~2.3.2
@@ -33361,7 +33361,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: caeb1eecc0a8e0865782899e2f83d2993a9816562badc1c8291316d80d49b82f12038abd8cb8b8c627b6f369f58dfb25972ef4517d5e6e1b6e1bf7ee5b63a8a6
+  checksum: cde5a1d80ae61b2c0b2e2a04938e10aa8821a4c2c625f1dcd6eff179f0c9ce98a5b3c8fd62b54a81299568f7747fff4d35ffecc0e7f7ff34d76124d94a24ce9b
   languageName: node
   linkType: hard
 
