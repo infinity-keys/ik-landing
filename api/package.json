@@ -15,7 +15,7 @@
     "alchemy-sdk": "^2.8.3",
     "cloudinary": "^1.41.2",
     "cloudinary-build-url": "^0.2.4",
-    "cookie": "^0.5.0",
+    "cookie": "^0.7.0",
     "crypto-js": "^4.2.0",
     "discord.js": "^14.7.1",
     "googleapis": "^123.0.0",
